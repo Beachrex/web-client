@@ -1,4 +1,7 @@
 {
+  "Common": {
+    "search": "Search"
+  },
   "HomePage": {
     "allBeaches": "All Beaches",
     "beachCountries": "Beach Countries",

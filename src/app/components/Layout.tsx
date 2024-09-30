@@ -10,8 +10,11 @@ import {
 } from 'react-icons/hi';
 import { FaBed, FaFilter, FaMobileAlt } from "react-icons/fa";
 import {Link} from '@/i18n/routing';
+import {useLocale, useTranslations} from "next-intl";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+    const locale = useLocale();
+    const t = useTranslations('Common');
     return (
         <>
             <MegaMenu>
@@ -21,7 +24,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <Navbar.Toggle />
                 <Navbar.Collapse>
                     <div className="max-w-md">
-                        <TextInput id="searchMenu" type="input" rightIcon={HiSearch} placeholder="Search..."  />
+                        <TextInput id="searchMenu" type="input" rightIcon={HiSearch} placeholder={`${t('search')}...`}  />
                     </div>
                     <Navbar.Collapse>
                         <Dropdown
@@ -30,7 +33,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                             label={
                                 <span className='inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-neutral-100 hover:text-gray-900 dark:hover:bg-neutral-700 dark:hover:text-white'>
                               <span className='sr-only'></span>
-                              <img className='h-6 w-6' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/en.svg`} />
+                              <img className='h-6 w-6' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/${locale}.svg`} />
                             </span>
                             }
                         >

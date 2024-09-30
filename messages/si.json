@@ -1,4 +1,7 @@
 {
+  "Common": {
+    "search": "Iskanje"
+  },
   "HomePage": {
     "allBeaches": "Vse plaže",
     "beachCountries": "Države s plažami",
