@@ -1,10 +1,12 @@
 "use client";
 
-import Link from "next/link";
+// import Link from "next/link";
 import Layout from '@/app/components/Layout';
 import { useEffect, useState } from "react";
 import { fetchFromApi } from "@/app/utils/apiHelper";
 import { Carousel } from "flowbite-react";
+import {useTranslations} from 'next-intl';
+import {Link} from '@/i18n/routing';
 
 interface Counters {
     totalBeaches: number;
@@ -16,6 +18,8 @@ interface Counters {
     boatOnlyBeaches: number;
 }
 export default function HomePage() {
+
+    const t = useTranslations('HomePage');
 
     const [counters, setCounters] = useState<Counters | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -45,37 +49,37 @@ export default function HomePage() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                             <div
                                 className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
-                                <h3 className="text-2xl font-bold"> All Beaches</h3>
+                                <h3 className="text-2xl font-bold">{t('allBeaches')}</h3>
                                 <div className="text-lg">{counters.totalBeaches}</div>
                             </div>
                             <div
                                 className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
-                                <h3 className="text-2xl font-bold">Beach Countries</h3>
+                                <h3 className="text-2xl font-bold">{t('beachCountries')}</h3>
                                 <div className="text-lg">{counters.totalCountries}</div>
                             </div>
                             <div
                                 className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
-                                <h3 className="text-2xl font-bold">Beach Continents</h3>
+                                <h3 className="text-2xl font-bold">{t('beachContinents')}</h3>
                                 <div className="text-lg">{counters.totalContinents}</div>
                             </div>
                             <div
                                 className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
-                                <h3 className="text-2xl font-bold">Sea Beaches</h3>
+                                <h3 className="text-2xl font-bold">{t('seaBeaches')}</h3>
                                 <div className="text-lg">{counters.seaBeaches}</div>
                             </div>
                             <div
                                 className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
-                                <h3 className="text-2xl font-bold">Beach Islands</h3>
+                                <h3 className="text-2xl font-bold">{t('beachIslands')}</h3>
                                 <div className="text-lg">{counters.islandsCount}</div>
                             </div>
                             <div
                                 className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
-                                <h3 className="text-2xl font-bold">Sweetwater Beaches</h3>
+                                <h3 className="text-2xl font-bold">{t('sweetwaterBeaches')}</h3>
                                 <div className="text-lg">{counters.sweetwaterBeaches}</div>
                             </div>
                             <div
                                 className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
-                                <h3 className="text-2xl font-bold">Boat Only Beaches</h3>
+                                <h3 className="text-2xl font-bold">{t('boatOnlyBeaches')}</h3>
                                 <div className="text-lg">{counters.boatOnlyBeaches}</div>
                             </div>
                             {/* Add other counters here */}

@@ -9,7 +9,7 @@ import {
     HiSearch
 } from 'react-icons/hi';
 import { FaBed, FaFilter, FaMobileAlt } from "react-icons/fa";
-import Link from "next/link";
+import {Link} from '@/i18n/routing';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
