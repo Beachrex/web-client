@@ -14,5 +14,8 @@
   "Metadata": {
     "title": "BeachRex - Najdi svojo popolno plažo.",
     "description": "Vse plaže sveta na enem mestu. Za vsakega turista, da najde svojo popolno plažo za zaslužene počitnice. To je vizija BeachRexa, kateri sem posvetil 4 leta svojega življenja. V tem času sem ustvaril največjo svetovno bazo fotografij, videov, panoram, sferičnih fotografij in podatkov o plažah v Španiji, Franciji, Sloveniji, na Hrvaškem in v Italiji. Trenutno ustvarjam končno spletno stran in mobilno aplikacijo s popolno predstavitvijo vseh 2.445 plaž, 56.000 fotografij, videov, panoram, sferičnih fotografij in 200 podrobnih podatkov, kot so značilnosti vsake plaže. Vizija BeachRexa je, da bomo v nekaj letih pridobili fotografije in druge podatke za vse plaže na svetu. Če imate radi plaže in vam je všeč ideja BeachRexa, nas prosimo podprite in delite našo stran s prijatelji."
+  },
+  "NotFoundPage": {
+    "title": "Stran ne obstaja."
   }
 }
