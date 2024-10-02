@@ -11,6 +11,7 @@ import {
 import { FaBed, FaFilter, FaMobileAlt } from "react-icons/fa";
 import {Link} from '@/i18n/routing';
 import {useLocale, useTranslations} from "next-intl";
+import Image from "next/image";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const locale = useLocale();
@@ -19,7 +20,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <>
             <MegaMenu>
                 <Navbar.Brand href="/">
-                    <img alt="Beachrex Logo" src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/js/assets/img/logo_dark.png`} className="mr-3 h-6 sm:h-9" />
+                    <Image width="200" height="100" alt="Beachrex Logo" src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/js/assets/img/logo_dark.png`} className="mr-3 h-6 sm:h-9" />
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
@@ -33,7 +34,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                             label={
                                 <span className='inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-neutral-100 hover:text-gray-900 dark:hover:bg-neutral-700 dark:hover:text-white'>
                               <span className='sr-only'></span>
-                              <img className='h-6 w-6' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/${locale}.svg`} />
+                              <Image width="50" height="50" alt={`${locale}`} className='h-6 w-6' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/${locale}.svg`} />
                             </span>
                             }
                         >
@@ -45,7 +46,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                                         className='block py-2 px-4 text-sm text-gray-700 hover:bg-neutral-100 dark:text-gray-400 dark:hover:bg-neutral-600 dark:hover:text-white'
                                     >
                                         <div className='inline-flex items-center'>
-                                            <img className='mr-2 h-4 w-4' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/en.svg`} />
+                                            <Image width="50" height="50" alt='EN' className='mr-2 h-4 w-4' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/en.svg`} />
                                             <span className='whitespace-nowrap'>EN</span>
                                         </div>
                                     </Link>
@@ -57,7 +58,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                                         className='block py-2 px-4 text-sm text-gray-700 hover:bg-neutral-100 dark:text-gray-400 dark:hover:bg-neutral-600 dark:hover:text-white'
                                     >
                                         <div className='inline-flex items-center'>
-                                            <img className='mr-2 h-4 w-4' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/si.svg`} />
+                                            <Image width="50" height="50" alt='SI' className='mr-2 h-4 w-4' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/si.svg`} />
                                             <span className='whitespace-nowrap'>SI</span>
                                         </div>
                                     </Link>

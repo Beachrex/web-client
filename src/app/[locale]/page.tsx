@@ -1,12 +1,11 @@
 "use client";
 
-// import Link from "next/link";
 import Layout from '@/app/components/Layout';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchFromApi } from "@/app/utils/apiHelper";
 import { Carousel } from "flowbite-react";
 import {useTranslations} from 'next-intl';
-import {Link} from '@/i18n/routing';
+import Image from "next/image";
 
 interface Counters {
     totalBeaches: number;
@@ -23,21 +22,23 @@ export default function HomePage() {
 
     const [counters, setCounters] = useState<Counters | null>(null);
     const [error, setError] = useState<string | null>(null);
-    let isMounted = false;
+    const isMounted = useRef(false);
 
     useEffect(() => {
-        if (isMounted) return; // Prevent fetching again
-        isMounted = true;
+        if (isMounted.current) return; // Prevent fetching again
+        isMounted.current = true;
+
         const fetchCounters = async () => {
             try {
-                // const data = await fetchFromApi<Counters>('totalBeaches,totalCountries');
                 const data = await fetchFromApi<Counters>("");
                 setCounters(data);
-            } catch (error: any) {
-                setError(error.message);
+            } catch (error: unknown) {
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                setError(errorMessage);
             }
         };
-        fetchCounters();
+
+        void fetchCounters(); // Silences no-floating-promises warning
     }, []);
 
     return (
@@ -89,11 +90,11 @@ export default function HomePage() {
             </div>
             <div className="h-56 sm:h-64 xl:h-80 2xl:h-96 m-4">
                 <Carousel pauseOnHover>
-                    <img src="https://flowbite.com/docs/images/carousel/carousel-1.svg" alt="..."/>
-                    <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="..."/>
-                    <img src="https://flowbite.com/docs/images/carousel/carousel-3.svg" alt="..."/>
-                    <img src="https://flowbite.com/docs/images/carousel/carousel-4.svg" alt="..."/>
-                    <img src="https://flowbite.com/docs/images/carousel/carousel-5.svg" alt="..."/>
+                    <Image width="50" height="50" src="https://flowbite.com/docs/images/carousel/carousel-1.svg" alt="..."/>
+                    <Image width="50" height="50" src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="..."/>
+                    <Image width="50" height="50" src="https://flowbite.com/docs/images/carousel/carousel-3.svg" alt="..."/>
+                    <Image width="50" height="50" src="https://flowbite.com/docs/images/carousel/carousel-4.svg" alt="..."/>
+                    <Image width="50" height="50" src="https://flowbite.com/docs/images/carousel/carousel-5.svg" alt="..."/>
                 </Carousel>
             </div>
         </Layout>
