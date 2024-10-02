@@ -9,13 +9,23 @@ import {
     HiSearch
 } from 'react-icons/hi';
 import { FaBed, FaFilter, FaMobileAlt } from "react-icons/fa";
-import {Link} from '@/i18n/routing';
+import {Link, usePathname} from '@/i18n/routing';
 import {useLocale, useTranslations} from "next-intl";
 import Image from "next/image";
+import { getTranslatedPath } from '../utils/routes';
+import { locales } from '../utils/locales'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const locale = useLocale();
     const t = useTranslations('Common');
+    const pathname = usePathname();
+
+    const handleLocaleSwitch = (targetLocale: string) => {
+        // Use the dynamic translation function to get the new path
+        return getTranslatedPath(pathname, targetLocale);
+    };
+
+
     return (
         <>
             <MegaMenu>
@@ -39,30 +49,21 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                             }
                         >
                             <ul className='py-1' role='none'>
-                                <li>
-                                    <Link
-                                        href='/'
-                                        locale='en'
-                                        className='block py-2 px-4 text-sm text-gray-700 hover:bg-neutral-100 dark:text-gray-400 dark:hover:bg-neutral-600 dark:hover:text-white'
-                                    >
-                                        <div className='inline-flex items-center'>
-                                            <Image width="50" height="50" alt='EN' className='mr-2 h-4 w-4' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/en.svg`} />
-                                            <span className='whitespace-nowrap'>EN</span>
-                                        </div>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        href='/'
-                                        locale='si'
-                                        className='block py-2 px-4 text-sm text-gray-700 hover:bg-neutral-100 dark:text-gray-400 dark:hover:bg-neutral-600 dark:hover:text-white'
-                                    >
-                                        <div className='inline-flex items-center'>
-                                            <Image width="50" height="50" alt='SI' className='mr-2 h-4 w-4' src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/si.svg`} />
-                                            <span className='whitespace-nowrap'>SI</span>
-                                        </div>
-                                    </Link>
-                                </li>
+                                {locales.map((loc) => (
+                                    <li key={loc}>
+                                        <Link
+                                            href={handleLocaleSwitch(loc)}
+                                            locale={loc}
+                                            className='block py-2 px-4 text-sm text-gray-700 hover:bg-neutral-100 dark:text-gray-400 dark:hover:bg-neutral-600 dark:hover:text-white'
+                                        >
+                                            <div className='inline-flex items-center'>
+                                                <Image width="50" height="50" alt={loc} className='mr-2 h-4 w-4'
+                                                       src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/flag/${loc}.svg`}/>
+                                                <span className='whitespace-nowrap'>{loc.toUpperCase()}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                ))}
                             </ul>
                         </Dropdown>
                     </Navbar.Collapse>
@@ -75,6 +76,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     <Navbar.Link href="/"> <HiOutlineUser className="size-10"/></Navbar.Link>
 
                 </Navbar.Collapse>
+                <Link href={getTranslatedPath('/about', locale)}
+                      className="block py-2 px-4 text-sm text-gray-700 hover:bg-neutral-100 dark:text-gray-400 dark:hover:bg-neutral-600 dark:hover:text-white">
+                    {t('about')}
+                </Link>
             </MegaMenu>
 
             <main

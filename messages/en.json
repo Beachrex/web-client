@@ -1,6 +1,7 @@
 {
   "Common": {
-    "search": "Search"
+    "search": "Search",
+    "about": "About"
   },
   "HomePage": {
     "allBeaches": "All Beaches",
@@ -17,5 +18,9 @@
   },
   "NotFoundPage": {
     "title": "Page not found."
+  },
+  "AboutPage": {
+    "aboutUs": "About us",
+    "description": "Description about us page"
   }
 }

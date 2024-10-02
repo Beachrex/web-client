@@ -1,6 +1,7 @@
 {
   "Common": {
-    "search": "Iskanje"
+    "search": "Iskanje",
+    "about": "O nas"
   },
   "HomePage": {
     "allBeaches": "Vse plaže",
@@ -17,5 +18,9 @@
   },
   "NotFoundPage": {
     "title": "Stran ne obstaja."
+  },
+  "AboutPage": {
+    "aboutUs": "O nas",
+    "description": "Opis o nas strani"
   }
 }
