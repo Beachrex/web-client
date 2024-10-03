@@ -4,7 +4,7 @@ import Layout from '@/app/components/Layout';
 import { useEffect, useState, useRef } from "react";
 import { fetchFromApi } from "@/app/utils/apiHelper";
 import { Carousel } from "flowbite-react";
-import {useTranslations} from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Image from "next/image";
 
 interface Counters {
@@ -16,10 +16,20 @@ interface Counters {
     sweetwaterBeaches: number;
     boatOnlyBeaches: number;
 }
+
+const skeletonLoader = (
+    <div className="grid grid-cols-1 text-center sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {Array.from({ length: 7 }).map((_, index) => (
+            <div key={index} className="flex flex-col items-center justify-center rounded-xl bg-gray-200 p-4">
+                <div className="h-8 w-32 bg-gray-300 rounded mb-2" />
+                <div className="h-6 w-24 bg-gray-300 rounded" />
+            </div>
+        ))}
+    </div>
+);
+
 export default function HomePage() {
-
     const t = useTranslations('HomePage');
-
     const [counters, setCounters] = useState<Counters | null>(null);
     const [error, setError] = useState<string | null>(null);
     const isMounted = useRef(false);
@@ -46,45 +56,40 @@ export default function HomePage() {
             <div className="flex flex-col items-center">
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
                     {error && <div>{error}</div>}
-                    {counters && (
+                    {counters ? (
                         <div className="grid grid-cols-1 text-center sm:grid-cols-2 md:grid-cols-3 gap-8">
-                            <div
-                                className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
+                            <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
                                 <h3 className="text-2xl font-bold">{t('allBeaches')}</h3>
                                 <div className="text-lg">{counters.totalBeaches}</div>
                             </div>
-                            <div
-                                className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
+                            <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
                                 <h3 className="text-2xl font-bold">{t('beachCountries')}</h3>
                                 <div className="text-lg">{counters.totalCountries}</div>
                             </div>
-                            <div
-                                className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
+                            <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
                                 <h3 className="text-2xl font-bold">{t('beachContinents')}</h3>
                                 <div className="text-lg">{counters.totalContinents}</div>
                             </div>
-                            <div
-                                className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
+                            <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
                                 <h3 className="text-2xl font-bold">{t('seaBeaches')}</h3>
                                 <div className="text-lg">{counters.seaBeaches}</div>
                             </div>
-                            <div
-                                className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
+                            <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
                                 <h3 className="text-2xl font-bold">{t('beachIslands')}</h3>
                                 <div className="text-lg">{counters.islandsCount}</div>
                             </div>
-                            <div
-                                className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
+                            <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
                                 <h3 className="text-2xl font-bold">{t('sweetwaterBeaches')}</h3>
                                 <div className="text-lg">{counters.sweetwaterBeaches}</div>
                             </div>
-                            <div
-                                className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
+                            <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-4 hover:bg-white/20">
                                 <h3 className="text-2xl font-bold">{t('boatOnlyBeaches')}</h3>
                                 <div className="text-lg">{counters.boatOnlyBeaches}</div>
                             </div>
                             {/* Add other counters here */}
                         </div>
+                    ) : (
+                        skeletonLoader // Show skeleton loader while data is being fetched
                     )}
                 </div>
             </div>
@@ -98,7 +103,5 @@ export default function HomePage() {
                 </Carousel>
             </div>
         </Layout>
-
     );
 }
-
