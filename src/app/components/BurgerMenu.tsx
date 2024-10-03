@@ -54,7 +54,7 @@ const MenuItemComponent: React.FC<{ item: MenuItem }> = ({ item }) => {
             >
                 {/* Display an arrow if there are sub-items */}
                 {item.subItems?.length ? (
-                    <span className={`mr-2 ${isOpen ? 'rotate-90' : ''}`}>➔</span>
+                    <span className={`mr-2 text-xs ${isOpen ? 'rotate-90' : ''}`}>➔</span>
                 ) : null}
                 {/* Render Link only if there are no sub-items */}
                 {item.subItems?.length ? (
