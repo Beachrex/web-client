@@ -18,9 +18,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const locale = useLocale();
     const t = useTranslations('Common');
     const pathname = usePathname();
-    console.log("pathname")
-    console.log(pathname)
-
 
     return (
         <>
