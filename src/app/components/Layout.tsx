@@ -25,7 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
             <MegaMenu>
                 <Navbar.Brand href="/">
-                    <Image width="200" height="100" alt="Beachrex Logo" src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/js/assets/img/logo_dark.png`} className="mr-3 h-6 sm:h-9" />
+                    <Image width="200" height="100" alt="Beachrex Logo" src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/js/assets/img/logo_dark.png`} className="mainLogo mr-3 h-6 sm:h-9" />
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
