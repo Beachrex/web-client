@@ -12,18 +12,14 @@ import { FaBed, FaFilter, FaMobileAlt } from "react-icons/fa";
 import {Link, usePathname} from '@/i18n/routing';
 import {useLocale, useTranslations} from "next-intl";
 import Image from "next/image";
-import { getTranslatedPath } from '../utils/routes';
 import { locales } from '../utils/locales'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const locale = useLocale();
     const t = useTranslations('Common');
     const pathname = usePathname();
-
-    const handleLocaleSwitch = (targetLocale: string) => {
-        // Use the dynamic translation function to get the new path
-        return getTranslatedPath(pathname, targetLocale);
-    };
+    console.log("pathname")
+    console.log(pathname)
 
 
     return (
@@ -52,7 +48,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                                 {locales.map((loc) => (
                                     <li key={loc}>
                                         <Link
-                                            href={handleLocaleSwitch(loc)}
+                                            href={pathname}
                                             locale={loc}
                                             className='block py-2 px-4 text-sm text-gray-700 hover:bg-neutral-100 dark:text-gray-400 dark:hover:bg-neutral-600 dark:hover:text-white'
                                         >
@@ -74,12 +70,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     <Navbar.Link href="/"> <FaFilter className="size-9"/></Navbar.Link>
                     <Navbar.Link href="/"> <FaMobileAlt className="size-10"/></Navbar.Link>
                     <Navbar.Link href="/"> <HiOutlineUser className="size-10"/></Navbar.Link>
-
                 </Navbar.Collapse>
-                <Link href={getTranslatedPath('/about', locale)}
-                      className="block py-2 px-4 text-sm text-gray-700 hover:bg-neutral-100 dark:text-gray-400 dark:hover:bg-neutral-600 dark:hover:text-white">
-                    {t('about')}
-                </Link>
             </MegaMenu>
 
             <main
