@@ -10,13 +10,35 @@ export const routing = defineRouting({
     // Used when no locale matches
     defaultLocale: 'en',
     pathnames: {
-        // If all locales use the same pathname, a single
-        // external path can be used for all locales
+        //how to: https://next-intl-docs.vercel.app/docs/routing
+
         '/': '/',
         // '/blog': '/blog',
-
-        // If locales use different paths, you can
-        // specify each external path per locale
+        '/beach-map': {
+            en: '/beach-map',
+            si: '/zemljevid-plaz' // Assume this is the Slovenian translation for "beach map"
+        },
+        '/beaches': {
+            en: '/beaches',
+            si: '/plaze' // Assume this is the Slovenian translation for "beaches"
+        },
+        // Dynamic beaches by region
+        '/beaches/[region]': {
+            en: '/beaches/[region]',
+            si: '/plaze/[region]' // The region will be dynamically replaced in the Slovenian path
+        },
+        '/beach-type/[type]': {
+            en: '/beach-type/[type]',
+            si: '/tip-plaze/[type]'
+        },
+        '/user-type/[type]': {
+            en: '/user-type/[type]',
+            si: '/tip-uporabnika/[type]'
+        },
+        // '/beach-type/sandy': {
+        //     en: '/beach-type/sandy',
+        //     si: '/tip-plaze/pescena'
+        // },
         '/about': {
             en: '/about',
             si: '/o-nas' ///si/o-nas will be handled by the page at /[locale]/about/page.tsx

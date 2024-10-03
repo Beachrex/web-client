@@ -13,6 +13,7 @@ import {Link, usePathname} from '@/i18n/routing';
 import {useLocale, useTranslations} from "next-intl";
 import Image from "next/image";
 import { locales } from '../utils/locales'
+import BurgerMenu from './BurgerMenu';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const locale = useLocale();
@@ -21,6 +22,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <>
+
             <MegaMenu>
                 <Navbar.Brand href="/">
                     <Image width="200" height="100" alt="Beachrex Logo" src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/js/assets/img/logo_dark.png`} className="mr-3 h-6 sm:h-9" />
@@ -69,7 +71,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     <Navbar.Link href="/"> <HiOutlineUser className="size-10"/></Navbar.Link>
                 </Navbar.Collapse>
             </MegaMenu>
-
+            <BurgerMenu/>
             <main
                 className="flex min-h-screen flex-col bg-gradient-to-b from-[#00b1c8]/70 to-[#eb8651]/70 text-white">{children}</main>
         </>
