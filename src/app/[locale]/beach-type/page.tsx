@@ -1,5 +1,4 @@
 "use client";
-import Layout from '@/app/components/Layout';
 import { usePathname } from '@/i18n/routing';
 import { useEffect } from 'react';
 

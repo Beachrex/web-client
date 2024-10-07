@@ -1,6 +1,5 @@
 "use client";
 
-import Layout from '@/app/components/Layout';
 import { useEffect, useState, useRef } from "react";
 import { fetchFromApi } from "@/app/utils/apiHelper";
 import { Carousel } from "flowbite-react";

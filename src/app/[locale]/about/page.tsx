@@ -1,4 +1,3 @@
-import Layout from '@/app/components/Layout';
 import {useTranslations} from 'next-intl';
 
 export default function AboutPage() {
