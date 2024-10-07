@@ -52,7 +52,7 @@ export default function HomePage() {
     }, []);
 
     return (
-        <Layout>
+        <>
             <div className="flex flex-col items-center">
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
                     {error && <div>{error}</div>}
@@ -102,6 +102,6 @@ export default function HomePage() {
                     <Image width="50" height="50" src="https://flowbite.com/docs/images/carousel/carousel-5.svg" alt="..."/>
                 </Carousel>
             </div>
-        </Layout>
+        </>
     );
 }

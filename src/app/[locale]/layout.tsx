@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { Open_Sans } from 'next/font/google'
+import Footer from 'src/app/components/Footer';
+import Layout from "@/app/components/Layout";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
     const t = await getTranslations({ locale, namespace: 'Metadata' });
@@ -30,7 +32,8 @@ export default async function LocaleLayout({
         <html lang={locale} className={openSans.className}>
         <body>
         <NextIntlClientProvider messages={messages}>
-            {children}
+            <Layout>{children}</Layout>
+            <Footer/>
         </NextIntlClientProvider>
         </body>
         </html>

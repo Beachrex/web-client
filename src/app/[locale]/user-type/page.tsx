@@ -13,10 +13,10 @@ const Page = () => {
     }, [pathname]);
 
     return (
-        <Layout>
+        <>
             <h1>{`Page: ${pathname}`}</h1>
             {/* Render content based on slug */}
-        </Layout>
+        </>
     );
 };
 
