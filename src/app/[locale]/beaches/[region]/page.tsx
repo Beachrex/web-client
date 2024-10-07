@@ -92,7 +92,7 @@ const Page = () => {
                         imena obale. Klik na ime presumeri na novo podstran.
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        {Array.from({ length: 6 }).map((_, index) => (
+                        {Array.from({length: 6}).map((_, index) => (
                             <div key={index} className="p-4 border border-gray-300 rounded-lg bg-white">
                                 <div className="h-20 bg-gray-200 mb-2"></div>
                                 <h3 className="font-bold">Ime destinacije</h3>
@@ -106,15 +106,17 @@ const Page = () => {
 
                 {/* Region sections */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 text-black">
-                    {Array.from({ length: 6 }).map((_, index) => (
+                    {Array.from({length: 6}).map((_, index) => (
                         <div
                             key={index}
-                            className="p-4 border border-gray-300 rounded-lg text-center bg-gray-100"
+                            className="p-4 border border-gray-300 rounded-lg text-center bg-gray-100 flex flex-col" // Added flex column here
                         >
                             <div className="h-20 bg-gray-200 mb-2"></div>
                             <h3 className="font-bold">Ime Regije</h3>
                             <p>Prikažemo lepo plažo regije, ki se pretaka v grb regije</p>
-                            <Button className="mt-4">Št. plaž</Button>
+                            <div className="flex justify-end mt-4"> {/* Flexbox to align items to the right */}
+                                <Button>Št. plaž</Button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -141,7 +143,8 @@ const Page = () => {
                     Spodaj prikažemo na tabelaren način vse plaže te države. Poudarek je, da lahko uporabnik preko
                     filtra si točno določi oz. prikaže plažo po svoji preferenci. Klik na posamezno polje spodaj,
                     dodatno prikaže opcije, podobno kot imamo že sedaj na obstoječi strani, isto ima konkurenca:
-                    <Link target='_blank' href='https://beachsearcher.si/sl/search/country/143?nature_secret=1&pagesize=18&smart=0&op=1&offset=0'><u>Beachsearcher</u></Link>
+                    <Link target='_blank'
+                          href='https://beachsearcher.si/sl/search/country/143?nature_secret=1&pagesize=18&smart=0&op=1&offset=0'><u>Beachsearcher</u></Link>
                 </h2>
 
                 <div className="mt-4 grid grid-cols-3 gap-4">
@@ -157,30 +160,37 @@ const Page = () => {
                         spodaj v razporeditvi 3 v vrsto, 6 vrst, nato gumb za naslednjo stran in spodaj prikaz
                         navigacije, torej kje se nahajamo, koliko strani je še naprej oz. nazaj.)</h2>
                     <div className="grid grid-cols-3 gap-4">
-                        {Array.from({ length: 6 }).map((_, index) => (
+                        {Array.from({length: 6}).map((_, index) => (
                             <div key={index} className="relative border border-gray-300 rounded-lg p-4 bg-gray-100">
                                 {/* Carousel for beach images */}
                                 <div className="relative w-full h-48">
                                     <Carousel
-                                        leftControl={<BsArrowLeft className="text-3xl opacity-0" />} // Custom left arrow
-                                        rightControl={<BsArrowRight className="text-3xl opacity-0" />} // Custom right arrow
+                                        leftControl={<BsArrowLeft className="text-3xl opacity-0"/>} // Custom left arrow
+                                        rightControl={<BsArrowRight
+                                            className="text-3xl opacity-0"/>} // Custom right arrow
                                     >
                                         {/* Carousel items */}
-                                        <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')` }}></div>
-                                        <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')` }}></div>
-                                        <div className="h-48 bg-cover bg-center" style={{ backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')` }}></div>
+                                        <div className="h-48 bg-cover bg-center"
+                                             style={{backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')`}}></div>
+                                        <div className="h-48 bg-cover bg-center"
+                                             style={{backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')`}}></div>
+                                        <div className="h-48 bg-cover bg-center"
+                                             style={{backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')`}}></div>
                                     </Carousel>
 
                                 </div>
                                 {/* Country Flag */}
-                                <div className="absolute top-2 left-2 w-16 h-15 bg-gray-200 text-black text-center">Zastava države</div>
+                                <div
+                                    className="absolute top-2 left-2 w-16 h-15 bg-gray-200 text-black text-center">Zastava
+                                    države
+                                </div>
 
                                 {/* Right-side icons */}
                                 <div className="absolute top-2 right-2 flex flex-col space-y-2">
-                                    <Button className="p-1 bg-orange-300 rounded-full"><FaHeart /></Button>
+                                    <Button className="p-1 bg-orange-300 rounded-full"><FaHeart/></Button>
                                     <Button className="p-1 bg-orange-300 rounded-full">360</Button>
-                                    <Button className="p-1 bg-orange-300 rounded-full"><FaPlay /></Button>
-                                    <Button className="p-1 bg-orange-300 rounded-full"><FaBed /></Button>
+                                    <Button className="p-1 bg-orange-300 rounded-full"><FaPlay/></Button>
+                                    <Button className="p-1 bg-orange-300 rounded-full"><FaBed/></Button>
                                 </div>
 
                                 {/* Content below the carousel */}
