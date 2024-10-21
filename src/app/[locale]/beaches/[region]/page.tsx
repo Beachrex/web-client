@@ -6,6 +6,7 @@ import { FaHeart, FaPlay, FaBed, FaMap, FaUmbrellaBeach, FaUser } from 'react-ic
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import IslandSection from "@/app/components/IslandSection";
 import CitySection from "@/app/components/CitySection";
+import RegionSection from "@/app/components/RegionSection";
 
 const islandsData = [
     { islandName: 'Otok A', beachCount: '1', hotelPrice: '70€' },
@@ -23,6 +24,14 @@ const cityData = [
     { cityName: 'Mesto D', beachCount: '4', hotelPrice: '80€' },
     { cityName: 'Mesto E', beachCount: '5', hotelPrice: '90€' },
     { cityName: 'Mesto F', beachCount: '6', hotelPrice: '100€' },
+];
+const regionData = [
+    { regionName: 'Regija A', beachCount: '1' },
+    { regionName: 'Regija B', beachCount: '2' },
+    { regionName: 'Regija C', beachCount: '3' },
+    { regionName: 'Regija D', beachCount: '4' },
+    { regionName: 'Regija E', beachCount: '5' },
+    { regionName: 'Regija F', beachCount: '6' },
 ];
 
 const Page = () => {
@@ -126,18 +135,12 @@ const Page = () => {
 
                 {/* Region sections */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 text-black">
-                    {Array.from({length: 6}).map((_, index) => (
-                        <div
+                    {regionData.map((region, index) => (
+                        <RegionSection
                             key={index}
-                            className="p-4 border border-gray-300 rounded-lg text-center bg-gray-100 flex flex-col" // Added flex column here
-                        >
-                            <div className="h-20 bg-gray-200 mb-2"></div>
-                            <h3 className="font-bold">Ime Regije</h3>
-                            <p>Prikažemo lepo plažo regije, ki se pretaka v grb regije</p>
-                            <div className="flex justify-end mt-4"> {/* Flexbox to align items to the right */}
-                                <Button>Št. plaž</Button>
-                            </div>
-                        </div>
+                            regionName={region.regionName}
+                            beachCount={region.beachCount}
+                        />
                     ))}
                 </div>
                 {/* City sections */}
