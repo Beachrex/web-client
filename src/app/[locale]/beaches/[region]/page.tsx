@@ -206,8 +206,8 @@ const Page = () => {
                     <h2 className="text-lg font-semibold">Št. zadetkov (Zadetke iz nastavitev filtrov bomo zlistali
                         spodaj v razporeditvi 3 v vrsto, 6 vrst, nato gumb za naslednjo stran in spodaj prikaz
                         navigacije, torej kje se nahajamo, koliko strani je še naprej oz. nazaj.)</h2>
-                    <div className="grid grid-cols-3 gap-4">
-                        {Array.from({length: 6}).map((_, index) => (
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {Array.from({length: 8}).map((_, index) => (
                             <div key={index} className="relative border border-gray-300 rounded-lg p-4 bg-gray-100">
                                 {/* Carousel for beach images */}
                                 <div className="relative w-full h-48">
