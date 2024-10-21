@@ -7,6 +7,7 @@ import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import IslandSection from "@/app/components/IslandSection";
 import CitySection from "@/app/components/CitySection";
 import RegionSection from "@/app/components/RegionSection";
+import DynamicBreadcrumbs from "@/app/components/DynamicBreadcrumbs";
 
 const islandsData = [
     { islandName: 'Otok A', beachCount: '1', hotelPrice: '70€' },
@@ -50,6 +51,16 @@ const Page = () => {
                 <h1 className="text-xl font-bold mb-4 text-red-600">
                     Ta frame je namenjen predstavitvi podstrani na ravni država
                 </h1>
+                {/* Filters and navigation */}
+                <div className="mt-8 grid grid-cols-2 gap-4 text-black">
+                    <div>
+                        <DynamicBreadcrumbs pathname={pathname}/>
+                    </div>
+                    <div className="p-4 border border-gray-300 bg-gray-50 text-center">
+                        <h2 className="font-bold">Vse plaže, opcije, filter</h2>
+                    </div>
+                </div>
+
                 {/* Top section with background image */}
                 <div className="relative h-96 bg-cover bg-center"
                      style={{backgroundImage: "url('https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-543a-k-odalmacija/hr-543a-k-odalmacija-sl9.jpg')"}}>
@@ -67,7 +78,7 @@ const Page = () => {
                                     </div>
                                     <div className="flex flex-row gap-2 mb-4">
 
-                                        <Button> Simbol za plažo + št. plaž</Button>
+                                        <Button>Simbol za plažo + št. plaž</Button>
                                         <Button>Simbol za odprti bazen + št.</Button>
                                         <Button>Simbol za zaprti bazen + št.</Button>
                                     </div>
@@ -84,15 +95,6 @@ const Page = () => {
                 </div>
 
 
-                {/* Filters and navigation */}
-                <div className="mt-8 grid grid-cols-2 gap-4 text-black ">
-                    <div className="p-4 border border-gray-300 bg-gray-50 text-center">
-                        <h2 className="font-bold">Vse plaže, opcije, filter</h2>
-                    </div>
-                    <div className="p-4 border border-gray-300 bg-gray-50 text-center">
-                        <h2 className="font-bold">NAVIGACIJA, kje si, možnost korakov nazaj</h2>
-                    </div>
-                </div>
 
                 {/* Filtering and search table */}
                 <div className="mt-8 p-4 bg-gray-50 border border-gray-300 rounded-lg text-black">
@@ -132,7 +134,6 @@ const Page = () => {
                     </div>
                 </div>
 
-
                 {/* Region sections */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 text-black">
                     {regionData.map((region, index) => (
@@ -165,7 +166,6 @@ const Page = () => {
                         />
                     ))}
                 </div>
-
 
                 {/* Section with country description */}
                 <div className="mt-8">
@@ -288,8 +288,6 @@ const Page = () => {
                     </div>
                 </div>
             </div>
-            {/* Render content based on slug */}
-
         </>
     );
 };
