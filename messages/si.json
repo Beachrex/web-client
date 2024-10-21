@@ -1,7 +1,9 @@
 {
   "Common": {
     "search": "Iskanje",
-    "about": "O nas"
+    "about": "O nas",
+    "numBeaches": "Št. plaž",
+    "hotelPrice": "Cena hotela"
   },
   "HomePage": {
     "allBeaches": "Vse plaže",

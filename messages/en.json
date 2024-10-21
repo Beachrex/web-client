@@ -1,7 +1,9 @@
 {
   "Common": {
     "search": "Search",
-    "about": "About"
+    "about": "About",
+    "numBeaches": "Num. beaches",
+    "hotelPrice": "Hotel price"
   },
   "HomePage": {
     "allBeaches": "All Beaches",

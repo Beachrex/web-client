@@ -4,6 +4,26 @@ import { useEffect } from 'react';
 import { Button, Carousel, Tooltip } from "flowbite-react";
 import { FaHeart, FaPlay, FaBed, FaMap, FaUmbrellaBeach, FaUser } from 'react-icons/fa';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
+import IslandSection from "@/app/components/IslandSection";
+import CitySection from "@/app/components/CitySection";
+
+const islandsData = [
+    { islandName: 'Otok A', beachCount: '1', hotelPrice: '70€' },
+    { islandName: 'Otok B', beachCount: '2', hotelPrice: '60€' },
+    { islandName: 'Otok C', beachCount: '3', hotelPrice: '50€' },
+    { islandName: 'Otok D', beachCount: '4', hotelPrice: '80€' },
+    { islandName: 'Otok E', beachCount: '5', hotelPrice: '90€' },
+    { islandName: 'Otok F', beachCount: '6', hotelPrice: '100€' },
+];
+
+const cityData = [
+    { cityName: 'Mesto A', beachCount: '1', hotelPrice: '70€' },
+    { cityName: 'Mesto B', beachCount: '2', hotelPrice: '60€' },
+    { cityName: 'Mesto C', beachCount: '3', hotelPrice: '50€' },
+    { cityName: 'Mesto D', beachCount: '4', hotelPrice: '80€' },
+    { cityName: 'Mesto E', beachCount: '5', hotelPrice: '90€' },
+    { cityName: 'Mesto F', beachCount: '6', hotelPrice: '100€' },
+];
 
 const Page = () => {
     const pathname = usePathname();
@@ -122,50 +142,26 @@ const Page = () => {
                 </div>
                 {/* City sections */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 text-black">
-                    {Array.from({length: 6}).map((_, index) => (
-                        <div
+                    {cityData.map((city, index) => (
+                        <CitySection
                             key={index}
-                            className="p-4 border border-gray-300 rounded-lg text-center bg-gray-100 flex flex-col" // Added flex column here
-                        >
-                            <div className="h-20 bg-gray-200 mb-2"></div>
-                            <h3 className="font-bold">Ime Mesta</h3>
-                            <p>Prikažemo lepo plažo mesta, ki se pretaka v grb mesta</p>
-                            <div className="flex-1 flex justify-center items-center space-x-4">
-                                <div className="flex mt-4"> {/* Flexbox to align items to the right */}
-                                    <Button>Št. plaž</Button>
-                                </div>
-                                <div className="flex mt-4"> {/* Flexbox to align items to the right */}
-                                    <Button>Cena od hotela</Button>
-                                </div>
-                            </div>
-                        </div>
+                            cityName={city.cityName}
+                            beachCount={city.beachCount}
+                            hotelPrice={city.hotelPrice}
+                        />
                     ))}
                 </div>
                 {/* Island sections */}
-                {/*<div className="h-56 sm:h-64 xl:h-80 2xl:h-96">*/}
-                {/*    <Carousel slideInterval={3000}>*/}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-8 text-black">
-                    {Array.from({length: 6}).map((_, index) => (
-                        <div
+                    {islandsData.map((island, index) => (
+                        <IslandSection
                             key={index}
-                            className="p-4 border border-gray-300 rounded-lg text-center bg-gray-100 flex flex-col"
-                        >
-                            <div className="h-20 bg-gray-200 mb-2"></div>
-                            <h3 className="font-bold">Ime Otoka</h3>
-                            <p>Prikažemo lepo plažo otoka, ki se pretaka v kak simbol otoka</p>
-                            <div className="flex-1 flex justify-center items-center space-x-4">
-                                <div className="flex mt-4">
-                                    <Button>Št. plaž</Button>
-                                </div>
-                                <div className="flex mt-4">
-                                    <Button>Cena od hotela</Button>
-                                </div>
-                            </div>
-                        </div>
+                            islandName={island.islandName}
+                            beachCount={island.beachCount}
+                            hotelPrice={island.hotelPrice}
+                        />
                     ))}
                 </div>
-                {/*</Carousel>*/}
-                {/*</div>*/}
 
 
                 {/* Section with country description */}
