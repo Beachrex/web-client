@@ -27,6 +27,10 @@ export const routing = defineRouting({
             en: '/beaches/[region]',
             si: '/plaze/[region]' // The region will be dynamically replaced in the Slovenian path
         },
+        // '/beaches/europe': {
+        //     en: '/beaches/europe',
+        //     si: '/plaze/evropa' // Če dodamo to, bo na podstrani, ko zamenjaš jezik delal url pravilno.
+        // },
         '/beach-type/[type]': {
             en: '/beach-type/[type]',
             si: '/tip-plaze/[type]'
