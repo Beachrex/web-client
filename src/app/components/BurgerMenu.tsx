@@ -17,18 +17,18 @@ interface MenuItem {
 
 
 // Recursive component for rendering nested menu
-const NestedMenu = ({ items }: { items: MenuItem[] }) => {
+const NestedMenu = ({ items, closeMenu }: { items: MenuItem[], closeMenu: () => void }) => {
     return (
         <ul className="pl-4">
             {items.map((item, index) => (
-                <MenuItemComponent key={index} item={item} />
+                <MenuItemComponent key={index} item={item} closeMenu={closeMenu}/>
             ))}
         </ul>
     );
 };
 
 // Individual menu item component
-const MenuItemComponent: React.FC<{ item: MenuItem }> = ({ item }) => {
+const MenuItemComponent: React.FC<{ item: MenuItem; closeMenu: () => void }> = ({ item, closeMenu }) => {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
 
@@ -36,13 +36,19 @@ const MenuItemComponent: React.FC<{ item: MenuItem }> = ({ item }) => {
         (item.subItems?.some(sub => pathname === sub.href));
 
     useEffect(() => {
+        // Reset isOpen when the pathname changes
         if (isSelected) {
             setIsOpen(true);
+        } else {
+            setIsOpen(false);
         }
-    }, [isSelected]);
+    }, [pathname, isSelected]);
     const toggleMenu = () => {
         if (item.subItems && item.subItems.length > 0) {
             setIsOpen((prev) => !prev); // Toggle submenu if sub-items exist
+        }
+        else {
+            closeMenu(); // Close menu if no sub-items
         }
     };
 
@@ -60,11 +66,11 @@ const MenuItemComponent: React.FC<{ item: MenuItem }> = ({ item }) => {
                 {item.subItems?.length ? (
                     <span className="flex-1">{item.label}</span>
                 ) : (
-                    <Link href={item.href} className="flex-1">{item.label}</Link>
+                    <Link href={item.href} className="flex-1" onClick={closeMenu}>{item.label}</Link>
                 )}
             </div>
             {/* Render sub-items if they exist */}
-            {isOpen && item.subItems && <NestedMenu items={item.subItems} />}
+            {isOpen && item.subItems && <NestedMenu items={item.subItems} closeMenu={closeMenu} />}
         </li>
     );
 };
@@ -137,7 +143,7 @@ const BurgerMenu = () => {
                             </button>
                         </div>
                         <div className="overflow-y-auto max-h-[calc(100vh-64px)]">
-                            <NestedMenu items={menuItems} />
+                            <NestedMenu items={menuItems} closeMenu={closeMenu}/>
                         </div>
                     </Sidebar.ItemGroup>
                 </Sidebar.Items>
