@@ -3,6 +3,12 @@ import { defineRouting } from 'next-intl/routing';
 import { createSharedPathnamesNavigation } from 'next-intl/navigation';
 import { locales } from '@/app/utils/locales'; // Import the centralized locales
 
+const globalRoutes = {
+    beaches: {
+        en: 'beaches',
+        si: 'plaze'
+    }
+};
 export const routing = defineRouting({
     // A list of all locales that are supported
     locales,
@@ -11,7 +17,6 @@ export const routing = defineRouting({
     defaultLocale: 'en',
     pathnames: {
         //how to: https://next-intl-docs.vercel.app/docs/routing
-
         '/': '/',
         // '/blog': '/blog',
         '/beach-map': {
@@ -19,14 +24,23 @@ export const routing = defineRouting({
             si: '/zemljevid-plaz' // Assume this is the Slovenian translation for "beach map"
         },
         '/beaches': {
-            en: '/beaches',
-            si: '/plaze' // Assume this is the Slovenian translation for "beaches"
+            en: `/${globalRoutes.beaches.en}`,
+            si: `/${globalRoutes.beaches.si}`// Assume this is the Slovenian translation for "beaches"
+        },
+        // Dynamic beaches by continents
+        '/beaches/[continent]': {
+            en: `/${globalRoutes.beaches.en}/europe`,
+            si: `/${globalRoutes.beaches.si}/evropa`
+        },
+        '/beaches/[continent]/[city]': {
+            en: `/${globalRoutes.beaches.en}/[continent]/[city]`,
+            si: `/${globalRoutes.beaches.si}/[continent]/[city]`
         },
         // Dynamic beaches by region
-        '/beaches/[region]': {
-            en: '/beaches/[region]',
-            si: '/plaze/[region]' // The region will be dynamically replaced in the Slovenian path
-        },
+        // '/beaches/[region]': {
+        //     en: '/beaches/[region]',
+        //     si: '/plaze/[region]' // The region will be dynamically replaced in the Slovenian path
+        // },
         // '/beaches/europe': {
         //     en: '/beaches/europe',
         //     si: '/plaze/evropa' // Če dodamo to, bo na podstrani, ko zamenjaš jezik delal url pravilno.

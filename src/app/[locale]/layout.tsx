@@ -12,6 +12,9 @@ export async function generateMetadata({ params: { locale } }: { params: { local
         title: t('title'),
         description: t('description'),
         icons: [{ rel: "icon", url: "/favicon.png" }],
+        authors: [
+            { name: 'David Tacer' }
+        ]
     };
 }
 const openSans = Open_Sans({
