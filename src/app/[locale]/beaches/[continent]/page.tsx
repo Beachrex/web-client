@@ -8,12 +8,12 @@ import CountrySection from "@/app/components/CountrySection";
 import DynamicBreadcrumbs from "@/app/components/DynamicBreadcrumbs";
 
 const countryData = [
-    { countryName: 'Država A', beachCount: '1', hotelPrice: '70€' },
-    { countryName: 'Država B', beachCount: '2', hotelPrice: '60€' },
-    { countryName: 'Država C', beachCount: '3', hotelPrice: '50€' },
-    { countryName: 'Država D', beachCount: '4', hotelPrice: '80€' },
-    { countryName: 'Država E', beachCount: '5', hotelPrice: '90€' },
-    { countryName: 'Država F', beachCount: '6', hotelPrice: '100€' },
+    { countryName: 'Slovenia', beachCount: '1', hotelPrice: '70€', link: '/beaches/europe/slovenia' },
+    { countryName: 'Država B', beachCount: '2', hotelPrice: '60€', link: '/beaches/europe/slovenia' },
+    { countryName: 'Država C', beachCount: '3', hotelPrice: '50€', link: '/beaches/europe/slovenia' },
+    { countryName: 'Država D', beachCount: '4', hotelPrice: '80€', link: '/beaches/europe/slovenia' },
+    { countryName: 'Država E', beachCount: '5', hotelPrice: '90€', link: '/beaches/europe/slovenia' },
+    { countryName: 'Država F', beachCount: '6', hotelPrice: '100€', link: '/beaches/europe/slovenia' },
 ];
 
 
@@ -139,6 +139,7 @@ const Page = () => {
                             countryName={country.countryName}
                             beachCount={country.beachCount}
                             hotelPrice={country.hotelPrice}
+                            link={country.link}
                         />
                     ))}
                 </div>
