@@ -29,8 +29,9 @@ export const routing = defineRouting({
         },
         // Dynamic beaches by continents
         '/beaches/[continent]': {
-            en: `/${globalRoutes.beaches.en}/europe`,
-            si: `/${globalRoutes.beaches.si}/evropa`
+            en: `/${globalRoutes.beaches.en}/[continent]`,
+            si: `/${globalRoutes.beaches.si}/[continent]`
+            // si: `/${globalRoutes.beaches.si}/evropa`
         },
         '/beaches/[continent]/[city]': {
             en: `/${globalRoutes.beaches.en}/[continent]/[city]`,
