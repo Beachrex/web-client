@@ -1,10 +1,17 @@
 {
   "Common": {
-    "search": "Iskanje",
+    "search": "Išči",
     "about": "O nas",
     "numBeaches": "Št. plaž",
     "hotelPrice": "Cena hotela",
-    "home": "Domov"
+    "home": "Domov",
+    "favorite_beaches": "Priljubljene plaže",
+    "my_account": "Moj račun",
+    "search_placeholder": "Katero plažo, mesto, otok, državo, celino boš obiskal najprej?",
+    "accommodations": "Nastanitve",
+    "shop": "Trgovina",
+    "map": "Zemljevid",
+    "icon": "Ikona"
   },
   "HomePage": {
     "allBeaches": "Vse plaže",

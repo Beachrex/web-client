@@ -111,7 +111,7 @@ const BurgerMenu = () => {
 
 
     return (
-        <div className="relative">
+        <div className="relative h-[61px] bg-variable-collection-ultra-light-grey">
             {/* Overlay */}
             {isOpen && (
                 <div
@@ -125,7 +125,14 @@ const BurgerMenu = () => {
                 onClick={toggleMenu}
                 className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600 z-50"
             >
-                {isOpen ? <HiX className="h-6 w-6 text-gray-800" /> : <HiMenu className="h-6 w-6 text-gray-800" />}
+                {isOpen ? (
+                    <HiX className="h-6 w-6 text-gray-800" />
+                ) : (
+                    <div className="flex items-center gap-2">
+                        <HiMenu className="h-6 w-6 text-gray-800" />
+                        <span className="text-gray-800 text-sm">Več kategorij</span>
+                    </div>
+                )}
             </button>
 
             {/* Sidebar */}

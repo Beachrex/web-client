@@ -15,6 +15,7 @@ const Page = () => {
         <>
             <h1>{`Page: ${pathname}`}</h1>
             {/* Render content based on slug */}
+
         </>
     );
 };
