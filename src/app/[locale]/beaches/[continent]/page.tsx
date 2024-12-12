@@ -6,6 +6,7 @@ import { FaHeart, FaPlay, FaBed, FaMap, FaUmbrellaBeach, FaUser } from 'react-ic
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import CountrySection from "@/app/components/CountrySection";
 import DynamicBreadcrumbs from "@/app/components/DynamicBreadcrumbs";
+import Banner from "@/app/components/Beach/Banner";
 
 const countryData = [
     { countryName: 'Slovenia', beachCount: '1', hotelPrice: '70€', link: '/beaches/europe/slovenia' },
@@ -28,6 +29,7 @@ const Page = () => {
 
     return (
         <>
+            <Banner/>
             <div className="container mx-auto p-4">
                 <h1 className="text-xl mb-4 text-red-600">
                     Ta frame je namenjen predstavitvi podstrani na ravni kontinent
