@@ -58,7 +58,7 @@ const DesktopSearchBar = () => {
 
                 {/* Right Section (Map Button) */}
                 <div className="flex items-center space-x-4">
-                    <button className="inline-flex items-center justify-center gap-5 px-10 py-3 bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] flex-shrink-0 h-[54px] hover:bg-variable-collection-morje">
+                    <button className="inline-flex items-center justify-center gap-5 px-10 py-[10px] bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] flex-shrink-0 hover:bg-variable-collection-morje">
                         <Image
                             src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/icon/map.svg`}
                             alt={`${t("map")} ${t("icon")}`}

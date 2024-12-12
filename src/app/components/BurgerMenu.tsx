@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { HiMenu, HiX } from 'react-icons/hi';
+import { HiX } from 'react-icons/hi';
 import { Sidebar } from "flowbite-react";
-import {Link, usePathname} from '@/i18n/routing';
+import { Link, usePathname } from '@/i18n/routing';
+import { useLocale } from "next-intl";
 import enMenu from 'public/menu_en.json';
 import siMenu from 'public/menu_si.json';
-import {useLocale} from "next-intl";
+import QuickMenu from '@/app/components/Header/QuickMenu';
 
 interface MenuItem {
     label: string;
@@ -13,15 +14,12 @@ interface MenuItem {
     subItems?: MenuItem[]; // Optional sub-items
 }
 
-
-
-
 // Recursive component for rendering nested menu
 const NestedMenu = ({ items, closeMenu }: { items: MenuItem[], closeMenu: () => void }) => {
     return (
         <ul className="pl-4">
             {items.map((item, index) => (
-                <MenuItemComponent key={index} item={item} closeMenu={closeMenu}/>
+                <MenuItemComponent key={index} item={item} closeMenu={closeMenu} />
             ))}
         </ul>
     );
@@ -43,11 +41,11 @@ const MenuItemComponent: React.FC<{ item: MenuItem; closeMenu: () => void }> = (
             setIsOpen(false);
         }
     }, [pathname, isSelected]);
+
     const toggleMenu = () => {
         if (item.subItems && item.subItems.length > 0) {
             setIsOpen((prev) => !prev); // Toggle submenu if sub-items exist
-        }
-        else {
+        } else {
             closeMenu(); // Close menu if no sub-items
         }
     };
@@ -79,7 +77,6 @@ const BurgerMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const locale = useLocale();
-
     const menuItems = locale === 'si' ? siMenu.MenuItems : enMenu.MenuItems;
 
     const toggleMenu = () => {
@@ -109,9 +106,9 @@ const BurgerMenu = () => {
         };
     }, [isOpen]);
 
-
     return (
         <div className="relative h-[61px] bg-variable-collection-ultra-light-grey">
+            <QuickMenu toggleMenu={toggleMenu} />
             {/* Overlay */}
             {isOpen && (
                 <div
@@ -119,22 +116,6 @@ const BurgerMenu = () => {
                     onClick={closeMenu}
                 />
             )}
-
-            {/* Burger Icon */}
-            <button
-                onClick={toggleMenu}
-                className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600 z-50"
-            >
-                {isOpen ? (
-                    <HiX className="h-6 w-6 text-gray-800" />
-                ) : (
-                    <div className="flex items-center gap-2">
-                        <HiMenu className="h-6 w-6 text-gray-800" />
-                        <span className="text-gray-800 text-sm">Več kategorij</span>
-                    </div>
-                )}
-            </button>
-
             {/* Sidebar */}
             <Sidebar
                 id="sidebar"
@@ -150,7 +131,7 @@ const BurgerMenu = () => {
                             </button>
                         </div>
                         <div className="overflow-y-auto max-h-[calc(100vh-64px)]">
-                            <NestedMenu items={menuItems} closeMenu={closeMenu}/>
+                            <NestedMenu items={menuItems} closeMenu={closeMenu} />
                         </div>
                     </Sidebar.ItemGroup>
                 </Sidebar.Items>
