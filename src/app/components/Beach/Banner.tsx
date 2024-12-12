@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Image from "next/image";
+import React from "react";
 import StairsElement from "@/app/components/StairsElement";
 
 // The main component for the page layout
