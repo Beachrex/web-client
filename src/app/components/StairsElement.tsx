@@ -11,8 +11,10 @@ const StairsElement = () => {
             statValue: '56',
             activityTitle: 'Št. aktivnosti:',
             activityValue: '12',
-            bgColor: '#0069ab',
+            bgColor: 'bg-[#0069ab]',
+            textColor: 'text-[#0069ab]',
             link: '/beach/haludovo',
+            left: '20px'
         },
         {
             title: 'Pine Beach',
@@ -21,8 +23,10 @@ const StairsElement = () => {
             statValue: '45',
             activityTitle: 'Št. aktivnosti:',
             activityValue: '8',
-            bgColor: '#fca311',
+            bgColor: 'bg-[#fca311]',
+            textColor: 'text-[#fca311]',
             link: '/beach/zlatni-rat',
+            left: '40px'
         },
         {
             title: 'Sunset Beach',
@@ -31,17 +35,25 @@ const StairsElement = () => {
             statValue: '22',
             activityTitle: 'Št. aktivnosti:',
             activityValue: '5',
-            bgColor: '#ff4b5c',
+            bgColor: 'bg-[#ff4b5c]',
+            textColor: 'text-[#ff4b5c]',
             link: '/beach/laganini',
+            left: '60px'
         },
     ];
+
+    const leftVariants = {
+        0: "left-[0px]",
+        1: "left-[20px]",
+        2: "left-[40px]",
+    }
 
     return (
         <div className="relative m-4">
             {elements.map((element, index) => (
                 <Link href={element.link} key={index}>
                     <div
-                        className={`absolute left-[${index * 20}px] top-[${index * 60}px] w-[760px] h-[54px] bg-[${element.bgColor}] rounded-[10px] shadow flex items-center justify-between px-4
+                        className={`absolute ${leftVariants[index]} top-[${index * 60}px] w-[760px] h-[54px] ${element.bgColor} rounded-[10px] shadow flex items-center justify-between px-4
                         transition-all duration-500 ease-in-out transform ${index !== elements.length - 1 ? 'hover:scale-105 hover:h-[220px] hover:opacity-100' : ''}`}
                         style={{ backgroundColor: element.bgColor }} // Set background dynamically
                     >
@@ -49,8 +61,7 @@ const StairsElement = () => {
                         <div className="flex items-center gap-4">
                             <div className="px-2.5 py-1 bg-white rounded-2xl flex items-center gap-1.5">
                                 <div
-                                    className="text-xl font-bold"
-                                    style={{ color: element.bgColor }} // Set text color dynamically
+                                    className={`text-xl font-bold ${element.textColor}`}
                                 >
                                     {element.title}
                                 </div>
