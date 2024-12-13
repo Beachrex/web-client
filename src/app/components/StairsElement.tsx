@@ -42,11 +42,11 @@ const StairsElement = () => {
         },
     ];
 
-    const leftVariants = {
-        0: "left-[0px]",
-        1: "left-[40px]",
-        2: "left-[80px]",
-    };
+    const leftVariants: string[] = [
+        "left-[0px]",
+        "left-[20px]",
+        "left-[40px]",
+    ];
 
     return (
         <div className="relative m-4">
