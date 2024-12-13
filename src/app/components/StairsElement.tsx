@@ -44,9 +44,9 @@ const StairsElement = () => {
 
     const leftVariants = {
         0: "left-[0px]",
-        1: "left-[20px]",
-        2: "left-[40px]",
-    }
+        1: "left-[40px]",
+        2: "left-[80px]",
+    };
 
     return (
         <div className="relative m-4">
@@ -54,7 +54,8 @@ const StairsElement = () => {
                 <Link href={element.link} key={index}>
                     <div
                         className={`absolute ${leftVariants[index]} top-[${index * 60}px] w-[760px] h-[54px] ${element.bgColor} rounded-[10px] shadow flex items-center justify-between px-4
-                        transition-all duration-500 ease-in-out transform ${index !== elements.length - 1 ? 'hover:scale-105 hover:h-[220px] hover:opacity-100' : ''}`}
+                        transition-all duration-200 ease-in-out transform 
+                        ${index !== elements.length - 1 ? 'hover:scale-105 hover:z-10 hover:opacity-100' : ''}`}
                         style={{ backgroundColor: element.bgColor }} // Set background dynamically
                     >
                         {/* Left Section: Title and Subtitle (Non-hoverable) */}
@@ -69,7 +70,7 @@ const StairsElement = () => {
                             <div className="text-center text-white text-3xl font-bold">{element.subtitle}</div>
                         </div>
 
-                        {/* Right Section: Stats (Hoverable) */}
+                        {/* Right Section: Stats */}
                         <div className="flex items-center gap-4">
                             {/* Number of Accommodations */}
                             <div className="shadow px-2.5 py-[11px] bg-white rounded-md flex items-center gap-2">
