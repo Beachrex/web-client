@@ -32,7 +32,7 @@ const StairsElement = () => {
             title: 'Sunset Beach',
             subtitle: 'Plaža Laganini',
             statTitle: 'Št. nastanitev:',
-            statValue: '22',
+            statValue: '66',
             activityTitle: 'Št. aktivnosti:',
             activityValue: '5',
             bgColor: 'bg-[#ff4b5c]',
