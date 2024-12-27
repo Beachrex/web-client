@@ -32,7 +32,7 @@ const StairsElement = () => {
             title: 'Sunset Beach',
             subtitle: 'Plaža Laganini',
             statTitle: 'Št. nastanitev:',
-            statValue: '22',
+            statValue: '69',
             activityTitle: 'Št. aktivnosti:',
             activityValue: '5',
             bgColor: 'bg-[#ff4b5c]',
@@ -44,8 +44,8 @@ const StairsElement = () => {
 
     const leftVariants: string[] = [
         "left-[0px]",
-        "left-[20px]",
         "left-[40px]",
+        "left-[80px]",
     ];
 
     return (
