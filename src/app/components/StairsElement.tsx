@@ -14,7 +14,7 @@ const StairsElement = () => {
             bgColor: 'bg-[#0069ab]',
             textColor: 'text-[#0069ab]',
             link: '/beach/haludovo',
-            left: '20px'
+            left: '0',  // Adjusted for static position classes
         },
         {
             title: 'Pine Beach',
@@ -26,26 +26,26 @@ const StairsElement = () => {
             bgColor: 'bg-[#fca311]',
             textColor: 'text-[#fca311]',
             link: '/beach/zlatni-rat',
-            left: '40px'
+            left: '40',
         },
         {
             title: 'Sunset Beach',
             subtitle: 'Plaža Laganini',
             statTitle: 'Št. nastanitev:',
-            statValue: '69',
+            statValue: '22',
             activityTitle: 'Št. aktivnosti:',
             activityValue: '5',
             bgColor: 'bg-[#ff4b5c]',
             textColor: 'text-[#ff4b5c]',
             link: '/beach/laganini',
-            left: '60px'
+            left: '80',
         },
     ];
 
-    const leftVariants: string[] = [
-        "left-[0px]",
-        "left-[40px]",
-        "left-[80px]",
+    const leftVariants = [
+        "left-0",
+        "left-20",
+        "left-60",
     ];
 
     return (
@@ -53,10 +53,9 @@ const StairsElement = () => {
             {elements.map((element, index) => (
                 <Link href={element.link} key={index}>
                     <div
-                        className={`absolute ${leftVariants[index]} top-[${index * 60}px] w-[760px] h-[54px] ${element.bgColor} rounded-[10px] shadow flex items-center justify-between px-4
+                        className={`absolute ${leftVariants[index]} top-[${index * 60}px] w-[760px] h-[54px] ${element.bgColor} rounded-[10px] shadow flex items-center justify-between px-4 
                         transition-all duration-200 ease-in-out transform 
                         ${index !== elements.length - 1 ? 'hover:scale-105 hover:z-10 hover:opacity-100' : ''}`}
-                        style={{ backgroundColor: element.bgColor }} // Set background dynamically
                     >
                         {/* Left Section: Title and Subtitle (Non-hoverable) */}
                         <div className="flex items-center gap-4">
