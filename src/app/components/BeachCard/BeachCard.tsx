@@ -1,12 +1,13 @@
 import React from 'react';
 import { FaStar, FaHeart } from 'react-icons/fa';
+import Image from 'next/image';
 
 const BeachCard = () => {
     return (
         <div className="w-80 bg-white rounded-xl shadow-lg overflow-hidden">
             {/* Image Section */}
             <div className="relative">
-                <img
+                <Image
                     className="w-full h-[180px] object-cover"
                     src="https://via.placeholder.com/800x600"
                     alt="Beach Image"
@@ -30,7 +31,13 @@ const BeachCard = () => {
                 <h3 className="text-lg font-semibold text-blue-600">Plaža Ladinka</h3>
                 <div className="text-sm text-gray-600 mt-2 flex items-center space-x-2">
                     <span className="text-sm font-medium">Baška</span>
-                    <img className="w-5 h-5 rounded-full" src="https://via.placeholder.com/25" alt="Country Flag" />
+                    <Image
+                        src="https://via.placeholder.com/25"
+                        alt="Country Flag"
+                        width={42}
+                        height={41}
+                        className="rounded-full"
+                    />
                 </div>
             </div>
 
