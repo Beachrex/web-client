@@ -11,6 +11,11 @@ const nextConfig = {
                 hostname: 'beachrex.fra1.digitaloceanspaces.com',
                 pathname: '/**', // You can specify a specific path if needed
             },
+            {
+                protocol: 'https',
+                hostname: 'via.placeholder.com', // Adding via.placeholder.com here
+                pathname: '/**',
+            },
         ],
     },
     // async rewrites() {

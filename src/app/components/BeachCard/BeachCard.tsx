@@ -11,6 +11,8 @@ const BeachCard = () => {
                     className="w-full h-[180px] object-cover"
                     src="https://via.placeholder.com/800x600"
                     alt="Beach Image"
+                    width={800}
+                    height={600}
                 />
                 {/* Rating Section */}
                 <div className="absolute top-2 right-2 flex items-center space-x-2">

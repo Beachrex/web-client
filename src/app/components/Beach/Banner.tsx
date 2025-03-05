@@ -17,8 +17,13 @@ const BeachPage = () => {
 
             <div className="w-[1920px] h-[4663px] relative bg-white">
 
-                <Image className="w-[1888px] h-[745px] left-[16px] top-[229px] absolute rounded-[10px]"
-                     src="https://via.placeholder.com/1888x745" alt="todo alt name"/>
+                <Image
+                    className="w-[1888px] h-[745px] left-[16px] top-[229px] absolute rounded-[10px]"
+                     src="https://via.placeholder.com/1888x745"
+                    alt="todo alt name"
+                    width={1888}
+                    height={745}
+                />
                 <div className="left-[1560px] top-[194px] absolute justify-end items-center gap-[60px] inline-flex">
                     <div className="justify-start items-center gap-2 flex">
                         <div className="w-3 h-3 relative origin-top-left -rotate-180"/>
@@ -247,7 +252,10 @@ const BeachPage = () => {
                 </div>
                 <div className="w-36 h-36 left-[1353px] top-[757px] absolute">
                     <Image className="w-36 h-36 left-0 top-0 absolute rounded-[10px] shadow" alt="todo alt name"
-                         src="https://via.placeholder.com/144x144"/>
+                         src="https://via.placeholder.com/144x144"
+                           width={144}
+                           height={144}
+                    />
                     <div
                         className="w-36 h-36 left-[144px] top-[144px] absolute origin-top-left -rotate-180 opacity-70 bg-gradient-to-t from-[#e6e6e6] via-[#acacac] to-[#4c4c4c] rounded-[10px] shadow"/>
                     <div className="w-5 h-5 left-[13px] top-[113px] absolute"/>
