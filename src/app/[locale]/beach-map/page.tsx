@@ -1,22 +1,15 @@
-"use client";
-import { usePathname } from '@/i18n/routing';
-import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 
-const Page = () => {
-    const pathname = usePathname();
 
-    useEffect(() => {
-        if (!pathname) return; // Return if slug is not available
-        // Here you can handle your routing logic based on the slug
-        // For example, you could fetch data or set a state based on the slug
-    }, [pathname]);
+// Dynamically import the MapWithFilters component with ssr: false
+const MapWithFilters = dynamic(() => import('@/app/components/Map/MapWithFilters'), { ssr: false });
 
+const BeachMapPage = () => {
     return (
         <>
-            <h1>{`Page: ${pathname}`}</h1>
-            {/* Render content based on slug */}
+            <MapWithFilters />
         </>
     );
 };
 
-export default Page;
+export default BeachMapPage;
