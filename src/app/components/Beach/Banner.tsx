@@ -8,7 +8,7 @@ const BeachPage = () => {
         <>
             <div
                 className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center rounded-xl overflow-hidden"
-                style={{backgroundImage: "url('https://via.placeholder.com/1888x745')"}}>
+                style={{backgroundImage: "url('https://placehold.co/1888x745')"}}>
                 <StairsElement/>
 
 
@@ -19,7 +19,7 @@ const BeachPage = () => {
 
                 <Image
                     className="w-[1888px] h-[745px] left-[16px] top-[229px] absolute rounded-[10px]"
-                     src="https://via.placeholder.com/1888x745"
+                     src="https://placehold.co/1888x745"
                     alt="todo alt name"
                     width={1888}
                     height={745}
@@ -252,7 +252,7 @@ const BeachPage = () => {
                 </div>
                 <div className="w-36 h-36 left-[1353px] top-[757px] absolute">
                     <Image className="w-36 h-36 left-0 top-0 absolute rounded-[10px] shadow" alt="todo alt name"
-                         src="https://via.placeholder.com/144x144"
+                         src="https://placehold.co/144x144"
                            width={144}
                            height={144}
                     />

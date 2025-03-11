@@ -13,7 +13,7 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: 'via.placeholder.com', // Adding via.placeholder.com here
+                hostname: 'placehold.co',
                 pathname: '/**',
             },
         ],

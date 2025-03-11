@@ -9,7 +9,7 @@ const BeachCard = () => {
             <div className="relative">
                 <Image
                     className="w-full h-[180px] object-cover"
-                    src="https://via.placeholder.com/800x600"
+                    src="https://placehold.co/800x600"
                     alt="Beach Image"
                     width={800}
                     height={600}
@@ -34,7 +34,7 @@ const BeachCard = () => {
                 <div className="text-sm text-gray-600 mt-2 flex items-center space-x-2">
                     <span className="text-sm font-medium">Baška</span>
                     <Image
-                        src="https://via.placeholder.com/25"
+                        src="https://placehold.co/25"
                         alt="Country Flag"
                         width={42}
                         height={41}

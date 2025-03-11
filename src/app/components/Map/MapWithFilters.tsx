@@ -4,6 +4,8 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import BeachCard from "@/app/components/BeachCard/BeachCard";
 import LeftSidebarFilters from "@/app/components/Map/LeftSidebarFilters";
 import 'leaflet/dist/leaflet.css';
+import { useMap } from 'react-leaflet';
+import L from 'leaflet';
 
 const MapWithFilters = () => {
     const places = [
@@ -12,9 +14,21 @@ const MapWithFilters = () => {
         { lat: 45.3, lon: 15.4, title: 'Sunset Beach', description: 'Amazing sunset view.', id: 3 },
     ];
 
+    const SetMap = () => {
+        const map = useMap();
+            map.setView([45.0, 15.2], 13);
+        return null;
+    };
+
+    const customIcon = new L.Icon({
+        iconUrl: `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/icon/marker-icon-default.svg`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+    });
+
     return (
         <div className="flex w-full h-[100vh]">
-            {/* Left Sidebar: Filters */}
             <div className="bg-variable-collection-ultra-light-grey p-4">
                 <LeftSidebarFilters/>
             </div>
@@ -22,13 +36,18 @@ const MapWithFilters = () => {
             <div className="bg-white p-4">
                 <BeachCard/>
             </div>
-            {/* Map Container */}
             <div className="flex-1">
-                <MapContainer center={[45.0, 15.2]} zoom={13} style={{height: '100%'}}>
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-                    {/* Render markers */}
+                <MapContainer
+                    style={{ height: '100%' }}
+                >
+                    <SetMap />
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     {places.map((place) => (
-                        <Marker key={place.id} position={[place.lat, place.lon]}>
+                        <Marker
+                            key={place.id}
+                            position={[place.lat, place.lon]}
+                            icon={customIcon}
+                        >
                             <Popup>
                                 <div>
                                     <h3>{place.title}</h3>
@@ -39,7 +58,6 @@ const MapWithFilters = () => {
                     ))}
                 </MapContainer>
             </div>
-
         </div>
     );
 };
