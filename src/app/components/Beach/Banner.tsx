@@ -1,279 +1,149 @@
-import React from "react";
-import StairsElement from "@/app/components/StairsElement";
-import Image from 'next/image';
+import { Badge } from '@/app/utils/ui/badge';
+import { ImageWithFallback } from '@/app/utils/figma/ImageWithFallback';
 
-// The main component for the page layout
-const BeachPage = () => {
+const topFilterBadges = [
+    { label: 'Regija', color: 'bg-purple-600 hover:bg-purple-700', icon: '🇭🇷' },
+    { label: 'Kvarner', color: 'bg-pink-600 hover:bg-pink-700' },
+    { label: '5k result, 123', color: 'bg-gray-300 hover:bg-gray-400 text-gray-800' },
+    { label: 'Co.created:info', color: 'bg-gray-300 hover:bg-gray-400 text-gray-800' },
+];
+
+const bottomFilterBadges = [
+    { label: 'Festival Crna ovca', color: 'bg-pink-500 hover:bg-pink-600' },
+    { label: 'Vino Žlahtina', color: 'bg-green-500 hover:bg-green-600' },
+    { label: 'Krka lignjećak', color: 'bg-orange-500 hover:bg-orange-600' },
+    { label: 'Festival Crna ovca', color: 'bg-red-500 hover:bg-red-600' },
+    { label: 'Vino Žlahtina', color: 'bg-blue-500 hover:bg-blue-600' },
+    { label: 'Krka lignjećak', color: 'bg-yellow-500 hover:bg-yellow-600' },
+    { label: 'Krka lignjećak', color: 'bg-purple-500 hover:bg-purple-600' },
+    { label: 'Festival Crna ovca', color: 'bg-pink-400 hover:bg-pink-500' },
+    { label: 'Vino Žlahtina', color: 'bg-green-400 hover:bg-green-500' },
+    { label: 'Festival Crna ovca', color: 'bg-orange-400 hover:bg-orange-500' },
+    { label: 'Vino Žlahtina', color: 'bg-red-400 hover:bg-red-500' },
+    { label: 'Vino Žlahtina', color: 'bg-blue-400 hover:bg-blue-500' },
+];
+
+const destinations = [
+    {
+        title: 'Zgodovina',
+        subtitle: 'City is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
+        image: 'https://images.unsplash.com/photo-1600493505873-cddd69453072?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2FzdGFsJTIwYXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MXx8fHwxNzU2OTEyNjI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    },
+    {
+        title: 'Kulinarika',
+        subtitle: 'City is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
+        image: 'https://images.unsplash.com/photo-1615858770618-27f91b9c066c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZHJpYXRpYyUyMHNlYSUyMGhvdGVsfGVufDF8fHx8MTc1NjkxMjYyOXww&ixlib=rb-4.1.0&q=80&w=1080',
+    },
+    {
+        title: 'Kultura',
+        subtitle: 'City is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
+        image: 'https://images.unsplash.com/photo-1641150557653-e4c409426e59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWFjaCUyMHJlc29ydCUyMGFlcmlhbHxlbnwxfHx8fDE3NTY5MTI2Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    },
+    {
+        title: 'Znamenitosti',
+        subtitle: 'City is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
+        image: 'https://images.unsplash.com/photo-1694818740144-65ac2c8c8c62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9hdGlhJTIwdmFjYXRpb24lMjByZW50YWx8ZW58MXx8fHwxNzU2OTEyNjI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    },
+];
+
+export function HeroSection() {
     return (
-        <>
-            <div
-                className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] bg-cover bg-center rounded-xl overflow-hidden"
-                style={{backgroundImage: "url('https://placehold.co/1888x745')"}}>
-                <StairsElement/>
-
-
-            </div>
-
-
-            <div className="w-[1920px] h-[4663px] relative bg-white">
-
-                <Image
-                    className="w-[1888px] h-[745px] left-[16px] top-[229px] absolute rounded-[10px]"
-                     src="https://placehold.co/1888x745"
-                    alt="todo alt name"
-                    width={1888}
-                    height={745}
+        <div className="relative min-h-[500px] bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+                <ImageWithFallback
+                    src="https://images.unsplash.com/photo-1567882028577-703362976dd4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrdmFybmVyJTIwY3JvYXRpYSUyMGJlYWNoJTIwY29hc3RsaW5lfGVufDF8fHx8MTc1NjkxMjYyOXww&ixlib=rb-4.1.0&q=80&w=1080"
+                    alt="Kvarner coastline"
+                    className="w-full h-full object-cover"
                 />
-                <div className="left-[1560px] top-[194px] absolute justify-end items-center gap-[60px] inline-flex">
-                    <div className="justify-start items-center gap-2 flex">
-                        <div className="w-3 h-3 relative origin-top-left -rotate-180"/>
-                        <div className="text-[#0069ab] text-sm font-bold font-['Figtree'] underline">Ena plaža</div>
-                    </div>
-                    <div className="justify-start items-center gap-2 flex">
-                        <div className="text-[#0069ab] text-sm font-bold font-['Figtree'] underline">Enadruga plaža
-                        </div>
-                        <div className="w-3 h-3 relative"/>
-                    </div>
-                </div>
-                <div
-                    className="left-0 top-[636px] absolute opacity-30 text-white text-[200px] font-bold font-['Figtree']">plaža
-                </div>
-                <div
-                    className="w-[138px] h-[54px] px-3 py-[9px] left-[30px] top-[247px] absolute bg-[#57aba1] rounded-[10px] flex-col justify-start items-start gap-4 inline-flex">
-                    <div className="justify-start items-center gap-4 inline-flex">
-                        <div className="w-[35px] h-[35px] relative rounded-tl-[10px] rounded-bl-[10px]"/>
-                        <div className="text-white text-xl font-bold font-['Figtree']">Evropa</div>
-                    </div>
-                </div>
-                <div
-                    className="left-[100px] top-[781px] absolute text-white text-[100px] font-bold font-['Figtree']">Plaža
-                    Haludovo
-                </div>
-                <div
-                    className="px-3 py-3.5 left-[87px] top-[247px] absolute bg-[#8fd2d1] rounded-[10px] shadow flex-col justify-center items-center gap-2.5 inline-flex">
-                    <div className="justify-start items-center gap-4 inline-flex">
-                        <div className="text-white text-xl font-bold font-['Figtree']">Hrvaška</div>
-                    </div>
-                </div>
-                <div
-                    className="h-[54px] px-3 py-[15px] left-[143px] top-[247px] absolute bg-[#edd520] rounded-[10px] shadow justify-center items-center gap-2.5 inline-flex">
-                    <div className="text-white text-xl font-bold font-['Figtree']">Kvarner</div>
-                </div>
-                <div
-                    className="px-4 py-1.5 left-[199px] top-[247px] absolute bg-[#ff9b0f] rounded-[10px] shadow flex-col justify-center items-start gap-2.5 inline-flex">
-                    <div className="text-center text-white text-xl font-bold font-['Figtree']">Krk</div>
-                </div>
-                <div
-                    className="h-[54px] px-3 py-[11px] left-[255px] top-[247px] absolute bg-[#ff6239] rounded-[10px] shadow justify-center items-center gap-2.5 inline-flex">
-                    <div className="text-white text-xl font-bold font-['Figtree']">Malinska</div>
-                </div>
-                <div
-                    className="px-4 py-1.5 left-[311px] top-[247px] absolute bg-[#0069ab] rounded-[10px] shadow flex-col justify-start items-start gap-2.5 inline-flex">
-                    <div className="justify-start items-center gap-10 inline-flex">
-                        <div className="justify-start items-center gap-4 flex">
-                            <div
-                                className="px-2.5 py-[3px] bg-white rounded-2xl justify-start items-center gap-1.5 flex">
-                                <div className="text-[#0069ab] text-xl font-bold font-['Figtree']">Morska plaža</div>
-                            </div>
-                            <div className="text-center text-white text-3xl font-bold font-['Figtree']">Plaža Haludovo
-                            </div>
-                        </div>
-                        <div className="justify-start items-center gap-2 flex">
-                            <div className="shadow justify-start items-center gap-2 flex">
-                                <div
-                                    className="px-2.5 py-[11px] bg-white rounded-md justify-center items-center gap-2 flex">
-                                    <div className="w-5 h-5 relative"/>
-                                    <div className="justify-start items-center gap-1 flex">
-                                        <div
-                                            className="text-center text-[#222222] text-sm font-medium font-['Figtree']">Št.
-                                            nastanitev:
-                                        </div>
-                                        <div
-                                            className="text-center text-[#0069ab] text-sm font-bold font-['Figtree']">56
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="shadow justify-start items-center gap-2 flex">
-                                <div
-                                    className="px-2.5 py-[11px] bg-white rounded-md justify-center items-center gap-2 flex">
-                                    <div className="w-5 h-5 relative"/>
-                                    <div className="justify-start items-center gap-1 flex">
-                                        <div
-                                            className="text-center text-[#222222] text-sm font-medium font-['Figtree']">Št.
-                                            aktivnosti:
-                                        </div>
-                                        <div
-                                            className="text-center text-[#0069ab] text-sm font-bold font-['Figtree']">12
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    className="h-[35.80px] px-3 py-[3px] left-[1553px] top-[256px] absolute bg-neutral-100 rounded-[30px] justify-start items-center gap-2 inline-flex">
-                    <div className="justify-start items-center gap-2 flex">
-                        <div className="text-center text-[#4c4c4c] text-xs font-semibold font-['Figtree']">Google
-                            review
-                        </div>
-                    </div>
-                    <div
-                        className="w-[23px] h-[23px] px-[1.28px] pt-[1.78px] pb-[1.75px] justify-center items-center flex"/>
-                    <div className="justify-start items-center gap-2 flex">
-                        <div className="text-center text-[#4c4c4c] text-base font-bold font-['Figtree']">7.2</div>
-                    </div>
-                </div>
-                <div
-                    className="h-[35.80px] px-3 py-[3px] left-[1733.50px] top-[256px] absolute bg-white rounded-[30px] justify-start items-center gap-2 inline-flex">
-                    <div className="justify-start items-center gap-2 flex">
-                        <div className="text-center text-[#4c4c4c] text-xs font-semibold font-['Figtree']">Shrani</div>
-                    </div>
-                    <div className="w-5 h-5 relative">
-                        <div className="w-5 h-5 left-0 top-0 absolute"/>
-                        <div className="w-5 h-5 left-0 top-0 absolute"/>
-                    </div>
-                </div>
-                <div className="left-[100px] top-[925px] absolute justify-start items-center gap-3 inline-flex">
-                    <div
-                        className="w-[101px] h-[95px] px-2.5 py-2 bg-[#e7f6ff] rounded-[10px] flex-col justify-start items-center gap-2.5 inline-flex">
-                        <div className="h-16 flex-col justify-center items-center gap-[11px] flex">
-                            <div className="w-9 h-9 relative"/>
-                            <div
-                                className="self-stretch text-center text-[#0069ab] text-sm font-bold font-['Figtree']">Kamnita
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        className="w-[101px] h-[95px] px-2.5 py-2 bg-[#e7f6ff] rounded-[10px] flex-col justify-start items-center gap-2.5 inline-flex">
-                        <div className="h-[81px] flex-col justify-center items-center gap-[11px] flex">
-                            <div className="w-9 h-9 relative">
-                                <div className="w-[28.73px] h-9 left-[4.15px] top-0 absolute">
-                                </div>
-                            </div>
-                            <div
-                                className="self-stretch text-center text-[#0069ab] text-sm font-bold font-['Figtree']">Primerna
-                                za družine
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        className="w-[101px] h-[95px] px-2.5 py-2 bg-[#e7f6ff] rounded-[10px] flex-col justify-start items-center gap-2.5 inline-flex">
-                        <div className="h-[81px] flex-col justify-center items-center gap-[11px] flex">
-                            <div className="w-9 h-9 relative"/>
-                            <div
-                                className="self-stretch text-center text-[#0069ab] text-sm font-bold font-['Figtree']">Parkirišče
-                                na voljo
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        className="w-[101px] h-[95px] px-2.5 py-2 bg-[#e7f6ff] rounded-[10px] flex-col justify-start items-center gap-2.5 inline-flex">
-                        <div className="h-[81px] flex-col justify-center items-center gap-[11px] flex">
-                            <div className="w-9 h-9 relative"/>
-                            <div
-                                className="self-stretch text-center text-[#0069ab] text-sm font-bold font-['Figtree']">Preprost
-                                dostop
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        className="w-[101px] h-[95px] px-2.5 py-2 bg-[#e7f6ff] rounded-[10px] flex-col justify-start items-center gap-2.5 inline-flex">
-                        <div className="h-16 flex-col justify-center items-center gap-[11px] flex">
-                            <div className="w-9 h-9 relative"/>
-                            <div
-                                className="self-stretch text-center text-[#0069ab] text-sm font-bold font-['Figtree']">Windsurfing
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        className="w-[101px] h-[95px] px-2.5 py-2 bg-[#e7f6ff] rounded-[10px] flex-col justify-start items-center gap-2.5 inline-flex">
-                        <div className="h-[81px] flex-col justify-center items-center gap-[11px] flex">
-                            <div className="w-9 h-9 relative"/>
-                            <div
-                                className="self-stretch text-center text-[#0069ab] text-sm font-bold font-['Figtree']">Parkirišče
-                                na voljo
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        className="w-[101px] h-[95px] px-2.5 py-2 bg-[#e7f6ff] rounded-[10px] flex-col justify-start items-center gap-2.5 inline-flex">
-                        <div className="h-16 flex-col justify-center items-center gap-[11px] flex">
-                            <div className="w-9 h-9 relative"/>
-                            <div
-                                className="self-stretch text-center text-[#0069ab] text-sm font-bold font-['Figtree']">Windsurfing
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        className="w-[101px] h-[95px] px-2.5 py-2 bg-[#e7f6ff] rounded-[10px] flex-col justify-start items-center gap-2.5 inline-flex">
-                        <div className="h-[81px] flex-col justify-center items-center gap-[11px] flex">
-                            <div className="w-9 h-9 relative">
-                                <div className="w-[28.73px] h-9 left-[4.15px] top-0 absolute">
-                                </div>
-                            </div>
-                            <div
-                                className="self-stretch text-center text-[#0069ab] text-sm font-bold font-['Figtree']">Primerna
-                                za družine
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        className="w-[101px] h-[95px] px-2.5 py-2 bg-[#e7f6ff] rounded-[10px] flex-col justify-start items-center gap-2.5 inline-flex">
-                        <div className="h-[81px] flex-col justify-center items-center gap-[11px] flex">
-                            <div className="w-9 h-9 relative">
-                                <div className="w-[28.73px] h-9 left-[4.15px] top-0 absolute">
-                                </div>
-                            </div>
-                            <div
-                                className="self-stretch text-center text-[#0069ab] text-sm font-bold font-['Figtree']">MAX
-                                9 poudarkov
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    className="w-[703px] h-[95px] px-5 py-[13px] left-[1118px] top-[925px] absolute bg-neutral-100 rounded-[10px] flex-col justify-center items-center gap-2.5 inline-flex">
-                    <div className="self-stretch h-[63.21px] flex-col justify-start items-start gap-1 flex">
-                        <div
-                            className="self-stretch text-[#4c4c4c] text-xs font-normal font-['Figtree'] leading-none">Lorem
-                            Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                            the standard dummy text ever since the 1500s, when an unknown printer took a
-                            galley of type and scrambled it to make a type specimen
-                        </div>
-                        <div className="w-[82.60px] h-[27.21px] justify-start items-center gap-1 inline-flex">
-                            <div className="text-[#8d8d8d] text-[10px] font-medium font-['Figtree'] underline">Preberi
-                                več
-                            </div>
-                            <div className="w-3 h-3 relative"/>
-                        </div>
-                    </div>
-                </div>
-                <div className="w-36 h-36 left-[1353px] top-[757px] absolute">
-                    <Image className="w-36 h-36 left-0 top-0 absolute rounded-[10px] shadow" alt="todo alt name"
-                         src="https://placehold.co/144x144"
-                           width={144}
-                           height={144}
-                    />
-                    <div
-                        className="w-36 h-36 left-[144px] top-[144px] absolute origin-top-left -rotate-180 opacity-70 bg-gradient-to-t from-[#e6e6e6] via-[#acacac] to-[#4c4c4c] rounded-[10px] shadow"/>
-                    <div className="w-5 h-5 left-[13px] top-[113px] absolute"/>
-                </div>
-
-                <div
-                    className="w-[264px] h-[41px] px-2.5 py-[11px] left-[1555px] top-[1486px] absolute bg-white rounded-md shadow justify-between items-center inline-flex">
-                    <div className="justify-start items-center gap-0.5 flex">
-                        <div className="text-center text-[#4c4c4c] text-sm font-semibold font-['Figtree']">Razdalja 1 km
-                            od plaže
-                        </div>
-                    </div>
-                    <div className="w-3 h-3 relative origin-top-left rotate-90"/>
-                </div>
             </div>
 
-        </>
-    );
-};
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Top Filter Badges */}
+                <div className="flex flex-wrap gap-2 pt-4 mb-8">
+                    {topFilterBadges.map((badge, index) => (
+                        <Badge
+                            key={index}
+                            className={`${badge.color} ${badge.color.includes('gray') ? 'text-gray-800' : 'text-white'} border-0 px-3 py-2 cursor-pointer transition-colors rounded-full`}
+                        >
+                            {badge.icon && <span className="mr-1">{badge.icon}</span>}
+                            {badge.label}
+                        </Badge>
+                    ))}
+                </div>
 
-export default BeachPage;
+                {/* Main Content Layout */}
+                <div className="flex justify-between items-start mb-16">
+                    {/* Left Side - Title and Tags */}
+                    <div className="flex-1">
+                        <div className="max-w-lg">
+                            <h1 className="text-7xl font-bold text-white mb-6 leading-tight">
+                                Kvarner
+                            </h1>
+
+                            {/* Bottom Filter Tags */}
+                            <div className="flex flex-wrap gap-2">
+                                {bottomFilterBadges.map((badge, index) => (
+                                    <Badge
+                                        key={index}
+                                        className={`${badge.color} text-white border-0 px-3 py-1 cursor-pointer transition-colors rounded-full text-sm`}
+                                    >
+                                        {badge.label}
+                                    </Badge>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Side - Weather Widget */}
+                    <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 ml-8">
+                        <div className="flex items-center space-x-4">
+                            {/* Mini Map */}
+                            <div className="w-16 h-16 bg-blue-200 rounded-lg overflow-hidden">
+                                <div className="w-full h-full bg-gradient-to-br from-blue-300 to-green-300 relative">
+                                    <div className="absolute inset-2 bg-blue-400 rounded opacity-60"></div>
+                                </div>
+                            </div>
+
+                            {/* Weather Info */}
+                            <div className="text-white">
+                                <div className="text-2xl font-bold">11</div>
+                                <div className="text-sm opacity-90">4 hrs, Cres Krk</div>
+                            </div>
+
+                            {/* Weather Icon */}
+                            <div className="text-3xl">🌤️</div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Destination Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-8">
+                    {destinations.map((destination, index) => (
+                        <div key={index} className="bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden">
+                            <div className="aspect-[4/3] relative">
+                                <ImageWithFallback
+                                    src={destination.image}
+                                    alt={destination.title}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div className="p-4">
+                                <h3 className="font-semibold text-red-600 mb-2">{destination.title}</h3>
+                                <p className="text-sm text-gray-600 leading-tight">{destination.subtitle}</p>
+                                <div className="mt-2">
+                  <span className="text-xs text-blue-600 cursor-pointer hover:underline">
+                    Discover →
+                  </span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// Default export for compatibility
+export default HeroSection;
