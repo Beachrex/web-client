@@ -60,7 +60,7 @@ export function HeroSection() {
                     />
                 </div>
 
-                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="relative z-10 container mx-auto px-2 sm:px-4">
                     {/* Top Filter Badges */}
                     <div className="flex flex-wrap gap-2 pt-4 mb-8">
                         {topFilterBadges.map((badge, index) => (
@@ -122,7 +122,7 @@ export function HeroSection() {
             </div>
 
             {/* Overlapping Destination Cards - 50% inside banner, 50% outside */}
-            <div className="relative z-20 max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 -mt-32">
+            <div className="relative z-20 container mx-auto px-2 sm:px-4 -mt-32">
                 <div className="flex flex-wrap justify-center gap-4">
                     {destinations.map((destination, index) => (
                         <div
