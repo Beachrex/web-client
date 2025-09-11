@@ -38,7 +38,7 @@ const TopBar = () => {
                             inline
                             label={
                                 <span className="inline-flex items-center cursor-pointer text-white text-[9px] font-semibold">
-                                    {languageNames[locale].slice(0, 2).toUpperCase()}
+                                    {(languageNames[locale] ?? locale).slice(0, 2).toUpperCase()}
                                     <MdKeyboardArrowDown className="text-white ml-1 h-3 w-3" />
                                 </span>
                             }
@@ -84,7 +84,7 @@ const TopBar = () => {
                             inline
                             label={
                                 <span className="inline-flex items-center cursor-pointer text-white text-[10px] font-semibold">
-                                    {languageNames[locale]}
+                                    {languageNames[locale] ?? locale}
                                     <MdKeyboardArrowDown className="text-white ml-2 h-4 w-4" />
                                 </span>
                             }

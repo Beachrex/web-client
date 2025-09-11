@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 export function TestImageComponent() {
   const imageUrl = "https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg";
@@ -7,15 +8,15 @@ export function TestImageComponent() {
     <div style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>
       <h2>Image Blur Test</h2>
       
-      {/* Test 1: Raw HTML img tag */}
+      {/* Test 1: Next.js Image component */}
       <div style={{ marginBottom: '20px' }}>
-        <h3>1. Raw HTML img tag (no processing)</h3>
-        <img 
+        <h3>1. Next.js Image component (optimized)</h3>
+        <Image
           src={imageUrl}
-          alt="Test image - raw HTML"
+          alt="Test image - Next.js Image"
+          width={300}
+          height={200}
           style={{
-            width: '300px',
-            height: '200px',
             objectFit: 'cover',
             filter: 'none',
             imageRendering: 'crisp-edges',
@@ -54,15 +55,15 @@ export function TestImageComponent() {
         </a>
       </div>
 
-      {/* Test 4: Image with different URL parameters */}
+      {/* Test 4: Next.js Image with cache-busting parameter */}
       <div style={{ marginBottom: '20px' }}>
-        <h3>4. Image with cache-busting parameter</h3>
-        <img 
+        <h3>4. Next.js Image with cache-busting parameter</h3>
+        <Image
           src={`${imageUrl}?v=${Date.now()}`}
           alt="Test image - cache busted"
+          width={300}
+          height={200}
           style={{
-            width: '300px',
-            height: '200px',
             objectFit: 'cover',
             filter: 'none',
             imageRendering: 'crisp-edges',

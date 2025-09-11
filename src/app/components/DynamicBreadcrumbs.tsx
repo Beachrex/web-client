@@ -3,7 +3,6 @@
 import { Breadcrumb } from "flowbite-react";
 import { HiHome } from "react-icons/hi";
 import Link from "next/link";
-import {useTranslations} from "next-intl";
 
 // Define the type for the props
 interface DynamicBreadcrumbsProps {
