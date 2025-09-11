@@ -185,15 +185,21 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps) {
     const t = await getTranslations({ locale: params.locale, namespace: 'ContinentPage' });
 
+    // Capitalize first letter of continent
+    const capitalizedContinent = params.continent.charAt(0).toUpperCase() + params.continent.slice(1);
+
     return {
-        title: `${params.continent} - ${t('title')}`,
-        description: t('description', { continent: params.continent }),
+        title: `${capitalizedContinent} - ${t('title')}`,
+        description: t('description', { continent: capitalizedContinent }),
     };
 }
 
 const Page = async ({ params }: PageProps) => {
     const t = await getTranslations({ locale: params.locale, namespace: 'ContinentPage' });
     const pathname = `/beaches/${params.continent}`;
+
+    // Capitalize first letter of continent
+    const capitalizedContinent = params.continent.charAt(0).toUpperCase() + params.continent.slice(1);
 
     return (
         <>
@@ -209,12 +215,12 @@ const Page = async ({ params }: PageProps) => {
                 }}
             />
             <PropertySection
-                title={t('popularDestinations', { continent: params.continent })}
+                title={t('popularDestinations', { continent: capitalizedContinent })}
                 properties={mockProperties.popularDestinations}
             />
 
             <PropertySection
-                title={t('premiumAccommodations', { continent: params.continent })}
+                title={t('premiumAccommodations', { continent: capitalizedContinent })}
                 properties={mockProperties.premiumAccommodations}
             />
 
