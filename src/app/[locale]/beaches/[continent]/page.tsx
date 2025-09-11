@@ -189,7 +189,7 @@ export async function generateMetadata({ params }: PageProps) {
     const capitalizedContinent = params.continent.charAt(0).toUpperCase() + params.continent.slice(1);
 
     return {
-        title: `${capitalizedContinent} - ${t('title')}`,
+        title: t('metaTitle', { continent: capitalizedContinent }),
         description: t('description', { continent: capitalizedContinent }),
     };
 }

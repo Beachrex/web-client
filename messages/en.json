@@ -48,7 +48,8 @@
     "description": "Find beaches perfect for your travel style and preferences."
   },
   "ContinentPage": {
-    "title": "Beaches",
+    "title": "Beautiful Beaches",
+    "metaTitle": "{continent} Beaches - BeachRex",
     "popularDestinations": "Most Beautiful Destinations in {continent}",
     "premiumAccommodations": "Luxury Accommodation in {continent}",
     "bestDeals": "Great Deals",

@@ -48,7 +48,8 @@
     "description": "Najdite plaže popolne za vaš stil potovanja in preference."
   },
   "ContinentPage": {
-    "title": "Plaže",
+    "title": "Čudovite plaže",
+    "metaTitle": "Plaže {continent} - BeachRex",
     "popularDestinations": "Najlepše destinacije v {continent}",
     "premiumAccommodations": "Luksuzne nastanitve v {continent}",
     "bestDeals": "Odlične ponude",
