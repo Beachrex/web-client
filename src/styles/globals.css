@@ -10,6 +10,39 @@
 body {
     font-family: 'Figtree', sans-serif;
 }
+
+/* Ensure images don't inherit blur effects */
+img {
+    filter: none !important;
+    backdrop-filter: none !important;
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    image-rendering: pixelated !important;
+    -webkit-backface-visibility: hidden !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+}
+
+/* Prevent blur inheritance on Next.js Image components */
+.next-image {
+    filter: none !important;
+    backdrop-filter: none !important;
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    image-rendering: pixelated !important;
+    -webkit-backface-visibility: hidden !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+}
+
+/* Force sharp rendering for all image containers */
+[class*="image"], [class*="Image"], div[style*="background-image"] {
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+    -webkit-backface-visibility: hidden !important;
+    -webkit-transform: translateZ(0) !important;
+    transform: translateZ(0) !important;
+}
 :root {
     --drop: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
     --drop-temen: 1px 1px 2px 0px rgba(0, 0, 0, 0.43);

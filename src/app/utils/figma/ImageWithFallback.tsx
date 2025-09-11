@@ -22,7 +22,7 @@ export function ImageWithFallback(props: ImageWithFallbackProps) {
     setDidError(true)
   }
 
-  const { src, alt, width = 100, height = 100, className, style, fill, priority, ...rest } = props
+  const { src, alt, width = 600, height = 600, className, style, fill, priority, ...rest } = props
 
   return didError ? (
     <div
@@ -36,6 +36,7 @@ export function ImageWithFallback(props: ImageWithFallbackProps) {
           width={width}
           height={height}
           data-original-url={src}
+          style={{ filter: 'none', backdropFilter: 'none' }}
         />
       </div>
     </div>
@@ -46,10 +47,10 @@ export function ImageWithFallback(props: ImageWithFallbackProps) {
       width={width}
       height={height}
       className={className}
-      style={style}
       fill={fill}
       priority={priority}
       onError={handleError}
+      quality={90}
       {...rest}
     />
   )

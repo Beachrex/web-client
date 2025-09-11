@@ -25,7 +25,7 @@ const mockProperties = {
     popularDestinations: [
         {
             id: '1',
-            image: 'https://images.unsplash.com/photo-1634041441461-a1789d008830?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBob3RlbCUyMGV4dGVyaW9yfGVufDF8fHx8MTc1Njg3MzMzN3ww&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Grand Hotel Adriatic',
             location: 'Opatija, Kvarner',
             price: 180,
@@ -38,7 +38,7 @@ const mockProperties = {
         },
         {
             id: '2',
-            image: 'https://images.unsplash.com/photo-1641150557653-e4c409426e59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWFjaCUyMHJlc29ydCUyMGFlcmlhbHxlbnwxfHx8fDE3NTY5MTI2Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Seaside Resort & Spa',
             location: 'Crikvenica, Kvarner',
             price: 145,
@@ -49,7 +49,7 @@ const mockProperties = {
         },
         {
             id: '3',
-            image: 'https://images.unsplash.com/photo-1600493505873-cddd69453072?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2FzdGFsJTIwYXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MXx8fHwxNzU2OTEyNjI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Coastal Villa Apartments',
             location: 'Rijeka, Kvarner',
             price: 95,
@@ -62,7 +62,7 @@ const mockProperties = {
         },
         {
             id: '4',
-            image: 'https://images.unsplash.com/photo-1615858770618-27f91b9c066c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZHJpYXRpYyUyMHNlYSUyMGhvdGVsfGVufDF8fHx8MTc1NjkxMjYyOXww&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Adriatic Bay Hotel',
             location: 'Lovran, Kvarner',
             price: 160,
@@ -75,7 +75,7 @@ const mockProperties = {
     premiumAccommodations: [
         {
             id: '5',
-            image: 'https://images.unsplash.com/photo-1694818740144-65ac2c8c8c62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9hdGlhJTIwdmFjYXRpb24lMjByZW50YWx8ZW58MXx8fHwxNzU2OTEyNjI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Luxury Beachfront Villa',
             location: 'Mali Lošinj, Lošinj',
             price: 320,
@@ -88,7 +88,7 @@ const mockProperties = {
         },
         {
             id: '6',
-            image: 'https://images.unsplash.com/photo-1634041441461-a1789d008830?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBob3RlbCUyMGV4dGVyaW9yfGVufDF8fHx8MTc1Njg3MzMzN3ww&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Premium Spa Resort',
             location: 'Rab, Rab Island',
             price: 280,
@@ -99,7 +99,7 @@ const mockProperties = {
         },
         {
             id: '7',
-            image: 'https://images.unsplash.com/photo-1615858770618-27f91b9c066c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZHJpYXRpYyUyMHNlYSUyMGhvdGVsfGVufDF8fHx8MTc1NjkxMjYyOXww&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Elite Marina Hotel',
             location: 'Punat, Krk Island',
             price: 245,
@@ -112,7 +112,7 @@ const mockProperties = {
         },
         {
             id: '8',
-            image: 'https://images.unsplash.com/photo-1641150557653-e4c409426e59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWFjaCUyMHJlc29ydCUyMGFlcmlhbHxlbnwxfHx8fDE3NTY5MTI2Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Exclusive Resort & Club',
             location: 'Malinska, Krk Island',
             price: 310,
@@ -125,7 +125,7 @@ const mockProperties = {
     bestDeals: [
         {
             id: '9',
-            image: 'https://images.unsplash.com/photo-1600493505873-cddd69453072?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2FzdGFsJTIwYXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MXx8fHwxNzU2OTEyNjI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Budget Coastal Retreat',
             location: 'Senj, Kvarner',
             price: 65,
@@ -138,7 +138,7 @@ const mockProperties = {
         },
         {
             id: '10',
-            image: 'https://images.unsplash.com/photo-1694818740144-65ac2c8c8c62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9hdGlhJTIwdmFjYXRpb24lMjByZW50YWx8ZW58MXx8fHwxNzU2OTEyNjI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Charming Guesthouse',
             location: 'Vrbnik, Krk Island',
             price: 78,
@@ -151,7 +151,7 @@ const mockProperties = {
         },
         {
             id: '11',
-            image: 'https://images.unsplash.com/photo-1615858770618-27f91b9c066c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZHJpYXRpYyUyMHNlYSUyMGhvdGVsfGVufDF8fHx8MTc1NjkxMjYyOXww&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Family-Friendly Hotel',
             location: 'Novi Vinodolski, Kvarner',
             price: 115,
@@ -164,7 +164,7 @@ const mockProperties = {
         },
         {
             id: '12',
-            image: 'https://images.unsplash.com/photo-1634041441461-a1789d008830?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBob3RlbCUyMGV4dGVyaW9yfGVufDF8fHx8MTc1Njg3MzMzN3ww&ixlib=rb-4.1.0&q=80&w=1080',
+            image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
             title: 'Affordable Beach Hotel',
             location: 'Cres, Cres Island',
             price: 92,

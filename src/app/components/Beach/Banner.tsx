@@ -27,22 +27,22 @@ const destinations = [
     {
         title: 'Zgodovina',
         subtitle: 'City is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
-        image: 'https://images.unsplash.com/photo-1600493505873-cddd69453072?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2FzdGFsJTIwYXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MXx8fHwxNzU2OTEyNjI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+        image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
     },
     {
         title: 'Kulinarika',
         subtitle: 'City is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
-        image: 'https://images.unsplash.com/photo-1615858770618-27f91b9c066c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZHJpYXRpYyUyMHNlYSUyMGhvdGVsfGVufDF8fHx8MTc1NjkxMjYyOXww&ixlib=rb-4.1.0&q=80&w=1080',
+        image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
     },
     {
         title: 'Kultura',
         subtitle: 'City is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
-        image: 'https://images.unsplash.com/photo-1641150557653-e4c409426e59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWFjaCUyMHJlc29ydCUyMGFlcmlhbHxlbnwxfHx8fDE3NTY5MTI2Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080',
+        image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
     },
     {
         title: 'Znamenitosti',
         subtitle: 'City is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
-        image: 'https://images.unsplash.com/photo-1694818740144-65ac2c8c8c62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9hdGlhJTIwdmFjYXRpb24lMjByZW50YWx8ZW58MXx8fHwxNzU2OTEyNjI5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+        image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
     },
 ];
 
@@ -52,7 +52,7 @@ export function HeroSection() {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1567882028577-703362976dd4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrdmFybmVyJTIwY3JvYXRpYSUyMGJlYWNoJTIwY29hc3RsaW5lfGVufDF8fHx8MTc1NjkxMjYyOXww&ixlib=rb-4.1.0&q=80&w=1080"
+                    src="https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg"
                     alt="Kvarner coastline"
                     className="w-full h-full object-cover"
                 />
@@ -120,7 +120,7 @@ export function HeroSection() {
                 {/* Destination Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-8">
                     {destinations.map((destination, index) => (
-                        <div key={index} className="bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden">
+                        <div key={index} className="bg-white/90 rounded-lg overflow-hidden">
                             <div className="aspect-[4/3] relative">
                                 <ImageWithFallback
                                     src={destination.image}
