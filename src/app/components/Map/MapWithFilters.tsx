@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import BeachCard from "@/app/components/BeachCard/BeachCard";
+import {PropertyCard} from "@/app/components/PropertyCard/PropertyCard";
 import LeftSidebarFilters from "@/app/components/Map/LeftSidebarFilters";
 import 'leaflet/dist/leaflet.css';
 import { useMap } from 'react-leaflet';
@@ -34,7 +34,19 @@ const MapWithFilters = () => {
             </div>
 
             <div className="bg-white p-4">
-                <BeachCard/>
+                <PropertyCard
+                    id="1"
+                    image="https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg"
+                    title="Plaža Ladinka"
+                    location="Baška, Croatia"
+                    price={25}
+                    originalPrice={35}
+                    rating={7.2}
+                    reviews={123}
+                    discount="30"
+                    isFreeBreakfast={true}
+                    isFreeCancellation={true}
+                />
             </div>
             <div className="flex-1">
                 <MapContainer
