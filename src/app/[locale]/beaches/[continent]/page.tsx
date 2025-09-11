@@ -189,7 +189,17 @@ const Page = () => {
 
     return (
         <>
-            <Banner/>
+            <Banner
+                pathname={pathname}
+                prevBeach={{
+                    name: "Istria",
+                    url: "/beaches/europe/istria"
+                }}
+                nextBeach={{
+                    name: "Dalmatia",
+                    url: "/beaches/europe/dalmatia"
+                }}
+            />
             <PropertySection
                 title="Najljepše destinacije pjade Kvarner"
                 properties={mockProperties.popularDestinations}

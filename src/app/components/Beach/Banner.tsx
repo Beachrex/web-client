@@ -1,5 +1,6 @@
 import { Badge } from '@/app/utils/ui/badge';
 import { ImageWithFallback } from '@/app/utils/figma/ImageWithFallback';
+import DynamicBreadcrumbs from '@/app/components/DynamicBreadcrumbs';
 
 const topFilterBadges = [
     { label: 'Regija', color: 'bg-purple-600 hover:bg-purple-700', icon: '🇭🇷' },
@@ -46,9 +47,65 @@ const destinations = [
     },
 ];
 
-export function HeroSection() {
+interface HeroSectionProps {
+    pathname?: string;
+    showBreadcrumbs?: boolean;
+    prevBeach?: {
+        name: string;
+        url: string;
+    };
+    nextBeach?: {
+        name: string;
+        url: string;
+    };
+}
+
+export function HeroSection({ pathname, showBreadcrumbs = true, prevBeach, nextBeach }: HeroSectionProps) {
     return (
         <div className="relative">
+            {/* Breadcrumbs and Pagination */}
+            {showBreadcrumbs && pathname && (
+                <div className="bg-white border-b">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                        <div className="flex justify-between items-center">
+                            {/* Left side - Breadcrumbs */}
+                            <div className="flex-1">
+                                <DynamicBreadcrumbs pathname={pathname} />
+                            </div>
+
+                            {/* Right side - Beach Pagination */}
+                            {(prevBeach ?? nextBeach) && (
+                                <div className="flex items-center space-x-4 ml-8 font-light">
+                                    {prevBeach && (
+                                        <a
+                                            href={prevBeach.url}
+                                            className="flex items-center text-variable-collection-mesto hover:opacity-80 transition-opacity duration-200 text-sm"
+                                        >
+                                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                            </svg>
+                                            <span className="font-medium">{prevBeach.name}</span>
+                                        </a>
+                                    )}
+
+                                    {nextBeach && (
+                                        <a
+                                            href={nextBeach.url}
+                                            className="flex items-center text-variable-collection-mesto hover:opacity-80 transition-opacity duration-200 text-sm"
+                                        >
+                                            <span className="font-medium">{nextBeach.name}</span>
+                                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Main Banner */}
             <div className="relative min-h-[500px] bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700">
                 {/* Background Image */}
@@ -166,4 +223,6 @@ export function HeroSection() {
 }
 
 // Default export for compatibility
-export default HeroSection;
+export default function Banner(props: HeroSectionProps = {}) {
+    return <HeroSection {...props} />;
+}
