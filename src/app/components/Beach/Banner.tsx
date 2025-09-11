@@ -122,21 +122,33 @@ export function HeroSection() {
             </div>
 
             {/* Overlapping Destination Cards - 50% inside banner, 50% outside */}
-            <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-32">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="relative z-20 max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 -mt-32">
+                <div className="flex flex-wrap justify-center gap-4">
                     {destinations.map((destination, index) => (
-                        <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg">
-                            <div className="aspect-[4/3] relative">
+                        <div
+                            key={index}
+                            className="bg-[#f5f5f5] rounded-lg p-2 overflow-hidden shadow-lg flex flex-col sm:flex-row w-full sm:w-[390px] sm:max-w-[390px] h-auto sm:h-[158px]"
+                        >
+                            {/* Image on the left */}
+                            <div className="w-full sm:w-[180px] h-[120px] sm:h-full flex-shrink-0 pr-2">
                                 <ImageWithFallback
                                     src={destination.image}
                                     alt={destination.title}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover rounded-lg"
                                 />
                             </div>
-                            <div className="p-4">
-                                <h3 className="font-semibold text-red-600 mb-2">{destination.title}</h3>
-                                <p className="text-sm text-gray-600 leading-tight">{destination.subtitle}</p>
-                                <div className="mt-2">
+
+                            {/* Text content on the right */}
+                            <div className="flex-1 flex flex-col justify-between min-h-[120px] sm:min-h-full">
+                                <div>
+                                    <h3 className="font-semibold text-variable-collection-mesto mb-1 sm:mb-2 text-sm sm:text-base line-clamp-1">
+                                        {destination.title}
+                                    </h3>
+                                    <p className="text-xs sm:text-xs text-gray-600 leading-tight line-clamp-3 sm:line-clamp-4">
+                                        {destination.subtitle}
+                                    </p>
+                                </div>
+                                <div className="mt-2 sm:mt-auto">
                                     <span className="text-xs text-blue-600 cursor-pointer hover:underline">
                                         Discover →
                                     </span>
