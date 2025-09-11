@@ -32,5 +32,26 @@
   "AboutPage": {
     "aboutUs": "O nas",
     "description": "Opis o nas strani"
+  },
+  "BeachTypePage": {
+    "title": "Tipi plaž",
+    "pageTitle": "Stran tipov plaž",
+    "allBeachTypes": "Vsi tipi plaž",
+    "beachType": "Tip plaže",
+    "description": "Odkrijte različne tipe plaž in najdite svojo popolno izbiro."
+  },
+  "UserTypePage": {
+    "title": "Tipi uporabnikov",
+    "pageTitle": "Stran tipov uporabnikov",
+    "allUserTypes": "Vsi tipi uporabnikov",
+    "userType": "Tip uporabnika",
+    "description": "Najdite plaže popolne za vaš stil potovanja in preference."
+  },
+  "ContinentPage": {
+    "title": "Plaže",
+    "popularDestinations": "Najlepše destinacije v {continent}",
+    "premiumAccommodations": "Luksuzne nastanitve v {continent}",
+    "bestDeals": "Odlične ponude",
+    "description": "Raziščite najlepše plaže v {continent}."
   }
 }

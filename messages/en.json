@@ -32,5 +32,26 @@
   "AboutPage": {
     "aboutUs": "About us",
     "description": "Description about us page"
+  },
+  "BeachTypePage": {
+    "title": "Beach Types",
+    "pageTitle": "Beach Types Page",
+    "allBeachTypes": "All Beach Types",
+    "beachType": "Beach Type",
+    "description": "Discover different types of beaches and find your perfect match."
+  },
+  "UserTypePage": {
+    "title": "User Types",
+    "pageTitle": "User Types Page",
+    "allUserTypes": "All User Types",
+    "userType": "User Type",
+    "description": "Find beaches perfect for your travel style and preferences."
+  },
+  "ContinentPage": {
+    "title": "Beaches",
+    "popularDestinations": "Most Beautiful Destinations in {continent}",
+    "premiumAccommodations": "Luxury Accommodation in {continent}",
+    "bestDeals": "Great Deals",
+    "description": "Explore the most beautiful beaches in {continent}."
   }
 }

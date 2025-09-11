@@ -1,21 +1,35 @@
-"use client";
-import { usePathname } from '@/i18n/routing';
-import { useEffect } from 'react';
+import { getTranslations } from 'next-intl/server';
 
-const Page = () => {
-    const pathname = usePathname();
+interface PageProps {
+    params: {
+        locale: string;
+        type: string;
+    };
+}
 
-    useEffect(() => {
-        if (!pathname) return; // Return if slug is not available
-        // Here you can handle your routing logic based on the slug
-        // For example, you could fetch data or set a state based on the slug
-    }, [pathname]);
+export async function generateMetadata({ params }: PageProps) {
+    const t = await getTranslations({ locale: params.locale, namespace: 'BeachTypePage' });
+
+    return {
+        title: `${params.type} - ${t('title')}`,
+        description: t('description', { type: params.type }),
+    };
+}
+
+const Page = async ({ params }: PageProps) => {
+    const t = await getTranslations({ locale: params.locale, namespace: 'BeachTypePage' });
+    const pathname = `/beach-type/${params.type}`;
 
     return (
         <>
-            <h1>{`Page: ${pathname}`}</h1>
-            {/* Render content based on slug */}
-
+            <h1>{`${t('pageTitle')}: ${pathname}`}</h1>
+            <div className="container mx-auto p-4">
+                <h2 className="text-2xl font-bold mb-4">
+                    {t('beachType')}: {params.type}
+                </h2>
+                {/* Server-rendered content based on type */}
+                <p>{t('description', { type: params.type })}</p>
+            </div>
         </>
     );
 };

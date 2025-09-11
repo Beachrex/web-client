@@ -1,7 +1,4 @@
-"use client";
-// Removed unused imports to fix lint errors
-import { usePathname } from '@/i18n/routing';
-import { useEffect } from 'react';
+import { getTranslations } from 'next-intl/server';
 // import {Link} from '@/i18n/routing';
 // import { Button, Carousel, Tooltip } from "flowbite-react";
 // import { FaHeart, FaPlay, FaBed, FaMap, FaUmbrellaBeach, FaUser } from 'react-icons/fa';
@@ -178,14 +175,25 @@ const mockProperties = {
     ],
 };
 
-const Page = () => {
-    const pathname = usePathname();
+interface PageProps {
+    params: {
+        locale: string;
+        continent: string;
+    };
+}
 
-    useEffect(() => {
-        if (!pathname) return; // Return if slug is not available
-        // Here you can handle your routing logic based on the slug
-        // For example, you could fetch data or set a state based on the slug
-    }, [pathname]);
+export async function generateMetadata({ params }: PageProps) {
+    const t = await getTranslations({ locale: params.locale, namespace: 'ContinentPage' });
+
+    return {
+        title: `${params.continent} - ${t('title')}`,
+        description: t('description', { continent: params.continent }),
+    };
+}
+
+const Page = async ({ params }: PageProps) => {
+    const t = await getTranslations({ locale: params.locale, namespace: 'ContinentPage' });
+    const pathname = `/beaches/${params.continent}`;
 
     return (
         <>
@@ -201,17 +209,17 @@ const Page = () => {
                 }}
             />
             <PropertySection
-                title="Najljepše destinacije pjade Kvarner"
+                title={t('popularDestinations', { continent: params.continent })}
                 properties={mockProperties.popularDestinations}
             />
 
             <PropertySection
-                title="Luksuzni smještaj u Kvarneru"
+                title={t('premiumAccommodations', { continent: params.continent })}
                 properties={mockProperties.premiumAccommodations}
             />
 
             <PropertySection
-                title="Odlične ponude"
+                title={t('bestDeals')}
                 properties={mockProperties.bestDeals}
             />
 
