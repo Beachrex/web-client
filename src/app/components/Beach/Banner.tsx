@@ -48,79 +48,84 @@ const destinations = [
 
 export function HeroSection() {
     return (
-        <div className="relative min-h-[500px] bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700">
-            {/* Background Image */}
-            <div className="absolute inset-0 z-0">
-                <ImageWithFallback
-                    src="https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg"
-                    alt="Kvarner coastline"
-                    className="w-full h-full object-cover"
-                />
-            </div>
-
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Top Filter Badges */}
-                <div className="flex flex-wrap gap-2 pt-4 mb-8">
-                    {topFilterBadges.map((badge, index) => (
-                        <Badge
-                            key={index}
-                            className={`${badge.color} ${badge.color.includes('gray') ? 'text-gray-800' : 'text-white'} border-0 px-3 py-2 cursor-pointer transition-colors rounded-full`}
-                        >
-                            {badge.icon && <span className="mr-1">{badge.icon}</span>}
-                            {badge.label}
-                        </Badge>
-                    ))}
+        <div className="relative">
+            {/* Main Banner */}
+            <div className="relative min-h-[500px] bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700">
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                    <ImageWithFallback
+                        src="https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg"
+                        alt="Kvarner coastline"
+                        className="w-full h-full object-cover"
+                    />
                 </div>
 
-                {/* Main Content Layout */}
-                <div className="flex justify-between items-start mb-16">
-                    {/* Left Side - Title and Tags */}
-                    <div className="flex-1">
-                        <div className="max-w-lg">
-                            <h1 className="text-7xl font-bold text-white mb-6 leading-tight">
-                                Kvarner
-                            </h1>
-
-                            {/* Bottom Filter Tags */}
-                            <div className="flex flex-wrap gap-2">
-                                {bottomFilterBadges.map((badge, index) => (
-                                    <Badge
-                                        key={index}
-                                        className={`${badge.color} text-white border-0 px-3 py-1 cursor-pointer transition-colors rounded-full text-sm`}
-                                    >
-                                        {badge.label}
-                                    </Badge>
-                                ))}
-                            </div>
-                        </div>
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* Top Filter Badges */}
+                    <div className="flex flex-wrap gap-2 pt-4 mb-8">
+                        {topFilterBadges.map((badge, index) => (
+                            <Badge
+                                key={index}
+                                className={`${badge.color} ${badge.color.includes('gray') ? 'text-gray-800' : 'text-white'} border-0 px-3 py-2 cursor-pointer transition-colors rounded-full`}
+                            >
+                                {badge.icon && <span className="mr-1">{badge.icon}</span>}
+                                {badge.label}
+                            </Badge>
+                        ))}
                     </div>
 
-                    {/* Right Side - Weather Widget */}
-                    <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 ml-8">
-                        <div className="flex items-center space-x-4">
-                            {/* Mini Map */}
-                            <div className="w-16 h-16 bg-blue-200 rounded-lg overflow-hidden">
-                                <div className="w-full h-full bg-gradient-to-br from-blue-300 to-green-300 relative">
-                                    <div className="absolute inset-2 bg-blue-400 rounded opacity-60"></div>
+                    {/* Main Content Layout */}
+                    <div className="flex justify-between items-start mb-16">
+                        {/* Left Side - Title and Tags */}
+                        <div className="flex-1">
+                            <div className="max-w-lg">
+                                <h1 className="text-7xl font-bold text-white mb-6 leading-tight">
+                                    Kvarner
+                                </h1>
+
+                                {/* Bottom Filter Tags */}
+                                <div className="flex flex-wrap gap-2">
+                                    {bottomFilterBadges.map((badge, index) => (
+                                        <Badge
+                                            key={index}
+                                            className={`${badge.color} text-white border-0 px-3 py-1 cursor-pointer transition-colors rounded-full text-sm`}
+                                        >
+                                            {badge.label}
+                                        </Badge>
+                                    ))}
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Weather Info */}
-                            <div className="text-white">
-                                <div className="text-2xl font-bold">11</div>
-                                <div className="text-sm opacity-90">4 hrs, Cres Krk</div>
+                        {/* Right Side - Weather Widget */}
+                        <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 ml-8">
+                            <div className="flex items-center space-x-4">
+                                {/* Mini Map */}
+                                <div className="w-16 h-16 bg-blue-200 rounded-lg overflow-hidden">
+                                    <div className="w-full h-full bg-gradient-to-br from-blue-300 to-green-300 relative">
+                                        <div className="absolute inset-2 bg-blue-400 rounded opacity-60"></div>
+                                    </div>
+                                </div>
+
+                                {/* Weather Info */}
+                                <div className="text-white">
+                                    <div className="text-2xl font-bold">11</div>
+                                    <div className="text-sm opacity-90">4 hrs, Cres Krk</div>
+                                </div>
+
+                                {/* Weather Icon */}
+                                <div className="text-3xl">🌤️</div>
                             </div>
-
-                            {/* Weather Icon */}
-                            <div className="text-3xl">🌤️</div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                {/* Destination Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-8">
+            {/* Overlapping Destination Cards - 50% inside banner, 50% outside */}
+            <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-32">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {destinations.map((destination, index) => (
-                        <div key={index} className="bg-white/90 rounded-lg overflow-hidden">
+                        <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg">
                             <div className="aspect-[4/3] relative">
                                 <ImageWithFallback
                                     src={destination.image}
@@ -132,15 +137,18 @@ export function HeroSection() {
                                 <h3 className="font-semibold text-red-600 mb-2">{destination.title}</h3>
                                 <p className="text-sm text-gray-600 leading-tight">{destination.subtitle}</p>
                                 <div className="mt-2">
-                  <span className="text-xs text-blue-600 cursor-pointer hover:underline">
-                    Discover →
-                  </span>
+                                    <span className="text-xs text-blue-600 cursor-pointer hover:underline">
+                                        Discover →
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
+
+            {/* Spacer to account for overlapping cards */}
+            <div className="h-32"></div>
         </div>
     );
 }
