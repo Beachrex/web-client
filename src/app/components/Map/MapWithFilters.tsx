@@ -2,12 +2,10 @@
 import React from 'react';
 import {PropertyCard} from "@/app/components/PropertyCard/PropertyCard";
 import LeftSidebarFilters from "@/app/components/Map/LeftSidebarFilters";
-
-// Import Leaflet dynamically to avoid SSR issues
 import dynamic from 'next/dynamic';
 
-// Create the map component with no SSR
-const LeafletMap = dynamic(() => import('./LeafletMapComponent'), {
+// Test with simple global Leaflet approach
+const SimpleTestMap = dynamic(() => import('./SimpleTestMap'), {
     ssr: false,
     loading: () => (
         <div className="flex items-center justify-center h-full bg-gray-100">
@@ -17,11 +15,7 @@ const LeafletMap = dynamic(() => import('./LeafletMapComponent'), {
 });
 
 const MapWithFilters = () => {
-    const places = [
-        { lat: 45.1, lon: 15.2, title: 'Plaža Haludovo', description: 'Great beach with clear water.', id: 1 },
-        { lat: 45.2, lon: 15.3, title: 'Pine Beach', description: 'A nice beach with pine trees.', id: 2 },
-        { lat: 45.3, lon: 15.4, title: 'Sunset Beach', description: 'Amazing sunset view.', id: 3 },
-    ];
+    // Removed unused places variable - can be added back when needed for map markers
 
     return (
         <div className="flex w-full h-[100vh]">
@@ -44,8 +38,11 @@ const MapWithFilters = () => {
                     isFreeCancellation={true}
                 />
             </div>
-            <div className="flex-1">
-                <LeafletMap places={places} />
+            {/* Map container with proper height */}
+            <div className="flex-1 relative">
+                <div id="map" className="absolute inset-0">
+                    <SimpleTestMap />
+                </div>
             </div>
         </div>
     );

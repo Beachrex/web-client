@@ -67,11 +67,14 @@ img {
 }
 
 /* Leaflet Map Fixes */
+#map {
+    height: 100%;
+    width: 100%;
+}
+
 .leaflet-container {
     height: 100% !important;
     width: 100% !important;
-    z-index: 1;
-    background: #f0f8ff !important;
 }
 
 .leaflet-control-container {

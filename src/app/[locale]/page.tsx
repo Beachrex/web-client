@@ -5,6 +5,8 @@ import { fetchFromApi } from "@/app/utils/apiHelper";
 import { Carousel, Button } from "flowbite-react";
 import { useTranslations } from 'next-intl';
 import Image from "next/image";
+import WorldMapSection from "@/app/components/Home/WorldMapSection";
+import BeachCategorySearch from "@/app/components/Home/BeachCategorySearch";
 
 interface Counters {
     totalBeaches: number;
@@ -52,6 +54,9 @@ export default function HomePage() {
 
     return (
         <>
+            {/* Beach Category Search Section */}
+            <BeachCategorySearch />
+
             <div className="flex flex-col items-center">
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 relative">
                     {error && <div>{error}</div>}
@@ -105,6 +110,10 @@ export default function HomePage() {
                     )}
                 </div>
             </div>
+
+            {/* World Map Section */}
+            <WorldMapSection />
+
             <div className="h-56 sm:h-64 xl:h-80 2xl:h-96 m-4">
                 <Carousel pauseOnHover>
                     <Image width="50" height="50" src="https://flowbite.com/docs/images/carousel/carousel-1.svg" alt="..."/>
