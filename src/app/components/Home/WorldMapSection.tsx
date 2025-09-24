@@ -2,6 +2,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { Button } from 'flowbite-react';
+import { useTranslations } from 'next-intl';
 
 // Dynamically import the map component
 const HomeWorldMap = dynamic(() => import('@/app/components/Map/HomeWorldMap'), { 
@@ -14,6 +15,7 @@ const HomeWorldMap = dynamic(() => import('@/app/components/Map/HomeWorldMap'), 
 });
 
 const WorldMapSection: React.FC = () => {
+    const t = useTranslations('HomePage');
 
     return (
         <section className="py-16 bg-gradient-to-br from-blue-50 to-cyan-50">
@@ -22,7 +24,7 @@ const WorldMapSection: React.FC = () => {
                     {/* Left side - Text content */}
                     <div className="space-y-6">
                         <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
-                            Brskaj po zemljevidu z več kot 1500 plažami
+                            {t('searchMap')}
                         </h2>
                         
                         <p className="text-lg text-gray-600 leading-relaxed">

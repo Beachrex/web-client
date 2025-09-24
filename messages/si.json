@@ -20,7 +20,8 @@
     "seaBeaches": "Morske plaže",
     "beachIslands": "Otoške plaže",
     "sweetwaterBeaches": "Sladkovodne plaže",
-    "boatOnlyBeaches": "Plaže dostopne le s čolnom"
+    "boatOnlyBeaches": "Plaže dostopne le s čolnom",
+    "searchMap": " Brskaj po zemljevidu z več kot 1500 plažami"
   },
   "Metadata": {
     "title": "BeachRex - Najdi svojo popolno plažo.",
