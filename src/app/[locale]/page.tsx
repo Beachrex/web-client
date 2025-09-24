@@ -60,7 +60,7 @@ export default function HomePage() {
             <BeachCategorySearch />
 
             <div className="flex flex-col items-center">
-                <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 relative">
+                <div className="container flex flex-col items-center justify-center gap-12 mt-10 px-4 py-16 relative bg-gray-400">
                     {error && <div>{error}</div>}
                     {counters ? (
                         <div className="grid grid-cols-1 text-center sm:grid-cols-2 md:grid-cols-3 gap-8">
