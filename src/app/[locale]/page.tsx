@@ -78,13 +78,6 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* New Beaches Button - Mobile: Top, Desktop: Absolute */}
-          <div className="mb-6 flex justify-center sm:mb-8 lg:absolute lg:right-8 lg:top-8 lg:mb-0">
-            <Button className="rounded-lg bg-red-500 px-4 py-2 text-sm font-bold text-white transition duration-300 hover:bg-red-600 sm:px-6 sm:py-3 sm:text-base">
-              New Beaches
-            </Button>
-          </div>
-
           {counters ? (
             <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:gap-8">
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
