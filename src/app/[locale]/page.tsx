@@ -6,9 +6,7 @@ import HeroSection from "@/app/components/Home/HeroSection";
 import TopDesinationsSection from "@/app/components/Home/TopDestination";
 import WorldMapSection from "@/app/components/Home/WorldMapSection";
 import { fetchFromApi } from "@/app/utils/apiHelper";
-import { Button, Carousel } from "flowbite-react";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import TestimonialsSection from "../components/Home/TestimonialsSection";
 
