@@ -4,10 +4,10 @@ import Image from "next/image";
 
 const continents = [
   { name: "Evropa", icon: "/images/continents/evropa.png" },
-  { name: "Afrika", icon: "/images/continents/africa 1.png" },
-  { name: "Azija", icon: "/images/continents/asia 1.png" },
-  { name: "Severna Amerika", icon: "/images/continents/north-america 1.png" },
-  { name: "Južna Amerika", icon: "/images/continents/south-america 1.png" },
+  { name: "Afrika", icon: "/images/continents/africa.png" },
+  { name: "Azija", icon: "/images/continents/asia.png" },
+  { name: "Severna Amerika", icon: "/images/continents/north-america.png" },
+  { name: "Južna Amerika", icon: "/images/continents/south-america.png" },
   { name: "Avstralija", icon: "/images/continents/australia.png" },
 ];
 

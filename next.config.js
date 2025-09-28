@@ -19,6 +19,16 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+    // Add image optimization settings to handle small images
+    minimumCacheTTL: 60,
+    formats: ['image/webp', 'image/avif'],
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Disable optimization for development to avoid issues with small images
+    unoptimized: process.env.NODE_ENV === 'development',
+    // Add device sizes for better optimization
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   webpack: (config, { isServer }) => {
     // Fix for Leaflet in Next.js

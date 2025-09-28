@@ -9,7 +9,7 @@ const TestimonialsSection: React.FC = () => {
       <div className="container mx-auto mt-[110px] flex max-w-[1724px] gap-[26px] px-4">
         <div className="relative h-[275px] w-[849px] overflow-hidden rounded-[10px]">
           <Image
-            src="/images/testimonial/naj.jpg"
+            src="/images/testimonial/best.jpg"
             alt="Najlepših plaž"
             fill
             className="object-cover"
@@ -39,7 +39,7 @@ const TestimonialsSection: React.FC = () => {
 
         <div className="relative h-[275px] w-[849px] overflow-hidden rounded-[10px]">
           <Image
-            src="/images/testimonial/odkrij.jpg"
+            src="/images/testimonial/discover.jpg"
             alt="Odkrij plaže"
             fill
             className="object-cover"
@@ -75,7 +75,7 @@ const TestimonialsSection: React.FC = () => {
       <div className="container mx-auto mt-[25px] flex max-w-[1724px] gap-[26px] px-4">
         <div className="relative h-[275px] w-[849px] overflow-hidden rounded-[10px]">
           <Image
-            src="/images/testimonial/odpocijte.jpg"
+            src="/images/testimonial/relax.jpg"
             alt="Odpočijte si"
             fill
             className="object-cover"
@@ -108,7 +108,7 @@ const TestimonialsSection: React.FC = () => {
 
         <div className="relative h-[275px] w-[849px] overflow-hidden rounded-[10px]">
           <Image
-            src="/images/testimonial/okusu.jpg"
+            src="/images/testimonial/taste.jpg"
             alt="Odkrij plažo po svojem okusu"
             fill
             className="object-cover"

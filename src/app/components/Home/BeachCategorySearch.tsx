@@ -17,7 +17,7 @@ const BeachCategorySearch: React.FC = () => {
   const topRowCategories: CategoryItem[] = [
     {
       id: "pescene",
-      icon: "/images/categories/sand-castle 1.png",
+      icon: "/images/categories/sand-castle.png",
       label: "Peščene plaže",
     },
     {
@@ -27,47 +27,47 @@ const BeachCategorySearch: React.FC = () => {
     },
     {
       id: "travnate",
-      icon: "/images/categories/grass (2) 1.png",
+      icon: "/images/categories/grass-beach.png",
       label: "Travnate plaže",
     },
     {
       id: "bazen",
-      icon: "/images/categories/swimming-pool (3) 1.png",
+      icon: "/images/categories/swimming-pool.png",
       label: "Bazen",
     },
     {
       id: "naravna-senca",
-      icon: "/images/categories/tree (1) 1.png",
+      icon: "/images/categories/tree.png",
       label: "Naravna senca",
     },
     {
       id: "tobogani",
-      icon: "/images/categories/water-slide 1.png",
+      icon: "/images/categories/water-slide.png",
       label: "Tobogani",
     },
     {
       id: "plaze-z-igrali",
-      icon: "/images/categories/slider 1.png",
+      icon: "/images/categories/slider.png",
       label: "Plaže z igrali",
     },
     {
       id: "plaze-za-zabavo",
-      icon: "/images/categories/dance 1.png",
+      icon: "/images/categories/dance.png",
       label: "Plaže za zabavo",
     },
     {
       id: "plaze-z-barom",
-      icon: "/images/categories/stall 1.png",
+      icon: "/images/categories/stall.png",
       label: "Plaže z barom",
     },
     {
       id: "z-sportnim",
-      icon: "/images/categories/tennis-court 1.png",
+      icon: "/images/categories/tennis-court.png",
       label: "Z športnim igriščem",
     },
     {
       id: "plaze-s-parking",
-      icon: "/images/categories/parking (2) 1.png",
+      icon: "/images/categories/parking.png",
       label: "Plaže s parkiriščem",
     },
   ];
@@ -75,57 +75,57 @@ const BeachCategorySearch: React.FC = () => {
   const bottomRowCategories: CategoryItem[] = [
     {
       id: "parking-blizu",
-      icon: "/images/categories/path (3) 1.png",
+      icon: "/images/categories/path.png",
       label: "Parkirišče blizu",
     },
     {
       id: "avtokamp",
-      icon: "/images/categories/van (3) 1.png",
+      icon: "/images/categories/van.png",
       label: "Avtokamp ob plaži",
     },
     {
       id: "primerne-za-pse",
-      icon: "/images/categories/pets 1.png",
+      icon: "/images/categories/pets.png",
       label: "Primerne za pse",
     },
     {
       id: "primerne-za-invalide",
-      icon: "/images/categories/disability 1.png",
+      icon: "/images/categories/disability.png",
       label: "Primerne za invalide",
     },
     {
       id: "naravna-senca2",
-      icon: "/images/categories/tree (1) 1.png",
+      icon: "/images/categories/tree.png",
       label: "Naravna senca",
     },
     {
       id: "naravna-senca3",
-      icon: "/images/categories/tree (1) 1.png",
+      icon: "/images/categories/tree.png",
       label: "Naravna senca",
     },
     {
       id: "naravna-senca4",
-      icon: "/images/categories/tree (1) 1.png",
+      icon: "/images/categories/tree.png",
       label: "Naravna senca",
     },
     {
       id: "naravna-senca5",
-      icon: "/images/categories/tree (1) 1.png",
+      icon: "/images/categories/tree.png",
       label: "Naravna senca",
     },
     {
       id: "naravna-senca6",
-      icon: "/images/categories/tree (1) 1.png",
+      icon: "/images/categories/tree.png",
       label: "Naravna senca",
     },
     {
       id: "naravna-senca7",
-      icon: "/images/categories/tree (1) 1.png",
+      icon: "/images/categories/tree.png",
       label: "Naravna senca",
     },
     {
       id: "naravna-senca8",
-      icon: "/images/categories/tree (1) 1.png",
+      icon: "/images/categories/tree.png",
       label: "Naravna senca",
     },
   ];
@@ -261,7 +261,7 @@ const BeachCategorySearch: React.FC = () => {
           style={{ backgroundColor: "#0069AB" }}
         >
           <Image
-            src="/images/categories/morskeplaze.jpg"
+            src="/images/categories/sea-beaches.jpg"
             alt="Morske plaže background"
             fill
             className="object-cover opacity-10"
@@ -284,7 +284,7 @@ const BeachCategorySearch: React.FC = () => {
           style={{ backgroundColor: "#4CC07E" }}
         >
           <Image
-            src="/images/categories/plazaobjezeru.jpg"
+            src="/images/categories/lake-beaches.jpg"
             alt="Plaže ob jezeru background"
             fill
             className="object-cover opacity-10"
@@ -307,7 +307,7 @@ const BeachCategorySearch: React.FC = () => {
           style={{ backgroundColor: "#4CC07E" }}
         >
           <Image
-            src="/images/categories/plazeobreki.jpg"
+            src="/images/categories/river-beaches.jpg"
             alt="Plaže ob reki background"
             fill
             className="object-cover opacity-10"
@@ -353,7 +353,7 @@ const BeachCategorySearch: React.FC = () => {
           style={{ backgroundColor: "#42D4F4" }}
         >
           <Image
-            src="/images/categories/pokritibazen.jpg"
+            src="/images/categories/indoor-pool.jpg"
             alt="Pokriti bazeni background"
             fill
             className="object-cover opacity-10"

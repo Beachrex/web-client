@@ -35,7 +35,7 @@ const AccommodationSection: React.FC = () => {
       <div className="relative h-[574px] w-[1137px] rounded-[10px]">
         {/* Slika 1 */}
         <Image
-          src="/images/accomodation/rectangle 96.png"
+          src="/images/accomodation/accommodation-1.png"
           alt="img1"
           width={302}
           height={182}
@@ -44,7 +44,7 @@ const AccommodationSection: React.FC = () => {
 
         {/* Slika 2 */}
         <Image
-          src="/images/accomodation/rectangle 97.png"
+          src="/images/accomodation/accommodation-2.png"
           alt="img2"
           width={233}
           height={211}
@@ -53,7 +53,7 @@ const AccommodationSection: React.FC = () => {
 
         {/* Slika 3 */}
         <Image
-          src="/images/accomodation/rectangle 98.png"
+          src="/images/accomodation/accommodation-3.png"
           alt="img3"
           width={299}
           height={187}
@@ -62,7 +62,7 @@ const AccommodationSection: React.FC = () => {
 
         {/* Slika 4 */}
         <Image
-          src="/images/accomodation/rectangle 100.png"
+          src="/images/accomodation/accommodation-5.png"
           alt="img4"
           width={367}
           height={126}
@@ -71,7 +71,7 @@ const AccommodationSection: React.FC = () => {
 
         {/* Slika 5 */}
         <Image
-          src="/images/accomodation/rectangle99.png"
+          src="/images/accomodation/accommodation-4.png"
           alt="img5"
           width={412}
           height={214}
@@ -80,7 +80,7 @@ const AccommodationSection: React.FC = () => {
 
         {/* Slika 6 */}
         <Image
-          src="/images/accomodation/rectangle 101.png"
+          src="/images/accomodation/accommodation-6.png"
           alt="img6"
           width={399}
           height={291}
@@ -89,7 +89,7 @@ const AccommodationSection: React.FC = () => {
 
         {/* Slika 7 */}
         <Image
-          src="/images/accomodation/rectangle 102.png"
+          src="/images/accomodation/accommodation-7.png"
           alt="img7"
           width={241}
           height={119}
@@ -98,7 +98,7 @@ const AccommodationSection: React.FC = () => {
 
         {/* Slika 8 */}
         <Image
-          src="/images/accomodation/rectangle 103.png"
+          src="/images/accomodation/accommodation-8.png"
           alt="img8"
           width={159}
           height={152}

@@ -13,35 +13,35 @@ interface Destination {
 const destinations: Destination[] = [
   {
     name: "Hrvaška",
-    image: "/images/topdestination/hrvaska.jpg",
+    image: "/images/topdestination/croatia.jpg",
     accomodationCount: 5,
     price: "od 25€",
     beachCount: 112,
   },
   {
     name: "Italija",
-    image: "/images/topdestination/italija.jpg",
+    image: "/images/topdestination/italy.jpg",
     accomodationCount: 5,
     price: "od 25€",
     beachCount: 112,
   },
   {
     name: "Španija",
-    image: "/images/topdestination/spanija.jpg",
+    image: "/images/topdestination/spain.jpg",
     accomodationCount: 5,
     price: "od 25€",
     beachCount: 112,
   },
   {
     name: "Grčija",
-    image: "/images/topdestination/grcija.jpg",
+    image: "/images/topdestination/greece.jpg",
     accomodationCount: 5,
     price: "od 25€",
     beachCount: 112,
   },
   {
     name: "Portugalska",
-    image: "/images/topdestination/portugalska.jpg",
+    image: "/images/topdestination/portugal.jpg",
     accomodationCount: 5,
     price: "od 25€",
     beachCount: 112,
@@ -130,7 +130,7 @@ const TopDestinationsSection: React.FC = () => {
               <div className="flex h-[67px] w-full items-center justify-between rounded-b-[10px] bg-[#F8E2E2] px-4">
                 <div className="flex items-center gap-2">
                   <Image
-                    src="/images/topdestination/drzava.png"
+                    src="/images/topdestination/country.png"
                     alt="drzava"
                     width={32}
                     height={32}
@@ -138,7 +138,7 @@ const TopDestinationsSection: React.FC = () => {
                   <span className="text-[20px] font-bold">{d.name}</span>
                 </div>
                 <Image
-                  src="/images/topdestination/ikona.png"
+                  src="/images/topdestination/icon.png"
                   alt="ikona"
                   width={32}
                   height={32}
