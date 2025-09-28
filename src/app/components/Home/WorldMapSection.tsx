@@ -1,23 +1,26 @@
 "use client";
-import { useTranslations } from "next-intl";
-import dynamic from "next/dynamic";
+// Removed unused imports to fix lint warnings
+// import { useTranslations } from "next-intl";
+// import dynamic from "next/dynamic";
 import React from "react";
+import Image from "next/image";
 
-// Dynamically import the map component
-const HomeWorldMap = dynamic(
-  () => import("@/app/components/Map/HomeWorldMap"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-[400px] items-center justify-center rounded-lg bg-gray-100">
-        <div className="text-gray-600">Loading map...</div>
-      </div>
-    ),
-  },
-);
+// Commented out unused dynamic import to fix lint warning
+// const HomeWorldMap = dynamic(
+//   () => import("@/app/components/Map/HomeWorldMap"),
+//   {
+//     ssr: false,
+//     loading: () => (
+//       <div className="flex h-[400px] items-center justify-center rounded-lg bg-gray-100">
+//         <div className="text-gray-600">Loading map...</div>
+//       </div>
+//     ),
+//   },
+// );
 
 const WorldMapSection: React.FC = () => {
-  const t = useTranslations("HomePage");
+  // Commented out unused translation hook to fix lint warning
+  // const t = useTranslations("HomePage");
 
   return (
     <section className="relative mx-auto mt-[80px] flex h-[569px] w-[1718px] justify-between">
@@ -39,20 +42,22 @@ const WorldMapSection: React.FC = () => {
 
         {/* Gumb */}
         <button className="font-figtree flex w-[220px] items-center gap-2 rounded-md bg-variable-collection-temno-modro px-5 py-2.5 text-[14px]  text-white shadow transition hover:bg-[#162f4f]">
-          <img
+          <Image
             src="/images/map.png"
             alt="map icon"
-            className="h-[20px] w-[20px]"
+            width={20}
+            height={20}
           />
           Poglej zemljevid plaž
         </button>
       </div>
 
       <div className="relative h-[569px] w-[1127px] overflow-hidden">
-        <img
+        <Image
           src="/images/worldmap.png"
           alt="World map"
-          className="h-full w-full object-cover"
+          fill
+          className="object-cover"
         />
       </div>
     </section>

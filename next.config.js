@@ -4,6 +4,8 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Fix for multiple lockfiles warning
+  outputFileTracingRoot: process.cwd(),
   images: {
     remotePatterns: [
       {

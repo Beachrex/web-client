@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 
 const continents = [
   { name: "Evropa", icon: "/images/continents/evropa.png" },
@@ -27,10 +28,12 @@ const HeroSection: React.FC = () => {
             key={c.name}
             className="flex h-[54px] cursor-default items-center gap-[16px] rounded-[10px] bg-[#5E1CA5] px-[12px] py-[9px]"
           >
-            <img
+            <Image
               src={c.icon}
               alt={c.name}
-              className="h-[35px] w-[35px] opacity-100"
+              width={35}
+              height={35}
+              className="opacity-100"
             />
             <span className="font-figtree text-[20px] font-bold leading-[24px] text-white">
               {c.name}
@@ -48,10 +51,11 @@ const HeroSection: React.FC = () => {
       <div className="absolute bottom-[80px] left-[102px] z-10 flex gap-[80px] text-white">
         {/* 1. Plaže */}
         <div className="flex items-center gap-4">
-          <img
-            className="h-[60px] w-[60px]"
+          <Image
             src="/images/beach.png"
             alt="beach"
+            width={60}
+            height={60}
           />
           <div className="flex flex-col">
             <span className="text-[32px] font-bold">+1500</span>
@@ -63,7 +67,7 @@ const HeroSection: React.FC = () => {
 
         {/* 2. Države */}
         <div className="flex items-center gap-4">
-          <img className="h-[60px] w-[60px]" src="/images/map.png" alt="map" />
+          <Image src="/images/map.png" alt="map" width={60} height={60} />
           <div className="flex flex-col">
             <span className="text-[32px] font-bold">+250</span>
             <span className="text-[16px] font-normal">plažnih držav</span>
@@ -72,10 +76,11 @@ const HeroSection: React.FC = () => {
 
         {/* 3. Namestitve */}
         <div className="flex items-center gap-4">
-          <img
-            className="h-[60px] w-[60px]"
+          <Image
             src="/images/accomodation.png"
             alt="accommodation"
+            width={60}
+            height={60}
           />
           <div className="flex flex-col">
             <span className="text-[32px] font-bold">+6250</span>
@@ -88,19 +93,21 @@ const HeroSection: React.FC = () => {
       <div className="absolute right-0 top-1/2 z-20 flex translate-y-[-50%] flex-col">
         {/* Play / Beach button */}
         <button className="mb-2 flex h-[68.46px] w-[71px] items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro">
-          <img
+          <Image
             src="/images/map.png"
             alt="play beach"
-            className="h-[32.96px] w-[32.96px]"
+            width={33}
+            height={33}
           />
         </button>
 
         {/* Filters button */}
         <button className="flex h-[68.46px] w-[71px] items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro">
-          <img
+          <Image
             src="/images/filters.png"
             alt="filters"
-            className="h-[28px] w-[28px]"
+            width={28}
+            height={28}
           />
         </button>
       </div>

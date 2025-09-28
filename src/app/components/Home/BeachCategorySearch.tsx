@@ -260,15 +260,16 @@ const BeachCategorySearch: React.FC = () => {
           className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
           style={{ backgroundColor: "#0069AB" }}
         >
-          <img
+          <Image
             src="/images/categories/morskeplaze.jpg"
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-10"
+            alt="Morske plaže background"
+            fill
+            className="object-cover opacity-10"
           />
           <span className="relative z-10 flex items-center gap-[8px]">
-            <img
+            <Image
               src="/images/categories/sunset.png"
-              alt=""
+              alt="Sunset icon"
               width={32}
               height={32}
               className="object-contain"
@@ -282,15 +283,16 @@ const BeachCategorySearch: React.FC = () => {
           className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
           style={{ backgroundColor: "#4CC07E" }}
         >
-          <img
+          <Image
             src="/images/categories/plazaobjezeru.jpg"
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-10"
+            alt="Plaže ob jezeru background"
+            fill
+            className="object-cover opacity-10"
           />
           <span className="relative z-10 flex items-center gap-[8px]">
-            <img
+            <Image
               src="/images/categories/gozd.png"
-              alt=""
+              alt="Forest icon"
               width={32}
               height={32}
               className="object-contain"
@@ -304,15 +306,16 @@ const BeachCategorySearch: React.FC = () => {
           className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
           style={{ backgroundColor: "#4CC07E" }}
         >
-          <img
+          <Image
             src="/images/categories/plazeobreki.jpg"
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-10"
+            alt="Plaže ob reki background"
+            fill
+            className="object-cover opacity-10"
           />
           <span className="relative z-10 flex items-center gap-[8px]">
-            <img
+            <Image
               src="/images/categories/reka.png"
-              alt=""
+              alt="River icon"
               width={32}
               height={32}
               className="object-contain"
@@ -326,15 +329,16 @@ const BeachCategorySearch: React.FC = () => {
           className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
           style={{ backgroundColor: "#42D4F4" }}
         >
-          <img
+          <Image
             src="/images/categories/bazen.jpg"
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-10"
+            alt="Zunanji bazeni background"
+            fill
+            className="object-cover opacity-10"
           />
           <span className="relative z-10 flex items-center gap-[8px]">
-            <img
+            <Image
               src="/images/categories/reka.png"
-              alt=""
+              alt="Pool icon"
               width={32}
               height={32}
               className="object-contain"
@@ -348,15 +352,16 @@ const BeachCategorySearch: React.FC = () => {
           className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
           style={{ backgroundColor: "#42D4F4" }}
         >
-          <img
+          <Image
             src="/images/categories/pokritibazen.jpg"
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover opacity-10"
+            alt="Pokriti bazeni background"
+            fill
+            className="object-cover opacity-10"
           />
           <span className="relative z-10 flex items-center gap-[8px]">
-            <img
+            <Image
               src="/images/categories/reka.png"
-              alt=""
+              alt="Indoor pool icon"
               width={32}
               height={32}
               className="object-contain"
