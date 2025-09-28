@@ -1,13 +1,14 @@
 import { getTranslations } from 'next-intl/server';
 
 interface PageProps {
-    params: {
+    params: Promise<{
         locale: string;
-    };
+    }>;
 }
 
 export async function generateMetadata({ params }: PageProps) {
-    const t = await getTranslations({ locale: params.locale, namespace: 'UserTypePage' });
+    const resolvedParams = await params;
+    const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'UserTypePage' });
 
     return {
         title: t('title'),
@@ -16,7 +17,8 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 const Page = async ({ params }: PageProps) => {
-    const t = await getTranslations({ locale: params.locale, namespace: 'UserTypePage' });
+    const resolvedParams = await params;
+    const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'UserTypePage' });
     const pathname = '/user-type';
 
     return (

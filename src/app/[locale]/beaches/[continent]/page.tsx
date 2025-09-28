@@ -176,17 +176,18 @@ const mockProperties = {
 };
 
 interface PageProps {
-    params: {
+    params: Promise<{
         locale: string;
         continent: string;
-    };
+    }>;
 }
 
 export async function generateMetadata({ params }: PageProps) {
-    const t = await getTranslations({ locale: params.locale, namespace: 'ContinentPage' });
+    const resolvedParams = await params;
+    const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'ContinentPage' });
 
     // Capitalize first letter of continent
-    const capitalizedContinent = params.continent.charAt(0).toUpperCase() + params.continent.slice(1);
+    const capitalizedContinent = resolvedParams.continent.charAt(0).toUpperCase() + resolvedParams.continent.slice(1);
 
     return {
         title: t('metaTitle', { continent: capitalizedContinent }),
@@ -195,11 +196,12 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 const Page = async ({ params }: PageProps) => {
-    const t = await getTranslations({ locale: params.locale, namespace: 'ContinentPage' });
-    const pathname = `/beaches/${params.continent}`;
+    const resolvedParams = await params;
+    const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'ContinentPage' });
+    const pathname = `/beaches/${resolvedParams.continent}`;
 
     // Capitalize first letter of continent
-    const capitalizedContinent = params.continent.charAt(0).toUpperCase() + params.continent.slice(1);
+    const capitalizedContinent = resolvedParams.continent.charAt(0).toUpperCase() + resolvedParams.continent.slice(1);
 
     return (
         <>

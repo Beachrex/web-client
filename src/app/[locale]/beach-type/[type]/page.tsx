@@ -1,34 +1,36 @@
 import { getTranslations } from 'next-intl/server';
 
 interface PageProps {
-    params: {
+    params: Promise<{
         locale: string;
         type: string;
-    };
+    }>;
 }
 
 export async function generateMetadata({ params }: PageProps) {
-    const t = await getTranslations({ locale: params.locale, namespace: 'BeachTypePage' });
+    const resolvedParams = await params;
+    const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'BeachTypePage' });
 
     return {
-        title: `${params.type} - ${t('title')}`,
-        description: t('description', { type: params.type }),
+        title: `${resolvedParams.type} - ${t('title')}`,
+        description: t('description', { type: resolvedParams.type }),
     };
 }
 
 const Page = async ({ params }: PageProps) => {
-    const t = await getTranslations({ locale: params.locale, namespace: 'BeachTypePage' });
-    const pathname = `/beach-type/${params.type}`;
+    const resolvedParams = await params;
+    const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'BeachTypePage' });
+    const pathname = `/beach-type/${resolvedParams.type}`;
 
     return (
         <>
             <h1>{`${t('pageTitle')}: ${pathname}`}</h1>
             <div className="container mx-auto p-4">
                 <h2 className="text-2xl font-bold mb-4">
-                    {t('beachType')}: {params.type}
+                    {t('beachType')}: {resolvedParams.type}
                 </h2>
                 {/* Server-rendered content based on type */}
-                <p>{t('description', { type: params.type })}</p>
+                <p>{t('description', { type: resolvedParams.type })}</p>
             </div>
         </>
     );
