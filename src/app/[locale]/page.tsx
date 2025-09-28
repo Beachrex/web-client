@@ -125,51 +125,6 @@ export default function HomePage() {
       <AccommodationSection />
       <TopDesinationsSection />
       <TestimonialsSection />
-
-      {/* Carousel Section */}
-      <section className="bg-gray-50 py-8 sm:py-12 lg:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-48 sm:h-64 md:h-72 lg:h-80 xl:h-96">
-            <Carousel pauseOnHover className="rounded-lg overflow-hidden">
-              <Image
-                width={800}
-                height={400}
-                src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
-                alt="Carousel image 1"
-                className="w-full h-full object-cover"
-              />
-              <Image
-                width={800}
-                height={400}
-                src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
-                alt="Carousel image 2"
-                className="w-full h-full object-cover"
-              />
-              <Image
-                width={800}
-                height={400}
-                src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
-                alt="Carousel image 3"
-                className="w-full h-full object-cover"
-              />
-              <Image
-                width={800}
-                height={400}
-                src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
-                alt="Carousel image 4"
-                className="w-full h-full object-cover"
-              />
-              <Image
-                width={800}
-                height={400}
-                src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
-                alt="Carousel image 5"
-                className="w-full h-full object-cover"
-              />
-            </Carousel>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

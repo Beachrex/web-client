@@ -23,7 +23,7 @@ const WorldMapSection: React.FC = () => {
   // const t = useTranslations("HomePage");
 
   return (
-    <section className="relative mx-auto mt-[80px] flex h-[569px] w-[1718px] justify-between">
+    <section className="container relative mx-auto mt-[80px] flex h-[569px] w-[1718px] justify-between">
       {/* Levi blok (tekst + gumb) */}
       <div className="flex h-[336px] w-[409px] flex-col gap-[40px]">
         {/* Naslov */}
@@ -57,7 +57,7 @@ const WorldMapSection: React.FC = () => {
           src="/images/worldmap.png"
           alt="World map"
           fill
-          className="object-cover"
+          className="object-contain"
         />
       </div>
     </section>

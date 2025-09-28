@@ -143,7 +143,7 @@ const BeachCategorySearch: React.FC = () => {
   }) => (
     <button
       onClick={() => toggleCategory(category.id)}
-      className={`flex h-[100px] w-[100px] flex-col items-center justify-center gap-[10px] rounded-[4px] border border-[#E0E0E0] bg-[#F5F5F5] p-[8px_3px] transition-all duration-200 ${
+      className={`flex h-20 w-20 flex-col items-center justify-center gap-2 rounded border border-[#E0E0E0] bg-[#F5F5F5] p-2 transition-all duration-200 sm:h-24 sm:w-24 sm:gap-3 sm:p-3 lg:h-[100px] lg:w-[100px] lg:gap-[10px] lg:p-[8px_3px] ${
         selectedCategories.includes(category.id)
           ? "border-blue-500 bg-blue-50 text-blue-700"
           : "text-[#4D4D4D]"
@@ -155,21 +155,21 @@ const BeachCategorySearch: React.FC = () => {
         alt={category.label}
         width={32}
         height={32}
-        className="object-contain"
+        className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
       />
       {/* Label */}
-      <div className="h-[34px] w-[70px] text-center font-[Figtree] text-[14px] font-medium leading-[100%]">
+      <div className="text-center text-[8px] font-medium leading-tight sm:text-[10px] sm:leading-tight lg:text-[12px] lg:leading-[100%]">
         {category.label}
       </div>
     </button>
   );
 
   return (
-    <section>
-      <div className="mx-auto w-[1716px] rounded-[10px] bg-variable-collection-temno-modro px-[176px] py-[89px]">
-        <div className="container mx-auto px-4">
+    <section className="py-12 sm:py-16 lg:py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl rounded-lg bg-variable-collection-temno-modro px-6 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           {/* Header */}
-          <div className="mb-12 text-center">
+          <div className="mb-8 text-center sm:mb-12 lg:mb-16">
             <h2 className="mb-6 font-[Figtree] text-[30px] font-bold leading-[100%] text-white">
               Poišči plažo po svojem okusu
             </h2>
@@ -184,16 +184,16 @@ const BeachCategorySearch: React.FC = () => {
           </div>
 
           {/* Category Grid */}
-          <div className="mb-8 rounded-2xl bg-variable-collection-temno-modro p-8">
+          <div className="mb-6 rounded-lg bg-white/10 p-4 sm:mb-8 sm:rounded-2xl sm:p-6 lg:p-8">
             {/* Top Row */}
-            <div className="mb-6 grid grid-cols-2 gap-[26px] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-11">
+            <div className="mb-4 grid grid-cols-3 gap-3 sm:mb-6 sm:grid-cols-4 sm:gap-4 md:grid-cols-5 lg:grid-cols-7 lg:gap-6 xl:grid-cols-11">
               {topRowCategories.map((category) => (
                 <CategoryButton key={category.id} category={category} />
               ))}
             </div>
 
             {/* Bottom Row */}
-            <div className="mb-8 grid grid-cols-2 gap-[26px] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-11">
+            <div className="mb-4 grid grid-cols-3 gap-3 sm:mb-6 sm:grid-cols-4 sm:gap-4 md:grid-cols-5 lg:grid-cols-7 lg:gap-6 xl:grid-cols-11">
               {bottomRowCategories.map((category) => (
                 <CategoryButton key={category.id} category={category} />
               ))}
@@ -201,13 +201,13 @@ const BeachCategorySearch: React.FC = () => {
 
             {/* Advanced Filters Button */}
             <div className="flex justify-center">
-              <Button className="flex h-[41px] items-center justify-center gap-[20px] rounded-[6px] border border-[#E0E0E0] bg-white px-[20px] py-[11px] font-[Figtree] text-[14px] font-bold leading-[100%] text-[#4D4D4D] transition-colors duration-200">
+              <Button className="flex items-center justify-center gap-2 rounded-md border border-[#E0E0E0] bg-white px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors duration-200 hover:bg-gray-50 sm:gap-3 sm:px-5 sm:py-3 sm:text-base lg:gap-5 lg:px-6">
                 <Image
                   src="/images/filters.png"
                   alt="Filtri"
                   width={20}
                   height={20}
-                  className="object-contain"
+                  className="h-4 w-4 object-contain sm:h-5 sm:w-5"
                 />
                 Prikaži napredne filtre
               </Button>
@@ -253,122 +253,124 @@ const BeachCategorySearch: React.FC = () => {
         </div>
       </div>
 
-      {/* Quick Filter Buttons (veliki) */}
-      <div className="mx-auto mt-[110px] flex w-[1720px] justify-between gap-[26px] px-[101px]">
-        {/* Morske plaže */}
-        <button
-          className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
-          style={{ backgroundColor: "#0069AB" }}
-        >
-          <Image
-            src="/images/categories/sea-beaches.jpg"
-            alt="Morske plaže background"
-            fill
-            className="object-cover opacity-10"
-          />
-          <span className="relative z-10 flex items-center gap-[8px]">
+      {/* Quick Filter Buttons */}
+      <div className="container mx-auto mt-12 px-4 sm:mt-16 sm:px-6 lg:mt-20 lg:px-8">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-6 xl:gap-8">
+          {/* Morske plaže */}
+          <button
+            className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
+            style={{ backgroundColor: "#0069AB" }}
+          >
             <Image
-              src="/images/categories/sunset.png"
-              alt="Sunset icon"
-              width={32}
-              height={32}
-              className="object-contain"
+              src="/images/categories/sea-beaches.jpg"
+              alt="Morske plaže background"
+              fill
+              className="object-cover opacity-10"
             />
-            Morske plaže
-          </span>
-        </button>
+            <span className="relative z-10 flex items-center gap-2 sm:gap-3">
+              <Image
+                src="/images/categories/sunset.png"
+                alt="Sunset icon"
+                width={32}
+                height={32}
+                className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              />
+              Morske plaže
+            </span>
+          </button>
 
-        {/* Plaže ob jezeru */}
-        <button
-          className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
-          style={{ backgroundColor: "#4CC07E" }}
-        >
-          <Image
-            src="/images/categories/lake-beaches.jpg"
-            alt="Plaže ob jezeru background"
-            fill
-            className="object-cover opacity-10"
-          />
-          <span className="relative z-10 flex items-center gap-[8px]">
+          {/* Plaže ob jezeru */}
+          <button
+            className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
+            style={{ backgroundColor: "#4CC07E" }}
+          >
             <Image
-              src="/images/categories/gozd.png"
-              alt="Forest icon"
-              width={32}
-              height={32}
-              className="object-contain"
+              src="/images/categories/lake-beaches.jpg"
+              alt="Plaže ob jezeru background"
+              fill
+              className="object-cover opacity-10"
             />
-            Plaže ob jezeru
-          </span>
-        </button>
+            <span className="relative z-10 flex items-center gap-2 sm:gap-3">
+              <Image
+                src="/images/categories/gozd.png"
+                alt="Forest icon"
+                width={32}
+                height={32}
+                className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              />
+              Plaže ob jezeru
+            </span>
+          </button>
 
-        {/* Plaže ob reki */}
-        <button
-          className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
-          style={{ backgroundColor: "#4CC07E" }}
-        >
-          <Image
-            src="/images/categories/river-beaches.jpg"
-            alt="Plaže ob reki background"
-            fill
-            className="object-cover opacity-10"
-          />
-          <span className="relative z-10 flex items-center gap-[8px]">
+          {/* Plaže ob reki */}
+          <button
+            className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
+            style={{ backgroundColor: "#4CC07E" }}
+          >
             <Image
-              src="/images/categories/reka.png"
-              alt="River icon"
-              width={32}
-              height={32}
-              className="object-contain"
+              src="/images/categories/river-beaches.jpg"
+              alt="Plaže ob reki background"
+              fill
+              className="object-cover opacity-10"
             />
-            Plaže ob reki
-          </span>
-        </button>
+            <span className="relative z-10 flex items-center gap-2 sm:gap-3">
+              <Image
+                src="/images/categories/reka.png"
+                alt="River icon"
+                width={32}
+                height={32}
+                className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              />
+              Plaže ob reki
+            </span>
+          </button>
 
-        {/* Zunanji bazeni */}
-        <button
-          className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
-          style={{ backgroundColor: "#42D4F4" }}
-        >
-          <Image
-            src="/images/categories/bazen.jpg"
-            alt="Zunanji bazeni background"
-            fill
-            className="object-cover opacity-10"
-          />
-          <span className="relative z-10 flex items-center gap-[8px]">
+          {/* Zunanji bazeni */}
+          <button
+            className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
+            style={{ backgroundColor: "#42D4F4" }}
+          >
             <Image
-              src="/images/categories/reka.png"
-              alt="Pool icon"
-              width={32}
-              height={32}
-              className="object-contain"
+              src="/images/categories/bazen.jpg"
+              alt="Zunanji bazeni background"
+              fill
+              className="object-cover opacity-10"
             />
-            Zunanji bazeni
-          </span>
-        </button>
+            <span className="relative z-10 flex items-center gap-2 sm:gap-3">
+              <Image
+                src="/images/categories/reka.png"
+                alt="Pool icon"
+                width={32}
+                height={32}
+                className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              />
+              Zunanji bazeni
+            </span>
+          </button>
 
-        {/* Pokriti bazeni, terme */}
-        <button
-          className="relative flex h-[100px] w-[323px] items-center justify-center overflow-hidden rounded-[10px] px-[53px] py-[27px] font-[Figtree] text-[16px] font-bold leading-[100%] text-white"
-          style={{ backgroundColor: "#42D4F4" }}
-        >
-          <Image
-            src="/images/categories/indoor-pool.jpg"
-            alt="Pokriti bazeni background"
-            fill
-            className="object-cover opacity-10"
-          />
-          <span className="relative z-10 flex items-center gap-[8px]">
+          {/* Pokriti bazeni, terme */}
+          <button
+            className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
+            style={{ backgroundColor: "#42D4F4" }}
+          >
             <Image
-              src="/images/categories/reka.png"
-              alt="Indoor pool icon"
-              width={32}
-              height={32}
-              className="object-contain"
+              src="/images/categories/indoor-pool.jpg"
+              alt="Pokriti bazeni background"
+              fill
+              className="object-cover opacity-10"
             />
-            Pokriti bazeni, terme
-          </span>
-        </button>
+            <span className="relative z-10 flex items-center gap-2 sm:gap-3">
+              <Image
+                src="/images/categories/reka.png"
+                alt="Indoor pool icon"
+                width={32}
+                height={32}
+                className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              />
+              Pokriti bazeni, terme
+            </span>
+          </button>
+        </div>
       </div>
     </section>
   );
