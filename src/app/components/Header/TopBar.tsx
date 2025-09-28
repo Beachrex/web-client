@@ -6,6 +6,7 @@ import { Dropdown } from "flowbite-react";
 import { locales, languageNames } from "@/app/utils/locales";
 import { Link, usePathname } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
 const IconButton = ({ icon: Icon, label }: { icon: React.ElementType; label: string }) => (
     <button className="flex items-center space-x-1">
@@ -18,6 +19,11 @@ const TopBar = () => {
     const locale = useLocale();
     const t = useTranslations("Common");
     const pathname = usePathname();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     return (
         <div className="bg-variable-collection-temno-modro text-white text-sm px-2 sm:px-4 py-2">
@@ -33,24 +39,31 @@ const TopBar = () => {
                             alt="Language"
                             src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/icon/globeTranslate.svg`}
                         />
-                        <Dropdown
-                            arrowIcon={false}
-                            inline
-                            label={
-                                <span className="inline-flex items-center cursor-pointer text-white text-[9px] font-semibold">
-                                    {(languageNames[locale] ?? locale).slice(0, 2).toUpperCase()}
-                                    <MdKeyboardArrowDown className="text-white ml-1 h-3 w-3" />
-                                </span>
-                            }
-                        >
-                            {locales?.map((loc) => (
-                                <Dropdown.Item key={`${loc}-${pathname}`}>
-                                    <Link href={pathname || '/'} locale={loc}>
-                                        {languageNames[loc] ?? loc}
-                                    </Link>
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown>
+                        {isClient ? (
+                            <Dropdown
+                                arrowIcon={false}
+                                inline
+                                label={
+                                    <span className="inline-flex items-center cursor-pointer text-white text-[9px] font-semibold">
+                                        {(languageNames[locale] ?? locale).slice(0, 2).toUpperCase()}
+                                        <MdKeyboardArrowDown className="text-white ml-1 h-3 w-3" />
+                                    </span>
+                                }
+                            >
+                                {locales?.map((loc) => (
+                                    <Dropdown.Item key={`${loc}-${pathname}`}>
+                                        <Link href={pathname || '/'} locale={loc}>
+                                            {languageNames[loc] ?? loc}
+                                        </Link>
+                                    </Dropdown.Item>
+                                ))}
+                            </Dropdown>
+                        ) : (
+                            <span className="inline-flex items-center cursor-pointer text-white text-[9px] font-semibold">
+                                {(languageNames[locale] ?? locale).slice(0, 2).toUpperCase()}
+                                <MdKeyboardArrowDown className="text-white ml-1 h-3 w-3" />
+                            </span>
+                        )}
                     </div>
 
                     {/* Center: Shortened Message */}
@@ -79,24 +92,31 @@ const TopBar = () => {
                             alt="Beachrex Language"
                             src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/img/icon/globeTranslate.svg`}
                         />
-                        <Dropdown
-                            arrowIcon={false}
-                            inline
-                            label={
-                                <span className="inline-flex items-center cursor-pointer text-white text-[10px] font-semibold">
-                                    {languageNames[locale] ?? locale}
-                                    <MdKeyboardArrowDown className="text-white ml-2 h-4 w-4" />
-                                </span>
-                            }
-                        >
-                            {locales?.map((loc) => (
-                                <Dropdown.Item key={`${loc}-${pathname}`}>
-                                    <Link href={pathname || '/'} locale={loc}>
-                                        {languageNames[loc] ?? loc}
-                                    </Link>
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown>
+                        {isClient ? (
+                            <Dropdown
+                                arrowIcon={false}
+                                inline
+                                label={
+                                    <span className="inline-flex items-center cursor-pointer text-white text-[10px] font-semibold">
+                                        {languageNames[locale] ?? locale}
+                                        <MdKeyboardArrowDown className="text-white ml-2 h-4 w-4" />
+                                    </span>
+                                }
+                            >
+                                {locales?.map((loc) => (
+                                    <Dropdown.Item key={`${loc}-${pathname}`}>
+                                        <Link href={pathname || '/'} locale={loc}>
+                                            {languageNames[loc] ?? loc}
+                                        </Link>
+                                    </Dropdown.Item>
+                                ))}
+                            </Dropdown>
+                        ) : (
+                            <span className="inline-flex items-center cursor-pointer text-white text-[10px] font-semibold">
+                                {languageNames[locale] ?? locale}
+                                <MdKeyboardArrowDown className="text-white ml-2 h-4 w-4" />
+                            </span>
+                        )}
                     </div>
 
                     {/* Center Section */}

@@ -52,97 +52,117 @@ const TopDestinationsSection: React.FC = () => {
   const allDestinations = [...destinations];
 
   return (
-    <section className="relative h-[541px] w-[1920px] bg-[#F5F5F5]">
-      <div className="absolute left-[100px] right-[100px] top-[100px] h-[367px]">
+    <section className="bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <h2 className="absolute left-0 top-0 text-[30px] font-bold text-[#0A2342]">
-          Najlepše obalne destinacije sveta
-        </h2>
-        <a
-          href="#"
-          className="absolute right-[100px] top-0 text-[16px] font-medium text-[#0A2342] hover:underline"
-        >
-          Vse države &gt;
-        </a>
+        <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center lg:mb-12">
+          <h2 className="text-2xl font-bold text-[#0A2342] sm:text-3xl lg:text-4xl">
+            Najlepše obalne destinacije sveta
+          </h2>
+          <a
+            href="#"
+            className="text-sm font-medium text-[#0A2342] hover:underline sm:text-base"
+          >
+            Vse države &gt;
+          </a>
+        </div>
 
         {/* Destinations grid */}
-
-        <div className="mt-[60px] flex h-[307px] w-full gap-[20px]">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-5">
           {allDestinations.map((d, idx) => (
             <div
               key={`${d.name}-${idx}`}
-              className="h-[307px] w-[265px] shrink-0 overflow-hidden rounded-[10px] bg-white shadow"
+              className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
             >
               {/* Image */}
-              <div className="relative h-[240px] w-full">
+              <div className="relative h-48 w-full sm:h-56 lg:h-48 xl:h-56">
                 <Image
                   src={d.image}
                   alt={d.name}
                   fill
-                  className="rounded-t-[10px] object-cover"
+                  className="object-cover"
                 />
 
                 {/* Badge */}
-                <div className="absolute left-[12px] top-[13px] rounded-[16px] bg-white/80 px-3 py-1 text-sm font-medium text-[#0A2342]">
+                <div className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-[#0A2342] sm:text-sm">
                   Morska doživetja
                 </div>
 
-                {/* Info row */}
-                <div className="absolute bottom-[10px] left-[10px] flex items-center gap-[8px]">
+                {/* Info row - Hidden on mobile, shown on larger screens */}
+                <div className="absolute bottom-2 left-2 right-2 hidden gap-2 sm:flex">
                   {/* Left info */}
-                  <div className="flex h-[41px] w-[115px] items-center justify-center gap-[10px] rounded-[6px] bg-[#008260] px-3 text-white">
+                  <div className="flex flex-1 items-center justify-center gap-1 rounded bg-[#008260] px-2 py-2 text-white">
                     <Image
                       src="/images/accomodation.png"
-                      alt="Accomodation"
-                      width={20}
-                      height={20}
+                      alt="Accommodation"
+                      width={16}
+                      height={16}
                     />
-                    <span className="text-[14px] font-medium leading-[17px]">
-                      5
-                    </span>
-                    <span className="text-[14px] font-medium leading-[17px]">
-                      |
-                    </span>
-                    <span className="text-[14px] font-semibold leading-[17px]">
-                      od 25€
+                    <span className="text-xs font-medium">
+                      {d.accomodationCount} | {d.price}
                     </span>
                   </div>
 
                   {/* Right info */}
-                  <div className="flex h-[41px] w-[115px] items-center justify-center gap-[10px] rounded-[6px] bg-[#0069AB] px-3 text-white">
+                  <div className="flex flex-1 items-center justify-center gap-1 rounded bg-[#0069AB] px-2 py-2 text-white">
                     <Image
                       src="/images/beach.png"
                       alt="Beaches"
-                      width={26}
-                      height={26}
+                      width={16}
+                      height={16}
                     />
-                    <span className="text-[14px] font-medium leading-[17px]">
-                      Plaže:
-                    </span>
-                    <span className="text-[14px] font-medium leading-[17px]">
-                      112
+                    <span className="text-xs font-medium">
+                      {d.beachCount}
                     </span>
                   </div>
                 </div>
               </div>
 
               {/* Bottom bar */}
-              <div className="flex h-[67px] w-full items-center justify-between rounded-b-[10px] bg-[#F8E2E2] px-4">
+              <div className="flex items-center justify-between bg-[#F8E2E2] p-3 sm:p-4">
                 <div className="flex items-center gap-2">
                   <Image
                     src="/images/topdestination/country.png"
-                    alt="drzava"
-                    width={32}
-                    height={32}
+                    alt="Country flag"
+                    width={24}
+                    height={24}
+                    className="sm:h-8 sm:w-8"
                   />
-                  <span className="text-[20px] font-bold">{d.name}</span>
+                  <span className="text-lg font-bold text-[#0A2342] sm:text-xl">{d.name}</span>
                 </div>
                 <Image
                   src="/images/topdestination/icon.png"
-                  alt="ikona"
-                  width={32}
-                  height={32}
+                  alt="More info"
+                  width={24}
+                  height={24}
+                  className="sm:h-8 sm:w-8"
                 />
+              </div>
+
+              {/* Mobile info row - Shown only on mobile */}
+              <div className="flex gap-2 bg-gray-50 p-3 sm:hidden">
+                <div className="flex flex-1 items-center justify-center gap-1 rounded bg-[#008260] px-2 py-2 text-white">
+                  <Image
+                    src="/images/accomodation.png"
+                    alt="Accommodation"
+                    width={16}
+                    height={16}
+                  />
+                  <span className="text-xs font-medium">
+                    {d.accomodationCount} | {d.price}
+                  </span>
+                </div>
+                <div className="flex flex-1 items-center justify-center gap-1 rounded bg-[#0069AB] px-2 py-2 text-white">
+                  <Image
+                    src="/images/beach.png"
+                    alt="Beaches"
+                    width={16}
+                    height={16}
+                  />
+                  <span className="text-xs font-medium">
+                    Plaže: {d.beachCount}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
