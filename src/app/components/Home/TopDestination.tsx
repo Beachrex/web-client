@@ -52,7 +52,7 @@ const TopDestinationsSection: React.FC = () => {
   const allDestinations = [...destinations];
 
   return (
-    <section className="relative h-[541px] w-full bg-[#F5F5F5]">
+    <section className="relative h-[541px] w-[1920px] bg-[#F5F5F5]">
       <div className="absolute left-[100px] right-[100px] top-[100px] h-[367px]">
         {/* Header */}
         <h2 className="absolute left-0 top-0 text-[30px] font-bold text-[#0A2342]">
