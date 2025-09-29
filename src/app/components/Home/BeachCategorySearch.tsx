@@ -166,8 +166,7 @@ const BeachCategorySearch: React.FC = () => {
 
   return (
     <section className="py-12 sm:py-16 lg:py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-lg bg-variable-collection-temno-modro px-6 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      <div className="container mx-auto max-w-7xl rounded-lg bg-variable-collection-temno-modro px-6 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           {/* Header */}
           <div className="mb-8 text-center sm:mb-12 lg:mb-16">
             <h2 className="mb-6 font-[Figtree] text-[30px] font-bold leading-[100%] text-white">
@@ -184,7 +183,6 @@ const BeachCategorySearch: React.FC = () => {
           </div>
 
           {/* Category Grid */}
-          <div className="mb-6 rounded-lg bg-white/10 p-4 sm:mb-8 sm:rounded-2xl sm:p-6 lg:p-8">
             {/* Top Row */}
             <div className="mb-4 grid grid-cols-3 gap-3 sm:mb-6 sm:grid-cols-4 sm:gap-4 md:grid-cols-5 lg:grid-cols-7 lg:gap-6 xl:grid-cols-11">
               {topRowCategories.map((category) => (
@@ -212,7 +210,6 @@ const BeachCategorySearch: React.FC = () => {
                 Prikaži napredne filtre
               </Button>
             </div>
-          </div>
 
           {/* Selected Categories Display */}
           {selectedCategories.length > 0 && (
@@ -250,7 +247,6 @@ const BeachCategorySearch: React.FC = () => {
               </div>
             </div>
           )}
-        </div>
       </div>
 
       {/* Quick Filter Buttons */}

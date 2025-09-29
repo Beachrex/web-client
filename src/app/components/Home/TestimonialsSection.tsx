@@ -24,7 +24,7 @@ const TestimonialsSection: React.FC = () => {
                 <h3 className="mb-4 text-xl font-bold leading-tight text-white sm:mb-6 sm:text-2xl lg:text-3xl">
                   100 najlepših plaž na svetu
                 </h3>
-                <button className="flex items-center gap-2 rounded-md bg-[#1A3C68] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#2a4c78] sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
+                <button className="inline-flex items-center gap-2 rounded-md bg-[#1A3C68] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#2a4c78] sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
                   <Image
                     src="/images/map.png"
                     alt="Map icon"
@@ -54,7 +54,7 @@ const TestimonialsSection: React.FC = () => {
                 <h3 className="mb-4 text-xl font-bold leading-tight text-white sm:mb-6 sm:text-2xl lg:text-3xl">
                   Odkrij plažne zgodbe in nasvete
                 </h3>
-                <button className="flex items-center gap-2 rounded-md bg-[#F5F5F5] px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors hover:bg-white sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
+                <button className="inline-flex items-center gap-2 rounded-md bg-[#F5F5F5] px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors hover:bg-white sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
                   <Image
                     src="/images/blog.png"
                     alt="Blog icon"
@@ -86,7 +86,7 @@ const TestimonialsSection: React.FC = () => {
                 <h3 className="mb-4 text-xl font-bold leading-tight text-white sm:mb-6 sm:text-2xl lg:text-3xl">
                   Odpočijte si v udobni nastanitvi
                 </h3>
-                <button className="flex items-center gap-2 rounded-md bg-[#008260] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#006b4f] sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
+                <button className="inline-flex items-center gap-2 rounded-md bg-[#008260] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#006b4f] sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
                   <Image
                     src="/images/accomodation.png"
                     alt="Accommodation icon"
@@ -115,7 +115,7 @@ const TestimonialsSection: React.FC = () => {
                 <h3 className="mb-4 text-xl font-bold leading-tight text-white sm:mb-6 sm:text-2xl lg:text-3xl">
                   Odkrij plažo po svojem okusu
                 </h3>
-                <button className="flex items-center gap-2 rounded-md bg-[#1A3C68] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#2a4c78] sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
+                <button className="inline-flex items-center gap-2 rounded-md bg-[#1A3C68] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#2a4c78] sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
                   <Image
                     src="/images/map.png"
                     alt="Map icon"
