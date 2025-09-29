@@ -49,82 +49,88 @@ className="font-figtree text-sm font-bold leading-tight text-white
           ))}
         </div>
 
-        {/* Center section - Main heading */}
-        <div className="flex-1 flex items-center">
+
+          <div className="container mx-auto">
+              {/* Center section - Main heading */}
+            <div className="flex-1 flex items-center">
           <div className="font-damion text-white">
             <span
-className="block text-4xl font-normal leading-tight
-                           sm:text-6xl sm:leading-tight
+className="block text-[40px] font-normal leading-tight
+                           sm:text-[80px] sm:leading-tight
                            lg:text-[120px] lg:leading-[110px]"
             >
               Vse skrbi so
             </span>
             <span
-className="block text-4xl font-normal leading-tight
-                           sm:text-6xl sm:leading-tight
+className="block text-[40px] font-normal leading-tight
+                          sm:text-[80px] sm:leading-tight
                            lg:text-[120px] lg:leading-[110px]"
             >
               manjše na plaži!
             </span>
           </div>
         </div>
-
-        {/* Bottom section - Stats */}
-        <div className="flex flex-col gap-4 text-white sm:flex-row sm:gap-8 lg:gap-[80px]">
-          {/* 1. Plaže */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Image
-              src="/images/beach.png"
-              alt="beach"
-              width={40}
-              height={40}
-              className="sm:w-[60px] sm:h-[60px]"
-            />
-            <div className="flex flex-col">
-              <span className="text-xl font-bold sm:text-[32px]">+1500</span>
-              <span className="text-sm font-normal sm:text-[16px]">
+          </div>
+          <div className="container mx-auto">
+              {/* Bottom section - Stats */}
+              <div className="flex flex-col gap-4 text-white sm:flex-row sm:gap-8 lg:gap-[80px]">
+                  {/* 1. Plaže */}
+                  <div className="flex items-center gap-3 sm:gap-4">
+                      <Image
+                          src="/images/beach.png"
+                          alt="beach"
+                          width={40}
+                          height={40}
+                          className="sm:w-[60px] sm:h-[60px]"
+                      />
+                      <div className="flex flex-col">
+                          <span className="text-xl font-bold sm:text-[32px]">+1500</span>
+                          <span className="text-sm font-normal sm:text-[16px]">
                 plaž za raziskovanje
               </span>
-            </div>
+                      </div>
+                  </div>
+
+                  {/* 2. Države */}
+                  <div className="flex items-center gap-3 sm:gap-4">
+                      <Image
+                          src="/images/map.png"
+                          alt="map"
+                          width={40}
+                          height={40}
+                          className="sm:w-[60px] sm:h-[60px]"
+                      />
+                      <div className="flex flex-col">
+                          <span className="text-xl font-bold sm:text-[32px]">+250</span>
+                          <span className="text-sm font-normal sm:text-[16px]">plažnih držav</span>
+                      </div>
+                  </div>
+
+                  {/* 3. Namestitve */}
+                  <div className="flex items-center gap-3 sm:gap-4">
+                      <Image
+                          src="/images/accomodation.png"
+                          alt="accommodation"
+                          width={40}
+                          height={40}
+                          className="sm:w-[60px] sm:h-[60px]"
+                      />
+                      <div className="flex flex-col">
+                          <span className="text-xl font-bold sm:text-[32px]">+6250</span>
+                          <span className="text-sm font-normal sm:text-[16px]">namestitev ob plaži</span>
+                      </div>
+                  </div>
+              </div>
           </div>
 
-          {/* 2. Države */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Image
-              src="/images/map.png"
-              alt="map"
-              width={40}
-              height={40}
-              className="sm:w-[60px] sm:h-[60px]"
-            />
-            <div className="flex flex-col">
-              <span className="text-xl font-bold sm:text-[32px]">+250</span>
-              <span className="text-sm font-normal sm:text-[16px]">plažnih držav</span>
-            </div>
-          </div>
 
-          {/* 3. Namestitve */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Image
-              src="/images/accomodation.png"
-              alt="accommodation"
-              width={40}
-              height={40}
-              className="sm:w-[60px] sm:h-[60px]"
-            />
-            <div className="flex flex-col">
-              <span className="text-xl font-bold sm:text-[32px]">+6250</span>
-              <span className="text-sm font-normal sm:text-[16px]">namestitev ob plaži</span>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Right side floating buttons - Keep absolute for floating effect */}
       <div className="absolute right-0 top-1/2 z-20 flex translate-y-[-50%] flex-col">
         {/* Play / Beach button */}
         <button
-className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px]
+            className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px]
                          bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]"
         >
           <Image
