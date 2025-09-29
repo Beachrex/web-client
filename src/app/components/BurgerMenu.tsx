@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { HiX } from 'react-icons/hi';
-import { Sidebar } from "flowbite-react";
+import { Sidebar } from 'flowbite-react';
 import { Link, usePathname } from '@/i18n/routing';
-import { useLocale } from "next-intl";
+import { useLocale } from 'next-intl';
 import enMenu from 'public/menu_en.json';
 import siMenu from 'public/menu_si.json';
 import QuickMenu from '@/app/components/Header/QuickMenu';
@@ -89,20 +89,20 @@ const BurgerMenu = () => {
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            const sidebar = document.getElementById("sidebar");
+            const sidebar = document.getElementById('sidebar');
             if (sidebar && !sidebar.contains(event.target as Node)) {
                 closeMenu();
             }
         };
 
         if (isOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener('mousedown', handleClickOutside);
         } else {
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         }
 
         return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isOpen]);
 

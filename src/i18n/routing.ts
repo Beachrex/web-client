@@ -6,8 +6,8 @@ import { locales } from '@/app/utils/locales'; // Import the centralized locales
 const globalRoutes = {
     beaches: {
         en: 'beaches',
-        si: 'plaze'
-    }
+        si: 'plaze',
+    },
 };
 export const routing = defineRouting({
     // A list of all locales that are supported
@@ -16,26 +16,26 @@ export const routing = defineRouting({
     // Used when no locale matches
     defaultLocale: 'en',
     pathnames: {
-        //how to: https://next-intl-docs.vercel.app/docs/routing
+        // how to: https://next-intl-docs.vercel.app/docs/routing
         '/': '/',
         // '/blog': '/blog',
         '/beach-map': {
             en: '/beach-map',
-            si: '/zemljevid-plaz' // Assume this is the Slovenian translation for "beach map"
+            si: '/zemljevid-plaz', // Assume this is the Slovenian translation for "beach map"
         },
         '/beaches': {
             en: `/${globalRoutes.beaches.en}`,
-            si: `/${globalRoutes.beaches.si}`// Assume this is the Slovenian translation for "beaches"
+            si: `/${globalRoutes.beaches.si}`, // Assume this is the Slovenian translation for "beaches"
         },
         // Dynamic beaches by continents
         '/beaches/[continent]': {
             en: `/${globalRoutes.beaches.en}/[continent]`,
-            si: `/${globalRoutes.beaches.si}/[continent]`
+            si: `/${globalRoutes.beaches.si}/[continent]`,
             // si: `/${globalRoutes.beaches.si}/evropa`
         },
         '/beaches/[continent]/[city]': {
             en: `/${globalRoutes.beaches.en}/[continent]/[city]`,
-            si: `/${globalRoutes.beaches.si}/[continent]/[city]`
+            si: `/${globalRoutes.beaches.si}/[continent]/[city]`,
         },
         // Dynamic beaches by region
         // '/beaches/[region]': {
@@ -48,11 +48,11 @@ export const routing = defineRouting({
         // },
         '/beach-type/[type]': {
             en: '/beach-type/[type]',
-            si: '/tip-plaze/[type]'
+            si: '/tip-plaze/[type]',
         },
         '/user-type/[type]': {
             en: '/user-type/[type]',
-            si: '/tip-uporabnika/[type]'
+            si: '/tip-uporabnika/[type]',
         },
         // '/beach-type/sandy': {
         //     en: '/beach-type/sandy',
@@ -60,8 +60,8 @@ export const routing = defineRouting({
         // },
         '/about': {
             en: '/about',
-            si: '/o-nas' ///si/o-nas will be handled by the page at /[locale]/about/page.tsx
-        }
+            si: '/o-nas', // /si/o-nas will be handled by the page at /[locale]/about/page.tsx
+        },
         //
         // // Dynamic params are supported via square brackets
         // '/news/[articleSlug]-[articleId]': {
@@ -81,7 +81,7 @@ export const routing = defineRouting({
         //     en: '/categories/[...slug]',
         //     de: '/kategorien/[...slug]'
         // }
-    }
+    },
 });
 
 // Lightweight wrappers around Next.js' navigation APIs

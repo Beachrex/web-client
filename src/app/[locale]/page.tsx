@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import AccommodationSection from "@/app/components/Home/AccommodationSection";
-import BeachCategorySearch from "@/app/components/Home/BeachCategorySearch";
-import HeroSection from "@/app/components/Home/HeroSection";
-import TopDesinationsSection from "@/app/components/Home/TopDestination";
-import WorldMapSection from "@/app/components/Home/WorldMapSection";
-import { fetchFromApi } from "@/app/utils/apiHelper";
-import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
-import TestimonialsSection from "../components/Home/TestimonialsSection";
+import AccommodationSection from '@/app/components/Home/AccommodationSection';
+import BeachCategorySearch from '@/app/components/Home/BeachCategorySearch';
+import HeroSection from '@/app/components/Home/HeroSection';
+import TopDesinationsSection from '@/app/components/Home/TopDestination';
+import WorldMapSection from '@/app/components/Home/WorldMapSection';
+import { fetchFromApi } from '@/app/utils/apiHelper';
+import { useTranslations } from 'next-intl';
+import { useEffect, useRef, useState } from 'react';
+import TestimonialsSection from '../components/Home/TestimonialsSection';
 
 interface Counters {
   totalBeaches: number;
@@ -35,7 +35,7 @@ const skeletonLoader = (
 );
 
 export default function HomePage() {
-  const t = useTranslations("HomePage");
+  const t = useTranslations('HomePage');
   const [counters, setCounters] = useState<Counters | null>(null);
   const [error, setError] = useState<string | null>(null);
   const isMounted = useRef(false);
@@ -46,11 +46,11 @@ export default function HomePage() {
 
     const fetchCounters = async () => {
       try {
-        const data = await fetchFromApi<Counters>("");
+        const data = await fetchFromApi<Counters>('');
         setCounters(data);
       } catch (error: unknown) {
         const errorMessage =
-          error instanceof Error ? error.message : "Unknown error";
+          error instanceof Error ? error.message : 'Unknown error';
         setError(errorMessage);
       }
     };
@@ -79,31 +79,31 @@ export default function HomePage() {
           {counters ? (
             <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:gap-8">
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t("allBeaches")}</h3>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('allBeaches')}</h3>
                 <div className="text-base text-white/90 sm:text-lg">{counters.totalBeaches}</div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t("beachCountries")}</h3>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('beachCountries')}</h3>
                 <div className="text-base text-white/90 sm:text-lg">{counters.totalCountries}</div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t("beachContinents")}</h3>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('beachContinents')}</h3>
                 <div className="text-base text-white/90 sm:text-lg">{counters.totalContinents}</div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t("seaBeaches")}</h3>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('seaBeaches')}</h3>
                 <div className="text-base text-white/90 sm:text-lg">{counters.seaBeaches}</div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t("beachIslands")}</h3>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('beachIslands')}</h3>
                 <div className="text-base text-white/90 sm:text-lg">{counters.islandsCount}</div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t("sweetwaterBeaches")}</h3>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('sweetwaterBeaches')}</h3>
                 <div className="text-base text-white/90 sm:text-lg">{counters.sweetwaterBeaches}</div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t("boatOnlyBeaches")}</h3>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('boatOnlyBeaches')}</h3>
                 <div className="text-base text-white/90 sm:text-lg">{counters.boatOnlyBeaches}</div>
               </div>
             </div>

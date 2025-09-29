@@ -1,5 +1,5 @@
-import { useTranslations } from "next-intl";
-import {Button} from "flowbite-react";
+import { useTranslations } from 'next-intl';
+import { Button } from 'flowbite-react';
 
 interface CitySectionProps {
     cityName: string;
@@ -14,7 +14,7 @@ const CitySection = ({ cityName, beachCount, hotelPrice }: CitySectionProps) => 
         <div
             className="p-4 border border-gray-300 rounded-lg text-center bg-gray-100 flex flex-col"
         >
-            <div className="h-20 bg-gray-200 mb-2"></div>
+            <div className="h-20 bg-gray-200 mb-2" />
             <h3 className="font-bold">{cityName}</h3>
             <p>Prikažemo lepo plažo mesta, ki se pretaka v grb mesta</p>
             <div className="flex-1 flex justify-center items-center space-x-4">

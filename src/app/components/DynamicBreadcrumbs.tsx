@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Breadcrumb } from "flowbite-react";
-import { HiHome } from "react-icons/hi";
-import Link from "next/link";
+import { Breadcrumb } from 'flowbite-react';
+import { HiHome } from 'react-icons/hi';
+import Link from 'next/link';
 
 // Define the type for the props
 interface DynamicBreadcrumbsProps {
@@ -12,12 +12,12 @@ interface DynamicBreadcrumbsProps {
 export default function DynamicBreadcrumbs({ pathname }: DynamicBreadcrumbsProps) {
 
     // Ensure pathname is a string and split it safely
-    const pathSegments = pathname.split("/").filter((segment: string) => segment.length > 0);
+    const pathSegments = pathname.split('/').filter((segment: string) => segment.length > 0);
 
     // Generate breadcrumb items based on path segments
     const breadcrumbs = pathSegments.map((segment: string, index: number) => {
         // Create URL for each breadcrumb
-        const href = `/${pathSegments.slice(0, index + 1).join("/")}`;
+        const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
         // Capitalize each breadcrumb for display
         const formattedSegment = `${segment.charAt(0).toUpperCase()}${segment.slice(1)}`;
         // Check if this is the last (current) breadcrumb

@@ -1,13 +1,13 @@
-"use client";
-import {Link, usePathname} from '@/i18n/routing';
+'use client';
+import { Link, usePathname } from '@/i18n/routing';
 import { useEffect } from 'react';
-import { Button, Carousel, Tooltip } from "flowbite-react";
+import { Button, Carousel, Tooltip } from 'flowbite-react';
 import { FaHeart, FaPlay, FaBed, FaMap, FaUmbrellaBeach, FaUser } from 'react-icons/fa';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
-import IslandSection from "@/app/components/IslandSection";
-import CitySection from "@/app/components/CitySection";
-import RegionSection from "@/app/components/RegionSection";
-import DynamicBreadcrumbs from "@/app/components/DynamicBreadcrumbs";
+import IslandSection from '@/app/components/IslandSection';
+import CitySection from '@/app/components/CitySection';
+import RegionSection from '@/app/components/RegionSection';
+import DynamicBreadcrumbs from '@/app/components/DynamicBreadcrumbs';
 
 const islandsData = [
     { islandName: 'Otok A', beachCount: '1', hotelPrice: '70€' },
@@ -49,8 +49,11 @@ const Page = () => {
             <div className="container mx-auto p-4">
                 <h1 className="text-xl mb-4 text-red-600">
                     Ta frame je namenjen predstavitvi podstrani na ravni država
-                    (<Link className="text-xl font-bold mb-4 text-red-600" href="https://wireframe.cc/Kuqhso"
-                           target="_blank"><u>Wireframe</u></Link>)
+                    (<Link
+                        className="text-xl font-bold mb-4 text-red-600"
+                        href="https://wireframe.cc/Kuqhso"
+                        target="_blank"
+                     ><u>Wireframe</u></Link>)
                 </h1>
                 {/* Filters and navigation */}
                 <div className="mt-8 grid grid-cols-2 gap-4 text-black">
@@ -63,11 +66,14 @@ const Page = () => {
                 </div>
 
                 {/* Top section with background image */}
-                <div className="relative h-96 bg-cover bg-center"
-                     style={{backgroundImage: "url('https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-543a-k-odalmacija/hr-543a-k-odalmacija-sl9.jpg')"}}>
+                <div
+className="relative h-96 bg-cover bg-center"
+                     style={{ backgroundImage: "url('https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-543a-k-odalmacija/hr-543a-k-odalmacija-sl9.jpg')" }}
+                >
                     {/* Overlay content */}
                     <div
-                        className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white">
+                        className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white"
+                    >
                         {/* Header section */}
                         <div className="flex flex-col items-center mt-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
@@ -75,7 +81,7 @@ const Page = () => {
                                     <div className="mb-4">
                                         <h2 className="text-lg font-semibold">Zastava države</h2>
                                         {/* Placeholder for flag */}
-                                        <div className="w-40 h-24 bg-gray-200"></div>
+                                        <div className="w-40 h-24 bg-gray-200" />
                                     </div>
                                     <div className="flex flex-row gap-2 mb-4">
 
@@ -137,9 +143,9 @@ const Page = () => {
                         imena obale. Klik na ime presumeri na novo podstran.
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        {Array.from({length: 6}).map((_, index) => (
+                        {Array.from({ length: 6 }).map((_, index) => (
                             <div key={index} className="p-4 border border-gray-300 rounded-lg bg-white">
-                                <div className="h-20 bg-gray-200 mb-2"></div>
+                                <div className="h-20 bg-gray-200 mb-2" />
                                 <h3 className="font-bold">Ime destinacije</h3>
                                 <p>Št. plaž: XX</p>
                                 <Button className="mt-2">Preberi več</Button>
@@ -203,8 +209,10 @@ const Page = () => {
                     Spodaj prikažemo na tabelaren način vse plaže te države. Poudarek je, da lahko uporabnik preko
                     filtra si točno določi oz. prikaže plažo po svoji preferenci. Klik na posamezno polje spodaj,
                     dodatno prikaže opcije, podobno kot imamo že sedaj na obstoječi strani, isto ima konkurenca:
-                    <Link target='_blank'
-                          href='https://beachsearcher.si/sl/search/country/143?nature_secret=1&pagesize=18&smart=0&op=1&offset=0'><u>Beachsearcher</u></Link>
+                    <Link
+target='_blank'
+                          href='https://beachsearcher.si/sl/search/country/143?nature_secret=1&pagesize=18&smart=0&op=1&offset=0'
+                    ><u>Beachsearcher</u></Link>
                 </h2>
 
                 <div className="mt-4 grid grid-cols-3 gap-4">
@@ -220,28 +228,36 @@ const Page = () => {
                         spodaj v razporeditvi 3 v vrsto, 6 vrst, nato gumb za naslednjo stran in spodaj prikaz
                         navigacije, torej kje se nahajamo, koliko strani je še naprej oz. nazaj.)</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {Array.from({length: 8}).map((_, index) => (
+                        {Array.from({ length: 8 }).map((_, index) => (
                             <div key={index} className="relative border border-gray-300 rounded-lg p-4 bg-gray-100">
                                 {/* Carousel for beach images */}
                                 <div className="relative w-full h-48">
                                     <Carousel
                                         leftControl={<BsArrowLeft className="text-3xl opacity-0"/>} // Custom left arrow
                                         rightControl={<BsArrowRight
-                                            className="text-3xl opacity-0"/>} // Custom right arrow
+                                            className="text-3xl opacity-0"
+                                                      />} // Custom right arrow
                                     >
                                         {/* Carousel items */}
-                                        <div className="h-48 bg-cover bg-center"
-                                             style={{backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')`}}></div>
-                                        <div className="h-48 bg-cover bg-center"
-                                             style={{backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')`}}></div>
-                                        <div className="h-48 bg-cover bg-center"
-                                             style={{backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')`}}></div>
+                                        <div
+className="h-48 bg-cover bg-center"
+                                             style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
+                                        />
+                                        <div
+className="h-48 bg-cover bg-center"
+                                             style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
+                                        />
+                                        <div
+className="h-48 bg-cover bg-center"
+                                             style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
+                                        />
                                     </Carousel>
 
                                 </div>
                                 {/* Country Flag */}
                                 <div
-                                    className="absolute top-2 left-2 w-16 h-15 bg-gray-200 text-black text-center">Zastava
+                                    className="absolute top-2 left-2 w-16 h-15 bg-gray-200 text-black text-center"
+                                >Zastava
                                     države
                                 </div>
 
@@ -275,7 +291,8 @@ const Page = () => {
                                         <div className="flex space-x-4">
                                             {/* Icon for Beach Type */}
                                             <div
-                                                className="w-10 h-10 bg-gray-400 rounded-full flex justify-center items-center">
+                                                className="w-10 h-10 bg-gray-400 rounded-full flex justify-center items-center"
+                                            >
                                                 <Tooltip content="Tip plaže">
                                                     <FaUmbrellaBeach/>
                                                 </Tooltip>
@@ -284,7 +301,8 @@ const Page = () => {
 
                                             {/* Icon for User Type */}
                                             <div
-                                                className="w-10 h-10 bg-gray-400 rounded-full flex justify-center items-center">
+                                                className="w-10 h-10 bg-gray-400 rounded-full flex justify-center items-center"
+                                            >
                                                 <Tooltip content="Tip uporabnika">
                                                     <FaUser/>
                                                 </Tooltip>

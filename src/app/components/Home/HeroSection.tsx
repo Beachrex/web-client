@@ -1,14 +1,14 @@
-"use client";
-import React from "react";
-import Image from "next/image";
+'use client';
+import React from 'react';
+import Image from 'next/image';
 
 const continents = [
-  { name: "Evropa", icon: "/images/continents/evropa.png" },
-  { name: "Afrika", icon: "/images/continents/africa.png" },
-  { name: "Azija", icon: "/images/continents/asia.png" },
-  { name: "Severna Amerika", icon: "/images/continents/north-america.png" },
-  { name: "Južna Amerika", icon: "/images/continents/south-america.png" },
-  { name: "Avstralija", icon: "/images/continents/australia.png" },
+  { name: 'Evropa', icon: '/images/continents/evropa.png' },
+  { name: 'Afrika', icon: '/images/continents/africa.png' },
+  { name: 'Azija', icon: '/images/continents/asia.png' },
+  { name: 'Severna Amerika', icon: '/images/continents/north-america.png' },
+  { name: 'Južna Amerika', icon: '/images/continents/south-america.png' },
+  { name: 'Avstralija', icon: '/images/continents/australia.png' },
 ];
 
 const HeroSection: React.FC = () => {
@@ -67,7 +67,10 @@ const HeroSection: React.FC = () => {
 
         {/* 2. Države */}
         <div className="flex items-center gap-4">
-          <Image src="/images/map.png" alt="map" width={60} height={60} />
+          <Image
+src="/images/map.png" alt="map" width={60}
+height={60}
+          />
           <div className="flex flex-col">
             <span className="text-[32px] font-bold">+250</span>
             <span className="text-[16px] font-normal">plažnih držav</span>

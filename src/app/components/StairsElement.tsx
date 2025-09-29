@@ -43,9 +43,9 @@ const StairsElement = () => {
     ];
 
     const leftVariants = [
-        "left-0 sm:left-0",
-        "left-2 sm:left-20",
-        "left-4 sm:left-60",
+        'left-0 sm:left-0',
+        'left-2 sm:left-20',
+        'left-4 sm:left-60',
     ];
 
     return (

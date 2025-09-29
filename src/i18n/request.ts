@@ -14,7 +14,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
     }
 
     // Safely import the module and assert the type of `messages`
-    const messages: Messages = (await import(`../../messages/${locale}.json`)).default as Messages;
+    const messagesModule: { default: Messages } = await import(`../../messages/${locale}.json`) as
+        { default: Messages };
+    const messages: Messages = messagesModule.default;
 
     return {
         locale,

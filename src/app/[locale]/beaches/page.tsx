@@ -1,11 +1,11 @@
-"use client";
-import {Link, usePathname} from '@/i18n/routing';
+'use client';
+import { Link, usePathname } from '@/i18n/routing';
 import { useEffect } from 'react';
-import { Button, Carousel, Tooltip } from "flowbite-react";
+import { Button, Carousel, Tooltip } from 'flowbite-react';
 import { FaHeart, FaPlay, FaBed, FaMap, FaUmbrellaBeach, FaUser } from 'react-icons/fa';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
-import ContinentSection from "@/app/components/ContinentSection";
-import DynamicBreadcrumbs from "@/app/components/DynamicBreadcrumbs";
+import ContinentSection from '@/app/components/ContinentSection';
+import DynamicBreadcrumbs from '@/app/components/DynamicBreadcrumbs';
 
 const continentData = [
     { name: 'Europe', beachCount: '1', hotelPrice: '70€', link: '/beaches/europe/' },
@@ -31,8 +31,13 @@ const Page = () => {
             <div className="container mx-auto p-4">
                 <h1 className="text-xl mb-4 text-red-600">
                     Ta frame je namenjen predstavitvi podstrani SVET
-                    (<Link className="text-xl font-bold mb-4 text-red-600" href="https://wireframe.cc/QteImS"
-                           target="_blank"><u>Wireframe</u></Link>)
+                    (<Link
+                        className="text-xl font-bold mb-4 text-red-600"
+                        href="https://wireframe.cc/QteImS"
+                        target="_blank"
+                     >
+                        <u>Wireframe</u>
+                     </Link>)
                 </h1>
                 <p>
                     Veliko zadev je podobnih kot na ostalih podstraneh. najti moramo nek način, da se to jasno loči,
@@ -49,11 +54,14 @@ const Page = () => {
                 </div>
 
                 {/* Top section with background image */}
-                <div className="relative h-96 bg-cover bg-center"
-                     style={{backgroundImage: "url('https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-543a-k-odalmacija/hr-543a-k-odalmacija-sl9.jpg')"}}>
+                <div
+className="relative h-96 bg-cover bg-center"
+                     style={{ backgroundImage: "url('https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-543a-k-odalmacija/hr-543a-k-odalmacija-sl9.jpg')" }}
+                >
                     {/* Overlay content */}
                     <div
-                        className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white">
+                        className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white"
+                    >
                         {/* Header section */}
                         <div className="flex flex-col items-center mt-8">
                             <div className="grid grid-cols-1 md:grid-cols-1 gap-4 items-center">
@@ -137,8 +145,10 @@ const Page = () => {
                     lahko uporabnik preko filtra si točno določi oz. prikaže plažo po svoji preferenci.
                     Klik na posamezno polje spodaj, dodatno prikaže opcije, podobno kot imamo že sedaj na
                     obstoječi strani, isto ima konkurenca.
-                    <Link target='_blank'
-                          href='https://beachsearcher.si/sl/search/country/143?nature_secret=1&pagesize=18&smart=0&op=1&offset=0'><u>Beachsearcher</u></Link>
+                    <Link
+target='_blank'
+                          href='https://beachsearcher.si/sl/search/country/143?nature_secret=1&pagesize=18&smart=0&op=1&offset=0'
+                    ><u>Beachsearcher</u></Link>
                 </h2>
 
                 <div className="mt-4 grid grid-cols-3 gap-4">
@@ -154,28 +164,36 @@ const Page = () => {
                         spodaj v razporeditvi 3 v vrsto, 6 vrst, nato gumb za naslednjo stran in spodaj prikaz
                         navigacije, torej kje se nahajamo, koliko strani je še naprej oz. nazaj.)</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {Array.from({length: 8}).map((_, index) => (
+                        {Array.from({ length: 8 }).map((_, index) => (
                             <div key={index} className="relative border border-gray-300 rounded-lg p-4 bg-gray-100">
                                 {/* Carousel for beach images */}
                                 <div className="relative w-full h-48">
                                     <Carousel
                                         leftControl={<BsArrowLeft className="text-3xl opacity-0"/>} // Custom left arrow
                                         rightControl={<BsArrowRight
-                                            className="text-3xl opacity-0"/>} // Custom right arrow
+                                            className="text-3xl opacity-0"
+                                                      />} // Custom right arrow
                                     >
                                         {/* Carousel items */}
-                                        <div className="h-48 bg-cover bg-center"
-                                             style={{backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')`}}></div>
-                                        <div className="h-48 bg-cover bg-center"
-                                             style={{backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')`}}></div>
-                                        <div className="h-48 bg-cover bg-center"
-                                             style={{backgroundImage: `url('https://flowbite.com/docs/images/carousel/carousel-1.svg')`}}></div>
+                                        <div
+className="h-48 bg-cover bg-center"
+                                             style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
+                                        />
+                                        <div
+className="h-48 bg-cover bg-center"
+                                             style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
+                                        />
+                                        <div
+className="h-48 bg-cover bg-center"
+                                             style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
+                                        />
                                     </Carousel>
 
                                 </div>
                                 {/* Country Flag */}
                                 <div
-                                    className="absolute top-2 left-2 w-16 h-15 bg-gray-200 text-black text-center">Zastava
+                                    className="absolute top-2 left-2 w-16 h-15 bg-gray-200 text-black text-center"
+                                >Zastava
                                     države
                                 </div>
 
@@ -209,7 +227,8 @@ const Page = () => {
                                         <div className="flex space-x-4">
                                             {/* Icon for Beach Type */}
                                             <div
-                                                className="w-10 h-10 bg-gray-400 rounded-full flex justify-center items-center">
+                                                className="w-10 h-10 bg-gray-400 rounded-full flex justify-center items-center"
+                                            >
                                                 <Tooltip content="Tip plaže">
                                                     <FaUmbrellaBeach/>
                                                 </Tooltip>
@@ -218,7 +237,8 @@ const Page = () => {
 
                                             {/* Icon for User Type */}
                                             <div
-                                                className="w-10 h-10 bg-gray-400 rounded-full flex justify-center items-center">
+                                                className="w-10 h-10 bg-gray-400 rounded-full flex justify-center items-center"
+                                            >
                                                 <Tooltip content="Tip uporabnika">
                                                     <FaUser/>
                                                 </Tooltip>

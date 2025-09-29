@@ -1,6 +1,6 @@
-"use client";
-import Image from "next/image";
-import React from "react";
+'use client';
+import Image from 'next/image';
+import React from 'react';
 
 interface Destination {
   name: string;
@@ -12,38 +12,38 @@ interface Destination {
 
 const destinations: Destination[] = [
   {
-    name: "Hrvaška",
-    image: "/images/topdestination/croatia.jpg",
+    name: 'Hrvaška',
+    image: '/images/topdestination/croatia.jpg',
     accomodationCount: 5,
-    price: "od 25€",
+    price: 'od 25€',
     beachCount: 112,
   },
   {
-    name: "Italija",
-    image: "/images/topdestination/italy.jpg",
+    name: 'Italija',
+    image: '/images/topdestination/italy.jpg',
     accomodationCount: 5,
-    price: "od 25€",
+    price: 'od 25€',
     beachCount: 112,
   },
   {
-    name: "Španija",
-    image: "/images/topdestination/spain.jpg",
+    name: 'Španija',
+    image: '/images/topdestination/spain.jpg',
     accomodationCount: 5,
-    price: "od 25€",
+    price: 'od 25€',
     beachCount: 112,
   },
   {
-    name: "Grčija",
-    image: "/images/topdestination/greece.jpg",
+    name: 'Grčija',
+    image: '/images/topdestination/greece.jpg',
     accomodationCount: 5,
-    price: "od 25€",
+    price: 'od 25€',
     beachCount: 112,
   },
   {
-    name: "Portugalska",
-    image: "/images/topdestination/portugal.jpg",
+    name: 'Portugalska',
+    image: '/images/topdestination/portugal.jpg',
     accomodationCount: 5,
-    price: "od 25€",
+    price: 'od 25€',
     beachCount: 112,
   },
 ];

@@ -1,10 +1,10 @@
-import React from "react";
-import Image from "next/image";
-import { FiSearch } from "react-icons/fi";
-import {useTranslations} from "next-intl";
+import React from 'react';
+import Image from 'next/image';
+import { FiSearch } from 'react-icons/fi';
+import { useTranslations } from 'next-intl';
 
 const MobileSearchBar = () => {
-    const t = useTranslations("Common");
+    const t = useTranslations('Common');
     return (
         <div className="bg-white shadow-sm py-3 sm:py-4 flex flex-col items-center md:hidden">
             {/* Logo Row */}
@@ -23,8 +23,8 @@ const MobileSearchBar = () => {
                 <FiSearch className="text-gray-500 ml-2 sm:ml-3" size={18} />
                 <input
                     type="text"
-                    placeholder={t("search_placeholder")}
-                    aria-label={t("search_placeholder")}
+                    placeholder={t('search_placeholder')}
+                    aria-label={t('search_placeholder')}
                     className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none px-2 sm:px-3 py-2 text-sm text-gray-600 placeholder-gray-400"
                 />
                 <div className="w-[38px] sm:w-[43px] h-[36px] sm:h-[41px] bg-[#e6e6e6] rounded-md justify-center items-center flex">
@@ -41,7 +41,7 @@ const MobileSearchBar = () => {
                         width={24}
                         height={24}
                     />
-                    <span className="text-xs text-gray-600 mt-1">{t("accommodations")}</span>
+                    <span className="text-xs text-gray-600 mt-1">{t('accommodations')}</span>
                 </div>
                 <div className="flex flex-col items-center">
                     <Image
@@ -50,7 +50,7 @@ const MobileSearchBar = () => {
                         width={24}
                         height={24}
                     />
-                    <span className="text-xs text-gray-600 mt-1">{t("shop")}</span>
+                    <span className="text-xs text-gray-600 mt-1">{t('shop')}</span>
                 </div>
                 <div className="flex flex-col items-center">
                     <Image
@@ -59,7 +59,7 @@ const MobileSearchBar = () => {
                         width={24}
                         height={24}
                     />
-                    <span className="text-xs text-gray-600 mt-1">{t("map")}</span>
+                    <span className="text-xs text-gray-600 mt-1">{t('map')}</span>
                 </div>
             </div>
         </div>

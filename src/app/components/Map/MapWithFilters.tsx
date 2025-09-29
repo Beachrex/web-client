@@ -1,7 +1,7 @@
-"use client";
+'use client';
 import React from 'react';
-import {PropertyCard} from "@/app/components/PropertyCard/PropertyCard";
-import LeftSidebarFilters from "@/app/components/Map/LeftSidebarFilters";
+import { PropertyCard } from '@/app/components/PropertyCard/PropertyCard';
+import LeftSidebarFilters from '@/app/components/Map/LeftSidebarFilters';
 import dynamic from 'next/dynamic';
 
 // Test with simple global Leaflet approach
@@ -11,7 +11,7 @@ const SimpleTestMap = dynamic(() => import('./SimpleTestMap'), {
         <div className="flex items-center justify-center h-full bg-gray-100">
             <div className="text-gray-600">Loading map...</div>
         </div>
-    )
+    ),
 });
 
 const MapWithFilters = () => {

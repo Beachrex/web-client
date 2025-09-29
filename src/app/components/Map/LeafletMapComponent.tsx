@@ -109,7 +109,8 @@ const LeafletMapComponent: React.FC<LeafletMapComponentProps> = ({ places }) => 
     return (
         <div style={{ height: '100%', width: '100%', position: 'relative' }}>
             {/* Debug status overlay */}
-            <div style={{
+            <div
+style={{
                 position: 'absolute',
                 top: '10px',
                 left: '10px',
@@ -118,8 +119,9 @@ const LeafletMapComponent: React.FC<LeafletMapComponentProps> = ({ places }) => 
                 padding: '8px',
                 borderRadius: '4px',
                 zIndex: 1000,
-                fontSize: '12px'
-            }}>
+                fontSize: '12px',
+            }}
+            >
                 Status: {mapStatus}
             </div>
 
@@ -129,7 +131,7 @@ const LeafletMapComponent: React.FC<LeafletMapComponentProps> = ({ places }) => 
                     height: '100%',
                     width: '100%',
                     minHeight: '400px',
-                    background: '#e0e0e0'
+                    background: '#e0e0e0',
                 }}
             />
         </div>

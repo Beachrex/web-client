@@ -2,12 +2,12 @@ import React from 'react';
 import Image from 'next/image';
 
 export function TestImageComponent() {
-  const imageUrl = "https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg";
-  
+  const imageUrl = 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg';
+
   return (
     <div style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>
       <h2>Image Blur Test</h2>
-      
+
       {/* Test 1: Next.js Image component */}
       <div style={{ marginBottom: '20px' }}>
         <h3>1. Next.js Image component (optimized)</h3>
@@ -20,7 +20,7 @@ export function TestImageComponent() {
             objectFit: 'cover',
             filter: 'none',
             imageRendering: 'crisp-edges',
-            border: '2px solid red'
+            border: '2px solid red',
           }}
         />
       </div>
@@ -37,7 +37,7 @@ export function TestImageComponent() {
             backgroundPosition: 'center',
             border: '2px solid blue',
             filter: 'none',
-            imageRendering: 'crisp-edges'
+            imageRendering: 'crisp-edges',
           }}
         />
       </div>
@@ -45,9 +45,9 @@ export function TestImageComponent() {
       {/* Test 3: Direct URL link */}
       <div style={{ marginBottom: '20px' }}>
         <h3>3. Direct URL (click to open in new tab)</h3>
-        <a 
-          href={imageUrl} 
-          target="_blank" 
+        <a
+          href={imageUrl}
+          target="_blank"
           rel="noopener noreferrer"
           style={{ color: 'blue', textDecoration: 'underline' }}
         >
@@ -67,7 +67,7 @@ export function TestImageComponent() {
             objectFit: 'cover',
             filter: 'none',
             imageRendering: 'crisp-edges',
-            border: '2px solid green'
+            border: '2px solid green',
           }}
         />
       </div>

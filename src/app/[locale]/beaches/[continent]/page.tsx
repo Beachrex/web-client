@@ -5,8 +5,8 @@ import { getTranslations } from 'next-intl/server';
 // import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 // import CountrySection from "@/app/components/CountrySection";
 // import DynamicBreadcrumbs from "@/app/components/DynamicBreadcrumbs";
-import Banner from "@/app/components/Beach/Banner";
-import { PropertySection } from "@/app/components/PropertySection";
+import Banner from '@/app/components/Beach/Banner';
+import { PropertySection } from '@/app/components/PropertySection';
 
 // Commented out unused variable to fix lint errors
 // const countryData = [
@@ -208,12 +208,12 @@ const Page = async ({ params }: PageProps) => {
             <Banner
                 pathname={pathname}
                 prevBeach={{
-                    name: "Istria",
-                    url: "/beaches/europe/istria"
+                    name: 'Istria',
+                    url: '/beaches/europe/istria',
                 }}
                 nextBeach={{
-                    name: "Dalmatia",
-                    url: "/beaches/europe/dalmatia"
+                    name: 'Dalmatia',
+                    url: '/beaches/europe/dalmatia',
                 }}
             />
             <PropertySection

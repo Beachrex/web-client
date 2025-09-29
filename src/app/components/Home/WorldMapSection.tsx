@@ -1,9 +1,9 @@
-"use client";
+'use client';
 // Removed unused imports to fix lint warnings
 // import { useTranslations } from "next-intl";
 // import dynamic from "next/dynamic";
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+import Image from 'next/image';
 
 // Commented out unused dynamic import to fix lint warning
 // const HomeWorldMap = dynamic(

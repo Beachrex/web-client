@@ -1,6 +1,6 @@
 import { FaSearch, FaChevronDown } from 'react-icons/fa';
 import { useState } from 'react';
-import { ToggleSwitch } from "flowbite-react";
+import { ToggleSwitch } from 'flowbite-react';
 
 const LeftSidebarFilters = () => {
     const [isExpanded, setIsExpanded] = useState(false);

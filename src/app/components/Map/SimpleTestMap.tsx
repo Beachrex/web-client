@@ -29,7 +29,7 @@ const SimpleTestMap: React.FC = () => {
                     // Try different tile providers to see if one works better
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                        maxZoom: 19
+                        maxZoom: 19,
                     }).addTo(map);
 
                     // Add a marker
@@ -60,13 +60,13 @@ const SimpleTestMap: React.FC = () => {
 
     return (
         <div style={{ height: '100%', width: '100%' }}>
-            <div 
-                ref={mapRef} 
-                style={{ 
-                    height: '100%', 
+            <div
+                ref={mapRef}
+                style={{
+                    height: '100%',
                     width: '100%',
-                    background: '#e0e0e0'
-                }} 
+                    background: '#e0e0e0',
+                }}
             />
         </div>
     );

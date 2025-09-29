@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from "next/image";
+import Image from 'next/image';
 
 const Footer: React.FC = () => {
     return (
@@ -8,7 +8,10 @@ const Footer: React.FC = () => {
                 {/* First Column - Logo */}
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold">
-                        <Image width="200" height="100" alt="Beachrex Logo" src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/js/assets/img/logo_dark.png`} className="mainLogo mr-3 h-6 sm:h-9" />
+                        <Image
+width="200" height="100" alt="Beachrex Logo"
+src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/js/assets/img/logo_dark.png`} className="mainLogo mr-3 h-6 sm:h-9"
+                        />
                     </h1>
                     <p className="text-sm text-gray-600 mt-2">Your tagline or description here.</p>
                 </div>

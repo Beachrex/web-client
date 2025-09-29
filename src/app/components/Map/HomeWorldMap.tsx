@@ -22,14 +22,14 @@ interface HomeWorldMapProps {
     beachLocations?: BeachLocation[];
 }
 
-const HomeWorldMap: React.FC<HomeWorldMapProps> = ({ 
+const HomeWorldMap: React.FC<HomeWorldMapProps> = ({
     beachLocations = [
         { lat: 45.1, lon: 15.2, count: 1689, region: 'Europe', id: 'europe' },
         { lat: 35.0, lon: 25.0, count: 1693, region: 'Mediterranean', id: 'mediterranean' },
         { lat: 25.0, lon: 55.0, count: 2689, region: 'Middle East', id: 'middle-east' },
         { lat: -15.0, lon: -60.0, count: 2669, region: 'South America', id: 'south-america' },
         { lat: -25.0, lon: 135.0, count: 2669, region: 'Australia', id: 'australia' },
-    ]
+    ],
 }) => {
     const mapRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<L.Map | null>(null);
@@ -53,17 +53,17 @@ const HomeWorldMap: React.FC<HomeWorldMapProps> = ({
                         scrollWheelZoom: false,
                         doubleClickZoom: false,
                         boxZoom: false,
-                        keyboard: false
+                        keyboard: false,
                     });
                     mapInstanceRef.current = map;
-                    
+
                     // Add tile layer with a clean style
                     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
                         attribution: '',
                         maxZoom: 6,
-                        subdomains: 'abcd'
+                        subdomains: 'abcd',
                     }).addTo(map);
-                    
+
                     // Custom marker style
                     const createCustomMarker = (count: number): L.DivIcon => {
                         return L.divIcon({
@@ -77,14 +77,14 @@ const HomeWorldMap: React.FC<HomeWorldMapProps> = ({
                                 </div>
                             `,
                             iconSize: [60, 40],
-                            iconAnchor: [30, 40]
+                            iconAnchor: [30, 40],
                         });
                     };
-                    
+
                     // Add markers for each beach location
                     beachLocations.forEach((location) => {
                         const marker = L.marker([location.lat, location.lon], {
-                            icon: createCustomMarker(location.count)
+                            icon: createCustomMarker(location.count),
                         }).addTo(map);
 
                         // Add click handler
@@ -93,7 +93,7 @@ const HomeWorldMap: React.FC<HomeWorldMapProps> = ({
                             // You can add navigation logic here
                         });
                     });
-                    
+
                     console.log('Home world map created successfully');
                 } else {
                     console.error('Leaflet is not available for home map, retrying...');
@@ -117,15 +117,15 @@ const HomeWorldMap: React.FC<HomeWorldMapProps> = ({
     return (
         <div className="relative w-full h-full">
             {/* Map container */}
-            <div 
-                ref={mapRef} 
+            <div
+                ref={mapRef}
                 className="w-full h-full rounded-lg"
-                style={{ 
+                style={{
                     minHeight: '400px',
-                    background: '#f8fafc'
-                }} 
+                    background: '#f8fafc',
+                }}
             />
-            
+
             {/* Custom CSS for markers */}
             <style jsx>{`
                 .beach-marker-container {

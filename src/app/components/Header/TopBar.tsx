@@ -1,12 +1,12 @@
-import { CiHeart } from "react-icons/ci";
-import { PiUserCircle } from "react-icons/pi";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import Image from "next/image";
-import { Dropdown } from "flowbite-react";
-import { locales, languageNames } from "@/app/utils/locales";
-import { Link, usePathname } from "@/i18n/routing";
-import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { CiHeart } from 'react-icons/ci';
+import { PiUserCircle } from 'react-icons/pi';
+import { MdKeyboardArrowDown } from 'react-icons/md';
+import Image from 'next/image';
+import { Dropdown } from 'flowbite-react';
+import { locales, languageNames } from '@/app/utils/locales';
+import { Link, usePathname } from '@/i18n/routing';
+import { useLocale, useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 
 const IconButton = ({ icon: Icon, label }: { icon: React.ElementType; label: string }) => (
     <button className="flex items-center space-x-1">
@@ -17,7 +17,7 @@ const IconButton = ({ icon: Icon, label }: { icon: React.ElementType; label: str
 
 const TopBar = () => {
     const locale = useLocale();
-    const t = useTranslations("Common");
+    const t = useTranslations('Common');
     const pathname = usePathname();
     const [isClient, setIsClient] = useState(false);
 
@@ -126,8 +126,8 @@ const TopBar = () => {
 
                     {/* Right Section */}
                     <div className="flex items-center space-x-4">
-                        <IconButton icon={CiHeart} label={t("favorite_beaches")} />
-                        <IconButton icon={PiUserCircle} label={t("my_account")} />
+                        <IconButton icon={CiHeart} label={t('favorite_beaches')} />
+                        <IconButton icon={PiUserCircle} label={t('my_account')} />
                     </div>
                 </div>
             </div>

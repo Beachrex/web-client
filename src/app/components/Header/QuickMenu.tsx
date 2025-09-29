@@ -1,6 +1,6 @@
 import React from 'react';
-import Image from "next/image";
-import { SlBriefcase } from "react-icons/sl";
+import Image from 'next/image';
+import { SlBriefcase } from 'react-icons/sl';
 
 const NavIcon = ({
                      src,
@@ -8,7 +8,7 @@ const NavIcon = ({
                      label,
                      horizontal = false, // optional prop to switch to horizontal layout
                      className = '',
-                     onClick
+                     onClick,
                  }: {
     src: string;
     alt: string;
@@ -25,7 +25,9 @@ const NavIcon = ({
 
     return (
         <button className={appliedClassName} onClick={onClick}>
-            <Image src={src} alt={alt} width={26} height={26} />
+            <Image
+src={src} alt={alt} width={26}
+height={26} />
             <span className={appliedClassName}>
        <span className="text-sm text-variable-collection-semi-dark-grey leading-tight">{label}</span>
       </span>
@@ -33,7 +35,7 @@ const NavIcon = ({
     );
 };
 
-const QuickMenu = ({toggleMenu}: { toggleMenu: () => void }) => {
+const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
     return (
         <div
             className="bg-variable-collection-ultra-light-grey border-t border-b border-variable-collection-light-grey min-h-[61px] flex items-center"
@@ -57,9 +59,9 @@ const QuickMenu = ({toggleMenu}: { toggleMenu: () => void }) => {
                     {/* Center: Most important icons only */}
                     <div className="flex items-center space-x-3 flex-1 justify-center">
                         {[
-                            {icon: 'globe.svg', label: 'Plaže'},
-                            {icon: 'beachType.svg', label: 'Tip'},
-                            {icon: 'baseBeachIcon.svg', label: 'Top'}
+                            { icon: 'globe.svg', label: 'Plaže' },
+                            { icon: 'beachType.svg', label: 'Tip' },
+                            { icon: 'baseBeachIcon.svg', label: 'Top' },
                         ].map((item, index) => (
                             <div key={index} className="flex flex-col items-center">
                                 <Image
@@ -109,12 +111,12 @@ const QuickMenu = ({toggleMenu}: { toggleMenu: () => void }) => {
                     {/* Middle Section (Icons and Labels) */}
                     <div className="flex flex-wrap items-center justify-center space-x-3 lg:space-x-6 flex-1">
                         {[
-                            {icon: 'globe.svg', label: 'Plaže po svetu'},
-                            {icon: 'beachType.svg', label: 'Tip plaže'},
-                            {icon: 'userType.svg', label: 'Tip uporabnika'},
-                            {icon: 'beachShowType.svg', label: 'Prikaz plaže'},
-                            {icon: 'shower.svg', label: 'Storitve ob plaži'},
-                            {icon: 'baseBeachIcon.svg', label: 'Top plaže'}
+                            { icon: 'globe.svg', label: 'Plaže po svetu' },
+                            { icon: 'beachType.svg', label: 'Tip plaže' },
+                            { icon: 'userType.svg', label: 'Tip uporabnika' },
+                            { icon: 'beachShowType.svg', label: 'Prikaz plaže' },
+                            { icon: 'shower.svg', label: 'Storitve ob plaži' },
+                            { icon: 'baseBeachIcon.svg', label: 'Top plaže' },
                         ].map((item, index) => (
                             <div key={index} className="flex items-center space-x-2">
                                 <NavIcon

@@ -1,10 +1,10 @@
-import "@/styles/globals.css";
+import '@/styles/globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
-import { Open_Sans } from 'next/font/google'
+import { Open_Sans } from 'next/font/google';
 import Script from 'next/script';
 import Footer from 'src/app/components/Footer';
-import Layout from "@/app/components/Layout";
+import Layout from '@/app/components/Layout';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
@@ -13,19 +13,19 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: t('title'),
         description: t('description'),
-        icons: [{ rel: "icon", url: "/favicon.png" }],
+        icons: [{ rel: 'icon', url: '/favicon.png' }],
         authors: [
-            { name: 'David Tacer' }
-        ]
+            { name: 'David Tacer' },
+        ],
     };
 }
 const openSans = Open_Sans({
-    subsets: ['latin','latin-ext'],
+    subsets: ['latin', 'latin-ext'],
     display: 'swap',
-})
+});
 export default async function LocaleLayout({
                                                children,
-                                               params
+                                               params,
                                            }: {
     children: React.ReactNode;
     params: Promise<{ locale: string }>;

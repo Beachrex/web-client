@@ -81,8 +81,14 @@ export function HeroSection({ pathname, showBreadcrumbs = true, prevBeach, nextB
                                             href={prevBeach.url}
                                             className="flex items-center text-variable-collection-mesto hover:opacity-80 transition-opacity duration-200 text-sm"
                                         >
-                                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                            <svg
+className="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+viewBox="0 0 24 24"
+                                            >
+                                                <path
+strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+d="M15 19l-7-7 7-7"
+                                                />
                                             </svg>
                                             <span className="font-medium">{prevBeach.name}</span>
                                         </a>
@@ -94,8 +100,14 @@ export function HeroSection({ pathname, showBreadcrumbs = true, prevBeach, nextB
                                             className="flex items-center text-variable-collection-mesto hover:opacity-80 transition-opacity duration-200 text-sm"
                                         >
                                             <span className="font-medium">{nextBeach.name}</span>
-                                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                            <svg
+className="w-4 h-4 ml-1" fill="none" stroke="currentColor"
+viewBox="0 0 24 24"
+                                            >
+                                                <path
+strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+d="M9 5l7 7-7 7"
+                                                />
                                             </svg>
                                         </a>
                                     )}
@@ -145,7 +157,8 @@ export function HeroSection({ pathname, showBreadcrumbs = true, prevBeach, nextB
                                     {bottomFilterBadges.map((badge, index) => (
                                         <Badge
                                             key={index}
-                                            className={`${badge.color} text-white border-0 px-3 py-1 cursor-pointer transition-colors rounded-full text-sm`}
+                                            className={`${badge.color} text-white border-0 px-3 py-1 cursor-pointer ` +
+                                                'transition-colors rounded-full text-sm'}
                                         >
                                             {badge.label}
                                         </Badge>
@@ -160,7 +173,7 @@ export function HeroSection({ pathname, showBreadcrumbs = true, prevBeach, nextB
                                 {/* Mini Map */}
                                 <div className="w-16 h-16 bg-blue-200 rounded-lg overflow-hidden">
                                     <div className="w-full h-full bg-gradient-to-br from-blue-300 to-green-300 relative">
-                                        <div className="absolute inset-2 bg-blue-400 rounded opacity-60"></div>
+                                        <div className="absolute inset-2 bg-blue-400 rounded opacity-60" />
                                     </div>
                                 </div>
 
@@ -217,7 +230,7 @@ export function HeroSection({ pathname, showBreadcrumbs = true, prevBeach, nextB
             </div>
 
             {/* Spacer to account for overlapping cards */}
-            <div className="h-32"></div>
+            <div className="h-32" />
         </div>
     );
 }

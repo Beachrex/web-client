@@ -1,8 +1,8 @@
-"use client";
-import { Button } from "flowbite-react";
-import Image from "next/image";
-import React, { useState } from "react";
-import { FiFilter } from "react-icons/fi";
+'use client';
+import { Button } from 'flowbite-react';
+import Image from 'next/image';
+import React, { useState } from 'react';
+
 
 interface CategoryItem {
   id: string;
@@ -17,114 +17,114 @@ const BeachCategorySearch: React.FC = () => {
   // Beach categories with icons (Figma)
   const categories: CategoryItem[] = [
     {
-      id: "pescene",
-      icon: "/images/categories/sand-castle.png",
-      label: "Peščene plaže",
+      id: 'pescene',
+      icon: '/images/categories/sand-castle.png',
+      label: 'Peščene plaže',
     },
     {
-      id: "kamene",
-      icon: "/images/categories/stones.png",
-      label: "Kamnite plaže",
+      id: 'kamene',
+      icon: '/images/categories/stones.png',
+      label: 'Kamnite plaže',
     },
     {
-      id: "travnate",
-      icon: "/images/categories/grass-beach.png",
-      label: "Travnate plaže",
+      id: 'travnate',
+      icon: '/images/categories/grass-beach.png',
+      label: 'Travnate plaže',
     },
     {
-      id: "bazen",
-      icon: "/images/categories/swimming-pool.png",
-      label: "Bazen",
+      id: 'bazen',
+      icon: '/images/categories/swimming-pool.png',
+      label: 'Bazen',
     },
     {
-      id: "naravna-senca",
-      icon: "/images/categories/tree.png",
-      label: "Naravna senca",
+      id: 'naravna-senca',
+      icon: '/images/categories/tree.png',
+      label: 'Naravna senca',
     },
     {
-      id: "tobogani",
-      icon: "/images/categories/water-slide.png",
-      label: "Tobogani",
+      id: 'tobogani',
+      icon: '/images/categories/water-slide.png',
+      label: 'Tobogani',
     },
     {
-      id: "plaze-z-igrali",
-      icon: "/images/categories/slider.png",
-      label: "Plaže z igrali",
+      id: 'plaze-z-igrali',
+      icon: '/images/categories/slider.png',
+      label: 'Plaže z igrali',
     },
     {
-      id: "plaze-za-zabavo",
-      icon: "/images/categories/dance.png",
-      label: "Plaže za zabavo",
+      id: 'plaze-za-zabavo',
+      icon: '/images/categories/dance.png',
+      label: 'Plaže za zabavo',
     },
     {
-      id: "plaze-z-barom",
-      icon: "/images/categories/stall.png",
-      label: "Plaže z barom",
+      id: 'plaze-z-barom',
+      icon: '/images/categories/stall.png',
+      label: 'Plaže z barom',
     },
     {
-      id: "z-sportnim",
-      icon: "/images/categories/tennis-court.png",
-      label: "Z športnim igriščem",
+      id: 'z-sportnim',
+      icon: '/images/categories/tennis-court.png',
+      label: 'Z športnim igriščem',
     },
     {
-      id: "plaze-s-parking",
-      icon: "/images/categories/parking.png",
-      label: "Plaže s parkiriščem",
+      id: 'plaze-s-parking',
+      icon: '/images/categories/parking.png',
+      label: 'Plaže s parkiriščem',
     },
     {
-      id: "parking-blizu",
-      icon: "/images/categories/path.png",
-      label: "Parkirišče blizu",
+      id: 'parking-blizu',
+      icon: '/images/categories/path.png',
+      label: 'Parkirišče blizu',
     },
     {
-      id: "avtokamp",
-      icon: "/images/categories/van.png",
-      label: "Avtokamp ob plaži",
+      id: 'avtokamp',
+      icon: '/images/categories/van.png',
+      label: 'Avtokamp ob plaži',
     },
     {
-      id: "primerne-za-pse",
-      icon: "/images/categories/pets.png",
-      label: "Primerne za pse",
+      id: 'primerne-za-pse',
+      icon: '/images/categories/pets.png',
+      label: 'Primerne za pse',
     },
     {
-      id: "primerne-za-invalide",
-      icon: "/images/categories/disability.png",
-      label: "Primerne za invalide",
+      id: 'primerne-za-invalide',
+      icon: '/images/categories/disability.png',
+      label: 'Primerne za invalide',
     },
     {
-      id: "naravna-senca2",
-      icon: "/images/categories/tree.png",
-      label: "Naravna senca",
+      id: 'naravna-senca2',
+      icon: '/images/categories/tree.png',
+      label: 'Naravna senca',
     },
     {
-      id: "naravna-senca3",
-      icon: "/images/categories/tree.png",
-      label: "Naravna senca",
+      id: 'naravna-senca3',
+      icon: '/images/categories/tree.png',
+      label: 'Naravna senca',
     },
     {
-      id: "naravna-senca4",
-      icon: "/images/categories/tree.png",
-      label: "Naravna senca",
+      id: 'naravna-senca4',
+      icon: '/images/categories/tree.png',
+      label: 'Naravna senca',
     },
     {
-      id: "naravna-senca5",
-      icon: "/images/categories/tree.png",
-      label: "Naravna senca",
+      id: 'naravna-senca5',
+      icon: '/images/categories/tree.png',
+      label: 'Naravna senca',
     },
     {
-      id: "naravna-senca6",
-      icon: "/images/categories/tree.png",
-      label: "Naravna senca",
+      id: 'naravna-senca6',
+      icon: '/images/categories/tree.png',
+      label: 'Naravna senca',
     },
     {
-      id: "naravna-senca7",
-      icon: "/images/categories/tree.png",
-      label: "Naravna senca",
+      id: 'naravna-senca7',
+      icon: '/images/categories/tree.png',
+      label: 'Naravna senca',
     },
     {
-      id: "naravna-senca8",
-      icon: "/images/categories/tree.png",
-      label: "Naravna senca",
+      id: 'naravna-senca8',
+      icon: '/images/categories/tree.png',
+      label: 'Naravna senca',
     },
   ];
 
@@ -141,10 +141,12 @@ const BeachCategorySearch: React.FC = () => {
   }) => (
     <button
       onClick={() => toggleCategory(category.id)}
-      className={`flex h-20 w-20 flex-col items-center justify-center gap-2 rounded border border-[#E0E0E0] bg-[#F5F5F5] p-2 transition-all duration-200 sm:h-24 sm:w-24 sm:gap-3 sm:p-3 lg:h-[100px] lg:w-[100px] lg:gap-[10px] lg:p-[8px_3px] ${
+      className={'flex h-20 w-20 flex-col items-center justify-center gap-2 rounded border ' +
+        'border-[#E0E0E0] bg-[#F5F5F5] p-2 transition-all duration-200 sm:h-24 sm:w-24 ' +
+        `sm:gap-3 sm:p-3 lg:h-[100px] lg:w-[100px] lg:gap-[10px] lg:p-[8px_3px] ${
         selectedCategories.includes(category.id)
-          ? "border-blue-500 bg-blue-50 text-blue-700"
-          : "text-[#4D4D4D]"
+          ? 'border-blue-500 bg-blue-50 text-blue-700'
+          : 'text-[#4D4D4D]'
       } `}
     >
       {/* Ikona (slika) */}
@@ -237,8 +239,6 @@ const BeachCategorySearch: React.FC = () => {
                       )}
 
 
-
-
                   </div>
 
 
@@ -246,7 +246,7 @@ const BeachCategorySearch: React.FC = () => {
                           {/* Morske plaže */}
                           <button
                               className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
-                              style={{ backgroundColor: "#0069AB" }}
+                              style={{ backgroundColor: '#0069AB' }}
                           >
                               <Image
                                   src="/images/categories/sea-beaches.jpg"
@@ -269,7 +269,7 @@ const BeachCategorySearch: React.FC = () => {
                           {/* Plaže ob jezeru */}
                           <button
                               className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
-                              style={{ backgroundColor: "#4CC07E" }}
+                              style={{ backgroundColor: '#4CC07E' }}
                           >
                               <Image
                                   src="/images/categories/lake-beaches.jpg"
@@ -292,7 +292,7 @@ const BeachCategorySearch: React.FC = () => {
                           {/* Plaže ob reki */}
                           <button
                               className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
-                              style={{ backgroundColor: "#4CC07E" }}
+                              style={{ backgroundColor: '#4CC07E' }}
                           >
                               <Image
                                   src="/images/categories/river-beaches.jpg"
@@ -315,7 +315,7 @@ const BeachCategorySearch: React.FC = () => {
                           {/* Zunanji bazeni */}
                           <button
                               className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
-                              style={{ backgroundColor: "#42D4F4" }}
+                              style={{ backgroundColor: '#42D4F4' }}
                           >
                               <Image
                                   src="/images/categories/bazen.jpg"
@@ -338,7 +338,7 @@ const BeachCategorySearch: React.FC = () => {
                           {/* Pokriti bazeni, terme */}
                           <button
                               className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
-                              style={{ backgroundColor: "#42D4F4" }}
+                              style={{ backgroundColor: '#42D4F4' }}
                           >
                               <Image
                                   src="/images/categories/indoor-pool.jpg"
@@ -360,12 +360,10 @@ const BeachCategorySearch: React.FC = () => {
                       </div>
 
 
-
               </div>
           </section>
 
     <section className="py-12 sm:py-16 lg:py-20">
-
 
 
       {/* Quick Filter Buttons */}
