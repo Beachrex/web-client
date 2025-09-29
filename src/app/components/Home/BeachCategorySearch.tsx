@@ -141,13 +141,13 @@ const BeachCategorySearch: React.FC = () => {
   }) => (
     <button
       onClick={() => toggleCategory(category.id)}
-      className={'flex h-20 w-20 flex-col items-center justify-center gap-2 rounded border ' +
-        'border-[#E0E0E0] bg-[#F5F5F5] p-2 transition-all duration-200 sm:h-24 sm:w-24 ' +
-        `sm:gap-3 sm:p-3 lg:h-[100px] lg:w-[100px] lg:gap-[10px] lg:p-[8px_3px] ${
+      className={`flex aspect-square w-full flex-col items-center justify-center gap-1 rounded border
+                  border-[#E0E0E0] bg-[#F5F5F5] p-1 transition-all duration-200
+                  sm:gap-2 sm:p-2 md:gap-3 md:p-3 lg:gap-[10px] lg:p-[8px_3px] ${
         selectedCategories.includes(category.id)
           ? 'border-blue-500 bg-blue-50 text-blue-700'
           : 'text-[#4D4D4D]'
-      } `}
+      }`}
     >
       {/* Ikona (slika) */}
       <Image
@@ -155,10 +155,14 @@ const BeachCategorySearch: React.FC = () => {
         alt={category.label}
         width={32}
         height={32}
-        className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+        className="h-4 w-4 object-contain sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 xl:h-8 xl:w-8"
       />
       {/* Label */}
-      <div className="text-center text-[8px] font-medium leading-tight sm:text-[10px] sm:leading-tight lg:text-[12px] lg:leading-[100%]">
+      <div
+className="text-center text-[7px] font-medium leading-tight
+                      sm:text-[8px] md:text-[9px] lg:text-[10px] xl:text-[12px]
+                      sm:leading-tight lg:leading-[100%]"
+      >
         {category.label}
       </div>
     </button>
@@ -167,7 +171,10 @@ const BeachCategorySearch: React.FC = () => {
   return (
           <section className="py-12 sm:py-16 lg:py-20">
               <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
-                  <div className="rounded-lg bg-variable-collection-temno-modro text-center pt-16 pb-16 pl-24 pr-24">
+                  <div
+className="rounded-lg bg-variable-collection-temno-modro text-center
+                               px-4 py-8 sm:px-8 sm:py-12 lg:px-16 lg:py-16 xl:px-24"
+                  >
 
                           <h2 className="mb-6 font-[Figtree] text-[30px] font-bold leading-[100%] text-white">
                               Poišči plažo po svojem okusu
@@ -182,7 +189,11 @@ const BeachCategorySearch: React.FC = () => {
                           </p>
                       {/* Category Grid */}
                       {/* Top Row */}
-                      <div className="mb-4 grid grid-cols-3 gap-3 sm:mb-6 sm:grid-cols-4 sm:gap-4 md:grid-cols-5 lg:grid-cols-7 lg:gap-6 xl:grid-cols-11">
+                      <div
+className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
+                                   md:grid-cols-6 md:gap-4 lg:grid-cols-8 lg:gap-5
+                                   xl:grid-cols-10 xl:gap-6 2xl:grid-cols-11"
+                      >
                           {categories.map((category) => (
                               <CategoryButton key={category.id} category={category} />
                           ))}
