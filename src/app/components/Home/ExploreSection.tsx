@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-const TestimonialsSection: React.FC = () => {
+const ExploreSection: React.FC = () => {
   return (
     <section className="bg-white py-12 sm:py-16 lg:py-20">
       <div className="container mx-auto">
@@ -141,4 +141,4 @@ const TestimonialsSection: React.FC = () => {
   );
 };
 
-export default TestimonialsSection;
+export default ExploreSection;

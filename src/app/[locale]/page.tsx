@@ -8,7 +8,7 @@ import WorldMapSection from '@/app/components/Home/WorldMapSection';
 import { fetchFromApi } from '@/app/utils/apiHelper';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import TestimonialsSection from '../components/Home/TestimonialsSection';
+import ExploreSection from '../components/Home/ExploreSection';
 
 interface Counters {
   totalBeaches: number;
@@ -115,7 +115,7 @@ export default function HomePage() {
 
       <AccommodationSection />
       <TopDesinationsSection />
-      <TestimonialsSection />
+      <ExploreSection />
     </>
   );
 }
