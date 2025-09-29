@@ -23,16 +23,16 @@ const WorldMapSection: React.FC = () => {
   // const t = useTranslations("HomePage");
 
   return (
-    <section className="container relative mx-auto mt-[80px] flex h-[569px] w-[1718px] justify-between">
+    <section className="container mx-auto px-4 py-8 md:py-12 lg:py-16 flex flex-col lg:flex-row lg:justify-between items-center gap-8 lg:gap-12">
       {/* Levi blok (tekst + gumb) */}
-      <div className="flex h-[336px] w-[409px] flex-col gap-[40px]">
+      <div className="flex flex-col gap-6 lg:gap-10 w-full lg:w-auto lg:max-w-md xl:max-w-lg">
         {/* Naslov */}
-        <h2 className="font-figtree h-[72px] w-[360px] text-[30px] font-bold leading-[30px] text-variable-collection-temno-modro">
+        <h2 className="font-figtree text-2xl md:text-3xl lg:text-[30px] font-bold leading-tight lg:leading-[30px] text-variable-collection-temno-modro">
           Brskaj po zemljevidu z več kot 1500 plažami
         </h2>
 
         {/* Opis */}
-        <p className="font-figtree text-[17px] font-normal leading-[24px] text-[#4D4D4D]">
+        <p className="font-figtree text-base md:text-lg lg:text-[17px] font-normal leading-relaxed lg:leading-[24px] text-[#4D4D4D]">
           Odkrij najlepše plaže po svetu s pomočjo interaktivnega zemljevida, ki
           vsebuje več kot 1500 čudovitih lokacij. Ne glede na to, ali iščeš
           peščene rajske obale, skrite zalive ali priljubljene destinacije za
@@ -41,7 +41,7 @@ const WorldMapSection: React.FC = () => {
         </p>
 
         {/* Gumb */}
-        <button className="font-figtree flex w-[220px] items-center gap-2 rounded-md bg-variable-collection-temno-modro px-5 py-2.5 text-[14px]  text-white shadow transition hover:bg-[#162f4f]">
+        <button className="font-figtree flex w-full sm:w-auto sm:max-w-[220px] items-center justify-center gap-2 rounded-md bg-variable-collection-temno-modro px-5 py-2.5 text-sm text-white shadow transition hover:bg-[#162f4f]">
           <Image
             src="/images/map.png"
             alt="map icon"
@@ -52,13 +52,15 @@ const WorldMapSection: React.FC = () => {
         </button>
       </div>
 
-      <div className="relative h-[569px] w-[1127px] overflow-hidden">
-        <Image
-          src="/images/worldmap.png"
-          alt="World map"
-          fill
-          className="object-contain"
-        />
+      <div className="relative w-full lg:flex-1 max-w-2xl lg:max-w-none overflow-hidden">
+        <div className="relative aspect-[16/9] lg:aspect-[2/1] w-full">
+          <Image
+            src="/images/worldmap.png"
+            alt="World map"
+            fill
+            className="object-contain"
+          />
+        </div>
       </div>
     </section>
   );
