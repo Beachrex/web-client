@@ -2,6 +2,7 @@
 import { Button } from "flowbite-react";
 import Image from "next/image";
 import React, { useState } from "react";
+import { FiFilter } from "react-icons/fi";
 
 interface CategoryItem {
   id: string;
@@ -188,13 +189,13 @@ const BeachCategorySearch: React.FC = () => {
 
                       {/* Advanced Filters Button */}
                       <div className="flex justify-center">
-                          <Button className="flex items-center justify-center gap-2 rounded-md border border-[#E0E0E0] bg-white px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors duration-200 hover:bg-gray-50 sm:gap-3 sm:px-5 sm:py-3 sm:text-base lg:gap-5 lg:px-6">
+                          <Button className="flex items-center justify-center gap-3 rounded-md border border-[#E0E0E0] bg-white px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors duration-200 hover:bg-gray-50 sm:gap-4 sm:px-5 sm:py-3 sm:text-base lg:gap-5 lg:px-6">
                               <Image
-                                  src="/images/filters.png"
+                                  src="/images/filters-blue.png"
                                   alt="Filtri"
                                   width={20}
                                   height={20}
-                                  className="h-4 w-4 object-contain sm:h-5 sm:w-5"
+                                  className="h-4 w-4 object-contain sm:h-5 sm:w-5 mr-1 sm:mr-2"
                               />
                               Prikaži napredne filtre
                           </Button>
