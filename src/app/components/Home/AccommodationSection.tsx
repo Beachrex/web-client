@@ -4,7 +4,7 @@ import Image from 'next/image';
 const AccommodationSection: React.FC = () => {
   return (
     <section className="py-12 sm:py-16 lg:py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-16 xl:gap-20">
           {/* Text Content */}
           <div className="flex flex-col gap-6 lg:w-1/3 lg:gap-8">

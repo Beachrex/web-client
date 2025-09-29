@@ -170,7 +170,7 @@ className="text-center text-[7px] font-medium leading-tight
 
   return (
           <section className="py-12 sm:py-16 lg:py-20">
-              <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
+              <div className="container mx-auto">
                   <div
 className="rounded-lg bg-variable-collection-temno-modro text-center
                                px-4 py-8 sm:px-8 sm:py-12 lg:px-16 lg:py-16 xl:px-24"

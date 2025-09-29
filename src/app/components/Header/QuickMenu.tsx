@@ -40,7 +40,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
         <div
             className="bg-variable-collection-ultra-light-grey border-t border-b border-variable-collection-light-grey min-h-[61px] flex items-center"
         >
-            <div className="container mx-auto px-2 sm:px-4">
+            <div className="container mx-auto">
 
                 {/* Mobile Layout (< md) */}
                 <div className="md:hidden flex items-center justify-between">

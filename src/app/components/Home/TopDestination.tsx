@@ -53,7 +53,7 @@ const TopDestinationsSection: React.FC = () => {
 
   return (
     <section className="bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
         {/* Header */}
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center lg:mb-12">
           <h2 className="text-2xl font-bold text-[#0A2342] sm:text-3xl lg:text-4xl">

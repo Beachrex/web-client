@@ -5,7 +5,7 @@ import React from 'react';
 const TestimonialsSection: React.FC = () => {
   return (
     <section className="bg-white py-12 sm:py-16 lg:py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
         {/* First row */}
         <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2 lg:gap-8">
           {/* Best beaches card */}

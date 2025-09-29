@@ -18,7 +18,7 @@ const DesktopSearchBar = () => {
 
     return (
         <div className="bg-white shadow-sm py-3 md:py-4 hidden md:flex">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto">
 
                 {/* Tablet Layout (md to lg) */}
                 <div className="lg:hidden flex flex-col space-y-3">
