@@ -165,7 +165,6 @@ const BeachCategorySearch: React.FC = () => {
   );
 
   return (
-      <>
           <section className="py-12 sm:py-16 lg:py-20">
               <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
                   <div className="rounded-lg bg-variable-collection-temno-modro text-center pt-16 pb-16 pl-24 pr-24">
@@ -362,14 +361,6 @@ const BeachCategorySearch: React.FC = () => {
 
               </div>
           </section>
-
-    <section className="py-12 sm:py-16 lg:py-20">
-
-
-      {/* Quick Filter Buttons */}
-
-    </section>
-          </>
   );
 };
 
