@@ -29,8 +29,8 @@ const HeroSection: React.FC = () => {
           {continents.map((c) => (
             <div
               key={c.name}
-              className="flex h-10 cursor-default items-center gap-2 rounded-[10px] bg-[#5E1CA5]
-                         px-2 py-2 sm:h-[54px] sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
+              className="flex h-10 w-10 cursor-default items-center justify-center rounded-[10px] bg-[#5E1CA5]
+                         p-2 sm:h-[54px] sm:w-auto sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
             >
               <Image
                 src={c.icon}
@@ -39,10 +39,7 @@ const HeroSection: React.FC = () => {
                 height={25}
                 className="opacity-100 sm:w-[35px] sm:h-[35px]"
               />
-              <span
-className="font-figtree text-sm font-bold leading-tight text-white
-                             sm:text-[20px] sm:leading-[24px]"
-              >
+              <span className="hidden font-figtree text-[20px] font-bold leading-[24px] text-white sm:block">
                 {c.name}
               </span>
             </div>
