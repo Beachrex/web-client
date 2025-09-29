@@ -1,17 +1,20 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 const continents = [
-  { name: 'Evropa', icon: '/images/continents/evropa.png' },
-  { name: 'Afrika', icon: '/images/continents/africa.png' },
-  { name: 'Azija', icon: '/images/continents/asia.png' },
-  { name: 'Severna Amerika', icon: '/images/continents/north-america.png' },
-  { name: 'Južna Amerika', icon: '/images/continents/south-america.png' },
-  { name: 'Avstralija', icon: '/images/continents/australia.png' },
+  { key: 'europe', icon: '/images/continents/evropa.png' },
+  { key: 'africa', icon: '/images/continents/africa.png' },
+  { key: 'asia', icon: '/images/continents/asia.png' },
+  { key: 'northAmerica', icon: '/images/continents/north-america.png' },
+  { key: 'southAmerica', icon: '/images/continents/south-america.png' },
+  { key: 'australia', icon: '/images/continents/australia.png' },
 ];
 
 const HeroSection: React.FC = () => {
+  const t = useTranslations('HomePage');
+  const tContinents = useTranslations('Continents');
   return (
     <section
       className="relative mx-auto min-h-[500px] w-full max-w-[1928px] bg-cover bg-center
@@ -28,19 +31,19 @@ const HeroSection: React.FC = () => {
         <div className="flex flex-wrap gap-2 sm:gap-[9px]">
           {continents.map((c) => (
             <div
-              key={c.name}
+              key={c.key}
               className="flex h-10 w-10 cursor-default items-center justify-center rounded-[10px] bg-[#5E1CA5]
                          p-2 sm:h-[54px] sm:w-auto sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
             >
               <Image
                 src={c.icon}
-                alt={c.name}
+                alt={tContinents(c.key)}
                 width={25}
                 height={25}
                 className="opacity-100 sm:w-[35px] sm:h-[35px]"
               />
               <span className="hidden font-figtree text-[20px] font-bold leading-[24px] text-white sm:block">
-                {c.name}
+                {tContinents(c.key)}
               </span>
             </div>
           ))}
@@ -56,14 +59,14 @@ className="block text-[40px] font-normal leading-tight
                            sm:text-[80px] sm:leading-tight
                            lg:text-[120px] lg:leading-[110px]"
             >
-              Vse skrbi so
+              {t('heroTitle1')}
             </span>
             <span
 className="block text-[40px] font-normal leading-tight
                           sm:text-[80px] sm:leading-tight
                            lg:text-[120px] lg:leading-[110px]"
             >
-              manjše na plaži!
+              {t('heroTitle2')}
             </span>
           </div>
         </div>
@@ -81,9 +84,9 @@ className="block text-[40px] font-normal leading-tight
                           className="sm:w-[60px] sm:h-[60px]"
                       />
                       <div className="flex flex-col">
-                          <span className="text-xl font-bold sm:text-[32px]">+1500</span>
+                          <span className="text-xl font-bold sm:text-[32px]">{t('beachesCount')}</span>
                           <span className="text-sm font-normal sm:text-[16px]">
-                plaž za raziskovanje
+                {t('beachesLabel')}
               </span>
                       </div>
                   </div>
@@ -98,8 +101,8 @@ className="block text-[40px] font-normal leading-tight
                           className="sm:w-[60px] sm:h-[60px]"
                       />
                       <div className="flex flex-col">
-                          <span className="text-xl font-bold sm:text-[32px]">+250</span>
-                          <span className="text-sm font-normal sm:text-[16px]">plažnih držav</span>
+                          <span className="text-xl font-bold sm:text-[32px]">{t('countriesCount')}</span>
+                          <span className="text-sm font-normal sm:text-[16px]">{t('countriesLabel')}</span>
                       </div>
                   </div>
 
@@ -113,8 +116,8 @@ className="block text-[40px] font-normal leading-tight
                           className="sm:w-[60px] sm:h-[60px]"
                       />
                       <div className="flex flex-col">
-                          <span className="text-xl font-bold sm:text-[32px]">+6250</span>
-                          <span className="text-sm font-normal sm:text-[16px]">namestitev ob plaži</span>
+                          <span className="text-xl font-bold sm:text-[32px]">{t('accommodationsCount')}</span>
+                          <span className="text-sm font-normal sm:text-[16px]">{t('accommodationsLabel')}</span>
                       </div>
                   </div>
               </div>

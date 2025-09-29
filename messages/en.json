@@ -21,7 +21,28 @@
     "beachIslands": "Beach Islands",
     "sweetwaterBeaches": "Sweetwater Beaches",
     "boatOnlyBeaches": "Boat Only Beaches",
-    "searchMap": "Browse the map with over 1500 beaches"
+    "searchMap": "Browse the map with over 1500 beaches",
+    "heroTitle1": "All worries are",
+    "heroTitle2": "smaller on the beach!",
+    "beachesCount": "+1500",
+    "beachesLabel": "beaches to explore",
+    "countriesCount": "+250",
+    "countriesLabel": "beach countries",
+    "accommodationsCount": "+6250",
+    "accommodationsLabel": "beachfront accommodations",
+    "topDestinationsTitle": "Most Beautiful Coastal Destinations in the World",
+    "allCountriesLink": "All countries (69) >",
+    "seaExperiences": "Sea Experiences",
+    "beachSearchTitle": "Find a beach to your taste",
+    "beachSearchDescription": "Looking for the perfect beach? Use advanced filters and quickly find the ideal location! Browse by beach type, sand type, accessibility, popularity, activities, infrastructure and more. Whether you want a quiet corner to relax or a lively beach with numerous water sports, you'll easily find what suits you best.",
+    "advancedFilters": "Advanced Filters",
+    "exploreTagline": "Explore, dream, discover paradise beaches!",
+    "beachesLabel2": "Beaches:",
+    "freshwaterBeaches": "Freshwater Beaches",
+    "lakeBeaches": "Lake Beaches",
+    "riverBeaches": "River Beaches",
+    "outdoorPools": "Outdoor Pools",
+    "indoorPoolsSpas": "Indoor Pools & Spas"
   },
   "Metadata": {
     "title": "BeachRex - Find your perfect beach.",
@@ -55,5 +76,30 @@
     "premiumAccommodations": "Luxury Accommodation in {continent}",
     "bestDeals": "Great Deals",
     "description": "Explore the most beautiful beaches in {continent}."
+  },
+  "FeatureCards": {
+    "bestBeachesTitle": "100 most beautiful beaches in the world",
+    "beachMapButton": "Beach Map",
+    "discoverStoriesTitle": "Discover beach stories and tips",
+    "browseBlogButton": "Browse Blog",
+    "relaxAccommodationTitle": "Relax in comfortable accommodation",
+    "browseAccommodationsButton": "Browse Accommodations",
+    "discoverTasteTitle": "Discover a beach to your taste"
+  },
+  "Destinations": {
+    "croatia": "Croatia",
+    "italy": "Italy",
+    "spain": "Spain",
+    "greece": "Greece",
+    "portugal": "Portugal",
+    "priceFrom": "from 25€"
+  },
+  "Continents": {
+    "europe": "Europe",
+    "africa": "Africa",
+    "asia": "Asia",
+    "northAmerica": "North America",
+    "southAmerica": "South America",
+    "australia": "Australia"
   }
 }

@@ -2,6 +2,7 @@
 import { Button } from 'flowbite-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 
 interface CategoryItem {
@@ -12,6 +13,7 @@ interface CategoryItem {
 }
 
 const BeachCategorySearch: React.FC = () => {
+  const t = useTranslations('HomePage');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   // Beach categories with icons (Figma)
@@ -177,15 +179,10 @@ className="rounded-lg bg-variable-collection-temno-modro text-center
                   >
 
                           <h2 className="mb-6 font-[Figtree] text-[30px] font-bold leading-[100%] text-white">
-                              Poišči plažo po svojem okusu
+                              {t('beachSearchTitle')}
                           </h2>
                           <p className="text-slate-300 mx-auto max-w-4xl font-[Figtree] text-[14px] font-normal leading-[24px] mb-8">
-                              Iščeš popolno plažo? Uporabi napredne filtre in hitro najdi
-                              idealno lokacijo! Brskaj glede na tip plaže, vrsto peska,
-                              dostopnost, priljubljenost, aktivnosti, infrastrukturo in še več.
-                              Ne glede na to, ali si želiš mirnega kotička za sprostitev ali
-                              živahne plaže s številnimi vodnimi športi, boš zlahka našel tisto,
-                              kar ti najbolj ustreza.
+                              {t('beachSearchDescription')}
                           </p>
                       {/* Category Grid */}
                       {/* Top Row */}
@@ -260,7 +257,7 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                           >
                               <Image
                                   src="/images/categories/sea-beaches.jpg"
-                                  alt="Morske plaže background"
+                                  alt={t('seaBeaches')}
                                   fill
                                   className="object-cover opacity-10"
                               />
@@ -272,7 +269,7 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                   height={32}
                   className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
               />
-              Morske plaže
+              {t('seaBeaches')}
             </span>
                           </button>
 
@@ -283,7 +280,7 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                           >
                               <Image
                                   src="/images/categories/lake-beaches.jpg"
-                                  alt="Plaže ob jezeru background"
+                                  alt={t('lakeBeaches')}
                                   fill
                                   className="object-cover opacity-10"
                               />
@@ -295,7 +292,7 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                   height={32}
                   className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
               />
-              Plaže ob jezeru
+              {t('lakeBeaches')}
             </span>
                           </button>
 
@@ -306,7 +303,7 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                           >
                               <Image
                                   src="/images/categories/river-beaches.jpg"
-                                  alt="Plaže ob reki background"
+                                  alt={t('riverBeaches')}
                                   fill
                                   className="object-cover opacity-10"
                               />
@@ -318,7 +315,7 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                   height={32}
                   className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
               />
-              Plaže ob reki
+              {t('riverBeaches')}
             </span>
                           </button>
 
@@ -341,7 +338,7 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                   height={32}
                   className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
               />
-              Zunanji bazeni
+              {t('outdoorPools')}
             </span>
                           </button>
 
@@ -352,7 +349,7 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                           >
                               <Image
                                   src="/images/categories/indoor-pool.jpg"
-                                  alt="Pokriti bazeni background"
+                                  alt={t('indoorPoolsSpas')}
                                   fill
                                   className="object-cover opacity-10"
                               />
@@ -364,7 +361,7 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                   height={32}
                   className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
               />
-              Pokriti bazeni, terme
+              {t('indoorPoolsSpas')}
             </span>
                           </button>
                       </div>

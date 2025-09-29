@@ -3,82 +3,85 @@ import Image from 'next/image';
 import React from 'react';
 import { Carousel } from 'flowbite-react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { useTranslations } from 'next-intl';
 
 interface Destination {
-  name: string;
+  nameKey: string;
   image: string;
   accomodationCount: number;
-  price: string;
+  priceKey: string;
   beachCount: number;
 }
 
 const destinations: Destination[] = [
   {
-    name: 'Hrvaška',
+    nameKey: 'croatia',
     image: '/images/topdestination/croatia.jpg',
     accomodationCount: 5,
-    price: 'od 25€',
+    priceKey: 'priceFrom',
     beachCount: 112,
   },
   {
-    name: 'Italija',
+    nameKey: 'italy',
     image: '/images/topdestination/italy.jpg',
     accomodationCount: 5,
-    price: 'od 25€',
+    priceKey: 'priceFrom',
     beachCount: 112,
   },
   {
-    name: 'Španija',
+    nameKey: 'spain',
     image: '/images/topdestination/spain.jpg',
     accomodationCount: 5,
-    price: 'od 25€',
+    priceKey: 'priceFrom',
     beachCount: 112,
   },
   {
-    name: 'Grčija',
+    nameKey: 'greece',
     image: '/images/topdestination/greece.jpg',
     accomodationCount: 5,
-    price: 'od 25€',
+    priceKey: 'priceFrom',
     beachCount: 112,
   },
   {
-    name: 'Portugalska',
+    nameKey: 'portugal',
     image: '/images/topdestination/portugal.jpg',
     accomodationCount: 5,
-    price: 'od 25€',
+    priceKey: 'priceFrom',
     beachCount: 112,
   },
   {
-    name: 'Italija',
+    nameKey: 'italy',
     image: '/images/topdestination/italy.jpg',
     accomodationCount: 5,
-    price: 'od 25€',
+    priceKey: 'priceFrom',
     beachCount: 112,
   },
   {
-    name: 'Španija',
+    nameKey: 'spain',
     image: '/images/topdestination/spain.jpg',
     accomodationCount: 5,
-    price: 'od 25€',
+    priceKey: 'priceFrom',
     beachCount: 112,
   },
   {
-    name: 'Grčija',
+    nameKey: 'greece',
     image: '/images/topdestination/greece.jpg',
     accomodationCount: 5,
-    price: 'od 25€',
+    priceKey: 'priceFrom',
     beachCount: 112,
   },
   {
-    name: 'Portugalska',
+    nameKey: 'portugal',
     image: '/images/topdestination/portugal.jpg',
     accomodationCount: 5,
-    price: 'od 25€',
+    priceKey: 'priceFrom',
     beachCount: 112,
   },
 ];
 
 const TopDestinationsSection: React.FC = () => {
+  const t = useTranslations('HomePage');
+  const tDestinations = useTranslations('Destinations');
   const allDestinations = [...destinations];
 
   // Create slides - each slide will show multiple cards based on screen size
@@ -98,21 +101,21 @@ const TopDestinationsSection: React.FC = () => {
   // Render destination card
   const renderDestinationCard = (d: typeof destinations[0], idx: number) => (
     <div
-      key={`${d.name}-${idx}`}
+      key={`${tDestinations(d.nameKey)}-${idx}`}
       className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
     >
       {/* Image */}
       <div className="relative h-48 w-full sm:h-56 lg:h-48 xl:h-56">
         <Image
           src={d.image}
-          alt={d.name}
+          alt={tDestinations(d.nameKey)}
           fill
           className="object-cover"
         />
 
         {/* Badge */}
         <div className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-[#0A2342] sm:text-sm">
-          Morska doživetja
+          {t('seaExperiences')}
         </div>
 
         {/* Info row - Hidden on mobile, shown on larger screens */}
@@ -126,7 +129,7 @@ const TopDestinationsSection: React.FC = () => {
               height={16}
             />
             <span className="text-xs font-medium">
-              {d.accomodationCount} | {d.price}
+              {d.accomodationCount} | {tDestinations(d.priceKey)}
             </span>
           </div>
 
@@ -155,7 +158,7 @@ const TopDestinationsSection: React.FC = () => {
             height={24}
             className="sm:h-8 sm:w-8"
           />
-          <span className="text-lg font-bold text-[#0A2342] sm:text-xl">{d.name}</span>
+          <span className="text-lg font-bold text-[#0A2342] sm:text-xl">{tDestinations(d.nameKey)}</span>
         </div>
         <Image
           src="/images/topdestination/icon.png"
@@ -176,7 +179,7 @@ const TopDestinationsSection: React.FC = () => {
             height={16}
           />
           <span className="text-xs font-medium">
-            {d.accomodationCount} | {d.price}
+            {d.accomodationCount} | {tDestinations(d.priceKey)}
           </span>
         </div>
         <div className="flex flex-1 items-center justify-center gap-1 rounded bg-[#0069AB] px-2 py-2 text-white">
@@ -187,7 +190,7 @@ const TopDestinationsSection: React.FC = () => {
             height={16}
           />
           <span className="text-xs font-medium">
-            Plaže: {d.beachCount}
+            {t('beachesLabel2')} {d.beachCount}
           </span>
         </div>
       </div>
@@ -200,13 +203,13 @@ const TopDestinationsSection: React.FC = () => {
         {/* Header */}
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center lg:mb-12">
           <h2 className="text-2xl font-bold text-[#0A2342] sm:text-3xl lg:text-4xl">
-            Najlepše obalne destinacije sveta
+            {t('topDestinationsTitle')}
           </h2>
           <a
             href="#"
             className="text-sm font-medium text-[#0A2342] hover:underline sm:text-base"
           >
-            Vse države (69) &gt;
+            {t('allCountriesLink')}
           </a>
         </div>
 
