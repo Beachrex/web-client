@@ -42,7 +42,14 @@
     "lakeBeaches": "Jezerske plaže",
     "riverBeaches": "Rečne plaže",
     "outdoorPools": "Zunanji bazeni",
-    "indoorPoolsSpas": "Pokriti bazeni, terme"
+    "indoorPoolsSpas": "Pokriti bazeni, terme",
+    "worldMapTitle": "Brskaj po zemljevidu z več kot 1500 plažami",
+    "worldMapDescription": "Odkrij najlepše plaže po svetu s pomočjo interaktivnega zemljevida, ki vsebuje več kot 1500 čudovitih lokacij. Ne glede na to, ali iščeš peščene rajske obale, skrite zalive ali priljubljene destinacije za deskanje, boš našel popolno plažo zase. Preveri opise, ocene in fotografije ter načrtuj svojo naslednjo sanjsko avanturo ob morju!",
+    "viewBeachMapButton": "Poglej zemljevid plaž",
+    "accommodationTitle": "Odpočij si v udobni plažni nastanitvi",
+    "accommodationDescription": "Doživi popolno sprostitev v nastanitvi tik ob morju! Izberi med luksuznimi letovišči, prikupnimi bungalovi ali apartmaji s pogledom na valove. Ne glede na tvoj slog potovanja te čaka udobje, bližina plaže in nepozabno doživetje ob morski obali.",
+    "browseAccommodationsButton": "Brskaj po nastanitvah",
+    "moreAccommodations": "+More Accommodations"
   },
   "Metadata": {
     "title": "BeachRex - Najdi svojo popolno plažo.",

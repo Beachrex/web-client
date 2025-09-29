@@ -1,7 +1,9 @@
 'use client';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 const AccommodationSection: React.FC = () => {
+  const t = useTranslations('HomePage');
   return (
     <section className="py-12 sm:py-16 lg:py-20">
       <div className="container mx-auto">
@@ -10,15 +12,12 @@ const AccommodationSection: React.FC = () => {
           <div className="flex flex-col gap-6 lg:w-1/3 lg:gap-8">
             {/* Title */}
             <h2 className="text-2xl font-bold leading-tight text-[#003366] sm:text-3xl lg:text-4xl">
-              Odpočij si v udobni plažni nastanitvi
+              {t('accommodationTitle')}
             </h2>
 
             {/* Content */}
             <p className="text-sm leading-relaxed text-[#4D4D4D] sm:text-base lg:text-lg">
-              Doživi popolno sprostitev v nastanitvi tik ob morju! Izberi med
-              luksuznimi letovišči, prikupnimi bungalovi ali apartmaji s pogledom na
-              valove. Ne glede na tvoj slog potovanja te čaka udobje, bližina plaže
-              in nepozabno doživetje ob morski obali.
+              {t('accommodationDescription')}
             </p>
 
             {/* Button */}
@@ -30,7 +29,7 @@ const AccommodationSection: React.FC = () => {
                 height={20}
                 className="object-contain"
               />
-              Brskaj po nastanitvah
+              {t('browseAccommodationsButton')}
             </button>
           </div>
 
@@ -189,7 +188,7 @@ const AccommodationSection: React.FC = () => {
                   />
                   <div className="flex-1 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
                     <span className="text-blue-600 font-semibold text-center px-4">
-                      +More Accommodations
+                      {t('moreAccommodations')}
                     </span>
                   </div>
                 </div>

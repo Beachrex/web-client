@@ -1,9 +1,7 @@
 'use client';
-// Removed unused imports to fix lint warnings
-// import { useTranslations } from "next-intl";
-// import dynamic from "next/dynamic";
 import React from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 // Commented out unused dynamic import to fix lint warning
 // const HomeWorldMap = dynamic(
@@ -19,8 +17,7 @@ import Image from 'next/image';
 // );
 
 const WorldMapSection: React.FC = () => {
-  // Commented out unused translation hook to fix lint warning
-  // const t = useTranslations("HomePage");
+  const t = useTranslations('HomePage');
 
   return (
       <section className="py-12 sm:py-16 lg:py-20">
@@ -30,16 +27,12 @@ const WorldMapSection: React.FC = () => {
                   <div className="flex flex-col gap-6 lg:w-1/3 lg:gap-8">
                       {/* Title */}
                       <h2 className="text-2xl font-bold leading-tight text-[#003366] sm:text-3xl lg:text-4xl">
-                          Brskaj po zemljevidu z več kot 1500 plažami
+                          {t('worldMapTitle')}
                       </h2>
 
                       {/* Content */}
                       <p className="text-sm leading-relaxed text-[#4D4D4D] sm:text-base lg:text-lg">
-                          Odkrij najlepše plaže po svetu s pomočjo interaktivnega zemljevida, ki
-                          vsebuje več kot 1500 čudovitih lokacij. Ne glede na to, ali iščeš
-                          peščene rajske obale, skrite zalive ali priljubljene destinacije za
-                          deskanje, boš našel popolno plažo zase. Preveri opise, ocene in
-                          fotografije ter načrtuj svojo naslednjo sanjsko avanturo ob morju!
+                          {t('worldMapDescription')}
                       </p>
 
                       {/* Button */}
@@ -50,7 +43,7 @@ const WorldMapSection: React.FC = () => {
                               width={20}
                               height={20}
                           />
-                          Poglej zemljevid plaž
+                          {t('viewBeachMapButton')}
                       </button>
                   </div>
 

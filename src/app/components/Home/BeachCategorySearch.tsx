@@ -308,15 +308,15 @@ className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3
                                   className="object-cover opacity-10"
                               />
                               <span className="relative z-10 flex items-center gap-2 sm:gap-3">
-              <Image
-                  src="/images/categories/reka.png"
-                  alt="River icon"
-                  width={32}
-                  height={32}
-                  className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
-              />
-              {t('riverBeaches')}
-            </span>
+                                  <Image
+                                      src="/images/categories/reka.png"
+                                      alt="River icon"
+                                      width={32}
+                                      height={32}
+                                      className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                                  />
+                                  {t('riverBeaches')}
+                              </span>
                           </button>
 
                           {/* Zunanji bazeni */}

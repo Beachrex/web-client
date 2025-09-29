@@ -42,7 +42,14 @@
     "lakeBeaches": "Lake Beaches",
     "riverBeaches": "River Beaches",
     "outdoorPools": "Outdoor Pools",
-    "indoorPoolsSpas": "Indoor Pools & Spas"
+    "indoorPoolsSpas": "Indoor Pools & Spas",
+    "worldMapTitle": "Browse the map with over 1500 beaches",
+    "worldMapDescription": "Discover the most beautiful beaches around the world with an interactive map containing over 1500 stunning locations. Whether you're looking for sandy paradise shores, hidden coves, or popular surfing destinations, you'll find the perfect beach for you. Check descriptions, ratings, and photos to plan your next dream seaside adventure!",
+    "viewBeachMapButton": "View Beach Map",
+    "accommodationTitle": "Relax in comfortable beachfront accommodation",
+    "accommodationDescription": "Experience perfect relaxation in accommodation right by the sea! Choose from luxury resorts, charming bungalows, or apartments with ocean views. Regardless of your travel style, comfort, beach proximity, and an unforgettable seaside experience await you.",
+    "browseAccommodationsButton": "Browse Accommodations",
+    "moreAccommodations": "+More Accommodations"
   },
   "Metadata": {
     "title": "BeachRex - Find your perfect beach.",
