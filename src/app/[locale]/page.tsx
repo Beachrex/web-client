@@ -8,8 +8,8 @@ import WorldMapSection from '@/app/components/Home/WorldMapSection';
 import { fetchFromApi } from '@/app/utils/apiHelper';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
+import BeachMediaSection from '../components/Home/BeachMediaSection';
 import ExploreSection from '../components/Home/ExploreSection';
-
 interface Counters {
   totalBeaches: number;
   totalCountries: number;
@@ -64,9 +64,10 @@ export default function HomePage() {
       <HeroSection />
       {/* World Map Section */}
       <WorldMapSection />
+
       {/* Beach Category Search Section */}
       <BeachCategorySearch />
-
+      <BeachMediaSection />
       {/* Statistics Section */}
       <section className="bg-gray-400 py-8 sm:py-12 lg:py-16">
         <div className="container mx-auto">
@@ -79,32 +80,60 @@ export default function HomePage() {
           {counters ? (
             <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:gap-8">
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('allBeaches')}</h3>
-                <div className="text-base text-white/90 sm:text-lg">{counters.totalBeaches}</div>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">
+                  {t('allBeaches')}
+                </h3>
+                <div className="text-base text-white/90 sm:text-lg">
+                  {counters.totalBeaches}
+                </div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('beachCountries')}</h3>
-                <div className="text-base text-white/90 sm:text-lg">{counters.totalCountries}</div>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">
+                  {t('beachCountries')}
+                </h3>
+                <div className="text-base text-white/90 sm:text-lg">
+                  {counters.totalCountries}
+                </div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('beachContinents')}</h3>
-                <div className="text-base text-white/90 sm:text-lg">{counters.totalContinents}</div>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">
+                  {t('beachContinents')}
+                </h3>
+                <div className="text-base text-white/90 sm:text-lg">
+                  {counters.totalContinents}
+                </div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('seaBeaches')}</h3>
-                <div className="text-base text-white/90 sm:text-lg">{counters.seaBeaches}</div>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">
+                  {t('seaBeaches')}
+                </h3>
+                <div className="text-base text-white/90 sm:text-lg">
+                  {counters.seaBeaches}
+                </div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('beachIslands')}</h3>
-                <div className="text-base text-white/90 sm:text-lg">{counters.islandsCount}</div>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">
+                  {t('beachIslands')}
+                </h3>
+                <div className="text-base text-white/90 sm:text-lg">
+                  {counters.islandsCount}
+                </div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('sweetwaterBeaches')}</h3>
-                <div className="text-base text-white/90 sm:text-lg">{counters.sweetwaterBeaches}</div>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">
+                  {t('sweetwaterBeaches')}
+                </h3>
+                <div className="text-base text-white/90 sm:text-lg">
+                  {counters.sweetwaterBeaches}
+                </div>
               </div>
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
-                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">{t('boatOnlyBeaches')}</h3>
-                <div className="text-base text-white/90 sm:text-lg">{counters.boatOnlyBeaches}</div>
+                <h3 className="text-lg font-bold text-white sm:text-xl lg:text-2xl">
+                  {t('boatOnlyBeaches')}
+                </h3>
+                <div className="text-base text-white/90 sm:text-lg">
+                  {counters.boatOnlyBeaches}
+                </div>
               </div>
             </div>
           ) : (
