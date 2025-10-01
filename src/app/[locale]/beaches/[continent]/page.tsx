@@ -208,12 +208,12 @@ const Page = async ({ params }: PageProps) => {
             <Banner
                 pathname={pathname}
                 prevBeach={{
-                    name: 'Istria',
-                    url: '/beaches/europe/istria',
+                    name: 'Africa',
+                    url: '/beaches/africa',
                 }}
                 nextBeach={{
-                    name: 'Dalmatia',
-                    url: '/beaches/europe/dalmatia',
+                    name: 'Asia',
+                    url: '/beaches/europe/asia',
                 }}
             />
             <PropertySection
