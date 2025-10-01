@@ -76,7 +76,6 @@ export default function HomePage() {
               {error}
             </div>
           )}
-
           {counters ? (
             <div className="grid grid-cols-1 gap-4 text-center sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:gap-8">
               <div className="flex flex-col items-center justify-center rounded-xl bg-white/10 p-3 transition-colors hover:bg-white/20 sm:p-4">
