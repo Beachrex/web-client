@@ -2,19 +2,12 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
-
-const continents = [
-  { key: 'europe', icon: '/images/continents/evropa.png' },
-  { key: 'africa', icon: '/images/continents/africa.png' },
-  { key: 'asia', icon: '/images/continents/asia.png' },
-  { key: 'northAmerica', icon: '/images/continents/north-america.png' },
-  { key: 'southAmerica', icon: '/images/continents/south-america.png' },
-  { key: 'australia', icon: '/images/continents/australia.png' },
-];
+import { useContinents } from '@/app/hooks/useContinents';
 
 const HeroSection: React.FC = () => {
   const t = useTranslations('HomePage');
   const tContinents = useTranslations('Continents');
+  const { continents, loading, error } = useContinents();
   return (
     <section
       className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] bg-cover bg-center sm:h-[700px] lg:h-[798px]"
@@ -27,23 +20,49 @@ const HeroSection: React.FC = () => {
       <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-6 lg:p-8">
         {/* Top section - Continents buttons */}
         <div className="flex flex-wrap gap-2 sm:gap-[9px]">
-          {continents.map((c) => (
-            <div
-              key={c.key}
-              className="flex h-10 w-10 cursor-default items-center justify-center rounded-[10px] bg-[#5E1CA5] p-2 sm:h-[54px] sm:w-auto sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
-            >
-              <Image
-                src={c.icon}
-                alt={tContinents(c.key)}
-                width={25}
-                height={25}
-                className="opacity-100 sm:h-[35px] sm:w-[35px]"
-              />
-              <span className="hidden font-figtree text-[20px] font-bold leading-[24px] text-white sm:block">
-                {tContinents(c.key)}
-              </span>
+          {loading ? (
+            // Loading skeleton
+            Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="flex h-10 w-10 animate-pulse items-center justify-center rounded-[10px] bg-gray-300 p-2 sm:h-[54px] sm:w-auto sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
+              >
+                <div className="h-[25px] w-[25px] rounded bg-gray-400 sm:h-[35px] sm:w-[35px]" />
+                <div className="hidden h-[24px] w-[80px] rounded bg-gray-400 sm:block" />
+              </div>
+            ))
+          ) : error ? (
+            // Error state - show fallback message
+            <div className="text-white text-sm">
+              {error}
             </div>
-          ))}
+          ) : (
+            // Render continents from API
+            continents.map((c) => (
+              <div
+                key={c.key}
+                className="flex h-10 w-10 cursor-default items-center justify-center rounded-[10px] bg-[#5E1CA5] p-2 sm:h-[54px] sm:w-auto sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
+                title={`${tContinents(c.key)} - ${c.beaches_count} beaches`}
+              >
+                <Image
+                  src={c.icon}
+                  alt={tContinents(c.key)}
+                  width={25}
+                  height={25}
+                  className="opacity-100 sm:h-[35px] sm:w-[35px]"
+                />
+                <span className="hidden font-figtree text-[20px] font-bold leading-[24px] text-white sm:block">
+                  {tContinents(c.key)}
+                </span>
+                {/* Optional: Show beach count as a small badge */}
+                {c.beaches_count > 0 && (
+                  <span className="hidden text-xs text-white/80 sm:block">
+                    ({c.beaches_count})
+                  </span>
+                )}
+              </div>
+            ))
+          )}
         </div>
 
         <div className="container ml-0 mr-auto pl-[4%]">
