@@ -42,7 +42,7 @@ const HeroSection: React.FC = () => {
               <div
                 key={c.key}
                 className="flex h-10 w-10 cursor-default items-center justify-center rounded-[10px] bg-[#5E1CA5] p-2 sm:h-[54px] sm:w-auto sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
-                title={`${tContinents(c.key)} - ${c.beaches_count} beaches`}
+                title={`${tContinents(c.key)} - ${tContinents('num_of_beaches')}: ${c.beaches_count}`}
               >
                 <Image
                   src={c.icon}

@@ -128,6 +128,7 @@
     "asia": "Asia",
     "northAmerica": "North America",
     "southAmerica": "South America",
-    "australia": "Australia"
+    "australia": "Australia",
+    "num_of_beaches": "Num. of beaches"
   }
 }
