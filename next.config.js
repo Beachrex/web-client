@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   // Fix for multiple lockfiles warning
   outputFileTracingRoot: process.cwd(),
+  // Transpile flowbite-react to fix module resolution issues
+  transpilePackages: ['flowbite-react'],
   images: {
     remotePatterns: [
       {
@@ -40,6 +42,16 @@ const nextConfig = {
         tls: false,
       };
     }
+
+    // Handle flowbite-react module resolution
+    config.module.rules.push({
+      test: /\.m?js$/,
+      type: 'javascript/auto',
+      resolve: {
+        fullySpecified: false,
+      },
+    });
+
     return config;
   },
   // async rewrites() {

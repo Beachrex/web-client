@@ -4,6 +4,7 @@ import React from 'react';
 import { Carousel } from 'flowbite-react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { useTranslations } from 'next-intl';
+import { useCountries } from '@/app/hooks/useCountries';
 
 interface Destination {
   nameKey: string;
@@ -13,76 +14,13 @@ interface Destination {
   beachCount: number;
 }
 
-const destinations: Destination[] = [
-  {
-    nameKey: 'croatia',
-    image: '/images/topdestination/croatia.jpg',
-    accomodationCount: 5,
-    priceKey: 'priceFrom',
-    beachCount: 112,
-  },
-  {
-    nameKey: 'italy',
-    image: '/images/topdestination/italy.jpg',
-    accomodationCount: 5,
-    priceKey: 'priceFrom',
-    beachCount: 112,
-  },
-  {
-    nameKey: 'spain',
-    image: '/images/topdestination/spain.jpg',
-    accomodationCount: 5,
-    priceKey: 'priceFrom',
-    beachCount: 112,
-  },
-  {
-    nameKey: 'greece',
-    image: '/images/topdestination/greece.jpg',
-    accomodationCount: 5,
-    priceKey: 'priceFrom',
-    beachCount: 112,
-  },
-  {
-    nameKey: 'portugal',
-    image: '/images/topdestination/portugal.jpg',
-    accomodationCount: 5,
-    priceKey: 'priceFrom',
-    beachCount: 112,
-  },
-  {
-    nameKey: 'italy',
-    image: '/images/topdestination/italy.jpg',
-    accomodationCount: 5,
-    priceKey: 'priceFrom',
-    beachCount: 112,
-  },
-  {
-    nameKey: 'spain',
-    image: '/images/topdestination/spain.jpg',
-    accomodationCount: 5,
-    priceKey: 'priceFrom',
-    beachCount: 112,
-  },
-  {
-    nameKey: 'greece',
-    image: '/images/topdestination/greece.jpg',
-    accomodationCount: 5,
-    priceKey: 'priceFrom',
-    beachCount: 112,
-  },
-  {
-    nameKey: 'portugal',
-    image: '/images/topdestination/portugal.jpg',
-    accomodationCount: 5,
-    priceKey: 'priceFrom',
-    beachCount: 112,
-  },
-];
-
 const TopDestinationsSection: React.FC = () => {
   const t = useTranslations('HomePage');
   const tDestinations = useTranslations('Destinations');
-  const allDestinations = [...destinations];
+  const { countries, loading, error } = useCountries();
+
+  // Use API data directly
+  const allDestinations = countries;
 
   // Create slides - each slide will show multiple cards based on screen size
   const createSlides = () => {
@@ -99,7 +37,7 @@ const TopDestinationsSection: React.FC = () => {
   const slides = createSlides();
 
   // Render destination card
-  const renderDestinationCard = (d: typeof destinations[0], idx: number) => (
+  const renderDestinationCard = (d: Destination, idx: number) => (
     <div
       key={`${tDestinations(d.nameKey)}-${idx}`}
       className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
@@ -209,27 +147,53 @@ const TopDestinationsSection: React.FC = () => {
             href="#"
             className="text-sm font-medium text-[#0A2342] hover:underline sm:text-base"
           >
-            {t('allCountriesLink')}
+            {loading ? t('loading') : t('allCountriesCount', { count: countries.length })}
           </a>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="h-[350px] flex items-center justify-center">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 w-full">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="animate-pulse">
+                  <div className="bg-gray-300 h-48 w-full rounded-lg mb-4" />
+                  <div className="bg-gray-300 h-4 w-3/4 rounded mb-2" />
+                  <div className="bg-gray-300 h-4 w-1/2 rounded" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !loading && countries.length === 0 && (
+          <div className="h-[350px] flex items-center justify-center">
+            <div className="text-center">
+              <p className="text-red-600 mb-4">Error loading destinations: {error}</p>
+              <p className="text-gray-600">Please try again later</p>
+            </div>
+          </div>
+        )}
+
         {/* Flowbite Carousel */}
-        <div className="h-[350px]">
-          <Carousel
-            leftControl={
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg hover:bg-gray-50 transition-colors">
-                <HiChevronLeft className="h-5 w-5 text-gray-600" />
-              </div>
-            }
-            rightControl={
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg hover:bg-gray-50 transition-colors">
-                <HiChevronRight className="h-5 w-5 text-gray-600" />
-              </div>
-            }
-            indicators={true}
-            slide={false}
-            className="pb-8"
-          >
+        {!loading && countries.length > 0 && (
+          <div className="h-[350px]">
+            <Carousel
+              leftControl={
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg hover:bg-gray-50 transition-colors">
+                  <HiChevronLeft className="h-5 w-5 text-gray-600" />
+                </div>
+              }
+              rightControl={
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg hover:bg-gray-50 transition-colors">
+                  <HiChevronRight className="h-5 w-5 text-gray-600" />
+                </div>
+              }
+              indicators={true}
+              slide={false}
+              className="pb-8"
+            >
             {slides.map((slideDestinations, slideIdx) => (
               <div key={`slide-${slideIdx}`} className="px-0">
                 {/* Responsive grid layout */}
@@ -239,7 +203,8 @@ const TopDestinationsSection: React.FC = () => {
               </div>
             ))}
           </Carousel>
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
