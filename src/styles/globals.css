@@ -67,7 +67,9 @@ div[style*="background-image"] {
   -webkit-transform: translateZ(0) !important;
   transform: translateZ(0) !important;
 }
-
+.container{
+    padding: 0 5px;
+}
 /* Leaflet Map Fixes */
 #map {
   height: 100%;
