@@ -129,5 +129,42 @@
     "southAmerica": "Južna Amerika",
     "australia": "Avstralija",
     "num_of_beaches": "Št. plaž"
-  }
+  },
+  "PropertySection": {
+    "allBeachesLink": "Vse plaže ({count})",
+    "viewAllPropertiesButton": "Poglej vse nastanitve"
+  },
+  "SearchEurope": {
+    "title": "Podrobneje preglej Evropo",
+    "viewBeachMap": "Poglej zemljevid plaž"
+  },
+  "SearchBeach": {
+    "title": "Brskaj po vseh plažah Evrope",
+    "filterButton": "Filtriraj",
+    "mapButton": "Prikaži zemljevid",
+    "displayLabel": "Prikaz plaže:",
+    "sortPopular": "Najbolj popularne",
+    "sortNewest": "Najnovejše",
+    "sortTopRated": "Najbolje ocenjene",
+    "prevPage": "Nazaj",
+    "nextPage": "Naprej"
+  },
+  "BannerSection": {
+    "categoryLabel": "regija",
+    "badgeFestival": "Festival Črna ovca",
+    "badgeWine": "Vino Žlahtina",
+    "badgeLamb": "Krški jagenjček",
+    "cardHistoryTitle": "Zgodovina",
+    "cardCuisineTitle": "Kulinarika",
+    "cardCultureTitle": "Kultura",
+    "cardSightsTitle": "Znamenitosti",
+    "readMore": "Preberi več >"
+  },
+  "TopBar": {
+  "continentLabel": "Kontinent",
+  "continentName": "Evropa",
+  "numBeachesLabel": "št. plaž:",
+  "numAccommodationsLabel": "št. nastanitev:"
+}
+
 }

@@ -53,11 +53,10 @@
     "browseAccommodationsButton": "Browse Accommodations",
     "moreAccommodations": "+More Accommodations",
     "beachMediaTitle": "See beaches in all views",
-"beachMediaGallery": "Photo Gallery",
-"beachMediaVideo": "Video",
-"beachMedia360": "360° View",
-"beachMediaLiveCam": "Live Cam"
-
+    "beachMediaGallery": "Photo Gallery",
+    "beachMediaVideo": "Video",
+    "beachMedia360": "360° View",
+    "beachMediaLiveCam": "Live Cam"
   },
   "Metadata": {
     "title": "BeachRex - Find your perfect beach.",
@@ -130,5 +129,41 @@
     "southAmerica": "South America",
     "australia": "Australia",
     "num_of_beaches": "Num. of beaches"
+  },
+  "PropertySection": {
+    "allBeachesLink": "All beaches ({count})",
+    "viewAllPropertiesButton": "View all properties"
+  },
+  "SearchEurope": {
+    "title": "Explore Europe in detail",
+    "viewBeachMap": "View beach map"
+  },
+  "SearchBeach": {
+    "title": "Browse all beaches in Europe",
+    "filterButton": "Filter",
+    "mapButton": "Show map",
+    "displayLabel": "Beach view:",
+    "sortPopular": "Most popular",
+    "sortNewest": "Newest",
+    "sortTopRated": "Top rated",
+    "prevPage": "Previous",
+    "nextPage": "Next"
+  },
+  "BannerSection": {
+    "categoryLabel": "region",
+    "badgeFestival": "Crna Ovca Festival",
+    "badgeWine": "Žlahtina Wine",
+    "badgeLamb": "Krk Lamb",
+    "cardHistoryTitle": "History",
+    "cardCuisineTitle": "Cuisine",
+    "cardCultureTitle": "Culture",
+    "cardSightsTitle": "Sights",
+    "readMore": "Read more >"
+  },
+  "TopBar": {
+    "continentLabel": "Continent",
+    "continentName": "Europe",
+    "numBeachesLabel": "Num. of beaches:",
+    "numAccommodationsLabel": "Num. of accommodations:"
   }
 }
