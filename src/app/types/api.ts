@@ -10,6 +10,8 @@ export interface Continent {
   code: string;
   name: string;
   beaches_count: number;
+  icon_path?: string;
+  description?: string;
 }
 
 export interface Country {
@@ -19,6 +21,8 @@ export interface Country {
   iso3: string;
   continent_code: string;
   beaches_count: number;
+  image_path?: string;
+  description?: string;
   continent?: Continent;
 }
 

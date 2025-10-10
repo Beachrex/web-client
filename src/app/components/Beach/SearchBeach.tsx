@@ -4,14 +4,38 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import PropertyCard from '../PropertyCard/PropertyCard';
+import type { Country, Continent } from '@/app/types/api';
 
-const SearchBeach: React.FC = () => {
+interface SearchBeachProps {
+  countries?: Country[];
+  continent?: Continent;
+}
+
+const SearchBeach: React.FC<SearchBeachProps> = ({
+  countries = [],
+  continent,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Testno: 50 kartic
-  const allProperties = Array.from({ length: 50 }, (_, i) => ({
-    id: i + 1,
-  }));
+  // Transform countries to property format for display
+  const allProperties = countries.length > 0
+    ? countries.map((country) => ({
+        id: country.code,
+        image: country.image_path
+          ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${country.image_path}`
+          : '/images/spain.jpg',
+        title: country.full_name || country.name,
+        location: `${country.name}${continent ? `, ${continent.name}` : ''}`,
+        price: Math.floor(Math.random() * 200) + 50, // Mock price until we have real data
+        originalPrice: Math.floor(Math.random() * 100) + 200,
+        rating: 4.0 + Math.random() * 0.9,
+        reviews: Math.floor(Math.random() * 300) + 50,
+        discount: Math.floor(Math.random() * 25) + 10,
+        isFreeBreakfast: Math.random() > 0.5,
+        isFreeCancellation: Math.random() > 0.3,
+        beaches_count: country.beaches_count,
+      }))
+    : Array.from({ length: 16 }, (_, i) => ({ id: i + 1 })); // Fallback mock data
 
   const itemsPerPage = 16; // 4x4 grid
   const totalPages = Math.ceil(allProperties.length / itemsPerPage);

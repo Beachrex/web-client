@@ -2,8 +2,17 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
+import type { Continent } from '@/app/types/api';
 
-const SearchEurope: React.FC = () => {
+interface SearchEuropeProps {
+  continent?: Continent;
+  continentSlug?: string;
+}
+
+const SearchEurope: React.FC<SearchEuropeProps> = ({
+  continent,
+  continentSlug: _continentSlug = 'europe',
+}) => {
   const t = useTranslations('HomePage'); // ali 'ContinentPage' če so prevodi tam
   const tSearch = useTranslations('SearchEurope');
 
@@ -22,7 +31,11 @@ const SearchEurope: React.FC = () => {
         <div className="relative z-10 flex flex-col items-center justify-center gap-10 text-center">
           {/* Title */}
           <h2 className="font-figtree text-[30px] font-bold leading-[100%] text-white">
-            {tSearch('title')}
+            {continent ?
+              tSearch('titleWithContinent', { continent: continent.name }) ||
+              `Explore ${continent.name} Beaches` :
+              tSearch('title') || 'Explore Beautiful Beaches'
+            }
           </h2>
 
           {/* Buttons */}

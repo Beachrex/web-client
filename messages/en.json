@@ -136,6 +136,7 @@
   },
   "SearchEurope": {
     "title": "Explore Europe in detail",
+    "titleWithContinent": "Explore {continent} in detail",
     "viewBeachMap": "View beach map"
   },
   "SearchBeach": {
