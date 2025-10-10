@@ -6,6 +6,7 @@ import InfoCardsSection from './InfoCardsSection';
 import MapWidget from './MapWidget';
 import TopBar from './TopBar';
 import WeatherWidget from './WeatherWidget';
+import type { Continent } from '@/app/types/api';
 
 interface BannerSectionProps {
   image: string; // background slika
@@ -15,9 +16,16 @@ interface BannerSectionProps {
   badges?: { label: string; color?: string; icon?: string }[]; // array badge-ov
   rightWidgets?: React.ReactNode; // vreme, mapa, ipd.
   children?: React.ReactNode; // dodatni custom content
+  continent?: Continent; // continent data for TopBar
+  accommodationCount?: number; // accommodation count for TopBar
 }
 
-const BannerSection: React.FC<BannerSectionProps> = ({ image, title }) => {
+const BannerSection: React.FC<BannerSectionProps> = ({
+  image,
+  title,
+  continent,
+  accommodationCount,
+}) => {
   const t = useTranslations('BannerSection');
 
   // 🔹 Prevedene kartice
@@ -91,7 +99,10 @@ const BannerSection: React.FC<BannerSectionProps> = ({ image, title }) => {
         <div className="relative z-10 flex h-full flex-col p-4 sm:p-6 lg:p-8">
           {/* Top bar */}
           <div>
-            <TopBar />
+            <TopBar
+              continent={continent}
+              accommodationCount={accommodationCount}
+            />
           </div>
 
           <div className="flex flex-1 flex-col justify-center">

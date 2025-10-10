@@ -2,17 +2,34 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
+import type { Continent } from '@/app/types/api';
+import { continentCodeToKey, getContinentIcon } from '@/app/services/continentService';
 
-const TopBar: React.FC = () => {
+interface TopBarProps {
+  continent?: Continent;
+  accommodationCount?: number;
+}
+
+const TopBar: React.FC<TopBarProps> = ({
+  continent,
+  accommodationCount = 0,
+}) => {
   const t = useTranslations('TopBar');
   const tContinent = useTranslations('Continents');
+
+  // Get continent key and icon
+  const continentKey = continent ? continentCodeToKey[continent.code] : 'europe';
+  const continentIcon = continent ? getContinentIcon(continentKey) : '/images/continents/evropa.png';
+  const continentName = continent ? continent.name : tContinent('europe');
+  const beachCount = continent ? continent.beaches_count : 0;
+
   return (
     <div className="flex h-[54px] items-center rounded-[10px]">
       {/* Kontinent ikona */}
       <div className="flex h-full w-[54px] items-center justify-center overflow-hidden rounded-l-[10px] bg-[#5E1CA5]">
         <Image
-          src="/images/continents/evropa.png"
-          alt={tContinent('europe')}
+          src={continentIcon}
+          alt={continentName}
           width={35}
           height={35}
           className="object-contain"
@@ -28,7 +45,7 @@ const TopBar: React.FC = () => {
 
         {/* Naziv kontinenta */}
         <span className="font-figtree text-[30px] font-bold leading-[100%] text-white">
-          {tContinent('europe')}
+          {continentName}
         </span>
 
         {/* Št. plaž */}
@@ -43,7 +60,7 @@ const TopBar: React.FC = () => {
             {t('numBeachesLabel')}
           </span>
           <span className="font-figtree text-[14px] font-bold text-[#5E1CA5]">
-            123
+            {beachCount}
           </span>
         </div>
 
@@ -59,7 +76,7 @@ const TopBar: React.FC = () => {
             {t('numAccommodationsLabel')}
           </span>
           <span className="font-figtree text-[14px] font-bold text-[#5E1CA5]">
-            56
+            {accommodationCount}
           </span>
         </div>
 

@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import Banner from '@/app/components/Beach/Banner';
 import SearchBeach from '@/app/components/Beach/SearchBeach';
-import SearchEurope from '@/app/components/Beach/SearchEurope';
+import SearchContinent from '@/app/components/Beach/SearchContinent';
 import TopDestination from '@/app/components/Home/TopDestination';
 import { PropertySection } from '@/app/components/PropertySection';
 import { continentService } from '@/app/services/continentService';
@@ -222,6 +222,9 @@ const Page = async ({ params }: PageProps) => {
       <>
         <Banner
           pathname={pathname}
+          title={continent.name}
+          continent={continent}
+          accommodationCount={Math.floor(Math.random() * 100) + 20}
           prevBeach={{
             name: prevContinent.name,
             url: `/beaches/${prevSlug}`,
@@ -236,7 +239,7 @@ const Page = async ({ params }: PageProps) => {
           properties={transformedProperties}
         />
 
-        <SearchEurope
+        <SearchContinent
           continent={continent}
           continentSlug={resolvedParams.continent}
         />

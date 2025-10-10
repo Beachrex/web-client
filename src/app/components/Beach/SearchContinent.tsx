@@ -4,17 +4,17 @@ import Image from 'next/image';
 import React from 'react';
 import type { Continent } from '@/app/types/api';
 
-interface SearchEuropeProps {
+interface SearchContinentProps {
   continent?: Continent;
   continentSlug?: string;
 }
 
-const SearchEurope: React.FC<SearchEuropeProps> = ({
+const SearchContinent: React.FC<SearchContinentProps> = ({
   continent,
-  continentSlug: _continentSlug = 'europe',
+  continentSlug: _continentSlug,
 }) => {
-  const t = useTranslations('HomePage'); // ali 'ContinentPage' če so prevodi tam
-  const tSearch = useTranslations('SearchEurope');
+  const t = useTranslations('HomePage');
+  const tSearch = useTranslations('SearchContinent');
 
   return (
     <section className="flex justify-center bg-white py-12 sm:py-16 lg:py-20">
@@ -32,9 +32,8 @@ const SearchEurope: React.FC<SearchEuropeProps> = ({
           {/* Title */}
           <h2 className="font-figtree text-[30px] font-bold leading-[100%] text-white">
             {continent ?
-              tSearch('titleWithContinent', { continent: continent.name }) ||
-              `Explore ${continent.name} Beaches` :
-              tSearch('title') || 'Explore Beautiful Beaches'
+              tSearch('titleWithContinent', { continent: continent.name }) :
+              tSearch('title')
             }
           </h2>
 
@@ -69,4 +68,4 @@ const SearchEurope: React.FC<SearchEuropeProps> = ({
   );
 };
 
-export default SearchEurope;
+export default SearchContinent;
