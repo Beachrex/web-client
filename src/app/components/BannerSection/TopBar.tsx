@@ -37,56 +37,59 @@ const TopBar: React.FC<TopBarProps> = ({
       </div>
 
       {/* Besedilni del */}
-      <div className="flex h-full items-center gap-[10px] rounded-r-[10px] bg-[#5E1CA5] px-[16px]">
-        {/* Kontinent (bel pill) */}
-        <span className="flex items-center justify-center gap-[7px] rounded-full bg-white px-[10px] py-[3px] font-figtree text-[20px] font-bold leading-[100%] text-[#5E1CA5]">
+      <div className="flex h-full items-center gap-[6px] sm:gap-[10px] rounded-r-[10px] bg-[#5E1CA5] px-[8px] sm:px-[16px]">
+        {/* Kontinent (bel pill) - Hidden on mobile */}
+        <span className="hidden md:flex items-center justify-center gap-[7px] rounded-full bg-white px-[10px] py-[3px] font-figtree text-[20px] font-bold leading-[100%] text-[#5E1CA5]">
           {t('continentLabel')}
         </span>
 
-        {/* Naziv kontinenta */}
-        <span className="font-figtree text-[30px] font-bold leading-[100%] text-white">
+        {/* Naziv kontinenta - Hidden on mobile */}
+        <span className="hidden md:block font-figtree text-[30px] font-bold leading-[100%] text-white">
           {continentName}
         </span>
 
         {/* Št. plaž */}
-        <div className="flex h-[41px] items-center gap-[8px] rounded-[6px] bg-white px-[10px]">
+        <div className="flex h-[41px] items-center gap-[4px] sm:gap-[8px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
           <Image
             src="/images/beach-black.png"
             alt={t('numBeachesLabel')}
             width={26}
             height={26}
+            className="w-[20px] h-[20px] sm:w-[26px] sm:h-[26px]"
           />
-          <span className="font-figtree text-[14px] font-medium text-[#222222]">
+          <span className="hidden sm:block font-figtree text-[14px] font-medium text-[#222222]">
             {t('numBeachesLabel')}
           </span>
-          <span className="font-figtree text-[14px] font-bold text-[#5E1CA5]">
+          <span className="font-figtree text-[12px] sm:text-[14px] font-bold text-[#5E1CA5]">
             {beachCount}
           </span>
         </div>
 
         {/* Št. nastanitev */}
-        <div className="flex h-[41px] items-center gap-[8px] rounded-[6px] bg-white px-[10px]">
+        <div className="flex h-[41px] items-center gap-[4px] sm:gap-[8px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
           <Image
             src="/images/accommodation-black.png"
             alt={t('numAccommodationsLabel')}
             width={26}
             height={26}
+            className="w-[20px] h-[20px] sm:w-[26px] sm:h-[26px]"
           />
-          <span className="font-figtree text-[14px] font-medium text-[#222222]">
+          <span className="hidden sm:block font-figtree text-[14px] font-medium text-[#222222]">
             {t('numAccommodationsLabel')}
           </span>
-          <span className="font-figtree text-[14px] font-bold text-[#5E1CA5]">
+          <span className="font-figtree text-[12px] sm:text-[14px] font-bold text-[#5E1CA5]">
             {accommodationCount}
           </span>
         </div>
 
         {/* Filter gumb */}
-        <div className="flex h-[41px] w-[41px] items-center justify-center rounded-[6px] bg-white">
+        <div className="flex h-[41px] w-[35px] sm:w-[41px] items-center justify-center rounded-[6px] bg-white">
           <Image
             src="/images/banner/filter-purple.png"
             alt="filter"
             width={32}
             height={32}
+            className="w-[24px] h-[24px] sm:w-[32px] sm:h-[32px]"
           />
         </div>
       </div>
