@@ -130,7 +130,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
                       key={i}
                       className="flex items-center gap-[4px] sm:gap-[8px] rounded-[14px] sm:rounded-[16px] bg-[#5E1CA5] px-[6px] sm:px-[10px] py-[2px] sm:py-[3px]"
                     >
-                      <img
+                      <Image
                         src={b.icon}
                         alt={b.label}
                         width={16}
@@ -151,7 +151,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
                       key={i}
                       className="flex items-center gap-[4px] sm:gap-[8px] rounded-[14px] sm:rounded-[16px] bg-[#5E1CA5] px-[6px] sm:px-[10px] py-[2px] sm:py-[3px]"
                     >
-                      <img
+                      <Image
                         src={b.icon}
                         alt={b.label}
                         width={16}
