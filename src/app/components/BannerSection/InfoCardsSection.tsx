@@ -26,7 +26,7 @@ const InfoCardsSection: React.FC<InfoCardsSectionProps> = ({ cards }) => {
             className="flex flex-col sm:flex-row h-auto sm:h-[158px] w-full overflow-hidden rounded-[10px] bg-white shadow-md"
           >
             {/* Slika */}
-            <div className="m-[10px] h-[120px] sm:h-[138px] w-full sm:w-[135px] flex-shrink-0 overflow-hidden rounded-[8px]">
+            <div className="mx-[10px] mt-[10px] mb-[5px] sm:m-[10px] h-[120px] sm:h-[138px] w-auto sm:w-[135px] flex-shrink-0 overflow-hidden rounded-[8px]">
               <Image
                 src={card.image}
                 alt={card.title}
@@ -37,7 +37,7 @@ const InfoCardsSection: React.FC<InfoCardsSectionProps> = ({ cards }) => {
             </div>
 
             {/* Vsebina */}
-            <div className="flex flex-col justify-between p-[10px] sm:py-[10px] sm:pr-[10px] sm:pl-0">
+            <div className="flex flex-col justify-between px-[10px] pb-[10px] pt-[5px] sm:py-[10px] sm:pr-[10px] sm:pl-0">
               <div>
                 <h3 className="font-figtree text-[16px] sm:text-[20px] font-bold text-[#5E1CA5]">
                   {card.title}
