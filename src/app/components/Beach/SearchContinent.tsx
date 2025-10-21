@@ -17,8 +17,7 @@ const SearchContinent: React.FC<SearchContinentProps> = ({
   const tSearch = useTranslations('SearchContinent');
 
   return (
-    <section className="flex justify-center bg-white py-16 sm:py-20">
-      <div className="w-full max-w-[1200px] px-4">
+    <section className="container mx-auto justify-center bg-white py-16 sm:py-20">
         <div
           className="relative flex min-h-[300px] items-center justify-center rounded-[20px] bg-cover bg-center"
           style={{
@@ -31,7 +30,7 @@ const SearchContinent: React.FC<SearchContinentProps> = ({
           {/* Content */}
           <div className="relative z-10 flex flex-col items-center justify-center gap-8 px-8 py-12 text-center">
             {/* Title */}
-            <h2 className="font-figtree text-[30px] font-bold leading-[100%] text-white">
+            <h2 className="font-figtree text-[30px] leading-[100%] text-white">
               {continent ?
                 tSearch('titleWithContinent', { continent: continent.name }) :
                 tSearch('title')
@@ -65,7 +64,6 @@ const SearchContinent: React.FC<SearchContinentProps> = ({
             </div>
           </div>
         </div>
-      </div>
     </section>
   );
 };

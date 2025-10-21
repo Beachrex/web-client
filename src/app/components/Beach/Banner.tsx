@@ -31,8 +31,8 @@ export function HeroSection({
     <div className="relative">
       {/* Breadcrumbs and Pagination */}
       {showBreadcrumbs && pathname && (
-        <div className="border-b bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+        <div className="border-b bg-white py-4">
+          <div className="container mx-auto">
             <div className="flex items-center justify-between">
               {/* Left side - Breadcrumbs */}
               <div className="flex-1">

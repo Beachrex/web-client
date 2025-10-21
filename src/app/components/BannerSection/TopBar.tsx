@@ -25,16 +25,7 @@ const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <div className="flex h-[54px] items-center rounded-[10px]">
-      {/* Kontinent ikona */}
-      <div className="flex h-full w-[54px] items-center justify-center overflow-hidden rounded-l-[10px] bg-[#5E1CA5]">
-        <Image
-          src={continentIcon}
-          alt={continentName}
-          width={35}
-          height={35}
-          className="object-contain"
-        />
-      </div>
+
 
       {/* Besedilni del */}
       <div className="flex h-full items-center gap-[6px] sm:gap-[10px] rounded-r-[10px] bg-[#5E1CA5] px-[8px] sm:px-[16px]">
@@ -42,7 +33,16 @@ const TopBar: React.FC<TopBarProps> = ({
         <span className="hidden md:flex items-center justify-center gap-[7px] rounded-full bg-white px-[10px] py-[3px] font-figtree text-[20px] font-bold leading-[100%] text-[#5E1CA5]">
           {t('continentLabel')}
         </span>
-
+          {/* Kontinent ikona */}
+          <div className="flex h-full w-[54px] items-center justify-center overflow-hidden rounded-l-[10px] bg-[#5E1CA5]">
+              <Image
+                  src={continentIcon}
+                  alt={continentName}
+                  width={35}
+                  height={35}
+                  className="object-contain"
+              />
+          </div>
         {/* Naziv kontinenta - Hidden on mobile */}
         <span className="hidden md:block font-figtree text-[30px] font-bold leading-[100%] text-white">
           {continentName}

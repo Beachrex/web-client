@@ -18,7 +18,8 @@ const InfoCardsSection: React.FC<InfoCardsSectionProps> = ({ cards }) => {
   const t = useTranslations('BannerSection');
 
   return (
-    <div className="relative z-20 -mt-[60px] sm:-mt-[80px] mb-[32px] px-[20px] sm:px-[50px] lg:px-[100px]">
+      <div className="container mx-auto">
+        <div className="relative z-20 -mt-[60px] sm:-mt-[80px] mb-[32px]">
       <div className="grid grid-cols-1 gap-[16px] sm:gap-[20px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {cards.map((card, index) => (
           <div
@@ -57,6 +58,7 @@ const InfoCardsSection: React.FC<InfoCardsSectionProps> = ({ cards }) => {
         ))}
       </div>
     </div>
+      </div>
   );
 };
 

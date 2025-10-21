@@ -1,8 +1,6 @@
 'use client';
-import { Carousel } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import PropertyCard from './PropertyCard/PropertyCard';
 
 interface Property {
@@ -32,17 +30,6 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
 }) => {
   const t = useTranslations('PropertySection');
 
-  // Ustvarimo slide-e (5 kartic na slide)
-  const createSlides = () => {
-    const slides = [];
-    const itemsPerSlide = 5;
-    for (let i = 0; i < properties.length; i += itemsPerSlide) {
-      slides.push(properties.slice(i, i + itemsPerSlide));
-    }
-    return slides;
-  };
-
-  const slides = createSlides();
 
   return (
     <section className="relative overflow-x-hidden bg-white py-10 sm:py-14 lg:py-20">
@@ -65,34 +52,11 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
           </a>
         </div>
 
-        {/* Carousel */}
-        <div className="h-[430px] sm:h-[440px] lg:h-[460px]">
-          <Carousel
-            leftControl={
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-lg transition-colors hover:bg-gray-50 sm:h-10 sm:w-10">
-                <HiChevronLeft className="h-4 w-4 text-gray-600 sm:h-5 sm:w-5" />
-              </div>
-            }
-            rightControl={
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-lg transition-colors hover:bg-gray-50 sm:h-10 sm:w-10">
-                <HiChevronRight className="h-4 w-4 text-gray-600 sm:h-5 sm:w-5" />
-              </div>
-            }
-            indicators={true}
-            slide={false}
-            className="pb-8"
-          >
-            {slides.map((slideProperties, slideIdx) => (
-              <div key={`slide-${slideIdx}`} className="px-2 sm:px-4">
-                <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-8 2xl:gap-10">
-                  {slideProperties.map((p) => (
-                    <PropertyCard key={p.id} {...p} />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </Carousel>
-        </div>
+          {properties.map((p) => (
+              <PropertyCard key={p.id} {...p} />
+          ))}
+
+
       </div>
     </section>
   );
