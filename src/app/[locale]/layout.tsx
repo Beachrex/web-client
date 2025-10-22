@@ -3,7 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { Open_Sans } from 'next/font/google';
 import Script from 'next/script';
-import Footer from 'src/app/components/Footer';
+import Footer from '@/app/components/Footer/Footer';
 import Layout from '@/app/components/Layout';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
