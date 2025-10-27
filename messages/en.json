@@ -134,8 +134,9 @@
     "allBeachesLink": "All beaches ({count})",
     "viewAllPropertiesButton": "View all properties"
   },
-  "SearchEurope": {
-    "title": "Explore Europe in detail",
+  "SearchContinent": {
+    "title": "Explore Beautiful Beaches",
+    "titleWithContinent": "Explore {continent} in detail",
     "viewBeachMap": "View beach map"
   },
   "SearchBeach": {

@@ -134,8 +134,9 @@
     "allBeachesLink": "Vse plaže ({count})",
     "viewAllPropertiesButton": "Poglej vse nastanitve"
   },
-  "SearchEurope": {
-    "title": "Podrobneje preglej Evropo",
+  "SearchContinent": {
+    "title": "Preglej čudovite plaže",
+    "titleWithContinent": "Podrobneje preglej {continent}",
     "viewBeachMap": "Poglej zemljevid plaž"
   },
   "SearchBeach": {

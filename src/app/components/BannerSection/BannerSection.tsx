@@ -6,6 +6,7 @@ import InfoCardsSection from './InfoCardsSection';
 import MapWidget from './MapWidget';
 import TopBar from './TopBar';
 import WeatherWidget from './WeatherWidget';
+import type { Continent } from '@/app/types/api';
 
 interface BannerSectionProps {
   image: string; // background slika
@@ -15,9 +16,16 @@ interface BannerSectionProps {
   badges?: { label: string; color?: string; icon?: string }[]; // array badge-ov
   rightWidgets?: React.ReactNode; // vreme, mapa, ipd.
   children?: React.ReactNode; // dodatni custom content
+  continent?: Continent; // continent data for TopBar
+  accommodationCount?: number; // accommodation count for TopBar
 }
 
-const BannerSection: React.FC<BannerSectionProps> = ({ image, title }) => {
+const BannerSection: React.FC<BannerSectionProps> = ({
+  image,
+  title,
+  continent,
+  accommodationCount,
+}) => {
   const t = useTranslations('BannerSection');
 
   // 🔹 Prevedene kartice
@@ -91,39 +99,45 @@ const BannerSection: React.FC<BannerSectionProps> = ({ image, title }) => {
         <div className="relative z-10 flex h-full flex-col p-4 sm:p-6 lg:p-8">
           {/* Top bar */}
           <div>
-            <TopBar />
+            <TopBar
+              continent={continent}
+              accommodationCount={accommodationCount}
+            />
           </div>
 
           <div className="flex flex-1 flex-col justify-center">
             {/* Naslovni blok */}
             <div className="relative">
               {/* Velik background title */}
-              <span className="left-0 block font-figtree text-[200px] font-bold leading-[100%] text-white opacity-30">
+              <span className="left-0 block font-figtree text-[80px] sm:text-[120px] md:text-[160px] lg:text-[200px] font-bold leading-[100%] text-white opacity-30">
                 {t('categoryLabel')}
               </span>
 
               {/* Manjši naslov Kvarner */}
-              <span className="absolute bottom-0 left-[100px] font-figtree text-[100px] font-bold leading-[100%] text-white">
+              <span className="absolute bottom-0 left-[30px] sm:left-[50px] md:left-[80px] lg:left-[100px] font-figtree text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] font-bold leading-[100%] text-white">
                 {title}
               </span>
             </div>
 
             {/* Spodnji del */}
-            <div className="ml-[100px] mr-[100px] mt-12 flex items-end justify-between">
+            <div className="mx-[20px] sm:mx-[50px] md:mx-[80px] lg:mx-[100px] mt-8 sm:mt-12 flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 lg:gap-0">
               {/* Leva stran – badge-i */}
-              <div className="flex gap-[20px]">
+              <div className="flex flex-col sm:flex-row gap-[10px] sm:gap-[20px]">
                 {/* Levi grid */}
-                <div className="grid grid-cols-3 grid-rows-2 gap-[10px]">
+                <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-3 sm:grid-rows-2 gap-[6px] sm:gap-[10px]">
                   {leftBadges.map((b, i) => (
                     <div
                       key={i}
-                      className="flex h-[32px] items-center gap-[8px] rounded-[16px] bg-[#5E1CA5] px-[10px] py-[3px]"
+                      className="flex items-center gap-[4px] sm:gap-[8px] rounded-[14px] sm:rounded-[16px] bg-[#5E1CA5] px-[6px] sm:px-[10px] py-[2px] sm:py-[3px]"
                     >
-                      <img
-src={b.icon} alt={b.label} width={20}
-height={20}
+                      <Image
+                        src={b.icon}
+                        alt={b.label}
+                        width={16}
+                        height={16}
+                        className="w-[16px] h-[16px] sm:w-[20px] sm:h-[20px]"
                       />
-                      <span className="font-figtree text-[16px] font-bold text-white">
+                      <span className="font-figtree text-[12px] sm:text-[16px] font-bold text-white">
                         {b.label}
                       </span>
                     </div>
@@ -131,17 +145,20 @@ height={20}
                 </div>
 
                 {/* Desni grid */}
-                <div className="grid grid-cols-3 grid-rows-2 gap-[10px]">
+                <div className="grid grid-cols-2 sm:grid-cols-3 grid-rows-3 sm:grid-rows-2 gap-[6px] sm:gap-[10px]">
                   {rightBadges.map((b, i) => (
                     <div
                       key={i}
-                      className="flex h-[32px] items-center gap-[8px] rounded-[16px] bg-[#5E1CA5] px-[10px] py-[3px]"
+                      className="flex items-center gap-[4px] sm:gap-[8px] rounded-[14px] sm:rounded-[16px] bg-[#5E1CA5] px-[6px] sm:px-[10px] py-[2px] sm:py-[3px]"
                     >
-                      <img
-src={b.icon} alt={b.label} width={20}
-height={20}
+                      <Image
+                        src={b.icon}
+                        alt={b.label}
+                        width={16}
+                        height={16}
+                        className="w-[16px] h-[16px] sm:w-[20px] sm:h-[20px]"
                       />
-                      <span className="font-figtree text-[16px] font-bold text-white">
+                      <span className="font-figtree text-[12px] sm:text-[16px] font-bold text-white">
                         {b.label}
                       </span>
                     </div>
@@ -150,7 +167,7 @@ height={20}
               </div>
 
               {/* Desna stran – mapa + vreme */}
-              <div className="flex gap-[10px]">
+              <div className="flex gap-[6px] sm:gap-[10px] w-full lg:w-auto justify-center lg:justify-end">
                 <MapWidget />
                 <WeatherWidget />
               </div>

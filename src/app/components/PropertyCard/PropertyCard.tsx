@@ -4,10 +4,10 @@ import Image from 'next/image';
 
 export function PropertyCard() {
   return (
-    <div className="w-[289px] max-w-[289px] overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg">
+    <div className="w-[410px] max-w-[410px] overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg">
       {/* Top banner */}
       <div
-        className="relative h-[196px] w-full bg-cover bg-center"
+        className="relative h-[278px] w-full bg-cover bg-center"
         style={{
           backgroundImage: "url('/images/propertycard/card-banner.jpg')",
         }}

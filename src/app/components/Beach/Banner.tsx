@@ -1,9 +1,13 @@
 import DynamicBreadcrumbs from '@/app/components/DynamicBreadcrumbs';
 import BannerSection from '../BannerSection/BannerSection';
+import type { Continent } from '@/app/types/api';
 
 interface HeroSectionProps {
   pathname?: string;
   showBreadcrumbs?: boolean;
+  title?: string;
+  continent?: Continent;
+  accommodationCount?: number;
   prevBeach?: {
     name: string;
     url: string;
@@ -17,6 +21,9 @@ interface HeroSectionProps {
 export function HeroSection({
   pathname,
   showBreadcrumbs = true,
+  title = 'Beaches',
+  continent,
+  accommodationCount,
   prevBeach,
   nextBeach,
 }: HeroSectionProps) {
@@ -24,8 +31,8 @@ export function HeroSection({
     <div className="relative">
       {/* Breadcrumbs and Pagination */}
       {showBreadcrumbs && pathname && (
-        <div className="border-b bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+        <div className="border-b bg-white py-4">
+          <div className="container mx-auto">
             <div className="flex items-center justify-between">
               {/* Left side - Breadcrumbs */}
               <div className="flex-1">
@@ -89,7 +96,9 @@ export function HeroSection({
 
       <BannerSection
         image="/images/banner/region-banner.jpg"
-        title="Evropa"
+        title={title}
+        continent={continent}
+        accommodationCount={accommodationCount}
       />
     </div>
   );
