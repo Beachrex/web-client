@@ -2,7 +2,6 @@
 import type { Country } from '@/lib/api-client/models/Country';
 import type { Continent } from '@/lib/api-client/models/Continent';
 import { countryCodeToKey } from '@/lib/constants/mappings';
-import { getDefaultCountryImage } from './icons';
 import type { ContinentWithUI, CountryWithUI } from '@/types/domain';
 
 /**

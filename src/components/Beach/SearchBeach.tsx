@@ -25,7 +25,7 @@ const SearchBeach: React.FC<SearchBeachProps> = ({
         image: country.image_path
           ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${country.image_path}`
           : '/images/spain.jpg',
-        title: country.full_name || country.name,
+        title: country.full_name ?? country.name,
         location: `${country.name}${continent ? `, ${continent.name}` : ''}`,
         price: Math.floor(Math.random() * 200) + 50, // Mock price until we have real data
         originalPrice: Math.floor(Math.random() * 100) + 200,
