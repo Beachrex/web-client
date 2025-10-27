@@ -15,7 +15,7 @@ export class BeachesService {
      */
     public static getBeaches(
         acceptLanguage: 'en' | 'si' | 'hr' | 'de' | 'it' | 'fr' = 'en',
-    ): CancelablePromise<Array<BeachSchema>> {
+    ): CancelablePromise<{ data: Array<BeachSchema> }> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/beaches',

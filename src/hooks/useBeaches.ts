@@ -26,7 +26,7 @@ export const useBeaches = (filters?: {
 
         // Fetch all beaches from API
         const response = await BeachesService.getBeaches();
-        const apiBeaches = response ?? [];
+        const apiBeaches = response.data ?? [];
 
         console.log('🏖️ [useBeaches] Total beaches:', apiBeaches.length);
 
