@@ -4,7 +4,8 @@ import React from 'react';
 import { Carousel } from 'flowbite-react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { useTranslations } from 'next-intl';
-import { useCountries } from '@/hooks/useCountries';
+import { useCountries } from '@/app/hooks/useCountries';
+import type { Country, Continent } from '@/app/types/api';
 
 interface Destination {
   nameKey: string;
@@ -14,17 +15,25 @@ interface Destination {
   beachCount: number;
 }
 
-const TopDestinationsSection: React.FC = () => {
+interface TopDestinationsSectionProps {
+  countries?: Country[];
+  continent?: Continent;
+}
+
+const TopDestinationsSection: React.FC<TopDestinationsSectionProps> = ({
+  countries: propCountries,
+  continent: _continent,
+}) => {
   const t = useTranslations('HomePage');
   const tDestinations = useTranslations('Destinations');
-  const { countries, loading, error } = useCountries();
+  const { countries: hookCountries, loading, error } = useCountries();
 
-  // Use API data directly
-  const allDestinations = countries;
+  // Use prop countries if provided, otherwise fall back to hook
+  const allDestinations = propCountries ?? hookCountries;
 
   // Create slides - each slide will show multiple cards based on screen size
-  const createSlides = (): Destination[][] => {
-    const slides: Destination[][] = [];
+  const createSlides = () => {
+    const slides = [];
     const itemsPerSlide = 5; // Maximum items per slide (for XL screens)
 
     for (let i = 0; i < allDestinations.length; i += itemsPerSlide) {
@@ -36,17 +45,29 @@ const TopDestinationsSection: React.FC = () => {
 
   const slides = createSlides();
 
-  // Render destination card
-  const renderDestinationCard = (d: Destination, idx: number) => (
-    <div
-      key={`${tDestinations(d.nameKey)}-${idx}`}
-      className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
-    >
+  // Render destination card - works with both Country and Destination types
+  const renderDestinationCard = (d: Country | Destination, idx: number) => {
+    // Check if it's a Country object (from API) or Destination object (legacy)
+    const isCountry = 'code' in d;
+
+    const name = isCountry ? d.name : tDestinations(d.nameKey);
+    const image = isCountry
+      ? (d.image_path ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${d.image_path}` : '/images/spain.jpg')
+      : d.image;
+    const beachCount = isCountry ? d.beaches_count : d.beachCount;
+    const accommodationCount = isCountry ? Math.floor(Math.random() * 50) + 10 : d.accomodationCount;
+    const priceText = isCountry ? tDestinations('priceFrom') : tDestinations(d.priceKey);
+
+    return (
+      <div
+        key={`${name}-${idx}`}
+        className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
+      >
       {/* Image */}
       <div className="relative h-48 w-full sm:h-56 lg:h-48 xl:h-56">
         <Image
-          src={d.image}
-          alt={tDestinations(d.nameKey)}
+          src={image}
+          alt={name}
           fill
           className="object-cover"
         />
@@ -67,7 +88,7 @@ const TopDestinationsSection: React.FC = () => {
               height={16}
             />
             <span className="text-xs font-medium">
-              {d.accomodationCount} | {tDestinations(d.priceKey)}
+              {accommodationCount} | {priceText}
             </span>
           </div>
 
@@ -80,7 +101,7 @@ const TopDestinationsSection: React.FC = () => {
               height={16}
             />
             <span className="text-xs font-medium">
-              {d.beachCount}
+              {beachCount}
             </span>
           </div>
         </div>
@@ -96,7 +117,7 @@ const TopDestinationsSection: React.FC = () => {
             height={24}
             className="sm:h-8 sm:w-8"
           />
-          <span className="text-lg font-bold text-[#0A2342] sm:text-xl">{tDestinations(d.nameKey)}</span>
+          <span className="text-lg font-bold text-[#0A2342] sm:text-xl">{name}</span>
         </div>
         <Image
           src="/images/topdestination/icon.png"
@@ -117,7 +138,7 @@ const TopDestinationsSection: React.FC = () => {
             height={16}
           />
           <span className="text-xs font-medium">
-            {d.accomodationCount} | {tDestinations(d.priceKey)}
+            {accommodationCount} | {priceText}
           </span>
         </div>
         <div className="flex flex-1 items-center justify-center gap-1 rounded bg-[#0069AB] px-2 py-2 text-white">
@@ -128,12 +149,13 @@ const TopDestinationsSection: React.FC = () => {
             height={16}
           />
           <span className="text-xs font-medium">
-            {t('beachesLabel2')} {d.beachCount}
+            {t('beachesLabel2')} {beachCount}
           </span>
         </div>
       </div>
     </div>
-  );
+    );
+  };
 
   return (
     <section className="bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
@@ -147,7 +169,7 @@ const TopDestinationsSection: React.FC = () => {
             href="#"
             className="text-sm font-medium text-[#0A2342] hover:underline sm:text-base"
           >
-            {loading ? t('loading') : t('allCountriesCount', { count: countries.length })}
+            {loading ? t('loading') : t('allCountriesCount', { count: allDestinations.length })}
           </a>
         </div>
 
@@ -167,7 +189,7 @@ const TopDestinationsSection: React.FC = () => {
         )}
 
         {/* Error State */}
-        {error && !loading && countries.length === 0 && (
+        {error && !loading && allDestinations.length === 0 && (
           <div className="h-[350px] flex items-center justify-center">
             <div className="text-center">
               <p className="text-red-600 mb-4">Error loading destinations: {error}</p>
@@ -177,7 +199,7 @@ const TopDestinationsSection: React.FC = () => {
         )}
 
         {/* Flowbite Carousel */}
-        {!loading && countries.length > 0 && (
+        {!loading && allDestinations.length > 0 && (
           <div className="h-[350px]">
             <Carousel
               leftControl={
@@ -198,9 +220,7 @@ const TopDestinationsSection: React.FC = () => {
               <div key={`slide-${slideIdx}`} className="px-0">
                 {/* Responsive grid layout */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-5">
-                  {slideDestinations.map((dest: Destination, idx: number) =>
-                    renderDestinationCard(dest, slideIdx * 5 + idx)
-                  )}
+                  {slideDestinations.map((dest, idx) => renderDestinationCard(dest, slideIdx * 5 + idx))}
                 </div>
               </div>
             ))}

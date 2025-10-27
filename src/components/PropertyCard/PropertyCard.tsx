@@ -1,106 +1,119 @@
-import { Heart, Star, MapPin } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ImageWithFallback } from '@/components/ui/image-with-fallback';
+'use client';
+import { Heart, Star } from 'lucide-react';
+import Image from 'next/image';
 
-interface PropertyCardProps {
-    id: string;
-    image: string;
-    title: string;
-    location: string;
-    price: number;
-    originalPrice?: number;
-    rating: number;
-    reviews: number;
-    discount?: string;
-    isFreeBreakfast?: boolean;
-    isFreeCancellation?: boolean;
-}
+export function PropertyCard() {
+  return (
+    <div className="w-[410px] max-w-[410px] overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg">
+      {/* Top banner */}
+      <div
+        className="relative h-[278px] w-full bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/images/propertycard/card-banner.jpg')",
+        }}
+      >
+        {/* Top left badges */}
+        <div className="absolute left-2 top-2 flex gap-1">
+          {/* Najbolj obiskano */}
+          <div className="flex items-center rounded-[12px] bg-white px-[8px] py-[2px]">
+            <span className="text-[10px] font-semibold text-[#4D4D4D]">
+              Najbolj obiskano
+            </span>
+          </div>
 
-export function PropertyCard({
-                                 image,
-                                 title,
-                                 location,
-                                 price,
-                                 originalPrice,
-                                 rating,
-                                 reviews,
-                                 discount,
-                                 isFreeBreakfast,
-                                 isFreeCancellation,
-                             }: PropertyCardProps) {
-    return (
-        <div className="bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200 overflow-hidden">
-            {/* Image */}
-            <div className="relative aspect-[4/3]">
-                <ImageWithFallback
-                    src={image}
-                    alt={title}
-                    className="w-full h-full object-cover"
-                />
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-3 right-3 bg-white/90 hover:bg-white"
-                >
-                    <Heart className="h-4 w-4" />
-                </Button>
-                {discount && (
-                    <Badge className="absolute top-3 left-3 bg-red-500 text-white">
-                        -{discount}%
-                    </Badge>
-                )}
-            </div>
-
-            {/* Content */}
-            <div className="p-4">
-                <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold text-gray-900 line-clamp-2 flex-1">
-                        {title}
-                    </h3>
-                    <div className="flex items-center ml-2">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                        <span className="text-sm font-medium ml-1">{rating}</span>
-                    </div>
-                </div>
-
-                <div className="flex items-center text-gray-600 text-sm mb-3">
-                    <MapPin className="h-3 w-3 mr-1" />
-                    {location}
-                </div>
-
-                {/* Features */}
-                <div className="flex flex-wrap gap-1 mb-3">
-                    {isFreeBreakfast && (
-                        <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                            Free breakfast
-                        </Badge>
-                    )}
-                    {isFreeCancellation && (
-                        <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
-                            Free cancellation
-                        </Badge>
-                    )}
-                </div>
-
-                {/* Price */}
-                <div className="flex items-end justify-between">
-                    <div className="text-sm text-gray-600">
-                        ({reviews} reviews)
-                    </div>
-                    <div className="text-right">
-                        {originalPrice && (
-                            <div className="text-sm text-gray-500 line-through">
-                                €{originalPrice}
-                            </div>
-                        )}
-                        <div className="text-lg font-bold text-gray-900">
-                            €{price}
-                        </div>
-                        <div className="text-xs text-gray-600">per night</div>
-                    </div>
-                </div>
-            </div>
+          {/* Ocena */}
+          <div className="flex items-center gap-1 rounded-[12px] bg-[#F5F5F5] px-[8px] py-[2px]">
+            <Star size={14} className="text-[#FFD700]" fill="#FFD700" />
+            <span className="text-[10px] font-semibold text-[#4D4D4D]">
+              4.9
+            </span>
+          </div>
         </div>
-    );
+
+        {/* Top right heart */}
+        <div className="absolute right-2 top-2">
+          <Heart
+            size={22}
+            className="text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.5)]"
+          />
+        </div>
+
+        {/* Bottom overlay */}
+        <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">
+          {/* Green tag */}
+          <div className="flex items-center gap-1 rounded bg-[#008260] px-2 py-[3px] text-white">
+            <Image
+              src="/images/accomodation.png"
+              alt="Accommodation"
+              width={14}
+              height={14}
+            />
+            <span className="text-[10px] font-medium">od 25 €</span>
+          </div>
+
+          {/* Orange tag with flag */}
+          <div className="flex items-center gap-1 rounded-[8px] bg-[#FF8000] px-[8px] py-[6px]">
+            <span className="text-[12px] font-bold text-white">Baška</span>
+            <Image
+              src="/images/propertycard/croatia-icon.png"
+              alt="Croatia flag"
+              width={28}
+              height={28}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom section */}
+      <div className="flex flex-col gap-[2px] rounded-b-[10px] bg-[#E5F2FB] px-3 py-2">
+        {/* Title row */}
+        <div className="flex items-center justify-between">
+          <h3 className="font-figtree text-[16px] font-bold text-[#0069AB]">
+            Plaza Ladinka
+          </h3>
+          <Image
+            src="/images/propertycard/location.png"
+            alt="location"
+            width={24}
+            height={24}
+          />
+        </div>
+
+        {/* Content row */}
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] font-medium leading-4 text-[#4D4D4D]">
+            Sup <span className="mx-1">•</span> Diving{' '}
+            <span className="mx-1">•</span> Windsurfing
+            <span className="mx-1">•</span> Coffee{' '}
+            <span className="mx-1">•</span>
+            <span className="font-bold">Crowded</span>
+          </p>
+
+          {/* Right icons */}
+          <div className="flex gap-1">
+            <Image
+              src="/images/propertycard/stones.png"
+              alt="stones"
+              width={20}
+              height={20}
+            />
+            <Image
+              src="/images/propertycard/family.png"
+              alt="family"
+              width={20}
+              height={20}
+            />
+            <Image
+              src="/images/propertycard/parking.png"
+              alt="parking"
+              width={20}
+              height={20}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
+
+export default PropertyCard;

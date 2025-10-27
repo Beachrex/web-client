@@ -129,5 +129,90 @@
     "southAmerica": "Južna Amerika",
     "australia": "Avstralija",
     "num_of_beaches": "Št. plaž"
+  },
+  "PropertySection": {
+    "allBeachesLink": "Vse plaže ({count})",
+    "viewAllPropertiesButton": "Poglej vse nastanitve"
+  },
+  "SearchContinent": {
+    "title": "Preglej čudovite plaže",
+    "titleWithContinent": "Podrobneje preglej {continent}",
+    "viewBeachMap": "Poglej zemljevid plaž"
+  },
+  "SearchBeach": {
+    "title": "Brskaj po vseh plažah Evrope",
+    "filterButton": "Filtriraj",
+    "mapButton": "Prikaži zemljevid",
+    "displayLabel": "Prikaz plaže:",
+    "sortPopular": "Najbolj popularne",
+    "sortNewest": "Najnovejše",
+    "sortTopRated": "Najbolje ocenjene",
+    "prevPage": "Nazaj",
+    "nextPage": "Naprej"
+  },
+  "BannerSection": {
+    "categoryLabel": "regija",
+    "badgeFestival": "Festival Črna ovca",
+    "badgeWine": "Vino Žlahtina",
+    "badgeLamb": "Krški jagenjček",
+    "cardHistoryTitle": "Zgodovina",
+    "cardCuisineTitle": "Kulinarika",
+    "cardCultureTitle": "Kultura",
+    "cardSightsTitle": "Znamenitosti",
+    "readMore": "Preberi več >"
+  },
+  "TopBar": {
+    "continentLabel": "Kontinent",
+    "continentName": "Evropa",
+    "numBeachesLabel": "št. plaž:",
+    "numAccommodationsLabel": "št. nastanitev:"
+  },
+  "Footer": {
+    "brand": {
+      "desc": "Poiščite svojo popolno plažo in BeachRex vas bo seznanil z vsako podrobnostjo.",
+      "cta": "Brskaj po zemljevidu"
+    },
+    "mostViewed": {
+      "title": "Most viewed beaches",
+      "links": [
+        "Rajska plaža",
+        "Sončna obala",
+        "Modri zaliv",
+        "Zlati pesek",
+        "Kristalna obala",
+        "Skriti zaliv"
+      ]
+    },
+    "info": {
+      "title": "Glavne informacije",
+      "links": [
+        { "label": "O nas", "href": "/about" },
+        { "label": "Pogoji uporabe", "href": "/legal/terms" },
+        { "label": "Politika zasebnosti", "href": "/legal/privacy" },
+        {
+          "label": "Pravila za prispevanje",
+          "href": "/legal/contribution-rules"
+        },
+        { "label": "Kontakt", "href": "/contact" }
+      ]
+    },
+    "browse": {
+      "title": "Brskaj po strani",
+      "links": [
+        { "label": "Pregled vseh destinacij", "href": "/destinations" },
+        { "label": "Išči po plažah", "href": "/beaches" },
+        { "label": "Išči po nastanitvah", "href": "/accommodations" },
+        { "label": "Zemljevid", "href": "/map" }
+      ]
+    },
+    "newsletter": {
+      "title": "Bodi na tekočem z novostmi",
+      "subtitle": "Prijavi se na newsletter",
+      "placeholder": "Vpiši email",
+      "button": "Naroči se"
+    },
+    "legal": {
+      "rights": "Vse pravice pridržane BeachRex"
+    }
   }
 }
