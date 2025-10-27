@@ -1,7 +1,7 @@
 // src/i18n/routing.ts
 import { defineRouting } from 'next-intl/routing';
 import { createSharedPathnamesNavigation } from 'next-intl/navigation';
-import { locales } from '@/app/utils/locales'; // Import the centralized locales
+import { locales } from '@/app/config/locales';
 
 const globalRoutes = {
     beaches: {

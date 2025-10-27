@@ -94,7 +94,15 @@ const config = {
         "@typescript-eslint/prefer-nullish-coalescing": "off",
         "@typescript-eslint/no-explicit-any": "off"
       }
+    },
+    {
+      "files": ["src/lib/api-client/**/*.ts"],
+      "rules": {
+        "@typescript-eslint/ban-tslint-comment": "off",
+        "@typescript-eslint/no-inferrable-types": "off"
+      }
     }
-  ]
+  ],
+  "ignorePatterns": ["src/lib/api-client/services/**/*.ts", "src/lib/api-client/models/**/*.ts", "src/lib/api-client/core/request.ts"]
 }
 module.exports = config;

@@ -1,12 +1,13 @@
 import { getTranslations } from 'next-intl/server';
+import type { PageProps } from '@/types';
 // import {Link} from '@/i18n/routing';
 // import { Button, Carousel, Tooltip } from "flowbite-react";
 // import { FaHeart, FaPlay, FaBed, FaMap, FaUmbrellaBeach, FaUser } from 'react-icons/fa';
 // import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 // import CountrySection from "@/app/components/CountrySection";
 // import DynamicBreadcrumbs from "@/app/components/DynamicBreadcrumbs";
-import Banner from '@/app/components/Beach/Banner';
-import { PropertySection } from '@/app/components/PropertySection';
+import Banner from '@/components/Beach/Banner';
+import { PropertySection } from '@/components/PropertySection';
 
 // Commented out unused variable to fix lint errors
 // const countryData = [
@@ -175,14 +176,9 @@ const mockProperties = {
     ],
 };
 
-interface PageProps {
-    params: Promise<{
-        locale: string;
-        continent: string;
-    }>;
-}
+type ContinentPageProps = PageProps<{ continent: string }>;
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: ContinentPageProps) {
     const resolvedParams = await params;
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'ContinentPage' });
 
@@ -195,7 +191,7 @@ export async function generateMetadata({ params }: PageProps) {
     };
 }
 
-const Page = async ({ params }: PageProps) => {
+const Page = async ({ params }: ContinentPageProps) => {
     const resolvedParams = await params;
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'ContinentPage' });
     const pathname = `/beaches/${resolvedParams.continent}`;

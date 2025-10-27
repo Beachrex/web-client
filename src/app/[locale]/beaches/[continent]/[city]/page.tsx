@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { Button, Carousel, Tooltip } from 'flowbite-react';
 import { FaHeart, FaPlay, FaBed, FaMap, FaUmbrellaBeach, FaUser } from 'react-icons/fa';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
-import IslandSection from '@/app/components/IslandSection';
-import CitySection from '@/app/components/CitySection';
-import RegionSection from '@/app/components/RegionSection';
-import DynamicBreadcrumbs from '@/app/components/DynamicBreadcrumbs';
+import IslandSection from '@/components/IslandSection';
+import CitySection from '@/components/CitySection';
+import RegionSection from '@/components/RegionSection';
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 
 const islandsData = [
     { islandName: 'Otok A', beachCount: '1', hotelPrice: '70€' },

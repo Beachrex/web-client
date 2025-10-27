@@ -4,8 +4,6 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Fix for multiple lockfiles warning
-  outputFileTracingRoot: process.cwd(),
   // Transpile flowbite-react to fix module resolution issues
   transpilePackages: ['flowbite-react'],
   images: {

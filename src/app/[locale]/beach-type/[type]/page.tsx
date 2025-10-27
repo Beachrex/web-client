@@ -1,13 +1,9 @@
 import { getTranslations } from 'next-intl/server';
+import type { PageProps } from '@/types';
 
-interface PageProps {
-    params: Promise<{
-        locale: string;
-        type: string;
-    }>;
-}
+type BeachTypePageProps = PageProps<{ type: string }>;
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: BeachTypePageProps) {
     const resolvedParams = await params;
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'BeachTypePage' });
 
@@ -17,7 +13,7 @@ export async function generateMetadata({ params }: PageProps) {
     };
 }
 
-const Page = async ({ params }: PageProps) => {
+const Page = async ({ params }: BeachTypePageProps) => {
     const resolvedParams = await params;
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'BeachTypePage' });
     const pathname = `/beach-type/${resolvedParams.type}`;

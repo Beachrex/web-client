@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import { Button, Carousel, Tooltip } from 'flowbite-react';
 import { FaHeart, FaPlay, FaBed, FaMap, FaUmbrellaBeach, FaUser } from 'react-icons/fa';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
-import ContinentSection from '@/app/components/ContinentSection';
-import DynamicBreadcrumbs from '@/app/components/DynamicBreadcrumbs';
+import ContinentSection from '@/components/ContinentSection';
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 
 const continentData = [
     { name: 'Europe', beachCount: '1', hotelPrice: '70€', link: '/beaches/europe/' },

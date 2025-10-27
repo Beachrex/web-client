@@ -33,18 +33,6 @@ body {
   font-family: "Figtree", sans-serif;
 }
 
-/* Ensure images don't inherit blur effects */
-img {
-  filter: none !important;
-  backdrop-filter: none !important;
-  image-rendering: -webkit-optimize-contrast !important;
-  image-rendering: crisp-edges !important;
-  image-rendering: pixelated !important;
-  -webkit-backface-visibility: hidden !important;
-  -webkit-transform: translateZ(0) !important;
-  transform: translateZ(0) !important;
-}
-
 /* Prevent blur inheritance on Next.js Image components */
 .next-image {
   filter: none !important;
@@ -69,83 +57,6 @@ div[style*="background-image"] {
 }
 .container{
     padding: 0 5px;
-}
-/* Leaflet Map Fixes */
-#map {
-  height: 100%;
-  width: 100%;
-}
-
-.leaflet-container {
-  height: 100% !important;
-  width: 100% !important;
-}
-
-.leaflet-control-container {
-  z-index: 1000;
-}
-
-.leaflet-popup-content-wrapper {
-  border-radius: 8px;
-}
-
-.leaflet-popup-content {
-  margin: 8px 12px;
-}
-
-/* Force tiles to be visible and prevent blinking */
-.leaflet-tile-pane {
-  opacity: 1 !important;
-  filter: none !important;
-}
-
-.leaflet-tile {
-  opacity: 1 !important;
-  max-width: none !important;
-  max-height: none !important;
-  visibility: visible !important;
-  display: block !important;
-  filter: none !important;
-  transform: none !important;
-  transition: none !important;
-  animation: none !important;
-}
-
-.leaflet-layer {
-  opacity: 1 !important;
-  filter: none !important;
-}
-
-/* Completely disable all animations and transitions */
-.leaflet-tile-container {
-  opacity: 1 !important;
-  transition: none !important;
-  animation: none !important;
-  filter: none !important;
-}
-
-.leaflet-fade-anim .leaflet-tile {
-  transition: none !important;
-  opacity: 1 !important;
-  animation: none !important;
-  filter: none !important;
-}
-
-.leaflet-fade-anim .leaflet-popup {
-  transition: opacity 0.2s ease-in-out;
-}
-
-/* Prevent any CSS transforms that might cause issues */
-.leaflet-tile-loaded {
-  opacity: 1 !important;
-  visibility: visible !important;
-  filter: none !important;
-}
-
-/* Force immediate tile display */
-.leaflet-tile-container .leaflet-tile {
-  opacity: 1 !important;
-  visibility: visible !important;
 }
 :root {
   --drop: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);

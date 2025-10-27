@@ -1,10 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-
-interface PageProps {
-    params: Promise<{
-        locale: string;
-    }>;
-}
+import type { PageProps } from '@/types';
 
 export async function generateMetadata({ params }: PageProps) {
     const resolvedParams = await params;
