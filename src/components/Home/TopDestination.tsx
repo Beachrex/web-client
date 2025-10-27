@@ -4,8 +4,9 @@ import React from 'react';
 import { Carousel } from 'flowbite-react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { useTranslations } from 'next-intl';
-import { useCountries } from '@/app/hooks/useCountries';
-import type { Country, Continent } from '@/app/types/api';
+import { useCountries } from '@/hooks/useCountries';
+import type { Country } from '@/lib/api-client/models/Country';
+import type { Continent } from '@/lib/api-client/models/Continent';
 
 interface Destination {
   nameKey: string;
@@ -50,13 +51,13 @@ const TopDestinationsSection: React.FC<TopDestinationsSectionProps> = ({
     // Check if it's a Country object (from API) or Destination object (legacy)
     const isCountry = 'code' in d;
 
-    const name = isCountry ? d.name : tDestinations(d.nameKey);
+    const name = isCountry ? d.name : tDestinations((d as Destination).nameKey);
     const image = isCountry
       ? (d.image_path ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${d.image_path}` : '/images/spain.jpg')
-      : d.image;
-    const beachCount = isCountry ? d.beaches_count : d.beachCount;
-    const accommodationCount = isCountry ? Math.floor(Math.random() * 50) + 10 : d.accomodationCount;
-    const priceText = isCountry ? tDestinations('priceFrom') : tDestinations(d.priceKey);
+      : (d as Destination).image;
+    const beachCount = isCountry ? d.beaches_count : (d as Destination).beachCount;
+    const accommodationCount = isCountry ? Math.floor(Math.random() * 50) + 10 : (d as Destination).accomodationCount;
+    const priceText = isCountry ? tDestinations('priceFrom') : tDestinations((d as Destination).priceKey);
 
     return (
       <div
@@ -67,7 +68,7 @@ const TopDestinationsSection: React.FC<TopDestinationsSectionProps> = ({
       <div className="relative h-48 w-full sm:h-56 lg:h-48 xl:h-56">
         <Image
           src={image}
-          alt={name}
+          alt={name ?? ''}
           fill
           className="object-cover"
         />

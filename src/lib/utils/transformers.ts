@@ -16,11 +16,12 @@ export const transformCountryToUI = (country: Country): CountryWithUI => {
     code: country.code ?? '',
     name: country.name ?? '',
     full_name: country.full_name ?? '',
-    image: getDefaultCountryImage(),
+    image: '/images/topdestination/spain.jpg', // Default image since API doesn't provide images yet
     beachCount: country.beaches_count ?? 0,
     continent_code: country.continent_code ?? '',
-    accomodationCount: 5, // Placeholder
-    priceKey: 'priceFrom', // Placeholder
+    // Placeholder data - will be replaced with real API data later
+    accomodationCount: 5,
+    priceKey: 'priceFrom',
   };
 };
 

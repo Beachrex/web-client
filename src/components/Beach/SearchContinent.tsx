@@ -2,7 +2,8 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
-import type { Continent } from '@/app/types/api';
+import type { Continent } from '@/lib/api-client/models/Continent';
+import type { Country } from '@/lib/api-client/models/Country';
 
 interface SearchContinentProps {
   continent?: Continent;

@@ -32,5 +32,6 @@ export type Country = {
      */
     beaches_count?: number;
     continent?: Continent;
+    image_path?: string;
 };
 

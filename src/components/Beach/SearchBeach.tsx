@@ -4,7 +4,8 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import PropertyCard from '../PropertyCard/PropertyCard';
-import type { Country, Continent } from '@/app/types/api';
+import type { Country } from '@/lib/api-client/models/Country';
+import type { Continent } from '@/lib/api-client/models/Continent';
 
 interface SearchBeachProps {
   countries?: Country[];

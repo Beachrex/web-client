@@ -3,7 +3,7 @@
 import BurgerMenu from './BurgerMenu';
 import TopBar from './Header/TopBar';
 import SearchBar from './Header/SearchBar';
-import Footer from './Footer';
+import Footer from './Footer/Footer';
 
 interface DefaultLayoutProps {
     children: React.ReactNode;

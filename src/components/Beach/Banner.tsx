@@ -1,6 +1,6 @@
-import DynamicBreadcrumbs from '@/app/components/DynamicBreadcrumbs';
-import BannerSection from '../BannerSection/BannerSection';
-import type { Continent } from '@/app/types/api';
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+import BannerSection from '@/components/BannerSection/BannerSection'
+import type { Continent } from '@/lib/api-client/models/Continent';
 
 interface HeroSectionProps {
   pathname?: string;
