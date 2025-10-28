@@ -10,6 +10,10 @@ import { CountriesService } from '@/lib/api-client/services/CountriesService';
 import { getContinentCodeFromSlug, getContinentSlugFromCode, isValidContinentSlug, getAllContinentSlugs } from '@/lib/constants/continentMapping';
 import { initOpenAPIClient } from '@/lib/api-client/core/init';
 
+// Force dynamic rendering to avoid DYNAMIC_SERVER_USAGE errors
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
+
 // Remove unused mockProperties to fix lint errors
 const _mockProperties = {
   popularDestinations: [
