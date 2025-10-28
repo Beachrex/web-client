@@ -7,122 +7,8 @@ import TopDestination from '@/components/Home/TopDestination';
 import { PropertySection } from '@/components/PropertySection';
 import { ContinentsService } from '@/lib/api-client/services/ContinentsService';
 import { CountriesService } from '@/lib/api-client/services/CountriesService';
-import { getContinentCodeFromSlug, getContinentSlugFromCode, isValidContinentSlug, getAllContinentSlugs } from '@/lib/constants/continentMapping';
+import { getContinentCodeFromSlug, getContinentSlugFromCode, isValidContinentSlug } from '@/lib/constants/continentMapping';
 import { initOpenAPIClient } from '@/lib/api-client/core/init';
-
-// Force dynamic rendering to avoid DYNAMIC_SERVER_USAGE errors
-export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Revalidate every hour
-
-// Remove unused mockProperties to fix lint errors
-const _mockProperties = {
-  popularDestinations: [
-    {
-      id: '1',
-      image:
-        'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-      title: 'Grand Hotel Adriatic',
-      location: 'Opatija, Kvarner',
-      price: 180,
-      originalPrice: 220,
-      rating: 4.8,
-      reviews: 234,
-      discount: '18',
-      isFreeBreakfast: true,
-      isFreeCancellation: true,
-    },
-    {
-      id: '2',
-      image:
-        'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-      title: 'Seaside Resort & Spa',
-      location: 'Crikvenica, Kvarner',
-      price: 145,
-      rating: 4.6,
-      reviews: 189,
-      isFreeBreakfast: true,
-      isFreeCancellation: false,
-    },
-    {
-      id: '3',
-      image:
-        'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-      title: 'Coastal Villa Apartments',
-      location: 'Rijeka, Kvarner',
-      price: 95,
-      originalPrice: 120,
-      rating: 4.4,
-      reviews: 156,
-      discount: '21',
-      isFreeBreakfast: false,
-      isFreeCancellation: true,
-    },
-    {
-      id: '4',
-      image:
-        'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-      title: 'Adriatic Bay Hotel',
-      location: 'Lovran, Kvarner',
-      price: 160,
-      rating: 4.7,
-      reviews: 287,
-      isFreeBreakfast: true,
-      isFreeCancellation: true,
-    },
-    {
-      id: '5',
-      image:
-        'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-      title: 'Luxury Beachfront Villa',
-      location: 'Mali Lošinj, Lošinj',
-      price: 320,
-      originalPrice: 400,
-      rating: 4.9,
-      reviews: 98,
-      discount: '20',
-      isFreeBreakfast: true,
-      isFreeCancellation: true,
-    },
-    {
-      id: '6',
-      image:
-        'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-      title: 'Premium Spa Resort',
-      location: 'Rab, Rab Island',
-      price: 280,
-      rating: 4.8,
-      reviews: 145,
-      isFreeBreakfast: true,
-      isFreeCancellation: false,
-    },
-    {
-      id: '7',
-      image:
-        'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-      title: 'Elite Marina Hotel',
-      location: 'Punat, Krk Island',
-      price: 245,
-      originalPrice: 290,
-      rating: 4.7,
-      reviews: 203,
-      discount: '16',
-      isFreeBreakfast: true,
-      isFreeCancellation: true,
-    },
-    {
-      id: '8',
-      image:
-        'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-      title: 'Exclusive Resort & Club',
-      location: 'Malinska, Krk Island',
-      price: 310,
-      rating: 4.9,
-      reviews: 167,
-      isFreeBreakfast: true,
-      isFreeCancellation: true,
-    },
-  ],
-};
 
 interface PageProps {
   params: Promise<{
@@ -274,14 +160,5 @@ const Page = async ({ params }: PageProps) => {
     notFound();
   }
 };
-
-// Generate static paths for all continents
-export function generateStaticParams() {
-  const continentSlugs = getAllContinentSlugs();
-
-  return continentSlugs.map((continent) => ({
-    continent,
-  }));
-}
 
 export default Page;
