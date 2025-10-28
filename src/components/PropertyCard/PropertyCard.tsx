@@ -2,9 +2,23 @@
 import { Heart, Star } from 'lucide-react';
 import Image from 'next/image';
 
-export function PropertyCard() {
+interface PropertyCardProps {
+  size?: 'small' | 'big';
+}
+
+export function PropertyCard({ size = 'big' }: PropertyCardProps) {
+  // Define size-specific classes
+  const sizeClasses = {
+    small: 'w-[289px] max-w-[289px]',
+    big: 'w-[410px] max-w-[410px]',
+  };
+
+  const cardWidth = sizeClasses[size];
   return (
-    <div className="w-[410px] max-w-[410px] overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg">
+    <div
+className={`${cardWidth} overflow-hidden rounded-[10px] 
+    bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg`}
+    >
       {/* Top banner */}
       <div
         className="relative h-[278px] w-full bg-cover bg-center"
