@@ -47,7 +47,7 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
         </div>
       </div>
 
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container relative z-10 mx-auto">
         {/* Header row: title left | beaches display + link right */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4 sm:mb-6">
           {/* Left: Title */}

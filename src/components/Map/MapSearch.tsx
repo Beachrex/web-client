@@ -1,22 +1,23 @@
-/*
 import { useMap } from 'react-leaflet';
-// @ts-ignore: no type declarations for 'leaflet-geosearch'
+// @ts-expect-error - leaflet-geosearch doesn't have proper TypeScript types
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-// @ts-ignore: importing CSS without type declarations
 import 'leaflet-geosearch/dist/geosearch.css';
 import { useEffect } from 'react';
+import type { Control } from 'leaflet';
 
 const MapSearch: React.FC = () => {
   const map = useMap();
   useEffect(() => {
+    // @ts-expect-error - OpenStreetMapProvider is not typed
     const provider = new OpenStreetMapProvider();
 
+    // @ts-expect-error - GeoSearchControl is not typed
     const searchControl = GeoSearchControl({
       provider,
       showMarker: false,
       autoClose: true,
       style: 'bar',
-    });
+    }) as Control;
 
     map.addControl(searchControl);
 
@@ -28,4 +29,3 @@ const MapSearch: React.FC = () => {
 };
 
 export default MapSearch;
-*/
