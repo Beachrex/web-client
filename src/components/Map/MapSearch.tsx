@@ -7,10 +7,8 @@ import type { Control } from 'leaflet';
 const MapSearch: React.FC = () => {
   const map = useMap();
   useEffect(() => {
-    // @ts-expect-error - OpenStreetMapProvider is not typed
     const provider = new OpenStreetMapProvider();
 
-    // @ts-expect-error - GeoSearchControl is not typed
     const searchControl = GeoSearchControl({
       provider,
       showMarker: false,
