@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
         {/* Accessibility wrapper for footer navigation */}
         <nav
           aria-label="Footer"
-          className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-5 lg:gap-12"
+          className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-4 lg:gap-12 2xl:grid-cols-5"
         >
           <div>
             <FooterBrandColumn />
@@ -23,7 +23,9 @@ const Footer: React.FC = () => {
           <FooterInfoColumn />
 
           <FooterBrowseColumn />
-          <FooterNewsletter />
+          <div className="lg:col-span-2 2xl:col-span-1">
+            <FooterNewsletter />
+          </div>
         </nav>
 
         <div className="mt-10 border-t border-[#E7E7E7] pt-6">

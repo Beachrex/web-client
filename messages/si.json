@@ -89,7 +89,8 @@
     "popularDestinations": "Najlepše destinacije v {continent}",
     "premiumAccommodations": "Luksuzne nastanitve v {continent}",
     "bestDeals": "Odlične ponude",
-    "description": "Raziščite najlepše plaže v {continent}."
+    "description": "Raziščite najlepše plaže v {continent}.",
+    "countriesContinent": "Države v {continent}"
   },
   "FeatureCards": {
     "bestBeachesTitle": "100 najlepših plaž na svetu",
@@ -132,7 +133,8 @@
   },
   "PropertySection": {
     "allBeachesLink": "Vse plaže ({count})",
-    "viewAllPropertiesButton": "Poglej vse nastanitve"
+    "viewAllPropertiesButton": "Poglej vse nastanitve",
+    "displayLabel": "Prikaz plaže:"
   },
   "SearchContinent": {
     "title": "Preglej čudovite plaže",

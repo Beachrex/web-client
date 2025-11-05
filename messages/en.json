@@ -89,7 +89,8 @@
     "popularDestinations": "Most Beautiful Destinations in {continent}",
     "premiumAccommodations": "Luxury Accommodation in {continent}",
     "bestDeals": "Great Deals",
-    "description": "Explore the most beautiful beaches in {continent}."
+    "description": "Explore the most beautiful beaches in {continent}.",
+    "countriesContinent": "Countries in {continent}"
   },
   "FeatureCards": {
     "bestBeachesTitle": "100 most beautiful beaches in the world",
@@ -132,7 +133,8 @@
   },
   "PropertySection": {
     "allBeachesLink": "All beaches ({count})",
-    "viewAllPropertiesButton": "View all properties"
+    "viewAllPropertiesButton": "View all properties",
+    "displayLabel": "Beach view:"
   },
   "SearchContinent": {
     "title": "Explore Beautiful Beaches",

@@ -1,11 +1,11 @@
 'use client';
+import type { Continent } from '@/lib/api-client/models/Continent';
+import type { Country } from '@/lib/api-client/models/Country';
 import { Pagination } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import PropertyCard from '../PropertyCard/PropertyCard';
-import type { Country } from '@/lib/api-client/models/Country';
-import type { Continent } from '@/lib/api-client/models/Continent';
 
 interface SearchBeachProps {
   countries?: Country[];
@@ -19,24 +19,25 @@ const SearchBeach: React.FC<SearchBeachProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
 
   // Transform countries to property format for display
-  const allProperties = countries.length > 0
-    ? countries.map((country) => ({
-        id: country.code,
-        image: country.image_path
-          ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${country.image_path}`
-          : '/images/spain.jpg',
-        title: country.full_name ?? country.name,
-        location: `${country.name}${continent ? `, ${continent.name}` : ''}`,
-        price: Math.floor(Math.random() * 200) + 50, // Mock price until we have real data
-        originalPrice: Math.floor(Math.random() * 100) + 200,
-        rating: 4.0 + Math.random() * 0.9,
-        reviews: Math.floor(Math.random() * 300) + 50,
-        discount: Math.floor(Math.random() * 25) + 10,
-        isFreeBreakfast: Math.random() > 0.5,
-        isFreeCancellation: Math.random() > 0.3,
-        beaches_count: country.beaches_count,
-      }))
-    : Array.from({ length: 16 }, (_, i) => ({ id: i + 1 })); // Fallback mock data
+  const allProperties =
+    countries.length > 0
+      ? countries.map((country) => ({
+          id: country.code,
+          image: country.image_path
+            ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${country.image_path}`
+            : '/images/spain.jpg',
+          title: country.full_name ?? country.name,
+          location: `${country.name}${continent ? `, ${continent.name}` : ''}`,
+          price: Math.floor(Math.random() * 200) + 50, // Mock price until we have real data
+          originalPrice: Math.floor(Math.random() * 100) + 200,
+          rating: 4.0 + Math.random() * 0.9,
+          reviews: Math.floor(Math.random() * 300) + 50,
+          discount: Math.floor(Math.random() * 25) + 10,
+          isFreeBreakfast: Math.random() > 0.5,
+          isFreeCancellation: Math.random() > 0.3,
+          beaches_count: country.beaches_count,
+        }))
+      : Array.from({ length: 16 }, (_, i) => ({ id: i + 1 })); // Fallback mock data
 
   const itemsPerPage = 16; // 4x4 grid
   const totalPages = Math.ceil(allProperties.length / itemsPerPage);
@@ -53,14 +54,14 @@ const SearchBeach: React.FC<SearchBeachProps> = ({
       <div className="container mx-auto">
         {/* Header */}
         <div className="mb-8 flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">
-          {/* Levi naslov */}
+          {/* left title */}
           <h2 className="text-left font-figtree text-[26px] font-bold leading-[100%] text-[#222222] sm:text-[28px] lg:text-[30px]">
             {t('title')}
           </h2>
 
-          {/* Desni kontrolni del */}
+          {/* right control part */}
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-start lg:justify-end lg:gap-4">
-            {/* Filter gumb */}
+            {/* Filter */}
             <button className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#5E1CA5] px-5 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#4b1489]">
               <Image
                 src="/images/filters.png"
@@ -82,40 +83,67 @@ const SearchBeach: React.FC<SearchBeachProps> = ({
               <span>{t('mapButton')}</span>
             </button>
 
-            {/* Prikaz plaže container */}
-            <div className="flex flex-wrap items-center justify-center gap-[10px] rounded-[6px] bg-[#E7E7E7] px-[8px] py-[6px]">
+            {/* Beaches display container */}
+            <div className="flex h-[40px] flex-wrap items-center justify-center gap-[10px] rounded-[6px] bg-[#E7E7E7] px-[8px] py-[6px]">
               <span className="whitespace-nowrap font-figtree text-[14px] font-semibold text-[#4D4D4D]">
                 {t('displayLabel')}
               </span>
-              {/* Ikone */}
+
+              {/* Icons*/}
               <div className="flex items-center gap-[10px]">
-                <Image
-                  src="/images/beachmedia/photo.png"
-                  alt="photo"
-                  width={24}
-                  height={24}
-                />
-                <div className="h-[25px] w-[1px] rotate-[-90deg] bg-[#4D4D4D]" />
-                <Image
-                  src="/images/beachmedia/video-icon.png"
-                  alt="video"
-                  width={24}
-                  height={24}
-                />
-                <div className="h-[25px] w-[1px] rotate-[-90deg] bg-[#4D4D4D]" />
-                <Image
-                  src="/images/beachmedia/360-degree.png"
-                  alt="360 view"
-                  width={24}
-                  height={24}
-                />
-                <div className="h-[25px] w-[1px] rotate-[-90deg] bg-[#4D4D4D]" />
-                <Image
-                  src="/images/beachmedia/play-button-arrowhead.png"
-                  alt="live cam"
-                  width={24}
-                  height={24}
-                />
+                <button
+                  type="button"
+                  onClick={() => console.log('photo clicked')}
+                >
+                  <Image
+                    src="/images/beachmedia/photo.png"
+                    alt="photo"
+                    width={24}
+                    height={24}
+                  />
+                </button>
+
+                <div className="h-[25px] w-[1px] bg-[#ffffff]" />
+
+                <button
+                  type="button"
+                  onClick={() => console.log('video clicked')}
+                >
+                  <Image
+                    src="/images/beachmedia/video-icon-white.png"
+                    alt="video"
+                    width={24}
+                    height={24}
+                  />
+                </button>
+
+                <div className="h-[25px] w-[1px] bg-[#ffffff]" />
+
+                <button
+                  type="button"
+                  onClick={() => console.log('360 clicked')}
+                >
+                  <Image
+                    src="/images/beachmedia/360-degree-white.png"
+                    alt="360 view"
+                    width={24}
+                    height={24}
+                  />
+                </button>
+
+                <div className="h-[25px] w-[1px] bg-[#ffffff]" />
+
+                <button
+                  type="button"
+                  onClick={() => console.log('live cam clicked')}
+                >
+                  <Image
+                    src="/images/beachmedia/play-button-arrowhead-white.png"
+                    alt="live cam"
+                    width={24}
+                    height={24}
+                  />
+                </button>
               </div>
             </div>
 
@@ -128,10 +156,10 @@ const SearchBeach: React.FC<SearchBeachProps> = ({
           </div>
         </div>
 
-        {/* GRID kartic */}
+        {/* GRID cards */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {paginatedProperties.map((p) => (
-            <PropertyCard size="small" key={p.id} />
+            <PropertyCard key={p.id} />
           ))}
         </div>
 

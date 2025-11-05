@@ -1,7 +1,7 @@
 'use client';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
-import { useTranslations } from 'next-intl';
 
 const ExploreSection: React.FC = () => {
   const t = useTranslations('FeatureCards');
@@ -89,7 +89,7 @@ const ExploreSection: React.FC = () => {
                 <h3 className="mb-4 text-xl font-bold leading-tight text-white sm:mb-6 sm:text-2xl lg:text-3xl">
                   {t('relaxAccommodationTitle')}
                 </h3>
-                <button className="inline-flex items-center gap-2 rounded-md bg-[#008260] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#006b4f] sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
+                <button className="inline-flex items-center gap-2 rounded-md bg-[#006b4f] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#008260] sm:gap-3 sm:px-5 sm:py-3 sm:text-base">
                   <Image
                     src="/images/accomodation.png"
                     alt="Accommodation icon"
@@ -135,7 +135,10 @@ const ExploreSection: React.FC = () => {
 
         {/* Bottom tagline */}
         <div className="mt-12 text-center sm:mt-16 lg:mt-20">
-          <h2 className="text-3xl font-normal leading-tight text-variable-collection-temno-modro sm:text-4xl lg:text-5xl xl:text-6xl" style={{ fontFamily: 'Damion, cursive' }}>
+          <h2
+            className="text-3xl font-normal leading-tight text-variable-collection-temno-modro sm:text-4xl lg:text-5xl xl:text-6xl"
+            style={{ fontFamily: 'Damion, cursive' }}
+          >
             {tHome('exploreTagline')}
           </h2>
         </div>

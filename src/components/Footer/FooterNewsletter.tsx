@@ -20,7 +20,7 @@ export default function FooterNewsletter() {
 
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="flex w-full max-w-[420px] items-center justify-between gap-3 rounded-[10px] border border-[#E7E7E7] px-[16px] py-[8px] sm:max-w-[460px] md:max-w-[520px] lg:max-w-[620px] xl:max-w-[680px] 2xl:max-w-[720px]"
+        className="flex w-full items-center justify-between gap-3 rounded-[10px] border border-[#E7E7E7] px-[16px] py-[8px] 2xl:max-w-[720px]"
       >
         <input
           type="email"
