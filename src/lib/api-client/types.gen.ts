@@ -2232,6 +2232,7 @@ export type GetCountriesResponses = {
       full_name?: string;
       iso3?: string;
       continent_code?: string;
+      image_path?: string | null;
       beaches_count?: number;
     }>;
     message?: string;
@@ -2277,6 +2278,7 @@ export type GetCountryResponses = {
       full_name?: string;
       iso3?: string;
       continent_code?: string;
+      image_path?: string | null;
       beaches_count?: number;
       continent?: {
         code?: string;
