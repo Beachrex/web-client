@@ -419,6 +419,10 @@ export type Country = {
    */
   continent_code?: string;
   /**
+   * Path to the country image
+   */
+  image_path?: string | null;
+  /**
    * Number of beaches in this country
    */
   beaches_count?: number;
