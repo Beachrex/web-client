@@ -423,7 +423,6 @@ export type Country = {
    */
   beaches_count?: number;
   continent?: Continent;
-  image_path?: string;
 };
 
 /**
@@ -2401,6 +2400,75 @@ export type GetBeachFiltersResponses = {
    */
   200: {
     data?: {
+      country?: {
+        /**
+         * Localized filter title
+         */
+        title?: string;
+        /**
+         * Icon file path (SVG/PNG)
+         */
+        icon?: string | null;
+        /**
+         * Input type: checkbox, radio, select, single, multiple
+         */
+        input_type?: string;
+        /**
+         * Countries with more than 1 beach
+         */
+        options?: Array<{
+          id?: number;
+          code?: string;
+          name?: string;
+          slug?: string;
+        }>;
+      };
+      region?: {
+        /**
+         * Localized filter title
+         */
+        title?: string;
+        /**
+         * Icon file path (SVG/PNG)
+         */
+        icon?: string | null;
+        /**
+         * Input type: checkbox, radio, select, single, multiple
+         */
+        input_type?: string;
+        /**
+         * Regions with more than 1 beach
+         */
+        options?: Array<{
+          id?: number;
+          code?: string;
+          name?: string;
+          slug?: string;
+        }>;
+      };
+      island?: {
+        /**
+         * Localized filter title
+         */
+        title?: string;
+        /**
+         * Icon file path (SVG/PNG)
+         */
+        icon?: string | null;
+        /**
+         * Input type: checkbox, radio, select, single, multiple
+         */
+        input_type?: string;
+        /**
+         * Islands with more than 1 beach
+         */
+        options?: Array<{
+          id?: number;
+          code?: string;
+          name?: string;
+          slug?: string;
+        }>;
+      };
       waterbody?: {
         /**
          * Localized filter title
