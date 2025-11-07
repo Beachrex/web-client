@@ -99,10 +99,26 @@ const config = {
       "files": ["src/lib/api-client/**/*.ts"],
       "rules": {
         "@typescript-eslint/ban-tslint-comment": "off",
-        "@typescript-eslint/no-inferrable-types": "off"
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-redundant-type-constituents": "off",
+        "@typescript-eslint/prefer-nullish-coalescing": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/only-throw-error": "off",
+        "max-len": "off"
       }
     }
   ],
-  "ignorePatterns": ["src/lib/api-client/services/**/*.ts", "src/lib/api-client/models/**/*.ts", "src/lib/api-client/core/request.ts"]
+  "ignorePatterns": [
+    "src/lib/api-client/**/*.gen.ts",
+    "src/lib/api-client/client/**/*.ts",
+    "src/lib/api-client/core/**/*.ts",
+    "src/lib/api-client/@tanstack/**/*.ts"
+  ]
 }
 module.exports = config;

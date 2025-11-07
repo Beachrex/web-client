@@ -2,9 +2,9 @@
 // Import all types from here: import { Continent, Beach } from '@/types'
 
 // API types from generated OpenAPI client
-export type { Continent } from '@/lib/api-client/models/Continent';
-export type { Country } from '@/lib/api-client/models/Country';
-export type { BeachSchema as Beach } from '@/lib/api-client/models/BeachSchema';
+export type { Continent } from '@/lib/api-client/types.gen';
+export type { Country } from '@/lib/api-client/types.gen';
+export type { BeachSchema as Beach } from '@/lib/api-client/types.gen';
 
 // Generic API response type
 export interface ApiResponse<T> {

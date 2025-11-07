@@ -1,6 +1,5 @@
-
-import type { Country } from '@/lib/api-client/models/Country';
-import type { Continent } from '@/lib/api-client/models/Continent';
+import type { Country } from '@/lib/api-client/types.gen';
+import type { Continent } from '@/lib/api-client/types.gen';
 import { countryCodeToKey } from '@/lib/constants/mappings';
 import type { ContinentWithUI, CountryWithUI } from '@/types/domain';
 

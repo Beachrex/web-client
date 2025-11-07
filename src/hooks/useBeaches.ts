@@ -1,58 +1,64 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { useLocale } from 'next-intl';
-import { initOpenAPIClient } from '@/lib/api-client/core/init';
-import { BeachesService } from '@/lib/api-client/services/BeachesService';
-import type { BeachSchema } from '@/lib/api-client/models/BeachSchema';
+
+import { useEffect, useState } from 'react';
+import { getBeaches } from '@/lib/api-client/sdk.gen';
+import type { BeachSchema } from '@/lib/api-client/types.gen';
 
 export const useBeaches = (filters?: {
   continent?: string;
   country?: string;
   type?: string;
 }) => {
-  const [beaches, setBeaches] = useState<BeachSchema[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [allBeaches, setAllBeaches] = useState<BeachSchema[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const locale = useLocale();
 
   useEffect(() => {
-    // Initialize OpenAPI client with current locale
-    initOpenAPIClient(locale);
-
     const fetchBeaches = async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         setError(null);
 
-        // Fetch all beaches from API
-        const response = await BeachesService.getBeaches();
-        const apiBeaches = response.data ?? [];
+        const response = await getBeaches({
+          throwOnError: true,
+        });
 
-        console.log('🏖️ [useBeaches] Total beaches:', apiBeaches.length);
-
-        // Apply client-side filtering if needed
-        let filteredBeaches = apiBeaches;
-
-        if (filters?.continent) {
-          filteredBeaches = apiBeaches.filter(
-            (beach: BeachSchema) => beach.status === filters.continent,
-          );
+        if (response.data) {
+          setAllBeaches(response.data.data ?? []);
         }
-
-        setBeaches(filteredBeaches);
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch beaches';
-        setError(errorMessage);
-        console.error('Error fetching beaches:', err);
-        setBeaches([]);
+        setError(err instanceof Error ? err.message : 'Failed to fetch beaches');
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     void fetchBeaches();
-  }, [locale, filters?.continent, filters?.country, filters?.type]);
+  }, []);
 
-  return { beaches, loading, error };
+  // Apply client-side filtering
+  let beaches = allBeaches;
+
+  if (filters?.continent) {
+    beaches = allBeaches.filter(
+      (beach) => beach.continent_code === filters.continent,
+    );
+  }
+  if (filters?.country) {
+    beaches = beaches.filter(
+      (beach) => beach.country_code === filters.country,
+    );
+  }
+
+  if (filters?.type) {
+    beaches = beaches.filter(
+      (beach) => beach.slug?.includes(filters.type ?? ''),
+    );
+  }
+
+  return {
+    beaches,
+    loading: isLoading,
+    error,
+  };
 };
-

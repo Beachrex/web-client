@@ -163,6 +163,13 @@
     "cardSightsTitle": "Sights",
     "readMore": "Read more >"
   },
+  "BeachesMap":{
+    "title": "Filter",
+    "advancedFilters": "Advanced",
+    "loadingFilters": "Loading...",
+    "found": "Found",
+    "noBeachesFound": "No beaches found"
+  },
   "TopBar": {
     "continentLabel": "Continent",
     "continentName": "Europe",

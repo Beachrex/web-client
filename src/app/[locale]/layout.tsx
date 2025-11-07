@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { Open_Sans } from 'next/font/google';
 import DefaultLayout from '@/components/Layout';
+import { ApiClientProvider } from '@/components/ApiClientProvider';
 
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -31,6 +32,9 @@ export default async function LocaleLayout({
 }) {
     // Await params in Next.js 15
     const { locale } = await params;
+
+    console.log('LocaleLayout locale', locale);
+
     // Typing the messages
     const messages = await getMessages() as Record<string, string>;
 
@@ -38,7 +42,9 @@ export default async function LocaleLayout({
         <html lang={locale} className={openSans.className}>
         <body>
         <NextIntlClientProvider messages={messages}>
-            <DefaultLayout>{children}</DefaultLayout>
+                <ApiClientProvider>
+                    <DefaultLayout>{children}</DefaultLayout>
+                </ApiClientProvider>
         </NextIntlClientProvider>
 
         </body>

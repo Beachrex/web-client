@@ -163,6 +163,13 @@
     "cardSightsTitle": "Znamenitosti",
     "readMore": "Preberi več >"
   },
+  "BeachesMap":{
+    "title": "Filter",
+    "advancedFilters": "Napredno",
+    "loadingFilters": "Nalaganje...",
+    "found": "Najdeno",
+    "noBeachesFound": "Ni najdenih plaž"
+  },
   "TopBar": {
     "continentLabel": "Kontinent",
     "continentName": "Evropa",
