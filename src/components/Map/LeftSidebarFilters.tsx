@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import { getBeachFilters } from '@/lib/api-client/sdk.gen';
-import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
+import { useQuery } from '@tanstack/react-query';
+import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { env } from '@/env';
 import { useBeaches } from '@/hooks/useBeaches';
 import { useTranslations } from 'next-intl';
@@ -12,41 +12,27 @@ import { useTranslations } from 'next-intl';
 const LeftSidebarFilters = () => {
     const t = useTranslations('BeachesMap');
     const [isExpanded, setIsExpanded] = useState(false);
-    const [expandedSections, setExpandedSections] = useState({
-        beachType: false,
-        userType: false,
-        waterbody: false,
-    });
-    const [filters, setFilters] = useState<GetBeachFiltersResponse['data'] | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
     const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
     const { beaches, loading: beachesLoading } = useBeaches();
 
+    // Fetch filters using TanStack Query
+    const { data, isLoading, error } = useQuery(getBeachFiltersOptions());
+    const filters = data?.data ?? null;
 
+    // Initialize expanded sections when filters data changes
     useEffect(() => {
-        const fetchFilters = async () => {
-            try {
-                setIsLoading(true);
-                const response = await getBeachFilters({
-                    throwOnError: true,
-                });
-                if (response.data) {
-                    setFilters(response.data.data ?? null);
-                }
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'Failed to fetch filters');
-                console.error('Error fetching beach filters:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        if (filters) {
+            const initialExpandedState: Record<string, boolean> = {};
+            Object.keys(filters).forEach(key => {
+                initialExpandedState[key] = false;
+            });
+            setExpandedSections(initialExpandedState);
+        }
+    }, [filters]);
 
-        void fetchFilters();
-    }, []);
-
-    const toggleSection = (section: 'beachType' | 'userType' | 'waterbody') => {
+    const toggleSection = (section: string) => {
         setExpandedSections(prev => ({
             ...prev,
             [section]: !prev[section],
@@ -153,122 +139,51 @@ const LeftSidebarFilters = () => {
 
                         {error && (
                             <div className="text-center text-red-500 py-4">
-                                {error}
+                                {error instanceof Error ? error.message : 'Failed to fetch filters'}
                             </div>
                         )}
 
                         {!isLoading && !error && filters && (
                             <>
-                                {/* Filter by Water Body */}
-                                {filters.waterbody && (
-                                    <div className="border border-gray-200 rounded-lg">
-                                        <button
-                                            onClick={() => toggleSection('waterbody')}
-                                            className="w-full flex justify-between items-center px-4 py-3 hover:bg-gray-50 transition-colors rounded-lg"
-                                        >
-                                            <div className="flex items-center gap-2">
-                                                {filters.waterbody.icon && (
-                                                    <Image
-                                                        src={`${cdnEndpoint}${filters.waterbody.icon}`}
-                                                        alt=""
-                                                        width={20}
-                                                        height={20}
-                                                        className="object-contain"
-                                                    />
+                                {/* Dynamically render all filter categories */}
+                                {Object.entries(filters).map(([filterKey, filterData]) => {
+                                    if (!filterData) return null;
+                                    return (
+                                        <div key={filterKey} className="border border-gray-200 rounded-lg">
+                                            <button
+                                                onClick={() => toggleSection(filterKey)}
+                                                className="w-full flex justify-between items-center px-4 py-3 hover:bg-gray-50 transition-colors rounded-lg"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    {filterData.icon && (
+                                                        <Image
+                                                            src={`${cdnEndpoint}${filterData.icon}`}
+                                                            alt=""
+                                                            width={20}
+                                                            height={20}
+                                                            className="object-contain"
+                                                        />
+                                                    )}
+                                                    <h3 className="font-semibold text-sm">
+                                                        {filterData.title ?? filterKey}
+                                                    </h3>
+                                                </div>
+                                                {expandedSections[filterKey] ? (
+                                                    <FiChevronUp className="text-gray-500" />
+                                                ) : (
+                                                    <FiChevronDown className="text-gray-500" />
                                                 )}
-                                                <h3 className="font-semibold text-sm">
-                                                    {filters.waterbody.title ?? 'Water Body'}
-                                                </h3>
-                                            </div>
-                                            {expandedSections.waterbody ? (
-                                                <FiChevronUp className="text-gray-500" />
-                                            ) : (
-                                                <FiChevronDown className="text-gray-500" />
-                                            )}
-                                        </button>
-                                        {expandedSections.waterbody &&
-                                            renderFilterOptions(
-                                                filters.waterbody.input_type,
-                                                filters.waterbody.options,
-                                                'waterbody'
-                                            )
-                                        }
-                                    </div>
-                                )}
-
-                                {/* Filter by Beach Type */}
-                                {filters.beach_type && (
-                                    <div className="border border-gray-200 rounded-lg">
-                                        <button
-                                            onClick={() => toggleSection('beachType')}
-                                            className="w-full flex justify-between items-center px-4 py-3 hover:bg-gray-50 transition-colors rounded-lg"
-                                        >
-                                            <div className="flex items-center gap-2">
-                                                {filters.beach_type.icon && (
-                                                    <Image
-                                                        src={`${cdnEndpoint}${filters.beach_type.icon}`}
-                                                        alt=""
-                                                        width={20}
-                                                        height={20}
-                                                        className="object-contain"
-                                                    />
-                                                )}
-                                                <h3 className="font-semibold text-sm">
-                                                    {filters.beach_type.title ?? 'Beach Type'}
-                                                </h3>
-                                            </div>
-                                            {expandedSections.beachType ? (
-                                                <FiChevronUp className="text-gray-500" />
-                                            ) : (
-                                                <FiChevronDown className="text-gray-500" />
-                                            )}
-                                        </button>
-                                        {expandedSections.beachType &&
-                                            renderFilterOptions(
-                                                filters.beach_type.input_type,
-                                                filters.beach_type.options,
-                                                'beachType'
-                                            )
-                                        }
-                                    </div>
-                                )}
-
-                                {/* Filter by User Type */}
-                                {filters.user_type && (
-                                    <div className="border border-gray-200 rounded-lg">
-                                        <button
-                                            onClick={() => toggleSection('userType')}
-                                            className="w-full flex justify-between items-center px-4 py-3 hover:bg-gray-50 transition-colors rounded-lg"
-                                        >
-                                            <div className="flex items-center gap-2">
-                                                {filters.user_type.icon && (
-                                                    <Image
-                                                        src={`${cdnEndpoint}${filters.user_type.icon}`}
-                                                        alt=""
-                                                        width={20}
-                                                        height={20}
-                                                        className="object-contain"
-                                                    />
-                                                )}
-                                                <h3 className="font-semibold text-sm">
-                                                    {filters.user_type.title ?? 'User Type'}
-                                                </h3>
-                                            </div>
-                                            {expandedSections.userType ? (
-                                                <FiChevronUp className="text-gray-500" />
-                                            ) : (
-                                                <FiChevronDown className="text-gray-500" />
-                                            )}
-                                        </button>
-                                        {expandedSections.userType &&
-                                            renderFilterOptions(
-                                                filters.user_type.input_type,
-                                                filters.user_type.options,
-                                                'userType'
-                                            )
-                                        }
-                                    </div>
-                                )}
+                                            </button>
+                                            {expandedSections[filterKey] &&
+                                                renderFilterOptions(
+                                                    filterData.input_type,
+                                                    filterData.options,
+                                                    filterKey
+                                                )
+                                            }
+                                        </div>
+                                    );
+                                })}
                             </>
                         )}
                     </div>

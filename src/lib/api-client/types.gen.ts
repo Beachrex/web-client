@@ -419,6 +419,10 @@ export type Country = {
    */
   continent_code?: string;
   /**
+   * Path to the country image
+   */
+  image_path?: string | null;
+  /**
    * Number of beaches in this country
    */
   beaches_count?: number;
@@ -2232,6 +2236,7 @@ export type GetCountriesResponses = {
       full_name?: string;
       iso3?: string;
       continent_code?: string;
+      image_path?: string | null;
       beaches_count?: number;
     }>;
     message?: string;
@@ -2277,6 +2282,7 @@ export type GetCountryResponses = {
       full_name?: string;
       iso3?: string;
       continent_code?: string;
+      image_path?: string | null;
       beaches_count?: number;
       continent?: {
         code?: string;

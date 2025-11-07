@@ -1,39 +1,15 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
-import { getContinents } from '@/lib/api-client/sdk.gen';
-import type { GetContinentsResponse } from '@/lib/api-client/types.gen';
+import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getContinentsOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { continentCodeToKey } from '@/lib/constants/mappings';
 import { getContinentIcon } from '@/lib/utils/icons';
 import type { ContinentWithUI } from '@/types/domain';
 
 export const useContinents = () => {
-  const [data, setData] = useState<GetContinentsResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchContinents = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-
-        const response = await getContinents({
-          throwOnError: true,
-        });
-
-        if (response.data) {
-          setData(response.data);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch continents');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    void fetchContinents();
-  }, []);
+  // Fetch continents using TanStack Query
+  const { data, isLoading, error } = useQuery(getContinentsOptions());
 
   // Transform API data to UI format
   const continents = useMemo(() => {
@@ -63,11 +39,11 @@ export const useContinents = () => {
         beaches_count: continent.beaches_count ?? 0,
       };
     }).filter((continent): continent is ContinentWithUI => continent !== null);
-  }, [data, error]);
+  }, [data?.data, error]);
 
   return {
     continents,
     loading: isLoading,
-    error,
+    error: error ? (error instanceof Error ? error.message : 'Failed to fetch continents') : null,
   };
 };
