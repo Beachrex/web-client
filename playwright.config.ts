@@ -1,10 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+dotenv.config({ path: '.env' });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -20,7 +21,20 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    ['html'],
+    ['list'],
+    // Zephyr Scale reporter - sends test results to Jira
+    ['playwright-zephyr/lib/src/cloud', {
+      projectKey: process.env.ZEPHYR_PROJECT_KEY || 'PEOG',
+      authorizationToken: process.env.ZEPHYR_AUTH_TOKEN,
+      autoCreateTestCases: true,
+      testCycle: {
+        name: `Beachrex E2E Tests - ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
+        description: 'Automated Playwright test execution for Beachrex application',
+      },
+    }],
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
