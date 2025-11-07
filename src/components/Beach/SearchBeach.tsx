@@ -1,6 +1,5 @@
 'use client';
-import type { Continent } from '@/lib/api-client/models/Continent';
-import type { Country } from '@/lib/api-client/models/Country';
+  import type { Continent, Country } from '@/lib/api-client/types.gen';
 import { Pagination } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';

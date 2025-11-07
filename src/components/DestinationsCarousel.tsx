@@ -1,6 +1,6 @@
 'use client';
 
-import type { Country } from '@/lib/api-client/models/Country';
+import type { Country } from '@/lib/api-client/types.gen';
 import { Carousel } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';

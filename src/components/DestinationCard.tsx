@@ -1,6 +1,6 @@
 'use client';
 
-import type { Country } from '@/lib/api-client/models/Country';
+import type { Country } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 

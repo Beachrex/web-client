@@ -1,8 +1,8 @@
 'use client';
-import type { Continent } from '@/lib/api-client/models/Continent';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
+import type { Continent } from '@/lib/api-client/types.gen';
 
 interface SearchContinentProps {
   continent?: Continent;

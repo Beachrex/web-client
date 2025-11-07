@@ -1,18 +1,12 @@
+import { getTranslations } from 'next-intl/server';
+import { notFound } from 'next/navigation';
 import Banner from '@/components/Beach/Banner';
 import ContinentCountriesSection from '@/components/Beach/ContinentCountriesSection';
 import SearchBeach from '@/components/Beach/SearchBeach';
 import SearchContinent from '@/components/Beach/SearchContinent';
 import { PropertySection } from '@/components/PropertySection';
-import { initOpenAPIClient } from '@/lib/api-client/core/init';
-import { ContinentsService } from '@/lib/api-client/services/ContinentsService';
-import { CountriesService } from '@/lib/api-client/services/CountriesService';
-import {
-  getContinentCodeFromSlug,
-  getContinentSlugFromCode,
-  isValidContinentSlug,
-} from '@/lib/constants/continentMapping';
-import { getTranslations } from 'next-intl/server';
-import { notFound } from 'next/navigation';
+import { getContinentCodeFromSlug, getContinentSlugFromCode, isValidContinentSlug } from '@/lib/constants/continentMapping';
+import { getContinent, getContinents, getCountries } from '@/lib/api-client/sdk.gen';
 
 interface PageProps {
   params: Promise<{
@@ -36,8 +30,6 @@ export async function generateMetadata({ params }: PageProps) {
     namespace: 'ContinentPage',
   });
 
-  initOpenAPIClient(resolvedParams.locale);
-
   try {
     // Validate and get continent code
     const continentCode = validateAndGetContinentCode(resolvedParams.continent);
@@ -45,11 +37,14 @@ export async function generateMetadata({ params }: PageProps) {
       throw new Error('Invalid continent');
     }
 
-    const continent = await ContinentsService.getContinent(continentCode);
+    const { data } = await getContinent({
+      path: { code: continentCode },
+    });
+    const continent = data?.data;
 
     return {
-      title: t('metaTitle', { continent: continent.data?.name ?? '' }),
-      description: t('description', { continent: continent.data?.name ?? '' }),
+      title: t('metaTitle', { continent: continent?.name ?? '' }),
+      description: t('description', { continent: continent?.name ?? '' }),
     };
   } catch {
     // Fallback to capitalized slug if API fails
@@ -79,53 +74,39 @@ const Page = async ({ params }: PageProps) => {
       notFound();
     }
 
-    const continentResponse =
-      await ContinentsService.getContinent(continentCode);
-    const continent = continentResponse.data;
+    const { data: continentResponse } = await getContinent({
+      path: { code: continentCode },
+    });
+    const continent = continentResponse?.data;
 
     if (!continent) {
       notFound();
     }
 
     // Get countries for this continent
-    const countriesResponse =
-      await CountriesService.getCountries(continentCode);
-    const countries = countriesResponse.data ?? [];
+    const { data: countriesResponse } = await getCountries({
+      query: { continent: continentCode },
+    });
+    const countries = countriesResponse?.data ?? [];
 
     // Get all continents for navigation
-    const allContinentsResponse = await ContinentsService.getContinents();
-    const allContinents = allContinentsResponse.data ?? [];
+    const { data: continentsResponse } = await getContinents();
+    const allContinents = continentsResponse?.data ?? [];
 
     // Find current continent index for navigation
-    const currentIndex = allContinents.findIndex(
-      (c) => c.code === continentCode,
-    );
-    const prevContinent =
-      currentIndex > 0
-        ? allContinents[currentIndex - 1]
-        : allContinents[allContinents.length - 1];
-    const nextContinent =
-      currentIndex < allContinents.length - 1
-        ? allContinents[currentIndex + 1]
-        : allContinents[0];
+    const currentIndex = allContinents.findIndex(c => c.code === continentCode);
+    const prevContinent = currentIndex > 0 ? allContinents[currentIndex - 1] : allContinents[allContinents.length - 1];
+    const nextContinent = currentIndex < allContinents.length - 1 ? allContinents[currentIndex + 1] : allContinents[0];
 
     // Get URL slugs for navigation (with null checks)
-    const prevSlug = prevContinent?.code
-      ? (getContinentSlugFromCode(prevContinent.code) ??
-        prevContinent.code.toLowerCase())
-      : 'unknown';
-    const nextSlug = nextContinent?.code
-      ? (getContinentSlugFromCode(nextContinent.code) ??
-        nextContinent.code.toLowerCase())
-      : 'unknown';
+    const prevSlug = prevContinent?.code ? (getContinentSlugFromCode(prevContinent.code) ?? prevContinent.code.toLowerCase()) : 'unknown';
+    const nextSlug = nextContinent?.code ? (getContinentSlugFromCode(nextContinent.code) ?? nextContinent.code.toLowerCase()) : 'unknown';
     // Transform countries to property format for now (until we have real accommodation data)
-    const transformedProperties = countries
-      .slice(0, 4)
+    const transformedProperties = countries.slice(0, 8)
       .filter((country) => country.code && country.name)
       .map((country) => ({
         id: country.code!,
-        image:
-          'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg', // Default image until we have image_path in API response
+        image: 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg', // Default image until we have image_path in API response
         title: country.full_name ?? country.name!,
         location: `${country.name}, ${continent.name}`,
         price: Math.floor(Math.random() * 200) + 50, // Mock price until we have real data
@@ -167,9 +148,13 @@ const Page = async ({ params }: PageProps) => {
         {/* top destination section HERE */}
         <ContinentCountriesSection  />
 
-        <SearchBeach countries={countries} continent={continent} />
+        <SearchBeach
+          countries={countries}
+          continent={continent}
+        />
       </>
     );
+
   } catch (error) {
     console.error('Error loading continent data:', error);
     // Return 404 if continent not found
