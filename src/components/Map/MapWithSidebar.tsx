@@ -1,34 +1,88 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import LeftSidebarFilters from './LeftSidebarFilters';
 import ReactLeafletMap from './ReactLeafletMap';
 import { useBeaches } from '@/hooks/useBeaches';
 import { DynamicPropertyCard } from '@/components/PropertyCard/DynamicPropertyCard';
 import { useTranslations } from 'next-intl';
+import { SingleColumnIcon, DoubleColumnIcon } from '@/components/Icons/LayoutIcons';
 
 type ColumnLayout = 1 | 2;
 
 const MapWithSidebar = () => {
     const t = useTranslations('BeachesMap');
-    const { beaches, loading, error } = useBeaches();
-    const [mapCenter, setMapCenter] = useState<[number, number]>([46.861505, 2.496587]);
-    const [mapZoom, setMapZoom] = useState<number>(6);
+    const [mapCenter, setMapCenter] = useState<[number, number]>([46.861505, 2.496587]); // Default center (France)
+    const [mapZoom, setMapZoom] = useState<number>(8);
     const [columnLayout, setColumnLayout] = useState<ColumnLayout>(1);
+    const [radius, setRadius] = useState<number>(100); // Default radius: 100km
+    const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null); // Track selected beach
+    const beachCardsContainerRef = useRef<HTMLDivElement>(null);
 
-    const handleLocationClick = (latitude: string, longitude: string) => {
+    // Get user's location on initial load
+    useEffect(() => {
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Set map center to user's location
+                    setMapCenter([position.coords.latitude, position.coords.longitude]);
+                    setMapZoom(10); // Zoom in closer when we have user location
+                },
+                (error) => {
+                    // If geolocation fails, silently keep default location
+                    console.warn('Geolocation not available:', error.message);
+                },
+                {
+                    enableHighAccuracy: false,
+                    timeout: 5000,
+                    maximumAge: 300000, // Cache for 5 minutes
+                }
+            );
+        }
+    }, []); // Empty dependency array = run only once on mount
+
+    // Fetch beaches within radius of map center
+    const { beaches, loading, error } = useBeaches({
+        latitude: mapCenter[0],
+        longitude: mapCenter[1],
+        radius: radius,
+        limit: 100, // Fetch up to 100 beaches
+    });
+
+    const handleLocationClick = (latitude: string, longitude: string, beachId?: number) => {
         const lat = parseFloat(latitude);
         const lng = parseFloat(longitude);
-
         if (!isNaN(lat) && !isNaN(lng)) {
             setMapCenter([lat, lng]);
             setMapZoom(13); // Zoom in when clicking on a beach
+            setSelectedBeachId(beachId ?? null); // Highlight the selected beach marker
         }
     };
 
+    // Handler for map viewport changes (pan/zoom) - now includes radius
+    const handleMapViewportChange = useCallback((center: [number, number], zoom: number, radius: number) => {
+        setMapCenter(center);
+        setMapZoom(zoom);
+        setRadius(radius);
+    }, []);
+
+    // Handler for marker clicks - scrolls to the corresponding beach card
+    const handleMarkerClick = useCallback((beachId: number) => {
+        setSelectedBeachId(beachId); // Highlight the marker
+
+        // Scroll to the beach card
+        const beachCard = document.querySelector(`[data-beach-id="${beachId}"]`);
+        if (beachCard && beachCardsContainerRef.current) {
+            beachCard.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+        }
+    }, []);
+
     // Calculate container width based on column layout
     const getContainerWidth = () => {
-        const cardWidth = 289; // small card width
+        const cardWidth = 410; // big card width
         const gap = 16; // gap-4 = 1rem = 16px
         const padding = 32; // p-4 = 1rem each side = 32px total
 
@@ -42,83 +96,22 @@ const MapWithSidebar = () => {
         }
     };
 
-    // SVG icon for single column layout
-    const SingleColumnIcon = ({ isActive }: { isActive: boolean }) => (
-        <svg
-            width='10'
-            height='22'
-            viewBox='0 0 13 30'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-        >
-            <rect
-                width='13'
-                height='13'
-                rx='2'
-                fill={isActive ? '#4D4D4D' : '#E7E7E7'}
-            />
-            <rect
-                y='17'
-                width='13'
-                height='13'
-                rx='2'
-                fill={isActive ? '#4D4D4D' : '#E7E7E7'}
-            />
-        </svg>
-    );
-
-    // SVG icon for double column layout
-    const DoubleColumnIcon = ({ isActive }: { isActive: boolean }) => (
-        <svg
-            width='22'
-            height='22'
-            viewBox='0 0 30 30'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-        >
-            <rect
-                width='13'
-                height='13'
-                rx='2'
-                fill={isActive ? '#4D4D4D' : '#E7E7E7'}
-            />
-            <rect
-                y='17'
-                width='13'
-                height='13'
-                rx='2'
-                fill={isActive ? '#4D4D4D' : '#E7E7E7'}
-            />
-            <rect
-                x='17'
-                width='13'
-                height='13'
-                rx='2'
-                fill={isActive ? '#4D4D4D' : '#E7E7E7'}
-            />
-            <rect
-                x='17'
-                y='17'
-                width='13'
-                height='13'
-                rx='2'
-                fill={isActive ? '#4D4D4D' : '#E7E7E7'}
-            />
-        </svg>
-    );
-
     return (
         <div className="h-screen w-full overflow-hidden">
             <div className="h-full w-full flex flex-col md:flex-row gap-2">
                 {/* Left Sidebar - Filters */}
                 <div className="w-full md:w-80 h-full overflow-y-auto flex-shrink-0">
                     <div className="h-full shadow-md rounded-lg" style={{ backgroundColor: '#F6F6F5' }}>
-                        <LeftSidebarFilters />
+                        <LeftSidebarFilters
+                            beachesCount={beaches.length}
+                            beachesLoading={loading}
+                        />
                     </div>
                 </div>
 
                 {/* Middle Column - Beach Cards List */}
                 <div
+                    ref={beachCardsContainerRef}
                     className='h-full overflow-y-auto bg-gray-50 flex-shrink-0 rounded-lg scrollbar-hide'
                     style={{
                         width: `${getContainerWidth()}px`,
@@ -173,12 +166,12 @@ const MapWithSidebar = () => {
                                 }}
                             >
                                 {beaches.map((beach) => (
+                                <div key={beach.id} data-beach-id={beach.id!}>
                                     <DynamicPropertyCard
-                                        key={beach.id}
                                         beach={beach}
-                                        size='small'
                                         onLocationClick={handleLocationClick}
                                     />
+                                </div>
                                 ))}
                             </div>
                         )}
@@ -192,6 +185,10 @@ const MapWithSidebar = () => {
                             beaches={beaches}
                             center={mapCenter}
                             zoom={mapZoom}
+                            radius={radius}
+                            selectedBeachId={selectedBeachId}
+                            onViewportChange={handleMapViewportChange}
+                            onMarkerClick={handleMarkerClick}
                         />
                     </div>
                 </div>

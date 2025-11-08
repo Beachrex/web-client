@@ -6,37 +6,56 @@ import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { env } from '@/env';
-import { useBeaches } from '@/hooks/useBeaches';
 import { useTranslations } from 'next-intl';
 
-const LeftSidebarFilters = () => {
+interface LeftSidebarFiltersProps {
+    beachesCount: number;
+    beachesLoading: boolean;
+    onFiltersChange?: (filters: Record<string, string | number | undefined>) => void;
+    currentFilters?: Record<string, string | number | undefined>;
+}
+
+const LeftSidebarFilters = ({
+    beachesCount,
+    beachesLoading,
+    onFiltersChange,
+    currentFilters = {},
+}: LeftSidebarFiltersProps) => {
     const t = useTranslations('BeachesMap');
     const [isExpanded, setIsExpanded] = useState(false);
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
     const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
-    const { beaches, loading: beachesLoading } = useBeaches();
 
-    // Fetch filters using TanStack Query
+    // Fetch filter options using TanStack Query
     const { data, isLoading, error } = useQuery(getBeachFiltersOptions());
-    const filters = data?.data ?? null;
+    const filterOptions = data?.data ?? null;
 
-    // Initialize expanded sections when filters data changes
+    // Initialize expanded sections when filter options data changes
     useEffect(() => {
-        if (filters) {
+        if (filterOptions) {
             const initialExpandedState: Record<string, boolean> = {};
-            Object.keys(filters).forEach(key => {
+            Object.keys(filterOptions).forEach(key => {
                 initialExpandedState[key] = false;
             });
             setExpandedSections(initialExpandedState);
         }
-    }, [filters]);
+    }, [filterOptions]);
 
     const toggleSection = (section: string) => {
         setExpandedSections(prev => ({
             ...prev,
             [section]: !prev[section],
         }));
+    };
+
+    const handleFilterChange = (filterKey: string, value: string | undefined) => {
+        if (onFiltersChange) {
+            onFiltersChange({
+                ...currentFilters,
+                [filterKey]: value ?? undefined, // Remove key if value is empty
+            });
+        }
     };
 
     const renderFilterOptions = (
@@ -47,11 +66,16 @@ const LeftSidebarFilters = () => {
         if (!options) return null;
 
         const type = inputType?.toLowerCase();
+        const currentValue = currentFilters[filterName] as string | undefined;
 
         if (type === 'select') {
             return (
                 <div className="px-4 pb-3">
-                    <select className="w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm">
+                    <select
+                        className="w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
+                        value={currentValue ?? ''}
+                        onChange={(e) => handleFilterChange(filterName, e.target.value)}
+                    >
                         <option value="">Select an option</option>
                         {options.map((option) => (
                             <option key={option.id} value={option.code ?? option.slug}>
@@ -66,33 +90,52 @@ const LeftSidebarFilters = () => {
         if (type === 'radio' || type === 'single') {
             return (
                 <div className="px-4 pb-3 space-y-2">
-                    {options.map((option) => (
-                        <label key={option.id} className="flex items-center gap-2 cursor-pointer">
-                            <input
-                                type="radio"
-                                name={filterName}
-                                value={option.code ?? option.slug}
-                                className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                            />
-                            <span className="text-sm">{option.name}</span>
-                        </label>
-                    ))}
+                    {options.map((option) => {
+                        const optionValue = option.code ?? option.slug;
+                        return (
+                            <label key={option.id} className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name={filterName}
+                                    value={optionValue}
+                                    checked={currentValue === optionValue}
+                                    onChange={(e) => handleFilterChange(filterName, e.target.value)}
+                                    className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                                />
+                                <span className="text-sm">{option.name}</span>
+                            </label>
+                        );
+                    })}
                 </div>
             );
         }
 
+        // Checkbox (multiple selection) - store as comma-separated string
         return (
             <div className="px-4 pb-3 space-y-2">
-                {options.map((option) => (
-                    <label key={option.id} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            value={option.code ?? option.slug}
-                            className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                        />
-                        <span className="text-sm">{option.name}</span>
-                    </label>
-                ))}
+                {options.map((option) => {
+                    const optionValue = option.code ?? option.slug ?? '';
+                    const selectedValues = currentValue ? currentValue.split(',') : [];
+                    const isChecked = selectedValues.includes(optionValue);
+
+                    return (
+                        <label key={option.id} className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                value={optionValue}
+                                checked={isChecked}
+                                onChange={(e) => {
+                                    const newValues = e.target.checked
+                                        ? [...selectedValues, optionValue]
+                                        : selectedValues.filter(v => v !== optionValue);
+                                    handleFilterChange(filterName, newValues.length > 0 ? newValues.join(',') : undefined);
+                                }}
+                                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                            />
+                            <span className="text-sm">{option.name}</span>
+                        </label>
+                    );
+                })}
             </div>
         );
     };
@@ -123,7 +166,7 @@ const LeftSidebarFilters = () => {
                         {beachesLoading ? (
                             t('loadingFilters')
                         ) : (
-                            `${t('found')} (${beaches.length})`
+                            `${t('found')} (${beachesCount})`
                         )}
                     </p>
                 </div>
@@ -143,10 +186,10 @@ const LeftSidebarFilters = () => {
                             </div>
                         )}
 
-                        {!isLoading && !error && filters && (
+                        {!isLoading && !error && filterOptions && (
                             <>
                                 {/* Dynamically render all filter categories */}
-                                {Object.entries(filters).map(([filterKey, filterData]) => {
+                                {Object.entries(filterOptions).map(([filterKey, filterData]) => {
                                     if (!filterData) return null;
                                     return (
                                         <div key={filterKey} className="border border-gray-200 rounded-lg">

@@ -6,7 +6,7 @@ import type { BeachSchema } from '@/lib/api-client/types.gen';
 interface DynamicPropertyCardProps {
   beach: BeachSchema;
   size?: 'small' | 'big';
-  onLocationClick?: (latitude: string, longitude: string) => void;
+  onLocationClick?: (latitude: string, longitude: string, beachId?: number) => void;
 }
 
 export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: DynamicPropertyCardProps) {
@@ -34,7 +34,7 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
   // Handle location icon click
   const handleLocationClick = () => {
     if (onLocationClick) {
-      onLocationClick(latitude, longitude);
+      onLocationClick(latitude, longitude, beach.id);
     }
   };
 
