@@ -2,24 +2,19 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { client } from '@/lib/api-client/client.gen';
-import { useLocale } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 interface ApiClientProviderProps {
   children: React.ReactNode;
+  locale: string;
 }
 
-export function ApiClientProvider({ children }: ApiClientProviderProps) {
-  const locale = useLocale();
-
-  // Create a QueryClient instance - use useState to ensure it's only created once
+export function ApiClientProvider({ children, locale }: ApiClientProviderProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
-            // With SSR, we usually want to set some default staleTime
-            // above 0 to avoid refetching immediately on the client
             staleTime: 60 * 1000, // 1 minute
             refetchOnWindowFocus: false,
           },
@@ -33,7 +28,10 @@ export function ApiClientProvider({ children }: ApiClientProviderProps) {
         'Accept-Language': locale,
       },
     });
-  }, [locale]);
+
+    void queryClient.resetQueries();
+
+  }, [locale, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>

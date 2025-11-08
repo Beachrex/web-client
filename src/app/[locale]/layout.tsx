@@ -6,8 +6,8 @@ import DefaultLayout from '@/components/Layout';
 import { ApiClientProvider } from '@/components/ApiClientProvider';
 
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-    const { locale } = await params;
+export async function generateMetadata({ params }: { params: { locale: string } }) {
+    const { locale } = params;
     const t = await getTranslations({ locale, namespace: 'Metadata' });
 
     return {
@@ -28,21 +28,18 @@ export default async function LocaleLayout({
                                                params,
                                            }: {
     children: React.ReactNode;
-    params: Promise<{ locale: string }>;
+    params: { locale: string };
 }) {
-    // Await params in Next.js 15
-    const { locale } = await params;
+    // Next.js 14: params is directly available (not a Promise)
+    const { locale } = params;
 
-    console.log('LocaleLayout locale', locale);
-
-    // Typing the messages
     const messages = await getMessages() as Record<string, string>;
 
     return (
         <html lang={locale} className={openSans.className}>
         <body>
         <NextIntlClientProvider messages={messages}>
-                <ApiClientProvider>
+                <ApiClientProvider locale={locale}>
                     <DefaultLayout>{children}</DefaultLayout>
                 </ApiClientProvider>
         </NextIntlClientProvider>

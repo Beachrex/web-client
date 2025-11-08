@@ -1,40 +1,48 @@
 'use client';
 
-import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getBeachesOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import { getBeachesOptions, getBeachesWithinRadiusOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import type { BeachSchema } from '@/lib/api-client/types.gen';
 
-export const useBeaches = (filters?: {
-  continent?: string;
-  country?: string;
-  type?: string;
-}) => {
-  // Fetch all beaches using TanStack Query
-  const { data, isLoading, error } = useQuery(getBeachesOptions());
+// Radius search filters
+export interface RadiusSearchFilters {
+  latitude?: number;
+  longitude?: number;
+  radius?: number;
+  limit?: number;
+}
 
-  // Apply client-side filtering with useMemo for performance
-  const beaches = useMemo(() => {
-    const allBeaches = data?.data ?? [];
-    let filteredBeaches = allBeaches;
+export const useBeaches = (filters?: RadiusSearchFilters) => {
+  // Determine if we should use radius search
+  const useRadiusSearch =
+    filters?.latitude !== undefined &&
+    filters?.longitude !== undefined &&
+    filters?.radius !== undefined;
 
-    if (filters?.continent) {
-      filteredBeaches = filteredBeaches.filter(
-        (beach) => beach.continent_code === filters.continent,
-      );
-    }
-    if (filters?.country) {
-      filteredBeaches = filteredBeaches.filter(
-        (beach) => beach.country_code === filters.country,
-      );
-    }
-    if (filters?.type) {
-      filteredBeaches = filteredBeaches.filter(
-        (beach) => beach.slug?.includes(filters.type ?? ''),
-      );
-    }
+  // Fetch all beaches (disabled when using radius search)
+  const allBeachesQuery = useQuery({
+    ...getBeachesOptions(),
+    enabled: !useRadiusSearch,
+  });
 
-    return filteredBeaches;
-  }, [data?.data, filters?.continent, filters?.country, filters?.type]);
+  // Fetch beaches within radius (disabled when not using radius search)
+  const radiusQuery = useQuery({
+    ...getBeachesWithinRadiusOptions({
+      query: {
+        latitude: Number(filters?.latitude ?? 0),
+        longitude: Number(filters?.longitude ?? 0),
+        radius: Number(filters?.radius ?? 1),
+        limit: filters?.limit ? Number(filters.limit) : undefined,
+      },
+    }),
+    enabled: useRadiusSearch,
+  });
+
+  // Use the appropriate query result
+  const { data, isLoading, error } = useRadiusSearch ? radiusQuery : allBeachesQuery;
+
+  // Extract beaches array from API response
+  const beaches = (data as { data?: BeachSchema[] })?.data ?? [];
 
   return {
     beaches,

@@ -168,7 +168,10 @@
     "advancedFilters": "Advanced",
     "loadingFilters": "Loading...",
     "found": "Found",
-    "noBeachesFound": "No beaches found"
+    "noBeachesFound": "No beaches found",
+    "searchForBeaches": "Enter address",
+    "loadingMap": "Loading map...",
+    "radiusLabel": "Radius:"
   },
   "TopBar": {
     "continentLabel": "Continent",

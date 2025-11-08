@@ -168,7 +168,10 @@
     "advancedFilters": "Napredno",
     "loadingFilters": "Nalaganje...",
     "found": "Najdeno",
-    "noBeachesFound": "Ni najdenih plaž"
+    "noBeachesFound": "Ni najdenih plaž",
+    "searchForBeaches": "Vnesi naslov",
+    "loadingMap": "Nalaganje zemljevida...",
+    "radiusLabel": "Radij:"
   },
   "TopBar": {
     "continentLabel": "Kontinent",
