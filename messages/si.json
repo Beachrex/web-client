@@ -11,7 +11,12 @@
     "accommodations": "Nastanitve",
     "shop": "Trgovina",
     "map": "Zemljevid",
-    "icon": "Ikona"
+    "icon": "Ikona",
+    "readMore": "Preberi več >",
+    "beach": "plaža",
+    "save": "shrani",
+    "share": "deli",
+    "reviews": "ocene"
   },
   "HomePage": {
     "allBeaches": "Vse plaže",
@@ -168,6 +173,21 @@
     "continentName": "Evropa",
     "numBeachesLabel": "št. plaž:",
     "numAccommodationsLabel": "št. nastanitev:"
+  },
+  "TopBarBeach": {
+    "beachLabel": "Morska plaža",
+    "numActivitiesLabel": "Št. aktivnosti",
+    "numAccommodationsLabel": "Št. nastanitev"
+  },
+  "BottomBadgesBeach": {
+    "badges": {
+      "stony": "Kamnita",
+      "familyFriendly": "Primerna za družine",
+      "parking": "Parkirišče na voljo",
+      "easyAccess": "Preprost dostop",
+      "windsurfing": "Windsurfing",
+      "SeaTemperature": "Temperatura morja"
+    }
   },
   "Footer": {
     "brand": {

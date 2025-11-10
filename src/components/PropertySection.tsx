@@ -1,4 +1,5 @@
 'use client';
+import { useBeaches } from '@/hooks/useBeaches';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
@@ -27,9 +28,17 @@ interface PropertySectionProps {
 export const PropertySection: React.FC<PropertySectionProps> = ({
   title,
   totalCount = 124,
-  properties,
 }) => {
   const t = useTranslations('PropertySection');
+  const { beaches } = useBeaches();
+
+  console.table(
+    beaches.slice(0, 5).map((b) => ({
+      id: b.id,
+      name: b.name,
+      mainImage: b.mainImage,
+    })),
+  );
 
   return (
     <section className="relative overflow-x-hidden bg-white py-10 sm:py-14 lg:py-20">
@@ -130,11 +139,10 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
             </a>
           </div>
         </div>
-
         {/* Property cards grid - 4 per row */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {properties.map((p) => (
-            <PropertyCard key={p.id} {...p} />
+          {beaches.map((b) => (
+            <PropertyCard key={b.id} beachtitle={b.name} />
           ))}
         </div>
       </div>

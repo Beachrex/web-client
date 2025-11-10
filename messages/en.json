@@ -11,7 +11,12 @@
     "accommodations": "Accommodations",
     "shop": "Shop",
     "map": "Map",
-    "icon": "Icon"
+    "icon": "Icon",
+     "readMore": "Read more >",
+     "beach": "beach",
+     "save" : "save",
+     "share": "share",
+     "reviews": "reviews"
   },
   "HomePage": {
     "allBeaches": "All Beaches",
@@ -169,11 +174,27 @@
     "numBeachesLabel": "Num. of beaches:",
     "numAccommodationsLabel": "Num. of accommodations:"
   },
+  "TopBarBeach": {
+    "beachLabel": "Sea beach",
+    "numActivitiesLabel": "No. of activities",
+    "numAccommodationsLabel": "No. of accommodations"
+  },
+"BottomBadgesBeach": {
+    "badges": {
+      "stony": "Stony",
+      "familyFriendly": "Family friendly",
+      "parking": "Parking available",
+      "easyAccess": "Easy access",
+      "windsurfing": "Windsurfing",
+      "SeaTemperature": "Sea Temperature"
+    }
+    },
   "Footer": {
     "brand": {
       "desc": "Find your perfect beach and BeachRex will acquaint you with every single detail it possibly can.",
       "cta": "Browse the map"
     },
+
     "mostViewed": {
       "title": "Most viewed beaches",
       "links": [

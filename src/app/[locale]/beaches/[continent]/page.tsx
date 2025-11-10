@@ -1,7 +1,7 @@
-import Banner from '@/components/Beach/Banner';
-import ContinentCountriesSection from '@/components/Beach/ContinentCountriesSection';
-import SearchBeach from '@/components/Beach/SearchBeach';
-import SearchContinent from '@/components/Beach/SearchContinent';
+import Banner from '@/components/Continent/Banner';
+import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
+import SearchBeach from '@/components/Continent/SearchBeach';
+import SearchContinent from '@/components/Continent/SearchContinent';
 import { PropertySection } from '@/components/PropertySection';
 import { initOpenAPIClient } from '@/lib/api-client/core/init';
 import { ContinentsService } from '@/lib/api-client/services/ContinentsService';
