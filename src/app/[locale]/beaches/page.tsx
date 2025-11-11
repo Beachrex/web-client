@@ -1,6 +1,9 @@
 'use client';
 
+import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BeachBannerSection from '@/components/Beach/BeachBanner/BeachBannerSection';
+import BeachPageView from '@/components/Beach/BeachBanner/BeachPageView';
+import BeachPromoBanner from '@/components/Beach/BeachBanner/BeachPromoBanner';
 import BreadCrumbsBeach from '@/components/Beach/BeachBanner/BreadCrumbsBeach';
 import { usePathname } from 'next/navigation';
 
@@ -19,6 +22,21 @@ export default function Page() {
       </div>
 
       <BeachBannerSection />
+
+<BeachPageView />
+
+   <AccommodationSection
+  totalCount={569}
+  showDropdown
+  items={Array.from({ length: 12 }, () => ({}))}
+  selectedDistance={{ value: 1, label: '1 km' }}
+  onDistanceChange={(v) => console.log('distance', v)}
+  onFilterClick={() => console.log('filter')}
+  onMapClick={() => console.log('map')}
+   />
+
+<BeachPromoBanner />
+
     </>
   );
 }

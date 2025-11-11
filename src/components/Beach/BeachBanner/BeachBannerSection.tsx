@@ -22,9 +22,9 @@ export default function BeachBannerSection({
     id: 'stony' | 'familyFriendly' | 'parking' | 'easyAccess' | 'windsurfing';
     icon: string;
   }[] = [
-    { id: 'stony', icon: '/images/categories/stones.png' },
+    { id: 'stony', icon: '/images/categories/stones-blue.png' },
     { id: 'familyFriendly', icon: '/images/categories/parents.png' },
-    { id: 'parking', icon: '/images/categories/parking.png' },
+    { id: 'parking', icon: '/images/categories/parking-blue.png' },
     { id: 'easyAccess', icon: '/images/categories/arrow-path.svg' },
     { id: 'windsurfing', icon: '/images/categories/windsurfing.png' },
   ];

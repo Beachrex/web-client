@@ -12,11 +12,11 @@
     "shop": "Shop",
     "map": "Map",
     "icon": "Icon",
-     "readMore": "Read more >",
-     "beach": "beach",
-     "save" : "save",
-     "share": "share",
-     "reviews": "reviews"
+    "readMore": "Read more >",
+    "beach": "beach",
+    "save": "save",
+    "share": "share",
+    "reviews": "reviews"
   },
   "HomePage": {
     "allBeaches": "All Beaches",
@@ -139,7 +139,8 @@
   "PropertySection": {
     "allBeachesLink": "All beaches ({count})",
     "viewAllPropertiesButton": "View all properties",
-    "displayLabel": "Beach view:"
+    "displayLabel": "Beach view:",
+    "beachSectionTitle": "Nearby beaches with similar characteristics"
   },
   "SearchContinent": {
     "title": "Explore Beautiful Beaches",
@@ -179,7 +180,7 @@
     "numActivitiesLabel": "No. of activities",
     "numAccommodationsLabel": "No. of accommodations"
   },
-"BottomBadgesBeach": {
+  "BottomBadgesBeach": {
     "badges": {
       "stony": "Stony",
       "familyFriendly": "Family friendly",
@@ -188,7 +189,21 @@
       "windsurfing": "Windsurfing",
       "SeaTemperature": "Sea Temperature"
     }
-    },
+  },
+  "AccommodationSection": {
+    "accomodationTitle": "Nearby accommodations",
+    "accommodationsLink": "All accommodations ({count})",
+    "dropdownLabel": "Distance ({distance}) from the beach",
+    "filterButton": "Filter",
+    "mapButton": "View map",
+    "dropdownOption": "Distance {distance} from the beach",
+    "dropdownAria": "Distance from the beach"
+  },
+  "BeachPromoBanner": {
+    "title": "Still haven't found your favorite beach?",
+    "beachesMap": "Map of all beaches",
+    "similarBeaches": "Show similar beaches"
+  },
   "Footer": {
     "brand": {
       "desc": "Find your perfect beach and BeachRex will acquaint you with every single detail it possibly can.",

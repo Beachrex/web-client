@@ -11,7 +11,7 @@ const carouselTheme: CustomFlowbiteTheme['carousel'] = {
   },
 };
 
-export function PropertyCard({ beachtitle }: { beachtitle: string }) {
+export function PropertyCard() {
   return (
     <div className="flex h-[395px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg">
       {/* Top banner fills remaining height */}
@@ -28,7 +28,7 @@ export function PropertyCard({ beachtitle }: { beachtitle: string }) {
           {/* Each slide keeps Next/Image for optimization */}
           <div className="relative h-full">
             <Image
-              src="/images/banner/region-banner.jpg"
+              src="/images/propertycard/card-banner.jpg"
               alt="Beach"
               fill
               className="object-cover"
@@ -114,7 +114,7 @@ export function PropertyCard({ beachtitle }: { beachtitle: string }) {
         {/* Title row */}
         <div className="flex items-center justify-between">
           <h3 className="font-figtree text-[20px] font-bold tracking-tight text-[#0069AB]">
-            {beachtitle}
+            Plaza Ladinka
           </h3>
           <div className="pr-[2px]">
             <Image

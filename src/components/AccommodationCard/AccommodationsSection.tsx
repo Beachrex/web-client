@@ -1,0 +1,145 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+
+import { type AccommodationCardProps } from './AccommodationCard';
+import AccommodationFlowbiteCarousel from './AccommodationCarousel';
+
+interface DistanceOption {
+  value: string | number;
+  label: string;
+}
+
+interface Props {
+  title?: string;
+  totalCount?: number;
+  items?: AccommodationCardProps[];
+  // Show dropdown only on the beach page
+  showDropdown?: boolean;
+  distanceOptions?: DistanceOption[];
+  selectedDistance?: DistanceOption;
+  onFilterClick?: () => void;
+  onMapClick?: () => void;
+  onDistanceChange?: (value: string | number) => void;
+  onAllAccommodationsClick?: () => void;
+}
+
+export default function AccommodationSection({
+  // Keep prop but alias to an underscored local to satisfy no-unused-vars
+  title: _title,
+  totalCount = 0,
+  items = Array.from({ length: 8 }, () => ({} as AccommodationCardProps)),
+  showDropdown = true,
+  distanceOptions = [
+    { value: 0.25, label: '250 m' },
+    { value: 0.5, label: '500 m' },
+    { value: 1, label: '1 km' },
+    { value: 2, label: '2 km' },
+  ],
+  selectedDistance,
+  // Remove default no-op functions; use optional chaining where invoked
+  onFilterClick,
+  onMapClick,
+  onDistanceChange,
+  onAllAccommodationsClick,
+}: Props) {
+  const tAcc = useTranslations('AccommodationSection');
+
+  return (
+    <section className="relative overflow-hidden bg-[#E7E7E7] py-10 sm:py-14 lg:py-20">
+      {/* Decorative background image */}
+      <div className="pointer-events-none absolute left-0 top-0 z-0 opacity-60">
+        <div className="relative h-[400px] w-[400px]">
+          <Image
+            src="/images/accomodation.png"
+            alt="Decorative beach image"
+            width={400}
+            height={400}
+            className="h-full w-full select-none object-contain"
+            priority
+          />
+        </div>
+      </div>
+
+      {/* Content wrapper */}
+      <div className="container relative z-10 mx-auto">
+        {/* Header */}
+        <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:mb-10 sm:flex-row sm:items-center">
+          <h2 className="font-figtree text-[30px] font-bold leading-[100%] text-[#222222]">
+            {tAcc('accomodationTitle')}
+          </h2>
+
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            {/* All accommodations link */}
+            <button
+              type="button"
+              onClick={() => onAllAccommodationsClick?.()}
+              className="font-figtree text-[13px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555] sm:text-[14px]"
+            >
+              {tAcc('accommodationsLink', { count: totalCount })}
+            </button>
+
+            {/* Filter button */}
+            <button
+              type="button"
+              onClick={() => onFilterClick?.()}
+              className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#5E1CA5] px-5 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#4b1489]"
+            >
+              <Image
+                src="/images/filters.png"
+                alt="Filter icon"
+                width={20}
+                height={20}
+              />
+              <span>{tAcc('filterButton')}</span>
+            </button>
+
+            {/* Map button */}
+            <button
+              type="button"
+              onClick={() => onMapClick?.()}
+              className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-6 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#2a4c78]"
+            >
+              <Image
+                src="/images/map.png"
+                alt="Map icon"
+                width={20}
+                height={20}
+              />
+              <span>{tAcc('mapButton')}</span>
+            </button>
+
+            {/* Distance dropdown inside the select */}
+            {showDropdown && (
+              <label className="flex items-center gap-2">
+                {/* Accessible label (visually hidden) */}
+                <span className="sr-only">
+                  {tAcc('dropdownAria', { default: 'Razdalja od plaže' })}
+                </span>
+
+                <select
+                  className="rounded-md border border-gray-300 bg-white px-4 py-2 font-figtree text-[14px] font-semibold text-[#4D4D4D] focus:outline-none focus:ring-2 focus:ring-[#5E1CA5]"
+                  value={selectedDistance?.value ?? distanceOptions[0]?.value}
+                  onChange={(e) => onDistanceChange?.(e.target.value)}
+                  aria-label={tAcc('dropdownAria', {
+                    default: 'Razdalja od plaže',
+                  })}
+                >
+                  {distanceOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {tAcc('dropdownOption', { distance: opt.label })}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+          </div>
+        </div>
+
+        {/* Carousel (cards 4/3/2/1 by breakpoint) */}
+        <AccommodationFlowbiteCarousel items={items} />
+      </div>
+    </section>
+  );
+}

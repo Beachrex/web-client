@@ -139,7 +139,8 @@
   "PropertySection": {
     "allBeachesLink": "Vse plaže ({count})",
     "viewAllPropertiesButton": "Poglej vse nastanitve",
-    "displayLabel": "Prikaz plaže:"
+    "displayLabel": "Prikaz plaže:",
+    "beachSectionTitle": "Bližnje plaže s podobnimi karakteristikami"
   },
   "SearchContinent": {
     "title": "Preglej čudovite plaže",
@@ -179,6 +180,20 @@
     "numActivitiesLabel": "Št. aktivnosti",
     "numAccommodationsLabel": "Št. nastanitev"
   },
+   "AccommodationSection": {
+      "accomodationTitle": "Nastanitve v bližini",
+      "accommodationsLink": "Vse nastanitve ({count})",
+      "dropdownLabel": "Oddaljenost ({distance}) od plaže",
+      "filterButton": "Filtriraj",
+      "mapButton": "Poglej zemljevid",
+       "dropdownOption": "Razdalja {distance} od plaže",
+  "dropdownAria": "Razdalja od plaže"
+    },
+    "BeachPromoBanner":{
+      "title": "Še nisi našel svoje najljubše plaže?",
+      "beachesMap": "Zemljevid vseh plaž",
+      "similarBeaches": "Prikaži podobne plaže"
+    },
   "BottomBadgesBeach": {
     "badges": {
       "stony": "Kamnita",
@@ -193,7 +208,9 @@
     "brand": {
       "desc": "Poiščite svojo popolno plažo in BeachRex vas bo seznanil z vsako podrobnostjo.",
       "cta": "Brskaj po zemljevidu"
+      
     },
+   
     "mostViewed": {
       "title": "Most viewed beaches",
       "links": [
