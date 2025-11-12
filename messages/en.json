@@ -249,5 +249,94 @@
     "legal": {
       "rights": "All rights reserved BeachRex"
     }
+  },
+
+  "BeachDetails": {
+    "title": "Detailed information",
+    "groups": {
+      "beach": "Beach",
+      "infrastructure": "Beach infrastructure",
+      "accommodation": "Accommodation",
+      "food": "Food & drinks",
+      "sports": "Sports activities",
+      "parking": "Parking",
+      "pathToBeach": "Path to the beach",
+      "userType": "User type"
+    },
+    "labels": {
+      "type": "Type",
+      "naturalFeatures": "Natural beach features",
+      "occupancy": "Occupancy",
+      "access": "Access",
+      "paid": "Paid",
+      "length": "Length",
+      "width": "Width",
+      "slope": "Slope",
+      "swimmingArea": "Swimming area",
+      "seabed": "Seabed",
+
+      "parkingSpots": "No. of parking spaces",
+      "wayToParking": "Surface to parking",
+      "recommendedAccess": "Recommended access",
+
+      "distance": "Distance (parking—beach)",
+      "elevationDiff": "Elevation difference (parking to beach)"
+    },
+    "buttons": {
+      "photo": "Photo",
+      "map": "Map"
+    },
+    "values": {
+      "yes": "Yes",
+      "no": "No",
+      "asphalt": "Asphalt",
+
+      "sand": "Sand",
+      "pebble": "Pebble",
+      "brownSand": "Brown sand",
+      "concrete": "Concrete",
+      "grass": "Grass",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "easy": "Easy",
+
+      "accessOnFoot": "on foot",
+      "accessBike": "bicycle",
+      "accessCar": "car",
+      "accessOffroad": "off-road vehicle",
+      "accessMotorhome": "motorhome",
+
+      "familyBeach": "Family-friendly beach",
+
+      "toilet": "Toilet",
+      "shower": "Shower",
+      "accommodation": "Accommodation",
+      "sunbeds": "Sunbeds",
+      "playground": "Playground",
+      "sportsField": "Sports field",
+      "lifeguard": "Lifeguard",
+      "parking": "Parking",
+      "bench": "Bench",
+      "trashBin": "Trash bin",
+      "publicPhone": "Public phone",
+      "wifi": "Wi-Fi point",
+      "apartments": "Apartments",
+      "rooms": "Rooms",
+      "campground": "Campground",
+
+      "restaurant": "Restaurant",
+      "fastFood": "Fast food restaurant",
+      "bakery": "Bakery",
+      "cafe": "Cafe",
+
+      "swimming": "Swimming",
+      "snorkeling": "Snorkeling",
+      "waterSports": "Water sports",
+
+      "unit": {
+        "meters": "m"
+      }
+    }
   }
 }
