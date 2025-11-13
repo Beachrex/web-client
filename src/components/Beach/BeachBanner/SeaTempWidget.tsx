@@ -11,18 +11,21 @@ const SeaTempWidget: React.FC<SeaTempWidgetProps> = ({ tempC = 8 }) => {
   const tBadges = useTranslations('BottomBadgesBeach.badges');
 
   return (
-    <div className="relative aspect-square w-36 overflow-hidden rounded-[10px] font-figtree text-white">
+    <div className="relative h-[144px] w-[144px] overflow-hidden rounded-[10px] font-figtree text-white">
+      {/* Faded background image */}
       <Image
         src="/images/sea.png"
         alt="sea background"
         fill
-        className="rounded-inherit object-cover"
+        className="object-cover opacity-80 mix-blend-lighten"
         priority
       />
 
-      <div className="rounded-inherit absolute inset-0 bg-black/30" />
+      {/* Much lighter overlay */}
+      <div className="absolute inset-0 bg-black/10" />
 
-      <div className="relative z-10 flex h-full flex-col items-start justify-start pl-[14px] pt-[60px]">
+      {/* Content */}
+      <div className="relative z-10 flex h-full flex-col items-start justify-end p-[14px]">
         <Image
           src="/images/sea-water.png"
           alt={tBadges('SeaTemperature')}
@@ -31,14 +34,14 @@ const SeaTempWidget: React.FC<SeaTempWidgetProps> = ({ tempC = 8 }) => {
           className="absolute right-[14px] top-[14px]"
         />
 
-        <div className="flex items-start">
+        <div className="mb-[4px] flex items-start">
           <span className="text-[50px] font-bold leading-[100%]">{tempC}</span>
           <span className="ml-[2px] mt-[10px] text-[12px] font-semibold">
             °C
           </span>
         </div>
 
-        <span className="mt-[6px] text-[12px] font-bold leading-[100%]">
+        <span className="text-[12px] font-bold leading-[100%]">
           {tBadges('SeaTemperature')}
         </span>
       </div>

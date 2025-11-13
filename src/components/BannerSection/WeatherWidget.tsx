@@ -4,7 +4,7 @@ import React from 'react';
 
 const WeatherWidget: React.FC = () => {
   return (
-    <div className="relative h-[144px] w-[144px] overflow-hidden rounded-[10px] bg-black/15 font-figtree text-white">
+    <div className="relative h-[144px] w-[144px] overflow-hidden rounded-[10px] bg-black/30 font-figtree text-white">
       {/* Icon (top right) */}
       <Image
         src="/images/beach.png"
@@ -19,7 +19,9 @@ const WeatherWidget: React.FC = () => {
         {/* Temperature */}
         <div className="flex items-start">
           <span className="text-[50px] font-bold leading-[100%]">23</span>
-          <span className="ml-[2px] mt-[10px] text-[12px] font-semibold">°C</span>
+          <span className="ml-[2px] mt-[10px] text-[12px] font-semibold">
+            °C
+          </span>
         </div>
 
         {/* Location */}
