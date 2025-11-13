@@ -2,7 +2,7 @@
 
 import { Heart, Star } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 
 export interface AccommodationCardProps {
   // Keeping props minimal; extend later when data becomes dynamic
@@ -20,6 +20,8 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
   beachName = 'Plaža Haludovo',
   priceText = 'od 25 €',
 }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
   return (
     <div className="flex h-[400px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg">
       {/* Top banner area */}
@@ -49,12 +51,22 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
         </div>
 
         {/* Top-right heart */}
-        <div className="absolute right-2 top-2">
+        <button
+          type="button"
+          onClick={() => setIsFavorite((prev) => !prev)}
+          aria-pressed={isFavorite}
+          aria-label={
+            isFavorite ? 'Remove from favourites' : 'Save to favourites'
+          }
+          className="absolute right-2 top-2 rounded-full p-1 transition hover:bg-black/40"
+        >
           <Heart
             size={22}
-            className="text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.5)]"
+            // lucide Heart needs fill for solid color
+            fill={isFavorite ? '#ef4444' : 'transparent'}
+            color={isFavorite ? '#ef4444' : '#ffffff'}
           />
-        </div>
+        </button>
 
         {/* Bottom overlay controls */}
         <div className="pointer-events-none absolute bottom-3 left-3 right-3 flex items-center justify-between gap-3">
