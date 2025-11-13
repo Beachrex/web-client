@@ -3,8 +3,8 @@ import { usePathname } from 'next/navigation';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BeachBannerSection from '@/components/Beach/BeachBanner/BeachBannerSection';
-import BeachPageView from '@/components/Beach/BeachBanner/BeachPageView';
-import BeachPromoBanner from '@/components/Beach/BeachBanner/BeachPromoBanner';
+import BeachPageView from '@/components/Beach/BeachPageView';
+import BeachPromoBanner from '@/components/Beach/BeachPromoBanner';
 import BreadCrumbsBeach from '@/components/Beach/BeachBanner/BreadCrumbsBeach';
 import BeachDetailsSection from '@/components/Beach/BeachDetails/beachDetailsSection';
 import SimilarBeachesSection from '@/components/Beach/SimilarBeachesSection';
