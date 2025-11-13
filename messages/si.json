@@ -187,7 +187,9 @@
     "filterButton": "Filtriraj",
     "mapButton": "Poglej zemljevid",
     "dropdownOption": "Razdalja {distance} od plaže",
-    "dropdownAria": "Razdalja od plaže"
+    "dropdownAria": "Razdalja od plaže",
+    "activitiesTitle": "Get your guide",
+    "activitiesLink": "Vse aktivnosti ({count})"
   },
   "BeachPromoBanner": {
     "title": "Še nisi našel svoje najljubše plaže?",
@@ -252,6 +254,11 @@
     "legal": {
       "rights": "Vse pravice pridržane BeachRex"
     }
+  },
+  "BeachSimilarBeaches": {
+    "title": "Bližnje plaže s podobnimi karakteristikami",
+    "dropdownAria": "Filtriraj podobne plaže po oddaljenosti",
+    "dropdownOption": "Oddaljenost ({distance}) od plaže"
   },
   "BeachDetails": {
     "title": "Podrobne informacije",
@@ -320,17 +327,17 @@
       "publicPhone": "Javni telefon",
       "wifi": "Wi-Fi točka",
       "apartments": "Apartmaji",
-  "rooms": "Sobe",
-  "campground": "Avtokamp",
+      "rooms": "Sobe",
+      "campground": "Avtokamp",
 
-  "restaurant": "Restavracija",
-  "fastFood": "Restavracija s hitro prehrano",
-  "bakery": "Pekarna",
-  "cafe": "Kavarna",
+      "restaurant": "Restavracija",
+      "fastFood": "Restavracija s hitro prehrano",
+      "bakery": "Pekarna",
+      "cafe": "Kavarna",
 
-  "swimming": "Plavanje",
-  "snorkeling": "Potapljanje z masko",
-  "waterSports": "Vodni športi",
+      "swimming": "Plavanje",
+      "snorkeling": "Potapljanje z masko",
+      "waterSports": "Vodni športi",
 
       "unit": {
         "meters": "m"

@@ -197,7 +197,9 @@
     "filterButton": "Filter",
     "mapButton": "View map",
     "dropdownOption": "Distance {distance} from the beach",
-    "dropdownAria": "Distance from the beach"
+    "dropdownAria": "Distance from the beach",
+    "activitiesTitle": "Get your guide",
+    "activitiesLink": "All activities ({count})"
   },
   "BeachPromoBanner": {
     "title": "Still haven't found your favorite beach?",
@@ -249,6 +251,12 @@
     "legal": {
       "rights": "All rights reserved BeachRex"
     }
+  },
+
+  "BeachSimilarBeaches": {
+    "title": "Nearby beaches with similar characteristics",
+    "dropdownAria": "Filter similar beaches by distance",
+    "dropdownOption": "Distance ({distance}) from the beach"
   },
 
   "BeachDetails": {

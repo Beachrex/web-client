@@ -5,11 +5,8 @@ import Image from 'next/image';
 
 import { type AccommodationCardProps } from './AccommodationCard';
 import AccommodationFlowbiteCarousel from './AccommodationCarousel';
+import DistanceDropdown, { type DistanceOption } from '../DistanceDropdown';
 
-interface DistanceOption {
-  value: string | number;
-  label: string;
-}
 
 interface Props {
   title?: string;
@@ -38,7 +35,6 @@ export default function AccommodationSection({
     { value: 2, label: '2 km' },
   ],
   selectedDistance,
-  // Remove default no-op functions; use optional chaining where invoked
   onFilterClick,
   onMapClick,
   onDistanceChange,
@@ -110,29 +106,21 @@ export default function AccommodationSection({
               <span>{tAcc('mapButton')}</span>
             </button>
 
-            {/* Distance dropdown inside the select */}
+            {/* Distance dropdown (reusable component) */}
             {showDropdown && (
-              <label className="flex items-center gap-2">
-                {/* Accessible label (visually hidden) */}
-                <span className="sr-only">
-                  {tAcc('dropdownAria', { default: 'Razdalja od plaže' })}
-                </span>
-
-                <select
-                  className="rounded-md border border-gray-300 bg-white px-4 py-2 font-figtree text-[14px] font-semibold text-[#4D4D4D] focus:outline-none focus:ring-2 focus:ring-[#5E1CA5]"
-                  value={selectedDistance?.value ?? distanceOptions[0]?.value}
-                  onChange={(e) => onDistanceChange?.(e.target.value)}
-                  aria-label={tAcc('dropdownAria', {
-                    default: 'Razdalja od plaže',
-                  })}
-                >
-                  {distanceOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {tAcc('dropdownOption', { distance: opt.label })}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <DistanceDropdown
+                value={
+                  selectedDistance?.value ?? distanceOptions[0]?.value ?? ''
+                }
+                options={distanceOptions}
+                onChange={(val) => onDistanceChange?.(val)}
+                ariaLabel={tAcc('dropdownAria', {
+                  default: 'Razdalja od plaže',
+                })}
+                renderOptionLabel={(opt) =>
+                  tAcc('dropdownOption', { distance: opt.label })
+                }
+              />
             )}
           </div>
         </div>

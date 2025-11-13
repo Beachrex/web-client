@@ -5,8 +5,8 @@ import Image from 'next/image';
 import React from 'react';
 import PropertyCard from './PropertyCard/PropertyCard';
 
-// Define property structure - will match API data later
-interface Property {
+// TODO: optionally export this type so you can reuse it elsewhere
+export interface Property {
   id: string;
   image: string;
   title: string;
@@ -20,13 +20,12 @@ interface Property {
   isFreeCancellation?: boolean;
 }
 
-// Define props for the section component
 interface PropertySectionProps {
   title: string;
   totalCount?: number;
   properties: Property[];
-  // Optional: allows rendering a custom right-side header (e.g. dropdown or filters)
-  headerRight?: JSX.Element;
+  // Optional: custom right-side element (e.g. dropdown instead of link)
+  headerRight?: React.ReactNode;
 }
 
 export const PropertySection: React.FC<PropertySectionProps> = ({
@@ -55,93 +54,93 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
 
       {/* Main content container */}
       <div className="container relative z-10 mx-auto">
-        {/* Header row: title (left) | filters / links (right) */}
+        {/* Header row: title (left) | controls (right) */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4 sm:mb-6">
           {/* Left: Section title */}
           <h2 className="font-figtree text-[22px] font-bold leading-[100%] text-[#222222] sm:text-[26px] lg:text-[30px]">
             {title}
           </h2>
 
-          {/* Right: either a custom header element or default beach display + link */}
-          {headerRight ?? (
-            <div className="flex flex-wrap items-center gap-[16px]">
-              {/* Media display toggle section */}
-              <div className="flex flex-wrap items-center justify-center gap-[10px] rounded-[6px] bg-[#E7E7E7] px-[8px] py-[6px]">
-                <span className="whitespace-nowrap font-figtree text-[14px] font-semibold text-[#4D4D4D]">
-                  {t('displayLabel')}
-                </span>
+          {/* Right: media icons + secondary action (link or dropdown) */}
+          <div className="flex flex-wrap items-center gap-[16px]">
+            {/* Media display toggle section – ALWAYS visible */}
+            <div className="flex flex-wrap items-center justify-center gap-[10px] rounded-[6px] bg-[#E7E7E7] px-[8px] py-[6px]">
+              <span className="whitespace-nowrap font-figtree text-[14px] font-semibold text-[#4D4D4D]">
+                {t('displayLabel')}
+              </span>
 
-                {/* Media icons */}
-                <div className="flex items-center gap-[10px]">
-                  {/* Photo */}
-                  <button
-                    type="button"
-                    onClick={() => console.log('photo clicked')}
-                  >
-                    <Image
-                      src="/images/beachmedia/photo.png"
-                      alt="photo"
-                      width={24}
-                      height={24}
-                    />
-                  </button>
+              {/* Media icons */}
+              <div className="flex items-center gap-[10px]">
+                {/* Photo */}
+                <button
+                  type="button"
+                  onClick={() => console.log('photo clicked')}
+                >
+                  <Image
+                    src="/images/beachmedia/photo.png"
+                    alt="photo"
+                    width={24}
+                    height={24}
+                  />
+                </button>
 
-                  <div className="h-[25px] w-[1px] bg-[#ffffff]" />
+                <div className="h-[25px] w-[1px] bg-[#ffffff]" />
 
-                  {/* Video */}
-                  <button
-                    type="button"
-                    onClick={() => console.log('video clicked')}
-                  >
-                    <Image
-                      src="/images/beachmedia/video-icon-white.png"
-                      alt="video"
-                      width={24}
-                      height={24}
-                    />
-                  </button>
+                {/* Video */}
+                <button
+                  type="button"
+                  onClick={() => console.log('video clicked')}
+                >
+                  <Image
+                    src="/images/beachmedia/video-icon-white.png"
+                    alt="video"
+                    width={24}
+                    height={24}
+                  />
+                </button>
 
-                  <div className="h-[25px] w-[1px] bg-[#ffffff]" />
+                <div className="h-[25px] w-[1px] bg-[#ffffff]" />
 
-                  {/* 360° view */}
-                  <button
-                    type="button"
-                    onClick={() => console.log('360 clicked')}
-                  >
-                    <Image
-                      src="/images/beachmedia/360-degree-white.png"
-                      alt="360 view"
-                      width={24}
-                      height={24}
-                    />
-                  </button>
+                {/* 360° view */}
+                <button
+                  type="button"
+                  onClick={() => console.log('360 clicked')}
+                >
+                  <Image
+                    src="/images/beachmedia/360-degree-white.png"
+                    alt="360 view"
+                    width={24}
+                    height={24}
+                  />
+                </button>
 
-                  <div className="h-[25px] w-[1px] bg-[#ffffff]" />
+                <div className="h-[25px] w-[1px] bg-[#ffffff]" />
 
-                  {/* Live cam */}
-                  <button
-                    type="button"
-                    onClick={() => console.log('live cam clicked')}
-                  >
-                    <Image
-                      src="/images/beachmedia/play-button-arrowhead-white.png"
-                      alt="live cam"
-                      width={24}
-                      height={24}
-                    />
-                  </button>
-                </div>
+                {/* Live cam */}
+                <button
+                  type="button"
+                  onClick={() => console.log('live cam clicked')}
+                >
+                  <Image
+                    src="/images/beachmedia/play-button-arrowhead-white.png"
+                    alt="live cam"
+                    width={24}
+                    height={24}
+                  />
+                </button>
               </div>
+            </div>
 
-              {/* "All beaches" link */}
+            {/* Secondary action: default link OR custom headerRight */}
+            {headerRight ?? (
               <a
                 href="#"
                 className="font-figtree text-[13px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555] sm:text-[14px]"
               >
                 {t('allBeachesLink', { count: totalCount })}
               </a>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Property cards grid (responsive, 1–4 per row) */}
