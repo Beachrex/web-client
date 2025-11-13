@@ -53,7 +53,7 @@ const BeachDetailsSection: React.FC = () => {
         height={20}
         className="object-contain"
       />
-      <span className="font-figtree text-[14px] font-bold leading-[100%] text-white">
+      <span className="whitespace-nowrap font-figtree text-[14px] font-bold leading-[100%] text-white">
         {label}
       </span>
     </button>
@@ -67,7 +67,7 @@ const BeachDetailsSection: React.FC = () => {
           {tMain('title')}
         </h1>
         {/* 4 columns on md+; stack on mobile */}
-        <div className="grid gap-10 md:grid-cols-4">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {/* COLUMN 1 — Beach + User type */}
           <div>
             {/* Beach */}
@@ -251,7 +251,7 @@ const BeachDetailsSection: React.FC = () => {
           <div>
             {/* Parking */}
             <div>
-              <div className="flex items-center justify-between">
+              <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Image
                     src="/images/beachicons/parking-gray.png"
@@ -264,10 +264,14 @@ const BeachDetailsSection: React.FC = () => {
                     {tGroups('parking')}
                   </h2>
                 </div>
-                <ActionButton
-                  icon="/images/beachicons/pic-gallery.png"
-                  label={tButtons('photo')}
-                />
+
+                {/* On mobile this stays normal; on md+ it's absolutely positioned */}
+                <div className="flex items-center md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2">
+                  <ActionButton
+                    icon="/images/beachicons/pic-gallery.png"
+                    label={tButtons('photo')}
+                  />
+                </div>
               </div>
 
               <div className="mt-3 border-b border-[#E7E7E7]" />

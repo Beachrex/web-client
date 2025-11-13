@@ -55,7 +55,7 @@ const BeachPromoBanner: React.FC<Props> = ({
             <button
               type="button"
               onClick={() => onSimilarClick?.()}
-              className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md border border-[#1A3C68] bg-white px-6 font-figtree text-[14px] font-bold text-[#1A3C68] transition-colors hover:bg-[#f2f2f2]"
+              className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md border bg-white px-6 font-figtree text-[14px] font-bold text-[#1A3C68] transition-colors hover:bg-[#f2f2f2]"
             >
               <Image
                 src="/images/map-blue.png"
