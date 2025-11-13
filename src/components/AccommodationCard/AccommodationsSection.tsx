@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { type AccommodationCardProps } from './AccommodationCard';
 import AccommodationFlowbiteCarousel from './AccommodationCarousel';
 import DistanceDropdown, { type DistanceOption } from '../DistanceDropdown';
+import { ChevronRight } from 'lucide-react';
 
 
 interface Props {
@@ -71,9 +72,12 @@ export default function AccommodationSection({
             <button
               type="button"
               onClick={() => onAllAccommodationsClick?.()}
-              className="font-figtree text-[13px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555] sm:text-[14px]"
+              className="inline-flex items-center gap-[4px] font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] hover:text-[#555] sm:text-[14px]"
             >
-              {tAcc('accommodationsLink', { count: totalCount })}
+              <span className="underline underline-offset-[2px]">
+                {tAcc('accommodationsLink', { count: totalCount })}
+              </span>
+              <ChevronRight className="h-4 w-4" />
             </button>
 
             {/* Filter button */}

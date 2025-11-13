@@ -1,5 +1,6 @@
 'use client';
 
+import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
@@ -65,9 +66,12 @@ export default function GetYourGuideSection({
             <button
               type="button"
               onClick={() => onAllActivitiesClick?.()}
-              className="font-figtree text-[13px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555] sm:text-[14px]"
+              className="inline-flex items-center gap-[4px] font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] hover:text-[#555] sm:text-[14px]"
             >
-              {tAcc('activitiesLink', { count: totalCount })}
+              <span className="underline underline-offset-[2px]">
+                {tAcc('activitiesLink', { count: totalCount })}
+              </span>
+              <ChevronRight className="h-4 w-4" />
             </button>
 
             {/* Filter button (dark red) */}

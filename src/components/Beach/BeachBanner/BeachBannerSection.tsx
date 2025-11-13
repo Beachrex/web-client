@@ -30,16 +30,18 @@ export default function BeachBannerSection({
   ];
 
   return (
-    <section className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-visible pb-40 sm:h-[700px] md:min-h-[400px] md:pb-48 lg:h-[798px]">
-      {/* Background */}
-      <Image
-        src="/images/propertycard/card-banner.jpg"
-        alt="Beach banner"
-        fill
-        className="object-cover object-center"
-        priority
-      />
-      <div className="absolute inset-0 bg-white/10" />
+    <section className="relative mx-auto mb-10 h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-visible pb-40 sm:h-[700px] md:min-h-[400px] md:pb-48 lg:h-[798px]">
+      {/* Background with rounded corners */}
+      <div className="absolute inset-0 overflow-hidden rounded-b-[10px] rounded-t-[10px]">
+        <Image
+          src="/images/propertycard/card-banner.jpg"
+          alt="Beach banner"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        <div className="absolute inset-0 bg-white/10" />
+      </div>
 
       {/* Top bar stays at the top */}
       <div className="relative z-10 flex flex-row items-center justify-between p-4 sm:p-6 lg:p-8">

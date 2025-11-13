@@ -46,7 +46,9 @@ export default function BeachTopBar({
             </div>
 
             {/* Right: Optional extras (share/like/user etc.) */}
-            {rightExtras && <div className="flex items-center gap-2">{rightExtras}</div>}
+            {rightExtras && (
+              <div className="flex items-center gap-2">{rightExtras}</div>
+            )}
           </div>
         )}
 
@@ -62,7 +64,9 @@ export default function BeachTopBar({
                 <ChevronLeft className="h-4 w-4" />
                 <span className="whitespace-nowrap">{prevLabel}</span>
                 {/* Show the beach name lightly, but allow it to wrap if long */}
-                <span className="truncate text-gray-600">{prevBeach.name}</span>
+                <span className="truncate text-[#0069AB]">
+                  {prevBeach.name}
+                </span>
               </Link>
             ) : (
               <button
@@ -83,7 +87,9 @@ export default function BeachTopBar({
               >
                 <span className="whitespace-nowrap">{nextLabel}</span>
                 {/* Show the beach name lightly, but allow it to wrap if long */}
-                <span className="truncate text-gray-600">{nextBeach.name}</span>
+                <span className="truncate text-[#0069AB]">
+                  {nextBeach.name}
+                </span>
                 <ChevronRight className="h-4 w-4" />
               </Link>
             ) : (

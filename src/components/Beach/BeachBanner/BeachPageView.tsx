@@ -30,9 +30,8 @@ const BeachPageView: React.FC = () => {
   ];
 
   return (
-    <section className="bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
+    <section className="bg-white py-12 sm:py-16 lg:py-20">
       <div className="container mx-auto px-4">
-
         {/* Grid */}
         <div className="grid grid-cols-1 gap-[26px] sm:grid-cols-2 lg:grid-cols-4">
           {mediaItems.map((item, idx) => (
