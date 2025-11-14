@@ -92,7 +92,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
         {/* Overlay */}
         <div className="absolute inset-0 bg-white/10" />
 
-        <div className="relative z-10 flex h-full flex-col p-4 sm:p-6 lg:p-8">
+        <div className="relative z-1 flex h-full flex-col p-4 sm:p-6 lg:p-8">
           {/* Top bar */}
           <div>
             <TopBar

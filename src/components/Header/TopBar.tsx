@@ -6,9 +6,11 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import Image from 'next/image';
 import { Dropdown } from 'flowbite-react';
 import { locales, languageNames } from '@/app/config/locales';
-import { Link, usePathname } from '@/i18n/routing';
+import { usePathname } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState, useTransition } from 'react';
+import { useLocalizedPath } from '@/hooks/useLocalizedPath';
 
 const IconButton = ({ icon: Icon, label }: { icon: React.ElementType; label: string }) => (
     <button className="flex items-center space-x-1">
@@ -21,11 +23,27 @@ const TopBar = () => {
     const locale = useLocale();
     const t = useTranslations('Common');
     const pathname = usePathname();
+    const router = useRouter();
+    const { getLocalizedPath } = useLocalizedPath();
+    const [_isPending, startTransition] = useTransition();
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
         setIsClient(true);
     }, []);
+
+    const handleLocaleChange = (newLocale: string) => {
+        startTransition(async () => {
+            // Get the localized path for the new locale
+            const localizedPath = await getLocalizedPath(newLocale);
+
+            // Construct the full URL with locale prefix
+            const fullPath = `/${newLocale}${localizedPath}`;
+
+            // Navigate using Next.js router
+            router.push(fullPath);
+        });
+    };
 
     return (
         <div className="bg-variable-collection-temno-modro text-white text-sm px-2 sm:px-4 py-2">
@@ -53,10 +71,11 @@ const TopBar = () => {
                                 }
                             >
                                 {locales?.map((loc) => (
-                                    <Dropdown.Item key={`${loc}-${pathname}`}>
-                                        <Link href={pathname || '/'} locale={loc}>
-                                            {languageNames[loc] ?? loc}
-                                        </Link>
+                                    <Dropdown.Item
+                                        key={`${loc}-${pathname}`}
+                                        onClick={() => handleLocaleChange(loc)}
+                                    >
+                                        {languageNames[loc] ?? loc}
                                     </Dropdown.Item>
                                 ))}
                             </Dropdown>
@@ -106,10 +125,11 @@ const TopBar = () => {
                                 }
                             >
                                 {locales?.map((loc) => (
-                                    <Dropdown.Item key={`${loc}-${pathname}`}>
-                                        <Link href={pathname || '/'} locale={loc}>
-                                            {languageNames[loc] ?? loc}
-                                        </Link>
+                                    <Dropdown.Item
+                                        key={`${loc}-${pathname}`}
+                                        onClick={() => handleLocaleChange(loc)}
+                                    >
+                                        {languageNames[loc] ?? loc}
                                     </Dropdown.Item>
                                 ))}
                             </Dropdown>
