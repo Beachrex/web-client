@@ -1,8 +1,8 @@
 'use client';
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
-const AccommodationSection: React.FC = () => {
+const HomeAccommodationSection: React.FC = () => {
   const t = useTranslations('HomePage');
   return (
     <section className="py-12 sm:py-16 lg:py-20">
@@ -42,28 +42,28 @@ const AccommodationSection: React.FC = () => {
                 alt="Beach accommodation 1"
                 width={302}
                 height={182}
-                className="rounded-lg object-cover w-full h-32"
+                className="h-32 w-full rounded-lg object-cover"
               />
               <Image
                 src="/images/accomodation/accommodation-2.png"
                 alt="Beach accommodation 2"
                 width={233}
                 height={211}
-                className="rounded-lg object-cover w-full h-32"
+                className="h-32 w-full rounded-lg object-cover"
               />
               <Image
                 src="/images/accomodation/accommodation-3.png"
                 alt="Beach accommodation 3"
                 width={299}
                 height={187}
-                className="rounded-lg object-cover w-full h-32"
+                className="h-32 w-full rounded-lg object-cover"
               />
               <Image
                 src="/images/accomodation/accommodation-5.png"
                 alt="Beach accommodation 4"
                 width={367}
                 height={126}
-                className="rounded-lg object-cover w-full h-32"
+                className="h-32 w-full rounded-lg object-cover"
               />
             </div>
 
@@ -74,48 +74,48 @@ const AccommodationSection: React.FC = () => {
                 alt="Beach accommodation 1"
                 width={302}
                 height={182}
-                className="rounded-lg object-cover w-full h-40"
+                className="h-40 w-full rounded-lg object-cover"
               />
               <Image
                 src="/images/accomodation/accommodation-2.png"
                 alt="Beach accommodation 2"
                 width={233}
                 height={211}
-                className="rounded-lg object-cover w-full h-40"
+                className="h-40 w-full rounded-lg object-cover"
               />
               <Image
                 src="/images/accomodation/accommodation-3.png"
                 alt="Beach accommodation 3"
                 width={299}
                 height={187}
-                className="rounded-lg object-cover w-full h-40"
+                className="h-40 w-full rounded-lg object-cover"
               />
               <Image
                 src="/images/accomodation/accommodation-5.png"
                 alt="Beach accommodation 4"
                 width={367}
                 height={126}
-                className="rounded-lg object-cover w-full h-40"
+                className="h-40 w-full rounded-lg object-cover"
               />
               <Image
                 src="/images/accomodation/accommodation-4.png"
                 alt="Beach accommodation 5"
                 width={412}
                 height={214}
-                className="rounded-lg object-cover w-full h-40"
+                className="h-40 w-full rounded-lg object-cover"
               />
               <Image
                 src="/images/accomodation/accommodation-6.png"
                 alt="Beach accommodation 6"
                 width={399}
                 height={291}
-                className="rounded-lg object-cover w-full h-40"
+                className="h-40 w-full rounded-lg object-cover"
               />
             </div>
 
             {/* Desktop: Complex masonry-style layout */}
             <div className="hidden lg:block">
-              <div className="grid grid-cols-4 gap-4 h-[500px]">
+              <div className="grid h-[500px] grid-cols-4 gap-4">
                 {/* Column 1 */}
                 <div className="flex flex-col gap-4">
                   <Image
@@ -123,14 +123,14 @@ const AccommodationSection: React.FC = () => {
                     alt="Beach accommodation 1"
                     width={302}
                     height={182}
-                    className="rounded-lg object-cover w-full h-48"
+                    className="h-48 w-full rounded-lg object-cover"
                   />
                   <Image
                     src="/images/accomodation/accommodation-2.png"
                     alt="Beach accommodation 2"
                     width={233}
                     height={211}
-                    className="rounded-lg object-cover w-full flex-1"
+                    className="w-full flex-1 rounded-lg object-cover"
                   />
                 </div>
 
@@ -141,21 +141,21 @@ const AccommodationSection: React.FC = () => {
                     alt="Beach accommodation 3"
                     width={299}
                     height={187}
-                    className="rounded-lg object-cover w-full h-40"
+                    className="h-40 w-full rounded-lg object-cover"
                   />
                   <Image
                     src="/images/accomodation/accommodation-4.png"
                     alt="Beach accommodation 5"
                     width={412}
                     height={214}
-                    className="rounded-lg object-cover w-full h-52"
+                    className="h-52 w-full rounded-lg object-cover"
                   />
                   <Image
                     src="/images/accomodation/accommodation-7.png"
                     alt="Beach accommodation 7"
                     width={241}
                     height={119}
-                    className="rounded-lg object-cover w-full flex-1"
+                    className="w-full flex-1 rounded-lg object-cover"
                   />
                 </div>
 
@@ -166,14 +166,14 @@ const AccommodationSection: React.FC = () => {
                     alt="Beach accommodation 4"
                     width={367}
                     height={126}
-                    className="rounded-lg object-cover w-full h-32"
+                    className="h-32 w-full rounded-lg object-cover"
                   />
                   <Image
                     src="/images/accomodation/accommodation-6.png"
                     alt="Beach accommodation 6"
                     width={399}
                     height={291}
-                    className="rounded-lg object-cover w-full flex-1"
+                    className="w-full flex-1 rounded-lg object-cover"
                   />
                 </div>
 
@@ -184,10 +184,10 @@ const AccommodationSection: React.FC = () => {
                     alt="Beach accommodation 8"
                     width={159}
                     height={152}
-                    className="rounded-lg object-cover w-full h-40"
+                    className="h-40 w-full rounded-lg object-cover"
                   />
-                  <div className="flex-1 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                    <span className="text-blue-600 font-semibold text-center px-4">
+                  <div className="flex flex-1 items-center justify-center rounded-lg bg-gradient-to-br from-blue-100 to-blue-200">
+                    <span className="px-4 text-center font-semibold text-blue-600">
                       {t('moreAccommodations')}
                     </span>
                   </div>
@@ -201,4 +201,4 @@ const AccommodationSection: React.FC = () => {
   );
 };
 
-export default AccommodationSection;
+export default HomeAccommodationSection;

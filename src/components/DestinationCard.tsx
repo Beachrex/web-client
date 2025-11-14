@@ -17,7 +17,11 @@ export default function DestinationCard({
   const tDest = useTranslations('Destinations');
 
   const name = country.name ?? '';
-  const beachCount = (country as { beaches_count?: number }).beaches_count ?? 0;
+  const beachCount =
+  (country as { beaches_count?: number; beachCount?: number }).beachCount ??
+  (country as { beaches_count?: number }).beaches_count ??
+  0;
+
 
   // Prefer API image; otherwise fallback to a neutral default
   const src = country.image_path

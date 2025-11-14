@@ -11,7 +11,12 @@
     "accommodations": "Accommodations",
     "shop": "Shop",
     "map": "Map",
-    "icon": "Icon"
+    "icon": "Icon",
+    "readMore": "Read more >",
+    "beach": "beach",
+    "save": "save",
+    "share": "share",
+    "reviews": "reviews"
   },
   "HomePage": {
     "allBeaches": "All Beaches",
@@ -134,7 +139,8 @@
   "PropertySection": {
     "allBeachesLink": "All beaches ({count})",
     "viewAllPropertiesButton": "View all properties",
-    "displayLabel": "Beach view:"
+    "displayLabel": "Beach view:",
+    "beachSectionTitle": "Nearby beaches with similar characteristics"
   },
   "SearchContinent": {
     "title": "Explore Beautiful Beaches",
@@ -179,11 +185,43 @@
     "numBeachesLabel": "Num. of beaches:",
     "numAccommodationsLabel": "Num. of accommodations:"
   },
+  "TopBarBeach": {
+    "beachLabel": "Sea beach",
+    "numActivitiesLabel": "No. of activities",
+    "numAccommodationsLabel": "No. of accommodations"
+  },
+  "BottomBadgesBeach": {
+    "badges": {
+      "stony": "Stony",
+      "familyFriendly": "Family friendly",
+      "parking": "Parking available",
+      "easyAccess": "Easy access",
+      "windsurfing": "Windsurfing",
+      "SeaTemperature": "Sea Temperature"
+    }
+  },
+  "AccommodationSection": {
+    "accomodationTitle": "Nearby accommodations",
+    "accommodationsLink": "All accommodations ({count})",
+    "dropdownLabel": "Distance ({distance}) from the beach",
+    "filterButton": "Filter",
+    "mapButton": "View map",
+    "dropdownOption": "Distance {distance} from the beach",
+    "dropdownAria": "Distance from the beach",
+    "activitiesTitle": "Get your guide",
+    "activitiesLink": "All activities ({count})"
+  },
+  "BeachPromoBanner": {
+    "title": "Still haven't found your favorite beach?",
+    "beachesMap": "Map of all beaches",
+    "similarBeaches": "Show similar beaches"
+  },
   "Footer": {
     "brand": {
       "desc": "Find your perfect beach and BeachRex will acquaint you with every single detail it possibly can.",
       "cta": "Browse the map"
     },
+
     "mostViewed": {
       "title": "Most viewed beaches",
       "links": [
@@ -222,6 +260,101 @@
     },
     "legal": {
       "rights": "All rights reserved BeachRex"
+    }
+  },
+
+  "BeachSimilarBeaches": {
+    "title": "Nearby beaches with similar characteristics",
+    "dropdownAria": "Filter similar beaches by distance",
+    "dropdownOption": "Distance ({distance}) from the beach"
+  },
+
+  "BeachDetails": {
+    "title": "Detailed information",
+    "groups": {
+      "beach": "Beach",
+      "infrastructure": "Beach infrastructure",
+      "accommodation": "Accommodation",
+      "food": "Food & drinks",
+      "sports": "Sports activities",
+      "parking": "Parking",
+      "pathToBeach": "Path to the beach",
+      "userType": "User type"
+    },
+    "labels": {
+      "type": "Type",
+      "naturalFeatures": "Natural beach features",
+      "occupancy": "Occupancy",
+      "access": "Access",
+      "paid": "Paid",
+      "length": "Length",
+      "width": "Width",
+      "slope": "Slope",
+      "swimmingArea": "Swimming area",
+      "seabed": "Seabed",
+
+      "parkingSpots": "No. of parking spaces",
+      "wayToParking": "Surface to parking",
+      "recommendedAccess": "Recommended access",
+
+      "distance": "Distance (parking—beach)",
+      "elevationDiff": "Elevation difference (parking to beach)"
+    },
+    "buttons": {
+      "photo": "Photo",
+      "map": "Map"
+    },
+    "values": {
+      "yes": "Yes",
+      "no": "No",
+      "asphalt": "Asphalt",
+
+      "sand": "Sand",
+      "pebble": "Pebble",
+      "brownSand": "Brown sand",
+      "concrete": "Concrete",
+      "grass": "Grass",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "easy": "Easy",
+
+      "accessOnFoot": "on foot",
+      "accessBike": "bicycle",
+      "accessCar": "car",
+      "accessOffroad": "off-road vehicle",
+      "accessMotorhome": "motorhome",
+
+      "familyBeach": "Family-friendly beach",
+
+      "toilet": "Toilet",
+      "shower": "Shower",
+      "accommodation": "Accommodation",
+      "sunbeds": "Sunbeds",
+      "playground": "Playground",
+      "sportsField": "Sports field",
+      "lifeguard": "Lifeguard",
+      "parking": "Parking",
+      "bench": "Bench",
+      "trashBin": "Trash bin",
+      "publicPhone": "Public phone",
+      "wifi": "Wi-Fi point",
+      "apartments": "Apartments",
+      "rooms": "Rooms",
+      "campground": "Campground",
+
+      "restaurant": "Restaurant",
+      "fastFood": "Fast food restaurant",
+      "bakery": "Bakery",
+      "cafe": "Cafe",
+
+      "swimming": "Swimming",
+      "snorkeling": "Snorkeling",
+      "waterSports": "Water sports",
+
+      "unit": {
+        "meters": "m"
+      }
     }
   }
 }

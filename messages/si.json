@@ -11,7 +11,12 @@
     "accommodations": "Nastanitve",
     "shop": "Trgovina",
     "map": "Zemljevid",
-    "icon": "Ikona"
+    "icon": "Ikona",
+    "readMore": "Preberi več >",
+    "beach": "plaža",
+    "save": "shrani",
+    "share": "deli",
+    "reviews": "ocene"
   },
   "HomePage": {
     "allBeaches": "Vse plaže",
@@ -134,7 +139,8 @@
   "PropertySection": {
     "allBeachesLink": "Vse plaže ({count})",
     "viewAllPropertiesButton": "Poglej vse nastanitve",
-    "displayLabel": "Prikaz plaže:"
+    "displayLabel": "Prikaz plaže:",
+    "beachSectionTitle": "Bližnje plaže s podobnimi karakteristikami"
   },
   "SearchContinent": {
     "title": "Preglej čudovite plaže",
@@ -179,11 +185,43 @@
     "numBeachesLabel": "št. plaž:",
     "numAccommodationsLabel": "št. nastanitev:"
   },
+  "TopBarBeach": {
+    "beachLabel": "Morska plaža",
+    "numActivitiesLabel": "Št. aktivnosti",
+    "numAccommodationsLabel": "Št. nastanitev"
+  },
+  "AccommodationSection": {
+    "accomodationTitle": "Nastanitve v bližini",
+    "accommodationsLink": "Vse nastanitve ({count})",
+    "dropdownLabel": "Oddaljenost ({distance}) od plaže",
+    "filterButton": "Filtriraj",
+    "mapButton": "Poglej zemljevid",
+    "dropdownOption": "Razdalja {distance} od plaže",
+    "dropdownAria": "Razdalja od plaže",
+    "activitiesTitle": "Get your guide",
+    "activitiesLink": "Vse aktivnosti ({count})"
+  },
+  "BeachPromoBanner": {
+    "title": "Še nisi našel svoje najljubše plaže?",
+    "beachesMap": "Zemljevid vseh plaž",
+    "similarBeaches": "Prikaži podobne plaže"
+  },
+  "BottomBadgesBeach": {
+    "badges": {
+      "stony": "Kamnita",
+      "familyFriendly": "Primerna za družine",
+      "parking": "Parkirišče na voljo",
+      "easyAccess": "Preprost dostop",
+      "windsurfing": "Windsurfing",
+      "SeaTemperature": "Temperatura morja"
+    }
+  },
   "Footer": {
     "brand": {
       "desc": "Poiščite svojo popolno plažo in BeachRex vas bo seznanil z vsako podrobnostjo.",
       "cta": "Brskaj po zemljevidu"
     },
+
     "mostViewed": {
       "title": "Most viewed beaches",
       "links": [
@@ -225,6 +263,95 @@
     },
     "legal": {
       "rights": "Vse pravice pridržane BeachRex"
+    }
+  },
+  "BeachSimilarBeaches": {
+    "title": "Bližnje plaže s podobnimi karakteristikami",
+    "dropdownAria": "Filtriraj podobne plaže po oddaljenosti",
+    "dropdownOption": "Oddaljenost ({distance}) od plaže"
+  },
+  "BeachDetails": {
+    "title": "Podrobne informacije",
+    "groups": {
+      "beach": "Plaža",
+      "infrastructure": "Plažna infrastruktura",
+      "accommodation": "Nastanitev",
+      "food": "Hrana in pijača",
+      "sports": "Športne aktivnosti",
+      "parking": "Parkirišče",
+      "pathToBeach": "Pot do plaže",
+      "userType": "Tip uporabnika"
+    },
+    "labels": {
+      "type": "Tip",
+      "naturalFeatures": "Naravne lastnosti plaže",
+      "occupancy": "Zasedenost",
+      "access": "Dostop",
+      "paid": "Plačljivo",
+      "length": "Dolžina",
+      "width": "Širina",
+      "slope": "Nagib",
+      "swimmingArea": "Mesto za plavanje",
+      "seabed": "Morsko dno",
+
+      "parkingSpots": "Št. parkirnih mest",
+      "wayToParking": "Pot do parkirišča",
+      "recommendedAccess": "Priporočljiv dostop",
+
+      "distance": "Razdalja (parkirišče—plaža)",
+      "elevationDiff": "Višinska razlika (od parkirišča do plaže)"
+    },
+    "buttons": {
+      "photo": "Slika",
+      "map": "Zemljevid"
+    },
+    "values": {
+      "yes": "Da",
+      "no": "Ne",
+      "asphalt": "Asfalt",
+      "sand": "Pesek",
+      "pebble": "Prod",
+      "brownSand": "Rjav pesek",
+      "concrete": "Beton",
+      "grass": "Trava",
+      "high": "Visoka",
+      "medium": "Srednja",
+      "low": "Nizka",
+      "easy": "Enostavno",
+      "accessOnFoot": "peš",
+      "accessBike": "kolo",
+      "accessCar": "vozilo",
+      "accessOffroad": "terensko vozilo",
+      "accessMotorhome": "avtodom",
+      "familyBeach": "Plaža za družine",
+      "toilet": "Stranišče",
+      "shower": "Tuš",
+      "accommodation": "Nastanitev",
+      "sunbeds": "Ležalniki",
+      "playground": "Otroško igrišče",
+      "sportsField": "Športno igrišče",
+      "lifeguard": "Reševalec iz vode",
+      "parking": "Parkirišče",
+      "bench": "Klop",
+      "trashBin": "Koš za smeti",
+      "publicPhone": "Javni telefon",
+      "wifi": "Wi-Fi točka",
+      "apartments": "Apartmaji",
+      "rooms": "Sobe",
+      "campground": "Avtokamp",
+
+      "restaurant": "Restavracija",
+      "fastFood": "Restavracija s hitro prehrano",
+      "bakery": "Pekarna",
+      "cafe": "Kavarna",
+
+      "swimming": "Plavanje",
+      "snorkeling": "Potapljanje z masko",
+      "waterSports": "Vodni športi",
+
+      "unit": {
+        "meters": "m"
+      }
     }
   }
 }

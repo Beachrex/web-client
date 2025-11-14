@@ -1,7 +1,6 @@
-import AccommodationSection from '@/components/Home/AccommodationSection';
 import BeachCategorySearch from '@/components/Home/BeachCategorySearch';
 import HeroSection from '@/components/Home/HeroSection';
-
+import HomeAccommodationSection from '@/components/Home/HomeAccommodationSection';
 import TopDestinationsSection from '@/components/Home/TopDestinationSection';
 import WorldMapSection from '@/components/Home/WorldMapSection';
 import BeachMediaSection from '../../components/Home/BeachMediaSection';
@@ -19,7 +18,7 @@ export default function HomePage() {
       <BeachCategorySearch />
       <BeachMediaSection />
 
-      <AccommodationSection />
+      <HomeAccommodationSection />
       <TopDestinationsSection />
       <ExploreSection />
     </>

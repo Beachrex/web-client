@@ -1,4 +1,4 @@
-import { useMap } from 'react-leaflet';
+/* import { useMap } from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import 'leaflet-geosearch/dist/geosearch.css';
 import { useEffect } from 'react';
@@ -29,4 +29,4 @@ const MapSearch: React.FC = () => {
   return null;
 };
 
-export default MapSearch;
+export default MapSearch;*/

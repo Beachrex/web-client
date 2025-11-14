@@ -4,14 +4,16 @@ import React from 'react';
 
 const MapWidget: React.FC = () => {
   return (
-    <div className="h-[144px] w-[144px] overflow-hidden rounded-[10px] bg-[#000] opacity-70">
+    <div className="relative h-[144px] w-[144px] overflow-hidden rounded-[10px]">
       <Image
-        src="/images/banner/banner-map.png" // začasna slika
+        src="/images/banner/banner-map.png"
         alt="mapa"
-        width={144}
-        height={144}
-        className="h-full w-full object-cover"
+        fill
+        className="object-cover"
+        priority
       />
+
+      <div className="pointer-events-none absolute inset-0 bg-black/5" />
     </div>
   );
 };
