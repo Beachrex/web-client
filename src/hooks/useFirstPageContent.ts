@@ -56,3 +56,52 @@ export function useHeroBanner() {
   return useSection('hero_banner');
 }
 
+/**
+ * Hook for the browse map section
+ */
+export function useBrowseMap() {
+  return useSection('browse_map');
+}
+
+/**
+ * Hook for the find beach section
+ */
+export function useFindBeach() {
+  return useSection('find_beach');
+}
+
+/**
+ * Hook for the beach views section
+ */
+export function useBeachViews() {
+  return useSection('beach_views');
+}
+
+/**
+ * Hook for the accommodation section
+ */
+export function useAccommodation() {
+  return useSection('accommodation');
+}
+
+/**
+ * Hook for the coastal destinations section
+ */
+export function useCoastalDestinations() {
+  return useSection('coastal_destinations');
+}
+
+/**
+ * Hook for the featured sections
+ */
+export function useFeaturedSections() {
+  return useSection('featured_sections');
+}
+
+/**
+ * Hook for the footer text section
+ */
+export function useFooterText() {
+  return useSection('footer_text');
+}
+
