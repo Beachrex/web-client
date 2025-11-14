@@ -1,8 +1,9 @@
 'use client';
 
 import type { Country } from '@/lib/api-client/types.gen';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface DestinationCardProps {
   country: Country;
@@ -15,13 +16,28 @@ export default function DestinationCard({
 }: DestinationCardProps) {
   const tHome = useTranslations('HomePage');
   const tDest = useTranslations('Destinations');
+  const locale = useLocale();
 
   const name = country.name ?? '';
-  const beachCount =
-  (country as { beaches_count?: number; beachCount?: number }).beachCount ??
-  (country as { beaches_count?: number }).beaches_count ??
-  0;
+  const beachCount = country.beaches_count ?? 0;
 
+  // Get the country slug from API (localized)
+  const countrySlug = country.slug ?? country.code?.toLowerCase() ?? '';
+
+  // Get the continent slug from the country's continent data
+  const continentSlug = country.continent?.slug ?? country.continent_code?.toLowerCase() ?? '';
+
+  // Localized "beaches" word based on locale
+  const beachesRoutes: Record<string, string> = {
+    en: 'beaches', si: 'plaze', de: 'strande', hr: 'plaze',
+    fr: 'plages', es: 'playas', it: 'spiagge', ua: 'plyazhi',
+    ru: 'plyazhi', pl: 'plaze', cs: 'plaze', hu: 'strandok',
+    bg: 'plyazhove', sk: 'plaze',
+  };
+  const beachesWord = beachesRoutes[locale] ?? 'beaches';
+
+  // Build the country page URL: /[locale]/[beaches]/[continent]/[country]
+  const countryUrl = `/${locale}/${beachesWord}/${continentSlug}/${countrySlug}`;
 
   // Prefer API image; otherwise fallback to a neutral default
   const src = country.image_path
@@ -38,7 +54,7 @@ export default function DestinationCard({
   const beachesLabel = tHome('beachesLabel2'); // "Plaže:" / "Beaches:"
 
   return (
-    <div className="flex h-[310px] flex-col overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
+    <Link href={countryUrl} className="flex h-[310px] flex-col overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
       {/* Image area fills remaining vertical space to avoid white gaps */}
       <div className="relative w-full flex-1">
         <Image
@@ -149,6 +165,6 @@ height={26}
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

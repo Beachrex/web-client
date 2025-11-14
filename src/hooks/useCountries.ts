@@ -3,9 +3,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { getCountries } from '@/lib/api-client/sdk.gen';
 import type { GetCountriesResponse } from '@/lib/api-client/types.gen';
-import { transformCountryToUI } from '@/lib/utils/transformers';
-
-export type { CountryWithUI } from '@/types/domain';
 
 export const useCountries = (continentCode?: string) => {
   const [data, setData] = useState<GetCountriesResponse | null>(null);
@@ -36,10 +33,9 @@ export const useCountries = (continentCode?: string) => {
     void fetchCountries();
   }, [continentCode]);
 
-  // Transform API data to UI format using utility function
+  // Return raw API data (includes slug and continent fields)
   const countries = useMemo(() => {
-    const apiCountries = data?.data ?? [];
-    return apiCountries.map(transformCountryToUI);
+    return data?.data ?? [];
   }, [data]);
 
   return {

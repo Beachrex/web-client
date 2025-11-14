@@ -415,6 +415,10 @@ export type Country = {
    */
   full_name?: string;
   /**
+   * Localized URL-friendly slug
+   */
+  slug?: string;
+  /**
    * Three-letter country code (ISO 3166-1 alpha-3)
    */
   iso3?: string;
