@@ -3,6 +3,7 @@ import { Button } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { useFindBeach } from '@/hooks/useFirstPageContent';
 
 interface CategoryItem {
   id: string;
@@ -13,6 +14,7 @@ interface CategoryItem {
 
 const BeachCategorySearch: React.FC = () => {
   const t = useTranslations('HomePage');
+  const { content: findBeach, loading } = useFindBeach();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   // Beach categories with icons (Figma)
@@ -169,15 +171,35 @@ const BeachCategorySearch: React.FC = () => {
     </button>
   );
 
+  if (loading) {
+    return (
+      <section className="py-12 sm:py-16 lg:py-20">
+        <div className="container mx-auto">
+          <div className="rounded-lg bg-variable-collection-temno-modro px-4 py-8 text-center sm:px-8 sm:py-12 lg:px-16 lg:py-16 xl:px-24">
+            <div className="mx-auto mb-6 h-10 w-3/4 animate-pulse rounded bg-white/20" />
+            <div className="mx-auto mb-8 h-16 max-w-4xl animate-pulse rounded bg-white/20" />
+            <div className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3 md:grid-cols-6 md:gap-4 lg:grid-cols-8 lg:gap-5 xl:grid-cols-10 xl:gap-6 2xl:grid-cols-11">
+              {Array.from({ length: 22 }).map((_, i) => (
+                <div key={i} className="aspect-square w-full animate-pulse rounded bg-white/20" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!findBeach) return null;
+
   return (
     <section className="py-12 sm:py-16 lg:py-20">
       <div className="container mx-auto">
         <div className="rounded-lg bg-variable-collection-temno-modro px-4 py-8 text-center sm:px-8 sm:py-12 lg:px-16 lg:py-16 xl:px-24">
           <h2 className="mb-6 font-[Figtree] text-[30px] font-bold leading-[100%] text-white">
-            {t('beachSearchTitle')}
+            {findBeach.title}
           </h2>
           <p className="text-white mx-auto mb-8 max-w-4xl font-[Figtree] text-[14px] font-light leading-[24px]">
-            {t('beachSearchDescription')}
+            {findBeach.description}
           </p>
           {/* Category Grid */}
           {/* Top Row */}
