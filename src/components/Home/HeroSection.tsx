@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useMemo } from 'react';
 import { useContinents } from '@/hooks/useContinents';
 import { useCountries } from '@/hooks/useCountries';
+import { useHeroBanner } from '@/hooks/useFirstPageContent';
 import { Link } from '@/i18n/routing';
 
 // Locale-specific route translations for beaches
@@ -30,6 +31,7 @@ const HeroSection: React.FC = () => {
   const locale = useLocale();
   const { continents, loading, error } = useContinents();
   const { countries } = useCountries();
+  const { content: heroBanner, loading: bannerLoading } = useHeroBanner();
 
   // Get the localized beaches route word for current locale
   const beachesWord = useMemo(() => beachesRoutes[locale] ?? 'beaches', [locale]);
@@ -43,10 +45,25 @@ const HeroSection: React.FC = () => {
   const totalCountries = useMemo(() => {
     return countries.length;
   }, [countries]);
+
+  // Get background image from API (URL is already full CDN URL)
+  const backgroundImage = useMemo(() => {
+    if (heroBanner?.media && heroBanner.media.length > 0) {
+      // Try to find by collection first, then by is_primary, then just take first
+      const bgMedia = heroBanner.media.find(m => m.collection === 'background_image')
+        ?? heroBanner.media.find(m => m.is_primary)
+        ?? heroBanner.media[0];
+      return bgMedia?.url ?? '';
+    }
+    return '';
+  }, [heroBanner]);
+
+  // Get hero title from API
+  const heroTitle = heroBanner?.title ?? '';
   return (
     <section
       className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] bg-cover bg-center sm:h-[700px] lg:h-[798px]"
-      style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
+      style={{ backgroundImage: `url('${backgroundImage}')` }}
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-white/10" />
@@ -104,14 +121,15 @@ const HeroSection: React.FC = () => {
         <div className="container ml-0 mr-auto pl-[4%]">
           {/* Center section - Main heading */}
           <div className="flex flex-1 items-center">
-            <div className="font-damion text-white">
-              <span className="block text-[40px] font-normal leading-tight sm:text-[80px] sm:leading-tight lg:text-[120px] lg:leading-[110px]">
-                {t('heroTitle1')}
-              </span>
-              <span className="block text-[40px] font-normal leading-tight sm:text-[80px] sm:leading-tight lg:text-[120px] lg:leading-[110px]">
-                {t('heroTitle2')}
-              </span>
-            </div>
+            {bannerLoading ? (
+              <div className="h-32 w-full max-w-2xl animate-pulse rounded bg-white/20" />
+            ) : (
+              <div className="font-damion text-white">
+                <span className="block text-[40px] font-normal leading-tight sm:text-[80px] sm:leading-tight lg:text-[120px] lg:leading-[110px]">
+                  {heroTitle}
+                </span>
+              </div>
+            )}
           </div>
         </div>
         <div className="container ml-0 mr-auto pl-[4%]">
