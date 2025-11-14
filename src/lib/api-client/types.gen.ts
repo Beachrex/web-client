@@ -387,6 +387,10 @@ export type Continent = {
    */
   name?: string;
   /**
+   * Localized URL-friendly slug
+   */
+  slug?: string;
+  /**
    * Number of beaches in this continent
    */
   beaches_count?: number;
@@ -1824,9 +1828,45 @@ export type GetBeachesData = {
   path?: never;
   query?: {
     /**
-     * Maximum number of beaches to return (default: 50)
+     * Maximum number of beaches to return (default: 5000)
      */
     limit?: number;
+    /**
+     * Filter by continent code(s) or ID(s). Supports: single value (continent_code=EU), comma-separated (continent_code=EU,AS), or array (continent_code[]=EU&continent_code[]=AS). Can mix codes and IDs.
+     */
+    continent_code?: string;
+    /**
+     * Filter by country code(s) or ID(s). Supports: single value (country=HR), comma-separated (country=HR,SI,IT), or array (country[]=HR&country[]=SI). Can mix codes and IDs.
+     */
+    country?: string;
+    /**
+     * Filter by region ID(s). Can be single value or array
+     */
+    region?: number;
+    /**
+     * Filter by island ID(s). Can be single value or array
+     */
+    island?: number;
+    /**
+     * Filter by waterbody ID(s). Can be single value or array
+     */
+    waterbody?: number;
+    /**
+     * Filter by beach type ID(s). Supports: single value (beach_type=1), comma-separated (beach_type=1,2,3), or array (beach_type[]=1&beach_type[]=2)
+     */
+    beach_type?: string;
+    /**
+     * Filter by user type ID(s). Can be single value or array
+     */
+    user_type?: number;
+    /**
+     * Filter by parking availability (true/false)
+     */
+    parking?: boolean;
+    /**
+     * Filter by swimming pool availability (true/false)
+     */
+    has_swimming_pool?: boolean;
   };
   url: "/api/v1/beaches";
 };
@@ -2143,6 +2183,7 @@ export type GetContinentsResponses = {
     data?: Array<{
       code?: string;
       name?: string;
+      slug?: string;
       beaches_count?: number;
     }>;
     message?: string;
@@ -2191,6 +2232,7 @@ export type GetContinentResponses = {
     data?: {
       code?: string;
       name?: string;
+      slug?: string;
       beaches_count?: number;
     };
     message?: string;
@@ -3412,9 +3454,29 @@ export type GetBeachesWithinRadiusData = {
      */
     radius: number;
     /**
-     * Maximum number of beaches to return (1 to 100, default: 50)
+     * Maximum number of beaches to return (1 to 10000, default: 5000)
      */
     limit?: number;
+    /**
+     * Filter by continent code(s) or ID(s). Supports: single value (continent_code=EU), comma-separated (continent_code=EU,AS), or array (continent_code[]=EU&continent_code[]=AS). Can mix codes and IDs.
+     */
+    continent_code?: string;
+    /**
+     * Filter by country code(s) or ID(s). Supports: single value (country=HR), comma-separated (country=HR,SI,IT), or array (country[]=HR&country[]=SI). Can mix codes and IDs.
+     */
+    country?: string;
+    /**
+     * Filter by waterbody ID(s). Can be single value or array
+     */
+    waterbody?: number;
+    /**
+     * Filter by beach type ID(s). Can be single value or array
+     */
+    beach_type?: number;
+    /**
+     * Filter by user type ID(s). Can be single value or array
+     */
+    user_type?: number;
   };
   url: "/api/v1/spatial/beaches/within-radius";
 };

@@ -5,6 +5,7 @@ export interface ContinentWithUI {
   key: string;
   code: string;
   name: string;
+  slug: string; // Localized URL slug from API
   icon: string;
   beaches_count: number;
 }

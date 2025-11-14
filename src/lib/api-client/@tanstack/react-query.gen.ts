@@ -372,7 +372,7 @@ export const getBeachesQueryKey = (options?: Options<GetBeachesData>) =>
   createQueryKey("getBeaches", options);
 
 /**
- * List all beaches
+ * List all beaches with optional filters
  */
 export const getBeachesOptions = (options?: Options<GetBeachesData>) => {
   return queryOptions({
@@ -1074,9 +1074,9 @@ export const getBeachesWithinRadiusQueryKey = (
 ) => createQueryKey("getBeachesWithinRadius", options);
 
 /**
- * Find beaches within radius
+ * Find beaches within radius with optional filters
  *
- * Find all beaches within a specified radius from a given point
+ * Find all beaches within a specified radius from a given point. Supports all filter parameters from /beaches endpoint
  */
 export const getBeachesWithinRadiusOptions = (
   options: Options<GetBeachesWithinRadiusData>,

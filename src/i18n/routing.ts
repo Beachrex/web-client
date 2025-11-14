@@ -7,8 +7,85 @@ const globalRoutes = {
     beaches: {
         en: 'beaches',
         si: 'plaze',
+        de: 'strande',
+        hr: 'plaze',
+        fr: 'plages',
+        es: 'playas',
+        it: 'spiagge',
+        ua: 'plyazhi',
+        ru: 'plyazhi',
+        pl: 'plaze',
+        cs: 'plaze',
+        hu: 'strandok',
+        bg: 'plyazhove',
+        sk: 'plaze',
+    },
+    beachMap: {
+        en: 'beach-map',
+        si: 'zemljevid-plaz',
+        de: 'strand-karte',
+        hr: 'karta-plaza',
+        fr: 'carte-des-plages',
+        es: 'mapa-de-playas',
+        it: 'mappa-spiagge',
+        ua: 'karta-plyazhiv',
+        ru: 'karta-plyazhey',
+        pl: 'mapa-plaz',
+        cs: 'mapa-plazi',
+        hu: 'strand-terkep',
+        bg: 'karta-na-plyazhovete',
+        sk: 'mapa-plazi',
+    },
+    beachType: {
+        en: 'beach-type',
+        si: 'tip-plaze',
+        de: 'strand-typ',
+        hr: 'tip-plaze',
+        fr: 'type-de-plage',
+        es: 'tipo-de-playa',
+        it: 'tipo-di-spiaggia',
+        ua: 'typ-plyazhu',
+        ru: 'tip-plyazha',
+        pl: 'typ-plazy',
+        cs: 'typ-plaze',
+        hu: 'strand-tipus',
+        bg: 'tip-plyazh',
+        sk: 'typ-plaze',
+    },
+    userType: {
+        en: 'user-type',
+        si: 'tip-uporabnika',
+        de: 'benutzer-typ',
+        hr: 'tip-korisnika',
+        fr: 'type-utilisateur',
+        es: 'tipo-de-usuario',
+        it: 'tipo-utente',
+        ua: 'typ-korystuvacha',
+        ru: 'tip-polzovatelya',
+        pl: 'typ-uzytkownika',
+        cs: 'typ-uzivatele',
+        hu: 'felhasznalo-tipus',
+        bg: 'tip-potrebitel',
+        sk: 'typ-pouzivatela',
+    },
+    about: {
+        en: 'about',
+        si: 'o-nas',
+        de: 'uber-uns',
+        hr: 'o-nama',
+        fr: 'a-propos',
+        es: 'acerca-de',
+        it: 'chi-siamo',
+        ua: 'pro-nas',
+        ru: 'o-nas',
+        pl: 'o-nas',
+        cs: 'o-nas',
+        hu: 'rolunk',
+        bg: 'za-nas',
+        sk: 'o-nas',
     },
 };
+
 export const routing = defineRouting({
     // A list of all locales that are supported
     locales,
@@ -16,71 +93,134 @@ export const routing = defineRouting({
     // Used when no locale matches
     defaultLocale: 'en',
     pathnames: {
-        // how to: https://next-intl-docs.vercel.app/docs/routing
+        // Home page
         '/': '/',
-        // '/blog': '/blog',
+
+        // Beach map
         '/beach-map': {
-            en: '/beach-map',
-            si: '/zemljevid-plaz', // Assume this is the Slovenian translation for "beach map"
+            en: `/${globalRoutes.beachMap.en}`,
+            si: `/${globalRoutes.beachMap.si}`,
+            de: `/${globalRoutes.beachMap.de}`,
+            hr: `/${globalRoutes.beachMap.hr}`,
+            fr: `/${globalRoutes.beachMap.fr}`,
+            es: `/${globalRoutes.beachMap.es}`,
+            it: `/${globalRoutes.beachMap.it}`,
+            ua: `/${globalRoutes.beachMap.ua}`,
+            ru: `/${globalRoutes.beachMap.ru}`,
+            pl: `/${globalRoutes.beachMap.pl}`,
+            cs: `/${globalRoutes.beachMap.cs}`,
+            hu: `/${globalRoutes.beachMap.hu}`,
+            bg: `/${globalRoutes.beachMap.bg}`,
+            sk: `/${globalRoutes.beachMap.sk}`,
         },
+
+        // Beaches listing
         '/beaches': {
             en: `/${globalRoutes.beaches.en}`,
-            si: `/${globalRoutes.beaches.si}`, // Assume this is the Slovenian translation for "beaches"
+            si: `/${globalRoutes.beaches.si}`,
+            de: `/${globalRoutes.beaches.de}`,
+            hr: `/${globalRoutes.beaches.hr}`,
+            fr: `/${globalRoutes.beaches.fr}`,
+            es: `/${globalRoutes.beaches.es}`,
+            it: `/${globalRoutes.beaches.it}`,
+            ua: `/${globalRoutes.beaches.ua}`,
+            ru: `/${globalRoutes.beaches.ru}`,
+            pl: `/${globalRoutes.beaches.pl}`,
+            cs: `/${globalRoutes.beaches.cs}`,
+            hu: `/${globalRoutes.beaches.hu}`,
+            bg: `/${globalRoutes.beaches.bg}`,
+            sk: `/${globalRoutes.beaches.sk}`,
         },
-        // Dynamic beaches by continents
+
+        // Beaches by continent (dynamic)
         '/beaches/[continent]': {
             en: `/${globalRoutes.beaches.en}/[continent]`,
             si: `/${globalRoutes.beaches.si}/[continent]`,
-            // si: `/${globalRoutes.beaches.si}/evropa`
+            de: `/${globalRoutes.beaches.de}/[continent]`,
+            hr: `/${globalRoutes.beaches.hr}/[continent]`,
+            fr: `/${globalRoutes.beaches.fr}/[continent]`,
+            es: `/${globalRoutes.beaches.es}/[continent]`,
+            it: `/${globalRoutes.beaches.it}/[continent]`,
+            ua: `/${globalRoutes.beaches.ua}/[continent]`,
+            ru: `/${globalRoutes.beaches.ru}/[continent]`,
+            pl: `/${globalRoutes.beaches.pl}/[continent]`,
+            cs: `/${globalRoutes.beaches.cs}/[continent]`,
+            hu: `/${globalRoutes.beaches.hu}/[continent]`,
+            bg: `/${globalRoutes.beaches.bg}/[continent]`,
+            sk: `/${globalRoutes.beaches.sk}/[continent]`,
         },
+
+        // Beaches by continent and city (dynamic)
         '/beaches/[continent]/[city]': {
             en: `/${globalRoutes.beaches.en}/[continent]/[city]`,
             si: `/${globalRoutes.beaches.si}/[continent]/[city]`,
+            de: `/${globalRoutes.beaches.de}/[continent]/[city]`,
+            hr: `/${globalRoutes.beaches.hr}/[continent]/[city]`,
+            fr: `/${globalRoutes.beaches.fr}/[continent]/[city]`,
+            es: `/${globalRoutes.beaches.es}/[continent]/[city]`,
+            it: `/${globalRoutes.beaches.it}/[continent]/[city]`,
+            ua: `/${globalRoutes.beaches.ua}/[continent]/[city]`,
+            ru: `/${globalRoutes.beaches.ru}/[continent]/[city]`,
+            pl: `/${globalRoutes.beaches.pl}/[continent]/[city]`,
+            cs: `/${globalRoutes.beaches.cs}/[continent]/[city]`,
+            hu: `/${globalRoutes.beaches.hu}/[continent]/[city]`,
+            bg: `/${globalRoutes.beaches.bg}/[continent]/[city]`,
+            sk: `/${globalRoutes.beaches.sk}/[continent]/[city]`,
         },
-        // Dynamic beaches by region
-        // '/beaches/[region]': {
-        //     en: '/beaches/[region]',
-        //     si: '/plaze/[region]' // The region will be dynamically replaced in the Slovenian path
-        // },
-        // '/beaches/europe': {
-        //     en: '/beaches/europe',
-        //     si: '/plaze/evropa' // Če dodamo to, bo na podstrani, ko zamenjaš jezik delal url pravilno.
-        // },
+
+        // Beach type filter
         '/beach-type/[type]': {
-            en: '/beach-type/[type]',
-            si: '/tip-plaze/[type]',
+            en: `/${globalRoutes.beachType.en}/[type]`,
+            si: `/${globalRoutes.beachType.si}/[type]`,
+            de: `/${globalRoutes.beachType.de}/[type]`,
+            hr: `/${globalRoutes.beachType.hr}/[type]`,
+            fr: `/${globalRoutes.beachType.fr}/[type]`,
+            es: `/${globalRoutes.beachType.es}/[type]`,
+            it: `/${globalRoutes.beachType.it}/[type]`,
+            ua: `/${globalRoutes.beachType.ua}/[type]`,
+            ru: `/${globalRoutes.beachType.ru}/[type]`,
+            pl: `/${globalRoutes.beachType.pl}/[type]`,
+            cs: `/${globalRoutes.beachType.cs}/[type]`,
+            hu: `/${globalRoutes.beachType.hu}/[type]`,
+            bg: `/${globalRoutes.beachType.bg}/[type]`,
+            sk: `/${globalRoutes.beachType.sk}/[type]`,
         },
+
+        // User type filter
         '/user-type/[type]': {
-            en: '/user-type/[type]',
-            si: '/tip-uporabnika/[type]',
+            en: `/${globalRoutes.userType.en}/[type]`,
+            si: `/${globalRoutes.userType.si}/[type]`,
+            de: `/${globalRoutes.userType.de}/[type]`,
+            hr: `/${globalRoutes.userType.hr}/[type]`,
+            fr: `/${globalRoutes.userType.fr}/[type]`,
+            es: `/${globalRoutes.userType.es}/[type]`,
+            it: `/${globalRoutes.userType.it}/[type]`,
+            ua: `/${globalRoutes.userType.ua}/[type]`,
+            ru: `/${globalRoutes.userType.ru}/[type]`,
+            pl: `/${globalRoutes.userType.pl}/[type]`,
+            cs: `/${globalRoutes.userType.cs}/[type]`,
+            hu: `/${globalRoutes.userType.hu}/[type]`,
+            bg: `/${globalRoutes.userType.bg}/[type]`,
+            sk: `/${globalRoutes.userType.sk}/[type]`,
         },
-        // '/beach-type/sandy': {
-        //     en: '/beach-type/sandy',
-        //     si: '/tip-plaze/pescena'
-        // },
+
+        // About page
         '/about': {
-            en: '/about',
-            si: '/o-nas', // /si/o-nas will be handled by the page at /[locale]/about/page.tsx
+            en: `/${globalRoutes.about.en}`,
+            si: `/${globalRoutes.about.si}`,
+            de: `/${globalRoutes.about.de}`,
+            hr: `/${globalRoutes.about.hr}`,
+            fr: `/${globalRoutes.about.fr}`,
+            es: `/${globalRoutes.about.es}`,
+            it: `/${globalRoutes.about.it}`,
+            ua: `/${globalRoutes.about.ua}`,
+            ru: `/${globalRoutes.about.ru}`,
+            pl: `/${globalRoutes.about.pl}`,
+            cs: `/${globalRoutes.about.cs}`,
+            hu: `/${globalRoutes.about.hu}`,
+            bg: `/${globalRoutes.about.bg}`,
+            sk: `/${globalRoutes.about.sk}`,
         },
-        //
-        // // Dynamic params are supported via square brackets
-        // '/news/[articleSlug]-[articleId]': {
-        //     en: '/news/[articleSlug]-[articleId]',
-        //     de: '/neuigkeiten/[articleSlug]-[articleId]'
-        // },
-        //
-        // // Static pathnames that overlap with dynamic segments
-        // // will be prioritized over the dynamic segment
-        // '/news/just-in': {
-        //     en: '/news/just-in',
-        //     de: '/neuigkeiten/aktuell'
-        // },
-        //
-        // // Also (optional) catch-all segments are supported
-        // '/categories/[...slug]': {
-        //     en: '/categories/[...slug]',
-        //     de: '/kategorien/[...slug]'
-        // }
     },
 });
 

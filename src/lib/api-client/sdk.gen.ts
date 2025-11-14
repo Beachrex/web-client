@@ -420,7 +420,7 @@ export const getBayLengthById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * List all beaches
+ * List all beaches with optional filters
  */
 export const getBeaches = <ThrowOnError extends boolean = false>(
   options?: Options<GetBeachesData, ThrowOnError>,
@@ -1057,9 +1057,9 @@ export const getParkingCapacityById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Find beaches within radius
+ * Find beaches within radius with optional filters
  *
- * Find all beaches within a specified radius from a given point
+ * Find all beaches within a specified radius from a given point. Supports all filter parameters from /beaches endpoint
  */
 export const getBeachesWithinRadius = <ThrowOnError extends boolean = false>(
   options: Options<GetBeachesWithinRadiusData, ThrowOnError>,

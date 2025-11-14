@@ -18,12 +18,12 @@ export const useContinents = () => {
     // Fallback to static data if API fails
     if (error) {
       const fallbackContinents: ContinentWithUI[] = [
-        { key: 'europe', code: 'EU', name: 'Europe', icon: '/images/continents/evropa.png', beaches_count: 0 },
-        { key: 'africa', code: 'AF', name: 'Africa', icon: '/images/continents/africa.png', beaches_count: 0 },
-        { key: 'asia', code: 'AS', name: 'Asia', icon: '/images/continents/asia.png', beaches_count: 0 },
-        { key: 'northAmerica', code: 'NA', name: 'North America', icon: '/images/continents/north-america.png', beaches_count: 0 },
-        { key: 'southAmerica', code: 'SA', name: 'South America', icon: '/images/continents/south-america.png', beaches_count: 0 },
-        { key: 'australia', code: 'OC', name: 'Australia', icon: '/images/continents/australia.png', beaches_count: 0 },
+        { key: 'europe', code: 'EU', name: 'Europe', slug: 'europe', icon: '/images/continents/evropa.png', beaches_count: 0 },
+        { key: 'africa', code: 'AF', name: 'Africa', slug: 'africa', icon: '/images/continents/africa.png', beaches_count: 0 },
+        { key: 'asia', code: 'AS', name: 'Asia', slug: 'asia', icon: '/images/continents/asia.png', beaches_count: 0 },
+        { key: 'northAmerica', code: 'NA', name: 'North America', slug: 'north-america', icon: '/images/continents/north-america.png', beaches_count: 0 },
+        { key: 'southAmerica', code: 'SA', name: 'South America', slug: 'south-america', icon: '/images/continents/south-america.png', beaches_count: 0 },
+        { key: 'australia', code: 'OC', name: 'Australia', slug: 'oceania', icon: '/images/continents/australia.png', beaches_count: 0 },
       ];
       return fallbackContinents;
     }
@@ -35,6 +35,7 @@ export const useContinents = () => {
         key,
         code: continent.code ?? '',
         name: continent.name ?? '',
+        slug: continent.slug ?? '', // Use slug from API (localized)
         icon: getContinentIcon(key),
         beaches_count: continent.beaches_count ?? 0,
       };
@@ -45,5 +46,43 @@ export const useContinents = () => {
     continents,
     loading: isLoading,
     error: error ? (error instanceof Error ? error.message : 'Failed to fetch continents') : null,
+  };
+};
+
+/**
+ * Hook to get a specific continent by slug
+ * Useful for continent detail pages
+ */
+export const useContinentBySlug = (slug: string) => {
+  const { continents, loading, error } = useContinents();
+
+  const continent = useMemo(() => {
+    return continents.find(c => c.slug?.toLowerCase() === slug.toLowerCase());
+  }, [continents, slug]);
+
+  return {
+    continent,
+    continents,
+    loading,
+    error,
+  };
+};
+
+/**
+ * Hook to get a specific continent by code
+ * Useful when you have a continent code
+ */
+export const useContinentByCode = (code: string) => {
+  const { continents, loading, error } = useContinents();
+
+  const continent = useMemo(() => {
+    return continents.find(c => c.code === code);
+  }, [continents, code]);
+
+  return {
+    continent,
+    continents,
+    loading,
+    error,
   };
 };
