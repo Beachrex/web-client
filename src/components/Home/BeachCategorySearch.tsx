@@ -176,7 +176,7 @@ const BeachCategorySearch: React.FC = () => {
           <h2 className="mb-6 font-[Figtree] text-[30px] font-bold leading-[100%] text-white">
             {t('beachSearchTitle')}
           </h2>
-          <p className="text-slate-300 mx-auto mb-8 max-w-4xl font-[Figtree] text-[14px] font-normal leading-[24px]">
+          <p className="text-white mx-auto mb-8 max-w-4xl font-[Figtree] text-[14px] font-light leading-[24px]">
             {t('beachSearchDescription')}
           </p>
           {/* Category Grid */}

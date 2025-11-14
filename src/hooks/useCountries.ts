@@ -1,37 +1,16 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
-import { getCountries } from '@/lib/api-client/sdk.gen';
-import type { GetCountriesResponse } from '@/lib/api-client/types.gen';
+import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getCountriesOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 
 export const useCountries = (continentCode?: string) => {
-  const [data, setData] = useState<GetCountriesResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-
-        const response = await getCountries({
-          query: continentCode ? { continent: continentCode } : undefined,
-          throwOnError: true,
-        });
-
-        if (response.data) {
-          setData(response.data);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch countries');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    void fetchCountries();
-  }, [continentCode]);
+  // Fetch countries using TanStack Query
+  const { data, isLoading, error } = useQuery(
+    getCountriesOptions({
+      query: continentCode ? { continent: continentCode } : undefined,
+    })
+  );
 
   // Return raw API data (includes slug and continent fields)
   const countries = useMemo(() => {
@@ -41,6 +20,6 @@ export const useCountries = (continentCode?: string) => {
   return {
     countries,
     loading: isLoading,
-    error,
+    error: error ? (error instanceof Error ? error.message : 'Failed to fetch countries') : null,
   };
 };

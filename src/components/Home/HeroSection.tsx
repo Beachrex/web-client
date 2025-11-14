@@ -3,6 +3,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import React, { useMemo } from 'react';
 import { useContinents } from '@/hooks/useContinents';
+import { useCountries } from '@/hooks/useCountries';
 import { Link } from '@/i18n/routing';
 
 // Locale-specific route translations for beaches
@@ -28,9 +29,20 @@ const HeroSection: React.FC = () => {
   const tContinents = useTranslations('Continents');
   const locale = useLocale();
   const { continents, loading, error } = useContinents();
+  const { countries } = useCountries();
 
   // Get the localized beaches route word for current locale
   const beachesWord = useMemo(() => beachesRoutes[locale] ?? 'beaches', [locale]);
+
+  // Calculate total beaches count from all continents
+  const totalBeaches = useMemo(() => {
+    return continents.reduce((sum, continent) => sum + continent.beaches_count, 0);
+  }, [continents]);
+
+  // Get total countries count
+  const totalCountries = useMemo(() => {
+    return countries.length;
+  }, [countries]);
   return (
     <section
       className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] bg-cover bg-center sm:h-[700px] lg:h-[798px]"
@@ -116,7 +128,7 @@ const HeroSection: React.FC = () => {
               />
               <div className="flex flex-col">
                 <span className="text-xl font-bold sm:text-[32px]">
-                  {t('beachesCount')}
+                  {totalBeaches}
                 </span>
                 <span className="text-sm font-normal sm:text-[16px]">
                   {t('beachesLabel')}
@@ -135,7 +147,7 @@ const HeroSection: React.FC = () => {
               />
               <div className="flex flex-col">
                 <span className="text-xl font-bold sm:text-[32px]">
-                  {t('countriesCount')}
+                  {totalCountries}
                 </span>
                 <span className="text-sm font-normal sm:text-[16px]">
                   {t('countriesLabel')}
