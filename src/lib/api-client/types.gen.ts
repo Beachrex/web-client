@@ -1329,10 +1329,18 @@ export type WaterbodyTranslation = {
 export const AcceptLanguage = {
   EN: "en",
   SI: "si",
-  HR: "hr",
   DE: "de",
-  IT: "it",
+  HR: "hr",
   FR: "fr",
+  ES: "es",
+  IT: "it",
+  UA: "ua",
+  RU: "ru",
+  PL: "pl",
+  CS: "cs",
+  HU: "hu",
+  BG: "bg",
+  SK: "sk",
 } as const;
 
 /**
@@ -1347,7 +1355,21 @@ export type GetAccessibilitiesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -1392,7 +1414,21 @@ export type GetAccessibilityByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -1449,7 +1485,21 @@ export type GetAccommodationTypesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -1489,7 +1539,21 @@ export type GetAccommodationTypeByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -1541,7 +1605,21 @@ export type GetAreaDescriptionsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -1586,7 +1664,21 @@ export type GetAreaDescriptionByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -1648,7 +1740,21 @@ export type RegisterUserData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -1678,7 +1784,21 @@ export type LoginUserData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -1732,7 +1852,21 @@ export type GetBayLengthsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -1771,7 +1905,21 @@ export type GetBayLengthByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -1823,7 +1971,21 @@ export type GetBeachesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -1898,7 +2060,21 @@ export type CreateBeachData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -1928,7 +2104,21 @@ export type GetBeachByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -1965,7 +2155,21 @@ export type GetBeachInclinationsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -2005,7 +2209,21 @@ export type GetBeachInclinationByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -2057,7 +2275,21 @@ export type GetBeachTypesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -2105,7 +2337,21 @@ export type GetBeachTypeByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -2155,7 +2401,21 @@ export type GetContinentsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -2199,7 +2459,21 @@ export type GetContinentData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -2343,7 +2617,21 @@ export type GetCulinaryOffersData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -2383,7 +2671,21 @@ export type GetCulinaryOfferByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -2435,7 +2737,21 @@ export type GetBeachFiltersData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -2599,7 +2915,21 @@ export type GetLocationInfrastructureData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -2639,7 +2969,21 @@ export type GetLocationInfrastructureByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -2691,7 +3035,21 @@ export type GetLocationLengthsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -2731,7 +3089,21 @@ export type GetLocationLengthByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -2947,7 +3319,21 @@ export type GetNaturalLocationConditionsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -2987,7 +3373,21 @@ export type GetNaturalLocationConditionByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -3039,7 +3439,21 @@ export type GetOccupancyRatesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -3079,7 +3493,21 @@ export type GetOccupancyRateByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -3131,7 +3559,21 @@ export type GetParkingBeachDistancesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -3176,7 +3618,21 @@ export type GetParkingBeachDistanceByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -3233,7 +3689,21 @@ export type GetParkingBeachHeightsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -3278,7 +3748,21 @@ export type GetParkingBeachHeightByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -3335,7 +3819,21 @@ export type GetParkingCapacitiesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -3380,7 +3878,21 @@ export type GetParkingCapacityByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -3437,7 +3949,21 @@ export type GetBeachesWithinRadiusData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query: {
@@ -3494,7 +4020,21 @@ export type GetNearestBeachesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query: {
@@ -3527,7 +4067,21 @@ export type CalculateDistanceData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query: {
@@ -3564,7 +4118,21 @@ export type GetBeachesInBoundingBoxData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query: {
@@ -3601,7 +4169,21 @@ export type GetBeachDensityGridData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -3626,7 +4208,21 @@ export type GetBeachStatisticsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -3646,7 +4242,21 @@ export type GetRecommendedTransportTypesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -3686,7 +4296,21 @@ export type GetRecommendedTransportTypeByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -3738,7 +4362,21 @@ export type GetRoadToParkingTypesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -3787,7 +4425,21 @@ export type GetRoadToParkingTypeByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -3844,7 +4496,21 @@ export type GetSportingActivitiesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -3884,7 +4550,21 @@ export type GetSportingActivityByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -3936,7 +4616,21 @@ export type GetSwimmingDepthsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -3976,7 +4670,21 @@ export type GetSwimmingDepthByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -4028,7 +4736,21 @@ export type GetUnderwaterCharacteristicsData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -4068,7 +4790,21 @@ export type GetUnderwaterCharacteristicByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -4144,7 +4880,21 @@ export type GetUserTypesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: never;
@@ -4183,7 +4933,21 @@ export type GetUserTypeByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**
@@ -4235,7 +4999,21 @@ export type GetWaterbodiesData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path?: never;
   query?: {
@@ -4284,7 +5062,21 @@ export type GetWaterbodyByIdData = {
     /**
      * Language preference for the response (ISO 639-1 language codes)
      */
-    "Accept-Language"?: "en" | "si" | "hr" | "de" | "it" | "fr";
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
   };
   path: {
     /**

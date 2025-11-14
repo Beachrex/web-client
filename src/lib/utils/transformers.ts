@@ -36,6 +36,7 @@ export const transformContinentToUI = (
     key,
     code: continent.code ?? '',
     name: continent.name ?? '',
+    slug: continent.slug ?? continent.code?.toLowerCase() ?? '',
     icon: '', // Will be set by calling code
     beaches_count: continent.beaches_count ?? 0,
   };

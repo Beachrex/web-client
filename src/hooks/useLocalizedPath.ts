@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { getContinents } from '@/lib/api-client/sdk.gen';
+import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 
 // Locale-specific route translations
 const beachesRoutes: Record<string, string> = {
@@ -37,9 +38,20 @@ export const useLocalizedPath = () => {
   const getLocalizedPath = async (targetLocale: string): Promise<string> => {
     console.log('[useLocalizedPath] Starting translation:', { pathname, currentLocale, targetLocale });
 
-    // Remove the locale prefix from pathname (e.g., /si/plaze/evropa -> /plaze/evropa)
-    const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}\//, '/');
+    // Remove the locale prefix from pathname
+    // Handles both /en and /en/something patterns
+    let pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(\/|$)/, '/');
+
+    // Normalize double slashes to single slash (e.g., // -> /)
+    pathWithoutLocale = pathWithoutLocale.replace(/\/+/g, '/');
+
     console.log('[useLocalizedPath] Path without locale:', pathWithoutLocale);
+
+    // If we're on the homepage, just return /
+    if (pathWithoutLocale === '/' || pathWithoutLocale === '') {
+      console.log('[useLocalizedPath] Homepage detected, returning /');
+      return '/';
+    }
 
     // Get the current locale's beaches route word
     const currentBeachesWord = beachesRoutes[currentLocale] ?? 'beaches';
@@ -55,7 +67,7 @@ export const useLocalizedPath = () => {
     console.log('[useLocalizedPath] Continent match:', continentMatch);
 
     if (!continentMatch) {
-      // Not a beaches page, just replace the locale in the path
+      // Not a beaches page, just return the path without locale
       console.log('[useLocalizedPath] Not a beaches page, returning:', pathWithoutLocale);
       return pathWithoutLocale;
     }
@@ -64,11 +76,16 @@ export const useLocalizedPath = () => {
     const currentCitySlug = continentCityMatch?.[2];
     console.log('[useLocalizedPath] Extracted slugs:', { currentContinentSlug, currentCitySlug });
 
+    if (!currentContinentSlug) {
+      // No continent slug found, return pathname as-is
+      console.log('[useLocalizedPath] No continent slug found, returning:', pathWithoutLocale);
+      return pathWithoutLocale;
+    }
+
     try {
       // Fetch continents for current locale to get the continent code
-      const { data: currentContinentsResponse } = await getContinents({
-        headers: { 'Accept-Language': currentLocale },
-      });
+      // Note: ApiClientProvider sets Accept-Language to currentLocale, so we can use it directly
+      const { data: currentContinentsResponse } = await getContinents();
 
       const currentContinent = currentContinentsResponse?.data?.find(
         c => c.slug?.toLowerCase() === currentContinentSlug.toLowerCase()
@@ -83,8 +100,9 @@ export const useLocalizedPath = () => {
       }
 
       // Fetch continents for target locale to get the translated slug
+      // We need to override the header here because we're fetching for a different locale
       const { data: targetContinentsResponse } = await getContinents({
-        headers: { 'Accept-Language': targetLocale },
+        headers: { 'Accept-Language': targetLocale as AcceptLanguage },
       });
 
       const targetContinent = targetContinentsResponse?.data?.find(

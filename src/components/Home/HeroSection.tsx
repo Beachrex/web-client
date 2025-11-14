@@ -1,13 +1,36 @@
 'use client';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useContinents } from '@/hooks/useContinents';
+import { Link } from '@/i18n/routing';
+
+// Locale-specific route translations for beaches
+const beachesRoutes: Record<string, string> = {
+  en: 'beaches',
+  si: 'plaze',
+  de: 'strande',
+  hr: 'plaze',
+  fr: 'plages',
+  es: 'playas',
+  it: 'spiagge',
+  ua: 'plyazhi',
+  ru: 'plyazhi',
+  pl: 'plaze',
+  cs: 'plaze',
+  hu: 'strandok',
+  bg: 'plyazhove',
+  sk: 'plaze',
+};
 
 const HeroSection: React.FC = () => {
   const t = useTranslations('HomePage');
   const tContinents = useTranslations('Continents');
+  const locale = useLocale();
   const { continents, loading, error } = useContinents();
+
+  // Get the localized beaches route word for current locale
+  const beachesWord = useMemo(() => beachesRoutes[locale] ?? 'beaches', [locale]);
   return (
     <section
       className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] bg-cover bg-center sm:h-[700px] lg:h-[798px]"
@@ -17,7 +40,7 @@ const HeroSection: React.FC = () => {
       <div className="absolute inset-0 bg-white/10" />
 
       {/* Main content container */}
-      <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-6 lg:p-8">
+      <div className="relative z-1 flex h-full flex-col justify-between p-4 sm:p-6 lg:p-8">
         {/* Top section - Continents buttons */}
         <div className="flex flex-wrap gap-2 sm:gap-[9px]">
           {loading ? (
@@ -39,9 +62,10 @@ const HeroSection: React.FC = () => {
           ) : (
             // Render continents from API
             continents.map((c) => (
-              <div
+              <Link
                 key={c.key}
-                className="flex h-10 w-10 cursor-default items-center justify-center rounded-[10px] bg-[#5E1CA5] p-2 sm:h-[54px] sm:w-auto sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
+                href={`/${beachesWord}/${c.slug}`}
+                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[10px] bg-[#5E1CA5] p-2 transition-all hover:bg-[#7A2BC9] hover:shadow-lg sm:h-[54px] sm:w-auto sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
                 title={`${tContinents(c.key)} - ${tContinents('num_of_beaches')}: ${c.beaches_count}`}
               >
                 <Image
@@ -60,7 +84,7 @@ const HeroSection: React.FC = () => {
                     ({c.beaches_count})
                   </span>
                 )}
-              </div>
+              </Link>
             ))
           )}
         </div>

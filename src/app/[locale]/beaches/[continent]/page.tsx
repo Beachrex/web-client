@@ -6,6 +6,7 @@ import SearchBeach from '@/components/Continent/SearchBeach';
 import SearchContinent from '@/components/Continent/SearchContinent';
 import { PropertySection } from '@/components/PropertySection';
 import { getContinent, getContinents, getCountries } from '@/lib/api-client/sdk.gen';
+import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 
 interface PageProps {
   params: Promise<{
@@ -18,7 +19,7 @@ interface PageProps {
 const validateAndGetContinentCode = async (continentSlug: string, locale: string): Promise<string | null> => {
   try {
     const { data: continentsResponse } = await getContinents({
-      headers: { 'Accept-Language': locale },
+      headers: { 'Accept-Language': locale as AcceptLanguage },
     });
 
     const continent = continentsResponse?.data?.find(
@@ -48,7 +49,7 @@ export async function generateMetadata({ params }: PageProps) {
 
     const { data } = await getContinent({
       path: { code: continentCode },
-      headers: { 'Accept-Language': resolvedParams.locale },
+      headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
     });
     const continent = data?.data;
 
@@ -86,7 +87,7 @@ const Page = async ({ params }: PageProps) => {
 
     const { data: continentResponse } = await getContinent({
       path: { code: continentCode },
-      headers: { 'Accept-Language': resolvedParams.locale },
+      headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
     });
     const continent = continentResponse?.data;
 
@@ -97,13 +98,13 @@ const Page = async ({ params }: PageProps) => {
     // Get countries for this continent
     const { data: countriesResponse } = await getCountries({
       query: { continent: continentCode },
-      headers: { 'Accept-Language': resolvedParams.locale },
+      headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
     });
     const countries = countriesResponse?.data ?? [];
 
     // Get all continents for navigation
     const { data: continentsResponse } = await getContinents({
-      headers: { 'Accept-Language': resolvedParams.locale },
+      headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
     });
     const allContinents = continentsResponse?.data ?? [];
 
