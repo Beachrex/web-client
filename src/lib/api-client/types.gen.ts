@@ -490,6 +490,112 @@ export type CulinaryOfferTranslation = {
 };
 
 /**
+ * First Page Content Item
+ *
+ * Item within a repeater section
+ */
+export type FirstPageContentItem = {
+  /**
+   * Item ID
+   */
+  id?: number;
+  /**
+   * Display order within the section
+   */
+  order?: number;
+  /**
+   * Item title (localized based on Accept-Language header)
+   */
+  title?: string | null;
+  /**
+   * Item description (localized based on Accept-Language header)
+   */
+  description?: string | null;
+  /**
+   * Media files associated with this item
+   */
+  media?: Array<FirstPageContentMedia>;
+};
+
+/**
+ * First Page Content Media
+ *
+ * Media file for first page content
+ */
+export type FirstPageContentMedia = {
+  /**
+   * Media ID
+   */
+  id?: number;
+  /**
+   * Media type code
+   */
+  type?: string;
+  /**
+   * Full CDN URL to the media file
+   */
+  url?: string;
+  /**
+   * File name
+   */
+  file_name?: string;
+  /**
+   * Whether this is the primary media file
+   */
+  is_primary?: boolean;
+  /**
+   * Media collection code (e.g., icon, main_image)
+   */
+  collection?: string | null;
+};
+
+/**
+ * First Page Content
+ *
+ * First page/homepage content section model
+ */
+export type FirstPageContent = {
+  /**
+   * Content section ID
+   */
+  id?: number;
+  /**
+   * Unique section code identifier
+   */
+  code?: string;
+  /**
+   * Type of content section
+   */
+  section_type?: "banner" | "text_image" | "repeater" | "text_only";
+  /**
+   * Display order on the page
+   */
+  order?: number;
+  /**
+   * Section title (localized based on Accept-Language header)
+   */
+  title?: string | null;
+  /**
+   * Section description (localized based on Accept-Language header)
+   */
+  description?: string | null;
+  /**
+   * Additional configuration data (JSON)
+   */
+  config?: {
+    [key: string]: unknown;
+  } | null;
+  /**
+   * Media files associated with this section
+   */
+  media?: Array<FirstPageContentMedia>;
+  /**
+   * Items for repeater sections (null for non-repeater sections)
+   */
+  items?: Array<FirstPageContentItem> | null;
+};
+
+/**
  * Location Infrastructure
  *
  * Location infrastructure model (WC, shower, parking, etc.)
@@ -2912,6 +3018,83 @@ export type GetBeachFiltersResponses = {
 
 export type GetBeachFiltersResponse =
   GetBeachFiltersResponses[keyof GetBeachFiltersResponses];
+
+export type GetFirstPageContentData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language code (en, sl, de, hr, etc.)
+     */
+    "Accept-Language"?: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/first-page-content";
+};
+
+export type GetFirstPageContentErrors = {
+  /**
+   * Server error
+   */
+  500: unknown;
+};
+
+export type GetFirstPageContentResponses = {
+  /**
+   * Successful operation
+   */
+  200: {
+    success?: boolean;
+    data?: Array<FirstPageContent>;
+    message?: string;
+  };
+};
+
+export type GetFirstPageContentResponse =
+  GetFirstPageContentResponses[keyof GetFirstPageContentResponses];
+
+export type GetFirstPageContentByCodeData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language code (en, sl, de, hr, etc.)
+     */
+    "Accept-Language"?: string;
+  };
+  path: {
+    /**
+     * Content section code
+     */
+    code: string;
+  };
+  query?: never;
+  url: "/api/v1/first-page-content/{code}";
+};
+
+export type GetFirstPageContentByCodeErrors = {
+  /**
+   * Content not found
+   */
+  404: unknown;
+  /**
+   * Server error
+   */
+  500: unknown;
+};
+
+export type GetFirstPageContentByCodeResponses = {
+  /**
+   * Successful operation
+   */
+  200: {
+    success?: boolean;
+    data?: FirstPageContent;
+    message?: string;
+  };
+};
+
+export type GetFirstPageContentByCodeResponse =
+  GetFirstPageContentByCodeResponses[keyof GetFirstPageContentByCodeResponses];
 
 export type GetLocationInfrastructureData = {
   body?: never;

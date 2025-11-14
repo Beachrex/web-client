@@ -97,6 +97,12 @@ import type {
   GetCurrentUserData,
   GetCurrentUserErrors,
   GetCurrentUserResponses,
+  GetFirstPageContentByCodeData,
+  GetFirstPageContentByCodeErrors,
+  GetFirstPageContentByCodeResponses,
+  GetFirstPageContentData,
+  GetFirstPageContentErrors,
+  GetFirstPageContentResponses,
   GetLocationInfrastructureByIdData,
   GetLocationInfrastructureByIdErrors,
   GetLocationInfrastructureByIdResponses,
@@ -665,6 +671,42 @@ export const getBeachFilters = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/beaches/filters",
+    ...options,
+  });
+};
+
+/**
+ * Get all first page content sections
+ *
+ * Returns all active first page content sections with translations, items, and media
+ */
+export const getFirstPageContent = <ThrowOnError extends boolean = false>(
+  options?: Options<GetFirstPageContentData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetFirstPageContentResponses,
+    GetFirstPageContentErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/first-page-content",
+    ...options,
+  });
+};
+
+/**
+ * Get specific first page content section by code
+ *
+ * Returns a specific first page content section with translations, items, and media
+ */
+export const getFirstPageContentByCode = <ThrowOnError extends boolean = false>(
+  options: Options<GetFirstPageContentByCodeData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetFirstPageContentByCodeResponses,
+    GetFirstPageContentByCodeErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/first-page-content/{code}",
     ...options,
   });
 };

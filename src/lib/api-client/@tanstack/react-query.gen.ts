@@ -32,6 +32,8 @@ import {
   getCulinaryOfferById,
   getCulinaryOffers,
   getCurrentUser,
+  getFirstPageContent,
+  getFirstPageContentByCode,
   getLocationInfrastructure,
   getLocationInfrastructureById,
   getLocationLengthById,
@@ -92,6 +94,8 @@ import type {
   GetCulinaryOfferByIdData,
   GetCulinaryOffersData,
   GetCurrentUserData,
+  GetFirstPageContentByCodeData,
+  GetFirstPageContentData,
   GetLocationInfrastructureByIdData,
   GetLocationInfrastructureData,
   GetLocationLengthByIdData,
@@ -678,6 +682,58 @@ export const getBeachFiltersOptions = (
       return data;
     },
     queryKey: getBeachFiltersQueryKey(options),
+  });
+};
+
+export const getFirstPageContentQueryKey = (
+  options?: Options<GetFirstPageContentData>,
+) => createQueryKey("getFirstPageContent", options);
+
+/**
+ * Get all first page content sections
+ *
+ * Returns all active first page content sections with translations, items, and media
+ */
+export const getFirstPageContentOptions = (
+  options?: Options<GetFirstPageContentData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFirstPageContent({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFirstPageContentQueryKey(options),
+  });
+};
+
+export const getFirstPageContentByCodeQueryKey = (
+  options: Options<GetFirstPageContentByCodeData>,
+) => createQueryKey("getFirstPageContentByCode", options);
+
+/**
+ * Get specific first page content section by code
+ *
+ * Returns a specific first page content section with translations, items, and media
+ */
+export const getFirstPageContentByCodeOptions = (
+  options: Options<GetFirstPageContentByCodeData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getFirstPageContentByCode({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getFirstPageContentByCodeQueryKey(options),
   });
 };
 
