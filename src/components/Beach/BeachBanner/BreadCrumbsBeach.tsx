@@ -3,7 +3,7 @@
 import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { useTranslations, useLocale } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { useParams } from 'next/navigation';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 
@@ -38,7 +38,6 @@ export default function BeachTopBar({
   showBreadcrumbs = true,
   rightExtras,
 }: BeachTopBarProps) {
-  const t = useTranslations('BeachNavigation');
   const locale = useLocale();
   const params = useParams();
 
@@ -74,10 +73,6 @@ export default function BeachTopBar({
       }
     : null;
 
-  // Get translated labels with fallback
-  const prevLabel = t('previousBeach', { defaultValue: 'Previous beach' });
-  const nextLabel = t('nextBeach', { defaultValue: 'Next beach' });
-
   return (
     <div className="w-full border-b bg-white/80 backdrop-blur">
       <div className="container mx-auto">
@@ -106,8 +101,6 @@ export default function BeachTopBar({
                 className="inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm transition-colors hover:bg-gray-50"
               >
                 <ChevronLeft className="h-4 w-4" />
-                <span className="whitespace-nowrap">{prevLabel}</span>
-                {/* Show the beach name lightly, but allow it to wrap if long */}
                 <span className="truncate text-[#0069AB]">
                   {prevBeach.name}
                 </span>
@@ -119,7 +112,6 @@ export default function BeachTopBar({
                 aria-disabled
               >
                 <ChevronLeft className="h-4 w-4" />
-                <span className="whitespace-nowrap">{prevLabel}</span>
               </button>
             )}
 
@@ -129,8 +121,6 @@ export default function BeachTopBar({
                 href={nextBeach.url}
                 className="inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm transition-colors hover:bg-gray-50"
               >
-                <span className="whitespace-nowrap">{nextLabel}</span>
-                {/* Show the beach name lightly, but allow it to wrap if long */}
                 <span className="truncate text-[#0069AB]">
                   {nextBeach.name}
                 </span>
@@ -142,7 +132,6 @@ export default function BeachTopBar({
                 disabled
                 aria-disabled
               >
-                <span className="whitespace-nowrap">{nextLabel}</span>
                 <ChevronRight className="h-4 w-4" />
               </button>
             )}
