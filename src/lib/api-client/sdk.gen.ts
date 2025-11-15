@@ -54,6 +54,9 @@ import type {
   GetBeachByIdResponses,
   GetBeachDensityGridData,
   GetBeachDensityGridResponses,
+  GetBeachDetailsData,
+  GetBeachDetailsErrors,
+  GetBeachDetailsResponses,
   GetBeachesData,
   GetBeachesInBoundingBoxData,
   GetBeachesInBoundingBoxResponses,
@@ -473,6 +476,24 @@ export const getBeachById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/beaches/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get comprehensive beach details by slug or ID
+ *
+ * Returns all beach information including media galleries, characteristics, facilities, and related data. Accepts either beach ID (numeric) or slug (string) in any language.
+ */
+export const getBeachDetails = <ThrowOnError extends boolean = false>(
+  options: Options<GetBeachDetailsData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetBeachDetailsResponses,
+    GetBeachDetailsErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/beach-details/{identifier}",
     ...options,
   });
 };

@@ -10,6 +10,18 @@ interface DynamicBreadcrumbsProps {
     pathname: string;
 }
 
+/**
+ * Format breadcrumb segment: replace dashes/underscores with spaces and capitalize each word
+ * Example: "vodice-beaches" -> "Vodice Beaches"
+ */
+function formatBreadcrumbSegment(segment: string): string {
+    return segment
+        .replace(/[-_]/g, ' ') // Replace dashes and underscores with spaces
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}
+
 export default function DynamicBreadcrumbs({ pathname }: DynamicBreadcrumbsProps) {
     const locale = useLocale();
 
@@ -23,8 +35,8 @@ export default function DynamicBreadcrumbs({ pathname }: DynamicBreadcrumbsProps
     const breadcrumbs = filteredSegments.map((segment: string, index: number) => {
         // Create URL for each breadcrumb - include locale prefix
         const href = `/${filteredSegments.slice(0, index + 1).join('/')}`;
-        // Capitalize each breadcrumb for display
-        const formattedSegment = `${segment.charAt(0).toUpperCase()}${segment.slice(1)}`;
+        // Format segment: replace dashes with spaces and capitalize each word
+        const formattedSegment = formatBreadcrumbSegment(segment);
         // Check if this is the last (current) breadcrumb
         const isCurrentPage = index === filteredSegments.length - 1;
 

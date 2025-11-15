@@ -213,6 +213,327 @@ export type BayLengthTranslation = {
 };
 
 /**
+ * Beach Bounding Box Response Schema
+ *
+ * Response schema for beaches in bounding box endpoint
+ */
+export type BeachBoundingBoxResponseSchema = {
+  /**
+   * Array of beaches
+   */
+  data?: Array<BeachSchema>;
+  /**
+   * Metadata about the response
+   */
+  meta?: {
+    /**
+     * The bounding box coordinates (user-provided)
+     */
+    bounding_box?: {
+      /**
+       * Minimum latitude
+       */
+      min_latitude?: number;
+      /**
+       * Minimum longitude
+       */
+      min_longitude?: number;
+      /**
+       * Maximum latitude
+       */
+      max_latitude?: number;
+      /**
+       * Maximum longitude
+       */
+      max_longitude?: number;
+    };
+    /**
+     * Geographic center (centroid) of all beaches found in the bounding box, calculated using PostGIS ST_Centroid
+     */
+    center?: {
+      /**
+       * Center latitude
+       */
+      latitude?: number | null;
+      /**
+       * Center longitude
+       */
+      longitude?: number | null;
+    };
+    /**
+     * Number of beaches found
+     */
+    count?: number;
+  };
+};
+
+/**
+ * Beach Details Schema
+ *
+ * Comprehensive beach details for detail pages
+ */
+export type BeachDetailsSchema = {
+  /**
+   * Basic beach information
+   */
+  basic_info?: {
+    id?: number;
+    name?: string;
+    slug?: string;
+    description?: string | null;
+    latitude?: string;
+    longitude?: string;
+    folder_name?: string | null;
+    mobile_upload?: boolean;
+  };
+  /**
+   * Location information
+   */
+  location?: {
+    continent?: {
+      code?: string;
+      name?: string;
+    } | null;
+    country?: {
+      code?: string;
+      name?: string;
+      full_name?: string | null;
+    } | null;
+    region?: {
+      id?: number;
+      name?: string;
+      slug?: string | null;
+    } | null;
+    city?: {
+      id?: number;
+      name?: string;
+      slug?: string | null;
+    } | null;
+    island?: {
+      id?: number;
+      name?: string;
+      slug?: string | null;
+    } | null;
+    river?: {
+      id?: number;
+      name?: string;
+    } | null;
+    lake?: {
+      id?: number;
+      name?: string;
+    } | null;
+  };
+  /**
+   * Beach characteristics
+   */
+  characteristics?: {
+    beach_type?: {
+      id?: number;
+      code?: string;
+      name?: string;
+    } | null;
+    waterbody?: {
+      id?: number;
+      code?: string;
+      name?: string;
+    } | null;
+    water_body_type?: {
+      id?: number;
+      code?: string;
+      name?: string;
+    } | null;
+    area_description?: {
+      id?: number;
+      code?: string;
+      name?: string;
+    } | null;
+    location_types?: Array<{
+      id?: number;
+      code?: string;
+      name?: string;
+    }>;
+    boat_only?: boolean;
+  };
+  /**
+   * Accessibility and parking information
+   */
+  accessibility?: {
+    [key: string]: unknown;
+  };
+  /**
+   * Beach dimensions and measurements
+   */
+  dimensions?: {
+    [key: string]: unknown;
+  };
+  /**
+   * Facilities and amenities
+   */
+  facilities?: {
+    accommodation_around?: Array<{
+      id?: number;
+      code?: string;
+      name?: string;
+    }>;
+    culinary_offers?: Array<{
+      id?: number;
+      code?: string;
+      name?: string;
+    }>;
+    location_infrastructure?: Array<{
+      id?: number;
+      code?: string;
+      name?: string;
+    }>;
+  };
+  /**
+   * Activities and user types
+   */
+  activities?: {
+    sporting_activities?: Array<{
+      id?: number;
+      code?: string;
+      name?: string;
+    }>;
+    user_types?: Array<{
+      id?: number;
+      code?: string;
+      name?: string;
+    }>;
+  };
+  /**
+   * Natural conditions and underwater characteristics
+   */
+  natural_conditions?: {
+    [key: string]: unknown;
+  };
+  /**
+   * Media collections (galleries, videos, 360 spheres, etc.)
+   */
+  media?: {
+    /**
+     * Main beach photo gallery
+     */
+    gallery?: Array<MediaItem>;
+    /**
+     * Beach videos
+     */
+    videos?: Array<MediaItem>;
+    /**
+     * 360-degree panoramic images
+     */
+    spheres_360?: Array<MediaItem>;
+    /**
+     * Parking area photos
+     */
+    parking_images?: Array<MediaItem>;
+    /**
+     * Specific beach spot photos
+     */
+    spot_images?: Array<MediaItem>;
+    /**
+     * Infrastructure and facilities photos
+     */
+    infrastructure_images?: Array<MediaItem>;
+    /**
+     * Informational images and signage
+     */
+    info_images?: Array<MediaItem>;
+  };
+  /**
+   * Embedded content (videos, webcams, maps, widgets)
+   */
+  embeds?: {
+    video_url?: string | null;
+    webcam?: string | null;
+    map_url?: string | null;
+    weather?: string | null;
+    water_temperature?: string | null;
+  };
+  /**
+   * Swimming pool features (if applicable)
+   */
+  swimming_pool_features?: {
+    [key: string]: unknown;
+  };
+  /**
+   * Metadata
+   */
+  meta?: {
+    status?: string | null;
+    views?: number;
+    created_by?: {
+      id?: number;
+      name?: string;
+    } | null;
+    created_at?: string;
+    updated_at?: string;
+  };
+  /**
+   * Previous and next beaches based on region and ID order. Provides consistent bidirectional navigation within the same region.
+   */
+  navigation?: {
+    /**
+     * Beach with highest ID lower than current beach in same region (null if first beach in region)
+     */
+    previous?: {
+      id?: number;
+      name?: string;
+      slug?: string;
+      latitude?: string;
+      longitude?: string;
+      /**
+       * Distance in kilometers
+       */
+      distance_km?: number;
+      /**
+       * Main beach image path (prepend CDN URL)
+       */
+      main_image?: string | null;
+    } | null;
+    /**
+     * Beach with lowest ID higher than current beach in same region (null if last beach in region)
+     */
+    next?: {
+      id?: number;
+      name?: string;
+      slug?: string;
+      latitude?: string;
+      longitude?: string;
+      /**
+       * Distance in kilometers
+       */
+      distance_km?: number;
+      /**
+       * Main beach image path (prepend CDN URL)
+       */
+      main_image?: string | null;
+    } | null;
+  };
+};
+
+/**
+ * Media Item
+ *
+ * Individual media item (image, video, etc.)
+ */
+export type MediaItem = {
+  id?: number;
+  file_name?: string;
+  url?: string;
+  thumbnail_url?: string | null;
+  mime_type?: string;
+  width?: number | null;
+  height?: number | null;
+  /**
+   * Duration in seconds for videos
+   */
+  duration?: number | null;
+  is_primary?: boolean;
+  order?: number;
+};
+
+/**
  * Beach Inclination
  *
  * Beach inclination model (small_slope, normal, increase, sudden_drop, different_mixed)
@@ -262,6 +583,91 @@ export type BeachInclinationTranslation = {
    * URL-friendly slug
    */
   slug?: string;
+};
+
+/**
+ * Beach List Response Schema
+ *
+ * Response schema for beach list endpoints
+ */
+export type BeachListResponseSchema = {
+  /**
+   * Array of beaches
+   */
+  data?: Array<BeachSchema>;
+  /**
+   * Metadata about the response
+   */
+  meta?: {
+    /**
+     * Geographic center (centroid) of all filtered beaches, calculated using PostGIS ST_Centroid
+     */
+    center?: {
+      /**
+       * Center latitude
+       */
+      latitude?: number | null;
+      /**
+       * Center longitude
+       */
+      longitude?: number | null;
+    };
+    /**
+     * Total number of beaches returned (respects limit parameter)
+     */
+    total_beaches?: number;
+  };
+};
+
+/**
+ * Beach Radius Response Schema
+ *
+ * Response schema for beaches within radius endpoint
+ */
+export type BeachRadiusResponseSchema = {
+  /**
+   * Array of beaches
+   */
+  data?: Array<BeachSchema>;
+  /**
+   * Metadata about the response
+   */
+  meta?: {
+    /**
+     * The center point of the search radius (user-provided)
+     */
+    search_center?: {
+      /**
+       * Search center latitude
+       */
+      latitude?: number;
+      /**
+       * Search center longitude
+       */
+      longitude?: number;
+    };
+    /**
+     * Geographic center (centroid) of all beaches found within the radius, calculated using PostGIS ST_Centroid
+     */
+    results_center?: {
+      /**
+       * Results center latitude
+       */
+      latitude?: number | null;
+      /**
+       * Results center longitude
+       */
+      longitude?: number | null;
+    };
+    /**
+     * Search radius in kilometers
+     */
+    radius_km?: number;
+    /**
+     * Number of beaches found
+     */
+    count?: number;
+  };
 };
 
 /**
@@ -2112,25 +2518,29 @@ export type GetBeachesData = {
      */
     country?: string;
     /**
-     * Filter by region ID(s). Can be single value or array
+     * Filter by region code(s) or ID(s). Supports: single value (region=algarve), comma-separated (region=algarve,lisbon), or array (region[]=algarve&region[]=lisbon). Can mix codes and IDs.
      */
-    region?: number;
+    region?: string;
     /**
-     * Filter by island ID(s). Can be single value or array
+     * Filter by island code(s) or ID(s). Supports: single value (island=madeira), comma-separated (island=madeira,azores), or array (island[]=madeira&island[]=azores). Can mix codes and IDs.
      */
-    island?: number;
+    island?: string;
     /**
-     * Filter by waterbody ID(s). Can be single value or array
+     * Filter by city code(s) or ID(s). Supports: single value (city=sukosan), comma-separated (city=sukosan,zadar), or array (city[]=sukosan&city[]=zadar). Can mix codes and IDs.
      */
-    waterbody?: number;
+    city?: string;
     /**
-     * Filter by beach type ID(s). Supports: single value (beach_type=1), comma-separated (beach_type=1,2,3), or array (beach_type[]=1&beach_type[]=2)
+     * Filter by waterbody code(s) or ID(s). Supports: single value (waterbody=sea), comma-separated (waterbody=sea,lake), or array (waterbody[]=sea&waterbody[]=lake). Can mix codes and IDs.
+     */
+    waterbody?: string;
+    /**
+     * Filter by beach type code(s) or ID(s). Supports: single value (beach_type=sand), comma-separated (beach_type=sand,pebble), or array (beach_type[]=sand&beach_type[]=pebble). Can mix codes and IDs.
      */
     beach_type?: string;
     /**
-     * Filter by user type ID(s). Can be single value or array
+     * Filter by user type code(s) or ID(s). Supports: single value (user_type=family), comma-separated (user_type=family,couple), or array (user_type[]=family&user_type[]=couple). Can mix codes and IDs.
      */
-    user_type?: number;
+    user_type?: string;
     /**
      * Filter by parking availability (true/false)
      */
@@ -2145,11 +2555,9 @@ export type GetBeachesData = {
 
 export type GetBeachesResponses = {
   /**
-   * List of beaches
+   * List of beaches with map center coordinates
    */
-  200: {
-    data?: Array<BeachSchema>;
-  };
+  200: BeachListResponseSchema;
 };
 
 export type GetBeachesResponse = GetBeachesResponses[keyof GetBeachesResponses];
@@ -2258,6 +2666,57 @@ export type GetBeachByIdResponses = {
 
 export type GetBeachByIdResponse =
   GetBeachByIdResponses[keyof GetBeachByIdResponses];
+
+export type GetBeachDetailsData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * Beach ID (numeric) or slug (string in any language)
+     */
+    identifier: number | string;
+  };
+  query?: never;
+  url: "/api/v1/beach-details/{identifier}";
+};
+
+export type GetBeachDetailsErrors = {
+  /**
+   * Beach not found
+   */
+  404: unknown;
+};
+
+export type GetBeachDetailsResponses = {
+  /**
+   * Beach details found
+   */
+  200: {
+    data?: BeachDetailsSchema;
+  };
+};
+
+export type GetBeachDetailsResponse =
+  GetBeachDetailsResponses[keyof GetBeachDetailsResponses];
 
 export type GetBeachInclinationsData = {
   body?: never;
@@ -4179,27 +4638,102 @@ export type GetBeachesWithinRadiusData = {
      */
     country?: string;
     /**
-     * Filter by waterbody ID(s). Can be single value or array
+     * Filter by waterbody code(s) or ID(s). Supports: single value (waterbody=sea), comma-separated (waterbody=sea,lake), or array (waterbody[]=sea&waterbody[]=lake). Can mix codes and IDs.
      */
-    waterbody?: number;
+    waterbody?: string;
     /**
-     * Filter by beach type ID(s). Can be single value or array
+     * Filter by beach type code(s) or ID(s). Supports: single value (beach_type=sand), comma-separated (beach_type=sand,pebble), or array (beach_type[]=sand&beach_type[]=pebble). Can mix codes and IDs.
      */
-    beach_type?: number;
+    beach_type?: string;
     /**
-     * Filter by user type ID(s). Can be single value or array
+     * Filter by user type code(s) or ID(s). Supports: single value (user_type=family), comma-separated (user_type=family,couple), or array (user_type[]=family&user_type[]=couple). Can mix codes and IDs.
      */
-    user_type?: number;
+    user_type?: string;
+    /**
+     * Filter by region code(s) or ID(s). Supports: single value (region=algarve), comma-separated (region=algarve,lisbon), or array (region[]=algarve&region[]=lisbon). Can mix codes and IDs.
+     */
+    region?: string;
+    /**
+     * Filter by island code(s) or ID(s). Supports: single value (island=madeira), comma-separated (island=madeira,azores), or array (island[]=madeira&island[]=azores). Can mix codes and IDs.
+     */
+    island?: string;
+    /**
+     * Filter by city code(s) or ID(s). Supports: single value (city=sukosan), comma-separated (city=sukosan,zadar), or array (city[]=sukosan&city[]=zadar). Can mix codes and IDs.
+     */
+    city?: string;
+    /**
+     * Filter by accessibility code(s) or ID(s). Supports: single value (accessibility=easy), comma-separated (accessibility=easy,moderate), or array (accessibility[]=easy&accessibility[]=moderate). Can mix codes and IDs.
+     */
+    accessibility?: string;
+    /**
+     * Filter by parking availability (boolean)
+     */
+    parking?: boolean;
+    /**
+     * Filter by parking capacity code(s) or ID(s). Supports: single value (parking_capacity=large), comma-separated (parking_capacity=large,medium), or array (parking_capacity[]=large&parking_capacity[]=medium). Can mix codes and IDs.
+     */
+    parking_capacity?: string;
+    /**
+     * Filter by beach inclination code(s) or ID(s). Supports: single value (beach_inclination=gentle), comma-separated (beach_inclination=gentle,steep), or array (beach_inclination[]=gentle&beach_inclination[]=steep). Can mix codes and IDs.
+     */
+    beach_inclination?: string;
+    /**
+     * Filter by swimming depth code(s) or ID(s). Supports: single value (swimming_depth=shallow), comma-separated (swimming_depth=shallow,deep), or array (swimming_depth[]=shallow&swimming_depth[]=deep). Can mix codes and IDs.
+     */
+    swimming_depth?: string;
+    /**
+     * Filter by occupancy rate code(s) or ID(s). Supports: single value (occupancy_rate=low), comma-separated (occupancy_rate=low,medium), or array (occupancy_rate[]=low&occupancy_rate[]=medium). Can mix codes and IDs.
+     */
+    occupancy_rate?: string;
+    /**
+     * Filter by area description code(s) or ID(s). Supports: single value (area_description=urban), comma-separated (area_description=urban,rural), or array (area_description[]=urban&area_description[]=rural). Can mix codes and IDs.
+     */
+    area_description?: string;
+    /**
+     * Filter by swimming pool availability (boolean)
+     */
+    has_swimming_pool?: boolean;
+    /**
+     * Filter beaches accessible only by boat (boolean)
+     */
+    boat_only?: boolean;
+    /**
+     * Filter by accommodation around code(s) or ID(s). Supports: single value (accommodation_around=hotel), comma-separated (accommodation_around=hotel,apartment), or array (accommodation_around[]=hotel&accommodation_around[]=apartment). Can mix codes and IDs.
+     */
+    accommodation_around?: string;
+    /**
+     * Filter by culinary offer code(s) or ID(s). Supports: single value (culinary_offer=restaurant), comma-separated (culinary_offer=restaurant,bar), or array (culinary_offer[]=restaurant&culinary_offer[]=bar). Can mix codes and IDs.
+     */
+    culinary_offer?: string;
+    /**
+     * Filter by location infrastructure code(s) or ID(s). Supports: single value (location_infrastructure=shower), comma-separated (location_infrastructure=shower,toilet), or array (location_infrastructure[]=shower&location_infrastructure[]=toilet). Can mix codes and IDs.
+     */
+    location_infrastructure?: string;
+    /**
+     * Filter by natural location condition code(s) or ID(s). Supports: single value (natural_location_condition=shaded), comma-separated (natural_location_condition=shaded,sunny), or array (natural_location_condition[]=shaded&natural_location_condition[]=sunny). Can mix codes and IDs.
+     */
+    natural_location_condition?: string;
+    /**
+     * Filter by sporting activity code(s) or ID(s). Supports: single value (sporting_activity=diving), comma-separated (sporting_activity=diving,surfing), or array (sporting_activity[]=diving&sporting_activity[]=surfing). Can mix codes and IDs.
+     */
+    sporting_activity?: string;
+    /**
+     * Filter by underwater characteristic code(s) or ID(s). Supports: single value (underwater_characteristic=coral), comma-separated (underwater_characteristic=coral,rocks), or array (underwater_characteristic[]=coral&underwater_characteristic[]=rocks). Can mix codes and IDs.
+     */
+    underwater_characteristic?: string;
   };
   url: "/api/v1/spatial/beaches/within-radius";
 };
 
 export type GetBeachesWithinRadiusResponses = {
   /**
-   * Beaches found within radius
+   * Beaches found within radius with center coordinates
    */
-  200: unknown;
+  200: BeachRadiusResponseSchema;
 };
+
+export type GetBeachesWithinRadiusResponse =
+  GetBeachesWithinRadiusResponses[keyof GetBeachesWithinRadiusResponses];
 
 export type GetNearestBeachesData = {
   body?: never;
@@ -4339,16 +4873,111 @@ export type GetBeachesInBoundingBoxData = {
      * Maximum longitude of the bounding box (-180 to 180)
      */
     max_lon: number;
+    /**
+     * Filter by continent code(s) or ID(s). Supports: single value (continent_code=EU), comma-separated (continent_code=EU,AS), or array (continent_code[]=EU&continent_code[]=AS). Can mix codes and IDs.
+     */
+    continent_code?: string;
+    /**
+     * Filter by country code(s) or ID(s). Supports: single value (country=HR), comma-separated (country=HR,SI,IT), or array (country[]=HR&country[]=SI). Can mix codes and IDs.
+     */
+    country?: string;
+    /**
+     * Filter by waterbody code(s) or ID(s). Supports: single value (waterbody=sea), comma-separated (waterbody=sea,lake), or array (waterbody[]=sea&waterbody[]=lake). Can mix codes and IDs.
+     */
+    waterbody?: string;
+    /**
+     * Filter by beach type code(s) or ID(s). Supports: single value (beach_type=sand), comma-separated (beach_type=sand,pebble), or array (beach_type[]=sand&beach_type[]=pebble). Can mix codes and IDs.
+     */
+    beach_type?: string;
+    /**
+     * Filter by user type code(s) or ID(s). Supports: single value (user_type=family), comma-separated (user_type=family,couple), or array (user_type[]=family&user_type[]=couple). Can mix codes and IDs.
+     */
+    user_type?: string;
+    /**
+     * Filter by region code(s) or ID(s). Supports: single value (region=algarve), comma-separated (region=algarve,lisbon), or array (region[]=algarve&region[]=lisbon). Can mix codes and IDs.
+     */
+    region?: string;
+    /**
+     * Filter by island code(s) or ID(s). Supports: single value (island=madeira), comma-separated (island=madeira,azores), or array (island[]=madeira&island[]=azores). Can mix codes and IDs.
+     */
+    island?: string;
+    /**
+     * Filter by city code(s) or ID(s). Supports: single value (city=sukosan), comma-separated (city=sukosan,zadar), or array (city[]=sukosan&city[]=zadar). Can mix codes and IDs.
+     */
+    city?: string;
+    /**
+     * Filter by accessibility code(s) or ID(s). Supports: single value (accessibility=easy), comma-separated (accessibility=easy,moderate), or array (accessibility[]=easy&accessibility[]=moderate). Can mix codes and IDs.
+     */
+    accessibility?: string;
+    /**
+     * Filter by parking availability (boolean)
+     */
+    parking?: boolean;
+    /**
+     * Filter by parking capacity code(s) or ID(s). Supports: single value (parking_capacity=large), comma-separated (parking_capacity=large,medium), or array (parking_capacity[]=large&parking_capacity[]=medium). Can mix codes and IDs.
+     */
+    parking_capacity?: string;
+    /**
+     * Filter by beach inclination code(s) or ID(s). Supports: single value (beach_inclination=gentle), comma-separated (beach_inclination=gentle,steep), or array (beach_inclination[]=gentle&beach_inclination[]=steep). Can mix codes and IDs.
+     */
+    beach_inclination?: string;
+    /**
+     * Filter by swimming depth code(s) or ID(s). Supports: single value (swimming_depth=shallow), comma-separated (swimming_depth=shallow,deep), or array (swimming_depth[]=shallow&swimming_depth[]=deep). Can mix codes and IDs.
+     */
+    swimming_depth?: string;
+    /**
+     * Filter by occupancy rate code(s) or ID(s). Supports: single value (occupancy_rate=low), comma-separated (occupancy_rate=low,medium), or array (occupancy_rate[]=low&occupancy_rate[]=medium). Can mix codes and IDs.
+     */
+    occupancy_rate?: string;
+    /**
+     * Filter by area description code(s) or ID(s). Supports: single value (area_description=urban), comma-separated (area_description=urban,rural), or array (area_description[]=urban&area_description[]=rural). Can mix codes and IDs.
+     */
+    area_description?: string;
+    /**
+     * Filter by swimming pool availability (boolean)
+     */
+    has_swimming_pool?: boolean;
+    /**
+     * Filter beaches accessible only by boat (boolean)
+     */
+    boat_only?: boolean;
+    /**
+     * Filter by accommodation around code(s) or ID(s). Supports: single value (accommodation_around=hotel), comma-separated (accommodation_around=hotel,apartment), or array (accommodation_around[]=hotel&accommodation_around[]=apartment). Can mix codes and IDs.
+     */
+    accommodation_around?: string;
+    /**
+     * Filter by culinary offer code(s) or ID(s). Supports: single value (culinary_offer=restaurant), comma-separated (culinary_offer=restaurant,bar), or array (culinary_offer[]=restaurant&culinary_offer[]=bar). Can mix codes and IDs.
+     */
+    culinary_offer?: string;
+    /**
+     * Filter by location infrastructure code(s) or ID(s). Supports: single value (location_infrastructure=shower), comma-separated (location_infrastructure=shower,toilet), or array (location_infrastructure[]=shower&location_infrastructure[]=toilet). Can mix codes and IDs.
+     */
+    location_infrastructure?: string;
+    /**
+     * Filter by natural location condition code(s) or ID(s). Supports: single value (natural_location_condition=shaded), comma-separated (natural_location_condition=shaded,sunny), or array (natural_location_condition[]=shaded&natural_location_condition[]=sunny). Can mix codes and IDs.
+     */
+    natural_location_condition?: string;
+    /**
+     * Filter by sporting activity code(s) or ID(s). Supports: single value (sporting_activity=diving), comma-separated (sporting_activity=diving,surfing), or array (sporting_activity[]=diving&sporting_activity[]=surfing). Can mix codes and IDs.
+     */
+    sporting_activity?: string;
+    /**
+     * Filter by underwater characteristic code(s) or ID(s). Supports: single value (underwater_characteristic=coral), comma-separated (underwater_characteristic=coral,rocks), or array (underwater_characteristic[]=coral&underwater_characteristic[]=rocks). Can mix codes and IDs.
+     */
+    underwater_characteristic?: string;
   };
   url: "/api/v1/spatial/beaches/bounding-box";
 };
 
 export type GetBeachesInBoundingBoxResponses = {
   /**
-   * Beaches found within bounding box
+   * Beaches found within bounding box with center coordinates
    */
-  200: unknown;
+  200: BeachBoundingBoxResponseSchema;
 };
+
+export type GetBeachesInBoundingBoxResponse =
+  GetBeachesInBoundingBoxResponses[keyof GetBeachesInBoundingBoxResponses];
 
 export type GetBeachDensityGridData = {
   body?: never;

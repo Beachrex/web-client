@@ -10,18 +10,33 @@ import BottomBadgesBeach from './BottomBadgesBeach';
 import SeaTempWidget from './SeaTempWidget';
 import TopBarBeach from './TopBarBeach';
 import TopBarBeachRight from './TopBarBeachRight';
+import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
+import { getMainBeachImage } from '@/lib/utils/beach-images';
 
 interface BeachBannerSectionProps {
+  beachDetails?: BeachDetailsSchema;
   accommodationCount?: number;
   activityCount?: number;
 }
 
 export default function BeachBannerSection({
+  beachDetails,
   accommodationCount,
   activityCount,
 }: BeachBannerSectionProps) {
   const tRoutes = useTranslations('routes');
 
+  // Extract data from beachDetails
+  const beachName = beachDetails?.basic_info?.name;
+  const description = beachDetails?.basic_info?.description;
+  const mainImage = getMainBeachImage(
+    beachDetails?.media?.gallery,
+    beachDetails?.basic_info?.folder_name,
+    beachDetails?.basic_info?.mobile_upload
+  );
+
+  // TODO: Map beach characteristics to badges dynamically
+  // For now, using placeholder badges
   const badges: {
     id: 'stony' | 'familyFriendly' | 'parking' | 'easyAccess' | 'windsurfing';
     icon: string;
@@ -37,13 +52,17 @@ export default function BeachBannerSection({
     <section className="relative mx-auto mb-10 h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-visible pb-40 sm:h-[700px] md:min-h-[400px] md:pb-48 lg:h-[798px]">
       {/* Background with rounded corners */}
       <div className="absolute inset-0 overflow-hidden rounded-b-[10px] rounded-t-[10px]">
-        <Image
-          src="/images/propertycard/card-banner.jpg"
-          alt="Beach banner"
-          fill
-          className="object-cover object-center"
-          priority
-        />
+        {mainImage ? (
+          <Image
+            src={mainImage}
+            alt={`${beachName} banner`}
+            fill
+            className="object-cover object-center"
+            priority
+          />
+        ) : (
+          <div className="h-full w-full bg-gradient-to-br from-blue-400 to-blue-600" />
+        )}
         <div className="absolute inset-0 bg-white/10" />
       </div>
 
@@ -52,7 +71,7 @@ export default function BeachBannerSection({
         {/* Left: naslov + counters */}
         <div className="flex flex-col">
           <TopBarBeach
-            beachName="Plaža Haludovo"
+            beachName={beachName}
             accommodationCount={accommodationCount}
             activityCount={activityCount}
           />
@@ -65,7 +84,7 @@ export default function BeachBannerSection({
       {/* === Title + widgets anchored near bottom === */}
       <div className="absolute inset-x-0 bottom-[110px] z-20 sm:bottom-[120px] md:bottom-[130px]">
         <div className="grid grid-cols-1 gap-6 px-4 pr-16 sm:px-6 sm:pr-20 lg:grid-cols-[1fr_auto] lg:items-end lg:px-8 lg:pr-[96px]">
-          <BeachTitleBlock title="Plaža Haludovo" />
+          <BeachTitleBlock title={beachName} />
 
           <div className="flex justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
             <MapWidget />
@@ -76,7 +95,7 @@ export default function BeachBannerSection({
       </div>
 
       <div className="absolute inset-x-0 bottom-0 z-30 translate-y-1/2">
-        <BottomBadgesBeach badges={badges} />
+        <BottomBadgesBeach badges={badges} description={description ?? undefined} />
       </div>
 
       {/* Floating buttons */}

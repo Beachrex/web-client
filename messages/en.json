@@ -173,6 +173,10 @@
     "numActivitiesLabel": "No. of activities",
     "numAccommodationsLabel": "No. of accommodations"
   },
+  "BeachNavigation": {
+    "previousBeach": "Previous beach",
+    "nextBeach": "Next beach"
+  },
   "BottomBadgesBeach": {
     "badges": {
       "stony": "Stony",

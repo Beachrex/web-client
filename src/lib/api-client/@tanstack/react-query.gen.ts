@@ -16,6 +16,7 @@ import {
   getBayLengths,
   getBeachById,
   getBeachDensityGrid,
+  getBeachDetails,
   getBeaches,
   getBeachesInBoundingBox,
   getBeachesWithinRadius,
@@ -78,6 +79,7 @@ import type {
   GetBayLengthsData,
   GetBeachByIdData,
   GetBeachDensityGridData,
+  GetBeachDetailsData,
   GetBeachesData,
   GetBeachesInBoundingBoxData,
   GetBeachesWithinRadiusData,
@@ -411,6 +413,32 @@ export const getBeachByIdOptions = (options: Options<GetBeachByIdData>) => {
       return data;
     },
     queryKey: getBeachByIdQueryKey(options),
+  });
+};
+
+export const getBeachDetailsQueryKey = (
+  options: Options<GetBeachDetailsData>,
+) => createQueryKey("getBeachDetails", options);
+
+/**
+ * Get comprehensive beach details by slug or ID
+ *
+ * Returns all beach information including media galleries, characteristics, facilities, and related data. Accepts either beach ID (numeric) or slug (string) in any language.
+ */
+export const getBeachDetailsOptions = (
+  options: Options<GetBeachDetailsData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBeachDetails({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBeachDetailsQueryKey(options),
   });
 };
 
