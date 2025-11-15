@@ -1,6 +1,7 @@
 'use client';
 
 import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { useParams } from 'next/navigation';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
@@ -86,7 +87,7 @@ export default function BeachTopBar({
               {(prevBeach?.url ?? nextBeach?.url) && (
               <div className="ml-8 flex items-center space-x-4 font-light">
                   {prevBeach ? (
-                      <a
+                      <Link
                           href={prevBeach.url}
                           className="flex items-center text-sm text-variable-collection-mesto transition-opacity duration-200 hover:opacity-80"
                       >
@@ -104,7 +105,7 @@ export default function BeachTopBar({
                               />
                           </svg>
                           <span className="font-medium">{prevBeach.name}</span>
-                      </a>
+                      </Link>
                   ) : (
                       <span className="flex cursor-not-allowed items-center text-sm opacity-50">
                   <svg
@@ -124,7 +125,7 @@ export default function BeachTopBar({
                   )}
 
                   {nextBeach ? (
-                      <a
+                      <Link
                           href={nextBeach.url}
                           className="flex items-center text-sm text-variable-collection-mesto transition-opacity duration-200 hover:opacity-80"
                       >
@@ -142,7 +143,7 @@ export default function BeachTopBar({
                                   d="M9 5l7 7-7 7"
                               />
                           </svg>
-                      </a>
+                      </Link>
                   ) : (
                       <span className="flex cursor-not-allowed items-center text-sm opacity-50">
                   <svg
