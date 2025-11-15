@@ -1,20 +1,26 @@
 'use client';
-import { useCountries } from '@/hooks/useCountries';
-import { useTranslations } from 'next-intl';
 import DestinationsCarousel from '../DestinationsCarousel';
+import type { CountryResource } from '@/lib/api-client/types.gen';
 
-export default function TopDestinationsSection() {
-  const t = useTranslations('HomePage');
-  const { countries, loading } = useCountries();
+interface TopDestinationsSectionProps {
+  title: string;
+  items: CountryResource[];
+  countLabel: string;
+  badgeLabel: string;
+}
 
-  if (loading) return null; // or skeleton
-
+export default function TopDestinationsSection({
+  title,
+  items,
+  countLabel,
+  badgeLabel,
+}: TopDestinationsSectionProps) {
   return (
     <DestinationsCarousel
-      items={countries}
-      title={t('topDestinationsTitle')}
-      countLabel={t('allCountriesCount', { count: countries.length })}
-      badgeLabel={t('seaExperiences')}
+      items={items}
+      title={title}
+      countLabel={countLabel}
+      badgeLabel={badgeLabel}
     />
   );
 }
