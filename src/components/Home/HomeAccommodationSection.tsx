@@ -1,44 +1,20 @@
-'use client';
-import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useMemo } from 'react';
-import { useAccommodation } from '@/hooks/useFirstPageContent';
 
-const HomeAccommodationSection: React.FC = () => {
-  const t = useTranslations('HomePage');
-  const { content: accommodation, loading } = useAccommodation();
+interface HomeAccommodationSectionProps {
+  title: string;
+  description: string;
+  images: string[];
+  buttonLabel: string;
+  moreLabel: string;
+}
 
-  // Get all images from API media
-  const images = useMemo(() => {
-    if (!accommodation?.media) return [];
-    return accommodation.media.map(m => m.url ?? '').filter(url => url !== '');
-  }, [accommodation]);
-
-  if (loading) {
-    return (
-      <section className="py-12 sm:py-16 lg:py-20">
-        <div className="container mx-auto">
-          <div className="flex flex-col gap-8 lg:flex-row lg:gap-16 xl:gap-20">
-            <div className="flex flex-col gap-6 lg:w-1/3 lg:gap-8">
-              <div className="h-10 w-3/4 animate-pulse rounded bg-gray-200" />
-              <div className="h-24 w-full animate-pulse rounded bg-gray-200" />
-              <div className="h-12 w-48 animate-pulse rounded bg-gray-200" />
-            </div>
-            <div className="lg:w-2/3">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className="h-40 w-full animate-pulse rounded-lg bg-gray-200" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (!accommodation) return null;
-
+const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
+  title,
+  description,
+  images,
+  buttonLabel,
+  moreLabel,
+}) => {
   return (
     <section className="py-12 sm:py-16 lg:py-20">
       <div className="container mx-auto">
@@ -47,12 +23,12 @@ const HomeAccommodationSection: React.FC = () => {
           <div className="flex flex-col gap-6 lg:w-1/3 lg:gap-8">
             {/* Title */}
             <h2 className="text-2xl font-bold leading-tight text-[#003366] sm:text-3xl lg:text-4xl">
-              {accommodation.title}
+              {title}
             </h2>
 
             {/* Content */}
             <p className="text-sm leading-relaxed text-[#4D4D4D] sm:text-base lg:text-lg">
-              {accommodation.description}
+              {description}
             </p>
 
             {/* Button */}
@@ -64,7 +40,7 @@ const HomeAccommodationSection: React.FC = () => {
                 height={20}
                 className="object-contain"
               />
-              {t('browseAccommodationsButton')}
+              {buttonLabel}
             </button>
           </div>
 
@@ -189,7 +165,7 @@ const HomeAccommodationSection: React.FC = () => {
                   )}
                   <div className="flex flex-1 items-center justify-center rounded-lg bg-gradient-to-br from-blue-100 to-blue-200">
                     <span className="px-4 text-center font-semibold text-blue-600">
-                      {t('moreAccommodations')}
+                      {moreLabel}
                     </span>
                   </div>
                 </div>

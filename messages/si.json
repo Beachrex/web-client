@@ -36,7 +36,6 @@
     "allCountriesCount": "Vse države ({count}) >",
     "seaExperiences": "Morska doživetja",
     "advancedFilters": "Napredni filtri",
-    "exploreTagline": "Raziskuj, sanjaj, odkrivaj rajske plaže!",
     "beachesLabel2": "Plaže:",
     "freshwaterBeaches": "Sladkovodne plaže",
     "lakeBeaches": "Jezerske plaže",
@@ -81,13 +80,9 @@
     "countriesContinent": "Države v {continent}"
   },
   "FeatureCards": {
-    "bestBeachesTitle": "100 najlepših plaž na svetu",
     "beachMapButton": "Zemljevid plaž",
-    "discoverStoriesTitle": "Odkrij plažne zgodbe in nasvete",
     "browseBlogButton": "Brskaj po blogu",
-    "relaxAccommodationTitle": "Odpočijte si v udobni nastanitvi",
-    "browseAccommodationsButton": "Brskaj po nastanitvah",
-    "discoverTasteTitle": "Odkrij plažo po svojem okusu"
+    "browseAccommodationsButton": "Brskaj po nastanitvah"
   },
   "Destinations": {
     "croatia": "Hrvaška",

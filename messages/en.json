@@ -36,7 +36,6 @@
     "allCountriesCount": "All countries ({count}) >",
     "seaExperiences": "Sea Experiences",
     "advancedFilters": "Advanced Filters",
-    "exploreTagline": "Explore, dream, discover paradise beaches!",
     "beachesLabel2": "Beaches:",
     "freshwaterBeaches": "Freshwater Beaches",
     "lakeBeaches": "Lake Beaches",
@@ -81,13 +80,9 @@
     "countriesContinent": "Countries in {continent}"
   },
   "FeatureCards": {
-    "bestBeachesTitle": "100 most beautiful beaches in the world",
     "beachMapButton": "Beach Map",
-    "discoverStoriesTitle": "Discover beach stories and tips",
     "browseBlogButton": "Browse Blog",
-    "relaxAccommodationTitle": "Relax in comfortable accommodation",
-    "browseAccommodationsButton": "Browse Accommodations",
-    "discoverTasteTitle": "Discover a beach to your taste"
+    "browseAccommodationsButton": "Browse Accommodations"
   },
   "Destinations": {
     "croatia": "Croatia",

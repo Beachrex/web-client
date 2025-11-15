@@ -1,60 +1,33 @@
-'use client';
 import Image from 'next/image';
-import React, { useMemo } from 'react';
-import { useBeachViews } from '@/hooks/useFirstPageContent';
+import React from 'react';
 
-const BeachMediaSection: React.FC = () => {
-  const { content: beachViews, loading } = useBeachViews();
+interface MediaItem {
+  id: number;
+  title: string;
+  iconUrl: string;
+  backgroundUrl: string;
+}
 
-  // Process items from API
-  const mediaItems = useMemo(() => {
-    if (!beachViews?.items) return [];
+interface BeachMediaSectionProps {
+  title: string;
+  items: MediaItem[];
+}
 
-    return beachViews.items.map(item => {
-      // Find icon (type: 'icon') and background image (type: 'image')
-      const icon = item.media?.find(m => m.type === 'icon');
-      const backgroundImage = item.media?.find(m => m.type === 'image');
-
-      return {
-        id: item.id,
-        title: item.title ?? '',
-        iconUrl: icon?.url ?? '',
-        backgroundUrl: backgroundImage?.url ?? '',
-      };
-    });
-  }, [beachViews]);
-
-  if (loading) {
-    return (
-      <section className="bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
-        <div className="container mx-auto px-4">
-          <div className="mb-10 h-10 w-1/2 animate-pulse rounded bg-gray-300" />
-          <div className="grid grid-cols-1 gap-[26px] sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, idx) => (
-              <div
-                key={idx}
-                className="h-[233px] w-full animate-pulse rounded-lg bg-gray-300"
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (!beachViews || mediaItems.length === 0) return null;
-
+const BeachMediaSection: React.FC<BeachMediaSectionProps> = ({
+  title,
+  items,
+}) => {
   return (
     <section className="bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
       <div className="container mx-auto px-4">
         {/* Header */}
         <h2 className="mb-10 text-[30px] font-bold text-[#0A2342]">
-          {beachViews.title}
+          {title}
         </h2>
 
         {/* Grid */}
         <div className="grid grid-cols-1 gap-[26px] sm:grid-cols-2 lg:grid-cols-4">
-          {mediaItems.map((item) => (
+          {items.map((item) => (
             <div
               key={item.id}
               className="relative flex h-[233px] w-full items-center justify-center overflow-hidden rounded-lg"
