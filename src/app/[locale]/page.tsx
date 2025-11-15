@@ -43,11 +43,11 @@ export default function HomePage() {
   // Process beach views data
   const beachViewsItems = useMemo(() => {
     if (!beachViews?.items) return [];
-    return beachViews.items.map(item => {
+    return beachViews.items.map((item, index) => {
       const icon = item.media?.find(m => m.type === 'icon');
       const backgroundImage = item.media?.find(m => m.type === 'image');
       return {
-        id: item.id,
+        id: item.id ?? index,
         title: item.title ?? '',
         iconUrl: icon?.url ?? '',
         backgroundUrl: backgroundImage?.url ?? '',
@@ -75,7 +75,12 @@ export default function HomePage() {
 
     return featuredSections.items.map((item, index) => {
       const backgroundImage = item.media?.find(m => m.type === 'image');
-      const config = buttonConfigs[index] ?? buttonConfigs[0];
+      const config = buttonConfigs[index] ?? buttonConfigs[0] ?? {
+        label: '',
+        icon: '',
+        bgColor: '#1A3C68',
+        textColor: '#FFFFFF',
+      };
 
       return {
         id: item.id ?? index,

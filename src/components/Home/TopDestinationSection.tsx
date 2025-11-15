@@ -1,10 +1,10 @@
 'use client';
 import DestinationsCarousel from '../DestinationsCarousel';
-import type { CountryResource } from '@/lib/api-client/types.gen';
+import type { Country } from '@/lib/api-client/types.gen';
 
 interface TopDestinationsSectionProps {
   title: string;
-  items: CountryResource[];
+  items: Country[];
   countLabel: string;
   badgeLabel: string;
 }
