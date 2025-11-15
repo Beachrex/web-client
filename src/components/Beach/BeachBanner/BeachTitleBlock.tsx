@@ -4,10 +4,10 @@ import { useTranslations } from 'next-intl';
 import React from 'react';
 
 interface BeachTitleBlockProps {
-  title: string; // e.g. "Plaža Haludovo"
+  title?: string; // e.g. "Plaža Haludovo"
 }
 
-const BeachTitleBlock: React.FC<BeachTitleBlockProps> = ({ title }) => {
+const BeachTitleBlock: React.FC<BeachTitleBlockProps> = ({ title = '' }) => {
   const tCommon = useTranslations('Common'); // uses Common.beach
 
   return (

@@ -6,7 +6,7 @@ import React from 'react';
 
 interface TopBarBeach {
   /** Beach name to display (e.g. Plaža Haludovo) */
-  beachName: string;
+  beachName?: string;
   /** Total number of activities related to this beach */
   activityCount?: number;
   /** Total number of accommodations for this beach/area */
@@ -14,7 +14,7 @@ interface TopBarBeach {
 }
 
 const TopBarBeach: React.FC<TopBarBeach> = ({
-  beachName,
+  beachName = '',
   activityCount = 0,
   accommodationCount = 0,
 }) => {
