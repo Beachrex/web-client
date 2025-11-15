@@ -1,6 +1,7 @@
 'use client';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import BottomBadges from './BottomBadges';
 import InfoCardsSection from './InfoCardsSection';
@@ -28,6 +29,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   accommodationCount,
 }) => {
   const t = useTranslations('BannerSection');
+  const tRoutes = useTranslations('routes');
 
   const infoCards = [
     {
@@ -132,7 +134,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
         {/* Right side floating buttons */}
         <div className="absolute right-0 top-1/2 z-20 flex translate-y-[-50%] flex-col">
           {/* Play / Beach button */}
-          <button className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">
+          <Link href={tRoutes('beachMap')} className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">
             <Image
               src="/images/map.png"
               alt="play beach"
@@ -140,7 +142,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
               height={24}
               className="sm:h-[33px] sm:w-[33px]"
             />
-          </button>
+          </Link>
 
           {/* Filters button */}
           <button className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">

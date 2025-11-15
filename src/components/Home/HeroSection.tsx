@@ -28,6 +28,7 @@ const beachesRoutes: Record<string, string> = {
 const HeroSection: React.FC = () => {
   const t = useTranslations('HomePage');
   const tContinents = useTranslations('Continents');
+  const tRoutes = useTranslations('routes');
   const locale = useLocale();
   const { continents, loading, error } = useContinents();
   const { countries } = useCountries();
@@ -198,7 +199,7 @@ const HeroSection: React.FC = () => {
       {/* Right side floating buttons - Keep absolute for floating effect */}
       <div className="absolute right-0 top-1/2 z-20 flex translate-y-[-50%] flex-col">
         {/* Play / Beach button */}
-        <button className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">
+        <Link href={tRoutes('beachMap')} className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">
           <Image
             src="/images/map.png"
             alt="play beach"
@@ -206,7 +207,7 @@ const HeroSection: React.FC = () => {
             height={24}
             className="sm:h-[33px] sm:w-[33px]"
           />
-        </button>
+        </Link>
 
         {/* Filters button */}
         <button className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">

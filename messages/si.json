@@ -84,6 +84,11 @@
     "browseBlogButton": "Brskaj po blogu",
     "browseAccommodationsButton": "Brskaj po nastanitvah"
   },
+  "routes": {
+    "beachMap": "/zemljevid-plaz",
+    "blog": "/blog",
+    "accommodations": "/nastanitve"
+  },
   "Destinations": {
     "croatia": "Hrvaška",
     "italy": "Italija",

@@ -22,6 +22,7 @@ import { useMemo } from 'react';
 export default function HomePage() {
   const t = useTranslations('HomePage');
   const tFeature = useTranslations('FeatureCards');
+  const tRoutes = useTranslations('routes');
   const { countries, loading: countriesLoading } = useCountries();
   const { content: coastalDestinations, loading: coastalLoading } = useCoastalDestinations();
   const { content: browseMap, loading: browseMapLoading } = useBrowseMap();
@@ -67,10 +68,10 @@ export default function HomePage() {
 
     // Button configurations (hardcoded for now - can be moved to API config later)
     const buttonConfigs = [
-      { label: tFeature('beachMapButton'), icon: '/images/map.png', bgColor: '#1A3C68', textColor: '#FFFFFF' },
-      { label: tFeature('browseBlogButton'), icon: '/images/blog.png', bgColor: '#F5F5F5', textColor: '#4D4D4D' },
-      { label: tFeature('browseAccommodationsButton'), icon: '/images/accomodation.png', bgColor: '#006b4f', textColor: '#FFFFFF' },
-      { label: tFeature('beachMapButton'), icon: '/images/map.png', bgColor: '#1A3C68', textColor: '#FFFFFF' },
+      { label: tFeature('beachMapButton'), icon: '/images/map.png', bgColor: '#1A3C68', textColor: '#FFFFFF', url: tRoutes('beachMap') },
+      { label: tFeature('browseBlogButton'), icon: '/images/blog.png', bgColor: '#F5F5F5', textColor: '#4D4D4D', url: tRoutes('blog') },
+      { label: tFeature('browseAccommodationsButton'), icon: '/images/accomodation.png', bgColor: '#006b4f', textColor: '#FFFFFF', url: tRoutes('accommodations') },
+      { label: tFeature('beachMapButton'), icon: '/images/map.png', bgColor: '#1A3C68', textColor: '#FFFFFF', url: tRoutes('beachMap') },
     ];
 
     return featuredSections.items.map((item, index) => {
@@ -80,6 +81,7 @@ export default function HomePage() {
         icon: '',
         bgColor: '#1A3C68',
         textColor: '#FFFFFF',
+        url: '',
       };
 
       return {
@@ -90,9 +92,10 @@ export default function HomePage() {
         buttonIconUrl: config.icon,
         buttonBgColor: config.bgColor,
         buttonTextColor: config.textColor,
+        buttonUrl: config.url,
       };
     });
-  }, [featuredSections, tFeature]);
+  }, [featuredSections, tFeature, tRoutes]);
 
   return (
     <>
@@ -105,7 +108,8 @@ export default function HomePage() {
           title={browseMap.title ?? ''}
           description={browseMap.description ?? ''}
           mapImageUrl={mapImageUrl}
-          buttonLabel="View Beach Map"
+          buttonLabel={tFeature('beachMapButton')}
+          buttonUrl={tRoutes('beachMap')}
         />
       )}
 

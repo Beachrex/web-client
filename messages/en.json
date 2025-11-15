@@ -84,6 +84,11 @@
     "browseBlogButton": "Browse Blog",
     "browseAccommodationsButton": "Browse Accommodations"
   },
+  "routes": {
+    "beachMap": "/beach-map",
+    "blog": "/blog",
+    "accommodations": "/accommodations"
+  },
   "Destinations": {
     "croatia": "Croatia",
     "italy": "Italy",

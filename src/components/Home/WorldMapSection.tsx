@@ -1,11 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface WorldMapSectionProps {
   title: string;
   description: string;
   mapImageUrl: string;
   buttonLabel: string;
+  buttonUrl: string;
 }
 
 const WorldMapSection: React.FC<WorldMapSectionProps> = ({
@@ -13,6 +15,7 @@ const WorldMapSection: React.FC<WorldMapSectionProps> = ({
   description,
   mapImageUrl,
   buttonLabel,
+  buttonUrl,
 }) => {
   return (
       <section className="py-12 sm:py-16 lg:py-20">
@@ -31,7 +34,7 @@ const WorldMapSection: React.FC<WorldMapSectionProps> = ({
                       </p>
 
                       {/* Button */}
-                      <button className="font-figtree flex w-full sm:w-auto sm:max-w-[220px] items-center justify-center gap-2 rounded-md bg-variable-collection-temno-modro px-5 py-2.5 text-sm text-white shadow transition hover:bg-[#162f4f]">
+                      <Link href={buttonUrl} className="font-figtree flex w-full sm:w-auto sm:max-w-[220px] items-center justify-center gap-2 rounded-md bg-variable-collection-temno-modro px-5 py-2.5 text-sm text-white shadow transition hover:bg-[#162f4f]">
                           <Image
                               src="/images/map.png"
                               alt="map icon"
@@ -39,7 +42,7 @@ const WorldMapSection: React.FC<WorldMapSectionProps> = ({
                               height={20}
                           />
                           {buttonLabel}
-                      </button>
+                      </Link>
                   </div>
 
                   {/* Images Grid */}

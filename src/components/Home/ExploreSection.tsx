@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 interface FeatureCard {
@@ -9,6 +10,7 @@ interface FeatureCard {
   buttonIconUrl: string;
   buttonBgColor: string;
   buttonTextColor: string;
+  buttonUrl: string;
 }
 
 interface ExploreSectionProps {
@@ -43,7 +45,8 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
                   <h3 className="mb-4 text-xl font-bold leading-tight text-white sm:mb-6 sm:text-2xl lg:text-3xl">
                     {item.title}
                   </h3>
-                  <button
+                  <Link
+                    href={item.buttonUrl}
                     className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-bold transition-colors sm:gap-3 sm:px-5 sm:py-3 sm:text-base"
                     style={{
                       backgroundColor: item.buttonBgColor,
@@ -60,7 +63,7 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
                       />
                     )}
                     <span>{item.buttonLabel}</span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -90,7 +93,8 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
                   <h3 className="mb-4 text-xl font-bold leading-tight text-white sm:mb-6 sm:text-2xl lg:text-3xl">
                     {item.title}
                   </h3>
-                  <button
+                  <Link
+                    href={item.buttonUrl}
                     className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-bold transition-colors sm:gap-3 sm:px-5 sm:py-3 sm:text-base"
                     style={{
                       backgroundColor: item.buttonBgColor,
@@ -107,7 +111,7 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
                       />
                     )}
                     <span>{item.buttonLabel}</span>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FiSearch } from 'react-icons/fi';
 import { useTranslations } from 'next-intl';
 import { env } from '@/env';
@@ -18,6 +19,7 @@ const NavIcon = ({ src, alt, label }: { src: string; alt: string; label: string 
 
 const SearchBar = () => {
     const t = useTranslations('Common');
+    const tRoutes = useTranslations('routes');
     const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
 
     return (
@@ -70,7 +72,7 @@ const SearchBar = () => {
                             />
                             <span className="text-xs text-gray-600 mt-1">{t('shop')}</span>
                         </div>
-                        <div className="flex flex-col items-center">
+                        <Link href={tRoutes('beachMap')} className="flex flex-col items-center">
                             <Image
                                 src={`${cdnEndpoint}/img/icon/map.svg`}
                                 alt="Map"
@@ -78,7 +80,7 @@ const SearchBar = () => {
                                 height={24}
                             />
                             <span className="text-xs text-gray-600 mt-1">{t('map')}</span>
-                        </div>
+                        </Link>
                     </div>
                 </div>
 
@@ -93,7 +95,7 @@ const SearchBar = () => {
                             height={36}
                             className="mix-blend-luminosity"
                         />
-                        <button className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] hover:bg-variable-collection-morje">
+                        <Link href={tRoutes('beachMap')} className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] hover:bg-variable-collection-morje">
                             <Image
                                 src={`${cdnEndpoint}/img/icon/map.svg`}
                                 alt={`${t('map')} ${t('icon')}`}
@@ -101,7 +103,7 @@ const SearchBar = () => {
                                 height={20}
                             />
                             <span className="text-sm">{t('map')}</span>
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Bottom Row: Search Bar and Icons */}
@@ -180,7 +182,7 @@ const SearchBar = () => {
 
                     {/* Right Section (Map Button) */}
                     <div className="flex items-center">
-                        <button className="inline-flex items-center justify-center gap-5 px-10 py-[10px] bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] flex-shrink-0 hover:bg-variable-collection-morje">
+                        <Link href={tRoutes('beachMap')} className="inline-flex items-center justify-center gap-5 px-10 py-[10px] bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] flex-shrink-0 hover:bg-variable-collection-morje">
                             <Image
                                 src={`${cdnEndpoint}/img/icon/map.svg`}
                                 alt={`${t('map')} ${t('icon')}`}
@@ -188,7 +190,7 @@ const SearchBar = () => {
                                 height={26}
                             />
                             {t('map')}
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,8 @@
 import MapWidget from '@/components/BannerSection/MapWidget';
 import WeatherWidget from '@/components/BannerSection/WeatherWidget';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import BeachTitleBlock from './BeachTitleBlock';
 import BottomBadgesBeach from './BottomBadgesBeach';
 import SeaTempWidget from './SeaTempWidget';
@@ -18,6 +20,8 @@ export default function BeachBannerSection({
   accommodationCount,
   activityCount,
 }: BeachBannerSectionProps) {
+  const tRoutes = useTranslations('routes');
+
   const badges: {
     id: 'stony' | 'familyFriendly' | 'parking' | 'easyAccess' | 'windsurfing';
     icon: string;
@@ -77,7 +81,7 @@ export default function BeachBannerSection({
 
       {/* Floating buttons */}
       <div className="absolute right-0 top-1/2 z-40 flex -translate-y-1/2 flex-col">
-        <button className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-[#1A3C68] sm:h-[68.46px] sm:w-[71px]">
+        <Link href={tRoutes('beachMap')} className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-[#1A3C68] sm:h-[68.46px] sm:w-[71px]">
           <Image
             src="/images/map.png"
             alt="open beach map"
@@ -85,7 +89,7 @@ export default function BeachBannerSection({
             height={24}
             className="sm:h-[33px] sm:w-[33px]"
           />
-        </button>
+        </Link>
         <button className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-[#008260] sm:h-[68.46px] sm:w-[71px]">
           <Image
             src="/images/accomodation.png"
