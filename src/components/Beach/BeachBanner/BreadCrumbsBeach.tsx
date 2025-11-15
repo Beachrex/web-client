@@ -1,8 +1,6 @@
 'use client';
 
 import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { useParams } from 'next/navigation';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
@@ -84,56 +82,90 @@ export default function BeachTopBar({
               <DynamicBreadcrumbs pathname={pathname} />
             </div>
 
+              {/* Right side - Beach Pagination */}
+              {(prevBeach?.url ?? nextBeach?.url) && (
+              <div className="ml-8 flex items-center space-x-4 font-light">
+                  {prevBeach ? (
+                      <a
+                          href={prevBeach.url}
+                          className="flex items-center text-sm text-variable-collection-mesto transition-opacity duration-200 hover:opacity-80"
+                      >
+                          <svg
+                              className="mr-1 h-4 w-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                          >
+                              <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M15 19l-7-7 7-7"
+                              />
+                          </svg>
+                          <span className="font-medium">{prevBeach.name}</span>
+                      </a>
+                  ) : (
+                      <span className="flex cursor-not-allowed items-center text-sm opacity-50">
+                  <svg
+                      className="mr-1 h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                  >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </span>
+                  )}
+
+                  {nextBeach ? (
+                      <a
+                          href={nextBeach.url}
+                          className="flex items-center text-sm text-variable-collection-mesto transition-opacity duration-200 hover:opacity-80"
+                      >
+                          <span className="font-medium">{nextBeach.name}</span>
+                          <svg
+                              className="ml-1 h-4 w-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                          >
+                              <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 5l7 7-7 7"
+                              />
+                          </svg>
+                      </a>
+                  ) : (
+                      <span className="flex cursor-not-allowed items-center text-sm opacity-50">
+                  <svg
+                      className="ml-1 h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                  >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </span>
+                  )}
+              </div>
+              )}
+
             {/* Right: Optional extras (share/like/user etc.) */}
             {rightExtras && (
               <div className="flex items-center gap-2">{rightExtras}</div>
-            )}
-          </div>
-        )}
-
-        {/* Prev / Next beach controls */}
-        {(prevBeach ?? nextBeach) && (
-          <div className="flex items-center justify-between gap-3 pb-3">
-            {/* Prev beach */}
-            {prevBeach?.url ? (
-              <Link
-                href={prevBeach.url}
-                className="inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm transition-colors hover:bg-gray-50"
-              >
-                <ChevronLeft className="h-4 w-4" />
-                <span className="truncate text-[#0069AB]">
-                  {prevBeach.name}
-                </span>
-              </Link>
-            ) : (
-              <button
-                className="inline-flex cursor-not-allowed items-center gap-2 rounded-xl border px-3 py-2 text-sm opacity-50"
-                disabled
-                aria-disabled
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-            )}
-
-            {/* Next beach */}
-            {nextBeach?.url ? (
-              <Link
-                href={nextBeach.url}
-                className="inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm transition-colors hover:bg-gray-50"
-              >
-                <span className="truncate text-[#0069AB]">
-                  {nextBeach.name}
-                </span>
-                <ChevronRight className="h-4 w-4" />
-              </Link>
-            ) : (
-              <button
-                className="inline-flex cursor-not-allowed items-center gap-2 rounded-xl border px-3 py-2 text-sm opacity-50"
-                disabled
-                aria-disabled
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
             )}
           </div>
         )}
@@ -141,4 +173,3 @@ export default function BeachTopBar({
     </div>
   );
 }
-
