@@ -102,22 +102,6 @@ export function buildBeachUrl(
 }
 
 /**
- * @deprecated Use buildBeachUrl() instead - this function requires all parameters
- * which causes issues when region/island/city are optional
- */
-export function buildBeachDetailUrl(
-  locale: string,
-  continentSlug: string,
-  countrySlug: string,
-  regionSlug: string,
-  citySlug: string,
-  beachSlug: string
-): string {
-  const beachesWord = getBeachesWord(locale);
-  return `/${locale}/${beachesWord}/${continentSlug}/${countrySlug}/${regionSlug}/${citySlug}/${beachSlug}`;
-}
-
-/**
  * Build country page URL
  * Format: /[locale]/beaches/[continent]/[country]
  */
@@ -209,7 +193,7 @@ export function buildBeachUrlFromNavigation(
 
 /**
  * Build beach URL from BeachSchema (from listing APIs)
- * BeachSchema includes location slugs including island_slug
+ * BeachSchema includes location slugs, so we can build the URL directly
  *
  * @param beach - Beach object from listing API
  * @param locale - Current locale
