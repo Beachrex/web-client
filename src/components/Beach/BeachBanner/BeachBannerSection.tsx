@@ -67,7 +67,7 @@ export default function BeachBannerSection({
       </div>
 
       {/* Top bar stays at the top */}
-      <div className="relative z-10 flex flex-row items-center justify-between p-4 sm:p-6 lg:p-8">
+      <div className="relative z-1 flex flex-row items-center justify-between p-4 sm:p-6 lg:p-8">
         {/* Left: naslov + counters */}
         <div className="flex flex-col">
           <TopBarBeach
