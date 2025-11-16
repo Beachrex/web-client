@@ -34,11 +34,18 @@ const TopBar = () => {
 
     const handleLocaleChange = (newLocale: string) => {
         startTransition(async () => {
+            console.log('[TopBar] Switching locale to:', newLocale);
+            console.log('[TopBar] Current pathname:', pathname);
+
             // Get the localized path for the new locale
             const localizedPath = await getLocalizedPath(newLocale);
 
+            console.log('[TopBar] Localized path returned:', localizedPath);
+
             // Construct the full URL with locale prefix
             const fullPath = `/${newLocale}${localizedPath}`;
+
+            console.log('[TopBar] Full path to navigate:', fullPath);
 
             // Navigate using Next.js router
             router.push(fullPath);
