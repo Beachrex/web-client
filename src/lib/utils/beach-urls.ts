@@ -209,7 +209,7 @@ export function buildBeachUrlFromNavigation(
 
 /**
  * Build beach URL from BeachSchema (from listing APIs)
- * BeachSchema includes location slugs but not island_slug
+ * BeachSchema includes location slugs including island_slug
  *
  * @param beach - Beach object from listing API
  * @param locale - Current locale
@@ -221,6 +221,7 @@ export function buildBeachUrlFromSchema(
     continent_slug?: string | null;
     country_slug?: string | null;
     region_slug?: string | null;
+    island_slug?: string | null;
     city_slug?: string | null;
   },
   locale: string
@@ -243,11 +244,12 @@ export function buildBeachUrlFromSchema(
     segments.push(beach.region_slug);
   }
 
-  // Note: BeachSchema doesn't include island_slug, so we skip it
-  // This means URLs from listing APIs won't include island segment
-  // This is acceptable as the backend can still resolve the beach
+  // Island (optional - comes after region if exists, otherwise after country)
+  if (beach.island_slug) {
+    segments.push(beach.island_slug);
+  }
 
-  // City (optional)
+  // City (optional - comes after island if exists, otherwise after region/country)
   if (beach.city_slug) {
     segments.push(beach.city_slug);
   }
