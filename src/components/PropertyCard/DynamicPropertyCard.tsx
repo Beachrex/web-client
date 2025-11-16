@@ -2,6 +2,9 @@
 import { Heart, MapPin } from 'lucide-react';
 import { env } from '@/env';
 import type { BeachSchema } from '@/lib/api-client/types.gen';
+import { useLocale } from 'next-intl';
+import Link from 'next/link';
+import { buildBeachDetailUrl } from '@/lib/utils/beach-urls';
 
 interface DynamicPropertyCardProps {
   beach: BeachSchema;
@@ -11,6 +14,7 @@ interface DynamicPropertyCardProps {
 
 export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: DynamicPropertyCardProps) {
   const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
+  const locale = useLocale();
 
   // Define size-specific classes
   const sizeClasses = {
@@ -31,18 +35,22 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
   const latitude = beach.latitude ?? '0';
   const longitude = beach.longitude ?? '0';
 
+  // Build beach detail URL if we have all required slugs
+  const beachUrl = beach.continent_slug && beach.country_slug && beach.region_slug && beach.city_slug && beach.slug
+    ? buildBeachDetailUrl(locale, beach.continent_slug, beach.country_slug,
+          beach.region_slug, beach.city_slug, beach.slug)
+    : null;
+
   // Handle location icon click
-  const handleLocationClick = () => {
+  const handleLocationClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation when clicking location icon
     if (onLocationClick) {
       onLocationClick(latitude, longitude, beach.id);
     }
   };
 
-  return (
-    <div
-      className={`${cardWidth} overflow-hidden rounded-[10px] 
-        bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg`}
-    >
+  const CardContent = (
+    <>
       {/* Top banner */}
       <div
         className="relative h-[278px] w-full bg-cover bg-center"
@@ -105,6 +113,28 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
           </p>
         )}
       </div>
+    </>
+  );
+
+  // Wrap in Link if we have a valid URL, otherwise just return the card
+  if (beachUrl) {
+    return (
+      <Link
+        href={beachUrl}
+        className={`${cardWidth} overflow-hidden rounded-[10px]
+          bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg block`}
+      >
+        {CardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <div
+      className={`${cardWidth} overflow-hidden rounded-[10px]
+        bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg`}
+    >
+      {CardContent}
     </div>
   );
 }

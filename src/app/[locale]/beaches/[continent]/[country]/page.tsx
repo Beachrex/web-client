@@ -46,9 +46,8 @@ const Page = () => {
 
     return (
         <>
-            <h1>{`Page: ${pathname}`}</h1>
             <div className="container mx-auto p-4">
-                <h1 className="text-xl font-bold mb-4 text-red-600">
+                <h1 className="text-xl mb-4 text-red-600">
                     Ta frame je namenjen predstavitvi podstrani na ravni država
                 </h1>
                 {/* Filters and navigation */}
@@ -93,10 +92,24 @@ className="relative h-96 bg-cover bg-center"
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
+                {/* Navigation section for previous and next page */}
+                <div className="flex justify-between items-center mt-2">
+                    {/* Previous page button */}
+                    <div>
+                        <Button>
+                            <span className="mr-2">←</span> sosednja država navzgor, zastava + št. plaž
+                        </Button>
+                    </div>
+                    {/* Next page button */}
+                    <div>
+                        <Button>
+                            sosednja država navzgor, zastava + št. plaž <span className="ml-2">→</span>
+                        </Button>
+                    </div>
+                </div>
 
                 {/* Filtering and search table */}
                 <div className="mt-8 p-4 bg-gray-50 border border-gray-300 rounded-lg text-black">

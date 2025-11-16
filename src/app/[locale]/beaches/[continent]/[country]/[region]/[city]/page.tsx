@@ -48,12 +48,7 @@ const Page = () => {
         <>
             <div className="container mx-auto p-4">
                 <h1 className="text-xl mb-4 text-red-600">
-                    Ta frame je namenjen predstavitvi podstrani na ravni država
-                    (<Link
-                        className="text-xl font-bold mb-4 text-red-600"
-                        href="https://wireframe.cc/Kuqhso"
-                        target="_blank"
-                     ><u>Wireframe</u></Link>)
+                    Ta frame je namenjen predstavitvi podstrani na ravni mesto
                 </h1>
                 {/* Filters and navigation */}
                 <div className="mt-8 grid grid-cols-2 gap-4 text-black">

@@ -4,6 +4,7 @@ import type { Country } from '@/lib/api-client/types.gen';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import { buildCountryUrl } from '@/lib/utils/beach-urls';
 
 interface DestinationCardProps {
   country: Country;
@@ -27,17 +28,8 @@ export default function DestinationCard({
   // Get the continent slug from the country's continent data
   const continentSlug = country.continent?.slug ?? country.continent_code?.toLowerCase() ?? '';
 
-  // Localized "beaches" word based on locale
-  const beachesRoutes: Record<string, string> = {
-    en: 'beaches', si: 'plaze', de: 'strande', hr: 'plaze',
-    fr: 'plages', es: 'playas', it: 'spiagge', ua: 'plyazhi',
-    ru: 'plyazhi', pl: 'plaze', cs: 'plaze', hu: 'strandok',
-    bg: 'plyazhove', sk: 'plaze',
-  };
-  const beachesWord = beachesRoutes[locale] ?? 'beaches';
-
-  // Build the country page URL: /[locale]/[beaches]/[continent]/[country]
-  const countryUrl = `/${locale}/${beachesWord}/${continentSlug}/${countrySlug}`;
+  // Build the country page URL: /[locale]/beaches/[continent]/[country]
+  const countryUrl = buildCountryUrl(locale, continentSlug, countrySlug);
 
   // Prefer API image; otherwise fallback to a neutral default
   const src = country.image_path

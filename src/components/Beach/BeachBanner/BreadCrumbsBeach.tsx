@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { useParams } from 'next/navigation';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
+import { buildBeachDetailUrl } from '@/lib/utils/beach-urls';
 
 interface BeachTopBarProps {
-  /** Full pathname to render breadcrumbs, e.g. /en/beaches/croatia/dalmatia/vodice/beach-hangar */
+  /** Full pathname to render breadcrumbs, e.g. /en/beaches/europe/croatia/dalmatia/vodice/beach-hangar */
   pathname: string;
   /** Beach details from API (includes navigation data) */
   beachDetails?: BeachDetailsSchema;
@@ -15,20 +16,6 @@ interface BeachTopBarProps {
   showBreadcrumbs?: boolean;
   /** Optional right-side extras (share/save etc.) */
   rightExtras?: React.ReactNode;
-}
-
-/**
- * Build beach detail page URL from current URL params and new beach slug
- * Format: /[locale]/beaches/[country]/[region]/[city]/[beach-slug]
- */
-function buildBeachUrl(
-  locale: string,
-  countrySlug: string,
-  regionSlug: string,
-  citySlug: string,
-  beachSlug: string
-): string {
-  return `/${locale}/beaches/${countrySlug}/${regionSlug}/${citySlug}/${beachSlug}`;
 }
 
 export default function BeachTopBar({
@@ -41,16 +28,18 @@ export default function BeachTopBar({
   const params = useParams();
 
   // Extract URL params from current page (these are already slugs)
-  const countrySlug = params?.continent as string;
-  const regionSlug = params?.city as string;
-  const citySlug = params?.region as string;
+  const continentSlug = params?.continent as string;
+  const countrySlug = params?.country as string;
+  const regionSlug = params?.region as string;
+  const citySlug = params?.city as string;
 
   // Build navigation URLs using current URL params and new beach slug
   const prevBeach = beachDetails?.navigation?.previous?.slug
     ? {
         name: beachDetails.navigation.previous.name ?? '',
-        url: buildBeachUrl(
+        url: buildBeachDetailUrl(
           locale,
+          continentSlug,
           countrySlug,
           regionSlug,
           citySlug,
@@ -62,8 +51,9 @@ export default function BeachTopBar({
   const nextBeach = beachDetails?.navigation?.next?.slug
     ? {
         name: beachDetails.navigation.next.name ?? '',
-        url: buildBeachUrl(
+        url: buildBeachDetailUrl(
           locale,
+          continentSlug,
           countrySlug,
           regionSlug,
           citySlug,

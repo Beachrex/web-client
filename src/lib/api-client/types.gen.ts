@@ -293,11 +293,13 @@ export type BeachDetailsSchema = {
     continent?: {
       code?: string;
       name?: string;
+      slug?: string | null;
     } | null;
     country?: {
       code?: string;
       name?: string;
       full_name?: string | null;
+      slug?: string | null;
     } | null;
     region?: {
       id?: number;
@@ -709,9 +711,25 @@ export type BeachSchema = {
    */
   country_name?: string;
   /**
+   * Country slug (translated based on Accept-Language header)
+   */
+  country_slug?: string | null;
+  /**
    * Continent code
    */
   continent_code?: string;
+  /**
+   * Continent slug (translated based on Accept-Language header)
+   */
+  continent_slug?: string | null;
+  /**
+   * Region slug (translated based on Accept-Language header)
+   */
+  region_slug?: string | null;
+  /**
+   * City slug (translated based on Accept-Language header)
+   */
+  city_slug?: string | null;
   /**
    * Primary beach image path (prepend CDN URL on frontend)
    */
