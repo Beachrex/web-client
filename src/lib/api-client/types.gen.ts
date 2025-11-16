@@ -161,6 +161,80 @@ export type AreaDescriptionTranslation = {
 };
 
 /**
+ * Article
+ *
+ * Article model
+ */
+export type Article = {
+  /**
+   * Article ID
+   */
+  id?: number;
+  /**
+   * Article code
+   */
+  code?: string;
+  /**
+   * Article category
+   */
+  category?:
+    | "History"
+    | "Culture"
+    | "Cuisine"
+    | "Sights"
+    | "Nature"
+    | "Activities";
+  /**
+   * Article title (localized based on Accept-Language header)
+   */
+  title?: string;
+  /**
+   * Localized URL-friendly slug
+   */
+  slug?: string;
+  /**
+   * Short excerpt or summary of the article
+   */
+  excerpt?: string | null;
+  /**
+   * Feature image path
+   */
+  feature_image?: string | null;
+  /**
+   * Full article content (only included in single article view)
+   */
+  content?: string | null;
+};
+
+/**
+ * Badge
+ *
+ * Badge model
+ */
+export type Badge = {
+  /**
+   * Badge ID
+   */
+  id?: number;
+  /**
+   * Badge code
+   */
+  code?: string;
+  /**
+   * Badge name (localized based on Accept-Language header)
+   */
+  name?: string;
+  /**
+   * Localized URL-friendly slug
+   */
+  slug?: string;
+  /**
+   * Icon identifier (Font Awesome class)
+   */
+  icon?: string | null;
+};
+
+/**
  * Bay Length
  *
  * Bay length model (3m, 5m, 10m, etc.)
@@ -492,6 +566,16 @@ export type BeachDetailsSchema = {
        * Main beach image path (prepend CDN URL)
        */
       main_image?: string | null;
+      /**
+       * Location slugs for building beach URL
+       */
+      location?: {
+        continent_slug?: string | null;
+        country_slug?: string | null;
+        region_slug?: string | null;
+        island_slug?: string | null;
+        city_slug?: string | null;
+      };
     } | null;
     /**
      * Beach with lowest ID higher than current beach in same region (null if last beach in region)
@@ -510,6 +594,16 @@ export type BeachDetailsSchema = {
        * Main beach image path (prepend CDN URL)
        */
       main_image?: string | null;
+      /**
+       * Location slugs for building beach URL
+       */
+      location?: {
+        continent_slug?: string | null;
+        country_slug?: string | null;
+        region_slug?: string | null;
+        island_slug?: string | null;
+        city_slug?: string | null;
+      };
     } | null;
   };
 };
@@ -727,6 +821,10 @@ export type BeachSchema = {
    */
   region_slug?: string | null;
   /**
+   * Island slug (translated based on Accept-Language header)
+   */
+  island_slug?: string | null;
+  /**
    * City slug (translated based on Accept-Language header)
    */
   city_slug?: string | null;
@@ -794,6 +892,52 @@ export type BeachTypeTranslation = {
    * URL-friendly slug
    */
   slug?: string;
+};
+
+/**
+ * City
+ *
+ * City model
+ */
+export type City = {
+  /**
+   * City ID
+   */
+  id?: number;
+  /**
+   * City code
+   */
+  code?: string;
+  /**
+   * City name
+   */
+  name?: string;
+  /**
+   * Localized URL-friendly slug
+   */
+  slug?: string;
+  /**
+   * Two-letter country code
+   */
+  country_code?: string;
+  /**
+   * Region ID
+   */
+  region_id?: number | null;
+  /**
+   * Number of beaches in this city
+   */
+  beaches_count?: number;
+  country?: Country;
+  region?: Region;
+  /**
+   * Badges associated with this city (when included)
+   */
+  badges?: Array<Badge>;
+  /**
+   * Articles associated with this city (when included)
+   */
+  articles?: Array<Article>;
 };
 
 /**
@@ -1017,6 +1161,42 @@ export type FirstPageContent = {
    * Items for repeater sections (null for non-repeater sections)
    */
   items?: Array<FirstPageContentItem> | null;
+};
+
+/**
+ * Island
+ *
+ * Island model
+ */
+export type Island = {
+  /**
+   * Island ID
+   */
+  id?: number;
+  /**
+   * Island code
+   */
+  code?: string;
+  /**
+   * Island name
+   */
+  name?: string;
+  /**
+   * Localized URL-friendly slug
+   */
+  slug?: string;
+  /**
+   * Number of beaches on this island
+   */
+  beaches_count?: number;
+  /**
+   * Badges associated with this island (when included)
+   */
+  badges?: Array<Badge>;
+  /**
+   * Articles associated with this island (when included)
+   */
+  articles?: Array<Article>;
 };
 
 /**
@@ -1487,6 +1667,47 @@ export type RecommendedTransportTypeTranslation = {
    * URL-friendly slug
    */
   slug?: string;
+};
+
+/**
+ * Region
+ *
+ * Region model
+ */
+export type Region = {
+  /**
+   * Region ID
+   */
+  id?: number;
+  /**
+   * Region code
+   */
+  code?: string;
+  /**
+   * Region name
+   */
+  name?: string;
+  /**
+   * Localized URL-friendly slug
+   */
+  slug?: string;
+  /**
+   * Two-letter country code
+   */
+  country_code?: string;
+  /**
+   * Number of beaches in this region
+   */
+  beaches_count?: number;
+  country?: Country;
+  /**
+   * Badges associated with this region (when included)
+   */
+  badges?: Array<Badge>;
+  /**
+   * Articles associated with this region (when included)
+   */
+  articles?: Array<Article>;
 };
 
 export type RegisterResponse = {
@@ -2982,6 +3203,125 @@ export type GetBeachTypeByIdResponses = {
 export type GetBeachTypeByIdResponse =
   GetBeachTypeByIdResponses[keyof GetBeachTypeByIdResponses];
 
+export type GetCitiesData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: {
+    /**
+     * Filter by country code (e.g., SI, HR, IT)
+     */
+    country_code?: string;
+  };
+  url: "/api/v1/cities";
+};
+
+export type GetCitiesErrors = {
+  /**
+   * Server error
+   */
+  500: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetCitiesError = GetCitiesErrors[keyof GetCitiesErrors];
+
+export type GetCitiesResponses = {
+  /**
+   * Successful operation
+   */
+  200: {
+    success?: boolean;
+    data?: Array<City>;
+    message?: string;
+  };
+};
+
+export type GetCitiesResponse = GetCitiesResponses[keyof GetCitiesResponses];
+
+export type GetCityData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * City slug (e.g., split, dubrovnik, pula)
+     */
+    slug: string;
+  };
+  query?: {
+    /**
+     * Filter by country code (e.g., SI, HR, IT)
+     */
+    country_code?: string;
+  };
+  url: "/api/v1/cities/{slug}";
+};
+
+export type GetCityErrors = {
+  /**
+   * City not found
+   */
+  404: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetCityError = GetCityErrors[keyof GetCityErrors];
+
+export type GetCityResponses = {
+  /**
+   * Successful operation
+   */
+  200: {
+    success?: boolean;
+    data?: City;
+    message?: string;
+  };
+};
+
+export type GetCityResponse = GetCityResponses[keyof GetCityResponses];
+
 export type GetContinentsData = {
   body?: never;
   headers?: {
@@ -3572,6 +3912,115 @@ export type GetFirstPageContentByCodeResponses = {
 
 export type GetFirstPageContentByCodeResponse =
   GetFirstPageContentByCodeResponses[keyof GetFirstPageContentByCodeResponses];
+
+export type GetIslandsData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/islands";
+};
+
+export type GetIslandsErrors = {
+  /**
+   * Server error
+   */
+  500: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetIslandsError = GetIslandsErrors[keyof GetIslandsErrors];
+
+export type GetIslandsResponses = {
+  /**
+   * Successful operation
+   */
+  200: {
+    success?: boolean;
+    data?: Array<Island>;
+    message?: string;
+  };
+};
+
+export type GetIslandsResponse = GetIslandsResponses[keyof GetIslandsResponses];
+
+export type GetIslandData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * Island slug (e.g., krk, brac, hvar)
+     */
+    slug: string;
+  };
+  query?: never;
+  url: "/api/v1/islands/{slug}";
+};
+
+export type GetIslandErrors = {
+  /**
+   * Island not found
+   */
+  404: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetIslandError = GetIslandErrors[keyof GetIslandErrors];
+
+export type GetIslandResponses = {
+  /**
+   * Successful operation
+   */
+  200: {
+    success?: boolean;
+    data?: Island;
+    message?: string;
+  };
+};
+
+export type GetIslandResponse = GetIslandResponses[keyof GetIslandResponses];
 
 export type GetLocationInfrastructureData = {
   body?: never;
@@ -5190,6 +5639,125 @@ export type GetRecommendedTransportTypeByIdResponses = {
 export type GetRecommendedTransportTypeByIdResponse =
   GetRecommendedTransportTypeByIdResponses[keyof GetRecommendedTransportTypeByIdResponses];
 
+export type GetRegionsData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: {
+    /**
+     * Filter by country code (e.g., SI, HR, IT)
+     */
+    country_code?: string;
+  };
+  url: "/api/v1/regions";
+};
+
+export type GetRegionsErrors = {
+  /**
+   * Server error
+   */
+  500: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetRegionsError = GetRegionsErrors[keyof GetRegionsErrors];
+
+export type GetRegionsResponses = {
+  /**
+   * Successful operation
+   */
+  200: {
+    success?: boolean;
+    data?: Array<Region>;
+    message?: string;
+  };
+};
+
+export type GetRegionsResponse = GetRegionsResponses[keyof GetRegionsResponses];
+
+export type GetRegionData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * Region slug (e.g., istria, dalmatia)
+     */
+    slug: string;
+  };
+  query?: {
+    /**
+     * Filter by country code (e.g., SI, HR, IT)
+     */
+    country_code?: string;
+  };
+  url: "/api/v1/regions/{slug}";
+};
+
+export type GetRegionErrors = {
+  /**
+   * Region not found
+   */
+  404: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetRegionError = GetRegionErrors[keyof GetRegionErrors];
+
+export type GetRegionResponses = {
+  /**
+   * Successful operation
+   */
+  200: {
+    success?: boolean;
+    data?: Region;
+    message?: string;
+  };
+};
+
+export type GetRegionResponse = GetRegionResponses[keyof GetRegionResponses];
+
 export type GetRoadToParkingTypesData = {
   body?: never;
   headers?: {
@@ -5323,6 +5891,101 @@ export type GetRoadToParkingTypeByIdResponses = {
 
 export type GetRoadToParkingTypeByIdResponse =
   GetRoadToParkingTypeByIdResponses[keyof GetRoadToParkingTypeByIdResponses];
+
+export type ResolveSlugData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * The slug to resolve (e.g., kvarner, island-cres, split)
+     */
+    slug: string;
+  };
+  query?: {
+    /**
+     * Optional country code to narrow down the search (e.g., HR, SI, IT)
+     */
+    country_code?: string;
+    /**
+     * Optional parent slug to provide context (e.g., if resolving a city within an island, pass the island slug)
+     */
+    parent_slug?: string;
+    /**
+     * Optional number of segments in the URL path to help determine entity type (1=region/island, 2=city, etc.)
+     */
+    segment_count?: number;
+  };
+  url: "/api/v1/resolve-slug/{slug}";
+};
+
+export type ResolveSlugErrors = {
+  /**
+   * Slug not found
+   */
+  404: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Server error
+   */
+  500: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type ResolveSlugError = ResolveSlugErrors[keyof ResolveSlugErrors];
+
+export type ResolveSlugResponses = {
+  /**
+   * Slug resolved successfully
+   */
+  200: {
+    success?: boolean;
+    data?: {
+      type?: "region" | "island" | "city" | "beach";
+      id?: number;
+      slug?: string;
+      name?: string;
+      /**
+       * Only for regions
+       */
+      code?: string;
+      /**
+       * Country code
+       */
+      country_code?: string;
+      /**
+       * Number of beaches
+       */
+      beaches_count?: number;
+    };
+    message?: string;
+  };
+};
+
+export type ResolveSlugResponse =
+  ResolveSlugResponses[keyof ResolveSlugResponses];
 
 export type GetSportingActivitiesData = {
   body?: never;

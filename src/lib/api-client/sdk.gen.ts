@@ -79,6 +79,12 @@ import type {
   GetBeachTypesData,
   GetBeachTypesErrors,
   GetBeachTypesResponses,
+  GetCitiesData,
+  GetCitiesErrors,
+  GetCitiesResponses,
+  GetCityData,
+  GetCityErrors,
+  GetCityResponses,
   GetContinentData,
   GetContinentErrors,
   GetContinentResponses,
@@ -106,6 +112,12 @@ import type {
   GetFirstPageContentData,
   GetFirstPageContentErrors,
   GetFirstPageContentResponses,
+  GetIslandData,
+  GetIslandErrors,
+  GetIslandResponses,
+  GetIslandsData,
+  GetIslandsErrors,
+  GetIslandsResponses,
   GetLocationInfrastructureByIdData,
   GetLocationInfrastructureByIdErrors,
   GetLocationInfrastructureByIdResponses,
@@ -156,6 +168,12 @@ import type {
   GetRecommendedTransportTypesData,
   GetRecommendedTransportTypesErrors,
   GetRecommendedTransportTypesResponses,
+  GetRegionData,
+  GetRegionErrors,
+  GetRegionResponses,
+  GetRegionsData,
+  GetRegionsErrors,
+  GetRegionsResponses,
   GetRoadToParkingTypeByIdData,
   GetRoadToParkingTypeByIdErrors,
   GetRoadToParkingTypeByIdResponses,
@@ -201,6 +219,9 @@ import type {
   RegisterUserData,
   RegisterUserErrors,
   RegisterUserResponses,
+  ResolveSlugData,
+  ResolveSlugErrors,
+  ResolveSlugResponses,
 } from "./types.gen";
 
 export type Options<
@@ -571,6 +592,42 @@ export const getBeachTypeById = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Get all cities that have beaches
+ *
+ * Returns a list of cities that have at least one beach. Can be filtered by country. Returns minimal data: id, code, name, slug, country_code, region_id, beaches_count, and country object (without continent, badges, articles).
+ */
+export const getCities = <ThrowOnError extends boolean = false>(
+  options?: Options<GetCitiesData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetCitiesResponses,
+    GetCitiesErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/cities",
+    ...options,
+  });
+};
+
+/**
+ * Get a specific city
+ *
+ * Returns a specific city by slug with full details including country, region, badges, and articles. Can be filtered by country code.
+ */
+export const getCity = <ThrowOnError extends boolean = false>(
+  options: Options<GetCityData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetCityResponses,
+    GetCityErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/cities/{slug}",
+    ...options,
+  });
+};
+
+/**
  * Get all continents that have beaches
  *
  * Returns a list of continents that have at least one beach
@@ -728,6 +785,42 @@ export const getFirstPageContentByCode = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/first-page-content/{code}",
+    ...options,
+  });
+};
+
+/**
+ * Get all islands that have beaches
+ *
+ * Returns a list of islands that have at least one beach. Returns minimal data: id, code, name, slug, beaches_count.
+ */
+export const getIslands = <ThrowOnError extends boolean = false>(
+  options?: Options<GetIslandsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetIslandsResponses,
+    GetIslandsErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/islands",
+    ...options,
+  });
+};
+
+/**
+ * Get a specific island
+ *
+ * Returns a specific island by slug with full details including beaches count, badges, and articles.
+ */
+export const getIsland = <ThrowOnError extends boolean = false>(
+  options: Options<GetIslandData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetIslandResponses,
+    GetIslandErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/islands/{slug}",
     ...options,
   });
 };
@@ -1266,6 +1359,42 @@ export const getRecommendedTransportTypeById = <
 };
 
 /**
+ * Get all regions that have beaches
+ *
+ * Returns a list of regions that have at least one beach. Can be filtered by country. Returns minimal data: id, code, name, slug, country_code, beaches_count, and country object (without continent, badges, articles).
+ */
+export const getRegions = <ThrowOnError extends boolean = false>(
+  options?: Options<GetRegionsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetRegionsResponses,
+    GetRegionsErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/regions",
+    ...options,
+  });
+};
+
+/**
+ * Get a specific region
+ *
+ * Returns a specific region by slug with full details including country, badges, and articles. Can be filtered by country code.
+ */
+export const getRegion = <ThrowOnError extends boolean = false>(
+  options: Options<GetRegionData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetRegionResponses,
+    GetRegionErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/regions/{slug}",
+    ...options,
+  });
+};
+
+/**
  * Get all road to parking types
  *
  * Retrieve a list of all road to parking types with their translations
@@ -1297,6 +1426,24 @@ export const getRoadToParkingTypeById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/road-to-parking-types/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Resolve a slug to determine its entity type
+ *
+ * Determines whether a slug represents a region, island, city, or beach. This is useful for dynamic routing where the URL structure can vary. Returns the entity type and basic information.
+ */
+export const resolveSlug = <ThrowOnError extends boolean = false>(
+  options: Options<ResolveSlugData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    ResolveSlugResponses,
+    ResolveSlugErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/resolve-slug/{slug}",
     ...options,
   });
 };

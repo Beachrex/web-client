@@ -26,6 +26,8 @@ import {
   getBeachStatistics,
   getBeachTypeById,
   getBeachTypes,
+  getCities,
+  getCity,
   getContinent,
   getContinents,
   getCountries,
@@ -35,6 +37,8 @@ import {
   getCurrentUser,
   getFirstPageContent,
   getFirstPageContentByCode,
+  getIsland,
+  getIslands,
   getLocationInfrastructure,
   getLocationInfrastructureById,
   getLocationLengthById,
@@ -52,6 +56,8 @@ import {
   getParkingCapacityById,
   getRecommendedTransportTypeById,
   getRecommendedTransportTypes,
+  getRegion,
+  getRegions,
   getRoadToParkingTypeById,
   getRoadToParkingTypes,
   getSportingActivities,
@@ -65,6 +71,7 @@ import {
   getWaterbodies,
   getWaterbodyById,
   type Options,
+  resolveSlug,
 } from "../sdk.gen";
 import type {
   Aa759989C685509Bf36Ff8153A83fData,
@@ -89,6 +96,8 @@ import type {
   GetBeachStatisticsData,
   GetBeachTypeByIdData,
   GetBeachTypesData,
+  GetCitiesData,
+  GetCityData,
   GetContinentData,
   GetContinentsData,
   GetCountriesData,
@@ -98,6 +107,8 @@ import type {
   GetCurrentUserData,
   GetFirstPageContentByCodeData,
   GetFirstPageContentData,
+  GetIslandData,
+  GetIslandsData,
   GetLocationInfrastructureByIdData,
   GetLocationInfrastructureData,
   GetLocationLengthByIdData,
@@ -115,6 +126,8 @@ import type {
   GetParkingCapacityByIdData,
   GetRecommendedTransportTypeByIdData,
   GetRecommendedTransportTypesData,
+  GetRegionData,
+  GetRegionsData,
   GetRoadToParkingTypeByIdData,
   GetRoadToParkingTypesData,
   GetSportingActivitiesData,
@@ -127,6 +140,7 @@ import type {
   GetUserTypesData,
   GetWaterbodiesData,
   GetWaterbodyByIdData,
+  ResolveSlugData,
 } from "../types.gen";
 
 export type QueryKey<TOptions extends Options> = [
@@ -543,6 +557,52 @@ export const getBeachTypeByIdOptions = (
   });
 };
 
+export const getCitiesQueryKey = (options?: Options<GetCitiesData>) =>
+  createQueryKey("getCities", options);
+
+/**
+ * Get all cities that have beaches
+ *
+ * Returns a list of cities that have at least one beach. Can be filtered by country. Returns minimal data: id, code, name, slug, country_code, region_id, beaches_count, and country object (without continent, badges, articles).
+ */
+export const getCitiesOptions = (options?: Options<GetCitiesData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCities({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCitiesQueryKey(options),
+  });
+};
+
+export const getCityQueryKey = (options: Options<GetCityData>) =>
+  createQueryKey("getCity", options);
+
+/**
+ * Get a specific city
+ *
+ * Returns a specific city by slug with full details including country, region, badges, and articles. Can be filtered by country code.
+ */
+export const getCityOptions = (options: Options<GetCityData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCity({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCityQueryKey(options),
+  });
+};
+
 export const getContinentsQueryKey = (options?: Options<GetContinentsData>) =>
   createQueryKey("getContinents", options);
 
@@ -762,6 +822,52 @@ export const getFirstPageContentByCodeOptions = (
       return data;
     },
     queryKey: getFirstPageContentByCodeQueryKey(options),
+  });
+};
+
+export const getIslandsQueryKey = (options?: Options<GetIslandsData>) =>
+  createQueryKey("getIslands", options);
+
+/**
+ * Get all islands that have beaches
+ *
+ * Returns a list of islands that have at least one beach. Returns minimal data: id, code, name, slug, beaches_count.
+ */
+export const getIslandsOptions = (options?: Options<GetIslandsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getIslands({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getIslandsQueryKey(options),
+  });
+};
+
+export const getIslandQueryKey = (options: Options<GetIslandData>) =>
+  createQueryKey("getIsland", options);
+
+/**
+ * Get a specific island
+ *
+ * Returns a specific island by slug with full details including beaches count, badges, and articles.
+ */
+export const getIslandOptions = (options: Options<GetIslandData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getIsland({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getIslandQueryKey(options),
   });
 };
 
@@ -1359,6 +1465,52 @@ export const getRecommendedTransportTypeByIdOptions = (
   });
 };
 
+export const getRegionsQueryKey = (options?: Options<GetRegionsData>) =>
+  createQueryKey("getRegions", options);
+
+/**
+ * Get all regions that have beaches
+ *
+ * Returns a list of regions that have at least one beach. Can be filtered by country. Returns minimal data: id, code, name, slug, country_code, beaches_count, and country object (without continent, badges, articles).
+ */
+export const getRegionsOptions = (options?: Options<GetRegionsData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getRegions({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getRegionsQueryKey(options),
+  });
+};
+
+export const getRegionQueryKey = (options: Options<GetRegionData>) =>
+  createQueryKey("getRegion", options);
+
+/**
+ * Get a specific region
+ *
+ * Returns a specific region by slug with full details including country, badges, and articles. Can be filtered by country code.
+ */
+export const getRegionOptions = (options: Options<GetRegionData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getRegion({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getRegionQueryKey(options),
+  });
+};
+
 export const getRoadToParkingTypesQueryKey = (
   options?: Options<GetRoadToParkingTypesData>,
 ) => createQueryKey("getRoadToParkingTypes", options);
@@ -1408,6 +1560,29 @@ export const getRoadToParkingTypeByIdOptions = (
       return data;
     },
     queryKey: getRoadToParkingTypeByIdQueryKey(options),
+  });
+};
+
+export const resolveSlugQueryKey = (options: Options<ResolveSlugData>) =>
+  createQueryKey("resolveSlug", options);
+
+/**
+ * Resolve a slug to determine its entity type
+ *
+ * Determines whether a slug represents a region, island, city, or beach. This is useful for dynamic routing where the URL structure can vary. Returns the entity type and basic information.
+ */
+export const resolveSlugOptions = (options: Options<ResolveSlugData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await resolveSlug({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: resolveSlugQueryKey(options),
   });
 };
 

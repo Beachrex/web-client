@@ -3,9 +3,8 @@
 import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
-import { useParams } from 'next/navigation';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
-import { buildBeachDetailUrl } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromNavigation } from '@/lib/utils/beach-urls';
 
 interface BeachTopBarProps {
   /** Full pathname to render breadcrumbs, e.g. /en/beaches/europe/croatia/dalmatia/vodice/beach-hangar */
@@ -25,40 +24,19 @@ export default function BeachTopBar({
   rightExtras,
 }: BeachTopBarProps) {
   const locale = useLocale();
-  const params = useParams();
 
-  // Extract URL params from current page (these are already slugs)
-  const continentSlug = params?.continent as string;
-  const countrySlug = params?.country as string;
-  const regionSlug = params?.region as string;
-  const citySlug = params?.city as string;
-
-  // Build navigation URLs using current URL params and new beach slug
-  const prevBeach = beachDetails?.navigation?.previous?.slug
+  // Build navigation URLs using location data from API
+  const prevBeach = beachDetails?.navigation?.previous
     ? {
         name: beachDetails.navigation.previous.name ?? '',
-        url: buildBeachDetailUrl(
-          locale,
-          continentSlug,
-          countrySlug,
-          regionSlug,
-          citySlug,
-          beachDetails.navigation.previous.slug
-        ),
+        url: buildBeachUrlFromNavigation(beachDetails.navigation.previous, locale),
       }
     : null;
 
-  const nextBeach = beachDetails?.navigation?.next?.slug
+  const nextBeach = beachDetails?.navigation?.next
     ? {
         name: beachDetails.navigation.next.name ?? '',
-        url: buildBeachDetailUrl(
-          locale,
-          continentSlug,
-          countrySlug,
-          regionSlug,
-          citySlug,
-          beachDetails.navigation.next.slug
-        ),
+        url: buildBeachUrlFromNavigation(beachDetails.navigation.next, locale),
       }
     : null;
 

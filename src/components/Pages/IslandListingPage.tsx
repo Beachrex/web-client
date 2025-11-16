@@ -35,20 +35,26 @@ const regionData = [
     { regionName: 'Regija F', beachCount: '6' },
 ];
 
-const Page = () => {
+interface IslandListingPageProps {
+  islandSlug?: string;
+  islandDataProp?: unknown;
+}
+
+export default function IslandListingPage({
+  islandSlug: _islandSlug,
+  islandDataProp: _islandDataProp,
+}: IslandListingPageProps) {
     const pathname = usePathname();
 
     useEffect(() => {
-        if (!pathname) return; // Return if slug is not available
-        // Here you can handle your routing logic based on the slug
-        // For example, you could fetch data or set a state based on the slug
+        if (!pathname) return;
     }, [pathname]);
 
     return (
         <>
             <div className="container mx-auto p-4">
                 <h1 className="text-xl mb-4 text-red-600">
-                    Ta frame je namenjen predstavitvi podstrani na ravni mesto
+                    Ta frame je namenjen predstavitvi podstrani na ravni otok22
                 </h1>
                 {/* Filters and navigation */}
                 <div className="mt-8 grid grid-cols-2 gap-4 text-black">
@@ -62,8 +68,8 @@ const Page = () => {
 
                 {/* Top section with background image */}
                 <div
-className="relative h-96 bg-cover bg-center"
-                     style={{ backgroundImage: "url('https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-543a-k-odalmacija/hr-543a-k-odalmacija-sl9.jpg')" }}
+                    className="relative h-96 bg-cover bg-center"
+                    style={{ backgroundImage: "url('https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-543a-k-odalmacija/hr-543a-k-odalmacija-sl9.jpg')" }}
                 >
                     {/* Overlay content */}
                     <div
@@ -79,7 +85,6 @@ className="relative h-96 bg-cover bg-center"
                                         <div className="w-40 h-24 bg-gray-200" />
                                     </div>
                                     <div className="flex flex-row gap-2 mb-4">
-
                                         <Button>Simbol za plažo + št. plaž</Button>
                                         <Button>Simbol za odprti bazen + št.</Button>
                                         <Button>Simbol za zaprti bazen + št.</Button>
@@ -92,22 +97,6 @@ className="relative h-96 bg-cover bg-center"
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                {/* Navigation section for previous and next page */}
-                <div className="flex justify-between items-center mt-2">
-                    {/* Previous page button */}
-                    <div>
-                        <Button>
-                            <span className="mr-2">←</span> sosednja država navzgor, zastava + št. plaž
-                        </Button>
-                    </div>
-                    {/* Next page button */}
-                    <div>
-                        <Button>
-                            sosednja država navzgor, zastava + št. plaž <span className="ml-2">→</span>
-                        </Button>
                     </div>
                 </div>
 
@@ -205,8 +194,8 @@ className="relative h-96 bg-cover bg-center"
                     filtra si točno določi oz. prikaže plažo po svoji preferenci. Klik na posamezno polje spodaj,
                     dodatno prikaže opcije, podobno kot imamo že sedaj na obstoječi strani, isto ima konkurenca:
                     <Link
-target='_blank'
-                          href='https://beachsearcher.si/sl/search/country/143?nature_secret=1&pagesize=18&smart=0&op=1&offset=0'
+                        target='_blank'
+                        href='https://beachsearcher.si/sl/search/country/143?nature_secret=1&pagesize=18&smart=0&op=1&offset=0'
                     ><u>Beachsearcher</u></Link>
                 </h2>
 
@@ -228,26 +217,23 @@ target='_blank'
                                 {/* Carousel for beach images */}
                                 <div className="relative w-full h-48">
                                     <Carousel
-                                        leftControl={<BsArrowLeft className="text-3xl opacity-0"/>} // Custom left arrow
-                                        rightControl={<BsArrowRight
-                                            className="text-3xl opacity-0"
-                                                      />} // Custom right arrow
+                                        leftControl={<BsArrowLeft className="text-3xl opacity-0"/>}
+                                        rightControl={<BsArrowRight className="text-3xl opacity-0"/>}
                                     >
                                         {/* Carousel items */}
                                         <div
-className="h-48 bg-cover bg-center"
-                                             style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
+                                            className="h-48 bg-cover bg-center"
+                                            style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
                                         />
                                         <div
-className="h-48 bg-cover bg-center"
-                                             style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
+                                            className="h-48 bg-cover bg-center"
+                                            style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
                                         />
                                         <div
-className="h-48 bg-cover bg-center"
-                                             style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
+                                            className="h-48 bg-cover bg-center"
+                                            style={{ backgroundImage: 'url(\'https://flowbite.com/docs/images/carousel/carousel-1.svg\')' }}
                                         />
                                     </Carousel>
-
                                 </div>
                                 {/* Country Flag */}
                                 <div
@@ -291,7 +277,6 @@ className="h-48 bg-cover bg-center"
                                                 <Tooltip content="Tip plaže">
                                                     <FaUmbrellaBeach/>
                                                 </Tooltip>
-
                                             </div>
 
                                             {/* Icon for User Type */}
@@ -317,6 +302,5 @@ className="h-48 bg-cover bg-center"
             </div>
         </>
     );
-};
+}
 
-export default Page;

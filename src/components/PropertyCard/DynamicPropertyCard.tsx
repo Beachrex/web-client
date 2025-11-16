@@ -4,7 +4,7 @@ import { env } from '@/env';
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
-import { buildBeachDetailUrl } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 
 interface DynamicPropertyCardProps {
   beach: BeachSchema;
@@ -35,11 +35,8 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
   const latitude = beach.latitude ?? '0';
   const longitude = beach.longitude ?? '0';
 
-  // Build beach detail URL if we have all required slugs
-  const beachUrl = beach.continent_slug && beach.country_slug && beach.region_slug && beach.city_slug && beach.slug
-    ? buildBeachDetailUrl(locale, beach.continent_slug, beach.country_slug,
-          beach.region_slug, beach.city_slug, beach.slug)
-    : null;
+  // Build beach detail URL using location slugs from API
+  const beachUrl = buildBeachUrlFromSchema(beach, locale);
 
   // Handle location icon click
   const handleLocationClick = (e: React.MouseEvent) => {
