@@ -9,13 +9,24 @@ interface Badge {
 
 interface BottomBadgesProps {
   badges: Badge[];
+  /** Controls accent color for badges */
+  variant?: 'continent' | 'region';
 }
 
-/**
- * BadgeItem component — displays individual badge with icon and label
- */
-const BadgeItem: React.FC<Badge> = ({ label, icon }) => (
-  <div className="flex h-8 w-full min-w-0 items-center justify-self-start whitespace-nowrap rounded-full bg-[#5E1CA5] px-3 font-figtree text-[0.9rem] font-bold leading-none text-white sm:h-9 sm:px-4 sm:text-[1rem] lg:w-auto">
+interface BadgeItemProps extends Badge {
+  colorClass: string;
+}
+
+const BadgeItem: React.FC<BadgeItemProps> = ({ label, icon, colorClass }) => (
+ <div
+  className={`
+    flex h-8 w-full min-w-0 items-center justify-self-start whitespace-nowrap
+    rounded-full px-3 font-figtree text-[0.9rem] font-bold leading-none text-white
+    sm:h-9 sm:px-4 sm:text-[1rem] lg:w-auto
+    ${colorClass}
+  `}
+ >
+
     <Image
       src={icon}
       alt={label}
@@ -32,12 +43,17 @@ const BadgeItem: React.FC<Badge> = ({ label, icon }) => (
  * - Below lg: 3 columns × 2 rows (6 visible badges)
  * - From lg up: show all badges with existing dense layout
  */
-const BottomBadges: React.FC<BottomBadgesProps> = ({ badges }) => {
+const BottomBadges: React.FC<BottomBadgesProps> = ({
+  badges,
+  variant = 'continent',
+}) => {
+  const colorClass = variant === 'region' ? 'bg-[#FF2877]' : 'bg-[#5E1CA5]';
+
   return (
     <div className="w-full overflow-hidden">
-      <div className="/* 3 columns on small screens */ /* stretch badges to fill each cell */ /* from lg up: use original responsive */ /* hide items 7+ below lg, re-show from lg up */ grid w-full grid-cols-3 justify-items-stretch gap-x-2 gap-y-2 lg:w-fit lg:grid-cols-[repeat(2,max-content)] lg:grid-rows-[repeat(6,auto)] lg:justify-items-start xl:grid-cols-[repeat(3,max-content)] xl:grid-rows-[repeat(4,auto)] 2xl:grid-cols-[repeat(6,max-content)] 2xl:grid-rows-[repeat(2,auto)] [&>*:nth-child(n+7)]:hidden lg:[&>*:nth-child(n+7)]:flex">
+      <div className="grid w-full grid-cols-3 justify-items-stretch gap-x-2 gap-y-2 lg:w-fit lg:grid-cols-[repeat(2,max-content)] lg:grid-rows-[repeat(6,auto)] lg:justify-items-start xl:grid-cols-[repeat(3,max-content)] xl:grid-rows-[repeat(4,auto)] 2xl:grid-cols-[repeat(6,max-content)] 2xl:grid-rows-[repeat(2,auto)] [&>*:nth-child(n+7)]:hidden lg:[&>*:nth-child(n+7)]:flex">
         {badges.slice(0, 12).map((b, i) => (
-          <BadgeItem key={`${b.label}-${i}`} {...b} />
+          <BadgeItem key={`${b.label}-${i}`} {...b} colorClass={colorClass} />
         ))}
       </div>
     </div>

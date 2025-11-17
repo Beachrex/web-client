@@ -152,7 +152,7 @@
     "cardSightsTitle": "Znamenitosti",
     "readMore": "Preberi več >"
   },
-  "BeachesMap":{
+  "BeachesMap": {
     "title": "Filter",
     "advancedFilters": "Napredno",
     "loadingFilters": "Nalaganje...",
@@ -166,7 +166,8 @@
     "continentLabel": "Kontinent",
     "continentName": "Evropa",
     "numBeachesLabel": "št. plaž:",
-    "numAccommodationsLabel": "št. nastanitev:"
+    "numAccommodationsLabel": "št. nastanitev:",
+    "regionLabel": "Regija"
   },
   "TopBarBeach": {
     "beachLabel": "Morska plaža",
@@ -189,6 +190,27 @@
     "beachesMap": "Zemljevid vseh plaž",
     "similarBeaches": "Prikaži podobne plaže"
   },
+
+  "RegionPage": {
+    "popularBeachesTitle": "Najbolj obiskane plaže {region}",
+    "featuredAccommodationsTitle": "Izpostavljene namestitve {region}",
+
+    "islandsTitle": "Otóki {region}",
+    "citiesTitle": "Mesta {region}",
+    "allIslandsCount": "Vsi otoki ({count})",
+    "allCitiesCount": "Vsa mesta ({count})",
+    "islandBadge": "Slikovit otok",
+    "cityBadge": "Slikovito mesto",
+
+    "browseBeachesTitle": "Brskaj po vseh plažah regije {region}",
+    "filterButton": "Filter",
+    "mapButton": "Poglej zemljevid",
+    "displayLabel": "Prikaz plaž:",
+    "sortPopular": "Najbolj priljubljene",
+    "sortNewest": "Najnovejše",
+    "sortTopRated": "Najbolje ocenjene"
+  },
+
   "BottomBadgesBeach": {
     "badges": {
       "stony": "Kamnita",

@@ -12,53 +12,63 @@ interface InfoCard {
 
 interface InfoCardsSectionProps {
   cards: InfoCard[];
+  /** Controls accent color for the title */
+  variant?: 'continent' | 'region';
 }
 
-const InfoCardsSection: React.FC<InfoCardsSectionProps> = ({ cards }) => {
+const InfoCardsSection: React.FC<InfoCardsSectionProps> = ({
+  cards,
+  variant = 'continent',
+}) => {
   const t = useTranslations('BannerSection');
 
-  return (
-      <div className="container mx-auto">
-        <div className="relative z-20 -mt-[60px] sm:-mt-[80px] mb-[32px]">
-      <div className="grid grid-cols-1 gap-[16px] sm:gap-[20px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {cards.map((card, index) => (
-          <div
-            key={index}
-            className="flex flex-col sm:flex-row h-auto sm:h-[158px] w-full overflow-hidden rounded-[10px] bg-white shadow-md"
-          >
-            {/* Slika */}
-            <div className="mx-[10px] mt-[10px] mb-[5px] sm:m-[10px] h-[120px] sm:h-[138px] w-auto sm:w-[135px] flex-shrink-0 overflow-hidden rounded-[8px]">
-              <Image
-                src={card.image}
-                alt={card.title}
-                width={135}
-                height={138}
-                className="h-full w-full object-cover"
-              />
-            </div>
+  const titleColorClass =
+    variant === 'region' ? 'text-[#FF2877]' : 'text-[#5E1CA5]';
 
-            {/* Vsebina */}
-            <div className="flex flex-col justify-between px-[10px] pb-[10px] pt-[5px] sm:py-[10px] sm:pr-[10px] sm:pl-0">
-              <div>
-                <h3 className="font-figtree text-[16px] sm:text-[20px] font-bold text-[#5E1CA5]">
-                  {card.title}
-                </h3>
-                <p className="mt-[4px] line-clamp-2 sm:line-clamp-3 font-figtree text-[12px] font-normal leading-[16px] text-[#4D4D4D]">
-                  {card.subtitle}
-                </p>
+  return (
+    <div className="container mx-auto">
+      <div className="relative z-20 -mt-[60px] mb-[32px] sm:-mt-[80px]">
+        <div className="grid grid-cols-1 gap-[16px] sm:grid-cols-2 sm:gap-[20px] lg:grid-cols-3 xl:grid-cols-4">
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              className="flex h-auto w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md sm:h-[158px] sm:flex-row"
+            >
+              {/* Image */}
+              <div className="mx-[10px] mb-[5px] mt-[10px] flex h-[120px] w-auto flex-shrink-0 overflow-hidden rounded-[8px] sm:m-[10px] sm:h-[138px] sm:w-[135px]">
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  width={135}
+                  height={138}
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <a
-                href={card.link ?? '#'}
-                className="mt-[8px] font-figtree text-[10px] font-medium text-[#8D8D8D] underline"
-              >
-                {t('readMore')}
-              </a>
+
+              {/* Content */}
+              <div className="flex flex-col justify-between px-[10px] pb-[10px] pt-[5px] sm:py-[10px] sm:pl-0 sm:pr-[10px]">
+                <div>
+                  <h3
+                    className={`font-figtree text-[16px] font-bold sm:text-[20px] ${titleColorClass}`}
+                  >
+                    {card.title}
+                  </h3>
+                  <p className="mt-[4px] line-clamp-2 font-figtree text-[12px] font-normal leading-[16px] text-[#4D4D4D] sm:line-clamp-3">
+                    {card.subtitle}
+                  </p>
+                </div>
+                <a
+                  href={card.link ?? '#'}
+                  className="mt-[8px] font-figtree text-[10px] font-medium text-[#8D8D8D] underline"
+                >
+                  {t('readMore')}
+                </a>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
-      </div>
   );
 };
 

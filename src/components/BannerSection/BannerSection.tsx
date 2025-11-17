@@ -1,4 +1,5 @@
 'use client';
+import type { Continent } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,18 +9,21 @@ import InfoCardsSection from './InfoCardsSection';
 import MapWidget from './MapWidget';
 import TopBar from './TopBar';
 import WeatherWidget from './WeatherWidget';
-import type { Continent } from '@/lib/api-client/types.gen';
 
 interface BannerSectionProps {
-  image: string; // background slika
-  title: string; // npr. "Kvarner"
-  categoryType?: string; // npr. "Regija", "Otok", "Kontinent"
-  subtitle?: string; // opcijsko
-  badges?: { label: string; color?: string; icon?: string }[]; // array badge-ov
-  rightWidgets?: React.ReactNode; // vreme, mapa, ipd.
-  children?: React.ReactNode; // dodatni custom content
-  continent?: Continent; // continent data for TopBar
-  accommodationCount?: number; // accommodation count for TopBar
+  image: string;
+  title: string;
+  categoryType?: string;
+  subtitle?: string;
+  badges?: { label: string; color?: string; icon?: string }[];
+  rightWidgets?: React.ReactNode;
+  children?: React.ReactNode;
+  continent?: Continent;
+  accommodationCount?: number;
+  /** 'continent' (default) or 'region' */
+  topBarVariant?: 'continent' | 'region';
+  /** Explicit beach count for regions */
+  beachCount?: number;
 }
 
 const BannerSection: React.FC<BannerSectionProps> = ({
@@ -27,6 +31,8 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   title,
   continent,
   accommodationCount,
+  topBarVariant = 'continent',
+  beachCount,
 }) => {
   const t = useTranslations('BannerSection');
   const tRoutes = useTranslations('routes');
@@ -85,33 +91,39 @@ const BannerSection: React.FC<BannerSectionProps> = ({
     { label: t('badgeLamb'), icon: '/images/banner/regions-icons/food.png' },
   ];
 
+  const floatingButtonColor =
+    topBarVariant === 'region' ? 'bg-[#FF2877]' : 'bg-[#5E1CA5]';
+
   return (
     <>
       <section
-        className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] bg-cover bg-center sm:h-[700px] lg:h-[798px]"
+        className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-hidden rounded-b-[10px] rounded-t-[10px] bg-cover bg-center sm:h-[700px] lg:h-[798px]"
         style={{ backgroundImage: `url(${image})` }}
       >
         {/* Overlay */}
         <div className="absolute inset-0 bg-white/10" />
 
-        <div className="relative z-1 flex h-full flex-col p-4 sm:p-6 lg:p-8">
+        <div className="z-1 relative flex h-full flex-col p-4 sm:p-6 lg:p-8">
           {/* Top bar */}
           <div>
             <TopBar
+              variant={topBarVariant}
               continent={continent}
               accommodationCount={accommodationCount}
+              title={title}
+              beachCount={beachCount}
             />
           </div>
 
           <div className="flex flex-1 flex-col justify-center">
-            {/* Naslovni blok */}
+            {/* Title Block */}
             <div className="relative">
-              {/* Velik background title */}
+              {/* Big background title */}
               <span className="left-0 block font-figtree text-[80px] font-bold leading-[100%] text-white opacity-30 sm:text-[120px] md:text-[160px] lg:text-[200px]">
                 {t('categoryLabel')}
               </span>
 
-              {/* Manjši naslov Kvarner */}
+              {/* Smaller Title */}
               <span className="absolute bottom-0 left-[30px] font-figtree text-[40px] font-bold leading-[100%] text-white sm:left-[50px] sm:text-[60px] md:left-[80px] md:text-[80px] lg:left-[100px] lg:text-[100px]">
                 {title}
               </span>
@@ -119,7 +131,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
             <div className="mx-[20px] mt-8 flex flex-col items-start justify-between gap-6 sm:mx-[50px] sm:mt-12 md:mx-[80px] lg:mx-[100px] lg:flex-row lg:items-end">
               {/* badges: allow shrinking/wrapping */}
               <div className="hidden min-w-0 flex-1 md:block">
-                <BottomBadges badges={badges} />
+                <BottomBadges badges={badges} variant={topBarVariant} />
               </div>
 
               {/* widgets: don't shrink off-screen */}
@@ -134,7 +146,10 @@ const BannerSection: React.FC<BannerSectionProps> = ({
         {/* Right side floating buttons */}
         <div className="absolute right-0 top-1/2 z-20 flex translate-y-[-50%] flex-col">
           {/* Play / Beach button */}
-          <Link href={tRoutes('beachMap')} className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">
+          <Link
+            href={tRoutes('beachMap')}
+            className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]"
+          >
             <Image
               src="/images/map.png"
               alt="play beach"
@@ -145,7 +160,14 @@ const BannerSection: React.FC<BannerSectionProps> = ({
           </Link>
 
           {/* Filters button */}
-          <button className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">
+         <button
+  className={`
+    flex h-12 w-12 items-center justify-center rounded-l-[10px]
+    sm:h-[68.46px] sm:w-[71px]
+    ${floatingButtonColor}
+  `}
+         >
+
             <Image
               src="/images/filters.png"
               alt="filters"
@@ -157,8 +179,8 @@ const BannerSection: React.FC<BannerSectionProps> = ({
         </div>
       </section>
 
-      {/* Info kartice */}
-      <InfoCardsSection cards={infoCards} />
+      {/* Info card */}
+      <InfoCardsSection cards={infoCards} variant={topBarVariant} />
     </>
   );
 };

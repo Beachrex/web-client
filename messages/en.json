@@ -152,7 +152,7 @@
     "cardSightsTitle": "Sights",
     "readMore": "Read more >"
   },
-  "BeachesMap":{
+  "BeachesMap": {
     "title": "Filter",
     "advancedFilters": "Advanced",
     "loadingFilters": "Loading...",
@@ -166,7 +166,8 @@
     "continentLabel": "Continent",
     "continentName": "Europe",
     "numBeachesLabel": "Num. of beaches:",
-    "numAccommodationsLabel": "Num. of accommodations:"
+    "numAccommodationsLabel": "Num. of accommodations:",
+    "regionLabel": "Region"
   },
   "TopBarBeach": {
     "beachLabel": "Sea beach",
@@ -199,6 +200,27 @@
     "beachesMap": "Map of all beaches",
     "similarBeaches": "Show similar beaches"
   },
+
+  "RegionPage": {
+    "popularBeachesTitle": "Most visited beaches in {region}",
+    "featuredAccommodationsTitle": "Featured accommodations in {region}",
+
+    "islandsTitle": "Islands of {region}",
+    "citiesTitle": "Towns of {region}",
+    "allIslandsCount": "All islands ({count})",
+    "allCitiesCount": "All towns ({count})",
+    "islandBadge": "Scenic island",
+    "cityBadge": "Scenic town",
+
+    "browseBeachesTitle": "Browse all beaches in {region}",
+    "filterButton": "Filter",
+    "mapButton": "View map",
+    "displayLabel": "Beach view:",
+    "sortPopular": "Most popular",
+    "sortNewest": "Newest",
+    "sortTopRated": "Top rated"
+  },
+
   "Footer": {
     "brand": {
       "desc": "Find your perfect beach and BeachRex will acquaint you with every single detail it possibly can.",

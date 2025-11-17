@@ -3,17 +3,15 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
+import { ChevronRight } from 'lucide-react';
+import DistanceDropdown, { type DistanceOption } from '../DistanceDropdown';
 import { type AccommodationCardProps } from './AccommodationCard';
 import AccommodationFlowbiteCarousel from './AccommodationCarousel';
-import DistanceDropdown, { type DistanceOption } from '../DistanceDropdown';
-import { ChevronRight } from 'lucide-react';
-
 
 interface Props {
   title?: string;
   totalCount?: number;
   items?: AccommodationCardProps[];
-  // Show dropdown only on the beach page
   showDropdown?: boolean;
   distanceOptions?: DistanceOption[];
   selectedDistance?: DistanceOption;
@@ -24,10 +22,9 @@ interface Props {
 }
 
 export default function AccommodationSection({
-  // Keep prop but alias to an underscored local to satisfy no-unused-vars
-  title: _title,
+  title,
   totalCount = 0,
-  items = Array.from({ length: 8 }, () => ({} as AccommodationCardProps)),
+  items = Array.from({ length: 8 }, () => ({}) as AccommodationCardProps),
   showDropdown = true,
   distanceOptions = [
     { value: 0.25, label: '250 m' },
@@ -43,13 +40,15 @@ export default function AccommodationSection({
 }: Props) {
   const tAcc = useTranslations('AccommodationSection');
 
+  const heading = title ?? tAcc('accomodationTitle');
+
   return (
     <section className="relative overflow-hidden bg-[#E7E7E7] py-10 sm:py-14 lg:py-20">
       {/* Decorative background image */}
       <div className="pointer-events-none absolute left-0 top-0 z-0 opacity-60">
         <div className="relative h-[400px] w-[400px]">
           <Image
-            src="/images/accomodation.png"
+            src="/images/accomodation.svg"
             alt="Decorative beach image"
             width={400}
             height={400}
@@ -64,7 +63,7 @@ export default function AccommodationSection({
         {/* Header */}
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:mb-10 sm:flex-row sm:items-center">
           <h2 className="font-figtree text-[30px] font-bold leading-[100%] text-[#222222]">
-            {tAcc('accomodationTitle')}
+            {heading}
           </h2>
 
           <div className="flex flex-wrap items-center gap-3 sm:gap-4">
@@ -118,9 +117,7 @@ export default function AccommodationSection({
                 }
                 options={distanceOptions}
                 onChange={(val) => onDistanceChange?.(val)}
-                ariaLabel={tAcc('dropdownAria', {
-                  default: 'Razdalja od plaže',
-                })}
+                ariaLabel={tAcc('dropdownAria')}
                 renderOptionLabel={(opt) =>
                   tAcc('dropdownOption', { distance: opt.label })
                 }
