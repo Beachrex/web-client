@@ -9,7 +9,7 @@ import AccommodationSection from '@/components/AccommodationCard/AccommodationsS
 import PropertySection, { type Property } from '@/components/PropertySection';
 import { type Country } from '@/lib/api-client/types.gen';
 import IslandDestinationsSection from '../IslandPage/IslandDestinationsSection';
-import IslandSearchBeaches from '../IslandPage/IslandSeachBeaches';
+import IslandSearchBeaches from '../IslandPage/IslandSearchBeaches';
 
 interface IslandListingPageProps {
   islandSlug?: string;
@@ -77,7 +77,7 @@ export default function IslandListingPage({
 
   return (
     <>
-      <div className="container mx-auto">
+      <div className="container mx-auto p-4">
         <DynamicBreadcrumbs pathname={pathname ?? ''} />
       </div>
 

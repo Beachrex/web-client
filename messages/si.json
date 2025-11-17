@@ -235,6 +235,69 @@
     "sortTopRated": "Najbolje ocenjeno"
   },
 
+  "TownPage": {
+    "popularBeachesTitle": "Najbolj obiskane plaže {town}",
+    "featuredAccommodationsTitle": "Izpostavljene namestitve {town}",
+
+    "browseBeachesTitle": "Brskaj po vseh plažah {town}",
+    "filterButton": "Filtri",
+    "mapButton": "Zemljevid",
+    "displayLabel": "Prikaz:",
+    "sortPopular": "Najbolj popularno",
+    "sortNewest": "Najnovejše",
+    "sortTopRated": "Najbolje ocenjeno",
+
+    "categories": {
+      "sandBeaches": "Peščene plaže",
+      "rockBeaches": "Kamnite plaže",
+      "grassBeaches": "Travnate plaže",
+      "pool": "Bazen",
+      "naturalShade": "Naravna senca",
+      "slides": "Tobogani",
+      "playgroundBeaches": "Plaže z igrali",
+      "partyBeaches": "Plaže za zabavo",
+      "barBeaches": "Plaže z barom",
+      "sportsCourt": "S športnim igriščem",
+      "parkingOnBeach": "Plaže s parkiriščem",
+      "parkingNearby": "Parkirišče blizu",
+      "camping": "Avtokamp ob plaži",
+      "dogFriendly": "Primerne za pse",
+      "accessible": "Primerne za invalide"
+    }
+  },
+
+  "countryPage": {
+    "popularBeachesTitle": "Najbolj obiskane plaže {{country}}",
+    "featuredAccommodationTitle": "Izpostavljene namestitve {{country}}",
+    "allBeaches": "Vse plaže",
+    "allAccommodations": "Vse nastanitve",
+    "filter": "Filtriraj",
+    "showMap": "Prikaži zemljevid",
+    "displayLabel": "Prikaz",
+    "list": "Seznam",
+    "grid": "Mreža",
+    "map": "Zemljevid",
+
+    "regionsTitle": "Regije {country}",
+    "citiesTitle": "Mesta {country}",
+    "islandsTitle": "Otoški {country}",
+
+    "allRegionsCount": "Vse regije ({count})",
+    "allCitiesCount": "Vsa mesta ({count})",
+    "allIslandsCount": "Vsi otoki ({count})",
+
+    "regionBadge": "Morska doživetja",
+    "cityBadge": "Slikovito mesto",
+    "islandBadge": "Slikovit otok",
+
+    "browseBeachesTitle": "Brskaj po vseh plažah {country}",
+    "filterButton": "Filtri",
+    "mapButton": "Zemljevid",
+    "sortPopular": "Najbolj popularno",
+    "sortNewest": "Najnovejše",
+    "sortTopRated": "Najbolje ocenjeno"
+  },
+
   "BottomBadgesBeach": {
     "badges": {
       "stony": "Kamnita",

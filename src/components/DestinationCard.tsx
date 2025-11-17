@@ -2,15 +2,15 @@
 'use client';
 
 import type { Country } from '@/lib/api-client/types.gen';
-import { useTranslations, useLocale } from 'next-intl';
+import { buildCountryUrl } from '@/lib/utils/beach-urls';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { buildCountryUrl } from '@/lib/utils/beach-urls';
 
 interface DestinationCardProps {
   country: Country;
   badgeLabel?: string;
-  bottomVariant?: 'default' | 'city' | 'island';
+  bottomVariant?: 'default' | 'city' | 'island' | 'region';
 }
 
 export default function DestinationCard({
@@ -36,7 +36,8 @@ export default function DestinationCard({
     : '/images/topdestination/spain.jpg';
 
   const accommodationCount =
-    typeof (country as Record<string, unknown>).accommodations_count === 'number'
+    typeof (country as Record<string, unknown>).accommodations_count ===
+    'number'
       ? (country as { accommodations_count: number }).accommodations_count
       : Math.floor(Math.random() * 50) + 10;
 
@@ -47,15 +48,17 @@ export default function DestinationCard({
     bottomVariant === 'city'
       ? 'bg-[#FFEFDE]'
       : bottomVariant === 'island'
-      ? 'bg-[#FBF6E5]'
-      : 'bg-[#F8E2E2]';
+        ? 'bg-[#FBF6E5]'
+        : bottomVariant === 'region'
+          ? 'bg-[#FBE6EE]'
+          : 'bg-[#F8E2E2]';
 
   const locationIconSrc =
     bottomVariant === 'city'
       ? '/images/beachicons/location-icon-orange.svg'
       : bottomVariant === 'island'
-      ? '/images/beachicons/location-icon-yellow.svg'
-      : '/images/topdestination/icon.png';
+        ? '/images/beachicons/location-icon-yellow.svg'
+        : '/images/topdestination/icon.png';
 
   return (
     <Link
@@ -64,11 +67,8 @@ export default function DestinationCard({
     >
       <div className="relative w-full flex-1">
         <Image
-          src={src}
-          alt={name}
-          fill
-          className="object-cover"
-          priority
+src={src} alt={name} fill
+className="object-cover" priority
         />
 
         {badgeLabel && (
@@ -155,10 +155,8 @@ export default function DestinationCard({
         </div>
         <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#0069AB] px-3 text-white">
           <Image
-            src="/images/beach.png"
-            alt="Beaches"
-            width={26}
-            height={26}
+src="/images/beach.png" alt="Beaches" width={26}
+height={26}
           />
           <span className="text-[13px] font-semibold">
             {beachesLabel} {beachCount}

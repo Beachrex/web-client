@@ -174,7 +174,7 @@
     "numAccommodationsLabel": "Num. of accommodations:",
     "regionLabel": "Region",
     "islandLabel": "Island",
-    "cityLabel": "Town",
+    "cityLabel": "City",
     "countryLabel": "Country"
   },
   "TopBarBeach": {
@@ -242,6 +242,68 @@
     "mapButton": "Map",
     "displayLabel": "Display:",
 
+    "sortPopular": "Most popular",
+    "sortNewest": "Newest",
+    "sortTopRated": "Top rated"
+  },
+  "TownPage": {
+    "popularBeachesTitle": "Most visited beaches of {town}",
+    "featuredAccommodationsTitle": "Featured accommodations in {town}",
+
+    "browseBeachesTitle": "Browse all beaches in {town}",
+    "filterButton": "Filters",
+    "mapButton": "Map",
+    "displayLabel": "Display:",
+    "sortPopular": "Most popular",
+    "sortNewest": "Newest",
+    "sortTopRated": "Top rated",
+
+    "categories": {
+      "sandBeaches": "Sandy beaches",
+      "rockBeaches": "Rocky beaches",
+      "grassBeaches": "Grass beaches",
+      "pool": "Pool",
+      "naturalShade": "Natural shade",
+      "slides": "Slides",
+      "playgroundBeaches": "Beaches with playground",
+      "partyBeaches": "Party beaches",
+      "barBeaches": "Beaches with a bar",
+      "sportsCourt": "With sports court",
+      "parkingOnBeach": "Beaches with parking",
+      "parkingNearby": "Parking nearby",
+      "camping": "Campsite by the beach",
+      "dogFriendly": "Dog friendly",
+      "accessible": "Accessible for disabled"
+    }
+  },
+
+  "countryPage": {
+    "popularBeachesTitle": "Most visited beaches in {country}",
+    "featuredAccommodationTitle": "Featured accommodations in {country}",
+    "allBeaches": "All beaches",
+    "allAccommodations": "All accommodations",
+    "filter": "Filter",
+    "showMap": "Show map",
+    "displayLabel": "Display",
+    "list": "List",
+    "grid": "Grid",
+    "map": "Map",
+
+    "regionsTitle": "Regions of {country}",
+    "citiesTitle": "Towns of {country}",
+    "islandsTitle": "Islands of {country}",
+
+    "allRegionsCount": "All regions ({count})",
+    "allCitiesCount": "All towns ({count})",
+    "allIslandsCount": "All islands ({count})",
+
+    "regionBadge": "Sea experiences",
+    "cityBadge": "Scenic town",
+    "islandBadge": "Scenic island",
+
+    "browseBeachesTitle": "Browse all beaches in {country}",
+    "filterButton": "Filters",
+    "mapButton": "Map",
     "sortPopular": "Most popular",
     "sortNewest": "Newest",
     "sortTopRated": "Top rated"

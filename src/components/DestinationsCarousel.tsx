@@ -12,7 +12,7 @@ interface DestinationsCarouselProps {
   title: string;
   countLabel?: string;
   badgeLabel?: string;
-  cardVariant?: 'default' | 'city' | 'island';
+  cardVariant?: 'default' | 'city' | 'island' | 'region';
 }
 
 export default function DestinationsCarousel({
