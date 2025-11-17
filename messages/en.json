@@ -150,7 +150,12 @@
     "cardCuisineTitle": "Cuisine",
     "cardCultureTitle": "Culture",
     "cardSightsTitle": "Sights",
-    "readMore": "Read more >"
+    "readMore": "Read more >",
+    "categoryLabelContinent": "Continent",
+    "categoryLabelRegion": "Region",
+    "categoryLabelIsland": "Island",
+    "categoryLabelCity": "Town",
+    "categoryLabelCountry": "Country"
   },
   "BeachesMap": {
     "title": "Filter",
@@ -167,7 +172,10 @@
     "continentName": "Europe",
     "numBeachesLabel": "Num. of beaches:",
     "numAccommodationsLabel": "Num. of accommodations:",
-    "regionLabel": "Region"
+    "regionLabel": "Region",
+    "islandLabel": "Island",
+    "cityLabel": "Town",
+    "countryLabel": "Country"
   },
   "TopBarBeach": {
     "beachLabel": "Sea beach",
@@ -216,6 +224,24 @@
     "filterButton": "Filter",
     "mapButton": "View map",
     "displayLabel": "Beach view:",
+    "sortPopular": "Most popular",
+    "sortNewest": "Newest",
+    "sortTopRated": "Top rated"
+  },
+  "IslandPage": {
+    "popularBeachesTitle": "Most visited beaches {island}",
+    "featuredAccommodationsTitle": "Featured accommodations {island}",
+
+    "citiesTitle": "Towns of {island}",
+    "allCitiesCount": "All towns ({count})",
+    "cityBadge": "Scenic town",
+
+    "browseBeachesTitle": "Browse all beaches on the island of {island}",
+
+    "filterButton": "Filters",
+    "mapButton": "Map",
+    "displayLabel": "Display:",
+
     "sortPopular": "Most popular",
     "sortNewest": "Newest",
     "sortTopRated": "Top rated"

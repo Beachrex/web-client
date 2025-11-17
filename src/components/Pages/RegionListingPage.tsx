@@ -25,9 +25,9 @@ export default function RegionListingPage({
 
   const regionName = regionSlug ?? 'Kvarner';
 
-// TODO: replace with real API data later
-const regionBeachesCount = 123;
-const regionAccommodationsCount = 569;
+  // TODO: replace with real API data later
+  const regionBeachesCount = 123;
+  const regionAccommodationsCount = 569;
 
   const baseBeach: Property = {
     id: '1',
@@ -89,14 +89,14 @@ const regionAccommodationsCount = 569;
 
   return (
     <>
-
-  <BannerSection
+      <BannerSection
   image="/images/banner/region-banner.jpg"
   title={regionName}
   topBarVariant="region"
   accommodationCount={regionAccommodationsCount}
   beachCount={regionBeachesCount}
-  />
+      />
+
 
       {/* Most visited beaches in region */}
       <PropertySection

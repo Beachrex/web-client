@@ -150,7 +150,12 @@
     "cardCuisineTitle": "Kulinarika",
     "cardCultureTitle": "Kultura",
     "cardSightsTitle": "Znamenitosti",
-    "readMore": "Preberi več >"
+    "readMore": "Preberi več >",
+    "categoryLabelContinent": "Kontinent",
+    "categoryLabelRegion": "Regija",
+    "categoryLabelIsland": "Otok",
+    "categoryLabelCity": "Mesto",
+    "categoryLabelCountry": "Država"
   },
   "BeachesMap": {
     "title": "Filter",
@@ -167,7 +172,10 @@
     "continentName": "Evropa",
     "numBeachesLabel": "št. plaž:",
     "numAccommodationsLabel": "št. nastanitev:",
-    "regionLabel": "Regija"
+    "regionLabel": "Regija",
+    "islandLabel": "Otok",
+    "cityLabel": "Mesto",
+    "countryLabel": "Država"
   },
   "TopBarBeach": {
     "beachLabel": "Morska plaža",
@@ -209,6 +217,22 @@
     "sortPopular": "Najbolj priljubljene",
     "sortNewest": "Najnovejše",
     "sortTopRated": "Najbolje ocenjene"
+  },
+  "IslandPage": {
+    "popularBeachesTitle": "Najbolj obiskane plaže otoka {island}",
+    "featuredAccommodationsTitle": "Izpostavljene namestitve otoka {island}",
+
+    "citiesTitle": "Mesta otoka {island}",
+    "allCitiesCount": "Vsa mesta ({count})",
+    "cityBadge": "Slikovito mesto",
+
+    "browseBeachesTitle": "Brskaj po vseh plažah otoka {island}",
+    "filterButton": "Filtri",
+    "mapButton": "Zemljevid",
+    "displayLabel": "Prikaz:",
+    "sortPopular": "Najbolj popularno",
+    "sortNewest": "Najnovejše",
+    "sortTopRated": "Najbolje ocenjeno"
   },
 
   "BottomBadgesBeach": {
