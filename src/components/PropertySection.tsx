@@ -1,10 +1,11 @@
 'use client';
 
+import { Carousel } from 'flowbite-react';
+import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PropertyCard from './PropertyCard/PropertyCard';
-import { ChevronRight } from 'lucide-react';
 
 // TODO: optionally export this type so you can reuse it elsewhere
 export interface Property {
@@ -27,6 +28,88 @@ interface PropertySectionProps {
   properties: Property[];
   // Optional: custom right-side element (e.g. dropdown instead of link)
   headerRight?: React.ReactNode;
+}
+
+interface PropertyCarouselProps {
+  items: Property[];
+}
+
+function PropertyFlowbiteCarousel({ items = [] }: PropertyCarouselProps) {
+  const [itemsPerSlide, setItemsPerSlide] = useState(1);
+
+  // Update itemsPerSlide on resize
+  useEffect(() => {
+    const onResize = () => {
+      const w = window.innerWidth;
+      if (w >= 1536) setItemsPerSlide(4); // 2xl: 4
+      else if (w >= 1280) setItemsPerSlide(3); // xl: 3
+      else if (w >= 640) setItemsPerSlide(2); // sm/md/lg: 2
+      else setItemsPerSlide(1); // base: 1
+    };
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // itemsPerSlide
+  const slides = useMemo(() => {
+    const chunks: Property[][] = [];
+    for (let i = 0; i < items.length; i += itemsPerSlide) {
+      chunks.push(items.slice(i, i + itemsPerSlide));
+    }
+    return chunks;
+  }, [items, itemsPerSlide]);
+
+  // Dynamic measuring
+  const measurementRef = useRef<HTMLDivElement | null>(null);
+  const [measuredHeight, setMeasuredHeight] = useState<number | undefined>();
+
+  useEffect(() => {
+    if (!measurementRef.current) return;
+    const ro = new ResizeObserver((entries) => {
+      const h = entries[0]?.contentRect?.height;
+      if (h) setMeasuredHeight(Math.ceil(h));
+    });
+    ro.observe(measurementRef.current);
+    return () => ro.disconnect();
+  }, [slides.length]);
+
+  if (!items.length) return null;
+
+  return (
+    <div>
+      {/* Measurer*/}
+      <div className="invisible absolute left-0 top-0 -z-10 w-full">
+        <div ref={measurementRef}>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+            {(slides[0] ?? []).map((card, i) => (
+              <PropertyCard key={`measure_${i}`} {...card} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Carousel */}
+      <div style={{ height: measuredHeight ? `${measuredHeight}px` : undefined }}>
+        <Carousel
+          indicators={false}
+          slide={false} //
+          className="h-full"
+
+        >
+          {slides.map((chunk, idx) => (
+            <div key={idx} className="h-full px-0">
+              <div className="grid h-full grid-cols-1 content-center gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                {chunk.map((card, i) => (
+                  <PropertyCard key={`${idx}_${i}`} {...card} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </Carousel>
+      </div>
+    </div>
+  );
 }
 
 export const PropertySection: React.FC<PropertySectionProps> = ({
@@ -145,12 +228,14 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
           </div>
         </div>
 
-        {/* Property cards grid (responsive, 1–4 per row) */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {properties.map((property) => (
-            <PropertyCard key={property.id} {...property} />
-          ))}
-        </div>
+        {/* Property cards carousel / or empty state */}
+        {properties.length === 0 ? (
+          <p className="font-figtree text-[14px] text-[#8D8D8D]">
+            {t('noBeachesLabel')}
+          </p>
+        ) : (
+          <PropertyFlowbiteCarousel items={properties} />
+        )}
       </div>
     </section>
   );

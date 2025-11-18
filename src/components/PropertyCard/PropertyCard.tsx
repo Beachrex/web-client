@@ -6,17 +6,18 @@ import Image from 'next/image';
 const carouselTheme: CustomFlowbiteTheme['carousel'] = {
   indicators: {
     wrapper:
-      'absolute left-1/2 -translate-x-1/2 bottom-3 z-50 flex gap-2 pointer-events-auto',
-    base: 'h-2 w-2 rounded-full bg-white/60 data-[active=true]:bg-white shadow transition',
+      'absolute left-1/2 -translate-x-1/2 bottom-3 flex gap-2 pointer-events-auto z-50',
+    base:
+      'h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-white/50 data-[active=true]:bg-white shadow cursor-pointer transition',
   },
 };
+
 
 export function PropertyCard() {
   return (
     <div className="flex h-[395px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg">
       {/* Top banner fills remaining height */}
       <div className="relative grow">
-        {/* ⬇️ NEW: carousel with three identical slides */}
         <Carousel
           theme={carouselTheme}
           indicators
@@ -25,7 +26,6 @@ export function PropertyCard() {
           rightControl={<></>} // hide arrows (only dots)
           className="h-full"
         >
-          {/* Each slide keeps Next/Image for optimization */}
           <div className="relative h-full">
             <Image
               src="/images/propertycard/card-banner.jpg"
@@ -109,7 +109,7 @@ export function PropertyCard() {
         </div>
       </div>
 
-      {/* Bottom section (fixed height content, not compressing) */}
+      {/* Bottom section */}
       <div className="flex shrink-0 flex-col gap-[2px] rounded-b-[10px] bg-[#E5F2FB] px-4 py-3 lg:px-5 lg:py-4">
         {/* Title row */}
         <div className="flex items-center justify-between">
