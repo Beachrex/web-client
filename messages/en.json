@@ -365,6 +365,10 @@
 
   "BeachDetails": {
     "title": "Detailed information",
+    "beachMediaGallery": "Beach gallery",
+    "beachMediaVideo": "Beach video",
+    "beachMedia360": "360° view",
+    "beachMediaLiveCam": "Live cam",
     "groups": {
       "beach": "Beach",
       "infrastructure": "Beach infrastructure",

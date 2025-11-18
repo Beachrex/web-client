@@ -4,7 +4,8 @@ import Image from 'next/image';
 import React from 'react';
 
 const BeachPageView: React.FC = () => {
-  const t = useTranslations('HomePage');
+ const t = useTranslations('BeachDetails');
+
 
   const mediaItems = [
     {

@@ -2,16 +2,16 @@
 
 import MapWidget from '@/components/BannerSection/MapWidget';
 import WeatherWidget from '@/components/BannerSection/WeatherWidget';
+import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
+import { getMainBeachImage } from '@/lib/utils/beach-images';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import BeachTitleBlock from './BeachTitleBlock';
 import BottomBadgesBeach from './BottomBadgesBeach';
 import SeaTempWidget from './SeaTempWidget';
 import TopBarBeach from './TopBarBeach';
 import TopBarBeachRight from './TopBarBeachRight';
-import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
-import { getMainBeachImage } from '@/lib/utils/beach-images';
 
 interface BeachBannerSectionProps {
   beachDetails?: BeachDetailsSchema;
@@ -32,7 +32,7 @@ export default function BeachBannerSection({
   const mainImage = getMainBeachImage(
     beachDetails?.media?.gallery,
     beachDetails?.basic_info?.folder_name,
-    beachDetails?.basic_info?.mobile_upload
+    beachDetails?.basic_info?.mobile_upload,
   );
 
   // TODO: Map beach characteristics to badges dynamically
@@ -43,7 +43,7 @@ export default function BeachBannerSection({
   }[] = [
     { id: 'stony', icon: '/images/categories/stones-blue.png' },
     { id: 'familyFriendly', icon: '/images/categories/parents.png' },
-    { id: 'parking', icon: '/images/categories/parking-blue.png' },
+    { id: 'parking', icon: '/images/categories/parking-blue-full.png' },
     { id: 'easyAccess', icon: '/images/categories/arrow-path.svg' },
     { id: 'windsurfing', icon: '/images/categories/windsurfing.png' },
   ];
@@ -63,11 +63,11 @@ export default function BeachBannerSection({
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-blue-400 to-blue-600" />
         )}
-        <div className="absolute inset-0 bg-white/10" />
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
       {/* Top bar stays at the top */}
-      <div className="relative z-1 flex flex-row items-center justify-between p-4 sm:p-6 lg:p-8">
+      <div className="z-1 relative flex flex-row items-center justify-between p-4 sm:p-6 lg:p-8">
         {/* Left: naslov + counters */}
         <div className="flex flex-col">
           <TopBarBeach
@@ -95,12 +95,18 @@ export default function BeachBannerSection({
       </div>
 
       <div className="absolute inset-x-0 bottom-0 z-30 translate-y-1/2">
-        <BottomBadgesBeach badges={badges} description={description ?? undefined} />
+        <BottomBadgesBeach
+          badges={badges}
+          description={description ?? undefined}
+        />
       </div>
 
       {/* Floating buttons */}
       <div className="absolute right-0 top-1/2 z-40 flex -translate-y-1/2 flex-col">
-        <Link href={tRoutes('beachMap')} className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-[#1A3C68] sm:h-[68.46px] sm:w-[71px]">
+        <Link
+          href={tRoutes('beachMap')}
+          className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-[#1A3C68] sm:h-[68.46px] sm:w-[71px]"
+        >
           <Image
             src="/images/map.png"
             alt="open beach map"

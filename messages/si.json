@@ -365,6 +365,10 @@
   },
   "BeachDetails": {
     "title": "Podrobne informacije",
+    "beachMediaGallery": "Galerija plaže",
+    "beachMediaVideo": "Video plaže",
+    "beachMedia360": "360° pogled",
+    "beachMediaLiveCam": "Spletna kamera",
     "groups": {
       "beach": "Plaža",
       "infrastructure": "Plažna infrastruktura",
