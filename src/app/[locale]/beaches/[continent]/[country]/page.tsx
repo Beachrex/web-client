@@ -102,8 +102,11 @@ const Page = ({ countrySlug }: CountryListingPageProps) => {
 
   return (
     <>
-      <div className="container mx-auto p-4">
-        <DynamicBreadcrumbs pathname={pathname ?? ''} />
+      {/* Simple header with breadcrumbs – same style as Continent Banner */}
+      <div className="border-b bg-white py-4">
+        <div className="container mx-auto">
+          <DynamicBreadcrumbs pathname={pathname ?? ''} />
+        </div>
       </div>
 
       <BannerSection
@@ -149,7 +152,6 @@ const Page = ({ countrySlug }: CountryListingPageProps) => {
         cityItems={cityItems}
         islandItems={islandItems}
       />
-
 
       <CountrySearchBeaches
         countries={countryCountries}

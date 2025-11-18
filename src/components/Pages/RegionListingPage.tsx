@@ -11,6 +11,7 @@ import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import DestinationsCarousel from '../DestinationsCarousel';
 import RegionSearchBeaches from '../regions/RegionSearchBeaches';
+import DynamicBreadcrumbs from '../DynamicBreadcrumbs';
 
 interface RegionListingPageProps {
   regionSlug?: string;
@@ -90,6 +91,13 @@ export default function RegionListingPage({
 
   return (
     <>
+    {/* Simple header with breadcrumbs – same style as Continent Banner */}
+      <div className="border-b bg-white py-4">
+        <div className="container mx-auto">
+          <DynamicBreadcrumbs pathname={pathname ?? ''} />
+        </div>
+      </div>
+
       <BannerSection
         image="/images/banner/region-banner.jpg"
         title={regionName}

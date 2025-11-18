@@ -71,7 +71,6 @@ export default function CityListingPage({
 
   // Temporary mock islands data (replace with real API later)
 
-
   // Temporary mock cities data (replace with real API later)
   const baseCity: Country = {
     code: 'BASKA',
@@ -87,8 +86,11 @@ export default function CityListingPage({
 
   return (
     <>
-      <div className="container mx-auto">
-        <DynamicBreadcrumbs pathname={pathname ?? ''} />
+      {/* Simple header with breadcrumbs – same style as Continent Banner */}
+      <div className="border-b bg-white py-4">
+        <div className="container mx-auto">
+          <DynamicBreadcrumbs pathname={pathname ?? ''} />
+        </div>
       </div>
 
       <BannerSection

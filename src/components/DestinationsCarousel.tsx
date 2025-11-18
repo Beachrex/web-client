@@ -3,6 +3,7 @@
 
 import type { Country } from '@/lib/api-client/types.gen';
 import { Carousel } from 'flowbite-react';
+import { ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import DestinationCard from './DestinationCard';
@@ -46,15 +47,16 @@ export default function DestinationsCarousel({
     <section className="bg-white py-12">
       <div className="container mx-auto">
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <h2 className="text-2xl font-bold text-[#0A2342] sm:text-3xl lg:text-4xl">
+          <h2 className="font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]">
             {title}
           </h2>
           {countLabel && (
             <a
               href="#"
-              className="text-sm font-medium text-[#0A2342] hover:underline"
+              className="flex items-center gap-1 font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
             >
               {countLabel}
+              <ChevronRight className="h-4 w-4" />
             </a>
           )}
         </div>
