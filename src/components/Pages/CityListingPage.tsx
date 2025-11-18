@@ -12,6 +12,7 @@ import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import CityCategories from '../CityPage/CityCategories';
 import CitySearchBeaches from '../CityPage/citySearchBeaches';
+import DestinationsCarousel from '../DestinationsCarousel';
 
 interface CityListingPageProps {
   citySlug?: string;
@@ -26,6 +27,8 @@ export default function CityListingPage({
 
   const tTown = useTranslations('TownPage');
   const tProperty = useTranslations('PropertySection');
+
+  const tRegion = useTranslations('RegionPage');
 
   useEffect(() => {
     if (!pathname) return;
@@ -64,6 +67,22 @@ export default function CityListingPage({
     full_name: `Country ${i + 1}`,
     beaches_count: 112,
     image_path: null,
+  })) as Country[];
+
+  // Temporary mock islands data (replace with real API later)
+
+
+  // Temporary mock cities data (replace with real API later)
+  const baseCity: Country = {
+    code: 'BASKA',
+    name: 'Baška',
+    beaches_count: 112,
+  } as Country;
+
+  const cityItems: Country[] = Array.from({ length: 6 }, (_, i) => ({
+    ...baseCity,
+    code: `CITY-${i + 1}`,
+    name: `City ${i + 1}`,
   })) as Country[];
 
   return (
@@ -110,6 +129,17 @@ export default function CityListingPage({
       <CityCategories />
 
       <CitySearchBeaches countries={cityCountries} townName={cityName} />
+
+      {/* Cities carousel */}
+      <DestinationsCarousel
+        items={cityItems}
+        title={tTown('categories.citiesTitle')}
+        countLabel={tRegion('allCitiesCount', {
+          count: cityItems.length,
+        })}
+        badgeLabel={tRegion('cityBadge')}
+        cardVariant="city"
+      />
     </>
   );
 }

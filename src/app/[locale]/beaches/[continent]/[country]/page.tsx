@@ -142,12 +142,14 @@ const Page = ({ countrySlug }: CountryListingPageProps) => {
       />
 
       {/* Regions / Cities / Islands carousels */}
+
       <CountryDestinationsSection
         countryName={countryName}
         regionItems={regionItems}
         cityItems={cityItems}
         islandItems={islandItems}
       />
+
 
       <CountrySearchBeaches
         countries={countryCountries}

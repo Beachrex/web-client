@@ -43,7 +43,7 @@ export default function DestinationsCarousel({
   }
 
   return (
-    <section className="bg-[#F5F5F5] py-12">
+    <section className="bg-white py-12">
       <div className="container mx-auto">
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <h2 className="text-2xl font-bold text-[#0A2342] sm:text-3xl lg:text-4xl">

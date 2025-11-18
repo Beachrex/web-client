@@ -1,8 +1,8 @@
 'use client';
 
+import DestinationsCarousel from '@/components/DestinationsCarousel';
 import type { Country } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
-import DestinationsCarousel from '@/components/DestinationsCarousel';
 
 interface CountryDestinationsSectionProps {
   countryName: string;
@@ -21,6 +21,7 @@ export default function CountryDestinationsSection({
 
   return (
     <>
+
       {/* Regions carousel */}
       <DestinationsCarousel
         items={regionItems}
@@ -53,6 +54,7 @@ export default function CountryDestinationsSection({
         badgeLabel={tCountry('islandBadge')}
         cardVariant="island"
       />
+
     </>
   );
 }

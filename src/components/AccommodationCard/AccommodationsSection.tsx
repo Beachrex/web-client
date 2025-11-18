@@ -43,7 +43,7 @@ export default function AccommodationSection({
   const heading = title ?? tAcc('accomodationTitle');
 
   return (
-    <section className="relative overflow-hidden bg-[#E7E7E7] py-10 sm:py-14 lg:py-20">
+    <section className="relative overflow-hidden bg-[#F5F5F5] py-10 sm:py-14 lg:py-20">
       {/* Decorative background image */}
       <div className="pointer-events-none absolute left-0 top-0 z-0 opacity-60">
         <div className="relative h-[400px] w-[400px]">
