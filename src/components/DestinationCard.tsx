@@ -39,7 +39,7 @@ export default function DestinationCard({
     typeof (country as Record<string, unknown>).accommodations_count ===
     'number'
       ? (country as { accommodations_count: number }).accommodations_count
-      : Math.floor(Math.random() * 50) + 10;
+      : 20;
 
   const priceText = tDest('priceFrom');
   const beachesLabel = tHome('beachesLabel2');

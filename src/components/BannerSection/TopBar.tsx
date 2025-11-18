@@ -1,6 +1,6 @@
 'use client';
 
-import type { Continent } from '@/lib/api-client/types.gen';
+import type { Continent, Country } from '@/lib/api-client/types.gen';
 import { continentCodeToKey } from '@/lib/constants/mappings';
 import { getContinentIcon } from '@/lib/utils/icons';
 import { useTranslations } from 'next-intl';
@@ -13,8 +13,14 @@ import {
   VARIANT_TEXT_CLASS,
 } from '../ui/pageVariants';
 
+// Local extension so we can safely use country.flag_icon later
+type CountryWithFlag = Country & {
+  flag_icon?: string | null;
+};
+
 interface TopBarProps {
   continent?: Continent;
+  country?: CountryWithFlag;
   accommodationCount?: number;
   /** Used for region/island/city/country title (e.g. "Kvarner", "Krk") */
   title?: string;
@@ -26,6 +32,7 @@ interface TopBarProps {
 
 const TopBar: React.FC<TopBarProps> = ({
   continent,
+  country,
   accommodationCount = 0,
   title,
   variant = 'continent',
@@ -49,8 +56,16 @@ const TopBar: React.FC<TopBarProps> = ({
     ? (continent.name ?? tContinent('europe'))
     : tContinent('europe');
 
-  // For continent we show continent name, for others we expect title prop
-  const displayTitle = isContinent ? continentName : (title ?? '');
+  // Country flag icon (only relevant for country variant)
+  const countryIcon =
+    variant === 'country'
+      ? (country?.flag_icon ?? '/images/common/croatia-icon.png')
+      : null;
+
+  // For continent we show continent name, for others we expect title or fall back to country name
+  const displayTitle = isContinent
+    ? continentName
+    : (title ?? country?.name ?? '');
 
   const displayBeachCount =
     typeof beachCount === 'number'
@@ -100,6 +115,19 @@ const TopBar: React.FC<TopBarProps> = ({
       <div className={containerClasses}>
         {/* Label pill (Continent / Region / Island / City / Country) */}
         <span className={pillClasses}>{t(pillLabelKey)}</span>
+
+        {/* Country icon – only for country variant (between pill and title) */}
+        {variant === 'country' && countryIcon && (
+          <div className="flex items-center justify-center overflow-hidden">
+            <Image
+              src={countryIcon}
+              alt={displayTitle || 'country flag'}
+              width={32}
+              height={55}
+              className="object-contain"
+            />
+          </div>
+        )}
 
         {/* Continent icon – only for continent variant */}
         {isContinent && (

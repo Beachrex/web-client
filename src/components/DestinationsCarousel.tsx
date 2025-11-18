@@ -72,7 +72,7 @@ export default function DestinationsCarousel({
                 <HiChevronRight className="h-5 w-5 text-gray-600" />
               </div>
             }
-            indicators
+            indicators={false}
             slide={false}
           >
             {slides.map((chunk, i) => (

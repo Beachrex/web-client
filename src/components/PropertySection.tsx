@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
 import PropertyCard from './PropertyCard/PropertyCard';
+import { ChevronRight } from 'lucide-react';
 
 // TODO: optionally export this type so you can reuse it elsewhere
 export interface Property {
@@ -135,9 +136,10 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
             {headerRight ?? (
               <a
                 href="#"
-                className="font-figtree text-[13px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555] sm:text-[14px]"
+                className="flex items-center gap-1 font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
               >
                 {t('allBeachesLink', { count: totalCount })}
+                <ChevronRight className="h-4 w-4" />
               </a>
             )}
           </div>

@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import { type Country } from '@/lib/api-client/types.gen';
+import { ChevronRight } from 'lucide-react';
 import IslandDestinationsSection from '../IslandPage/IslandDestinationsSection';
 import IslandSearchBeaches from '../IslandPage/IslandSearchBeaches';
 
@@ -97,9 +98,10 @@ export default function IslandListingPage({
         headerRight={
           <a
             href="#"
-            className="font-figtree text-[13px] font-bold leading-none text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
+            className="flex items-center font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
           >
             {tProperty('allBeachesLink', { count: beachProperties.length })}
+            <ChevronRight className="h-4 w-4" />
           </a>
         }
       />

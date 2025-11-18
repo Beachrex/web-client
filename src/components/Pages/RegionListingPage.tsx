@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 
 import PropertySection, { type Property } from '@/components/PropertySection';
 import type { Country } from '@/lib/api-client/types.gen';
+import { ChevronRight } from 'lucide-react';
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import DestinationsCarousel from '../DestinationsCarousel';
@@ -90,13 +91,12 @@ export default function RegionListingPage({
   return (
     <>
       <BannerSection
-  image="/images/banner/region-banner.jpg"
-  title={regionName}
-  topBarVariant="region"
-  accommodationCount={regionAccommodationsCount}
-  beachCount={regionBeachesCount}
+        image="/images/banner/region-banner.jpg"
+        title={regionName}
+        topBarVariant="region"
+        accommodationCount={regionAccommodationsCount}
+        beachCount={regionBeachesCount}
       />
-
 
       {/* Most visited beaches in region */}
       <PropertySection
@@ -106,9 +106,10 @@ export default function RegionListingPage({
         headerRight={
           <a
             href="#"
-            className="font-figtree text-[13px] font-bold leading-none text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
+            className="flex items-center font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
           >
             {tProperty('allBeachesLink', { count: beachProperties.length })}
+            <ChevronRight className="h-4 w-4" />
           </a>
         }
       />

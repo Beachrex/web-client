@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
 import CountrySearchBeaches from '@/components/CountryPage/CountrySearchBeaches';
 import type { Country } from '@/lib/api-client/types.gen';
+import { ChevronRight } from 'lucide-react';
 
 interface CountryListingPageProps {
   countrySlug?: string;
@@ -121,9 +122,10 @@ const Page = ({ countrySlug }: CountryListingPageProps) => {
         headerRight={
           <a
             href="#"
-            className="font-figtree text-[13px] font-bold leading-none text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
+            className="flex items-center font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
           >
             {tProperty('allBeachesLink', { count: beachProperties.length })}
+            <ChevronRight className="h-4 w-4" />
           </a>
         }
       />
