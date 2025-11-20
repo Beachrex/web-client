@@ -1,4 +1,3 @@
-// DestinationsCarousel.tsx
 'use client';
 
 import type { Country } from '@/lib/api-client/types.gen';
@@ -14,15 +13,21 @@ interface DestinationsCarouselProps {
   countLabel?: string;
   badgeLabel?: string;
   cardVariant?: 'default' | 'city' | 'island' | 'region';
+  backgroundClassName?: string; // new
+  titleClassName?: string;      // new
 }
 
-export default function DestinationsCarousel({
-  items,
-  title,
-  countLabel,
-  badgeLabel,
-  cardVariant = 'default',
-}: DestinationsCarouselProps) {
+export default function DestinationsCarousel(props: DestinationsCarouselProps) {
+  const {
+    items,
+    title,
+    countLabel,
+    badgeLabel,
+    cardVariant = 'default',
+    backgroundClassName = 'bg-white',      // default = white (prejšnje stanje)
+    titleClassName = 'text-[#222222]',     // default = prejšnja barva naslova
+  } = props;
+
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
 
   useEffect(() => {
@@ -44,12 +49,13 @@ export default function DestinationsCarousel({
   }
 
   return (
-    <section className="bg-white py-12">
+    <section className={`${backgroundClassName} py-12`}>
       <div className="container mx-auto">
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <h2 className="font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]">
+          <h2 className={`font-figtree text-[30px] font-bold leading-[1] tracking-[0] ${titleClassName}`}>
             {title}
           </h2>
+
           {countLabel && (
             <a
               href="#"
