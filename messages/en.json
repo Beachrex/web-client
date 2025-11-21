@@ -295,7 +295,10 @@
     "displayLabel": "Beach view:",
     "sortPopular": "Most popular",
     "sortNewest": "Newest",
-    "sortTopRated": "Top rated"
+    "sortTopRated": "Top rated",
+     "worldOverviewTitle": "World overview",
+  "worldOverviewSubtitle": "Beaches · Islands · Pools",
+  "destinationsTitle": "Top beach destinations in the world"
   },
 
 "WorldSEO": {

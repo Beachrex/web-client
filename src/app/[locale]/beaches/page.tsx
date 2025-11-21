@@ -1,14 +1,18 @@
 'use client';
+
 import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+import TopDestinationsSection from '@/components/Home/TopDestinationSection'; // ← ADDED
 import PropertySection, { type Property } from '@/components/PropertySection';
 import WorldBannerSection from '@/components/WorldPage/WorldBanner/WorldBannerSection';
+import WorldQuickActionsSection from '@/components/WorldPage/WorldQuickActionsSection';
 import WorldSearchBeaches from '@/components/WorldPage/WorldSearchBeaches';
 import { usePathname } from '@/i18n/routing';
 import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
-const mockCountries = Array.from({ length: 16 }, (_, i) => ({
+// MOCK DESTINATION COUNTRIES (replace with API later)
+const mockCountries = Array.from({ length: 12 }, (_, i) => ({
   code: `country-${i}`,
   name: `Country ${i + 1}`,
   full_name: `Country ${i + 1}`,
@@ -16,6 +20,7 @@ const mockCountries = Array.from({ length: 16 }, (_, i) => ({
   image_path: null,
 }));
 
+// MOCK BEACH PROPERTIES
 const baseBeach: Property = {
   id: '1',
   image:
@@ -40,23 +45,25 @@ const Page = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!pathname) return; // Return if slug is not available
-    // Here you can handle your routing logic based on the slug
-    // For example, you could fetch data or set a state based on the slug
+    if (!pathname) return;
   }, [pathname]);
 
   const tWorld = useTranslations('WorldTopBar');
   const tProperty = useTranslations('PropertySection');
+  const tTitle = useTranslations('WorldTopBar');
   const tSEO = useTranslations('WorldSEO');
+  const tHome = useTranslations('HomePage');
+
   return (
     <>
-      {/* Simple header with breadcrumbs – same style as Continent Banner */}
+      {/* Breadcrumbs */}
       <div className="py-4">
         <div className="container mx-auto">
           <DynamicBreadcrumbs pathname={pathname ?? ''} />
         </div>
       </div>
 
+      {/* Banner */}
       <WorldBannerSection
         image="/images/banner/world-banner.png"
         totalCountriesWithBeaches={120}
@@ -68,6 +75,16 @@ const Page = () => {
         totalLakeBeaches={15000}
       />
 
+
+        {/* NEW: quick access buttons row */}
+      <WorldQuickActionsSection
+        onAccommodationsClick={() => console.log('open world accommodations')}
+        onWeatherClick={() => console.log('open world weather')}
+        onTopBeachesClick={() => console.log('open top beaches')}
+      />
+
+
+      {/* Popular Beaches (mock) */}
       <PropertySection
         title={tWorld('popularBeachesTitle')}
         totalCount={beachProperties.length}
@@ -83,7 +100,7 @@ const Page = () => {
         }
       />
 
-      {/* SEO DESCRIPTION */}
+      {/* SEO text */}
       <section className="bg-white py-12 sm:py-16 lg:py-20">
         <div className="container mx-auto max-w-4xl">
           <h2 className="mb-4 font-figtree text-[28px] font-bold leading-[120%] text-[#222] sm:text-[32px]">
@@ -104,7 +121,15 @@ const Page = () => {
         </div>
       </section>
 
-      {/* WORLD BEACH SEARCH LIST */}
+      {/* ★ NEW: IDENTICAL TOPDESTINATIONSSECTION AS ON HOME PAGE ★ */}
+      <TopDestinationsSection
+        title={tTitle('destinationsTitle')} // same translation key as home
+        items={mockCountries} // pass your world data later
+        countLabel={tHome('allCountriesCount', { count: mockCountries.length })}
+        badgeLabel={tHome('seaExperiences')}
+      />
+
+      {/* World Beach Search */}
       <WorldSearchBeaches countries={mockCountries} />
     </>
   );

@@ -17,13 +17,9 @@ interface WorldTopBarProps {
 interface StatBadgeProps {
   label: string;
   value?: number;
-  // Optional icon so you can switch later (or remove completely)
   iconSrc?: string;
 }
 
-/**
- * Formats large numbers with thousand separators.
- */
 const formatNumber = (value?: number) => {
   if (value == null) return '–';
   try {
@@ -36,26 +32,41 @@ const formatNumber = (value?: number) => {
 const StatBadge: React.FC<StatBadgeProps> = ({ label, value, iconSrc }) => {
   const displayValue = formatNumber(value);
 
-  const numberTextClasses =
-    'font-figtree text-[12px] sm:text-[14px] font-bold text-[#1A3C68]';
-
   return (
-    <div className="flex h-[41px] items-center gap-[4px] rounded-[6px] bg-white/95 px-[6px] sm:gap-[8px] sm:px-[10px]">
+    <div
+      className="
+        inline-flex items-center gap-2 rounded-md
+        bg-white/90 px-3 py-1.5
+        shadow-[0_6px_16px_rgba(0,0,0,0.12)]
+        border border-white/60
+        backdrop-blur-md
+      "
+    >
       {iconSrc && (
-        <Image
-          src={iconSrc}
-          alt={label}
-          width={26}
-          height={26}
-          className="h-[20px] w-[20px] sm:h-[26px] sm:w-[26px]"
-        />
+        <div
+          className="
+            flex items-center justify-center rounded-full
+            bg-[#16BFD6]/10 p-1
+          "
+        >
+          <Image
+            src={iconSrc}
+            alt={label}
+            width={25}
+            height={25}
+            className="opacity-80"
+          />
+        </div>
       )}
 
-      <span className="hidden font-figtree text-[13px] font-medium text-[#222222] sm:block">
-        {label}
-      </span>
-
-      <span className={numberTextClasses}>{displayValue}</span>
+      <div className="flex flex-col leading-tight">
+        <span className="hidden text-[11px] font-medium uppercase tracking-[0.06em] text-[#3A3A3A] sm:block">
+          {label}
+        </span>
+        <span className="text-[12px] sm:text-[14px] font-semibold text-[#006b6b]">
+          {displayValue}
+        </span>
+      </div>
     </div>
   );
 };
@@ -70,52 +81,59 @@ const WorldTopBar: React.FC<WorldTopBarProps> = ({
   totalLakeBeaches,
 }) => {
   const t = useTranslations('WorldTopBar');
-
-  // For now we use the same beach icon everywhere; replace per badge later if needed
   const defaultIcon = '/images/beach-black.png';
 
   return (
-    <div className="flex h-[54px] items-center gap-[6px] overflow-x-auto rounded-[10px] px-[8px] py-[6px] backdrop-blur-sm sm:gap-[10px] sm:px-[12px] lg:px-[16px] scrollbar-hide">
 
-      {/* statistic badges */}
-      <div className="flex flex-nowrap items-center gap-[6px] sm:gap-[8px]">
-        <StatBadge
-          label={t('countriesWithBeachesLabel')}
-          value={totalCountriesWithBeaches}
-          iconSrc={defaultIcon}
-        />
-        <StatBadge
-          label={t('totalBeachesLabel')}
-          value={totalBeaches}
-          iconSrc={defaultIcon}
-        />
-        <StatBadge
-          label={t('openPoolsLabel')}
-          value={totalOpenPools}
-          iconSrc={defaultIcon}
-        />
-        <StatBadge
-          label={t('indoorPoolsLabel')}
-          value={totalIndoorPools}
-          iconSrc={defaultIcon}
-        />
-        <StatBadge
-          label={t('islandsWithBeachesLabel')}
-          value={totalIslandsWithBeaches}
-          iconSrc={defaultIcon}
-        />
-        <StatBadge
-          label={t('riverBeachesLabel')}
-          value={totalRiverBeaches}
-          iconSrc={defaultIcon}
-        />
-        <StatBadge
-          label={t('lakeBeachesLabel')}
-          value={totalLakeBeaches}
-          iconSrc={defaultIcon}
-        />
+      <div
+        className="
+          mt-2 flex items-center gap-3 overflow-x-auto scrollbar-hide
+          rounded-[10px]
+          bg-gradient-to-r from-[#0FBAD6] via-[#16C9D4] to-[#0B99C2]
+          px-3 py-3 sm:px-4 sm:py-4
+          shadow-[0_10px_30px_rgba(0,0,0,0.15)]
+        "
+      >
+        {/* Stat badges */}
+        <div className="flex flex-nowrap items-center gap-2.5 sm:gap-3.5">
+          <StatBadge
+            label={t('countriesWithBeachesLabel')}
+            value={totalCountriesWithBeaches}
+            iconSrc={defaultIcon}
+          />
+          <StatBadge
+            label={t('totalBeachesLabel')}
+            value={totalBeaches}
+            iconSrc={defaultIcon}
+          />
+          <StatBadge
+            label={t('openPoolsLabel')}
+            value={totalOpenPools}
+            iconSrc={defaultIcon}
+          />
+          <StatBadge
+            label={t('indoorPoolsLabel')}
+            value={totalIndoorPools}
+            iconSrc={defaultIcon}
+          />
+          <StatBadge
+            label={t('islandsWithBeachesLabel')}
+            value={totalIslandsWithBeaches}
+            iconSrc={defaultIcon}
+          />
+          <StatBadge
+            label={t('riverBeachesLabel')}
+            value={totalRiverBeaches}
+            iconSrc={defaultIcon}
+          />
+          <StatBadge
+            label={t('lakeBeachesLabel')}
+            value={totalLakeBeaches}
+            iconSrc={defaultIcon}
+          />
+        </div>
       </div>
-    </div>
+
   );
 };
 

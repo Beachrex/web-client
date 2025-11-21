@@ -284,7 +284,10 @@
     "displayLabel": "Pogled plaže:",
     "sortPopular": "Najbolj priljubljene",
     "sortNewest": "Najnovejše",
-    "sortTopRated": "Najbolje ocenjene"
+    "sortTopRated": "Najbolje ocenjene",
+    "worldOverviewTitle": "Pregled sveta",
+    "worldOverviewSubtitle": "Plaže · Otoki · Bazeni",
+    "destinationsTitle": "Najboljše plažne destinacije na svetu"
   },
 
   "WorldSEO": {
