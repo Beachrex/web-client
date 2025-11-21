@@ -278,6 +278,34 @@
     }
   },
 
+  "WorldTopBar": {
+    "worldLabel": "World",
+    "countriesWithBeachesLabel": "Countries with beaches",
+    "totalBeachesLabel": "Beaches worldwide",
+    "openPoolsLabel": "Outdoor pools worldwide",
+    "indoorPoolsLabel": "Indoor pools worldwide",
+    "islandsWithBeachesLabel": "Islands with beaches",
+    "riverBeachesLabel": "River beaches",
+    "lakeBeachesLabel": "Lake beaches",
+    "popularBeachesTitle": "Most visited beaches in the world",
+
+    "browseBeachesTitle": "Browse all beaches in the world",
+    "filterButton": "Filter",
+    "mapButton": "View map",
+    "displayLabel": "Beach view:",
+    "sortPopular": "Most popular",
+    "sortNewest": "Newest",
+    "sortTopRated": "Top rated"
+  },
+
+"WorldSEO": {
+  "title": "Discover the world's beaches",
+  "paragraph1": "The world is home to an incredible variety of beaches, from tropical white sands to rugged volcanic shores. Whether you're dreaming of quiet lagoons, palm-lined coasts, or iconic tourist destinations, our global beach database helps you find the perfect spot.",
+  "paragraph2": "With beaches across oceans, lakes, rivers, and islands, travellers can explore everything from hidden gems to world-famous coastlines. Each destination offers unique culture, climate, and experiences.",
+  "paragraph3": "Browse through thousands of beaches across all continents and discover where your next unforgettable seaside adventure will take you."
+},
+
+
   "countryPage": {
     "popularBeachesTitle": "Most visited beaches in {country}",
     "featuredAccommodationTitle": "Featured accommodations in {country}",

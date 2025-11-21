@@ -267,6 +267,33 @@
     }
   },
 
+  "WorldTopBar": {
+    "worldLabel": "Svet",
+    "countriesWithBeachesLabel": "Držav z plažami",
+    "totalBeachesLabel": "Plaž na svetu",
+    "openPoolsLabel": "Odprtih bazenov na svetu",
+    "indoorPoolsLabel": "Zaprtih bazenov na svetu",
+    "islandsWithBeachesLabel": "Otokov z plažami na svetu",
+    "riverBeachesLabel": "Plaž ob rekah",
+    "lakeBeachesLabel": "Plaž ob jezerih",
+    "popularBeachesTitle": "Najbolj obiskane plaže na svetu",
+
+    "browseBeachesTitle": "Prebrskaj vse plaže na svetu",
+    "filterButton": "Filter",
+    "mapButton": "Prikaži zemljevid",
+    "displayLabel": "Pogled plaže:",
+    "sortPopular": "Najbolj priljubljene",
+    "sortNewest": "Najnovejše",
+    "sortTopRated": "Najbolje ocenjene"
+  },
+
+  "WorldSEO": {
+    "title": "Odkrij plaže sveta",
+    "paragraph1": "Svet ponuja izjemno raznolikost plaž – od tropskih bežnih obal do mogočnih vulkanskih pokrajin. Ne glede na to, ali iščete mirne lagune, palmami obdane obale ali najbolj znane počitniške destinacije, vam naša globalna baza plaž pomaga najti popoln kotiček.",
+    "paragraph2": "Plaže ob oceanih, jezerih, rekah in otokih omogočajo raziskovanje skritih draguljev in svetovno znanih obal. Vsaka destinacija ponuja svojstveno kulturo, podnebje in doživetja.",
+    "paragraph3": "Prebrskajte tisoče plaž po vseh celinah in odkrijte, kam vas bo popeljala vaša naslednja nepozabna obmorska avantura."
+  },
+
   "countryPage": {
     "popularBeachesTitle": "Najbolj obiskane plaže {{country}}",
     "featuredAccommodationTitle": "Izpostavljene namestitve {{country}}",
