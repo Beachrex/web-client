@@ -13,19 +13,27 @@ import CountrySearchBeaches from '@/components/CountryPage/CountrySearchBeaches'
 import type { Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
 
-interface CountryListingPageProps {
-  countrySlug?: string;
-  countryDataProp?: unknown;
+// ✅ App Router page props – to je tisto, kar Next pričakuje
+interface PageProps {
+  params: {
+    locale: string;
+    continent: string;
+    country: string;
+  };
+  searchParams?: Record<string, string | string[] | undefined>;
 }
 
-const Page = ({ countrySlug }: CountryListingPageProps) => {
+const Page = ({ params }: PageProps) => {
   const pathname = usePathname();
 
   useEffect(() => {
     if (!pathname) return;
   }, [pathname]);
 
+  // ✅ countrySlug dobiš iz URL parametrov
+  const countrySlug = params.country;
   const countryName = countrySlug ?? 'Hrvaška';
+
   const countryBeachesCount = 112;
   const countryAccommodationsCount = 245;
 
@@ -145,7 +153,6 @@ const Page = ({ countrySlug }: CountryListingPageProps) => {
       />
 
       {/* Regions / Cities / Islands carousels */}
-
       <CountryDestinationsSection
         countryName={countryName}
         regionItems={regionItems}
