@@ -1,18 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { env } from '@/env';
 import { useTranslations } from 'next-intl';
+
+type FilterValue = string | number | boolean | undefined;
+type FilterOptions = GetBeachFiltersResponse['data'];
 
 interface LeftSidebarFiltersProps {
     beachesCount: number;
     beachesLoading: boolean;
-    onFiltersChange?: (filters: Record<string, string | number | undefined>) => void;
-    currentFilters?: Record<string, string | number | undefined>;
+    onFiltersChange?: (filters: Record<string, FilterValue>) => void;
+    currentFilters?: Record<string, FilterValue>;
+    onFilterOptionsChange?: (filterOptions: FilterOptions | null) => void;
+    onFilterOptionsLoadingChange?: (isLoading: boolean) => void;
 }
 
 const LeftSidebarFilters = ({
@@ -20,6 +26,8 @@ const LeftSidebarFilters = ({
     beachesLoading,
     onFiltersChange,
     currentFilters = {},
+    onFilterOptionsChange,
+    onFilterOptionsLoadingChange,
 }: LeftSidebarFiltersProps) => {
     const t = useTranslations('BeachesMap');
     const [isExpanded, setIsExpanded] = useState(false);
@@ -27,9 +35,59 @@ const LeftSidebarFilters = ({
 
     const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
 
-    // Fetch filter options using TanStack Query
-    const { data, isLoading, error } = useQuery(getBeachFiltersOptions());
+    // Extract all selected filters from currentFilters to pass as query parameters
+    // These filters cascade - selecting a filter will update other filter options
+    const queryParams = useMemo(() => {
+        // Build query params from all selected filters
+        const params: Record<string, string | number> = {};
+
+        Object.entries(currentFilters).forEach(([key, value]) => {
+            // Skip undefined, null, or empty values
+            if (value === undefined || value === null || value === '') {
+                return;
+            }
+
+            // Convert value to appropriate type for API
+            if (typeof value === 'string' || typeof value === 'number') {
+                params[key] = value;
+            } else if (typeof value === 'boolean') {
+                // Convert boolean to string or number as needed
+                params[key] = value ? 1 : 0;
+            }
+        });
+
+        if (Object.keys(params).length > 0) {
+            console.log('[LeftSidebarFilters] Computing query params:', params);
+        }
+
+        // Type assertion: API accepts geographic filters, but we pass all selected filters
+        // for cascading filter behavior. The API will ignore unsupported parameters.
+        return Object.keys(params).length > 0 ? params : undefined;
+    }, [currentFilters]);
+
+    // Fetch filter options using TanStack Query with all currently selected filters
+    const { data, isLoading, error } = useQuery(
+        getBeachFiltersOptions({
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+            query: queryParams as any,
+        })
+    );
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const filterOptions = data?.data ?? null;
+
+    // Notify parent component when filter options change
+    useEffect(() => {
+        if (onFilterOptionsChange) {
+            onFilterOptionsChange(filterOptions);
+        }
+    }, [filterOptions, onFilterOptionsChange]);
+
+    // Notify parent component when filter options loading state changes
+    useEffect(() => {
+        if (onFilterOptionsLoadingChange) {
+            onFilterOptionsLoadingChange(isLoading);
+        }
+    }, [isLoading, onFilterOptionsLoadingChange]);
 
     // Initialize expanded sections when filter options data changes
     useEffect(() => {
@@ -56,6 +114,10 @@ const LeftSidebarFilters = ({
                 [filterKey]: value ?? undefined, // Remove key if value is empty
             });
         }
+    };
+
+    const handleResetFilters = () => {
+        onFiltersChange?.({});
     };
 
     const renderFilterOptions = (
@@ -161,7 +223,7 @@ const LeftSidebarFilters = ({
                 </div>
 
                 {/* Beaches Count */}
-                <div className="py-2">
+                <div className="py-2 flex items-center justify-between gap-4">
                     <p className="text-sm text-gray-600">
                         {beachesLoading ? (
                             t('loadingFilters')
@@ -169,6 +231,14 @@ const LeftSidebarFilters = ({
                             `${t('found')} (${beachesCount})`
                         )}
                     </p>
+                    <button
+                        type="button"
+                        onClick={handleResetFilters}
+                        className="text-sm text-blue-600 hover:text-blue-800 disabled:text-gray-400"
+                        disabled={Object.keys(currentFilters).length === 0}
+                    >
+                        {t('resetFilters')}
+                    </button>
                 </div>
 
                 {/* Filter Categories */}
@@ -237,3 +307,4 @@ const LeftSidebarFilters = ({
 };
 
 export default LeftSidebarFilters;
+

@@ -709,10 +709,77 @@ export type BeachListResponseSchema = {
       longitude?: number | null;
     };
     /**
+     * Bounding box of all filtered beaches (min/max coordinates)
+     */
+    bounding_box?: {
+      /**
+       * Minimum latitude
+       */
+      min_latitude?: number | null;
+      /**
+       * Minimum longitude
+       */
+      min_longitude?: number | null;
+      /**
+       * Maximum latitude
+       */
+      max_latitude?: number | null;
+      /**
+       * Maximum longitude
+       */
+      max_longitude?: number | null;
+    };
+    /**
      * Total number of beaches returned (respects limit parameter)
      */
     total_beaches?: number;
   };
+};
+
+/**
+ * Beach Map Bounds Response
+ *
+ * Response schema for beach map bounds endpoint - returns geographic bounds and center of all active beaches without beach data. Used for initial map load.
+ */
+export type BeachMapBoundsResponse = {
+  /**
+   * Geographic center (centroid) of all active beaches, calculated using PostGIS ST_Centroid function
+   */
+  center?: {
+    /**
+     * Center latitude coordinate
+     */
+    latitude: number | null;
+    /**
+     * Center longitude coordinate
+     */
+    longitude: number | null;
+  };
+  /**
+   * Bounding box containing all active beaches (min/max latitude and longitude)
+   */
+  bounding_box?: {
+    /**
+     * Minimum latitude (southern boundary)
+     */
+    min_latitude: number | null;
+    /**
+     * Minimum longitude (western boundary)
+     */
+    min_longitude: number | null;
+    /**
+     * Maximum latitude (northern boundary)
+     */
+    max_latitude: number | null;
+    /**
+     * Maximum longitude (eastern boundary)
+     */
+    max_longitude: number | null;
+  };
+  /**
+   * Total count of active beaches (status_id=1)
+   */
+  total_beaches?: number;
 };
 
 /**
@@ -2720,6 +2787,23 @@ export type GetBayLengthByIdResponses = {
 export type GetBayLengthByIdResponse =
   GetBayLengthByIdResponses[keyof GetBayLengthByIdResponses];
 
+export type GetBeachesMapBoundsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/v1/beaches/map-bounds";
+};
+
+export type GetBeachesMapBoundsResponses = {
+  /**
+   * Map bounds calculated successfully
+   */
+  200: BeachMapBoundsResponse;
+};
+
+export type GetBeachesMapBoundsResponse =
+  GetBeachesMapBoundsResponses[keyof GetBeachesMapBoundsResponses];
+
 export type GetBeachesData = {
   body?: never;
   headers?: {
@@ -3681,7 +3765,24 @@ export type GetBeachFiltersData = {
       | "sk";
   };
   path?: never;
-  query?: never;
+  query?: {
+    /**
+     * Filter by continent code (e.g., EU, AS, AF)
+     */
+    continent_code?: string;
+    /**
+     * Filter by country code or ID (e.g., HR, SI, or numeric ID)
+     */
+    country?: string | number;
+    /**
+     * Filter by region ID or code
+     */
+    region?: number | string;
+    /**
+     * Filter by island ID or code
+     */
+    island?: number | string;
+  };
   url: "/api/v1/beaches/filters";
 };
 

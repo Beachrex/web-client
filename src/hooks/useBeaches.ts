@@ -1,52 +1,199 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getBeachesOptions, getBeachesWithinRadiusOptions } from '@/lib/api-client/@tanstack/react-query.gen';
-import type { BeachSchema } from '@/lib/api-client/types.gen';
+import { getBeachesOptions, getBeachesWithinRadiusOptions, getBeachesInBoundingBoxOptions, getBeachesMapBoundsOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import type { BeachSchema, BeachBoundingBoxResponseSchema, BeachMapBoundsResponse } from '@/lib/api-client/types.gen';
+
+type FilterInputValue = string | number | boolean | undefined;
+
+type NormalizedFiltersMap = Record<string, string | number | boolean>;
+
+const normalizeFilterValues = (
+  filters?: Record<string, FilterInputValue>
+): NormalizedFiltersMap => {
+  const normalized: NormalizedFiltersMap = {};
+
+  if (!filters) {
+    return normalized;
+  }
+
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value === undefined || value === '') {
+      return;
+    }
+
+    if (typeof value === 'number' || typeof value === 'boolean') {
+      normalized[key] = value;
+      return;
+    }
+
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) {
+        return;
+      }
+
+      const lower = trimmed.toLowerCase();
+      if (lower === 'true' || trimmed === '1') {
+        normalized[key] = true;
+        return;
+      }
+      if (lower === 'false' || trimmed === '0') {
+        normalized[key] = false;
+        return;
+      }
+
+      const numericValue = Number(trimmed);
+      if (!Number.isNaN(numericValue)) {
+        normalized[key] = numericValue;
+        return;
+      }
+
+      normalized[key] = trimmed;
+      return;
+    }
+
+    normalized[key] = String(value);
+  });
+
+  return normalized;
+};
+
+// Common filter parameters supported by radius search
+export type CommonBeachFilters = Record<string, FilterInputValue>;
+
+// All beaches filter parameters (supports all filters from /api/v1/beaches)
+export type AllBeachesFilters = Record<string, FilterInputValue>;
 
 // Radius search filters
-export interface RadiusSearchFilters {
-  latitude?: number;
-  longitude?: number;
-  radius?: number;
-  limit?: number;
+export type RadiusSearchFilters = CommonBeachFilters & {
+  latitude: FilterInputValue;
+  longitude: FilterInputValue;
+  radius: FilterInputValue;
+  limit?: FilterInputValue;
+};
+
+// Bounding box search filters (supports all filters from /api/v1/spatial/beaches/bounding-box)
+export type BoundingBoxSearchFilters = CommonBeachFilters & {
+  min_lat: FilterInputValue;
+  min_lon: FilterInputValue;
+  max_lat: FilterInputValue;
+  max_lon: FilterInputValue;
+};
+
+interface BeachesResult {
+  beaches: BeachSchema[];
+  loading: boolean;
+  error: string | null;
+  meta?: Record<string, unknown>;
 }
 
-export const useBeaches = (filters?: RadiusSearchFilters) => {
-  // Determine if we should use radius search
-  const useRadiusSearch =
-    filters?.latitude !== undefined &&
-    filters?.longitude !== undefined &&
-    filters?.radius !== undefined;
+/**
+ * Hook to fetch all beaches with optional filters
+ */
+export function useAllBeaches(filters?: AllBeachesFilters, enabled = true): BeachesResult {
+  const normalizedFilters = filters
+    ? normalizeFilterValues(filters as Record<string, FilterInputValue>)
+    : undefined;
 
-  // Fetch all beaches (disabled when using radius search)
-  const allBeachesQuery = useQuery({
-    ...getBeachesOptions(),
-    enabled: !useRadiusSearch,
-  });
-
-  // Fetch beaches within radius (disabled when not using radius search)
-  const radiusQuery = useQuery({
-    ...getBeachesWithinRadiusOptions({
-      query: {
-        latitude: Number(filters?.latitude ?? 0),
-        longitude: Number(filters?.longitude ?? 0),
-        radius: Number(filters?.radius ?? 1),
-        limit: filters?.limit ? Number(filters.limit) : undefined,
-      },
+  const { data, isLoading, error } = useQuery({
+    ...getBeachesOptions({
+      query: normalizedFilters as AllBeachesFilters | undefined,
     }),
-    enabled: useRadiusSearch,
+    enabled,
   });
 
-  // Use the appropriate query result
-  const { data, isLoading, error } = useRadiusSearch ? radiusQuery : allBeachesQuery;
-
-  // Extract beaches array from API response
-  const beaches = (data as { data?: BeachSchema[] })?.data ?? [];
+  const beaches = data?.data ?? [];
+  const metaData = data?.meta ?? {};
 
   return {
     beaches,
     loading: isLoading,
     error: error ? (error instanceof Error ? error.message : 'Failed to fetch beaches') : null,
+    meta: metaData,
   };
-};
+}
+
+/**
+ * Hook to fetch beaches within a radius from a center point
+ */
+export function useBeachesRadius(filters: RadiusSearchFilters, enabled = true): BeachesResult {
+  const normalizedFilters = normalizeFilterValues(
+    filters as unknown as Record<string, FilterInputValue>
+  );
+
+  const { data, isLoading, error } = useQuery({
+    ...getBeachesWithinRadiusOptions({
+      query: {
+        latitude: Number(filters.latitude),
+        longitude: Number(filters.longitude),
+        radius: Number(filters.radius),
+        ...normalizedFilters,
+      },
+    }),
+    enabled,
+  });
+
+  const beaches = data?.data ?? [];
+  const metaData = data?.meta ?? {};
+
+  return {
+    beaches,
+    loading: isLoading,
+    error: error ? (error instanceof Error ? error.message : 'Failed to fetch beaches') : null,
+    meta: metaData,
+  };
+}
+
+/**
+ * Hook to fetch beaches within a bounding box with optional filters
+ */
+export function useBeachesBoundingBox(filters: BoundingBoxSearchFilters, enabled = true): {
+  data: BeachBoundingBoxResponseSchema | undefined;
+  loading: boolean;
+  error: string | null;
+} {
+  const normalizedFilters = normalizeFilterValues(
+    filters as unknown as Record<string, FilterInputValue>
+  );
+
+  const { data, isLoading, error } = useQuery({
+    ...getBeachesInBoundingBoxOptions({
+      query: {
+        min_lat: Number(filters.min_lat),
+        min_lon: Number(filters.min_lon),
+        max_lat: Number(filters.max_lat),
+        max_lon: Number(filters.max_lon),
+        ...normalizedFilters,
+      },
+    }),
+    enabled,
+  });
+
+  return {
+    data,
+    loading: isLoading,
+    error: error ? (error instanceof Error ? error.message : 'Failed to fetch beaches') : null,
+  };
+}
+
+/**
+ * Hook to fetch map bounds for all active beaches (used for initial map load)
+ */
+export function useBeachesMapBounds(enabled = true): {
+  data: BeachMapBoundsResponse | undefined;
+  loading: boolean;
+  error: string | null;
+} {
+  const { data, isLoading, error } = useQuery({
+    ...getBeachesMapBoundsOptions(),
+    enabled,
+  });
+
+  return {
+    data,
+    loading: isLoading,
+    error: error ? (error instanceof Error ? error.message : 'Failed to fetch map bounds') : null,
+  };
+}
+

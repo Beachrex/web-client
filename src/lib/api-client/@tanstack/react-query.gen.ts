@@ -19,6 +19,7 @@ import {
   getBeachDetails,
   getBeaches,
   getBeachesInBoundingBox,
+  getBeachesMapBounds,
   getBeachesWithinRadius,
   getBeachFilters,
   getBeachInclinationById,
@@ -89,6 +90,7 @@ import type {
   GetBeachDetailsData,
   GetBeachesData,
   GetBeachesInBoundingBoxData,
+  GetBeachesMapBoundsData,
   GetBeachesWithinRadiusData,
   GetBeachFiltersData,
   GetBeachInclinationByIdData,
@@ -385,6 +387,32 @@ export const getBayLengthByIdOptions = (
       return data;
     },
     queryKey: getBayLengthByIdQueryKey(options),
+  });
+};
+
+export const getBeachesMapBoundsQueryKey = (
+  options?: Options<GetBeachesMapBoundsData>,
+) => createQueryKey("getBeachesMapBounds", options);
+
+/**
+ * Get map bounds for all active beaches
+ *
+ * Returns only the bounding box and center coordinates of all active beaches (status_id=1). Used for initial map load to calculate proper zoom and center. Does not return beach data. This endpoint is heavily cached (30 days TTL) and cache is automatically cleared when beaches are updated.
+ */
+export const getBeachesMapBoundsOptions = (
+  options?: Options<GetBeachesMapBoundsData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBeachesMapBounds({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBeachesMapBoundsQueryKey(options),
   });
 };
 
@@ -752,9 +780,9 @@ export const getBeachFiltersQueryKey = (
 ) => createQueryKey("getBeachFilters", options);
 
 /**
- * Get all beach filter options
+ * Get beach filter options with optional cascading filters
  *
- * Returns all available filter options for beaches including waterbody types, user types, etc. All data is translated based on Accept-Language header with English fallback.
+ * Returns available filter options for beaches. When geographic filters (continent_code, country, region, island) are provided, returns only options that have active beaches in those locations. All data is translated based on Accept-Language header with English fallback.
  */
 export const getBeachFiltersOptions = (
   options?: Options<GetBeachFiltersData>,
