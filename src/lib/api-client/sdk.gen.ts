@@ -60,6 +60,8 @@ import type {
   GetBeachesData,
   GetBeachesInBoundingBoxData,
   GetBeachesInBoundingBoxResponses,
+  GetBeachesMapBoundsData,
+  GetBeachesMapBoundsResponses,
   GetBeachesResponses,
   GetBeachesWithinRadiusData,
   GetBeachesWithinRadiusResponses,
@@ -450,6 +452,24 @@ export const getBayLengthById = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Get map bounds for all active beaches
+ *
+ * Returns only the bounding box and center coordinates of all active beaches (status_id=1). Used for initial map load to calculate proper zoom and center. Does not return beach data. This endpoint is heavily cached (30 days TTL) and cache is automatically cleared when beaches are updated.
+ */
+export const getBeachesMapBounds = <ThrowOnError extends boolean = false>(
+  options?: Options<GetBeachesMapBoundsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetBeachesMapBoundsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/v1/beaches/map-bounds",
+    ...options,
+  });
+};
+
+/**
  * List all beaches with optional filters
  */
 export const getBeaches = <ThrowOnError extends boolean = false>(
@@ -736,9 +756,9 @@ export const getCulinaryOfferById = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Get all beach filter options
+ * Get beach filter options with optional cascading filters
  *
- * Returns all available filter options for beaches including waterbody types, user types, etc. All data is translated based on Accept-Language header with English fallback.
+ * Returns available filter options for beaches. When geographic filters (continent_code, country, region, island) are provided, returns only options that have active beaches in those locations. All data is translated based on Accept-Language header with English fallback.
  */
 export const getBeachFilters = <ThrowOnError extends boolean = false>(
   options?: Options<GetBeachFiltersData, ThrowOnError>,

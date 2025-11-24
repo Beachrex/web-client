@@ -161,11 +161,13 @@
     "title": "Filter",
     "advancedFilters": "Advanced",
     "loadingFilters": "Loading...",
+    "resetFilters": "Reset",
     "found": "Found",
     "noBeachesFound": "No beaches found",
     "searchForBeaches": "Enter address",
     "loadingMap": "Loading map...",
-    "radiusLabel": "Radius:"
+    "radiusLabel": "Radius:",
+    "loadingBeaches": "Loading beaches..."
   },
   "TopBar": {
     "continentLabel": "Continent",
