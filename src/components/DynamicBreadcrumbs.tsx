@@ -1,71 +1,81 @@
 'use client';
 
-import { Breadcrumb } from 'flowbite-react';
-import { HiHome } from 'react-icons/hi';
-import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
+import { Breadcrumb } from 'flowbite-react';
+import { useLocale } from 'next-intl';
+import { HiHome } from 'react-icons/hi';
 
-// Define the type for the props
 interface DynamicBreadcrumbsProps {
-    pathname: string;
+  pathname: string;
 }
 
-/**
- * Format breadcrumb segment: replace dashes/underscores with spaces and capitalize each word
- * Example: "vodice-beaches" -> "Vodice Beaches"
- */
 function formatBreadcrumbSegment(segment: string): string {
-    return segment
-        .replace(/[-_]/g, ' ') // Replace dashes and underscores with spaces
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(' ');
+  return segment
+    .replace(/[-_]/g, ' ')
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 }
 
-export default function DynamicBreadcrumbs({ pathname }: DynamicBreadcrumbsProps) {
-    const locale = useLocale();
+export default function DynamicBreadcrumbs({
+  pathname,
+}: DynamicBreadcrumbsProps) {
+  const locale = useLocale();
 
-    // Ensure pathname is a string and split it safely
-    const pathSegments = pathname.split('/').filter((segment: string) => segment.length > 0);
+  const pathSegments = pathname.split('/').filter((s) => s.length > 0);
+  const filteredSegments = pathSegments.filter((s) => s !== locale);
 
-    // Filter out locale segment from breadcrumbs (we don't want to show 'en', 'si', etc. in breadcrumbs)
-    const filteredSegments = pathSegments.filter((segment: string) => segment !== locale);
-
-    // Generate breadcrumb items based on path segments
-    const breadcrumbs = filteredSegments.map((segment: string, index: number) => {
-        // Create URL for each breadcrumb - include locale prefix
-        const href = `/${filteredSegments.slice(0, index + 1).join('/')}`;
-        // Format segment: replace dashes with spaces and capitalize each word
-        const formattedSegment = formatBreadcrumbSegment(segment);
-        // Check if this is the last (current) breadcrumb
-        const isCurrentPage = index === filteredSegments.length - 1;
-
-        return (
-            <Breadcrumb.Item key={`breadcrumb-${index}`}>
-                <Link
-                    href={href}
-                    className={`transition-colors duration-200 ease-in-out text-xs ${
-                        isCurrentPage
-                            ? 'text-variable-collection-mesto hover:opacity-80 font-medium'
-                            : 'text-variable-collection-middle-grey hover:text-variable-collection-mesto font-light'
-                    }`}
-                >
-                    {formattedSegment}
-                </Link>
-            </Breadcrumb.Item>
-        );
-    });
+  const breadcrumbs = filteredSegments.map((segment, index) => {
+    const href = `/${filteredSegments.slice(0, index + 1).join('/')}`;
+    const formatted = formatBreadcrumbSegment(segment);
+    const isCurrent = index === filteredSegments.length - 1;
 
     return (
-        <div>
-            <Breadcrumb aria-label="Dynamic breadcrumbs">
-                <Breadcrumb.Item>
-                    <Link href="/" className="flex items-center text-variable-collection-middle-grey hover:text-variable-collection-mesto transition-colors duration-200 ease-in-out">
-                        <HiHome className="mr-2" />
-                    </Link>
-                </Breadcrumb.Item>
-                {breadcrumbs}
-            </Breadcrumb>
-        </div>
+      <Breadcrumb.Item key={index}>
+        <Link
+          href={href}
+          className={`text-xs transition-colors duration-200 ${
+            isCurrent
+              ? 'font-medium text-variable-collection-mesto'
+              : 'text-variable-collection-middle-grey hover:text-variable-collection-mesto'
+          }`}
+        >
+          {formatted}
+        </Link>
+      </Breadcrumb.Item>
     );
+  });
+
+  return (
+    <div className="w-full px-4 sm:px-6">
+      {/* 📱 MOBILE: only home icon, centered */}
+      <div className="flex justify-center py-1 sm:hidden">
+        <Link
+          href="/"
+          className="text-variable-collection-middle-grey hover:text-variable-collection-mesto"
+        >
+          <HiHome className="h-5 w-5" />
+        </Link>
+      </div>
+
+      {/* 🖥️ DESKTOP: normal breadcrumbs */}
+      <div className="scrollbar-hide hidden max-w-full overflow-x-auto sm:block">
+        <Breadcrumb
+          aria-label="Dynamic breadcrumbs"
+          className="flex items-center whitespace-nowrap"
+        >
+          <Breadcrumb.Item>
+            <Link
+              href="/"
+              className="flex items-center justify-center text-variable-collection-middle-grey hover:text-variable-collection-mesto"
+            >
+              <HiHome className="h-4 w-4" />
+            </Link>
+          </Breadcrumb.Item>
+
+          {breadcrumbs}
+        </Breadcrumb>
+      </div>
+    </div>
+  );
 }

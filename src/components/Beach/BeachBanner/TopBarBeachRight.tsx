@@ -12,7 +12,7 @@ const TopBarBeachRight: React.FC = () => {
       {/* Google reviews */}
       <button
         type="button"
-        className="flex cursor-pointer items-center gap-[8px] rounded-full bg-[#F5F5F5] px-[18px] py-[8px] text-[14px] shadow-sm transition-all hover:bg-[#E8E8E8]"
+        className="hidden cursor-pointer items-center gap-[8px] rounded-full bg-[#F5F5F5] px-[18px] py-[8px] text-[14px] shadow-sm transition-all hover:bg-[#E8E8E8] sm:flex"
         title={t('reviews')}
       >
         <span className="font-figtree text-[14px] font-semibold leading-[100%] text-[#4D4D4D]">

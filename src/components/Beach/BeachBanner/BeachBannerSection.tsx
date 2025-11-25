@@ -26,9 +26,21 @@ export default function BeachBannerSection({
 }: BeachBannerSectionProps) {
   const tRoutes = useTranslations('routes');
 
-  // Extract data from beachDetails
-  const beachName = beachDetails?.basic_info?.name;
+  // Extract and sanitize beach name from beachDetails
+  const rawBeachName = beachDetails?.basic_info?.name ?? '';
+
+  /**
+   * Clean up beach name coming from API:
+   * - remove backslashes used for escaping
+   * - replace "/" (and surrounding spaces) with a single space
+   */
+  const beachName = rawBeachName
+    .replace(/\\/g, '') // "Plaža d\'en" -> "Plaža d'en"
+    .replace(/\s*\/\s*/g, ' ') // "Plaža d'en / Perris" -> "Plaža d'en Perris"
+    .trim();
+
   const description = beachDetails?.basic_info?.description;
+
   const mainImage = getMainBeachImage(
     beachDetails?.media?.gallery,
     beachDetails?.basic_info?.folder_name,
@@ -68,7 +80,7 @@ export default function BeachBannerSection({
 
       {/* Top bar stays at the top */}
       <div className="z-1 relative flex flex-row items-center justify-between p-4 sm:p-6 lg:p-8">
-        {/* Left: naslov + counters */}
+        {/* Left: Title + counters */}
         <div className="flex flex-col">
           <TopBarBeach
             beachName={beachName}
