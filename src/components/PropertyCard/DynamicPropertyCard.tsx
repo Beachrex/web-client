@@ -5,6 +5,7 @@ import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
+import { encodeCdnImagePath } from '@/lib/utils/beach-images';
 
 interface DynamicPropertyCardProps {
   beach: BeachSchema;
@@ -26,7 +27,7 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
 
   // Build the image URL
   const imageUrl = beach.main_image
-    ? `${cdnEndpoint}${beach.main_image}`
+    ? `${cdnEndpoint}${encodeCdnImagePath(beach.main_image)}`
     : '/images/propertycard/card-banner.jpg'; // fallback image
 
   // Get display values with fallbacks

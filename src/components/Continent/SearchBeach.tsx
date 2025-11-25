@@ -1,5 +1,6 @@
 'use client';
-  import type { Continent, Country } from '@/lib/api-client/types.gen';
+import type { Continent, Country } from '@/lib/api-client/types.gen';
+import { encodeCdnImagePath } from '@/lib/utils/beach-images';
 import { Pagination } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -23,7 +24,7 @@ const SearchBeach: React.FC<SearchBeachProps> = ({
       ? countries.map((country) => ({
           id: country.code,
           image: country.image_path
-            ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${country.image_path}`
+            ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(country.image_path)}`
             : '/images/spain.jpg',
           title: country.full_name ?? country.name,
           location: `${country.name}${continent ? `, ${continent.name}` : ''}`,

@@ -2,6 +2,53 @@ import { env } from '@/env';
 import type { MediaItem } from '@/lib/api-client/types.gen';
 
 /**
+ * Encode a single path segment only when it contains non-ASCII characters.
+ * This avoids double-encoding already percent-encoded segments.
+ */
+function encodePathSegment(segment: string): string {
+  if (!segment) return segment;
+
+  // Fast path: already pure ASCII, nothing to encode
+  if (/^[\u0000-\u007F]*$/.test(segment)) {
+    return segment;
+  }
+
+  // Normalize to NFD so characters like "č" become "c" + combining caron,
+  // then percent-encode the bytes. This matches how objects are stored in the CDN
+  // (e.g. 'brač' -> 'brac%CC%8C').
+  return encodeURIComponent(segment.normalize('NFD'));
+}
+
+/**
+ * Encode only the non-ASCII characters in a CDN image path while preserving
+ * path separators and already-encoded segments.
+ *
+ * Example:
+ *   '/public/img/beaches/hr-37-o-brač/hr-37-o-brač-sl10.jpg'
+ * becomes
+ *   '/public/img/beaches/hr-37-o-bra%C4%8D/hr-37-o-bra%C4%8D-sl10.jpg'
+ */
+export function encodeCdnImagePath(path: string): string {
+  if (!path) return path;
+
+  const queryIndex = path.search(/[?#]/);
+  let main = path;
+  let suffix = '';
+
+  if (queryIndex !== -1) {
+    main = path.slice(0, queryIndex);
+    suffix = path.slice(queryIndex);
+  }
+
+  const encoded = main
+    .split('/')
+    .map(segment => encodePathSegment(segment))
+    .join('/');
+
+  return encoded + suffix;
+}
+
+/**
  * Build full CDN URL for beach images
  *
  * Beach images have two path patterns:
@@ -23,7 +70,11 @@ export function buildBeachImageUrl(
   }
 
   const basePath = mobileUpload ? 'img/beaches_mobile' : 'img/beaches';
-  return `${env.NEXT_PUBLIC_CDN_ENDPOINT}/${basePath}/${folderName}/${filename}`;
+
+  const safeFolder = encodePathSegment(folderName);
+  const safeFilename = encodePathSegment(filename);
+
+  return `${env.NEXT_PUBLIC_CDN_ENDPOINT}/${basePath}/${safeFolder}/${safeFilename}`;
 }
 
 /**
@@ -56,4 +107,3 @@ export function getMainBeachImage(
 
   return buildBeachImageUrl(folderName, selectedImage.file_name, mobileUpload);
 }
-

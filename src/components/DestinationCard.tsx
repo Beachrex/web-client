@@ -3,6 +3,7 @@
 
 import type { Country } from '@/lib/api-client/types.gen';
 import { buildCountryUrl } from '@/lib/utils/beach-urls';
+import { encodeCdnImagePath } from '@/lib/utils/beach-images';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -32,7 +33,7 @@ export default function DestinationCard({
   const countryUrl = buildCountryUrl(locale, continentSlug, countrySlug);
 
   const src = country.image_path
-    ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${country.image_path}`
+    ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(country.image_path)}`
     : '/images/topdestination/spain.jpg';
 
   const accommodationCount =
