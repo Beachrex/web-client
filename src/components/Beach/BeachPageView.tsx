@@ -6,7 +6,9 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import React from 'react';
 
+import { env } from '@/env';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
+import { encodeCdnImagePath } from '@/lib/utils/beach-images';
 
 // disable SSR for pannellum viewer
 const ReactPannellum = dynamic(() => import('react-pannellum'), {
@@ -44,6 +46,7 @@ const buildYoutubeEmbedUrl = (rawUrl: string): string => {
 
 const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const t = useTranslations('BeachDetails');
+  const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
 
   // ✅ Hook vedno pokličemo, brez pogojev
   const [activeMedia, setActiveMedia] =
@@ -56,20 +59,25 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const videos = media?.videos ?? [];
   const spheres = media?.spheres_360 ?? [];
 
-  const primaryGalleryUrl =
-    gallery[0]?.thumbnail_url ??
-    gallery[0]?.url ??
+  const buildCdnUrl = (path?: string | null): string | null => {
+    if (!path) return null;
+    return `${cdnEndpoint}${encodeCdnImagePath(path)}`;
+  };
+
+  const primaryGalleryUrlTmp =
+    buildCdnUrl(gallery[0]?.thumbnail_url ?? gallery[0]?.url) ??
     '/images/beachmedia/beach-gallery.jpg';
 
   const rawVideoUrl =
     (typeof embeds?.video_url === 'string' ? embeds.video_url : null) ??
-    videos[0]?.url ??
+    (videos[0]?.url ? buildCdnUrl(videos[0]?.url) : null) ??
     null;
 
   const videoEmbedUrl = rawVideoUrl ? buildYoutubeEmbedUrl(rawVideoUrl) : null;
 
   const sphereImageUrl =
-    spheres[0]?.thumbnail_url ?? spheres[0]?.url ?? primaryGalleryUrl;
+    buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url) ??
+    primaryGalleryUrlTmp;
 
   const hasGallery = gallery.length > 0;
   const hasVideo = Boolean(videoEmbedUrl);
@@ -78,7 +86,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const rawItems: (MediaCard & { enabled: boolean })[] = [
     {
       key: 'gallery',
-      src: primaryGalleryUrl,
+      src: primaryGalleryUrlTmp,
       icon: '/images/beachmedia/gallery-icon.svg',
       label: t('beachMediaGallery'),
       enabled: hasGallery,
@@ -161,8 +169,10 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
                 {gallery.length > 1 ? (
                   <Carousel slide={false} className="h-full w-full">
                     {gallery.map((img) => {
+                      const rawSrc = img.url ?? img.thumbnail_url;
                       const src =
-                        img.url ?? img.thumbnail_url ?? primaryGalleryUrl;
+                        (rawSrc ? `${env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(rawSrc)}` : null) ??
+                        primaryGalleryUrlTmp;
                       const key = String(img.id ?? src);
 
                       return (
@@ -182,7 +192,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
                   </Carousel>
                 ) : (
                   <Image
-                    src={primaryGalleryUrl}
+                    src={primaryGalleryUrlTmp}
                     alt={
                       beachDetails.basic_info?.name ?? 'Beach gallery image'
                     }

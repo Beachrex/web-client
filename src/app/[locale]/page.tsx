@@ -18,6 +18,8 @@ import {
 } from '@/hooks/useFirstPageContent';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { env } from '@/env';
+import { encodeCdnImagePath } from '@/lib/utils/beach-images';
 
 export default function HomePage() {
   const t = useTranslations('HomePage');
@@ -32,11 +34,17 @@ export default function HomePage() {
   const { content: featuredSections, loading: featuredLoading } = useFeaturedSections();
   const { content: footerText, loading: footerLoading } = useFooterText();
 
+  // Helper to build CDN URL from relative path
+  const buildCdnUrl = (path: string | null | undefined): string => {
+    if (!path) return '';
+    return `${env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(path)}`;
+  };
+
   // Process browse map data
   const mapImageUrl = useMemo(() => {
     if (browseMap?.media && browseMap.media.length > 0) {
       const image = browseMap.media.find(m => m.is_primary) ?? browseMap.media[0];
-      return image?.url ?? '';
+      return buildCdnUrl(image?.url);
     }
     return '';
   }, [browseMap]);
@@ -50,8 +58,8 @@ export default function HomePage() {
       return {
         id: item.id ?? index,
         title: item.title ?? '',
-        iconUrl: icon?.url ?? '',
-        backgroundUrl: backgroundImage?.url ?? '',
+        iconUrl: buildCdnUrl(icon?.url),
+        backgroundUrl: buildCdnUrl(backgroundImage?.url),
       };
     });
   }, [beachViews]);
@@ -59,7 +67,7 @@ export default function HomePage() {
   // Process accommodation images
   const accommodationImages = useMemo(() => {
     if (!accommodation?.media) return [];
-    return accommodation.media.map(m => m.url ?? '').filter(url => url !== '');
+    return accommodation.media.map(m => buildCdnUrl(m.url)).filter(url => url !== '');
   }, [accommodation]);
 
   // Process featured sections data
@@ -87,7 +95,7 @@ export default function HomePage() {
       return {
         id: item.id ?? index,
         title: item.title ?? '',
-        backgroundImageUrl: backgroundImage?.url ?? '',
+        backgroundImageUrl: buildCdnUrl(backgroundImage?.url),
         buttonLabel: config.label,
         buttonIconUrl: config.icon,
         buttonBgColor: config.bgColor,

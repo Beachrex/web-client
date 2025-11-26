@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import PropertyCard from '../PropertyCard/PropertyCard';
+import { encodeCdnImagePath } from '@/lib/utils/beach-images';
 
 interface WorldSearchBeachesProps {
   countries?: Country[];
@@ -24,7 +25,7 @@ const WorldSearchBeaches: React.FC<WorldSearchBeachesProps> = ({
       ? countries.map((country) => ({
           id: country.code,
           image: country.image_path
-            ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${country.image_path}`
+            ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(country.image_path)}`
             : '/images/spain.jpg',
 
           title: country.full_name ?? country.name,

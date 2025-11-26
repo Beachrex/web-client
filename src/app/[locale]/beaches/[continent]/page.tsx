@@ -11,6 +11,7 @@ import {
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { encodeCdnImagePath } from '@/lib/utils/beach-images';
 
 interface PageProps {
   params: Promise<{
@@ -145,8 +146,9 @@ const Page = async ({ params }: PageProps) => {
       .filter((country) => country.code && country.name)
       .map((country) => ({
         id: country.code!,
-        image:
-          'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg', // Default image until we have image_path in API response
+        image: country.image_path
+          ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(country.image_path)}`
+          : '/images/spain.jpg',
         title: country.full_name ?? country.name!,
         location: `${country.name}, ${continent.name}`,
         price: Math.floor(Math.random() * 200) + 50, // Mock price until we have real data

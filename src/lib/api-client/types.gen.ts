@@ -496,7 +496,7 @@ export type BeachDetailsSchema = {
      */
     videos?: Array<MediaItem>;
     /**
-     * 360-degree panoramic images
+     * 360-degree panoramic images and their virtual tours
      */
     spheres_360?: Array<MediaItem>;
     /**
@@ -563,7 +563,7 @@ export type BeachDetailsSchema = {
        */
       distance_km?: number;
       /**
-       * Main beach image path (prepend CDN URL)
+       * Main beach image path (relative, without CDN/domain prefix).
        */
       main_image?: string | null;
       /**
@@ -591,7 +591,7 @@ export type BeachDetailsSchema = {
        */
       distance_km?: number;
       /**
-       * Main beach image path (prepend CDN URL)
+       * Main beach image path (relative, without CDN/domain prefix).
        */
       main_image?: string | null;
       /**
@@ -611,13 +611,23 @@ export type BeachDetailsSchema = {
 /**
  * Media Item
  *
- * Individual media item (image, video, etc.)
+ * Individual media item (image, video, 360 sphere, etc.)
  */
 export type MediaItem = {
   id?: number;
   file_name?: string;
+  /**
+   * Relative media path without CDN/domain prefix. Frontend should prepend its own base URL or CDN.
+   */
   url?: string;
+  /**
+   * Relative thumbnail path (same as url for now).
+   */
   thumbnail_url?: string | null;
+  /**
+   * Virtual tour HTML path for 360 spheres (present only for spheres_360 collection).
+   */
+  tour_url?: string | null;
   mime_type?: string;
   width?: number | null;
   height?: number | null;
@@ -896,7 +906,7 @@ export type BeachSchema = {
    */
   city_slug?: string | null;
   /**
-   * Primary beach image path (prepend CDN URL on frontend)
+   * Primary beach image path (relative, without CDN/domain prefix). Frontend should prepend its own base URL or CDN.
    */
   main_image?: string | null;
 };
@@ -1167,7 +1177,7 @@ export type FirstPageContentMedia = {
    */
   type?: string;
   /**
-   * Full CDN URL to the media file
+   * Relative media path without CDN/domain prefix. Frontend should prepend its own base URL or CDN.
    */
   url?: string;
   /**
@@ -1398,7 +1408,13 @@ export type Media = {
     name?: string;
   } | null;
   file_name?: string;
+  /**
+   * Relative media path without CDN/domain prefix. Frontend should prepend its own base URL or CDN.
+   */
   url?: string;
+  /**
+   * Relative thumbnail path (same as url for now).
+   */
   thumbnail_url?: string | null;
   mime_type?: string;
   /**

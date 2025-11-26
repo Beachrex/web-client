@@ -5,7 +5,9 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
 
+import { env } from '@/env';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
+import { encodeCdnImagePath } from '@/lib/utils/beach-images';
 import InfoRow from './InfoRow';
 import SingleValue from './SingleValue';
 
@@ -41,10 +43,20 @@ const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
 
   if (validImages.length === 0) return null;
 
+  const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
+
+  const toCdnUrl = (url?: string | null): string | null => {
+    if (!url) return null;
+    return `${cdnEndpoint}${encodeCdnImagePath(url)}`;
+  };
+
   if (validImages.length === 1) {
+    const src = toCdnUrl(validImages[0]?.url);
+    if (!src) return null;
+
     return (
       <Image
-        src={validImages[0]!.url!}
+        src={src}
         alt=""
         width={1200}
         height={800}
@@ -56,16 +68,21 @@ const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
   return (
     <div className="h-[300px] w-full overflow-hidden rounded-lg shadow-md">
       <Carousel slide={false}>
-        {validImages.map((img, index) => (
-          <div key={index} className="relative h-[300px] w-full">
-            <Image
-              src={img.url!}
-              alt={`media-${index}`}
-              fill
-              className="object-cover"
-            />
-          </div>
-        ))}
+        {validImages.map((img, index) => {
+          const src = toCdnUrl(img.url);
+          if (!src) return null;
+
+          return (
+            <div key={index} className="relative h-[300px] w-full">
+              <Image
+                src={src}
+                alt={`media-${index}`}
+                fill
+                className="object-cover"
+              />
+            </div>
+          );
+        })}
       </Carousel>
     </div>
   );

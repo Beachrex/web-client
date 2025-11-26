@@ -6,6 +6,8 @@ import { useContinents } from '@/hooks/useContinents';
 import { useCountries } from '@/hooks/useCountries';
 import { useHeroBanner } from '@/hooks/useFirstPageContent';
 import { Link } from '@/i18n/routing';
+import { env } from '@/env';
+import { encodeCdnImagePath } from '@/lib/utils/beach-images';
 
 // Locale-specific route translations for beaches
 const beachesRoutes: Record<string, string> = {
@@ -47,14 +49,18 @@ const HeroSection: React.FC = () => {
     return countries.length;
   }, [countries]);
 
-  // Get background image from API (URL is already full CDN URL)
+  // Get background image from API (now returns relative path, need to prepend CDN)
   const backgroundImage = useMemo(() => {
     if (heroBanner?.media && heroBanner.media.length > 0) {
       // Try to find by collection first, then by is_primary, then just take first
       const bgMedia = heroBanner.media.find(m => m.collection === 'background_image')
         ?? heroBanner.media.find(m => m.is_primary)
         ?? heroBanner.media[0];
-      return bgMedia?.url ?? '';
+      const url = bgMedia?.url;
+      if (url) {
+        return `${env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(url)}`;
+      }
+      return '';
     }
     return '';
   }, [heroBanner]);
