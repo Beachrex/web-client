@@ -14,11 +14,7 @@ interface BeachDetailsSectionProps {
 
 /** Helper: safely extract string `name` from unknown object */
 const getName = (input: unknown): string | null => {
-  if (
-    typeof input === 'object' &&
-    input !== null &&
-    'name' in input
-  ) {
+  if (typeof input === 'object' && input !== null && 'name' in input) {
     const value = (input as { name?: unknown }).name;
     if (typeof value === 'string') {
       return value;
@@ -77,22 +73,16 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
   );
 
   /* ----------------------- FOOD & DRINKS ----------------------- */
-  const culinaryFromApi: string[] = getNameList(
-    facilities?.culinary_offers,
-  );
+  const culinaryFromApi: string[] = getNameList(facilities?.culinary_offers);
 
   /* ----------------------- SPORTS ----------------------- */
-  const sportsFromApi: string[] = getNameList(
-    activities?.sporting_activities,
-  );
+  const sportsFromApi: string[] = getNameList(activities?.sporting_activities);
 
   /* ----------------------- PARKING ----------------------- */
   const parkingFromApi = {
     spots: getName(accessibility?.parking_capacity),
     wayToParking: getName(accessibility?.road_to_parking_type),
-    recommendedAccess: getNameList(
-      accessibility?.recommended_transport_types,
-    ),
+    recommendedAccess: getNameList(accessibility?.recommended_transport_types),
   };
 
   /* ----------------------- PATH TO BEACH ----------------------- */
@@ -100,6 +90,15 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
     distance: getName(accessibility?.parking_beach_distance),
     elevation: getName(accessibility?.parking_beach_height),
   };
+
+  /* ----------------------- MEDIA: PATH IMAGE & MAP ----------------------- */
+  const pathImages = beachDetails.media?.spot_images ?? [];
+  const pathImageUrl = pathImages[0]?.url ?? null;
+
+  const mapUrl =
+    typeof beachDetails.embeds?.map_url === 'string'
+      ? beachDetails.embeds.map_url
+      : null;
 
   /* ----------------------- RENDER TICK LIST ----------------------- */
   const renderTickList = (items: string[]) =>
@@ -144,6 +143,15 @@ height={20}
       <span className="font-figtree text-[14px] font-bold">{label}</span>
     </button>
   );
+
+  /* ----------------------- PARKING IMAGE ----------------------- */
+  const parkingImages = beachDetails.media?.parking_images ?? [];
+  const parkingImageUrl = parkingImages[0]?.url ?? null;
+
+  const [showParkingPhoto, setShowParkingPhoto] = React.useState(false);
+
+  /* ----------------------- PATH VIEW STATE ----------------------- */
+  const [pathView, setPathView] = React.useState<'photo' | 'map' | null>(null);
 
   /* ----------------------- JSX ----------------------- */
 
@@ -264,9 +272,7 @@ height={20}
                 </h2>
               </div>
               <div className="mt-3 border-b border-[#E7E7E7]" />
-              <div className="mt-4">
-                {renderTickList(accommodationFromApi)}
-              </div>
+              <div className="mt-4">{renderTickList(accommodationFromApi)}</div>
             </div>
 
             {/* Food */}
@@ -320,13 +326,15 @@ height={20}
                     {tGroups('parking')}
                   </h2>
                 </div>
-
-                <div className="flex items-center md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2">
-                  <ActionButton
-                    icon="/images/beachicons/pic-gallery.png"
-                    label={tButtons('photo')}
-                  />
-                </div>
+                {parkingImageUrl ? (
+                  <div className="flex items-center md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2">
+                    <ActionButton
+                      icon="/images/beachicons/pic-gallery.png"
+                      label={tButtons('photo')}
+                      onClick={() => setShowParkingPhoto((prev) => !prev)}
+                    />
+                  </div>
+                ) : null}
               </div>
 
               <div className="mt-3 border-b border-[#E7E7E7]" />
@@ -345,6 +353,19 @@ height={20}
                     ? renderTickList(parkingFromApi.recommendedAccess)
                     : null}
                 </InfoRow>
+
+                {/* PARKING PHOTO PREVIEW */}
+                {showParkingPhoto && parkingImageUrl ? (
+                  <div className="mt-4">
+                    <Image
+                      src={parkingImageUrl}
+                      alt="Parking image"
+                      width={1200}
+                      height={800}
+                      className="max-h-[300px] w-full rounded-lg object-cover shadow-md"
+                    />
+                  </div>
+                ) : null}
               </div>
             </div>
 
@@ -362,15 +383,29 @@ height={20}
                     {tGroups('pathToBeach')}
                   </h2>
                 </div>
+
                 <div className="flex items-center gap-3">
-                  <ActionButton
-                    icon="/images/beachicons/pic-gallery.png"
-                    label={tButtons('photo')}
-                  />
-                  <ActionButton
-                    icon="/images/beachicons/pathway.png"
-                    label={tButtons('map')}
-                  />
+                  {pathImageUrl ? (
+                    <ActionButton
+                      icon="/images/beachicons/pic-gallery.png"
+                      label={tButtons('photo')}
+                      onClick={() =>
+                        setPathView((prev) =>
+                          prev === 'photo' ? null : 'photo',
+                        )
+                      }
+                    />
+                  ) : null}
+
+                  {mapUrl ? (
+                    <ActionButton
+                      icon="/images/beachicons/pathway.png"
+                      label={tButtons('map')}
+                      onClick={() =>
+                        setPathView((prev) => (prev === 'map' ? null : 'map'))
+                      }
+                    />
+                  ) : null}
                 </div>
               </div>
 
@@ -384,6 +419,31 @@ height={20}
                 <InfoRow labelKey="elevationDiff">
                   <SingleValue valueRaw={pathToBeachFromApi.elevation} />
                 </InfoRow>
+
+                {/* PATH PREVIEW (PHOTO or MAP) */}
+                {pathView === 'photo' && pathImageUrl ? (
+                  <div className="mt-4">
+                    <Image
+                      src={pathImageUrl}
+                      alt="Path image"
+                      width={1200}
+                      height={800}
+                      className="max-h-[300px] w-full rounded-lg object-cover shadow-md"
+                    />
+                  </div>
+                ) : null}
+
+                {pathView === 'map' && mapUrl ? (
+                  <div className="mt-4 h-[300px] w-full overflow-hidden rounded-lg shadow-md">
+                    <iframe
+                      src={mapUrl}
+                      title="Path to the beach map"
+                      className="h-full w-full border-0"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
