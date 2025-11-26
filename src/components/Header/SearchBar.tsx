@@ -30,7 +30,7 @@ const SearchBar = () => {
                     {/* Logo Row */}
                     <div className="flex items-center justify-center px-4 mb-3">
                         <Image
-                            src={`${cdnEndpoint}/js/assets/img/logo_dark.png`}
+                            src={`${cdnEndpoint}js/assets/img/logo_dark.png`}
                             alt="BeachRex Logo"
                             width={80}
                             height={26}
@@ -56,7 +56,7 @@ const SearchBar = () => {
                     <div className="flex items-center justify-center space-x-6 mt-3 w-full px-4">
                         <div className="flex flex-col items-center">
                             <Image
-                                src={`${cdnEndpoint}/img/icon/accomodation.svg`}
+                                src={`${cdnEndpoint}img/icon/accomodation.svg`}
                                 alt="Accommodations"
                                 width={24}
                                 height={24}
@@ -65,7 +65,7 @@ const SearchBar = () => {
                         </div>
                         <div className="flex flex-col items-center">
                             <Image
-                                src={`${cdnEndpoint}/img/icon/store.svg`}
+                                src={`${cdnEndpoint}img/icon/store.svg`}
                                 alt="Shop"
                                 width={24}
                                 height={24}
@@ -74,7 +74,7 @@ const SearchBar = () => {
                         </div>
                         <Link href={tRoutes('beachMap')} className="flex flex-col items-center">
                             <Image
-                                src={`${cdnEndpoint}/img/icon/map.svg`}
+                                src={`${cdnEndpoint}img/icon/map.svg`}
                                 alt="Map"
                                 width={24}
                                 height={24}
@@ -89,7 +89,7 @@ const SearchBar = () => {
                     {/* Top Row: Logo and Map Button */}
                     <div className="flex items-center justify-between">
                         <Image
-                            src={`${cdnEndpoint}/js/assets/img/logo_dark.png`}
+                            src={`${cdnEndpoint}js/assets/img/logo_dark.png`}
                             alt="BeachRex Logo"
                             width={90}
                             height={36}
@@ -97,7 +97,7 @@ const SearchBar = () => {
                         />
                         <Link href={tRoutes('beachMap')} className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] hover:bg-variable-collection-morje">
                             <Image
-                                src={`${cdnEndpoint}/img/icon/map.svg`}
+                                src={`${cdnEndpoint}img/icon/map.svg`}
                                 alt={`${t('map')} ${t('icon')}`}
                                 width={20}
                                 height={20}
@@ -125,12 +125,12 @@ const SearchBar = () => {
                         {/* Compact Navigation Icons */}
                         <div className="flex items-center space-x-2">
                             <NavIcon
-                                src={`${cdnEndpoint}/img/icon/accomodation.svg`}
+                                src={`${cdnEndpoint}img/icon/accomodation.svg`}
                                 alt={`${t('accommodations')} ${t('icon')}`}
                                 label=""
                             />
                             <NavIcon
-                                src={`${cdnEndpoint}/img/icon/store.svg`}
+                                src={`${cdnEndpoint}img/icon/store.svg`}
                                 alt={`${t('shop')} ${t('icon')}`}
                                 label=""
                             />
@@ -143,7 +143,7 @@ const SearchBar = () => {
                     {/* Left Section (Logo) */}
                     <div className="flex items-center">
                         <Image
-                            src={`${cdnEndpoint}/js/assets/img/logo_dark.png`}
+                            src={`${cdnEndpoint}js/assets/img/logo_dark.png`}
                             alt="BeachRex Logo"
                             width={100}
                             height={40}
@@ -169,12 +169,12 @@ const SearchBar = () => {
 
                         {/* Navigation Icons */}
                         <NavIcon
-                            src={`${cdnEndpoint}/img/icon/accomodation.svg`}
+                            src={`${cdnEndpoint}img/icon/accomodation.svg`}
                             alt={`${t('accommodations')} ${t('icon')}`}
                             label={t('accommodations')}
                         />
                         <NavIcon
-                            src={`${cdnEndpoint}/img/icon/store.svg`}
+                            src={`${cdnEndpoint}img/icon/store.svg`}
                             alt={`${t('shop')} ${t('icon')}`}
                             label={t('shop')}
                         />
@@ -184,7 +184,7 @@ const SearchBar = () => {
                     <div className="flex items-center">
                         <Link href={tRoutes('beachMap')} className="inline-flex items-center justify-center gap-5 px-10 py-[10px] bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] flex-shrink-0 hover:bg-variable-collection-morje">
                             <Image
-                                src={`${cdnEndpoint}/img/icon/map.svg`}
+                                src={`${cdnEndpoint}img/icon/map.svg`}
                                 alt={`${t('map')} ${t('icon')}`}
                                 width={26}
                                 height={26}

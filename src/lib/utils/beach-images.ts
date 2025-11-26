@@ -74,7 +74,7 @@ export function buildBeachImageUrl(
   const safeFolder = encodePathSegment(folderName);
   const safeFilename = encodePathSegment(filename);
 
-  return `${env.NEXT_PUBLIC_CDN_ENDPOINT}/${basePath}/${safeFolder}/${safeFilename}`;
+  return `${env.NEXT_PUBLIC_CDN_ENDPOINT}${basePath}/${safeFolder}/${safeFilename}`;
 }
 
 /**

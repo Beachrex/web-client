@@ -12,7 +12,7 @@ export default function FooterBrandColumn() {
       {/* Logo always on top */}
       <div>
         <Image
-          src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}/js/assets/img/logo_dark.png`}
+          src={`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}js/assets/img/logo_dark.png`}
           alt="BeachRex logo"
           width={119}
           height={22}
