@@ -1,5 +1,6 @@
 'use client';
 
+import { Carousel } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
@@ -12,23 +13,62 @@ interface BeachDetailsSectionProps {
   beachDetails: BeachDetailsSchema;
 }
 
-/** Helper: safely extract string `name` from unknown object */
+/* -------------------------------------------
+ * Safe helpers for extracting values
+ * ------------------------------------------- */
 const getName = (input: unknown): string | null => {
   if (typeof input === 'object' && input !== null && 'name' in input) {
-    const value = (input as { name?: unknown }).name;
-    if (typeof value === 'string') {
-      return value;
-    }
+    const val = (input as { name?: unknown }).name;
+    return typeof val === 'string' ? val : null;
   }
   return null;
 };
 
-/** Helper: safely extract all string `name` values from unknown array-like */
 const getNameList = (input: unknown): string[] => {
   if (!Array.isArray(input)) return [];
   return input
     .map((item) => getName(item))
     .filter((n): n is string => Boolean(n));
+};
+
+/* -------------------------------------------
+ * Helper for rendering image or carousel
+ * ------------------------------------------- */
+const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
+  if (!images || images.length === 0) return null;
+
+  const validImages = images.filter((i) => Boolean(i?.url));
+
+  if (validImages.length === 0) return null;
+
+  if (validImages.length === 1) {
+    return (
+      <Image
+        src={validImages[0]!.url!}
+        alt=""
+        width={1200}
+        height={800}
+        className="max-h-[300px] w-full rounded-lg object-cover shadow-md"
+      />
+    );
+  }
+
+  return (
+    <div className="h-[300px] w-full overflow-hidden rounded-lg shadow-md">
+      <Carousel slide={false}>
+        {validImages.map((img, index) => (
+          <div key={index} className="relative h-[300px] w-full">
+            <Image
+              src={img.url!}
+              alt={`media-${index}`}
+              fill
+              className="object-cover"
+            />
+          </div>
+        ))}
+      </Carousel>
+    </div>
+  );
 };
 
 const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
@@ -45,62 +85,68 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
   const natural = beachDetails.natural_conditions;
   const activities = beachDetails.activities;
 
-  /* ----------------------- BEACH (API) ----------------------- */
+  /* -------------------------------------------
+   * Build BEACH data
+   * ------------------------------------------- */
   const beachFromApi = {
     type: getName(characteristics?.beach_type),
     naturalFeatures: getNameList(natural?.natural_location_conditions),
     occupancy: getName(dimensions?.occupancy_rate),
     access: getName(accessibility?.accessibility),
-    paid: null as string | null, // Option C – skip row entirely
+    paid: null as string | null, // hidden row (Option C)
     length: getName(dimensions?.location_length),
     width: getName(dimensions?.bay_length),
     slope: getName(dimensions?.beach_inclination),
     swimmingArea: getName(dimensions?.swimming_depth_of_one_m),
     seabed: getNameList(natural?.underwater_characteristics),
+    waterbody: getName(characteristics?.waterbody),
+    areaDescription: getName(characteristics?.area_description),
+    boatOnly: characteristics?.boat_only === true ? 'Yes' : 'No',
   };
 
-  /* ----------------------- USER TYPES ----------------------- */
-  const userTypesFromApi: string[] = getNameList(activities?.user_types);
+  const userTypesFromApi = getNameList(activities?.user_types);
 
-  /* ----------------------- INFRASTRUCTURE ----------------------- */
-  const beachInfrastructureFromApi: string[] = getNameList(
-    facilities?.location_infrastructure,
-  );
+  const beachInfrastructure = getNameList(facilities?.location_infrastructure);
 
-  /* ----------------------- ACCOMMODATION ----------------------- */
-  const accommodationFromApi: string[] = getNameList(
-    facilities?.accommodation_around,
-  );
+  const accommodation = getNameList(facilities?.accommodation_around);
 
-  /* ----------------------- FOOD & DRINKS ----------------------- */
-  const culinaryFromApi: string[] = getNameList(facilities?.culinary_offers);
+  const culinary = getNameList(facilities?.culinary_offers);
 
-  /* ----------------------- SPORTS ----------------------- */
-  const sportsFromApi: string[] = getNameList(activities?.sporting_activities);
+  const sports = getNameList(activities?.sporting_activities);
 
-  /* ----------------------- PARKING ----------------------- */
+  /* -------------------------------------------
+   * Parking
+   * ------------------------------------------- */
   const parkingFromApi = {
     spots: getName(accessibility?.parking_capacity),
     wayToParking: getName(accessibility?.road_to_parking_type),
     recommendedAccess: getNameList(accessibility?.recommended_transport_types),
   };
 
-  /* ----------------------- PATH TO BEACH ----------------------- */
-  const pathToBeachFromApi = {
+  const parkingImages = beachDetails.media?.parking_images ?? [];
+
+  const [showParkingPhoto, setShowParkingPhoto] = React.useState(false);
+
+  /* -------------------------------------------
+   * Path to Beach
+   * ------------------------------------------- */
+  const pathFromApi = {
     distance: getName(accessibility?.parking_beach_distance),
     elevation: getName(accessibility?.parking_beach_height),
   };
 
-  /* ----------------------- MEDIA: PATH IMAGE & MAP ----------------------- */
   const pathImages = beachDetails.media?.spot_images ?? [];
-  const pathImageUrl = pathImages[0]?.url ?? null;
 
   const mapUrl =
     typeof beachDetails.embeds?.map_url === 'string'
       ? beachDetails.embeds.map_url
       : null;
 
-  /* ----------------------- RENDER TICK LIST ----------------------- */
+  const [pathView, setPathView] = React.useState<'photo' | 'map' | null>(null);
+
+  /* -------------------------------------------
+   * Helper: Tick list
+   * ------------------------------------------- */
   const renderTickList = (items: string[]) =>
     items.length > 0 ? (
       <ul className="flex flex-col gap-2">
@@ -121,7 +167,9 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
       </ul>
     ) : null;
 
-  /* ----------------------- ACTION BUTTON ----------------------- */
+  /* -------------------------------------------
+   * Helper: Action button
+   * ------------------------------------------- */
   const ActionButton = ({
     icon,
     label,
@@ -144,17 +192,9 @@ height={20}
     </button>
   );
 
-  /* ----------------------- PARKING IMAGE ----------------------- */
-  const parkingImages = beachDetails.media?.parking_images ?? [];
-  const parkingImageUrl = parkingImages[0]?.url ?? null;
-
-  const [showParkingPhoto, setShowParkingPhoto] = React.useState(false);
-
-  /* ----------------------- PATH VIEW STATE ----------------------- */
-  const [pathView, setPathView] = React.useState<'photo' | 'map' | null>(null);
-
-  /* ----------------------- JSX ----------------------- */
-
+  /* -------------------------------------------
+   * RENDER
+   * ------------------------------------------- */
   return (
     <section className="w-full bg-[#F5F5F5] py-8">
       <div className="container mx-auto px-4">
@@ -163,9 +203,11 @@ height={20}
         </h1>
 
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {/* ---------------- BEACH + USER TYPE ---------------- */}
+          {/* -------------------------------------------
+           * BEACH + USER TYPE
+           * ------------------------------------------- */}
           <div>
-            {/* Beach */}
+            {/* Beach header */}
             <div className="flex items-center gap-3">
               <Image
                 src="/images/beachicons/wave.png"
@@ -179,6 +221,7 @@ height={20}
             </div>
             <div className="mt-3 border-b border-[#E7E7E7]" />
 
+            {/* Beach data */}
             <div className="mt-4 flex flex-col">
               <InfoRow labelKey="type">
                 <SingleValue valueRaw={beachFromApi.type} />
@@ -195,8 +238,6 @@ height={20}
               <InfoRow labelKey="access">
                 <SingleValue valueRaw={beachFromApi.access} />
               </InfoRow>
-
-              {/* paid hidden by rule C */}
 
               <InfoRow labelKey="length">
                 <SingleValue valueRaw={beachFromApi.length} />
@@ -237,7 +278,9 @@ height={20}
             </div>
           </div>
 
-          {/* ---------------- INFRASTRUCTURE ---------------- */}
+          {/* -------------------------------------------
+           * INFRASTRUCTURE
+           * ------------------------------------------- */}
           <div>
             <div className="flex items-center gap-3">
               <Image
@@ -251,12 +294,13 @@ height={20}
               </h2>
             </div>
             <div className="mt-3 border-b border-[#E7E7E7]" />
-            <div className="mt-4">
-              {renderTickList(beachInfrastructureFromApi)}
-            </div>
+
+            <div className="mt-4">{renderTickList(beachInfrastructure)}</div>
           </div>
 
-          {/* ---------------- ACCOMMODATION, FOOD, SPORTS ---------------- */}
+          {/* -------------------------------------------
+           * ACCOMMODATION, FOOD, SPORTS
+           * ------------------------------------------- */}
           <div>
             {/* Accommodation */}
             <div>
@@ -272,7 +316,7 @@ height={20}
                 </h2>
               </div>
               <div className="mt-3 border-b border-[#E7E7E7]" />
-              <div className="mt-4">{renderTickList(accommodationFromApi)}</div>
+              <div className="mt-4">{renderTickList(accommodation)}</div>
             </div>
 
             {/* Food */}
@@ -289,7 +333,7 @@ height={20}
                 </h2>
               </div>
               <div className="mt-3 border-b border-[#E7E7E7]" />
-              <div className="mt-4">{renderTickList(culinaryFromApi)}</div>
+              <div className="mt-4">{renderTickList(culinary)}</div>
             </div>
 
             {/* Sports */}
@@ -306,11 +350,13 @@ height={20}
                 </h2>
               </div>
               <div className="mt-3 border-b border-[#E7E7E7]" />
-              <div className="mt-4">{renderTickList(sportsFromApi)}</div>
+              <div className="mt-4">{renderTickList(sports)}</div>
             </div>
           </div>
 
-          {/* ---------------- PARKING + PATH TO BEACH ---------------- */}
+          {/* -------------------------------------------
+           * PARKING + PATH
+           * ------------------------------------------- */}
           <div>
             {/* Parking */}
             <div>
@@ -326,7 +372,8 @@ height={20}
                     {tGroups('parking')}
                   </h2>
                 </div>
-                {parkingImageUrl ? (
+
+                {parkingImages.length > 0 && (
                   <div className="flex items-center md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2">
                     <ActionButton
                       icon="/images/beachicons/pic-gallery.png"
@@ -334,7 +381,7 @@ height={20}
                       onClick={() => setShowParkingPhoto((prev) => !prev)}
                     />
                   </div>
-                ) : null}
+                )}
               </div>
 
               <div className="mt-3 border-b border-[#E7E7E7]" />
@@ -354,18 +401,11 @@ height={20}
                     : null}
                 </InfoRow>
 
-                {/* PARKING PHOTO PREVIEW */}
-                {showParkingPhoto && parkingImageUrl ? (
+                {showParkingPhoto && (
                   <div className="mt-4">
-                    <Image
-                      src={parkingImageUrl}
-                      alt="Parking image"
-                      width={1200}
-                      height={800}
-                      className="max-h-[300px] w-full rounded-lg object-cover shadow-md"
-                    />
+                    <MediaBlock images={parkingImages} />
                   </div>
-                ) : null}
+                )}
               </div>
             </div>
 
@@ -385,7 +425,7 @@ height={20}
                 </div>
 
                 <div className="flex items-center gap-3">
-                  {pathImageUrl ? (
+                  {pathImages.length > 0 && (
                     <ActionButton
                       icon="/images/beachicons/pic-gallery.png"
                       label={tButtons('photo')}
@@ -395,9 +435,9 @@ height={20}
                         )
                       }
                     />
-                  ) : null}
+                  )}
 
-                  {mapUrl ? (
+                  {mapUrl && (
                     <ActionButton
                       icon="/images/beachicons/pathway.png"
                       label={tButtons('map')}
@@ -405,7 +445,7 @@ height={20}
                         setPathView((prev) => (prev === 'map' ? null : 'map'))
                       }
                     />
-                  ) : null}
+                  )}
                 </div>
               </div>
 
@@ -413,27 +453,20 @@ height={20}
 
               <div className="mt-4 flex flex-col">
                 <InfoRow labelKey="distance">
-                  <SingleValue valueRaw={pathToBeachFromApi.distance} />
+                  <SingleValue valueRaw={pathFromApi.distance} />
                 </InfoRow>
 
                 <InfoRow labelKey="elevationDiff">
-                  <SingleValue valueRaw={pathToBeachFromApi.elevation} />
+                  <SingleValue valueRaw={pathFromApi.elevation} />
                 </InfoRow>
 
-                {/* PATH PREVIEW (PHOTO or MAP) */}
-                {pathView === 'photo' && pathImageUrl ? (
+                {pathView === 'photo' && (
                   <div className="mt-4">
-                    <Image
-                      src={pathImageUrl}
-                      alt="Path image"
-                      width={1200}
-                      height={800}
-                      className="max-h-[300px] w-full rounded-lg object-cover shadow-md"
-                    />
+                    <MediaBlock images={pathImages} />
                   </div>
-                ) : null}
+                )}
 
-                {pathView === 'map' && mapUrl ? (
+                {pathView === 'map' && mapUrl && (
                   <div className="mt-4 h-[300px] w-full overflow-hidden rounded-lg shadow-md">
                     <iframe
                       src={mapUrl}
@@ -443,7 +476,7 @@ height={20}
                       referrerPolicy="no-referrer-when-downgrade"
                     />
                   </div>
-                ) : null}
+                )}
               </div>
             </div>
           </div>

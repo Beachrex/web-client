@@ -13,7 +13,6 @@ import CountrySearchBeaches from '@/components/CountryPage/CountrySearchBeaches'
 import type { Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
 
-// ✅ App Router page props – to je tisto, kar Next pričakuje
 interface PageProps {
   params: {
     locale: string;
@@ -30,7 +29,6 @@ const Page = ({ params }: PageProps) => {
     if (!pathname) return;
   }, [pathname]);
 
-  // ✅ countrySlug dobiš iz URL parametrov
   const countrySlug = params.country;
   const countryName = countrySlug ?? 'Hrvaška';
 

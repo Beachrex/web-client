@@ -47,7 +47,8 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
           accommodationCount={beachDetails?.facilities?.accommodation_around?.length}
           activityCount={beachDetails?.activities?.sporting_activities?.length}
         />
-        <BeachPageView />
+       <BeachPageView beachDetails={beachDetails} />
+
 
         <AccommodationSection
           totalCount={569}

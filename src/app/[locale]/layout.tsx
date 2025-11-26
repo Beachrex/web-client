@@ -1,50 +1,52 @@
 import '@/styles/globals.css';
+import 'pannellum/build/pannellum.css';
+
+import { ApiClientProvider } from '@/components/ApiClientProvider';
+import DefaultLayout from '@/components/Layout';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { Open_Sans } from 'next/font/google';
-import DefaultLayout from '@/components/Layout';
-import { ApiClientProvider } from '@/components/ApiClientProvider';
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const { locale } = params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
 
-export async function generateMetadata({ params }: { params: { locale: string } }) {
-    const { locale } = params;
-    const t = await getTranslations({ locale, namespace: 'Metadata' });
-
-    return {
-        title: t('title'),
-        description: t('description'),
-        icons: [{ rel: 'icon', url: '/favicon.png' }],
-        authors: [
-            { name: 'David Tacer' },
-        ],
-    };
+  return {
+    title: t('title'),
+    description: t('description'),
+    icons: [{ rel: 'icon', url: '/favicon.png' }],
+    authors: [{ name: 'David Tacer' }],
+  };
 }
 const openSans = Open_Sans({
-    subsets: ['latin', 'latin-ext'],
-    display: 'swap',
+  subsets: ['latin', 'latin-ext'],
+  display: 'swap',
 });
 export default async function LocaleLayout({
-                                               children,
-                                               params,
-                                           }: {
-    children: React.ReactNode;
-    params: { locale: string };
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { locale: string };
 }) {
-    // Next.js 14: params is directly available (not a Promise)
-    const { locale } = params;
+  // Next.js 14: params is directly available (not a Promise)
+  const { locale } = params;
 
-    const messages = await getMessages() as Record<string, string>;
+  const messages = (await getMessages()) as Record<string, string>;
 
-    return (
-        <html lang={locale} className={openSans.className}>
-        <body>
+  return (
+    <html lang={locale} className={openSans.className}>
+      <body>
         <NextIntlClientProvider messages={messages}>
-                <ApiClientProvider locale={locale}>
-                    <DefaultLayout>{children}</DefaultLayout>
-                </ApiClientProvider>
+          <ApiClientProvider locale={locale}>
+            <DefaultLayout>{children}</DefaultLayout>
+          </ApiClientProvider>
         </NextIntlClientProvider>
-
-        </body>
-        </html>
-    );
+      </body>
+    </html>
+  );
 }

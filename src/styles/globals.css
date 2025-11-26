@@ -60,8 +60,8 @@ div[style*="background-image"] {
   -webkit-transform: translateZ(0) !important;
   transform: translateZ(0) !important;
 }
-.container{
-    padding: 0 5px;
+.container {
+  padding: 0 5px;
 }
 :root {
   --drop: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
