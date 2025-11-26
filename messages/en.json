@@ -16,7 +16,9 @@
     "beach": "beach",
     "save": "save",
     "share": "share",
-    "reviews": "reviews"
+    "reviews": "reviews",
+"paidFallback": "No information"
+
   },
   "HomePage": {
     "allBeaches": "All Beaches",

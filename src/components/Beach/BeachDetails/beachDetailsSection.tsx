@@ -1,6 +1,5 @@
 'use client';
 
-import { useBeachDetailsFixture } from '@/hooks/useBeachDetailsFixture';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
@@ -8,45 +7,122 @@ import React from 'react';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import InfoRow from './InfoRow';
 import SingleValue from './SingleValue';
-import TickValueList from './TickValueList';
 
 interface BeachDetailsSectionProps {
   beachDetails: BeachDetailsSchema;
 }
+
+/** Helper: safely extract string `name` from unknown object */
+const getName = (input: unknown): string | null => {
+  if (
+    typeof input === 'object' &&
+    input !== null &&
+    'name' in input
+  ) {
+    const value = (input as { name?: unknown }).name;
+    if (typeof value === 'string') {
+      return value;
+    }
+  }
+  return null;
+};
+
+/** Helper: safely extract all string `name` values from unknown array-like */
+const getNameList = (input: unknown): string[] => {
+  if (!Array.isArray(input)) return [];
+  return input
+    .map((item) => getName(item))
+    .filter((n): n is string => Boolean(n));
+};
 
 const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
   beachDetails,
 }) => {
   const tMain = useTranslations('BeachDetails');
   const tGroups = useTranslations('BeachDetails.groups');
-  const tValues = useTranslations('BeachDetails.values');
   const tButtons = useTranslations('BeachDetails.buttons');
 
-  // 🔍 STEP 1: še vedno fixture, samo opazujemo API data
-  const { data } = useBeachDetailsFixture();
-  const beach = data.beach;
+  const accessibility = beachDetails.accessibility;
+  const characteristics = beachDetails.characteristics;
+  const dimensions = beachDetails.dimensions;
+  const facilities = beachDetails.facilities;
+  const natural = beachDetails.natural_conditions;
+  const activities = beachDetails.activities;
 
-  console.log('BeachDetailsSection API beachDetails:', beachDetails);
+  /* ----------------------- BEACH (API) ----------------------- */
+  const beachFromApi = {
+    type: getName(characteristics?.beach_type),
+    naturalFeatures: getNameList(natural?.natural_location_conditions),
+    occupancy: getName(dimensions?.occupancy_rate),
+    access: getName(accessibility?.accessibility),
+    paid: null as string | null, // Option C – skip row entirely
+    length: getName(dimensions?.location_length),
+    width: getName(dimensions?.bay_length),
+    slope: getName(dimensions?.beach_inclination),
+    swimmingArea: getName(dimensions?.swimming_depth_of_one_m),
+    seabed: getNameList(natural?.underwater_characteristics),
+  };
 
-  const userTypesFromApi = beachDetails.activities?.user_types ?? [];
-  const accommodationFromApi =
-    beachDetails.facilities?.accommodation_around ?? [];
+  /* ----------------------- USER TYPES ----------------------- */
+  const userTypesFromApi: string[] = getNameList(activities?.user_types);
 
-  const culinaryFromApi = beachDetails.facilities?.culinary_offers ?? [];
-
-  // Render an inline, comma-separated list (e.g., recommendedAccess)
-  const renderInlineList = (keys: string[]) => (
-    <span className="font-figtree text-[14px] font-medium leading-[100%] text-[#4D4D4D]">
-      {keys.map((k, i) => (
-        <React.Fragment key={k}>
-          {tValues(k)}
-          {i < keys.length - 1 ? ', ' : ''}
-        </React.Fragment>
-      ))}
-    </span>
+  /* ----------------------- INFRASTRUCTURE ----------------------- */
+  const beachInfrastructureFromApi: string[] = getNameList(
+    facilities?.location_infrastructure,
   );
 
-  // Reusable dark-blue button with icon
+  /* ----------------------- ACCOMMODATION ----------------------- */
+  const accommodationFromApi: string[] = getNameList(
+    facilities?.accommodation_around,
+  );
+
+  /* ----------------------- FOOD & DRINKS ----------------------- */
+  const culinaryFromApi: string[] = getNameList(
+    facilities?.culinary_offers,
+  );
+
+  /* ----------------------- SPORTS ----------------------- */
+  const sportsFromApi: string[] = getNameList(
+    activities?.sporting_activities,
+  );
+
+  /* ----------------------- PARKING ----------------------- */
+  const parkingFromApi = {
+    spots: getName(accessibility?.parking_capacity),
+    wayToParking: getName(accessibility?.road_to_parking_type),
+    recommendedAccess: getNameList(
+      accessibility?.recommended_transport_types,
+    ),
+  };
+
+  /* ----------------------- PATH TO BEACH ----------------------- */
+  const pathToBeachFromApi = {
+    distance: getName(accessibility?.parking_beach_distance),
+    elevation: getName(accessibility?.parking_beach_height),
+  };
+
+  /* ----------------------- RENDER TICK LIST ----------------------- */
+  const renderTickList = (items: string[]) =>
+    items.length > 0 ? (
+      <ul className="flex flex-col gap-2">
+        {items.map((txt, i) => (
+          <li key={i} className="flex items-center gap-2">
+            <Image
+              src="/images/beachicons/tick.png"
+              alt=""
+              width={16}
+              height={16}
+              className="inline-block object-contain"
+            />
+            <span className="font-figtree text-[14px] font-medium text-[#4D4D4D]">
+              {txt}
+            </span>
+          </li>
+        ))}
+      </ul>
+    ) : null;
+
+  /* ----------------------- ACTION BUTTON ----------------------- */
   const ActionButton = ({
     icon,
     label,
@@ -59,32 +135,27 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-2 rounded-md bg-[#1A3C68] px-3 py-2 transition-colors hover:bg-[#214a7f] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] focus-visible:ring-offset-2"
-      aria-label={label}
+      className="inline-flex items-center gap-2 rounded-md bg-[#1A3C68] px-3 py-2 text-white hover:bg-[#214a7f]"
     >
       <Image
-        src={icon}
-        alt=""
-        width={20}
-        height={20}
-        className="object-contain"
+src={icon} alt="" width={20}
+height={20}
       />
-      <span className="whitespace-nowrap font-figtree text-[14px] font-bold leading-[100%] text-white">
-        {label}
-      </span>
+      <span className="font-figtree text-[14px] font-bold">{label}</span>
     </button>
   );
+
+  /* ----------------------- JSX ----------------------- */
 
   return (
     <section className="w-full bg-[#F5F5F5] py-8">
       <div className="container mx-auto px-4">
-        {/* === Section title === */}
-        <h1 className="mb-8 font-figtree text-[30px] font-bold leading-[100%] text-[#222222]">
+        <h1 className="mb-8 font-figtree text-[30px] font-bold text-[#222222]">
           {tMain('title')}
         </h1>
-        {/* 4 columns on md+; stack on mobile */}
+
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {/* COLUMN 1 — Beach + User type */}
+          {/* ---------------- BEACH + USER TYPE ---------------- */}
           <div>
             {/* Beach */}
             <div className="flex items-center gap-3">
@@ -94,7 +165,7 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
                 width={30}
                 height={30}
               />
-              <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
+              <h2 className="font-figtree text-[16px] font-bold">
                 {tGroups('beach')}
               </h2>
             </div>
@@ -102,46 +173,41 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
 
             <div className="mt-4 flex flex-col">
               <InfoRow labelKey="type">
-                <SingleValue valueKey={beach.type} />
+                <SingleValue valueRaw={beachFromApi.type} />
               </InfoRow>
 
               <InfoRow labelKey="naturalFeatures">
-                <TickValueList itemKeys={beach.naturalFeatures} />
+                {renderTickList(beachFromApi.naturalFeatures)}
               </InfoRow>
 
               <InfoRow labelKey="occupancy">
-                <SingleValue valueKey={beach.occupancy} />
+                <SingleValue valueRaw={beachFromApi.occupancy} />
               </InfoRow>
 
               <InfoRow labelKey="access">
-                <SingleValue valueKey={beach.access} />
+                <SingleValue valueRaw={beachFromApi.access} />
               </InfoRow>
 
-              <InfoRow labelKey="paid">
-                <SingleValue valueKey={beach.paid} />
-              </InfoRow>
+              {/* paid hidden by rule C */}
 
               <InfoRow labelKey="length">
-                <SingleValue valueRaw={beach.lengthMeters} unitKey="meters" />
+                <SingleValue valueRaw={beachFromApi.length} />
               </InfoRow>
 
               <InfoRow labelKey="width">
-                <SingleValue valueRaw={beach.widthMeters} unitKey="meters" />
+                <SingleValue valueRaw={beachFromApi.width} />
               </InfoRow>
 
               <InfoRow labelKey="slope">
-                <SingleValue valueKey={beach.slope} />
+                <SingleValue valueRaw={beachFromApi.slope} />
               </InfoRow>
 
               <InfoRow labelKey="swimmingArea">
-                <SingleValue
-                  valueRaw={beach.swimmingAreaMeters}
-                  unitKey="meters"
-                />
+                <SingleValue valueRaw={beachFromApi.swimmingArea} />
               </InfoRow>
 
               <InfoRow labelKey="seabed">
-                <TickValueList itemKeys={beach.seabed} />
+                {renderTickList(beachFromApi.seabed)}
               </InfoRow>
             </div>
 
@@ -153,41 +219,17 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
                   alt={tGroups('userType')}
                   width={30}
                   height={30}
-                  className="object-contain"
                 />
-                <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
+                <h2 className="font-figtree text-[16px] font-bold">
                   {tGroups('userType')}
                 </h2>
               </div>
               <div className="mt-3 border-b border-[#E7E7E7]" />
-
-              <div className="mt-4 flex flex-col">
-                <InfoRow labelVariant="none">
-                  {userTypesFromApi.length > 0 ? (
-                    <ul className="flex flex-col gap-2">
-                      {userTypesFromApi.map((u) => (
-                        <li key={u.id} className="flex items-center gap-2">
-                          <Image
-                            src="/images/beachicons/tick.png"
-                            alt=""
-                            width={16}
-                            height={16}
-                            className="inline-block object-contain"
-                            aria-hidden
-                          />
-                          <span className="font-figtree text-[14px] font-medium leading-[100%] text-[#4D4D4D]">
-                            {u.name}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </InfoRow>
-              </div>
+              <div className="mt-4">{renderTickList(userTypesFromApi)}</div>
             </div>
           </div>
 
-          {/* COLUMN 2 — Beach infrastructure */}
+          {/* ---------------- INFRASTRUCTURE ---------------- */}
           <div>
             <div className="flex items-center gap-3">
               <Image
@@ -195,22 +237,18 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
                 alt={tGroups('infrastructure')}
                 width={30}
                 height={30}
-                className="object-contain"
               />
-              <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
+              <h2 className="font-figtree text-[16px] font-bold">
                 {tGroups('infrastructure')}
               </h2>
             </div>
             <div className="mt-3 border-b border-[#E7E7E7]" />
-
-            <div className="mt-4 flex flex-col">
-              <InfoRow labelVariant="none">
-                <TickValueList itemKeys={data.infrastructure} />
-              </InfoRow>
+            <div className="mt-4">
+              {renderTickList(beachInfrastructureFromApi)}
             </div>
           </div>
 
-          {/* COLUMN 3 — Accommodation, Food, Sports */}
+          {/* ---------------- ACCOMMODATION, FOOD, SPORTS ---------------- */}
           <div>
             {/* Accommodation */}
             <div>
@@ -220,41 +258,18 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
                   alt={tGroups('accommodation')}
                   width={30}
                   height={30}
-                  className="object-contain"
                 />
-                <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
+                <h2 className="font-figtree text-[16px] font-bold">
                   {tGroups('accommodation')}
                 </h2>
               </div>
-
               <div className="mt-3 border-b border-[#E7E7E7]" />
-
-              <div className="mt-4 flex flex-col">
-                <InfoRow labelVariant="none">
-                  {accommodationFromApi.length > 0 ? (
-                    <ul className="flex flex-col gap-2">
-                      {accommodationFromApi.map((a) => (
-                        <li key={a.id} className="flex items-center gap-2">
-                          <Image
-                            src="/images/beachicons/tick.png"
-                            alt=""
-                            width={16}
-                            height={16}
-                            className="inline-block object-contain"
-                            aria-hidden
-                          />
-                          <span className="font-figtree text-[14px] font-medium leading-[100%] text-[#4D4D4D]">
-                            {a.name}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </InfoRow>
+              <div className="mt-4">
+                {renderTickList(accommodationFromApi)}
               </div>
             </div>
 
-            {/* Food & drinks */}
+            {/* Food */}
             <div className="mt-8">
               <div className="flex items-center gap-3">
                 <Image
@@ -262,41 +277,16 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
                   alt={tGroups('food')}
                   width={30}
                   height={30}
-                  className="object-contain"
                 />
-                <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
+                <h2 className="font-figtree text-[16px] font-bold">
                   {tGroups('food')}
                 </h2>
               </div>
-
               <div className="mt-3 border-b border-[#E7E7E7]" />
-
-              <div className="mt-4 flex flex-col">
-                <InfoRow labelVariant="none">
-                  {culinaryFromApi.length > 0 ? (
-                    <ul className="flex flex-col gap-2">
-                      {culinaryFromApi.map((c) => (
-                        <li key={c.id} className="flex items-center gap-2">
-                          <Image
-                            src="/images/beachicons/tick.png"
-                            alt=""
-                            width={16}
-                            height={16}
-                            className="inline-block object-contain"
-                            aria-hidden
-                          />
-                          <span className="font-figtree text-[14px] font-medium leading-[100%] text-[#4D4D4D]">
-                            {c.name}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </InfoRow>
-              </div>
+              <div className="mt-4">{renderTickList(culinaryFromApi)}</div>
             </div>
 
-            {/* Sports activities */}
+            {/* Sports */}
             <div className="mt-8">
               <div className="flex items-center gap-3">
                 <Image
@@ -304,22 +294,17 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
                   alt={tGroups('sports')}
                   width={30}
                   height={30}
-                  className="object-contain"
                 />
-                <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
+                <h2 className="font-figtree text-[16px] font-bold">
                   {tGroups('sports')}
                 </h2>
               </div>
               <div className="mt-3 border-b border-[#E7E7E7]" />
-              <div className="mt-4 flex flex-col">
-                <InfoRow labelVariant="none">
-                  <TickValueList itemKeys={data.sports} />
-                </InfoRow>
-              </div>
+              <div className="mt-4">{renderTickList(sportsFromApi)}</div>
             </div>
           </div>
 
-          {/* COLUMN 4 — Parking + Path to the beach */}
+          {/* ---------------- PARKING + PATH TO BEACH ---------------- */}
           <div>
             {/* Parking */}
             <div>
@@ -330,9 +315,8 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
                     alt={tGroups('parking')}
                     width={30}
                     height={30}
-                    className="object-contain"
                   />
-                  <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
+                  <h2 className="font-figtree text-[16px] font-bold">
                     {tGroups('parking')}
                   </h2>
                 </div>
@@ -349,20 +333,22 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
 
               <div className="mt-4 flex flex-col">
                 <InfoRow labelKey="parkingSpots">
-                  <SingleValue valueRaw={data.parking.spots} />
+                  <SingleValue valueRaw={parkingFromApi.spots} />
                 </InfoRow>
 
                 <InfoRow labelKey="wayToParking">
-                  <SingleValue valueKey={data.parking.wayToParking} />
+                  <SingleValue valueRaw={parkingFromApi.wayToParking} />
                 </InfoRow>
 
                 <InfoRow labelKey="recommendedAccess">
-                  {renderInlineList(data.parking.recommendedAccess)}
+                  {parkingFromApi.recommendedAccess.length > 0
+                    ? renderTickList(parkingFromApi.recommendedAccess)
+                    : null}
                 </InfoRow>
               </div>
             </div>
 
-            {/* Path to the beach */}
+            {/* Path to beach */}
             <div className="mt-8">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -371,9 +357,8 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
                     alt={tGroups('pathToBeach')}
                     width={30}
                     height={30}
-                    className="object-contain"
                   />
-                  <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
+                  <h2 className="font-figtree text-[16px] font-bold">
                     {tGroups('pathToBeach')}
                   </h2>
                 </div>
@@ -393,17 +378,11 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
 
               <div className="mt-4 flex flex-col">
                 <InfoRow labelKey="distance">
-                  <SingleValue
-                    valueRaw={data.pathToBeach.distanceMetersFromParking}
-                    unitKey="meters"
-                  />
+                  <SingleValue valueRaw={pathToBeachFromApi.distance} />
                 </InfoRow>
 
                 <InfoRow labelKey="elevationDiff">
-                  <SingleValue
-                    valueRaw={data.pathToBeach.elevationDiffMeters}
-                    unitKey="meters"
-                  />
+                  <SingleValue valueRaw={pathToBeachFromApi.elevation} />
                 </InfoRow>
               </div>
             </div>

@@ -16,7 +16,8 @@
     "beach": "plaža",
     "save": "shrani",
     "share": "deli",
-    "reviews": "ocene"
+    "reviews": "ocene",
+    "paidFallback": "Ni podatka"
   },
   "HomePage": {
     "allBeaches": "Vse plaže",
