@@ -60,7 +60,7 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
         />
 
         <GetYourGuideSection />
-        <BeachDetailsSection />
+        <BeachDetailsSection beachDetails={beachDetails} />
 
         <SimilarBeachesSection
           properties={nearbyBeaches}

@@ -8,15 +8,27 @@ import React from 'react';
 import InfoRow from './InfoRow';
 import SingleValue from './SingleValue';
 import TickValueList from './TickValueList';
+import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 
-const BeachDetailsSection: React.FC = () => {
+interface BeachDetailsSectionProps {
+  beachDetails: BeachDetailsSchema;
+}
+
+const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({ beachDetails }) => {
   const tMain = useTranslations('BeachDetails');
   const tGroups = useTranslations('BeachDetails.groups');
   const tValues = useTranslations('BeachDetails.values');
   const tButtons = useTranslations('BeachDetails.buttons');
 
+  // 🔍 STEP 1: še vedno fixture, samo opazujemo API data
   const { data } = useBeachDetailsFixture();
   const beach = data.beach;
+
+  console.log('BeachDetailsSection API beachDetails:', beachDetails);
+
+
+  const userTypesFromApi = beachDetails.activities?.user_types ?? [];
+
 
   // Render an inline, comma-separated list (e.g., recommendedAccess)
   const renderInlineList = (keys: string[]) => (
@@ -129,29 +141,46 @@ const BeachDetailsSection: React.FC = () => {
               </InfoRow>
             </div>
 
-            {/* User type */}
-            <div className="mt-8">
-              <div className="flex items-center gap-3">
-                <Image
-                  src="/images/beachicons/people.png"
-                  alt={tGroups('userType')}
-                  width={30}
-                  height={30}
-                  className="object-contain"
-                />
-                <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
-                  {tGroups('userType')}
-                </h2>
-              </div>
-              <div className="mt-3 border-b border-[#E7E7E7]" />
+           {/* User type */}
+<div className="mt-8">
+  <div className="flex items-center gap-3">
+    <Image
+      src="/images/beachicons/people.png"
+      alt={tGroups('userType')}
+      width={30}
+      height={30}
+      className="object-contain"
+    />
+    <h2 className="font-figtree text-[16px] font-bold leading-[100%] text-[#222222]">
+      {tGroups('userType')}
+    </h2>
+  </div>
+  <div className="mt-3 border-b border-[#E7E7E7]" />
 
-              <div className="mt-4 flex flex-col">
-                {/* No left pill here — only tick list */}
-                <InfoRow labelVariant="none">
-                  <TickValueList itemKeys={data.userType} />
-                </InfoRow>
-              </div>
-            </div>
+  <div className="mt-4 flex flex-col">
+    <InfoRow labelVariant="none">
+      {userTypesFromApi.length > 0 ? (
+        <ul className="flex flex-col gap-2">
+          {userTypesFromApi.map((u) => (
+            <li key={u.id} className="flex items-center gap-2">
+              <Image
+                src="/images/beachicons/tick.png"
+                alt=""
+                width={16}
+                height={16}
+                className="inline-block object-contain"
+                aria-hidden
+              />
+              <span className="font-figtree text-[14px] font-medium leading-[100%] text-[#4D4D4D]">
+                {u.name}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </InfoRow>
+  </div>
+</div>
           </div>
 
           {/* COLUMN 2 — Beach infrastructure */}
@@ -171,7 +200,6 @@ const BeachDetailsSection: React.FC = () => {
             <div className="mt-3 border-b border-[#E7E7E7]" />
 
             <div className="mt-4 flex flex-col">
-              {/* No left pill for each infrastructure item */}
               <InfoRow labelVariant="none">
                 <TickValueList itemKeys={data.infrastructure} />
               </InfoRow>
@@ -247,7 +275,7 @@ const BeachDetailsSection: React.FC = () => {
             </div>
           </div>
 
-          {/* COLUMN 4 — Parking + Path to the beach (with real buttons) */}
+          {/* COLUMN 4 — Parking + Path to the beach */}
           <div>
             {/* Parking */}
             <div>
@@ -265,7 +293,6 @@ const BeachDetailsSection: React.FC = () => {
                   </h2>
                 </div>
 
-                {/* On mobile this stays normal; on md+ it's absolutely positioned */}
                 <div className="flex items-center md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2">
                   <ActionButton
                     icon="/images/beachicons/pic-gallery.png"
@@ -277,7 +304,6 @@ const BeachDetailsSection: React.FC = () => {
               <div className="mt-3 border-b border-[#E7E7E7]" />
 
               <div className="mt-4 flex flex-col">
-                {/* These rows use left pill labels */}
                 <InfoRow labelKey="parkingSpots">
                   <SingleValue valueRaw={data.parking.spots} />
                 </InfoRow>
@@ -322,7 +348,6 @@ const BeachDetailsSection: React.FC = () => {
               <div className="mt-3 border-b border-[#E7E7E7]" />
 
               <div className="mt-4 flex flex-col">
-                {/* These rows also use left pill labels */}
                 <InfoRow labelKey="distance">
                   <SingleValue
                     valueRaw={data.pathToBeach.distanceMetersFromParking}
