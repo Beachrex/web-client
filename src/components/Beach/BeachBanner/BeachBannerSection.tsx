@@ -26,18 +26,8 @@ export default function BeachBannerSection({
 }: BeachBannerSectionProps) {
   const tRoutes = useTranslations('routes');
 
-  // Extract and sanitize beach name from beachDetails
-  const rawBeachName = beachDetails?.basic_info?.name ?? '';
+const beachName = beachDetails?.basic_info?.name ?? '';
 
-  /**
-   * Clean up beach name coming from API:
-   * - remove backslashes used for escaping
-   * - replace "/" (and surrounding spaces) with a single space
-   */
-  const beachName = rawBeachName
-    .replace(/\\/g, '') // "Plaža d\'en" -> "Plaža d'en"
-    .replace(/\s*\/\s*/g, ' ') // "Plaža d'en / Perris" -> "Plaža d'en Perris"
-    .trim();
 
   const description = beachDetails?.basic_info?.description;
 
