@@ -13,11 +13,16 @@ e2e-tests:
 
   variables:
     CI: "true"
-    # Set BASE_URL when triggering pipeline (e.g., https://dev.beachrex.com)
+    # Base URL for testing - override when triggering pipeline if needed
+    # If not set, tests will try to start local dev server (slower)
+    BASE_URL: "https://dev.beachrex.com"
     # BROWSER: "all" | "chromium" | "firefox" | "webkit"
-    # DigitalOcean Spaces configuration (credentials come from GitLab CI/CD variables)
+    # DigitalOcean Spaces configuration
     DO_SPACES_BUCKET: "beachrex-tests"
     DO_SPACES_REGION: "fra1"
+    # These will be inherited from GitLab CI/CD Settings > Variables
+    # AWS_ACCESS_KEY_ID: (set in GitLab CI/CD variables)
+    # AWS_SECRET_ACCESS_KEY: (set in GitLab CI/CD variables)
 
   before_script:
     - corepack enable

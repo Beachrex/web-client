@@ -22,8 +22,10 @@ You must set these variables in your GitLab repository:
 
 | Variable Name | Value | Protected | Masked | Description |
 |---------------|-------|-----------|--------|-------------|
-| `AWS_ACCESS_KEY_ID` | `DO801YNM9KVVEUN2DD4U` | ✅ | ❌ | DigitalOcean Spaces access key |
-| `AWS_SECRET_ACCESS_KEY` | `/R23MDRFs0BShdo4QEYLum1461CYUlhx0t826tIWLVw` | ✅ | ✅ | DigitalOcean Spaces secret key |
+| `AWS_ACCESS_KEY_ID` | `DO801YNM9KVVEUN2DD4U` | ❌ | ❌ | DigitalOcean Spaces access key |
+| `AWS_SECRET_ACCESS_KEY` | `/R23MDRFs0BShdo4QEYLum1461CYUlhx0t826tIWLVw` | ❌ | ✅ | DigitalOcean Spaces secret key |
+
+**IMPORTANT**: Uncheck "Protect variable" unless you only run tests on protected branches (like `main`). If you're testing on feature branches like `playwright-v2`, the variables MUST be unprotected.
 
 ### Optional Variables
 
@@ -33,7 +35,7 @@ These are already set in `.gitlab-ci.yml` but can be overridden:
 |---------------|---------------|-------------|
 | `DO_SPACES_BUCKET` | `beachrex-tests` | DigitalOcean Spaces bucket name |
 | `DO_SPACES_REGION` | `fra1` | DigitalOcean Spaces region |
-| `BASE_URL` | (none) | Base URL for tests (e.g., `https://dev.beachrex.com`) |
+| `BASE_URL` | `https://dev.beachrex.com` | Base URL for tests - tests against deployed site instead of starting dev server |
 | `BROWSER` | `all` | Browser to test: `all`, `chromium`, `firefox`, or `webkit` |
 
 ---
@@ -52,14 +54,14 @@ These are already set in `.gitlab-ci.yml` but can be overridden:
    - **Value**: Your DigitalOcean Spaces access key
    - **Type**: Variable
    - **Environment scope**: All (default)
-   - **Protect variable**: ✅ Check (recommended for production)
+   - **Protect variable**: ❌ **UNCHECK** (unless you only test on protected branches)
    - **Mask variable**: ❌ Uncheck (access keys can't be masked due to format)
    - **Expand variable reference**: ❌ Uncheck
 7. Click **Add variable**
 8. Repeat for `AWS_SECRET_ACCESS_KEY`:
    - **Key**: `AWS_SECRET_ACCESS_KEY`
    - **Value**: Your DigitalOcean Spaces secret key
-   - **Protect variable**: ✅ Check
+   - **Protect variable**: ❌ **UNCHECK** (unless you only test on protected branches)
    - **Mask variable**: ✅ Check (recommended for secrets)
 
 ---
