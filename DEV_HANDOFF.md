@@ -162,7 +162,104 @@ https://beachrex-tests.fra1.digitaloceanspaces.com/playwright-reports/2025-11-27
 
 ---
 
-## 3. Zephyr Scale Integration (Optional)
+## 3. GitLab CI/CD Integration
+
+### Overview
+Automated E2E testing in GitLab CI with test report upload to DigitalOcean Spaces.
+
+### Configuration Files
+
+#### `.gitlab-ci.yml`
+```yaml
+stages:
+  - test
+
+e2e-tests:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.56.1-jammy
+
+  rules:
+    - when: manual
+      allow_failure: true
+
+  variables:
+    CI: "true"
+    BASE_URL: "https://dev.beachrex.com"
+    DO_SPACES_BUCKET: "beachrex-tests"
+    DO_SPACES_REGION: "fra1"
+```
+
+**Important**: Docker image version must match `@playwright/test` version in `package.json`.
+
+#### `playwright.config.ts`
+- Uses `BASE_URL` environment variable when set (for CI)
+- Only starts local dev server if `BASE_URL` is not provided
+- Increased webServer timeout to 120 seconds for CI environments
+- Configured reporters: HTML, list, and JUnit (for GitLab integration)
+
+### GitLab CI/CD Variables Setup
+
+**Required**: Set these in GitLab repository settings (Settings → CI/CD → Variables):
+
+| Variable | Value | Protected | Masked |
+|----------|-------|-----------|--------|
+| `AWS_ACCESS_KEY_ID` | Your DO Spaces access key | ❌ No | ❌ No |
+| `AWS_SECRET_ACCESS_KEY` | Your DO Spaces secret key | ❌ No | ✅ Yes |
+| `DO_SPACES_BUCKET` | `beachrex-tests` | ❌ No | ❌ No |
+| `DO_SPACES_REGION` | `fra1` | ❌ No | ❌ No |
+
+**Important**: Uncheck "Protect variable" to allow tests on non-protected branches (like feature branches).
+
+### Running Tests in GitLab CI
+
+1. Go to **CI/CD → Pipelines**
+2. Click **Run pipeline**
+3. Select branch (e.g., `main`, `playwright-v2`)
+4. (Optional) Override variables:
+   - `BASE_URL`: Test against different environment
+   - `BROWSER`: `chromium`, `firefox`, `webkit`, or `all`
+5. Click **Run pipeline**
+
+### Pipeline Behavior
+
+- **Manual trigger only** - Won't run automatically on commits
+- **Tests run** against deployed site (`BASE_URL`)
+- **Report uploads** to DigitalOcean Spaces (even if tests fail)
+- **Artifacts saved** in GitLab for 30 days
+- **JUnit report** integrated with GitLab test results
+
+### Report Access
+
+After pipeline completes, find the report URL in job logs:
+```
+https://beachrex-tests.fra1.digitaloceanspaces.com/playwright-reports/{timestamp}/index.html
+```
+
+Or download artifacts from GitLab UI: **CI/CD → Pipelines → Job → Browse artifacts**
+
+### Troubleshooting GitLab CI
+
+**"Missing credentials" error**:
+- Verify variables are set in Settings → CI/CD → Variables
+- Ensure "Protect variable" is **unchecked** for non-protected branches
+- Check variable names are exact: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
+
+**"Playwright version mismatch" error**:
+- Update Docker image in `.gitlab-ci.yml` to match `@playwright/test` version in `package.json`
+- Example: `mcr.microsoft.com/playwright:v1.56.1-jammy`
+
+**"Webserver timeout" error**:
+- Ensure `BASE_URL` is set to test against deployed site
+- Don't try to start dev server in CI (too slow)
+
+**"Job failed: exit code 1" (but upload succeeded)**:
+- This is normal when tests fail
+- The upload still completes successfully
+- Check the report URL to see which tests failed
+
+---
+
+## 4. Zephyr Scale Integration (Optional)
 
 Zephyr Scale integration for Jira is configured but currently disabled. To enable:
 
@@ -191,7 +288,7 @@ See `ZEPHYR_INTEGRATION.md` for detailed setup instructions.
 
 ---
 
-## Troubleshooting
+## Troubleshooting Local Development
 
 ### Upload fails with "Missing credentials"
 Ensure `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are set in your `.env` file.
@@ -204,4 +301,33 @@ Verify `DO_SPACES_BUCKET` is set correctly (default: `beachrex-tests`).
 
 ### Tests fail but upload doesn't run
 This shouldn't happen with the current setup (uses `;` instead of `&&`). If it does, run `yarn test:e2e:upload` manually.
+
+---
+
+## Summary of Changes
+
+### Files Modified
+- `.gitlab-ci.yml` - GitLab CI/CD pipeline configuration
+- `playwright.config.ts` - Dynamic BASE_URL and conditional webServer
+- `scripts/upload-playwright-report.mjs` - Upload script with better error messages
+
+### Files Created
+- `scripts/upload-playwright-report.mjs` - DigitalOcean Spaces upload script
+
+### Dependencies Added
+- `@aws-sdk/client-s3` - For uploading to DigitalOcean Spaces
+- `mime-types` - For setting correct content types
+
+### Environment Variables
+**Local (.env)**:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `DO_SPACES_BUCKET`
+- `DO_SPACES_REGION`
+
+**GitLab CI/CD Variables** (Settings → CI/CD → Variables):
+- `AWS_ACCESS_KEY_ID` (unprotected)
+- `AWS_SECRET_ACCESS_KEY` (unprotected, masked)
+- `DO_SPACES_BUCKET` (unprotected)
+- `DO_SPACES_REGION` (unprotected)
 
