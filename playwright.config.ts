@@ -24,6 +24,8 @@ export default defineConfig({
     reporter: [
         ['html', { open: 'never' }],
         ['list'],
+        // JUnit reporter for GitLab CI integration
+        ['junit', { outputFile: 'test-results/junit.xml' }],
         // Zephyr Scale reporter - sends test results to Jira
         // ['playwright-zephyr/lib/src/cloud', {
         //     projectKey: process.env.ZEPHYR_PROJECT_KEY || 'PEOG',
