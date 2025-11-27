@@ -1,15 +1,16 @@
 stages:
   - test
 
-# E2E Tests - Manual trigger
+# E2E Tests - API trigger only
 e2e-tests:
   stage: test
   image: mcr.microsoft.com/playwright:v1.56.1-jammy
 
-  # Manual trigger only
+  # Only run when triggered via API, not on push/merge
   rules:
-    - when: manual
-      allow_failure: true
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+      when: on_success
+    - when: never
 
   variables:
     CI: "true"

@@ -179,8 +179,9 @@ e2e-tests:
   image: mcr.microsoft.com/playwright:v1.56.1-jammy
 
   rules:
-    - when: manual
-      allow_failure: true
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+      when: on_success
+    - when: never
 
   variables:
     CI: "true"
@@ -189,7 +190,9 @@ e2e-tests:
     DO_SPACES_REGION: "fra1"
 ```
 
-**Important**: Docker image version must match `@playwright/test` version in `package.json`.
+**Important**:
+- Docker image version must match `@playwright/test` version in `package.json`
+- Tests **only run when triggered via API**, not on push/merge/manual UI trigger
 
 #### `playwright.config.ts`
 - Uses `BASE_URL` environment variable when set (for CI)
@@ -210,15 +213,33 @@ e2e-tests:
 
 **Important**: Uncheck "Protect variable" to allow tests on non-protected branches (like feature branches).
 
-### Running Tests in GitLab CI
+### Triggering Tests via API
 
-1. Go to **CI/CD → Pipelines**
-2. Click **Run pipeline**
-3. Select branch (e.g., `main`, `playwright-v2`)
-4. (Optional) Override variables:
-   - `BASE_URL`: Test against different environment
-   - `BROWSER`: `chromium`, `firefox`, `webkit`, or `all`
-5. Click **Run pipeline**
+Tests are configured to **only run when triggered via API**, not on push/merge.
+
+#### Basic Trigger:
+```bash
+curl -X POST \
+  --fail \
+  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form ref=main \
+  "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
+```
+
+#### With Custom Variables:
+```bash
+curl -X POST \
+  --fail \
+  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form ref=main \
+  --form "variables[BASE_URL]=https://staging.beachrex.com" \
+  --form "variables[BROWSER]=chromium" \
+  "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
+```
+
+#### Available Variables:
+- `BASE_URL`: Test against different environment (default: `https://dev.beachrex.com`)
+- `BROWSER`: `chromium`, `firefox`, `webkit`, or `all` (default: all browsers)
 
 ### Pipeline Behavior
 
