@@ -15,7 +15,9 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:upload": "node scripts/upload-playwright-report.mjs",
+    "test:e2e:ci": "playwright test; yarn test:e2e:upload"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
@@ -60,6 +62,7 @@
     "zod": "^3.23.3"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.940.0",
     "@hey-api/openapi-ts": "^0.87.1",
     "@playwright/test": "^1.56.1",
     "@types/eslint": "^8.56.10",
