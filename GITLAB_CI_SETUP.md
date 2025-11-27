@@ -202,7 +202,7 @@ stages:
 
 e2e-tests:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.49.1-jammy
+  image: mcr.microsoft.com/playwright:v1.56.1-jammy
   
   rules:
     - when: manual  # Manual trigger only
