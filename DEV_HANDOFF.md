@@ -237,9 +237,50 @@ curl -X POST \
   "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
 ```
 
+#### Run Specific Tests:
+```bash
+# Run specific test file
+curl -X POST \
+  --fail \
+  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form ref=main \
+  --form "variables[TEST_FILTER]=tests/home.spec.ts" \
+  "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
+
+# Run tests in specific folder
+curl -X POST \
+  --fail \
+  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form ref=main \
+  --form "variables[TEST_FILTER]=tests/auth/" \
+  "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
+
+# Run tests matching pattern (grep)
+curl -X POST \
+  --fail \
+  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form ref=main \
+  --form "variables[TEST_FILTER]=-g 'login'" \
+  "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
+
+# Combine filters: specific file + pattern + browser
+curl -X POST \
+  --fail \
+  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form ref=main \
+  --form "variables[BROWSER]=firefox" \
+  --form "variables[TEST_FILTER]=tests/home.spec.ts -g 'hero'" \
+  "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
+```
+
 #### Available Variables:
 - `BASE_URL`: Test against different environment (default: `https://dev.beachrex.com`)
 - `BROWSER`: `chromium`, `firefox`, `webkit`, or `all` (default: all browsers)
+- `TEST_FILTER`: Filter which tests to run:
+  - Specific file: `tests/home.spec.ts`
+  - Folder: `tests/auth/`
+  - Grep pattern: `-g 'login'`
+  - Combined: `tests/home.spec.ts -g 'hero'`
 
 ### Pipeline Behavior
 

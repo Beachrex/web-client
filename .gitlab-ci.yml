@@ -18,6 +18,12 @@ e2e-tests:
     # If not set, tests will try to start local dev server (slower)
     BASE_URL: "https://dev.beachrex.com"
     # BROWSER: "all" | "chromium" | "firefox" | "webkit"
+    # TEST_FILTER: Optional - filter tests by file path or grep pattern
+    # Examples:
+    #   TEST_FILTER: "tests/home.spec.ts"           - Run specific file
+    #   TEST_FILTER: "tests/auth/"                  - Run all tests in folder
+    #   TEST_FILTER: "-g 'login'"                   - Run tests matching "login"
+    #   TEST_FILTER: "tests/home.spec.ts -g 'hero'" - Specific file + grep
     # DigitalOcean Spaces configuration
     DO_SPACES_BUCKET: "beachrex-tests"
     DO_SPACES_REGION: "fra1"
@@ -31,11 +37,21 @@ e2e-tests:
 
   script:
     - |
-      if [ "$BROWSER" = "all" ] || [ -z "$BROWSER" ]; then
-        yarn playwright test
-      else
-        yarn playwright test --project=$BROWSER
+      # Build the test command
+      TEST_CMD="yarn playwright test"
+
+      # Add browser filter if specified
+      if [ -n "$BROWSER" ] && [ "$BROWSER" != "all" ]; then
+        TEST_CMD="$TEST_CMD --project=$BROWSER"
       fi
+
+      # Add test filter if specified
+      if [ -n "$TEST_FILTER" ]; then
+        TEST_CMD="$TEST_CMD $TEST_FILTER"
+      fi
+
+      echo "Running: $TEST_CMD"
+      eval $TEST_CMD
 
   after_script:
     # Debug: Check if credentials are available

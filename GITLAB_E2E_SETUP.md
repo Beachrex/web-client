@@ -458,6 +458,48 @@ curl -X POST \
   "https://gitlab.com/api/v4/projects/12345678/trigger/pipeline"
 ```
 
+#### Trigger specific test file:
+```bash
+curl -X POST \
+  --fail \
+  --form token=glptt-xxxxxxxxxxxxxxxxxxxx \
+  --form ref=main \
+  --form "variables[TEST_FILTER]=tests/home.spec.ts" \
+  "https://gitlab.com/api/v4/projects/12345678/trigger/pipeline"
+```
+
+#### Trigger tests in specific folder:
+```bash
+curl -X POST \
+  --fail \
+  --form token=glptt-xxxxxxxxxxxxxxxxxxxx \
+  --form ref=main \
+  --form "variables[TEST_FILTER]=tests/auth/" \
+  "https://gitlab.com/api/v4/projects/12345678/trigger/pipeline"
+```
+
+#### Trigger tests matching a pattern (grep):
+```bash
+curl -X POST \
+  --fail \
+  --form token=glptt-xxxxxxxxxxxxxxxxxxxx \
+  --form ref=main \
+  --form "variables[TEST_FILTER]=-g 'login'" \
+  "https://gitlab.com/api/v4/projects/12345678/trigger/pipeline"
+```
+
+#### Combine multiple filters:
+```bash
+# Run only "hero" tests in home.spec.ts on Firefox
+curl -X POST \
+  --fail \
+  --form token=glptt-xxxxxxxxxxxxxxxxxxxx \
+  --form ref=main \
+  --form "variables[BROWSER]=firefox" \
+  --form "variables[TEST_FILTER]=tests/home.spec.ts -g 'hero'" \
+  "https://gitlab.com/api/v4/projects/12345678/trigger/pipeline"
+```
+
 ### 5.3 Verify Pipeline Execution
 
 1. Go to **CI/CD → Pipelines** in GitLab
@@ -804,6 +846,11 @@ curl -X POST \
 
 - `BASE_URL` - Test environment URL (default: from .gitlab-ci.yml)
 - `BROWSER` - Browser to test: `chromium`, `firefox`, `webkit`, `all`
+- `TEST_FILTER` - Filter which tests to run:
+  - Specific file: `tests/home.spec.ts`
+  - Folder: `tests/auth/`
+  - Grep pattern: `-g 'login'`
+  - Combined: `tests/home.spec.ts -g 'hero'`
 
 ---
 
