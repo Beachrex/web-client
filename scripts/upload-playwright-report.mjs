@@ -20,7 +20,8 @@ import { existsSync } from 'fs';
 import { lookup } from 'mime-types';
 import * as dotenv from 'dotenv';
 
-// Load environment variables from .env file
+// Load environment variables from .env file (if it exists)
+// In CI environments, variables are already set, so this is optional
 dotenv.config();
 
 // Configuration
@@ -101,7 +102,13 @@ async function main() {
   // Check credentials
   if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
     console.error('❌ Missing credentials!');
-    console.error('   Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.');
+    console.error('');
+    console.error('   AWS_ACCESS_KEY_ID:', process.env.AWS_ACCESS_KEY_ID ? '✅ Set' : '❌ Not set');
+    console.error('   AWS_SECRET_ACCESS_KEY:', process.env.AWS_SECRET_ACCESS_KEY ? '✅ Set' : '❌ Not set');
+    console.error('');
+    console.error('   For local development: Add to .env file');
+    console.error('   For GitLab CI: Set in Settings > CI/CD > Variables');
+    console.error('');
     process.exit(1);
   }
   

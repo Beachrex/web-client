@@ -15,6 +15,9 @@ e2e-tests:
     CI: "true"
     # Set BASE_URL when triggering pipeline (e.g., https://dev.beachrex.com)
     # BROWSER: "all" | "chromium" | "firefox" | "webkit"
+    # DigitalOcean Spaces configuration (credentials come from GitLab CI/CD variables)
+    DO_SPACES_BUCKET: "beachrex-tests"
+    DO_SPACES_REGION: "fra1"
 
   before_script:
     - corepack enable
@@ -29,6 +32,20 @@ e2e-tests:
       fi
 
   after_script:
+    # Debug: Check if credentials are available
+    - echo "Checking AWS credentials..."
+    - |
+      if [ -z "$AWS_ACCESS_KEY_ID" ]; then
+        echo "❌ AWS_ACCESS_KEY_ID is not set!"
+      else
+        echo "✅ AWS_ACCESS_KEY_ID is set (length: ${#AWS_ACCESS_KEY_ID})"
+      fi
+    - |
+      if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
+        echo "❌ AWS_SECRET_ACCESS_KEY is not set!"
+      else
+        echo "✅ AWS_SECRET_ACCESS_KEY is set (length: ${#AWS_SECRET_ACCESS_KEY})"
+      fi
     # Always upload report, even if tests fail
     - yarn test:e2e:upload || true
 
