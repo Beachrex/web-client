@@ -17,10 +17,10 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
   const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
   const locale = useLocale();
 
-  // Define size-specific classes
+  // Define size-specific classes (responsive width, max fixed size)
   const sizeClasses = {
-    small: 'w-[289px] max-w-[289px]',
-    big: 'w-[410px] max-w-[410px]',
+    small: 'w-full max-w-[289px]',
+    big: 'w-full max-w-[410px]',
   };
 
   const cardWidth = sizeClasses[size];
