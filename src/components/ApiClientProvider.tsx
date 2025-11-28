@@ -15,7 +15,8 @@ export function ApiClientProvider({ children, locale }: ApiClientProviderProps) 
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000, // 1 minute
+            staleTime: 5 * 60 * 1000, // 5 minutes - map data doesn't change frequently
+            gcTime: 10 * 60 * 1000, // 10 minutes - keep in cache longer
             refetchOnWindowFocus: false,
           },
         },
