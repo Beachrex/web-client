@@ -46,7 +46,7 @@ const buildYoutubeEmbedUrl = (rawUrl: string): string => {
 
 const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const t = useTranslations('BeachDetails');
-  const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
+  const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
 
   // ✅ Hook vedno pokličemo, brez pogojev
   const [activeMedia, setActiveMedia] =
@@ -171,7 +171,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
                     {gallery.map((img) => {
                       const rawSrc = img.url ?? img.thumbnail_url;
                       const src =
-                        (rawSrc ? `${env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(rawSrc)}` : null) ??
+                        (rawSrc ? `${env.NEXT_PUBLIC_CDN_TEASER}${encodeCdnImagePath(rawSrc)}` : null) ??
                         primaryGalleryUrlTmp;
                       const key = String(img.id ?? src);
 

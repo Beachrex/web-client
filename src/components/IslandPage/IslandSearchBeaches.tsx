@@ -24,7 +24,7 @@ const IslandSearchBeaches: React.FC<IslandSearchBeachesProps> = ({
       ? countries.map((country) => ({
           id: country.code,
           image: country.image_path
-            ? `${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(country.image_path)}`
+            ? `${process.env.NEXT_PUBLIC_CDN_TEASER}${encodeCdnImagePath(country.image_path)}`
             : '/images/spain.jpg',
           title: country.full_name ?? country.name,
           location: `${country.name}, ${islandName}`,

@@ -43,7 +43,7 @@ const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
 
   if (validImages.length === 0) return null;
 
-  const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
+  const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
 
   const toCdnUrl = (url?: string | null): string | null => {
     if (!url) return null;

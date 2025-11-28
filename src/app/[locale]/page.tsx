@@ -37,7 +37,7 @@ export default function HomePage() {
   // Helper to build CDN URL from relative path
   const buildCdnUrl = (path: string | null | undefined): string => {
     if (!path) return '';
-    return `${env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(path)}`;
+    return `${env.NEXT_PUBLIC_CDN_TEASER}${encodeCdnImagePath(path)}`;
   };
 
   // Process browse map data
