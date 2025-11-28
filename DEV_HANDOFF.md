@@ -691,8 +691,8 @@ After deployment, verify:
 6. Mobile performance is acceptable (test on actual devices)
 
 ### Future Optimization Opportunities
-- **Backend clustering endpoint**: Return pre-clustered data at low zoom levels
-- **Tile-based caching**: Cache beaches by map tile coordinates
+- **Backend clustering endpoint**: Return pre-clustered data at low zoom levels (see Section 7)
+- **Tile-based caching**: Cache beaches by map tile coordinates (see Section 7)
 - **Virtual scrolling**: For the beach list sidebar
 - **WebWorker processing**: Offload marker calculations to background thread
 - **Progressive loading**: Load visible markers first, then off-screen
@@ -702,5 +702,745 @@ After deployment, verify:
 - The 1.5x expansion factor can be tuned in `MapWithSidebar.tsx`
 - Cache times should be increased cautiously (balance freshness vs performance)
 - Marker cluster radius (50px) can be adjusted for different visual density
+- Minimum cluster size is set to 5 markers (clusters with < 5 markers show individual pins)
 - All optimizations are backward compatible with existing API
+
+---
+
+## 7. Advanced Map Optimization Strategies (Future Implementation)
+
+This section documents advanced optimization strategies for the beach map that can be implemented when the application scales beyond 10,000+ beaches or when further performance improvements are needed.
+
+### Overview
+
+The current client-side clustering approach works well for up to ~10,000 beaches. For larger datasets or to achieve Google Maps-level performance, consider these two advanced strategies:
+
+1. **Backend Clustering Endpoint** - Server-side pre-calculation of clusters
+2. **Tile-Based Caching System** - Map tile-based data caching (like Google Maps)
+
+---
+
+### 7.1 Backend Clustering Endpoint
+
+#### Concept
+Instead of sending all individual beach coordinates to the frontend and letting the browser cluster them, the backend pre-calculates clusters based on the current zoom level and viewport bounds.
+
+#### Current vs Optimized Flow
+
+**Current approach (client-side clustering):**
+```
+Backend → Sends 500 beaches → Frontend clusters them → Displays ~50 clusters
+```
+
+**Optimized approach (server-side clustering):**
+```
+Backend → Calculates clusters → Sends 50 cluster objects → Frontend displays them directly
+```
+
+#### API Design
+
+**New Endpoint:**
+```
+GET /api/beaches/clusters?min_lat={lat}&max_lat={lat}&min_lon={lon}&max_lon={lon}&zoom={zoom}
+```
+
+**Response Format:**
+```json
+{
+  "data": [
+    {
+      "type": "cluster",
+      "lat": 45.5,
+      "lon": 14.2,
+      "count": 25,
+      "bounds": {
+        "min_lat": 45.4,
+        "max_lat": 45.6,
+        "min_lon": 14.1,
+        "max_lon": 14.3
+      },
+      "beach_ids": [1, 2, 3, ...]
+    },
+    {
+      "type": "single",
+      "beach_id": 123,
+      "lat": 45.7,
+      "lon": 14.5,
+      "name": "Beautiful Beach",
+      "slug": "beautiful-beach",
+      "country_code": "HR"
+    }
+  ],
+  "meta": {
+    "total_items": 75,
+    "zoom": 12
+  }
+}
+```
+
+#### Backend Implementation (Laravel)
+
+**Service Class:**
+```php
+// app/Services/BeachClusterService.php
+class BeachClusterService
+{
+    /**
+     * Cluster beaches based on zoom level and viewport
+     */
+    public function getClusters(
+        float $minLat,
+        float $maxLat,
+        float $minLon,
+        float $maxLon,
+        int $zoom
+    ): array {
+        // Calculate grid size based on zoom level
+        $gridSize = $this->getGridSize($zoom);
+
+        // Get all beaches in viewport
+        $beaches = Beach::where('status_id', 1)
+            ->whereBetween('latitude', [$minLat, $maxLat])
+            ->whereBetween('longitude', [$minLon, $maxLon])
+            ->get(['id', 'latitude', 'longitude', 'name', 'slug', 'country_code']);
+
+        // Group beaches into grid cells
+        $grid = [];
+        foreach ($beaches as $beach) {
+            $cellX = floor($beach->longitude / $gridSize);
+            $cellY = floor($beach->latitude / $gridSize);
+            $key = "{$cellX}_{$cellY}";
+
+            if (!isset($grid[$key])) {
+                $grid[$key] = [];
+            }
+            $grid[$key][] = $beach;
+        }
+
+        // Convert grid cells to clusters or single markers
+        $clusters = [];
+        foreach ($grid as $cell) {
+            if (count($cell) >= 5) {
+                // Create cluster (minimum 5 beaches)
+                $clusters[] = [
+                    'type' => 'cluster',
+                    'lat' => array_sum(array_column($cell, 'latitude')) / count($cell),
+                    'lon' => array_sum(array_column($cell, 'longitude')) / count($cell),
+                    'count' => count($cell),
+                    'beach_ids' => array_column($cell, 'id'),
+                    'bounds' => $this->calculateBounds($cell),
+                ];
+            } else {
+                // Add individual beaches
+                foreach ($cell as $beach) {
+                    $clusters[] = [
+                        'type' => 'single',
+                        'beach_id' => $beach->id,
+                        'lat' => $beach->latitude,
+                        'lon' => $beach->longitude,
+                        'name' => $beach->name,
+                        'slug' => $beach->slug,
+                        'country_code' => $beach->country_code,
+                    ];
+                }
+            }
+        }
+
+        return $clusters;
+    }
+
+    /**
+     * Calculate grid size based on zoom level
+     * Higher zoom = smaller grid = less clustering
+     */
+    private function getGridSize(int $zoom): float
+    {
+        return match(true) {
+            $zoom <= 5 => 5.0,    // Very large clusters (world view)
+            $zoom <= 8 => 1.0,    // Large clusters (continent view)
+            $zoom <= 11 => 0.5,   // Medium clusters (country view)
+            $zoom <= 14 => 0.1,   // Small clusters (region view)
+            default => 0.01,      // Minimal clustering (city view)
+        };
+    }
+
+    /**
+     * Calculate bounding box for a group of beaches
+     */
+    private function calculateBounds(array $beaches): array
+    {
+        $lats = array_column($beaches, 'latitude');
+        $lons = array_column($beaches, 'longitude');
+
+        return [
+            'min_lat' => min($lats),
+            'max_lat' => max($lats),
+            'min_lon' => min($lons),
+            'max_lon' => max($lons),
+        ];
+    }
+}
+```
+
+**Controller:**
+```php
+// app/Http/Controllers/BeachClusterController.php
+class BeachClusterController extends Controller
+{
+    public function getClusters(Request $request)
+    {
+        $validated = $request->validate([
+            'min_lat' => 'required|numeric|min:-90|max:90',
+            'max_lat' => 'required|numeric|min:-90|max:90',
+            'min_lon' => 'required|numeric|min:-180|max:180',
+            'max_lon' => 'required|numeric|min:-180|max:180',
+            'zoom' => 'required|integer|min:1|max:18',
+        ]);
+
+        $clusterService = app(BeachClusterService::class);
+        $clusters = $clusterService->getClusters(
+            $validated['min_lat'],
+            $validated['max_lat'],
+            $validated['min_lon'],
+            $validated['max_lon'],
+            $validated['zoom']
+        );
+
+        // Cache the result for 5 minutes
+        $cacheKey = sprintf(
+            'beach_clusters:%d:%.2f:%.2f:%.2f:%.2f',
+            $validated['zoom'],
+            $validated['min_lat'],
+            $validated['max_lat'],
+            $validated['min_lon'],
+            $validated['max_lon']
+        );
+
+        return response()->json([
+            'data' => $clusters,
+            'meta' => [
+                'total_items' => count($clusters),
+                'zoom' => $validated['zoom'],
+            ]
+        ]);
+    }
+}
+```
+
+**Route:**
+```php
+// routes/api.php
+Route::get('/beaches/clusters', [BeachClusterController::class, 'getClusters']);
+```
+
+#### Frontend Integration
+
+**Update API call in MapWithSidebar.tsx:**
+```typescript
+// Instead of /beaches/bounding-box, call /beaches/clusters
+const { data: clusterData } = useQuery({
+  queryKey: ['beach-clusters', boundingBox, zoom],
+  queryFn: () => fetchBeachClusters(boundingBox, zoom),
+  enabled: !!boundingBox,
+});
+
+// Handle both clusters and individual beaches
+const renderMarkers = () => {
+  return clusterData?.data.map(item => {
+    if (item.type === 'cluster') {
+      return <ClusterMarker key={`cluster-${item.lat}-${item.lon}`} {...item} />;
+    } else {
+      return <BeachMarker key={`beach-${item.beach_id}`} {...item} />;
+    }
+  });
+};
+```
+
+#### Benefits
+- ✅ **Reduced payload size**: Send 50 clusters instead of 500 beaches
+- ✅ **Faster frontend rendering**: No client-side clustering computation
+- ✅ **Consistent clustering**: Same clusters for all users at same zoom/viewport
+- ✅ **Better caching**: Can cache cluster results on backend
+- ✅ **Mobile performance**: Less JavaScript processing on mobile devices
+- ✅ **Scalable**: Works efficiently with 50,000+ beaches
+
+#### Drawbacks
+- ❌ More complex backend logic
+- ❌ Need to handle cluster expansion (when user clicks cluster to zoom in)
+- ❌ Less flexible (can't easily change clustering algorithm on frontend)
+- ❌ Additional API endpoint to maintain
+
+#### When to Implement
+- You have **> 10,000 beaches** in the database
+- Mobile performance becomes an issue
+- You want to reduce frontend bundle size and computation
+- You need consistent clustering across all users
+
+---
+
+### 7.2 Tile-Based Caching System
+
+#### Concept
+Divide the world map into **tiles** (like Google Maps does) and cache beach data per tile. This is the same pattern used by Google Maps, Mapbox, and other major mapping services for imagery tiles.
+
+#### How Map Tiles Work
+
+The world is divided into a grid at each zoom level:
+- **Zoom 0**: 1 tile (entire world)
+- **Zoom 1**: 4 tiles (2×2 grid)
+- **Zoom 2**: 16 tiles (4×4 grid)
+- **Zoom 10**: 1,048,576 tiles (1024×1024 grid)
+- **Zoom 18**: 68,719,476,736 tiles
+
+Each tile has coordinates: `{zoom}/{x}/{y}`
+
+Example: `10/512/342` = Zoom level 10, tile X=512, Y=342
+
+#### Tile Coordinate System
+
+```
+Zoom 1:           Zoom 2:
+┌─────┬─────┐     ┌──┬──┬──┬──┐
+│ 0,0 │ 1,0 │     │  │  │  │  │
+├─────┼─────┤     ├──┼──┼──┼──┤
+│ 0,1 │ 1,1 │     │  │  │  │  │
+└─────┴─────┘     ├──┼──┼──┼──┤
+                  │  │  │  │  │
+                  ├──┼──┼──┼──┤
+                  │  │  │  │  │
+                  └──┴──┴──┴──┘
+```
+
+#### Backend Implementation (Laravel)
+
+**Tile Service:**
+```php
+// app/Services/MapTileService.php
+class MapTileService
+{
+    /**
+     * Convert lat/lon to tile coordinates
+     *
+     * @param float $lat Latitude (-90 to 90)
+     * @param float $lon Longitude (-180 to 180)
+     * @param int $zoom Zoom level (0 to 18)
+     * @return array ['x' => int, 'y' => int, 'zoom' => int]
+     */
+    public function latLonToTile(float $lat, float $lon, int $zoom): array
+    {
+        $n = pow(2, $zoom);
+        $xtile = floor(($lon + 180) / 360 * $n);
+
+        $latRad = deg2rad($lat);
+        $ytile = floor((1 - log(tan($latRad) + 1 / cos($latRad)) / pi()) / 2 * $n);
+
+        return [
+            'x' => (int) $xtile,
+            'y' => (int) $ytile,
+            'zoom' => $zoom
+        ];
+    }
+
+    /**
+     * Get tile bounds (lat/lon boundaries)
+     *
+     * @param int $x Tile X coordinate
+     * @param int $y Tile Y coordinate
+     * @param int $zoom Zoom level
+     * @return array ['min_lat', 'max_lat', 'min_lon', 'max_lon']
+     */
+    public function getTileBounds(int $x, int $y, int $zoom): array
+    {
+        $n = pow(2, $zoom);
+
+        $lon_min = $x / $n * 360 - 180;
+        $lon_max = ($x + 1) / $n * 360 - 180;
+
+        $lat_min_rad = atan(sinh(pi() * (1 - 2 * ($y + 1) / $n)));
+        $lat_max_rad = atan(sinh(pi() * (1 - 2 * $y / $n)));
+
+        return [
+            'min_lat' => rad2deg($lat_min_rad),
+            'max_lat' => rad2deg($lat_max_rad),
+            'min_lon' => $lon_min,
+            'max_lon' => $lon_max,
+        ];
+    }
+
+    /**
+     * Get all tiles that intersect with a bounding box
+     *
+     * @param float $minLat Minimum latitude
+     * @param float $maxLat Maximum latitude
+     * @param float $minLon Minimum longitude
+     * @param float $maxLon Maximum longitude
+     * @param int $zoom Zoom level
+     * @return array Array of tiles [['x' => int, 'y' => int, 'zoom' => int], ...]
+     */
+    public function getTilesForBounds(
+        float $minLat,
+        float $maxLat,
+        float $minLon,
+        float $maxLon,
+        int $zoom
+    ): array {
+        $topLeft = $this->latLonToTile($maxLat, $minLon, $zoom);
+        $bottomRight = $this->latLonToTile($minLat, $maxLon, $zoom);
+
+        $tiles = [];
+        for ($x = $topLeft['x']; $x <= $bottomRight['x']; $x++) {
+            for ($y = $topLeft['y']; $y <= $bottomRight['y']; $y++) {
+                $tiles[] = ['x' => $x, 'y' => $y, 'zoom' => $zoom];
+            }
+        }
+
+        return $tiles;
+    }
+
+    /**
+     * Get beaches within a specific tile
+     *
+     * @param int $x Tile X coordinate
+     * @param int $y Tile Y coordinate
+     * @param int $zoom Zoom level
+     * @return \Illuminate\Support\Collection
+     */
+    public function getBeachesInTile(int $x, int $y, int $zoom)
+    {
+        $bounds = $this->getTileBounds($x, $y, $zoom);
+
+        return Beach::where('status_id', 1)
+            ->whereBetween('latitude', [$bounds['min_lat'], $bounds['max_lat']])
+            ->whereBetween('longitude', [$bounds['min_lon'], $bounds['max_lon']])
+            ->select(['id', 'latitude', 'longitude', 'name', 'slug', 'country_code'])
+            ->get();
+    }
+}
+```
+
+**Controller:**
+```php
+// app/Http/Controllers/BeachTileController.php
+class BeachTileController extends Controller
+{
+    /**
+     * Get beaches for a specific map tile
+     *
+     * @param int $zoom Zoom level (0-18)
+     * @param int $x Tile X coordinate
+     * @param int $y Tile Y coordinate
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTile(int $zoom, int $x, int $y)
+    {
+        // Validate zoom level
+        if ($zoom < 0 || $zoom > 18) {
+            return response()->json(['error' => 'Invalid zoom level'], 400);
+        }
+
+        $cacheKey = "beach_tile:{$zoom}:{$x}:{$y}";
+
+        // Cache for 1 hour (tiles rarely change)
+        $beaches = Cache::remember($cacheKey, 3600, function () use ($zoom, $x, $y) {
+            $tileService = app(MapTileService::class);
+            return $tileService->getBeachesInTile($x, $y, $zoom);
+        });
+
+        return response()->json([
+            'data' => $beaches,
+            'tile' => [
+                'zoom' => $zoom,
+                'x' => $x,
+                'y' => $y
+            ],
+            'meta' => [
+                'count' => $beaches->count(),
+                'cached' => Cache::has($cacheKey),
+            ]
+        ]);
+    }
+
+    /**
+     * Get beaches for multiple tiles (batch request)
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTiles(Request $request)
+    {
+        $validated = $request->validate([
+            'tiles' => 'required|array|max:20', // Limit to 20 tiles per request
+            'tiles.*.zoom' => 'required|integer|min:0|max:18',
+            'tiles.*.x' => 'required|integer|min:0',
+            'tiles.*.y' => 'required|integer|min:0',
+        ]);
+
+        $tileService = app(MapTileService::class);
+        $results = [];
+
+        foreach ($validated['tiles'] as $tile) {
+            $cacheKey = "beach_tile:{$tile['zoom']}:{$tile['x']}:{$tile['y']}";
+
+            $beaches = Cache::remember($cacheKey, 3600, function () use ($tileService, $tile) {
+                return $tileService->getBeachesInTile($tile['x'], $tile['y'], $tile['zoom']);
+            });
+
+            $results[] = [
+                'tile' => $tile,
+                'data' => $beaches,
+                'count' => $beaches->count(),
+            ];
+        }
+
+        return response()->json([
+            'tiles' => $results,
+            'meta' => [
+                'total_tiles' => count($results),
+                'total_beaches' => array_sum(array_column($results, 'count')),
+            ]
+        ]);
+    }
+}
+```
+
+**Routes:**
+```php
+// routes/api.php
+Route::get('/beaches/tiles/{zoom}/{x}/{y}', [BeachTileController::class, 'getTile'])
+    ->where(['zoom' => '[0-9]+', 'x' => '[0-9]+', 'y' => '[0-9]+']);
+
+Route::post('/beaches/tiles/batch', [BeachTileController::class, 'getTiles']);
+```
+
+#### Frontend Integration
+
+**Calculate visible tiles:**
+```typescript
+// lib/utils/map-tiles.ts
+export function latLonToTile(lat: number, lon: number, zoom: number) {
+  const n = Math.pow(2, zoom);
+  const xtile = Math.floor(((lon + 180) / 360) * n);
+  const ytile = Math.floor(
+    ((1 - Math.log(Math.tan((lat * Math.PI) / 180) + 1 / Math.cos((lat * Math.PI) / 180)) / Math.PI) / 2) * n
+  );
+  return { x: xtile, y: ytile, zoom };
+}
+
+export function getVisibleTiles(bounds: BoundingBox, zoom: number) {
+  const topLeft = latLonToTile(bounds.max_lat, bounds.min_lon, zoom);
+  const bottomRight = latLonToTile(bounds.min_lat, bounds.max_lon, zoom);
+
+  const tiles = [];
+  for (let x = topLeft.x; x <= bottomRight.x; x++) {
+    for (let y = topLeft.y; y <= bottomRight.y; y++) {
+      tiles.push({ x, y, zoom });
+    }
+  }
+  return tiles;
+}
+```
+
+**Fetch tiles in MapWithSidebar.tsx:**
+```typescript
+const visibleTiles = useMemo(() => {
+  if (!boundingBox || !zoom) return [];
+  return getVisibleTiles(boundingBox, zoom);
+}, [boundingBox, zoom]);
+
+// Fetch each tile with React Query
+const tileQueries = useQueries({
+  queries: visibleTiles.map(tile => ({
+    queryKey: ['beach-tile', tile.zoom, tile.x, tile.y],
+    queryFn: () => fetchBeachTile(tile.zoom, tile.x, tile.y),
+    staleTime: 60 * 60 * 1000, // 1 hour (tiles rarely change)
+    gcTime: 24 * 60 * 60 * 1000, // 24 hours
+  })),
+});
+
+// Combine all beaches from all tiles
+const allBeaches = useMemo(() => {
+  return tileQueries
+    .filter(query => query.data)
+    .flatMap(query => query.data.data);
+}, [tileQueries]);
+```
+
+**Alternative: Batch request:**
+```typescript
+const { data: tilesData } = useQuery({
+  queryKey: ['beach-tiles-batch', visibleTiles],
+  queryFn: () => fetchBeachTilesBatch(visibleTiles),
+  enabled: visibleTiles.length > 0,
+  staleTime: 60 * 60 * 1000,
+});
+```
+
+#### Cache Invalidation Strategy
+
+When beaches are added, updated, or deleted, invalidate affected tiles:
+
+```php
+// app/Observers/BeachObserver.php
+class BeachObserver
+{
+    public function saved(Beach $beach)
+    {
+        $this->invalidateTilesForBeach($beach);
+    }
+
+    public function deleted(Beach $beach)
+    {
+        $this->invalidateTilesForBeach($beach);
+    }
+
+    private function invalidateTilesForBeach(Beach $beach)
+    {
+        $tileService = app(MapTileService::class);
+
+        // Invalidate tiles at all zoom levels
+        for ($zoom = 0; $zoom <= 18; $zoom++) {
+            $tile = $tileService->latLonToTile(
+                $beach->latitude,
+                $beach->longitude,
+                $zoom
+            );
+
+            $cacheKey = "beach_tile:{$zoom}:{$tile['x']}:{$tile['y']}";
+            Cache::forget($cacheKey);
+        }
+    }
+}
+```
+
+#### Benefits
+- ✅ **Excellent caching**: Each tile cached independently, very high cache hit rate
+- ✅ **Predictable performance**: Same tiles always return same data
+- ✅ **CDN-friendly**: Can cache tiles at CDN edge locations (CloudFlare, etc.)
+- ✅ **Incremental loading**: Load only visible tiles, prefetch adjacent tiles
+- ✅ **Highly scalable**: Works with millions of beaches
+- ✅ **Standard approach**: Same pattern used by Google Maps, Mapbox, OpenStreetMap
+- ✅ **Efficient updates**: Only invalidate affected tiles when data changes
+- ✅ **Parallel loading**: Multiple tiles can be fetched simultaneously
+
+#### Drawbacks
+- ❌ Complex implementation (tile math, coordinate conversion)
+- ❌ Multiple API requests per viewport (need to fetch 4-9 tiles typically)
+- ❌ Tile boundaries can split clusters awkwardly
+- ❌ Need sophisticated cache invalidation strategy
+- ❌ More database queries (one per tile instead of one per viewport)
+- ❌ Requires careful testing of tile coordinate calculations
+
+#### When to Implement
+- You have **> 50,000 beaches** in the database
+- You need Google Maps-level performance and scalability
+- You want to leverage CDN caching for geographic data
+- You have multiple map-based features (not just beaches)
+- You're willing to invest in complex infrastructure
+
+---
+
+### 7.3 Comparison & Recommendations
+
+| Feature | Current (Client Clustering) | Backend Clustering | Tile-Based Caching |
+|---------|---------------------------|-------------------|-------------------|
+| **Complexity** | Low | Medium | High |
+| **Performance** | Good (with optimizations) | Excellent | Excellent |
+| **Payload Size** | Large (all beaches) | Small (clusters only) | Medium (per tile) |
+| **Cache Hit Rate** | Medium (~60-70%) | Medium (~60-70%) | Very High (~90%+) |
+| **Scalability** | Good (up to ~10k beaches) | Excellent (up to ~100k) | Excellent (millions) |
+| **Flexibility** | High | Medium | Low |
+| **Mobile Performance** | Good | Excellent | Excellent |
+| **API Requests** | 1 per viewport change | 1 per viewport change | 4-9 per viewport |
+| **Database Load** | Medium | Medium | Low (cached) |
+| **CDN Compatibility** | No | Partial | Excellent |
+| **Implementation Time** | ✅ Done | ~2-3 days | ~5-7 days |
+
+### 7.4 Implementation Recommendations
+
+**Current Scale (< 10,000 beaches):**
+- ✅ **Use current optimizations** - Already implemented and working well
+- ⏭️ **Skip backend clustering** - Added complexity without significant benefit
+- ⏭️ **Skip tile-based caching** - Overkill for current scale
+
+**Medium Scale (10,000 - 50,000 beaches):**
+- ✅ **Implement backend clustering** - Significant performance improvement
+- ⏭️ **Skip tile-based caching** - Still not necessary
+- 🔄 **Monitor performance** - Track API response times and frontend rendering
+
+**Large Scale (50,000+ beaches):**
+- ✅ **Implement tile-based caching** - Essential for this scale
+- ✅ **Combine with backend clustering** - Use clustering within each tile
+- ✅ **Add CDN caching** - Cache tiles at edge locations
+- ✅ **Consider database optimization** - Spatial indexes, read replicas
+
+### 7.5 Hybrid Approach (Best of Both Worlds)
+
+For maximum performance at scale, combine both strategies:
+
+1. **Use tile-based caching** for data fetching and caching
+2. **Apply backend clustering** within each tile before returning data
+3. **Frontend only renders** the pre-clustered data
+
+**Example flow:**
+```
+User pans map
+  → Frontend calculates visible tiles (e.g., 6 tiles)
+  → Fetch each tile from cache (6 parallel requests)
+  → Each tile contains pre-clustered data
+  → Frontend renders clusters + individual markers
+  → Smooth, fast experience
+```
+
+**Benefits of hybrid:**
+- ✅ Best cache hit rate (tile-based)
+- ✅ Smallest payload (clustering)
+- ✅ Fastest rendering (pre-clustered)
+- ✅ Most scalable (both strategies)
+
+### 7.6 Testing Strategy
+
+When implementing these optimizations, test:
+
+1. **Correctness**
+   - Tile coordinate calculations are accurate
+   - Clusters contain correct beaches
+   - No beaches are lost at tile boundaries
+
+2. **Performance**
+   - API response times < 100ms (cached)
+   - API response times < 500ms (uncached)
+   - Frontend rendering < 50ms
+   - Smooth map panning (60 FPS)
+
+3. **Cache Behavior**
+   - Cache hit rate > 80%
+   - Cache invalidation works correctly
+   - Memory usage is acceptable
+
+4. **Edge Cases**
+   - International date line (longitude ±180°)
+   - Poles (latitude ±90°)
+   - Very high zoom levels (18+)
+   - Empty tiles (no beaches)
+
+### 7.7 Monitoring & Metrics
+
+Track these metrics to determine when to implement advanced optimizations:
+
+- **API response time** - If > 1 second, consider backend clustering
+- **Frontend render time** - If > 200ms, consider backend clustering
+- **Cache hit rate** - If < 60%, consider tile-based caching
+- **Number of beaches** - If > 10,000, plan for backend clustering
+- **Mobile performance** - If laggy, implement backend clustering
+- **Database load** - If high, implement tile-based caching
+
+### 7.8 Additional Resources
+
+- **Leaflet.markercluster documentation**: https://github.com/Leaflet/Leaflet.markercluster
+- **Map tile coordinate system**: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+- **Google Maps tile system**: https://developers.google.com/maps/documentation/javascript/coordinates
+- **Spatial indexing in MySQL**: https://dev.mysql.com/doc/refman/8.0/en/spatial-index-optimization.html
+- **Redis caching strategies**: https://redis.io/docs/manual/patterns/
+
+---
 
