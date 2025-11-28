@@ -33,7 +33,7 @@ const LeftSidebarFilters = ({
     const [isExpanded, setIsExpanded] = useState(false);
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
-    const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
+    const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
 
     // Extract all selected filters from currentFilters to pass as query parameters
     // These filters cascade - selecting a filter will update other filter options

@@ -14,7 +14,7 @@ interface DynamicPropertyCardProps {
 }
 
 export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: DynamicPropertyCardProps) {
-  const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
+  const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
   const locale = useLocale();
 
   // Define size-specific classes (responsive width, max fixed size)

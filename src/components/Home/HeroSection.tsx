@@ -58,7 +58,7 @@ const HeroSection: React.FC = () => {
         ?? heroBanner.media[0];
       const url = bgMedia?.url;
       if (url) {
-        return `${env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(url)}`;
+        return `${env.NEXT_PUBLIC_CDN_TEASER}${encodeCdnImagePath(url)}`;
       }
       return '';
     }

@@ -20,7 +20,7 @@ const NavIcon = ({ src, alt, label }: { src: string; alt: string; label: string 
 const SearchBar = () => {
     const t = useTranslations('Common');
     const tRoutes = useTranslations('routes');
-    const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT;
+    const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
 
     return (
         <div className="bg-white shadow-sm py-3 sm:py-4">
