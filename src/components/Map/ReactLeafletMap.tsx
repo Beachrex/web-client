@@ -1,13 +1,16 @@
 'use client';
 
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo, memo } from 'react';
 import type { Beach } from '@/types';
 import MapSearch from './MapSearch';
 import { getMarkerIcon } from '@/lib/utils/icons';
-import { useTranslations } from 'next-intl';
+import { debounce } from '@/lib/utils/debounce';
 
 interface ReactLeafletMapProps {
   beaches: Beach[];
@@ -15,7 +18,6 @@ interface ReactLeafletMapProps {
   zoom?: number;
   radius?: number;
   selectedBeachId?: number | null;
-  loading?: boolean;
   boundingBox?: {
     min_latitude?: number;
     min_longitude?: number;
@@ -142,11 +144,28 @@ function MapEventHandler({
   ) => void;
 }) {
   const map = useMap();
+  const lastBoundsRef = useRef<string | null>(null);
+  const lastZoomRef = useRef<number | null>(null);
+
+  // Memoize the debounced handler to prevent recreation on every render
+  const debouncedViewportChange = useMemo(
+    () =>
+      debounce((
+        center: [number, number],
+        zoom: number,
+        radius: number,
+        bounds: { min_lat: number; min_lon: number; max_lat: number; max_lon: number }
+      ) => {
+        if (onViewportChange) {
+          onViewportChange(center, zoom, radius, bounds);
+        }
+      }, 300), // 300ms debounce - wait for user to stop moving
+    [onViewportChange]
+  );
 
   useEffect(() => {
     if (!onViewportChange) return;
 
-    let lastBounds: string | null = null;
     let resetTimeout: NodeJS.Timeout | null = null;
 
     const handleMoveEnd = () => {
@@ -170,7 +189,6 @@ function MapEventHandler({
         return;
       }
 
-      console.log('[MapEventHandler] Processing viewport change (user interaction)');
       const center = map.getCenter();
       const zoom = map.getZoom();
 
@@ -180,11 +198,8 @@ function MapEventHandler({
       const northeast = bounds.getNorthEast();
 
       // Clamp coordinates to valid ranges
-      // Latitude: -90 to 90
-      // Longitude: -180 to 180
       const clampLat = (lat: number) => Math.max(-90, Math.min(90, lat));
       const clampLng = (lng: number) => {
-        // Normalize longitude to -180 to 180 range
         let normalized = lng;
         while (normalized > 180) normalized -= 360;
         while (normalized < -180) normalized += 360;
@@ -195,12 +210,8 @@ function MapEventHandler({
       let min_lon = clampLng(southwest.lng);
       let max_lon = clampLng(northeast.lng);
 
-      // If viewport crosses the international date line, swap the values
-      // This happens when the map wraps around (e.g., from 170°E to -170°W)
+      // If viewport crosses the international date line, use full world span
       if (min_lon > max_lon) {
-        // The viewport crosses the date line, so we need to handle it differently
-        // For now, we'll use the full world span as a fallback
-        // In the future, this could be split into two queries
         min_lon = -180;
         max_lon = 180;
       }
@@ -212,24 +223,34 @@ function MapEventHandler({
         max_lon: max_lon,
       };
 
-      // Calculate radius from viewport bounds (for backward compatibility)
+      // Calculate radius from viewport bounds
       const northwest = bounds.getNorthWest();
       const radiusInMeters = center.distanceTo([northwest.lat, northwest.lng]);
       const radiusInKm = Math.round(radiusInMeters / 1000);
 
       // Create a string representation of bounds for comparison
-      const boundsString =
-        `${boundingBox.min_lat},${boundingBox.min_lon},${boundingBox.max_lat},${boundingBox.max_lon}`;
+      const boundsString = [
+        boundingBox.min_lat.toFixed(4),
+        boundingBox.min_lon.toFixed(4),
+        boundingBox.max_lat.toFixed(4),
+        boundingBox.max_lon.toFixed(4),
+      ].join(',');
 
-      // Only call callback if bounds actually changed
-      if (lastBounds !== boundsString) {
-        lastBounds = boundsString;
-        onViewportChange([center.lat, center.lng], zoom, radiusInKm, boundingBox);
+      // Only trigger if bounds or zoom changed significantly
+      const zoomChanged = lastZoomRef.current !== null && Math.abs((lastZoomRef.current ?? 0) - zoom) >= 1;
+      const boundsChanged = lastBoundsRef.current !== boundsString;
+
+      if (boundsChanged || zoomChanged) {
+        console.log('[MapEventHandler] Viewport changed (debounced) - zoom:', zoom, 'bounds:', boundsString);
+        lastBoundsRef.current = boundsString;
+        lastZoomRef.current = zoom;
+
+        // Call debounced handler
+        debouncedViewportChange([center.lat, center.lng], zoom, radiusInKm, boundingBox);
       }
     };
 
     // Listen to both moveend (pan) and zoomend (zoom) events
-    // Don't call on initial mount - only trigger on actual user interactions
     map.on('moveend', handleMoveEnd);
     map.on('zoomend', handleMoveEnd);
 
@@ -240,10 +261,61 @@ function MapEventHandler({
         clearTimeout(resetTimeout);
       }
     };
-  }, [map, onViewportChange]);
+  }, [map, onViewportChange, debouncedViewportChange]);
 
   return null;
 }
+
+// Memoized beach marker component to prevent unnecessary re-renders
+const BeachMarker = memo(({
+  beach,
+  isSelected,
+  beachIcon,
+  selectedBeachIcon,
+  onMarkerClick,
+}: {
+  beach: Beach;
+  isSelected: boolean;
+  beachIcon: L.Icon;
+  selectedBeachIcon: L.Icon;
+  onMarkerClick?: (beachId: number) => void;
+}) => {
+  const lat = typeof beach.latitude === 'string' ? parseFloat(beach.latitude) : beach.latitude;
+  const lng = typeof beach.longitude === 'string' ? parseFloat(beach.longitude) : beach.longitude;
+
+  if (!beach?.latitude || !beach?.longitude || !beach?.id || !lat || !lng || isNaN(lat) || isNaN(lng)) {
+    return null;
+  }
+
+  const markerIcon = isSelected ? selectedBeachIcon : beachIcon;
+
+  return (
+    <Marker
+      position={[lat, lng]}
+      icon={markerIcon}
+      zIndexOffset={isSelected ? 1000 : 0}
+      eventHandlers={{
+        click: () => {
+          if (onMarkerClick && beach.id) {
+            onMarkerClick(beach.id);
+          }
+        },
+      }}
+    >
+      <Tooltip offset={[10, -10]}>
+        <div>
+          <h3 className="font-bold">{beach.name ?? 'Beach'}</h3>
+          {beach.description && <p className="text-sm">{beach.description}</p>}
+        </div>
+      </Tooltip>
+    </Marker>
+  );
+}, (prevProps, nextProps) =>
+  prevProps.beach.id === nextProps.beach.id &&
+  prevProps.isSelected === nextProps.isSelected
+);
+
+BeachMarker.displayName = 'BeachMarker';
 
 const ReactLeafletMap = ({
   beaches,
@@ -251,30 +323,28 @@ const ReactLeafletMap = ({
   zoom = 6,
   radius: _radius = 100,
   selectedBeachId,
-  loading = false,
   boundingBox,
   onViewportChange,
   onMarkerClick,
 }: ReactLeafletMapProps) => {
-  const t = useTranslations('BeachesMap');
 
   // Ensure beaches is always an array
   const safeBeaches = Array.isArray(beaches) ? beaches : [];
 
-  // Create custom beach marker icons (normal and selected)
-  const beachIcon = L.icon({
+  // Memoize icons to prevent recreation on every render
+  const beachIcon = useMemo(() => L.icon({
     iconUrl: getMarkerIcon('beach'),
     iconSize: [28, 30],
-    iconAnchor: [14, 30], // Point of the icon which will correspond to marker's location
-    popupAnchor: [0, -30], // Point from which the popup should open relative to the iconAnchor
-  });
+    iconAnchor: [14, 30],
+    popupAnchor: [0, -30],
+  }), []);
 
-  const selectedBeachIcon = L.icon({
+  const selectedBeachIcon = useMemo(() => L.icon({
     iconUrl: getMarkerIcon('beach'),
-    iconSize: [42, 45], // 1.5x larger for selected marker
-    iconAnchor: [21, 45], // Adjusted anchor point
-    popupAnchor: [0, -45], // Adjusted popup anchor
-  });
+    iconSize: [42, 45],
+    iconAnchor: [21, 45],
+    popupAnchor: [0, -45],
+  }), []);
 
   return (
     <div className="h-full w-full p-0 flex flex-col bg-white shadow-lg">
@@ -295,50 +365,27 @@ const ReactLeafletMap = ({
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
 
-          {safeBeaches.map((beach, index) => {
-            if (!beach?.latitude || !beach?.longitude || !beach?.id) return null;
-            const lat =
-              typeof beach.latitude === 'string' ? parseFloat(beach.latitude) : beach.latitude;
-            const lng =
-              typeof beach.longitude === 'string' ? parseFloat(beach.longitude) : beach.longitude;
-            if (isNaN(lat) || isNaN(lng)) return null;
-
-            // Use larger icon for selected beach
-            const isSelected = selectedBeachId === beach.id;
-            const markerIcon = isSelected ? selectedBeachIcon : beachIcon;
-
-            return (
-              <Marker
-                key={`${beach.id}-${index}`}
-                position={[lat, lng]}
-                icon={markerIcon}
-                zIndexOffset={isSelected ? 1000 : 0} // Bring selected marker to front
-                eventHandlers={{
-                  click: () => {
-                    if (onMarkerClick && beach.id) {
-                      onMarkerClick(beach.id);
-                    }
-                  },
-                }}
-              >
-                <Tooltip offset={[10, -10]}>
-                  <div>
-                    <h3 className="font-bold">{beach.name ?? 'Beach'}</h3>
-                    {beach.description && <p className="text-sm">{beach.description}</p>}
-                  </div>
-                </Tooltip>
-              </Marker>
-            );
-          })}
+          {/* Marker clustering for better performance with many beaches */}
+          <MarkerClusterGroup
+            chunkedLoading
+            maxClusterRadius={50}
+            spiderfyOnMaxZoom={true}
+            showCoverageOnHover={false}
+            zoomToBoundsOnClick={true}
+          >
+            {safeBeaches.map((beach) => (
+              <BeachMarker
+                key={beach.id}
+                beach={beach}
+                isSelected={selectedBeachId === beach.id}
+                beachIcon={beachIcon}
+                selectedBeachIcon={selectedBeachIcon}
+                onMarkerClick={onMarkerClick}
+              />
+            ))}
+          </MarkerClusterGroup>
         </MapContainer>
-        {loading && (
-          <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-[1000] flex items-center justify-center rounded-lg">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-              <p className="text-gray-700 font-medium">{t('loadingBeaches')}</p>
-            </div>
-          </div>
-        )}
+        {/* Loading overlay removed - markers update in background for smooth UX */}
       </div>
     </div>
   );
