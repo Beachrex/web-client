@@ -10,7 +10,6 @@ import { useEffect, useRef, useMemo, memo } from 'react';
 import type { Beach } from '@/types';
 import MapSearch from './MapSearch';
 import { getMarkerIcon } from '@/lib/utils/icons';
-import { useTranslations } from 'next-intl';
 import { debounce } from '@/lib/utils/debounce';
 
 interface ReactLeafletMapProps {
@@ -19,7 +18,6 @@ interface ReactLeafletMapProps {
   zoom?: number;
   radius?: number;
   selectedBeachId?: number | null;
-  loading?: boolean;
   boundingBox?: {
     min_latitude?: number;
     min_longitude?: number;
@@ -325,12 +323,10 @@ const ReactLeafletMap = ({
   zoom = 6,
   radius: _radius = 100,
   selectedBeachId,
-  loading = false,
   boundingBox,
   onViewportChange,
   onMarkerClick,
 }: ReactLeafletMapProps) => {
-  const t = useTranslations('BeachesMap');
 
   // Ensure beaches is always an array
   const safeBeaches = Array.isArray(beaches) ? beaches : [];
@@ -389,14 +385,7 @@ const ReactLeafletMap = ({
             ))}
           </MarkerClusterGroup>
         </MapContainer>
-        {loading && (
-          <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-[1000] flex items-center justify-center rounded-lg">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-              <p className="text-gray-700 font-medium">{t('loadingBeaches')}</p>
-            </div>
-          </div>
-        )}
+        {/* Loading overlay removed - markers update in background for smooth UX */}
       </div>
     </div>
   );

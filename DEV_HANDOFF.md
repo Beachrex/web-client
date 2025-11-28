@@ -551,19 +551,46 @@ export function expandBounds(
 
 **Impact**: Reduces API calls when user pans the map slightly. Beaches in adjacent areas are already loaded.
 
-#### 4. Increased Cache Time
+#### 4. Increased Cache Time (TanStack Query Configuration)
 **File**: `src/components/ApiClientProvider.tsx`
 
-Updated TanStack Query (React Query) configuration:
-- `staleTime`: 1 minute → **5 minutes**
-- `gcTime`: default → **10 minutes**
+Updated TanStack Query (React Query) configuration to optimize caching for map data:
+
+**Cache Settings:**
+- **`staleTime`**: 1 minute → **5 minutes** (300,000ms)
+- **`gcTime`**: default (5 min) → **10 minutes** (600,000ms)
+- **`refetchOnWindowFocus`**: `false` (don't refetch when user returns to tab)
 
 ```typescript
-staleTime: 5 * 60 * 1000, // 5 minutes - map data doesn't change frequently
-gcTime: 10 * 60 * 1000, // 10 minutes - keep in cache longer
+new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes - map data doesn't change frequently
+      gcTime: 10 * 60 * 1000, // 10 minutes - keep in cache longer
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 ```
 
-**Impact**: Map data stays fresh longer, significantly fewer unnecessary refetches.
+**What these settings mean:**
+
+| Setting | Value | Meaning |
+|---------|-------|---------|
+| `staleTime` | 5 minutes | Data is considered "fresh" for 5 minutes. No refetch during this time even if component remounts. |
+| `gcTime` | 10 minutes | Cached data is kept in memory for 10 minutes after last use before garbage collection. |
+| `refetchOnWindowFocus` | false | Don't automatically refetch when user switches back to the browser tab. |
+
+**Why these values:**
+- Beach data doesn't change frequently (new beaches aren't added every minute)
+- Users often pan/zoom around the same area - cache prevents duplicate API calls
+- 5-minute freshness is acceptable for map exploration use case
+- 10-minute garbage collection allows users to return to previously viewed areas without refetch
+
+**Impact**:
+- Map data stays fresh longer, significantly fewer unnecessary refetches
+- Panning back to previously viewed areas uses cached data
+- Reduced server load and faster user experience
 
 #### 5. React.memo Optimization
 **File**: `src/components/Map/ReactLeafletMap.tsx`
@@ -618,12 +645,53 @@ const beachIcon = useMemo(() => L.icon({
 
 **Impact**: Reduces memory allocation and prevents icon recreation on every render.
 
+#### 8. Removed Loading Overlays & Seamless Updates
+**Files Modified**:
+- `src/components/Map/ReactLeafletMap.tsx` - Removed loading overlay
+- `src/components/Map/MapWithSidebar.tsx` - Keep previous beaches visible, update grid rendering
+
+**Problem**: Loading overlays cleared the map and beach list on every pan/zoom, creating a jarring user experience.
+
+**Solution**:
+1. **Removed loading overlay from map** - No more white overlay covering the map
+2. **Keep previous beaches visible** - Store previous beaches in ref and display them while loading new data
+3. **Update beach list grid** - Show grid whenever beaches exist, regardless of loading state
+
+```typescript
+// Keep previous beaches visible while loading new data
+const previousBeachesRef = useRef<any[]>([]);
+const newBeaches = boundingBoxResult.data?.data ?? [];
+const beaches = newBeaches.length > 0 ? newBeaches : previousBeachesRef.current;
+
+// Update ref when we have new data
+useEffect(() => {
+    if (newBeaches.length > 0) {
+        previousBeachesRef.current = newBeaches;
+    }
+}, [newBeaches]);
+
+// Show grid whenever we have beaches, even while loading new data
+{!error && beaches.length > 0 && (
+    <div className={`grid gap-4 grid-cols-1 ${columnLayout === 2 ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
+        {beaches.map((beach, index) => (
+            <DynamicPropertyCard beach={beach} onLocationClick={handleLocationClick} />
+        ))}
+    </div>
+)}
+```
+
+**Impact**:
+- Map markers stay visible during pan/zoom
+- Beach list grid stays visible during pan/zoom
+- Seamless background updates without clearing content
+- Professional UX like Google Maps, Airbnb, Booking.com
+
 ### Files Created
 - `src/lib/utils/debounce.ts` - Debounce utility and bounding box helpers
 
 ### Files Modified
-- `src/components/Map/ReactLeafletMap.tsx` - Debouncing, clustering, memoization
-- `src/components/Map/MapWithSidebar.tsx` - Expanded bounds, bounds tracking
+- `src/components/Map/ReactLeafletMap.tsx` - Debouncing, clustering, memoization, removed loading overlay
+- `src/components/Map/MapWithSidebar.tsx` - Expanded bounds, bounds tracking, previous beaches ref, grid rendering
 - `src/components/ApiClientProvider.tsx` - Increased cache times
 - `package.json` - Added clustering dependencies
 
@@ -650,6 +718,9 @@ const beachIcon = useMemo(() => L.icon({
 ### User Experience Improvements
 - ✅ **Smooth panning** - No lag or stuttering when dragging the map
 - ✅ **Fast zooming** - Instant zoom response without API delays
+- ✅ **No loading overlays** - Markers update in background without clearing the map
+- ✅ **Beach list stays visible** - Grid of beach cards remains visible during map movements
+- ✅ **Seamless updates** - Both map and list update smoothly without clearing existing content
 - ✅ **Reduced loading** - Fewer loading states, more cached data
 - ✅ **Better clustering** - Clean visual grouping at lower zoom levels
 - ✅ **Responsive interactions** - Immediate feedback on all user actions
@@ -697,12 +768,195 @@ After deployment, verify:
 - **WebWorker processing**: Offload marker calculations to background thread
 - **Progressive loading**: Load visible markers first, then off-screen
 
+### TanStack Query Cache Scope & Behavior
+
+**Important: Cache is Browser-Based, NOT Global**
+
+- ✅ **Per-user, per-browser** - Each user has their own separate cache in their browser memory
+- ❌ **NOT shared between users** - User A's cache doesn't affect User B
+- ❌ **NOT server-side** - Cache exists only in the browser's RAM
+- 🔄 **Session-based** - Cache is cleared when browser/tab is closed (unless using persistence plugins)
+
+**Example:**
+```
+User A visits map → Caches 100 beaches for 5 minutes
+User B visits map → Has separate cache, doesn't see User A's data
+Admin adds beach → Neither user sees it until cache expires (5 min)
+```
+
+### Auto-Refresh Strategies (When Backend Data Changes)
+
+Since cache is browser-based, users won't see new beaches added by admin until cache expires. Here are strategies to refresh cache when backend data changes:
+
+#### **Strategy 1: Server-Sent Events (SSE)** ⭐ Recommended for Real-Time
+
+**How it works:**
+1. Backend sends event when beach is added/updated/deleted
+2. Frontend listens to SSE stream
+3. Frontend invalidates TanStack Query cache
+4. Map automatically refetches and updates
+
+**Backend (Laravel):**
+```php
+// app/Events/BeachUpdated.php
+class BeachUpdated implements ShouldBroadcast
+{
+    public function __construct(public Beach $beach) {}
+
+    public function broadcastOn()
+    {
+        return new Channel('beaches');
+    }
+}
+
+// Trigger when beach changes
+event(new BeachUpdated($beach));
+```
+
+**Frontend (React):**
+```typescript
+// src/hooks/useBeachUpdates.ts
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+
+export function useBeachUpdates() {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/beaches/stream`);
+
+    eventSource.addEventListener('beach-updated', () => {
+      // Invalidate all beach queries - forces refetch
+      queryClient.invalidateQueries({ queryKey: ['beaches'] });
+    });
+
+    return () => eventSource.close();
+  }, [queryClient]);
+}
+
+// Use in MapWithSidebar.tsx
+function MapWithSidebar() {
+  useBeachUpdates(); // Auto-refresh when backend changes
+  // ... rest of component
+}
+```
+
+**Pros:**
+- ✅ Real-time updates (users see new beaches immediately)
+- ✅ Can extend cache time to 30+ minutes (rely on SSE for freshness)
+- ✅ Efficient (only sends events when data actually changes)
+
+**Cons:**
+- ❌ Requires backend SSE implementation
+- ❌ Requires persistent connection (minimal overhead)
+
+---
+
+#### **Strategy 2: Polling with `refetchInterval`**
+
+**How it works:**
+TanStack Query automatically refetches data every X seconds.
+
+```typescript
+// src/hooks/useBeaches.ts
+export function useBeachesBoundingBox(filters, enabled) {
+  return useQuery({
+    queryKey: ['beaches', 'bounding-box', filters],
+    queryFn: () => fetchBeaches(filters),
+    enabled,
+    staleTime: 5 * 60 * 1000,
+    refetchInterval: 30 * 1000, // Refetch every 30 seconds
+  });
+}
+```
+
+**Pros:**
+- ✅ Simple to implement (no backend changes)
+- ✅ Guaranteed freshness
+
+**Cons:**
+- ❌ Unnecessary API calls (even when data hasn't changed)
+- ❌ Increased server load
+- ❌ Can't extend cache time much (defeats purpose)
+
+---
+
+#### **Strategy 3: Cache Versioning with ETag/Last-Modified**
+
+**How it works:**
+Backend returns version/timestamp, frontend checks if data changed.
+
+**Backend:**
+```php
+// Return ETag header with beach data version
+$version = Cache::get('beaches_version', 1);
+return response()->json($beaches)
+    ->header('ETag', "beaches-v{$version}");
+
+// Increment version when beach changes
+Cache::increment('beaches_version');
+```
+
+**Frontend:**
+```typescript
+// TanStack Query automatically uses ETag for conditional requests
+// No code changes needed - just ensure backend sends ETag headers
+```
+
+**Pros:**
+- ✅ Efficient (304 Not Modified responses are fast)
+- ✅ Can extend cache time significantly
+- ✅ No persistent connections
+
+**Cons:**
+- ❌ Still requires periodic polling
+- ❌ Not truly real-time
+
+---
+
+#### **Strategy 4: WebSocket** (Overkill for this use case)
+
+Similar to SSE but bidirectional. Only needed if frontend also sends real-time data to backend.
+
+---
+
+### Recommended Approach
+
+**For Beachrex:**
+
+1. **Short-term (Current)**: Keep 5-minute cache, acceptable for most users
+2. **Medium-term**: Implement **Strategy 1 (SSE)** + extend cache to 30 minutes
+   - Real-time updates when admin adds beaches
+   - Longer cache reduces API calls
+   - Best user experience
+3. **Alternative**: Use **Strategy 3 (ETag)** with 10-minute polling if SSE is too complex
+
+### Extending Cache Time with SSE
+
+If you implement SSE, you can safely increase cache times:
+
+```typescript
+// src/components/ApiClientProvider.tsx
+staleTime: 30 * 60 * 1000,  // 30 minutes (rely on SSE for freshness)
+gcTime: 60 * 60 * 1000,      // 60 minutes
+refetchOnWindowFocus: false,
+```
+
+This gives you:
+- ✅ **30-minute cache** - Massive reduction in API calls
+- ✅ **Real-time updates** - Users see new beaches immediately via SSE
+- ✅ **Best of both worlds** - Performance + freshness
+
 ### Notes for Future Changes
 - The 300ms debounce delay can be adjusted in `ReactLeafletMap.tsx` if needed
 - The 1.5x expansion factor can be tuned in `MapWithSidebar.tsx`
 - Cache times should be increased cautiously (balance freshness vs performance)
+- **With SSE implementation, cache can be extended to 30+ minutes safely**
 - Marker cluster radius (50px) can be adjusted for different visual density
 - Minimum cluster size is set to 5 markers (clusters with < 5 markers show individual pins)
+- **Loading overlay removed**: Map updates markers in background without showing loading state for smooth UX
+- **Beach list stays visible**: Grid of beach cards remains visible during loading, updates seamlessly with new data
+- **Previous data retained**: Uses `previousBeachesRef` to keep beaches visible while new data loads
 - All optimizations are backward compatible with existing API
 
 ---

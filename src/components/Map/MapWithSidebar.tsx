@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import LeftSidebarFilters from './LeftSidebarFilters';
 import ReactLeafletMap from './ReactLeafletMap';
 import { useBeachesBoundingBox, useBeachesMapBounds, type BoundingBoxSearchFilters } from '@/hooks/useBeaches';
-import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
+import type { GetBeachFiltersResponse, BeachSchema } from '@/lib/api-client/types.gen';
 import { DynamicPropertyCard } from '@/components/PropertyCard/DynamicPropertyCard';
 import { useTranslations } from 'next-intl';
 import { SingleColumnIcon, DoubleColumnIcon } from '@/components/Icons/LayoutIcons';
@@ -47,6 +47,8 @@ const MapWithSidebar = () => {
     } | null>(null);
     const beachCardsContainerRef = useRef<HTMLDivElement>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
+    // Keep previous beaches visible while loading new data
+    const previousBeachesRef = useRef<BeachSchema[]>([]);
     // Show scroll-to-top button on mobile when page scrolled down
     useEffect(() => {
         const handleScroll = () => {
@@ -239,7 +241,17 @@ const MapWithSidebar = () => {
         boundingBox !== null && !filterOptionsLoading
     );
 
-    const beaches = boundingBoxResult.data?.data ?? [];
+    // Keep previous beaches visible while loading new data (smooth UX)
+    const newBeaches = useMemo(() => boundingBoxResult.data?.data ?? [], [boundingBoxResult.data?.data]);
+    const beaches = newBeaches.length > 0 ? newBeaches : previousBeachesRef.current;
+
+    // Update ref when we have new data
+    useEffect(() => {
+        if (newBeaches.length > 0) {
+            previousBeachesRef.current = newBeaches;
+        }
+    }, [newBeaches]);
+
     const loading = boundingBoxResult.loading;
     const error = boundingBoxResult.error;
     const boundingBoxMeta = boundingBoxResult.data?.meta;
@@ -392,7 +404,8 @@ const MapWithSidebar = () => {
                             </div>
 
                             <div className="p-4">
-                                {isLoading && (
+                                {/* Only show loading on initial load when no beaches exist */}
+                                {isLoading && beaches.length === 0 && (
                                     <div className="text-center py-8">
                                         <p className="text-gray-600">{t('loadingFilters')}</p>
                                     </div>
@@ -410,12 +423,13 @@ const MapWithSidebar = () => {
                                     </div>
                                 )}
 
-                                {!isLoading && !error && beaches.length > 0 && (
+                                {/* Show grid whenever we have beaches, even while loading new data */}
+                                {!error && beaches.length > 0 && (
                                     <div
                                         className={`grid gap-4 grid-cols-1 ${columnLayout === 2 ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}
                                     >
                                         {beaches.map((beach, index) => (
-                                            <div key={`${beach.id}-${index}`} data-beach-id={beach.id}>
+                                            <div key={`${beach.id ?? index}-${index}`} data-beach-id={beach.id}>
                                                 <DynamicPropertyCard
                                                     beach={beach}
                                                     onLocationClick={handleLocationClick}
@@ -436,7 +450,6 @@ const MapWithSidebar = () => {
                                         center={mapCenter}
                                         zoom={mapZoom}
                                         selectedBeachId={selectedBeachId}
-                                        loading={isLoading}
                                         boundingBox={
                                             viewportChangedByUserRef.current
                                                 ? null
@@ -470,7 +483,6 @@ const MapWithSidebar = () => {
                                             center={mapCenter}
                                             zoom={mapZoom}
                                             selectedBeachId={selectedBeachId}
-                                            loading={isLoading}
                                             boundingBox={
                                                 viewportChangedByUserRef.current
                                                     ? null
