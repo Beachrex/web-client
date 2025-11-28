@@ -16,6 +16,10 @@ const MapWithSidebar = () => {
     const [mapCenter, setMapCenter] = useState<[number, number] | null>(null);
     const [mapZoom, setMapZoom] = useState<number>(6);
     const [columnLayout, setColumnLayout] = useState<ColumnLayout>(1);
+    const [isListVisible, setIsListVisible] = useState(true);
+    const [isMobileMapOpen, setIsMobileMapOpen] = useState(false);
+    const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+    const [showScrollTop, setShowScrollTop] = useState(false);
     const [boundingBox, setBoundingBox] = useState<{
         min_lat: number;
         min_lon: number;
@@ -36,6 +40,21 @@ const MapWithSidebar = () => {
     } | null>(null);
     const beachCardsContainerRef = useRef<HTMLDivElement>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
+    // Show scroll-to-top button on mobile when page scrolled down
+    useEffect(() => {
+        const handleScroll = () => {
+            const y = window.scrollY || document.documentElement.scrollTop || 0;
+            setShowScrollTop(y > 50);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     const ignoreNextViewportChangeRef = useRef(false);
     const hasInitialBoundsRef = useRef(false);
 
@@ -288,11 +307,11 @@ const MapWithSidebar = () => {
     };
 
     return (
-        <div className="h-screen w-full overflow-hidden">
+        <div className="min-h-screen w-full overflow-x-hidden md:h-screen md:overflow-hidden">
             <div className="h-full w-full flex flex-col md:flex-row gap-2">
-                {/* Left Sidebar - Filters */}
-                <div className="w-full md:w-80 h-full overflow-y-auto flex-shrink-0">
-                    <div className="h-full shadow-md rounded-lg" style={{ backgroundColor: '#F6F6F5' }}>
+                {/* Left Sidebar - Filters (desktop) */}
+                <div className="hidden md:block w-full md:w-80 md:h-screen md:overflow-y-auto md:flex-shrink-0">
+                    <div className="md:h-full shadow-md rounded-lg" style={{ backgroundColor: '#F6F6F5' }}>
                         <LeftSidebarFilters
                             beachesCount={beaches.length}
                             beachesLoading={isLoading}
@@ -304,99 +323,222 @@ const MapWithSidebar = () => {
                     </div>
                 </div>
 
-                {/* Middle Column - Beach Cards List */}
-                <div
-                    ref={beachCardsContainerRef}
-                    className='h-full overflow-y-auto bg-gray-50 flex-shrink-0 rounded-lg scrollbar-hide'
-                    style={{
-                        width: `${getContainerWidth()}px`,
-                        scrollbarWidth: 'none',
-                        msOverflowStyle: 'none',
-                    }}
-                >
-                    {/* Column Layout Toggle */}
-                    <div className='sticky top-0 z-10 bg-white p-3 flex items-center justify-end'>
-                        <div className="flex">
-                            <button
-                                onClick={() => setColumnLayout(1)}
-                                className='py-1.5 pl-1.5 pr-0.5 transition-all hover:bg-gray-50'
-                                aria-label='Single column layout'
-                            >
-                                <SingleColumnIcon isActive={columnLayout === 1} />
-                            </button>
-                            <button
-                                onClick={() => setColumnLayout(2)}
-                                className='py-1.5 pl-0.5 pr-1.5 transition-all hover:bg-gray-50'
-                                aria-label='Double column layout'
-                            >
-                                <DoubleColumnIcon isActive={columnLayout === 2} />
-                            </button>
+                {/* Right side: mobile controls + list + map */}
+                <div className="flex-1 flex flex-col gap-2">
+                    {/* Mobile controls to toggle list/map visibility */}
+                    <div className="w-full flex items-center justify-between gap-2 px-3 py-2 md:hidden">
+                        <button
+                            type="button"
+                            className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm"
+                            onClick={() => setIsListVisible((prev) => !prev)}
+                        >
+                            {isListVisible ? 'Hide list' : 'Show list'}
+                        </button>
+                        <button
+                            type="button"
+                            className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm"
+                            onClick={() => setIsMobileMapOpen(true)}
+                        >
+                            {t('openMap')}
+                        </button>
+                    </div>
+
+                    {/* Main content: list + map */}
+                    <div className="flex flex-col md:flex-row gap-2">
+                        {/* Middle Column - Beach Cards List */}
+                        <div
+                            ref={beachCardsContainerRef}
+                            className={`bg-gray-50 rounded-lg scrollbar-hide w-full overflow-x-hidden md:flex-shrink-0 md:h-screen md:overflow-y-auto ${isListVisible ? 'block' : 'hidden'} md:block`}
+                            style={{
+                                width: `${getContainerWidth()}px`,
+                                maxWidth: '100%',
+                                scrollbarWidth: 'none',
+                                msOverflowStyle: 'none',
+                            }}
+                        >
+                            {/* Column Layout Toggle (desktop only) */}
+                            <div className='sticky top-0 z-10 bg-white p-3 hidden md:flex items-center justify-end'>
+                                <div className="flex">
+                                    <button
+                                        onClick={() => setColumnLayout(1)}
+                                        className='py-1.5 pl-1.5 pr-0.5 transition-all hover:bg-gray-50'
+                                        aria-label='Single column layout'
+                                    >
+                                        <SingleColumnIcon isActive={columnLayout === 1} />
+                                    </button>
+                                    <button
+                                        onClick={() => setColumnLayout(2)}
+                                        className='py-1.5 pl-0.5 pr-1.5 transition-all hover:bg-gray-50'
+                                        aria-label='Double column layout'
+                                    >
+                                        <DoubleColumnIcon isActive={columnLayout === 2} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="p-4">
+                                {isLoading && (
+                                    <div className="text-center py-8">
+                                        <p className="text-gray-600">{t('loadingFilters')}</p>
+                                    </div>
+                                )}
+
+                                {(error ?? mapBoundsError) && (
+                                    <div className="text-center py-8">
+                                        <p className="text-red-600">{error ?? mapBoundsError}</p>
+                                    </div>
+                                )}
+
+                                {!isLoading && !error && beaches.length === 0 && (
+                                    <div className="text-center py-8">
+                                        <p className="text-gray-600">{t('noBeachesFound')}</p>
+                                    </div>
+                                )}
+
+                                {!isLoading && !error && beaches.length > 0 && (
+                                    <div
+                                        className={`grid gap-4 grid-cols-1 ${columnLayout === 2 ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}
+                                    >
+                                        {beaches.map((beach, index) => (
+                                            <div key={`${beach.id}-${index}`} data-beach-id={beach.id}>
+                                                <DynamicPropertyCard
+                                                    beach={beach}
+                                                    onLocationClick={handleLocationClick}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Right Side - Map (desktop only, mobile uses popup) */}
+                        <div className="hidden md:block flex-1 h-screen">
+                            <div ref={mapContainerRef} className='h-full w-full rounded-lg overflow-hidden'>
+                                {mapCenter ? (
+                                    <ReactLeafletMap
+                                        beaches={beaches}
+                                        center={mapCenter}
+                                        zoom={mapZoom}
+                                        selectedBeachId={selectedBeachId}
+                                        loading={isLoading}
+                                        boundingBox={
+                                            viewportChangedByUserRef.current
+                                                ? null
+                                                : boundingBoxMeta?.bounding_box
+                                        }
+                                        onViewportChange={handleMapViewportChange}
+                                        onMarkerClick={handleMarkerClick}
+                                    />
+                                ) : (
+                                    <div className="h-full w-full bg-white flex items-center justify-center rounded-lg">
+                                        <div className="flex flex-col items-center gap-3">
+                                            <div className='w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin' />
+                                            <p className="text-gray-700 font-medium">{t('loadingBeaches')}</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div className="p-4">
-                        {isLoading && (
-                            <div className="text-center py-8">
-                                <p className="text-gray-600">{t('loadingFilters')}</p>
+                {/* Mobile full-screen map popup */}
+                {isMobileMapOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 md:hidden">
+                        <div className="relative w-full h-full p-2 flex items-center justify-center">
+                            <div className="relative h-full w-full">
+                                <div className="h-full w-full rounded-lg overflow-hidden bg-white">
+                                    {mapCenter ? (
+                                        <ReactLeafletMap
+                                            beaches={beaches}
+                                            center={mapCenter}
+                                            zoom={mapZoom}
+                                            selectedBeachId={selectedBeachId}
+                                            loading={isLoading}
+                                            boundingBox={
+                                                viewportChangedByUserRef.current
+                                                    ? null
+                                                    : boundingBoxMeta?.bounding_box
+                                            }
+                                            onViewportChange={handleMapViewportChange}
+                                            onMarkerClick={handleMarkerClick}
+                                        />
+                                    ) : (
+                                        <div className="h-full w-full bg-white flex items-center justify-center rounded-lg">
+                                            <div className="flex flex-col items-center gap-3">
+                                                <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                                                <p className="text-gray-700 font-medium">{t('loadingBeaches')}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsMobileMapOpen(false)}
+                                    className="absolute -top-4 right-4 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-white text-xl font-bold text-gray-800 shadow"
+                                    aria-label="Close map"
+                                >
+                                    X
+                                </button>
                             </div>
-                        )}
+                        </div>
+	                    </div>
+	                )}
 
-                        {(error ?? mapBoundsError) && (
-                            <div className="text-center py-8">
-                                <p className="text-red-600">{error ?? mapBoundsError}</p>
-                            </div>
-                        )}
-
-                        {!isLoading && !error && beaches.length === 0 && (
-                            <div className="text-center py-8">
-                                <p className="text-gray-600">{t('noBeachesFound')}</p>
-                            </div>
-                        )}
-
-                        {!isLoading && !error && beaches.length > 0 && (
-                            <div
-                                className='grid gap-4'
-                                style={{
-                                    gridTemplateColumns: `repeat(${columnLayout}, minmax(0, 1fr))`,
-                                }}
+                {/* Mobile slide-in filters panel */}
+                {isMobileFiltersOpen && (
+                    <div className="fixed inset-0 z-40 flex justify-end bg-black/40 md:hidden">
+                        <div className="relative h-full w-4/5 max-w-xs bg-[#F6F6F5] shadow-lg">
+                            <button
+                                type="button"
+                                onClick={() => setIsMobileFiltersOpen(false)}
+                                className="absolute top-3 right-3 z-50 flex h-8 w-8 items-center justify-center rounded-full bg-white text-lg font-bold text-gray-800 shadow"
+                                aria-label="Close filters"
                             >
-                                {beaches.map((beach, index) => (
-                                <div key={`${beach.id}-${index}`} data-beach-id={beach.id}>
-                                    <DynamicPropertyCard
-                                        beach={beach}
-                                        onLocationClick={handleLocationClick}
-                                    />
-                                </div>
-                                ))}
+                                X
+                            </button>
+                            <div className="h-full overflow-y-auto pt-12 px-3 pb-4">
+                                <LeftSidebarFilters
+                                    beachesCount={beaches.length}
+                                    beachesLoading={isLoading}
+                                    onFiltersChange={handleFiltersChange}
+                                    currentFilters={filters}
+                                    onFilterOptionsChange={setFilterOptions}
+                                    onFilterOptionsLoadingChange={setFilterOptionsLoading}
+                                />
                             </div>
-                        )}
+                        </div>
                     </div>
-                </div>
+                )}
 
-                {/* Right Side - Map */}
-                <div className='flex-1 h-full'>
-                    <div ref={mapContainerRef} className='h-full w-full rounded-lg overflow-hidden'>
-                        {mapCenter ? (
-                            <ReactLeafletMap
-                                beaches={beaches}
-                                center={mapCenter}
-                                zoom={mapZoom}
-                                selectedBeachId={selectedBeachId}
-                                loading={isLoading}
-                                boundingBox={viewportChangedByUserRef.current ? null : boundingBoxMeta?.bounding_box}
-                                onViewportChange={handleMapViewportChange}
-                                onMarkerClick={handleMarkerClick}
-                            />
-                        ) : (
-                            <div className="h-full w-full bg-white flex items-center justify-center rounded-lg">
-                                <div className="flex flex-col items-center gap-3">
-                                    <div className='w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin' />
-                                    <p className="text-gray-700 font-medium">{t('loadingBeaches')}</p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
+                {/* Floating filters button on mobile */}
+                {!isMobileFiltersOpen && !isMobileMapOpen && (
+                    <button
+                        type="button"
+                        onClick={() => setIsMobileFiltersOpen(true)}
+                        className="fixed top-1/2 right-4 -translate-y-1/2 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow md:hidden"
+                        aria-label={t('filters')}
+                    >
+                        F
+                    </button>
+                )}
+
+                {/* Scroll-to-top button for long list on mobile */}
+                {showScrollTop && !isMobileMapOpen && (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (typeof window !== 'undefined') {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }
+                        }}
+                        className="fixed bottom-4 right-4 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow md:hidden"
+                        aria-label={t('scrollToTop')}
+                    >
+                        ↑
+                    </button>
+                )}
             </div>
         </div>
     );

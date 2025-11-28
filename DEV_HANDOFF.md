@@ -393,3 +393,88 @@ This shouldn't happen with the current setup (uses `;` instead of `&&`). If it d
 - `DO_SPACES_BUCKET` (unprotected)
 - `DO_SPACES_REGION` (unprotected)
 
+
+---
+
+## 5. Beaches Map  Mobile Layout & UX
+
+### Overview
+Responsive and mobile-specific improvements were implemented for the Beaches Map page (`src/app/[locale]/beach-map/page.tsx`), primarily in the shared map layout component `src/components/Map/MapWithSidebar.tsx`. **Desktop behavior is preserved** (left filters, middle list, right map). All new interactions are **mobile-only**.
+
+### Files Modified
+- `src/components/Map/MapWithSidebar.tsx`
+
+### Desktop Behavior (Unchanged)
+- Layout: horizontal 3-column flex row:
+  - **Left**: `LeftSidebarFilters`
+  - **Middle**: beach cards list
+  - **Right**: Leaflet map (`ReactLeafletMap`)
+- Filters and list scroll vertically within their columns; map fills full column height (`h-screen`).
+- No mobile-only buttons (filters toggle, scroll-to-top, map popup) are rendered on desktop (`md:` breakpoints guard everything).
+
+Key structure:
+- Root wrapper:
+  - `min-h-screen w-full overflow-x-hidden md:h-screen md:overflow-hidden`
+  - Child: `flex flex-col md:flex-row gap-2`
+- Left filters column:
+  - `hidden md:block w-full md:w-80 md:h-screen md:overflow-y-auto md:flex-shrink-0`
+- Right content (list + map):
+  - `flex-1 flex flex-col gap-2`
+- Map column (desktop only):
+  - `hidden md:block flex-1 h-screen`
+
+### Mobile Behavior (New)
+
+#### 1. Full-screen Map Popup
+- The inline map is **hidden on mobile**; map is shown via a **full-screen popup**.
+- State: `const [isMobileMapOpen, setIsMobileMapOpen] = useState(false);`
+- "Open map" button (mobile only):
+  - Visible in a small control bar under the top area.
+  - Clicking opens the full-screen map overlay.
+- Full-screen overlay:
+  - `fixed inset-0 z-50 flex items-center justify-center bg-black/60 md:hidden`
+  - Inner container with full viewport height/width map.
+  - Close control: circular **"X"** button positioned top-right, half over the white map card, half over dark backdrop (`absolute -top-4 right-4 h-9 w-9 rounded-full`).
+- When popup is open:
+  - Underlying page remains but is visually covered.
+  - Mobile floating buttons (filters, scroll-to-top) are hidden.
+
+#### 2. Mobile List Visibility Toggle
+- State: `const [isListVisible, setIsListVisible] = useState(true);`
+- In the mobile control bar:
+  - Button label toggles between **"Hide list"** and **"Show list"**.
+- Behavior:
+  - On mobile: the list container uses `isListVisible` to show/hide.
+  - On desktop: the list is **always shown**, regardless of this flag.
+- Implementation detail in list container classes:
+  - Mobile: `isListVisible ? 'block' : 'hidden'`
+  - Desktop: forced `md:block`.
+
+#### 3. Floating Filters Button + Slide-in Filters Panel (Mobile Only)
+- State: `const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);`
+- Desktop filters remain in the left sidebar as before.
+- On **mobile**:
+  - A floating circular button with an **"F"** icon is positioned on the right edge, vertically centered (`fixed top-1/2 right-4 -translate-y-1/2 z-40 md:hidden`).
+  - Tapping it opens a **slide-in filters panel** from the right.
+- Slide-in panel:
+  - Full-screen translucent overlay: `fixed inset-0 z-40 flex justify-end bg-black/40 md:hidden`
+  - Panel: `h-full w-4/5 max-w-xs bg-[#F6F6F5] shadow-lg`
+  - Close button: circular **"X"** at top-right inside the panel.
+  - Filters content: `LeftSidebarFilters` rendered scrollable inside the panel (`overflow-y-auto`).
+- While filters panel is open:
+  - Floating filters button is hidden.
+
+#### 4. Floating Scroll-to-Top Button (Mobile Only)
+- State: `const [showScrollTop, setShowScrollTop] = useState(false);`
+- Global scroll listener:
+  - `useEffect` with `window.addEventListener('scroll', ...)` updates `showScrollTop` based on `window.scrollY` > ~50px.
+- Button:
+  - Mobile-only: `fixed bottom-4 right-4 z-40 h-10 w-10 rounded-full bg-blue-600 text-white shadow md:hidden`.
+  - On click: `window.scrollTo({ top: 0, behavior: 'smooth' });`
+- Hidden when the mobile map popup is open.
+
+### Notes for Future Changes
+- **Do not alter desktop layout** when adjusting mobile UX: desktop relies on the 3-column `md:flex-row` structure described above.
+- All new UX elements should remain guarded by `md:hidden` to prevent regressions on larger screens.
+- Map resizing on layout changes is handled within `ReactLeafletMap` via a `ResizeHandler` that calls `map.invalidateSize()` on window resize; no additional work is needed when using the mobile popup.
+
