@@ -72,35 +72,51 @@ Add a condition to filter when tests should run:
 
 **Web request URL**:
 ```
-https://gitlab.com/api/v4/projects/61956481/trigger/pipeline
+https://gitlab.com/api/v4/projects/YOUR_PROJECT_ID/trigger/pipeline
 ```
 
 **HTTP method**: `POST`
 
+**Headers**:
+| Key | Value |
+|-----|-------|
+| `Content-Type` | `application/json` |
+
 **Web request body**: `Custom data`
 
-**Custom data** (Form data):
-```
-token=glptt-KNqkrPWTWFjheXxTyKpV
-ref=main
+**Custom data** (JSON format):
+```json
+{
+  "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+  "ref": "main",
+  "variables": {
+    "JIRA_ISSUE": "{{issue.key}}",
+    "BASE_URL": "https://dev.yoursite.com"
+  }
+}
 ```
 
-**Headers**:
-```
-Content-Type: application/x-www-form-urlencoded
-```
+> **Note**: Tests are in the `e2e/` folder. Available test files:
+> - `e2e/example.spec.ts`
+> - `e2e/example-with-zephyr.spec.ts`
+> - `e2e/beaches.spec.ts`
 
 ### Step 4: Add Variables (Optional)
 
 To pass dynamic data from Jira to GitLab:
 
-**Custom data** (with variables):
-```
-token=glptt-KNqkrPWTWFjheXxTyKpV
-ref=main
-variables[BASE_URL]=https://staging.beachrex.com
-variables[BROWSER]=chromium
-variables[JIRA_ISSUE]={{issue.key}}
+**Custom data** (JSON with variables):
+```json
+{
+  "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+  "ref": "main",
+  "variables": {
+    "BASE_URL": "https://dev.yoursite.com",
+    "BROWSER": "chromium",
+    "JIRA_ISSUE": "{{issue.key}}",
+    "TEST_FILTER": "e2e/example-with-zephyr.spec.ts"
+  }
+}
 ```
 
 ### Step 5: Add Comment with Result (Optional)
@@ -131,22 +147,32 @@ Issue: {{issue.key}}
 
 **Custom data with conditional logic**:
 
-```
-token=glptt-KNqkrPWTWFjheXxTyKpV
-ref=main
-variables[TEST_FILTER]={{#if(equals(issue.issueType.name, "Bug"))}}e2e/regression/{{else}}e2e/{{/if}}
-variables[JIRA_ISSUE]={{issue.key}}
+```json
+{
+  "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+  "ref": "main",
+  "variables": {
+    "TEST_FILTER": "{{#if(equals(issue.issueType.name, \"Bug\"))}}e2e/regression/{{else}}e2e/{{/if}}",
+    "JIRA_ISSUE": "{{issue.key}}",
+    "BASE_URL": "https://dev.yoursite.com"
+  }
+}
 ```
 
 ### Use Case: Run tests based on component
 
 If your Jira issue has a component field:
 
-```
-token=glptt-KNqkrPWTWFjheXxTyKpV
-ref=main
-variables[TEST_FILTER]=e2e/{{issue.components.first.name}}/
-variables[JIRA_ISSUE]={{issue.key}}
+```json
+{
+  "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+  "ref": "main",
+  "variables": {
+    "TEST_FILTER": "e2e/{{issue.components.first.name}}/",
+    "JIRA_ISSUE": "{{issue.key}}",
+    "BASE_URL": "https://dev.yoursite.com"
+  }
+}
 ```
 
 Examples:
@@ -157,11 +183,16 @@ Examples:
 
 If you have a custom field "Test Path":
 
-```
-token=glptt-KNqkrPWTWFjheXxTyKpV
-ref=main
-variables[TEST_FILTER]={{issue.customfield_10050}}
-variables[JIRA_ISSUE]={{issue.key}}
+```json
+{
+  "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+  "ref": "main",
+  "variables": {
+    "TEST_FILTER": "{{issue.customfield_10050}}",
+    "JIRA_ISSUE": "{{issue.key}}",
+    "BASE_URL": "https://dev.yoursite.com"
+  }
+}
 ```
 
 ---
@@ -201,8 +232,8 @@ import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.entity.StringEntity
 
-def gitlabToken = "glptt-KNqkrPWTWFjheXxTyKpV"
-def gitlabProjectId = "61956481"
+def gitlabToken = "YOUR_GITLAB_TRIGGER_TOKEN"
+def gitlabProjectId = "YOUR_PROJECT_ID"
 def gitlabUrl = "https://gitlab.com/api/v4/projects/${gitlabProjectId}/trigger/pipeline"
 
 def issueKey = issue.key
@@ -245,15 +276,20 @@ if (statusCode == 201) {
 **Condition**: Issue type is one of: Bug, Story, Task
 
 **Action 1**: Send web request
-- URL: `https://gitlab.com/api/v4/projects/61956481/trigger/pipeline`
+- URL: `https://gitlab.com/api/v4/projects/YOUR_PROJECT_ID/trigger/pipeline`
 - Method: POST
-- Body: Custom data
+- Headers: `Content-Type: application/json`
+- Body: Custom data (JSON)
 - Data:
-  ```
-  token=glptt-KNqkrPWTWFjheXxTyKpV
-  ref=main
-  variables[JIRA_ISSUE]={{issue.key}}
-  variables[BASE_URL]=https://staging.beachrex.com
+  ```json
+  {
+    "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+    "ref": "main",
+    "variables": {
+      "JIRA_ISSUE": "{{issue.key}}",
+      "BASE_URL": "https://dev.yoursite.com"
+    }
+  }
   ```
 
 **Action 2**: Add comment
@@ -262,8 +298,8 @@ if (statusCode == 201) {
   ✅ E2E tests triggered for {{issue.key}}
   
   View pipeline: https://gitlab.com/your-username/your-project/-/pipelines
-  
-  Tests will run against: https://staging.beachrex.com
+
+  Tests will run against: https://staging.yoursite.com
   ```
 
 **Action 3**: Transition issue (optional)

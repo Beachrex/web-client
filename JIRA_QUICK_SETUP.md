@@ -46,24 +46,35 @@
 
 **Web request URL**:
 ```
-https://gitlab.com/api/v4/projects/61956481/trigger/pipeline
+https://gitlab.com/api/v4/projects/YOUR_PROJECT_ID/trigger/pipeline
 ```
 
 **HTTP method**: Select `POST`
 
+**Headers**:
+| Key | Value |
+|-----|-------|
+| `Content-Type` | `application/json` |
+
 **Web request body**: Select `Custom data`
 
-**Custom data**:
-```
-token=glptt-KNqkrPWTWFjheXxTyKpV
-ref=main
-variables[JIRA_ISSUE]={{issue.key}}
+**Custom data** (JSON format):
+```json
+{
+  "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+  "ref": "main",
+  "variables": {
+    "JIRA_ISSUE": "{{issue.key}}",
+    "TEST_FILTER": "e2e/example-with-zephyr.spec.ts",
+    "BASE_URL": "https://dev.yoursite.com"
+  }
+}
 ```
 
-**Headers**: Leave empty (or add if needed):
-```
-Content-Type: application/x-www-form-urlencoded
-```
+> **Note**: Tests are in the `e2e/` folder, not `tests/`. Available test files:
+> - `e2e/example.spec.ts`
+> - `e2e/example-with-zephyr.spec.ts`
+> - `e2e/beaches.spec.ts`
 
 4. Click **Save**
 
@@ -110,12 +121,17 @@ The test results will be available shortly.
 
 ### Run Specific Tests Based on Component
 
-**Custom data**:
-```
-token=glptt-KNqkrPWTWFjheXxTyKpV
-ref=main
-variables[TEST_FILTER]=e2e/{{issue.components.first.name | lowercase}}.spec.ts
-variables[JIRA_ISSUE]={{issue.key}}
+**Custom data** (JSON format recommended):
+```json
+{
+  "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+  "ref": "main",
+  "variables": {
+    "TEST_FILTER": "e2e/{{issue.components.first.name | lowercase}}.spec.ts",
+    "JIRA_ISSUE": "{{issue.key}}",
+    "BASE_URL": "https://dev.yoursite.com"
+  }
+}
 ```
 
 **Example**:
@@ -126,13 +142,17 @@ variables[JIRA_ISSUE]={{issue.key}}
 
 ### Run Tests on Specific Environment
 
-**Custom data**:
-```
-token=glptt-KNqkrPWTWFjheXxTyKpV
-ref=main
-variables[BASE_URL]=https://staging.beachrex.com
-variables[BROWSER]=chromium
-variables[JIRA_ISSUE]={{issue.key}}
+**Custom data** (JSON format recommended):
+```json
+{
+  "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+  "ref": "main",
+  "variables": {
+    "BASE_URL": "https://dev.yoursite.com",
+    "BROWSER": "chromium",
+    "JIRA_ISSUE": "{{issue.key}}"
+  }
+}
 ```
 
 ---
@@ -157,30 +177,45 @@ Create separate automation rules:
 
 **Rule 1: Smoke Tests**
 - Button: `🔥 Run Smoke Tests`
-- Custom data:
-  ```
-  token=glptt-KNqkrPWTWFjheXxTyKpV
-  ref=main
-  variables[TEST_FILTER]=-g 'smoke'
-  variables[BROWSER]=chromium
+- Custom data (JSON):
+  ```json
+  {
+    "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+    "ref": "main",
+    "variables": {
+      "TEST_FILTER": "-g 'smoke'",
+      "BROWSER": "chromium",
+      "BASE_URL": "https://dev.yoursite.com"
+    }
+  }
   ```
 
 **Rule 2: Full Regression**
 - Button: `🧪 Run Full Regression`
-- Custom data:
-  ```
-  token=glptt-KNqkrPWTWFjheXxTyKpV
-  ref=main
-  variables[JIRA_ISSUE]={{issue.key}}
+- Custom data (JSON):
+  ```json
+  {
+    "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+    "ref": "main",
+    "variables": {
+      "JIRA_ISSUE": "{{issue.key}}",
+      "BASE_URL": "https://dev.yoursite.com"
+    }
+  }
   ```
 
 **Rule 3: Component-Specific**
 - Button: `🎯 Run Component Tests`
-- Custom data:
-  ```
-  token=glptt-KNqkrPWTWFjheXxTyKpV
-  ref=main
-  variables[TEST_FILTER]=e2e/{{issue.components.first.name | lowercase}}/
+- Custom data (JSON):
+  ```json
+  {
+    "token": "YOUR_GITLAB_TRIGGER_TOKEN",
+    "ref": "main",
+    "variables": {
+      "TEST_FILTER": "e2e/{{issue.components.first.name | lowercase}}/",
+      "BASE_URL": "https://dev.yoursite.com"
+    }
+  }
   ```
 
 ---
@@ -264,8 +299,8 @@ Replace these values with your actual data:
 
 | Variable | Your Value | Where to Find |
 |----------|------------|---------------|
-| GitLab Project ID | `61956481` | GitLab project page (under project name) |
-| GitLab Trigger Token | `glptt-KNqkrPWTWFjheXxTyKpV` | GitLab → Settings → CI/CD → Pipeline triggers |
+| GitLab Project ID | `YOUR_PROJECT_ID` | GitLab project page (under project name) |
+| GitLab Trigger Token | `YOUR_GITLAB_TRIGGER_TOKEN` | GitLab → Settings → CI/CD → Pipeline triggers |
 | GitLab Username | `your-username` | Your GitLab username |
 | GitLab Project Name | `your-project` | Your GitLab project name |
 | Jira Domain | `your-domain.atlassian.net` | Your Jira URL |
