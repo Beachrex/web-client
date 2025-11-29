@@ -305,7 +305,6 @@ const BeachMarker = memo(({
       <Tooltip offset={[10, -10]}>
         <div>
           <h3 className="font-bold">{beach.name ?? 'Beach'}</h3>
-          {beach.description && <p className="text-sm">{beach.description}</p>}
         </div>
       </Tooltip>
     </Marker>
