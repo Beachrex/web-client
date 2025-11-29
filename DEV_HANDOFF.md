@@ -2,6 +2,112 @@
 
 This document summarizes recent changes made to the Beachrex frontend application.
 
+## 📚 Documentation
+
+All technical documentation is organized in the **[docs/](./docs/README.md)** folder:
+
+- **[docs/integrations/](./docs/integrations/)** - Third-party integrations (OpenWeather, Jira, Zephyr)
+- **[docs/testing/](./docs/testing/)** - E2E testing and CI/CD setup
+- **[docs/features/](./docs/features/)** - Feature-specific implementation guides
+- **[docs/setup/](./docs/setup/)** - Getting started guides
+
+👉 **Start here:** [docs/README.md](./docs/README.md)
+
+---
+
+## 2025-11-29 – OpenWeatherMap Integration (Real-Time Weather Data)
+
+### Overview
+
+Integrated real-time weather data from OpenWeatherMap API into beach detail pages. Weather widgets now display live weather conditions and sea temperature instead of static placeholder images.
+
+### What Changed
+
+**Backend:**
+- New API endpoint: `GET /api/v1/beach-details/{identifier}/weather`
+- Returns real-time weather data from OpenWeatherMap
+- Cached for 1 hour (independent from beach details cache)
+- Accepts beach ID or slug in any language
+
+**Frontend:**
+- Created `useBeachWeather` hook for fetching weather data
+- Updated `BeachBannerSection` to use real-time weather API
+- Added loading states to `WeatherWidget` and `SeaTempWidget`
+- Weather data now refreshes every hour automatically
+
+### Key Features
+
+✅ **Real-time weather** - Temperature, conditions, wind, humidity from OpenWeatherMap
+✅ **Sea temperature** - Approximated from weather data
+✅ **1-hour cache** - Both frontend and backend cache for 1 hour
+✅ **Loading states** - Spinner shown while fetching data
+✅ **Locale support** - Weather data in user's language
+✅ **Graceful fallbacks** - Shows `--` when data unavailable
+
+### Files Changed
+
+| File | Changes |
+|------|---------|
+| `src/hooks/useBeachWeather.ts` | **NEW** - Custom React Query hook for weather API |
+| `src/components/Beach/BeachBanner/BeachBannerSection.tsx` | Fetch weather from API instead of embeds |
+| `src/components/BannerSection/WeatherWidget.tsx` | Added loading state, handle null temperature |
+| `src/components/Beach/BeachBanner/SeaTempWidget.tsx` | Added loading state |
+
+### Usage Example
+
+```tsx
+import { useBeachWeather } from '@/hooks/useBeachWeather';
+
+const { data: weatherResponse, isLoading } = useBeachWeather({
+  identifier: beachSlug ?? beachId,
+  locale: 'en',
+  enabled: !!(beachSlug || beachId),
+});
+
+const weatherData = weatherResponse?.data?.weather;
+const seaTemperature = weatherResponse?.data?.sea_temperature;
+```
+
+### API Response Structure
+
+```typescript
+{
+  success: boolean;
+  data: {
+    beach_id: number;
+    beach_slug: string;
+    coordinates: { latitude: string; longitude: string };
+    weather: {
+      temperature: number;
+      feels_like: number;
+      condition: string;
+      description: string;
+      icon: string;
+      icon_url: string;
+      wind_speed: number;
+      humidity: number;
+      // ... more fields
+    } | null;
+    sea_temperature: number | null;
+    cached_at: string;
+  };
+}
+```
+
+### Documentation
+
+- **Backend Implementation**: See `../Api/docs/weather/` folder
+- **Frontend Implementation**: [docs/integrations/OPENWEATHER_FRONTEND_IMPLEMENTATION.md](./docs/integrations/OPENWEATHER_FRONTEND_IMPLEMENTATION.md)
+- **API Endpoint Guide**: `../Api/docs/weather/WEATHER_ENDPOINT_GUIDE.md`
+
+### Testing
+
+1. Navigate to any beach detail page
+2. Weather widget should show real temperature and weather icon
+3. Sea temperature widget should show real sea temperature
+4. Loading spinners appear briefly while fetching
+5. Data refreshes automatically after 1 hour
+
 ---
 
 ## 1. CDN Image Path Updates & Multi-Endpoint Strategy
@@ -309,6 +415,16 @@ The following packages were removed as they are no longer needed:
 - The `tour_url` field is only present for beaches that have virtual tours
 - The component gracefully handles missing tours by not showing the 360° option
 - The `url` and `thumbnail_url` fields are used for preview images in the media card selector
+
+### Related Fixes
+
+**Next.js Image Configuration** (`next.config.js`)
+- Added `s3.beachrex.com` to `remotePatterns` to allow Next.js Image component to optimize images from the CDN
+- Required for Next.js to proxy and optimize external images through `/_next/image`
+
+**Map Marker Tooltips** (`src/components/Map/ReactLeafletMap.tsx`)
+- Removed `beach.description` from marker tooltips (field doesn't exist in `BeachSchema`)
+- Tooltips now only display beach name
 
 ---
 

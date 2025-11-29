@@ -517,13 +517,19 @@ export type BeachDetailsSchema = {
     info_images?: Array<MediaItem>;
   };
   /**
-   * Embedded content (videos, webcams, maps, widgets)
+   * Embedded content (videos, webcams, maps, widgets). Note: Real-time weather data is now available via separate endpoint /beaches/{identifier}/weather
    */
   embeds?: {
     video_url?: string | null;
     webcam?: string | null;
     map_url?: string | null;
+    /**
+     * Legacy weather widget HTML (deprecated - use /beaches/{identifier}/weather endpoint instead)
+     */
     weather?: string | null;
+    /**
+     * Legacy water temperature widget HTML (deprecated - use /beaches/{identifier}/weather endpoint instead)
+     */
     water_temperature?: string | null;
   };
   /**
@@ -965,6 +971,125 @@ export type BeachTypeTranslation = {
    * URL-friendly slug
    */
   slug?: string;
+};
+
+/**
+ * Beach Weather Response
+ *
+ * Response schema for beach weather endpoint
+ */
+export type BeachWeatherResponse = {
+  /**
+   * Whether the request was successful
+   */
+  success: boolean;
+  /**
+   * Weather data for the beach
+   */
+  data: {
+    /**
+     * Beach ID
+     */
+    beach_id: number;
+    /**
+     * Beach slug in current locale
+     */
+    beach_slug: string;
+    /**
+     * Beach coordinates
+     */
+    coordinates: {
+      /**
+       * Beach latitude
+       */
+      latitude: string;
+      /**
+       * Beach longitude
+       */
+      longitude: string;
+    };
+    /**
+     * Current weather data from OpenWeatherMap (cached for 1 hour)
+     */
+    weather: {
+      /**
+       * Current temperature in Celsius
+       */
+      temperature: number;
+      /**
+       * Feels like temperature in Celsius
+       */
+      feels_like: number;
+      /**
+       * Minimum temperature in Celsius
+       */
+      temp_min: number;
+      /**
+       * Maximum temperature in Celsius
+       */
+      temp_max: number;
+      /**
+       * Atmospheric pressure in hPa
+       */
+      pressure: number;
+      /**
+       * Humidity percentage
+       */
+      humidity: number;
+      /**
+       * Weather condition (Clear, Clouds, Rain, etc.)
+       */
+      condition: string;
+      /**
+       * Detailed weather description
+       */
+      description: string;
+      /**
+       * Weather icon code
+       */
+      icon: string;
+      /**
+       * Full URL to weather icon
+       */
+      icon_url: string;
+      /**
+       * Wind speed in m/s
+       */
+      wind_speed: number;
+      /**
+       * Wind direction in degrees
+       */
+      wind_deg: number;
+      /**
+       * Cloudiness percentage
+       */
+      clouds: number;
+      /**
+       * Visibility in meters
+       */
+      visibility: number;
+      /**
+       * Sunrise time (HH:mm)
+       */
+      sunrise: string;
+      /**
+       * Sunset time (HH:mm)
+       */
+      sunset: string;
+      /**
+       * Location name from weather API
+       */
+      location_name: string;
+    } | null;
+    /**
+     * Sea surface temperature in Celsius (approximation from weather data)
+     */
+    sea_temperature: number | null;
+    /**
+     * Timestamp when the weather data was cached (ISO 8601 format)
+     */
+    cached_at: string;
+  };
 };
 
 /**
@@ -3052,6 +3177,75 @@ export type GetBeachDetailsResponses = {
 
 export type GetBeachDetailsResponse =
   GetBeachDetailsResponses[keyof GetBeachDetailsResponses];
+
+export type GetBeachWeatherData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * Beach ID (numeric) or slug (string in any language)
+     */
+    identifier: number | string;
+  };
+  query?: never;
+  url: "/api/v1/beach-details/{identifier}/weather";
+};
+
+export type GetBeachWeatherErrors = {
+  /**
+   * Beach has no coordinates
+   */
+  400: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Beach not found
+   */
+  404: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Weather service unavailable
+   */
+  503: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetBeachWeatherError =
+  GetBeachWeatherErrors[keyof GetBeachWeatherErrors];
+
+export type GetBeachWeatherResponses = {
+  /**
+   * Weather data retrieved successfully
+   */
+  200: BeachWeatherResponse;
+};
+
+export type GetBeachWeatherResponse =
+  GetBeachWeatherResponses[keyof GetBeachWeatherResponses];
 
 export type GetBeachInclinationsData = {
   body?: never;

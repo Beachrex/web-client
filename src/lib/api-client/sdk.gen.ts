@@ -81,6 +81,9 @@ import type {
   GetBeachTypesData,
   GetBeachTypesErrors,
   GetBeachTypesResponses,
+  GetBeachWeatherData,
+  GetBeachWeatherErrors,
+  GetBeachWeatherResponses,
   GetCitiesData,
   GetCitiesErrors,
   GetCitiesResponses,
@@ -535,6 +538,24 @@ export const getBeachDetails = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/beach-details/{identifier}",
+    ...options,
+  });
+};
+
+/**
+ * Get current weather for a beach
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific beach. Weather data is cached for 1 hour. Accepts either beach ID (numeric) or slug (string) in any language.
+ */
+export const getBeachWeather = <ThrowOnError extends boolean = false>(
+  options: Options<GetBeachWeatherData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetBeachWeatherResponses,
+    GetBeachWeatherErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/beach-details/{identifier}/weather",
     ...options,
   });
 };

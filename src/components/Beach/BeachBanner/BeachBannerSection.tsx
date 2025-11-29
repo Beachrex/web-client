@@ -2,9 +2,10 @@
 
 import MapWidget from '@/components/BannerSection/MapWidget';
 import WeatherWidget from '@/components/BannerSection/WeatherWidget';
+import { useBeachWeather } from '@/hooks/useBeachWeather';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { getMainBeachImage } from '@/lib/utils/beach-images';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import BeachTitleBlock from './BeachTitleBlock';
@@ -25,9 +26,11 @@ export default function BeachBannerSection({
   activityCount,
 }: BeachBannerSectionProps) {
   const tRoutes = useTranslations('routes');
+  const locale = useLocale();
 
-const beachName = beachDetails?.basic_info?.name ?? '';
-
+  const beachName = beachDetails?.basic_info?.name ?? '';
+  const beachSlug = beachDetails?.basic_info?.slug;
+  const beachId = beachDetails?.basic_info?.id;
 
   const description = beachDetails?.basic_info?.description;
 
@@ -37,6 +40,25 @@ const beachName = beachDetails?.basic_info?.name ?? '';
     beachDetails?.basic_info?.mobile_upload,
     'banner', // Use large CDN for banner images
   );
+
+  // Fetch real-time weather data from API
+  const { data: weatherResponse, isLoading: isWeatherLoading } = useBeachWeather({
+    identifier: beachSlug ?? beachId ?? '',
+    locale,
+    enabled: !!(beachSlug ?? beachId), // Only fetch if we have an identifier
+  });
+
+  // Extract weather data from API response
+  const weatherData = weatherResponse?.data?.weather ?? null;
+  const seaTemperature = weatherResponse?.data?.sea_temperature ?? null;
+
+  // Get location name for weather widget (prefer API location, fallback to beach location)
+  const locationName =
+    weatherData?.location_name ??
+    beachDetails?.location?.city?.name ??
+    beachDetails?.location?.island?.name ??
+    beachDetails?.location?.region?.name ??
+    beachDetails?.location?.country?.name;
 
   // TODO: Map beach characteristics to badges dynamically
   // For now, using placeholder badges
@@ -91,8 +113,12 @@ const beachName = beachDetails?.basic_info?.name ?? '';
 
           <div className="flex justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
             <MapWidget />
-            <WeatherWidget />
-            <SeaTempWidget tempC={8} />
+            <WeatherWidget
+              weather={weatherData}
+              locationName={locationName}
+              isLoading={isWeatherLoading}
+            />
+            <SeaTempWidget tempC={seaTemperature} isLoading={isWeatherLoading} />
           </div>
         </div>
       </div>

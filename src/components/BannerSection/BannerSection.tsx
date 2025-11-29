@@ -2,6 +2,7 @@
 
 import type { Continent } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -188,7 +189,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
               'bg-variable-collection-temno-modro', //
             ].join(' ')}
           >
-            <img
+            <Image
               src="/images/common/map-icon.svg"
               alt="play beach"
               width={24}
@@ -206,7 +207,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
               floatingButtonColorClass,
             ].join(' ')}
           >
-            <img
+            <Image
               src="/images/common/white-filter.svg"
               alt="filters"
               width={20}

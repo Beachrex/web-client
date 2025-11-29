@@ -164,7 +164,7 @@ const TopBar: React.FC<TopBarProps> = ({
 
         {/* Number of accommodations */}
         <div className="flex h-[41px] items-center gap-[4px] rounded-[6px] bg-white px-[6px] sm:gap-[8px] sm:px-[10px]">
-          <img
+          <Image
             src="/images/common/accommodation-black.svg"
             alt={t('numAccommodationsLabel')}
             width={26}

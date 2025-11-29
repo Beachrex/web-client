@@ -27,6 +27,7 @@ import {
   getBeachStatistics,
   getBeachTypeById,
   getBeachTypes,
+  getBeachWeather,
   getCities,
   getCity,
   getContinent,
@@ -98,6 +99,7 @@ import type {
   GetBeachStatisticsData,
   GetBeachTypeByIdData,
   GetBeachTypesData,
+  GetBeachWeatherData,
   GetCitiesData,
   GetCityData,
   GetContinentData,
@@ -481,6 +483,32 @@ export const getBeachDetailsOptions = (
       return data;
     },
     queryKey: getBeachDetailsQueryKey(options),
+  });
+};
+
+export const getBeachWeatherQueryKey = (
+  options: Options<GetBeachWeatherData>,
+) => createQueryKey("getBeachWeather", options);
+
+/**
+ * Get current weather for a beach
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific beach. Weather data is cached for 1 hour. Accepts either beach ID (numeric) or slug (string) in any language.
+ */
+export const getBeachWeatherOptions = (
+  options: Options<GetBeachWeatherData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBeachWeather({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBeachWeatherQueryKey(options),
   });
 };
 
