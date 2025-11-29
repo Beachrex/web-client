@@ -159,7 +159,7 @@ function MapEventHandler({
         if (onViewportChange) {
           onViewportChange(center, zoom, radius, bounds);
         }
-      }, 300), // 300ms debounce - wait for user to stop moving
+      }, 600), // 600ms debounce - wait for user to stop moving (increased to reduce API calls)
     [onViewportChange]
   );
 

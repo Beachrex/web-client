@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 export default function FooterBrandColumn() {
   const t = useTranslations('Footer.brand');
@@ -12,7 +13,7 @@ export default function FooterBrandColumn() {
       {/* Logo always on top */}
       <div>
         <Image
-          src={`${process.env.NEXT_PUBLIC_CDN_TEASER}js/assets/img/logo_dark.png`}
+          src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
           alt="BeachRex logo"
           width={119}
           height={22}

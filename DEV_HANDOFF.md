@@ -4,7 +4,7 @@ This document summarizes recent changes made to the Beachrex frontend applicatio
 
 ---
 
-## 1. CDN Image Path Updates
+## 1. CDN Image Path Updates & Multi-Endpoint Strategy
 
 ### Background
 The backend API was updated to return **relative paths** instead of full CDN URLs for all media. Previously, the API returned full URLs like:
@@ -17,36 +17,105 @@ Now it returns only relative paths:
 img/beaches/hr-6-o-hvar/hr-6-o-hvar-sl3.jpg
 ```
 
-### Frontend Changes Required
-The frontend must now prepend the CDN endpoint and use `encodeCdnImagePath()` to properly encode non-ASCII characters (e.g., Croatian characters like 'č', 'ž', 'š').
+### Multi-CDN Endpoint Strategy (Updated Nov 29, 2025)
+
+The frontend now uses **three different CDN endpoints** optimized for different image sizes and use cases:
+
+1. **`NEXT_PUBLIC_CDN_TEASER`** - For lists, carousels, thumbnails (up to 600x600)
+   - Used for: Beach cards, country cards, destination carousels, gallery thumbnails
+   - Optimized for: Fast loading in grid/list views
+
+2. **`NEXT_PUBLIC_CDN_LARGE`** - For banners and hero images
+   - Used for: Hero sections, banner backgrounds, full-width images
+   - Optimized for: High-quality large format images
+
+3. **`NEXT_PUBLIC_CDN_ASSETS`** - For icons, videos, and non-compressible assets
+   - Used for: SVG icons, video files, 360° sphere images, filter icons
+   - Optimized for: Assets that shouldn't be compressed or resized
 
 ### Pattern to Use
 ```typescript
-import { env } from '@/env';
-import { encodeCdnImagePath } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 
-// For any image URL from the API:
-const imageUrl = `${env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(apiImagePath)}`;
+// Automatic endpoint selection based on context:
+const imageUrl = buildCdnUrl(apiImagePath, 'list');      // Uses TEASER
+const bannerUrl = buildCdnUrl(apiImagePath, 'banner');   // Uses LARGE
+const iconUrl = buildCdnUrl(apiImagePath, 'icon');       // Uses ASSETS
+const videoUrl = buildCdnUrl(apiImagePath, 'video');     // Uses ASSETS
+
+// For beach images with context:
+import { buildBeachImageUrl, getMainBeachImage } from '@/lib/utils/beach-images';
+
+const cardImage = buildBeachImageUrl(folderName, filename, false, 'list');
+const bannerImage = getMainBeachImage(gallery, folderName, false, 'banner');
 ```
 
-### Files Updated
+### Environment Variables Required
+Add these to your `.env` file:
+```env
+NEXT_PUBLIC_CDN_TEASER=https://s3.beachrex.com/teaser/
+NEXT_PUBLIC_CDN_LARGE=https://s3.beachrex.com/large/
+NEXT_PUBLIC_CDN_ASSETS=https://s3.beachrex.com/assets/
+```
+
+### About `env.ts` File
+The project uses `@t3-oss/env-nextjs` with a `src/env.ts` file for environment variable management. This is **optional** - Next.js can access `.env` variables directly:
+- **Client-side**: Variables prefixed with `NEXT_PUBLIC_` via `process.env.NEXT_PUBLIC_*`
+- **Server-side**: Any variable via `process.env.*`
+
+The `env.ts` file provides additional benefits:
+- **Type safety**: TypeScript autocomplete and type checking for env vars
+- **Runtime validation**: Zod schema validates required variables at build/runtime
+- **Fail fast**: App won't start if required env vars are missing or invalid
+- **Documentation**: All env vars documented in one place with their types
+
+You can use either approach:
+```typescript
+// With env.ts (current approach)
+import { env } from '@/env';
+const url = env.NEXT_PUBLIC_CDN_TEASER;
+
+// Without env.ts (standard Next.js)
+const url = process.env.NEXT_PUBLIC_CDN_TEASER;
+```
+
+### Files Updated (Multi-CDN Implementation)
+
+#### Core Utilities
 | File | Changes |
 |------|---------|
-| `src/app/[locale]/page.tsx` | Added `buildCdnUrl` helper, fixed mapImageUrl, beachViewsItems, accommodationImages, featuredItems |
-| `src/components/Home/HeroSection.tsx` | Fixed backgroundImage URL from hero banner media |
-| `src/components/IslandPage/IslandSearchBeaches.tsx` | Fixed `country.image_path` |
-| `src/components/WorldPage/WorldSearchBeaches.tsx` | Fixed `country.image_path` |
-| `src/app/[locale]/beaches/[continent]/page.tsx` | Replaced hardcoded CDN URL with dynamic URL using `country.image_path` |
-| `src/components/Beach/BeachDetails/beachDetailsSection.tsx` | Fixed TypeScript type assertions |
+| `src/env.ts` | Added `NEXT_PUBLIC_CDN_LARGE` and `NEXT_PUBLIC_CDN_ASSETS` environment variables |
+| `src/lib/utils/beach-images.ts` | Added `buildCdnUrl()`, `getCdnEndpoint()`, `determineCdnEndpointType()` functions; Updated `buildBeachImageUrl()` and `getMainBeachImage()` to accept context parameter |
 
-### Files Already Correctly Implemented
-- `src/components/CountryPage/CountrySearchBeaches.tsx`
-- `src/components/CityPage/citySearchBeaches.tsx`
-- `src/components/regions/RegionSearchBeaches.tsx`
-- `src/components/Continent/SearchBeach.tsx`
-- `src/components/DestinationCard.tsx`
-- `src/components/Beach/BeachPageView.tsx`
-- `src/components/PropertyCard/DynamicPropertyCard.tsx`
+#### List & Carousel Components (TEASER CDN)
+| File | Changes |
+|------|---------|
+| `src/app/[locale]/page.tsx` | Updated to use `buildCdnUrl()` with 'carousel' context for map, beach views, and accommodation images |
+| `src/components/DestinationCard.tsx` | Updated to use `buildCdnUrl()` with 'carousel' context for country images |
+| `src/components/PropertyCard/DynamicPropertyCard.tsx` | Updated to use `buildCdnUrl()` with 'list' context for beach main images |
+| `src/app/[locale]/beaches/[continent]/page.tsx` | Updated to use `buildCdnUrl()` with 'carousel' context for country images |
+
+#### Banner Components (LARGE CDN)
+| File | Changes |
+|------|---------|
+| `src/components/Home/HeroSection.tsx` | Updated to use `buildCdnUrl()` with 'hero' context for hero banner background |
+| `src/components/Beach/BeachBanner/BeachBannerSection.tsx` | Updated `getMainBeachImage()` call with 'banner' context for beach banner images |
+
+#### Icon & Video Components (ASSETS CDN)
+| File | Changes |
+|------|---------|
+| `src/components/Beach/BeachPageView.tsx` | Updated to use `buildCdnUrl()` with 'gallery' and 'video' contexts for beach media (gallery, videos, 360° spheres) |
+| `src/components/Beach/BeachDetails/beachDetailsSection.tsx` | Updated MediaBlock component to use `buildCdnUrl()` with 'carousel' context for parking and path images |
+
+### Context Parameter Options
+The `buildCdnUrl()` function accepts the following context hints:
+- `'list'` - List items and cards (uses TEASER)
+- `'carousel'` - Carousel images (uses TEASER)
+- `'gallery'` - Gallery thumbnails (uses TEASER)
+- `'banner'` - Banner backgrounds (uses LARGE)
+- `'hero'` - Hero section backgrounds (uses LARGE)
+- `'icon'` - Icon images (uses ASSETS)
+- `'video'` - Video files (uses ASSETS)
 
 ---
 
@@ -496,10 +565,10 @@ Comprehensive performance optimizations were implemented to make the beach map f
 
 ### Solutions Implemented
 
-#### 1. Debouncing (300ms delay)
+#### 1. Debouncing (600ms delay)
 **File**: `src/lib/utils/debounce.ts` (new file)
 
-Created a reusable debounce utility function that delays API calls until 300ms after the user stops moving the map.
+Created a reusable debounce utility function that delays API calls until 600ms after the user stops moving the map.
 
 ```typescript
 export function debounce<T extends (...args: any[]) => any>(
@@ -508,7 +577,9 @@ export function debounce<T extends (...args: any[]) => any>(
 ): (...args: Parameters<T>) => void
 ```
 
-**Impact**: Prevents continuous API calls during active dragging/zooming. API only fires after user pauses interaction.
+**Configuration**: Set to 600ms in `ReactLeafletMap.tsx` (increased from 300ms to reduce request pile-up during rapid map movements)
+
+**Impact**: Prevents continuous API calls during active dragging/zooming. API only fires after user pauses interaction. Longer delay prevents request queue overflow.
 
 #### 2. Marker Clustering
 **Files Modified**:
@@ -535,31 +606,27 @@ Implemented marker clustering using `MarkerClusterGroup` to automatically group 
 
 **Impact**: Reduces DOM elements from hundreds to dozens. Improves rendering performance significantly.
 
-#### 3. Expanded Bounding Box (1.5x Prefetching)
+#### 3. ~~Expanded Bounding Box (1.5x Prefetching)~~ - REMOVED
+**Status**: This optimization was removed because it caused a mismatch between beaches shown on the map and beaches in the sidebar list.
+
+The map now uses **exact viewport bounds** to ensure the sidebar list shows exactly the same beaches as the map markers.
+
 **Files Modified**:
-- `src/lib/utils/debounce.ts` - Added `expandBounds()` utility
-- `src/components/Map/MapWithSidebar.tsx` - Implemented prefetching
+- `src/components/Map/MapWithSidebar.tsx` - Uses exact viewport bounds (no expansion)
 
-The map now fetches beaches in a 1.5x larger area than the visible viewport, prefetching data for adjacent areas.
+**Reason for Removal**: With expanded bounds, users would see 2 beaches on the map but 3 in the list, causing confusion. Exact bounds ensure UI consistency.
 
-```typescript
-export function expandBounds(
-  bounds: { min_lat, max_lat, min_lon, max_lon },
-  factor = 1.5
-): { min_lat, max_lat, min_lon, max_lon }
-```
-
-**Impact**: Reduces API calls when user pans the map slightly. Beaches in adjacent areas are already loaded.
-
-#### 4. Increased Cache Time (TanStack Query Configuration)
+#### 4. Increased Cache Time & Request Management (TanStack Query Configuration)
 **File**: `src/components/ApiClientProvider.tsx`
 
-Updated TanStack Query (React Query) configuration to optimize caching for map data:
+Updated TanStack Query (React Query) configuration to optimize caching and prevent request pile-up:
 
 **Cache Settings:**
 - **`staleTime`**: 1 minute → **5 minutes** (300,000ms)
 - **`gcTime`**: default (5 min) → **10 minutes** (600,000ms)
 - **`refetchOnWindowFocus`**: `false` (don't refetch when user returns to tab)
+- **`retry`**: **1** (only retry once on failure to avoid request pile-up)
+- **`retryDelay`**: **1000ms** (wait 1 second before retrying)
 
 ```typescript
 new QueryClient({
@@ -568,6 +635,8 @@ new QueryClient({
       staleTime: 5 * 60 * 1000, // 5 minutes - map data doesn't change frequently
       gcTime: 10 * 60 * 1000, // 10 minutes - keep in cache longer
       refetchOnWindowFocus: false,
+      retry: 1, // Only retry once on failure to avoid request pile-up
+      retryDelay: 1000, // Wait 1 second before retrying
     },
   },
 })
@@ -580,6 +649,8 @@ new QueryClient({
 | `staleTime` | 5 minutes | Data is considered "fresh" for 5 minutes. No refetch during this time even if component remounts. |
 | `gcTime` | 10 minutes | Cached data is kept in memory for 10 minutes after last use before garbage collection. |
 | `refetchOnWindowFocus` | false | Don't automatically refetch when user switches back to the browser tab. |
+| `retry` | 1 | Only retry failed requests once (default is 3). Prevents request pile-up on network issues. |
+| `retryDelay` | 1000ms | Wait 1 second before retrying failed requests. Gives network time to recover. |
 
 **Why these values:**
 - Beach data doesn't change frequently (new beaches aren't added every minute)
@@ -644,6 +715,32 @@ const beachIcon = useMemo(() => L.icon({
 ```
 
 **Impact**: Reduces memory allocation and prevents icon recreation on every render.
+
+#### 7. Lazy Image Loading with Next.js Image Component
+**Files Modified**:
+- `src/components/PropertyCard/DynamicPropertyCard.tsx` - Replaced background images with Next.js Image component
+
+**Problem**: Background images (`style={{ backgroundImage: url(...) }}`) load all at once, causing browser request queue overflow when scrolling through beach list.
+
+**Solution**: Use Next.js `<Image>` component with `loading="lazy"` and proper `sizes` attribute:
+
+```typescript
+<Image
+  src={imageUrl}
+  alt={beach.name ?? 'Beach'}
+  fill
+  className="object-cover"
+  loading="lazy"
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 410px"
+/>
+```
+
+**Impact**:
+- Browser only loads images as they enter viewport (lazy loading)
+- Proper `sizes` attribute helps browser choose optimal image size
+- Reduces simultaneous HTTP requests from 20+ to 3-5
+- Prevents "pending" requests pile-up in Network tab
+- Images load progressively as user scrolls
 
 #### 8. Removed Loading Overlays & Seamless Updates
 **Files Modified**:
@@ -744,13 +841,8 @@ The `MapEventHandler` component now:
 3. Only triggers viewport changes when bounds/zoom actually change
 4. Applies 300ms debounce before calling parent callback
 
-#### Bounding Box Expansion
-The `expandBounds` function calculates the expansion mathematically:
-```typescript
-const latDiff = ((bounds.max_lat - bounds.min_lat) * (factor - 1)) / 2;
-const lonDiff = ((bounds.max_lon - bounds.min_lon) * (factor - 1)) / 2;
-```
-This ensures the expanded area is centered on the original viewport.
+#### ~~Bounding Box Expansion~~ - REMOVED
+The bounding box expansion feature was removed to ensure the sidebar beach list matches exactly what's visible on the map. The map now uses exact viewport bounds without any expansion.
 
 ### Testing Recommendations
 After deployment, verify:
@@ -948,14 +1040,15 @@ This gives you:
 - ✅ **Best of both worlds** - Performance + freshness
 
 ### Notes for Future Changes
-- The 300ms debounce delay can be adjusted in `ReactLeafletMap.tsx` if needed
-- The 1.5x expansion factor can be tuned in `MapWithSidebar.tsx`
+- The **600ms debounce delay** can be adjusted in `ReactLeafletMap.tsx` if needed (increased from 300ms to prevent request pile-up)
+- ~~The 1.5x expansion factor can be tuned in `MapWithSidebar.tsx`~~ - REMOVED (caused list/map mismatch)
 - Cache times should be increased cautiously (balance freshness vs performance)
 - **With SSE implementation, cache can be extended to 30+ minutes safely**
 - Marker cluster radius (50px) can be adjusted for different visual density
 - Minimum cluster size is set to 5 markers (clusters with < 5 markers show individual pins)
 - **Loading overlay removed**: Map updates markers in background without showing loading state for smooth UX
 - **Beach list stays visible**: Grid of beach cards remains visible during loading, updates seamlessly with new data
+- **Retry limit set to 1**: Prevents request pile-up on network failures (default was 3 retries)
 - **Previous data retained**: Uses `previousBeachesRef` to keep beaches visible while new data loads
 - All optimizations are backward compatible with existing API
 

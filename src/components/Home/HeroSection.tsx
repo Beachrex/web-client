@@ -6,8 +6,7 @@ import { useContinents } from '@/hooks/useContinents';
 import { useCountries } from '@/hooks/useCountries';
 import { useHeroBanner } from '@/hooks/useFirstPageContent';
 import { Link } from '@/i18n/routing';
-import { env } from '@/env';
-import { encodeCdnImagePath } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 // Locale-specific route translations for beaches
 const beachesRoutes: Record<string, string> = {
@@ -58,7 +57,7 @@ const HeroSection: React.FC = () => {
         ?? heroBanner.media[0];
       const url = bgMedia?.url;
       if (url) {
-        return `${env.NEXT_PUBLIC_CDN_TEASER}${encodeCdnImagePath(url)}`;
+        return buildCdnUrl(url, 'hero') ?? '';
       }
       return '';
     }

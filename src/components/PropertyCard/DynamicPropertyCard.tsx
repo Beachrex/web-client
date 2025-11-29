@@ -1,11 +1,11 @@
 'use client';
 import { Heart, MapPin } from 'lucide-react';
-import { env } from '@/env';
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
+import Image from 'next/image';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
-import { encodeCdnImagePath } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 interface DynamicPropertyCardProps {
   beach: BeachSchema;
@@ -14,7 +14,6 @@ interface DynamicPropertyCardProps {
 }
 
 export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: DynamicPropertyCardProps) {
-  const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
   const locale = useLocale();
 
   // Define size-specific classes (responsive width, max fixed size)
@@ -25,9 +24,9 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
 
   const cardWidth = sizeClasses[size];
 
-  // Build the image URL
+  // Build the image URL (list context for carousel/grid display)
   const imageUrl = beach.main_image
-    ? `${cdnEndpoint}${encodeCdnImagePath(beach.main_image)}`
+    ? buildCdnUrl(beach.main_image, 'list') ?? '/images/propertycard/card-banner.jpg'
     : '/images/propertycard/card-banner.jpg'; // fallback image
 
   // Get display values with fallbacks
@@ -50,19 +49,23 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
   const CardContent = (
     <>
       {/* Top banner */}
-      <div
-        className="relative h-[278px] w-full bg-cover bg-center"
-        style={{
-          backgroundImage: `url('${imageUrl}')`,
-        }}
-      >
+      <div className="relative h-[278px] w-full overflow-hidden">
+        <Image
+          src={imageUrl}
+          alt={beach.name ?? 'Beach'}
+          fill
+          className="object-cover"
+          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 410px"
+        />
+
         {/* Top left badges - can be added later if needed */}
-        <div className="absolute left-2 top-2 flex gap-1">
+        <div className="absolute left-2 top-2 flex gap-1 z-10">
           {/* Placeholder for badges */}
         </div>
 
         {/* Top right heart */}
-        <div className="absolute right-2 top-2 cursor-pointer">
+        <div className="absolute right-2 top-2 cursor-pointer z-10">
           <Heart
             size={22}
             className="text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.5)] hover:fill-red-500 transition-colors"
