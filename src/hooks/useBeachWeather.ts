@@ -1,6 +1,8 @@
 import { getBeachWeather } from '@/lib/api-client';
-import type { BeachWeatherResponse } from '@/lib/api-client/types.gen';
+import type { BeachWeatherResponse, GetBeachWeatherData } from '@/lib/api-client/types.gen';
 import { useQuery } from '@tanstack/react-query';
+
+type AcceptedLocale = NonNullable<GetBeachWeatherData['headers']>['Accept-Language'];
 
 interface UseBeachWeatherOptions {
   identifier: string | number;
@@ -43,7 +45,7 @@ export function useBeachWeather({
         },
         headers: locale
           ? {
-              'Accept-Language': locale,
+              'Accept-Language': locale as AcceptedLocale,
             }
           : undefined,
       });
