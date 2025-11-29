@@ -20,6 +20,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "openweathermap.org",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "placehold.co",
         pathname: "/**",
       },
