@@ -106,13 +106,6 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
             {/* Placeholder for beach type icons */}
           </div>
         </div>
-
-        {/* Description if available */}
-        {beach.description && (
-          <p className="text-[10px] text-[#4D4D4D] line-clamp-2 mt-1">
-            {beach.description}
-          </p>
-        )}
       </div>
     </>
   );
