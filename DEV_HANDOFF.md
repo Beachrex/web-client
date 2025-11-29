@@ -565,10 +565,10 @@ Comprehensive performance optimizations were implemented to make the beach map f
 
 ### Solutions Implemented
 
-#### 1. Debouncing (300ms delay)
+#### 1. Debouncing (600ms delay)
 **File**: `src/lib/utils/debounce.ts` (new file)
 
-Created a reusable debounce utility function that delays API calls until 300ms after the user stops moving the map.
+Created a reusable debounce utility function that delays API calls until 600ms after the user stops moving the map.
 
 ```typescript
 export function debounce<T extends (...args: any[]) => any>(
@@ -577,7 +577,9 @@ export function debounce<T extends (...args: any[]) => any>(
 ): (...args: Parameters<T>) => void
 ```
 
-**Impact**: Prevents continuous API calls during active dragging/zooming. API only fires after user pauses interaction.
+**Configuration**: Set to 600ms in `ReactLeafletMap.tsx` (increased from 300ms to reduce request pile-up during rapid map movements)
+
+**Impact**: Prevents continuous API calls during active dragging/zooming. API only fires after user pauses interaction. Longer delay prevents request queue overflow.
 
 #### 2. Marker Clustering
 **Files Modified**:
@@ -614,15 +616,17 @@ The map now uses **exact viewport bounds** to ensure the sidebar list shows exac
 
 **Reason for Removal**: With expanded bounds, users would see 2 beaches on the map but 3 in the list, causing confusion. Exact bounds ensure UI consistency.
 
-#### 4. Increased Cache Time (TanStack Query Configuration)
+#### 4. Increased Cache Time & Request Management (TanStack Query Configuration)
 **File**: `src/components/ApiClientProvider.tsx`
 
-Updated TanStack Query (React Query) configuration to optimize caching for map data:
+Updated TanStack Query (React Query) configuration to optimize caching and prevent request pile-up:
 
 **Cache Settings:**
 - **`staleTime`**: 1 minute → **5 minutes** (300,000ms)
 - **`gcTime`**: default (5 min) → **10 minutes** (600,000ms)
 - **`refetchOnWindowFocus`**: `false` (don't refetch when user returns to tab)
+- **`retry`**: **1** (only retry once on failure to avoid request pile-up)
+- **`retryDelay`**: **1000ms** (wait 1 second before retrying)
 
 ```typescript
 new QueryClient({
@@ -631,6 +635,8 @@ new QueryClient({
       staleTime: 5 * 60 * 1000, // 5 minutes - map data doesn't change frequently
       gcTime: 10 * 60 * 1000, // 10 minutes - keep in cache longer
       refetchOnWindowFocus: false,
+      retry: 1, // Only retry once on failure to avoid request pile-up
+      retryDelay: 1000, // Wait 1 second before retrying
     },
   },
 })
@@ -643,6 +649,8 @@ new QueryClient({
 | `staleTime` | 5 minutes | Data is considered "fresh" for 5 minutes. No refetch during this time even if component remounts. |
 | `gcTime` | 10 minutes | Cached data is kept in memory for 10 minutes after last use before garbage collection. |
 | `refetchOnWindowFocus` | false | Don't automatically refetch when user switches back to the browser tab. |
+| `retry` | 1 | Only retry failed requests once (default is 3). Prevents request pile-up on network issues. |
+| `retryDelay` | 1000ms | Wait 1 second before retrying failed requests. Gives network time to recover. |
 
 **Why these values:**
 - Beach data doesn't change frequently (new beaches aren't added every minute)
@@ -707,6 +715,32 @@ const beachIcon = useMemo(() => L.icon({
 ```
 
 **Impact**: Reduces memory allocation and prevents icon recreation on every render.
+
+#### 7. Lazy Image Loading with Next.js Image Component
+**Files Modified**:
+- `src/components/PropertyCard/DynamicPropertyCard.tsx` - Replaced background images with Next.js Image component
+
+**Problem**: Background images (`style={{ backgroundImage: url(...) }}`) load all at once, causing browser request queue overflow when scrolling through beach list.
+
+**Solution**: Use Next.js `<Image>` component with `loading="lazy"` and proper `sizes` attribute:
+
+```typescript
+<Image
+  src={imageUrl}
+  alt={beach.name ?? 'Beach'}
+  fill
+  className="object-cover"
+  loading="lazy"
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 410px"
+/>
+```
+
+**Impact**:
+- Browser only loads images as they enter viewport (lazy loading)
+- Proper `sizes` attribute helps browser choose optimal image size
+- Reduces simultaneous HTTP requests from 20+ to 3-5
+- Prevents "pending" requests pile-up in Network tab
+- Images load progressively as user scrolls
 
 #### 8. Removed Loading Overlays & Seamless Updates
 **Files Modified**:
@@ -1006,14 +1040,15 @@ This gives you:
 - ✅ **Best of both worlds** - Performance + freshness
 
 ### Notes for Future Changes
-- The 300ms debounce delay can be adjusted in `ReactLeafletMap.tsx` if needed
-- The 1.5x expansion factor can be tuned in `MapWithSidebar.tsx`
+- The **600ms debounce delay** can be adjusted in `ReactLeafletMap.tsx` if needed (increased from 300ms to prevent request pile-up)
+- ~~The 1.5x expansion factor can be tuned in `MapWithSidebar.tsx`~~ - REMOVED (caused list/map mismatch)
 - Cache times should be increased cautiously (balance freshness vs performance)
 - **With SSE implementation, cache can be extended to 30+ minutes safely**
 - Marker cluster radius (50px) can be adjusted for different visual density
 - Minimum cluster size is set to 5 markers (clusters with < 5 markers show individual pins)
 - **Loading overlay removed**: Map updates markers in background without showing loading state for smooth UX
 - **Beach list stays visible**: Grid of beach cards remains visible during loading, updates seamlessly with new data
+- **Retry limit set to 1**: Prevents request pile-up on network failures (default was 3 retries)
 - **Previous data retained**: Uses `previousBeachesRef` to keep beaches visible while new data loads
 - All optimizations are backward compatible with existing API
 

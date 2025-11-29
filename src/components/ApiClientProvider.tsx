@@ -18,6 +18,8 @@ export function ApiClientProvider({ children, locale }: ApiClientProviderProps) 
             staleTime: 5 * 60 * 1000, // 5 minutes - map data doesn't change frequently
             gcTime: 10 * 60 * 1000, // 10 minutes - keep in cache longer
             refetchOnWindowFocus: false,
+            retry: 1, // Only retry once on failure to avoid request pile-up
+            retryDelay: 1000, // Wait 1 second before retrying
           },
         },
       })
