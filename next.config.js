@@ -15,6 +15,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "s3.beachrex.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "placehold.co",
         pathname: "/**",
       },
