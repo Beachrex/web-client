@@ -1123,6 +1123,14 @@ export type City = {
    */
   region_id?: number | null;
   /**
+   * City latitude (centroid of beaches)
+   */
+  latitude?: number | null;
+  /**
+   * City longitude (centroid of beaches)
+   */
+  longitude?: number | null;
+  /**
    * Number of beaches in this city
    */
   beaches_count?: number;
@@ -1192,6 +1200,14 @@ export type Country = {
    * Two-letter continent code
    */
   continent_code?: string;
+  /**
+   * Country latitude (centroid of beaches)
+   */
+  latitude?: number | null;
+  /**
+   * Country longitude (centroid of beaches)
+   */
+  longitude?: number | null;
   /**
    * Path to the country image
    */
@@ -1383,6 +1399,14 @@ export type Island = {
    * Localized URL-friendly slug
    */
   slug?: string;
+  /**
+   * Island latitude (centroid of beaches)
+   */
+  latitude?: number | null;
+  /**
+   * Island longitude (centroid of beaches)
+   */
+  longitude?: number | null;
   /**
    * Number of beaches on this island
    */
@@ -1899,6 +1923,14 @@ export type Region = {
    * Two-letter country code
    */
   country_code?: string;
+  /**
+   * Region latitude (centroid of beaches)
+   */
+  latitude?: number | null;
+  /**
+   * Region longitude (centroid of beaches)
+   */
+  longitude?: number | null;
   /**
    * Number of beaches in this region
    */
@@ -3612,6 +3644,114 @@ export type GetCityResponses = {
 
 export type GetCityResponse = GetCityResponses[keyof GetCityResponses];
 
+export type GetCityWeatherData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * City slug (e.g., split, dubrovnik, pula)
+     */
+    slug: string;
+  };
+  query?: {
+    /**
+     * Country code to disambiguate cities with same name (e.g., HR, SI)
+     */
+    country_code?: string;
+  };
+  url: "/api/v1/cities/{slug}/weather";
+};
+
+export type GetCityWeatherErrors = {
+  /**
+   * City has no coordinates
+   */
+  400: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * City not found
+   */
+  404: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Weather service unavailable
+   */
+  503: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetCityWeatherError =
+  GetCityWeatherErrors[keyof GetCityWeatherErrors];
+
+export type GetCityWeatherResponses = {
+  /**
+   * Weather data retrieved successfully
+   */
+  200: {
+    success?: boolean;
+    data?: {
+      city_id?: number;
+      city_slug?: string;
+      coordinates?: {
+        latitude?: string;
+        longitude?: string;
+      };
+      /**
+       * Current weather data from OpenWeatherMap (cached for 1 hour)
+       */
+      weather?: {
+        temperature?: number;
+        feels_like?: number;
+        temp_min?: number;
+        temp_max?: number;
+        pressure?: number;
+        humidity?: number;
+        condition?: string;
+        description?: string;
+        icon?: string;
+        icon_url?: string;
+        wind_speed?: number;
+        wind_deg?: number;
+        clouds?: number;
+        visibility?: number;
+        sunrise?: string;
+        sunset?: string;
+        location_name?: string;
+      } | null;
+      sea_temperature?: number | null;
+      cached_at?: string;
+    };
+  };
+};
+
+export type GetCityWeatherResponse =
+  GetCityWeatherResponses[keyof GetCityWeatherResponses];
+
 export type GetContinentsData = {
   body?: never;
   headers?: {
@@ -3827,6 +3967,109 @@ export type GetCountryResponses = {
 };
 
 export type GetCountryResponse = GetCountryResponses[keyof GetCountryResponses];
+
+export type GetCountryWeatherData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * Country code (e.g., HR, SI, IT)
+     */
+    code: string;
+  };
+  query?: never;
+  url: "/api/v1/countries/{code}/weather";
+};
+
+export type GetCountryWeatherErrors = {
+  /**
+   * Country has no coordinates
+   */
+  400: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Country not found
+   */
+  404: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Weather service unavailable
+   */
+  503: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetCountryWeatherError =
+  GetCountryWeatherErrors[keyof GetCountryWeatherErrors];
+
+export type GetCountryWeatherResponses = {
+  /**
+   * Weather data retrieved successfully
+   */
+  200: {
+    success?: boolean;
+    data?: {
+      country_id?: number;
+      country_slug?: string;
+      coordinates?: {
+        latitude?: string;
+        longitude?: string;
+      };
+      /**
+       * Current weather data from OpenWeatherMap (cached for 1 hour)
+       */
+      weather?: {
+        temperature?: number;
+        feels_like?: number;
+        temp_min?: number;
+        temp_max?: number;
+        pressure?: number;
+        humidity?: number;
+        condition?: string;
+        description?: string;
+        icon?: string;
+        icon_url?: string;
+        wind_speed?: number;
+        wind_deg?: number;
+        clouds?: number;
+        visibility?: number;
+        sunrise?: string;
+        sunset?: string;
+        location_name?: string;
+      } | null;
+      sea_temperature?: number | null;
+      cached_at?: string;
+    };
+  };
+};
+
+export type GetCountryWeatherResponse =
+  GetCountryWeatherResponses[keyof GetCountryWeatherResponses];
 
 export type GetCulinaryOffersData = {
   body?: never;
@@ -4328,6 +4571,109 @@ export type GetIslandResponses = {
 };
 
 export type GetIslandResponse = GetIslandResponses[keyof GetIslandResponses];
+
+export type GetIslandWeatherData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * Island slug (e.g., krk, brac, hvar)
+     */
+    slug: string;
+  };
+  query?: never;
+  url: "/api/v1/islands/{slug}/weather";
+};
+
+export type GetIslandWeatherErrors = {
+  /**
+   * Island has no coordinates
+   */
+  400: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Island not found
+   */
+  404: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Weather service unavailable
+   */
+  503: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetIslandWeatherError =
+  GetIslandWeatherErrors[keyof GetIslandWeatherErrors];
+
+export type GetIslandWeatherResponses = {
+  /**
+   * Weather data retrieved successfully
+   */
+  200: {
+    success?: boolean;
+    data?: {
+      island_id?: number;
+      island_slug?: string;
+      coordinates?: {
+        latitude?: string;
+        longitude?: string;
+      };
+      /**
+       * Current weather data from OpenWeatherMap (cached for 1 hour)
+       */
+      weather?: {
+        temperature?: number;
+        feels_like?: number;
+        temp_min?: number;
+        temp_max?: number;
+        pressure?: number;
+        humidity?: number;
+        condition?: string;
+        description?: string;
+        icon?: string;
+        icon_url?: string;
+        wind_speed?: number;
+        wind_deg?: number;
+        clouds?: number;
+        visibility?: number;
+        sunrise?: string;
+        sunset?: string;
+        location_name?: string;
+      } | null;
+      sea_temperature?: number | null;
+      cached_at?: string;
+    };
+  };
+};
+
+export type GetIslandWeatherResponse =
+  GetIslandWeatherResponses[keyof GetIslandWeatherResponses];
 
 export type GetLocationInfrastructureData = {
   body?: never;
@@ -6064,6 +6410,114 @@ export type GetRegionResponses = {
 };
 
 export type GetRegionResponse = GetRegionResponses[keyof GetRegionResponses];
+
+export type GetRegionWeatherData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path: {
+    /**
+     * Region slug (e.g., dalmatia, istria)
+     */
+    slug: string;
+  };
+  query?: {
+    /**
+     * Country code to disambiguate regions with same name (e.g., HR, SI)
+     */
+    country_code?: string;
+  };
+  url: "/api/v1/regions/{slug}/weather";
+};
+
+export type GetRegionWeatherErrors = {
+  /**
+   * Region has no coordinates
+   */
+  400: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Region not found
+   */
+  404: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Weather service unavailable
+   */
+  503: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type GetRegionWeatherError =
+  GetRegionWeatherErrors[keyof GetRegionWeatherErrors];
+
+export type GetRegionWeatherResponses = {
+  /**
+   * Weather data retrieved successfully
+   */
+  200: {
+    success?: boolean;
+    data?: {
+      region_id?: number;
+      region_slug?: string;
+      coordinates?: {
+        latitude?: string;
+        longitude?: string;
+      };
+      /**
+       * Current weather data from OpenWeatherMap (cached for 1 hour)
+       */
+      weather?: {
+        temperature?: number;
+        feels_like?: number;
+        temp_min?: number;
+        temp_max?: number;
+        pressure?: number;
+        humidity?: number;
+        condition?: string;
+        description?: string;
+        icon?: string;
+        icon_url?: string;
+        wind_speed?: number;
+        wind_deg?: number;
+        clouds?: number;
+        visibility?: number;
+        sunrise?: string;
+        sunset?: string;
+        location_name?: string;
+      } | null;
+      sea_temperature?: number | null;
+      cached_at?: string;
+    };
+  };
+};
+
+export type GetRegionWeatherResponse =
+  GetRegionWeatherResponses[keyof GetRegionWeatherResponses];
 
 export type GetRoadToParkingTypesData = {
   body?: never;

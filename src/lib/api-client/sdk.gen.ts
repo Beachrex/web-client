@@ -90,6 +90,9 @@ import type {
   GetCityData,
   GetCityErrors,
   GetCityResponses,
+  GetCityWeatherData,
+  GetCityWeatherErrors,
+  GetCityWeatherResponses,
   GetContinentData,
   GetContinentErrors,
   GetContinentResponses,
@@ -102,6 +105,9 @@ import type {
   GetCountryData,
   GetCountryErrors,
   GetCountryResponses,
+  GetCountryWeatherData,
+  GetCountryWeatherErrors,
+  GetCountryWeatherResponses,
   GetCulinaryOfferByIdData,
   GetCulinaryOfferByIdErrors,
   GetCulinaryOfferByIdResponses,
@@ -123,6 +129,9 @@ import type {
   GetIslandsData,
   GetIslandsErrors,
   GetIslandsResponses,
+  GetIslandWeatherData,
+  GetIslandWeatherErrors,
+  GetIslandWeatherResponses,
   GetLocationInfrastructureByIdData,
   GetLocationInfrastructureByIdErrors,
   GetLocationInfrastructureByIdResponses,
@@ -179,6 +188,9 @@ import type {
   GetRegionsData,
   GetRegionsErrors,
   GetRegionsResponses,
+  GetRegionWeatherData,
+  GetRegionWeatherErrors,
+  GetRegionWeatherResponses,
   GetRoadToParkingTypeByIdData,
   GetRoadToParkingTypeByIdErrors,
   GetRoadToParkingTypeByIdResponses,
@@ -669,6 +681,24 @@ export const getCity = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Get current weather for a city
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific city. Weather data is cached for 1 hour.
+ */
+export const getCityWeather = <ThrowOnError extends boolean = false>(
+  options: Options<GetCityWeatherData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetCityWeatherResponses,
+    GetCityWeatherErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/cities/{slug}/weather",
+    ...options,
+  });
+};
+
+/**
  * Get all continents that have beaches
  *
  * Returns a list of continents that have at least one beach
@@ -736,6 +766,24 @@ export const getCountry = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/countries/{code}",
+    ...options,
+  });
+};
+
+/**
+ * Get current weather for a country
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific country (typically capital or centroid coordinates). Weather data is cached for 1 hour.
+ */
+export const getCountryWeather = <ThrowOnError extends boolean = false>(
+  options: Options<GetCountryWeatherData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetCountryWeatherResponses,
+    GetCountryWeatherErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/countries/{code}/weather",
     ...options,
   });
 };
@@ -862,6 +910,24 @@ export const getIsland = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/islands/{slug}",
+    ...options,
+  });
+};
+
+/**
+ * Get current weather for an island
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific island. Weather data is cached for 1 hour.
+ */
+export const getIslandWeather = <ThrowOnError extends boolean = false>(
+  options: Options<GetIslandWeatherData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetIslandWeatherResponses,
+    GetIslandWeatherErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/islands/{slug}/weather",
     ...options,
   });
 };
@@ -1431,6 +1497,24 @@ export const getRegion = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/regions/{slug}",
+    ...options,
+  });
+};
+
+/**
+ * Get current weather for a region
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific region. Weather data is cached for 1 hour.
+ */
+export const getRegionWeather = <ThrowOnError extends boolean = false>(
+  options: Options<GetRegionWeatherData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetRegionWeatherResponses,
+    GetRegionWeatherErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/regions/{slug}/weather",
     ...options,
   });
 };

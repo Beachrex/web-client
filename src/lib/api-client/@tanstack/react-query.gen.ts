@@ -30,10 +30,12 @@ import {
   getBeachWeather,
   getCities,
   getCity,
+  getCityWeather,
   getContinent,
   getContinents,
   getCountries,
   getCountry,
+  getCountryWeather,
   getCulinaryOfferById,
   getCulinaryOffers,
   getCurrentUser,
@@ -41,6 +43,7 @@ import {
   getFirstPageContentByCode,
   getIsland,
   getIslands,
+  getIslandWeather,
   getLocationInfrastructure,
   getLocationInfrastructureById,
   getLocationLengthById,
@@ -60,6 +63,7 @@ import {
   getRecommendedTransportTypes,
   getRegion,
   getRegions,
+  getRegionWeather,
   getRoadToParkingTypeById,
   getRoadToParkingTypes,
   getSportingActivities,
@@ -102,10 +106,12 @@ import type {
   GetBeachWeatherData,
   GetCitiesData,
   GetCityData,
+  GetCityWeatherData,
   GetContinentData,
   GetContinentsData,
   GetCountriesData,
   GetCountryData,
+  GetCountryWeatherData,
   GetCulinaryOfferByIdData,
   GetCulinaryOffersData,
   GetCurrentUserData,
@@ -113,6 +119,7 @@ import type {
   GetFirstPageContentData,
   GetIslandData,
   GetIslandsData,
+  GetIslandWeatherData,
   GetLocationInfrastructureByIdData,
   GetLocationInfrastructureData,
   GetLocationLengthByIdData,
@@ -132,6 +139,7 @@ import type {
   GetRecommendedTransportTypesData,
   GetRegionData,
   GetRegionsData,
+  GetRegionWeatherData,
   GetRoadToParkingTypeByIdData,
   GetRoadToParkingTypesData,
   GetSportingActivitiesData,
@@ -659,6 +667,29 @@ export const getCityOptions = (options: Options<GetCityData>) => {
   });
 };
 
+export const getCityWeatherQueryKey = (options: Options<GetCityWeatherData>) =>
+  createQueryKey("getCityWeather", options);
+
+/**
+ * Get current weather for a city
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific city. Weather data is cached for 1 hour.
+ */
+export const getCityWeatherOptions = (options: Options<GetCityWeatherData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCityWeather({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCityWeatherQueryKey(options),
+  });
+};
+
 export const getContinentsQueryKey = (options?: Options<GetContinentsData>) =>
   createQueryKey("getContinents", options);
 
@@ -748,6 +779,32 @@ export const getCountryOptions = (options: Options<GetCountryData>) => {
       return data;
     },
     queryKey: getCountryQueryKey(options),
+  });
+};
+
+export const getCountryWeatherQueryKey = (
+  options: Options<GetCountryWeatherData>,
+) => createQueryKey("getCountryWeather", options);
+
+/**
+ * Get current weather for a country
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific country (typically capital or centroid coordinates). Weather data is cached for 1 hour.
+ */
+export const getCountryWeatherOptions = (
+  options: Options<GetCountryWeatherData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getCountryWeather({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getCountryWeatherQueryKey(options),
   });
 };
 
@@ -924,6 +981,32 @@ export const getIslandOptions = (options: Options<GetIslandData>) => {
       return data;
     },
     queryKey: getIslandQueryKey(options),
+  });
+};
+
+export const getIslandWeatherQueryKey = (
+  options: Options<GetIslandWeatherData>,
+) => createQueryKey("getIslandWeather", options);
+
+/**
+ * Get current weather for an island
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific island. Weather data is cached for 1 hour.
+ */
+export const getIslandWeatherOptions = (
+  options: Options<GetIslandWeatherData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getIslandWeather({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getIslandWeatherQueryKey(options),
   });
 };
 
@@ -1564,6 +1647,32 @@ export const getRegionOptions = (options: Options<GetRegionData>) => {
       return data;
     },
     queryKey: getRegionQueryKey(options),
+  });
+};
+
+export const getRegionWeatherQueryKey = (
+  options: Options<GetRegionWeatherData>,
+) => createQueryKey("getRegionWeather", options);
+
+/**
+ * Get current weather for a region
+ *
+ * Returns real-time weather data from OpenWeatherMap for a specific region. Weather data is cached for 1 hour.
+ */
+export const getRegionWeatherOptions = (
+  options: Options<GetRegionWeatherData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getRegionWeather({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getRegionWeatherQueryKey(options),
   });
 };
 
