@@ -2,17 +2,12 @@
 
 import { Carousel } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import React from 'react';
 
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-
-// disable SSR for pannellum viewer
-const ReactPannellum = dynamic(() => import('react-pannellum'), {
-  ssr: false,
-});
+import { env } from '@/env';
 
 interface BeachPageViewProps {
   beachDetails: BeachDetailsSchema;
@@ -72,9 +67,14 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
     buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url, 'gallery') ??
     primaryGalleryUrlTmp;
 
+  // Get the virtual tour URL from the first sphere
+  const sphereTourUrl = spheres[0]?.tour_url
+    ? `${env.NEXT_PUBLIC_CDN_ASSETS}/${spheres[0].tour_url}`
+    : null;
+
   const hasGallery = gallery.length > 0;
   const hasVideo = Boolean(videoEmbedUrl);
-  const hasSphere = spheres.length > 0;
+  const hasSphere = spheres.length > 0 && Boolean(sphereTourUrl);
 
   const rawItems: (MediaCard & { enabled: boolean })[] = [
     {
@@ -213,21 +213,14 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
             )}
 
             {/* 360° VIEWER */}
-            {activeMedia === 'sphere' && sphereImageUrl && (
+            {activeMedia === 'sphere' && sphereTourUrl && (
               <div className="relative h-[75vh] w-full overflow-hidden rounded-xl bg-black">
-                <ReactPannellum
-                  id="sphere-viewer"
-                  sceneId="sphere-scene"
-                  imageSource={sphereImageUrl}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    background: '#000000',
-                  }}
-                  config={{
-                    autoLoad: true,
-                    autoRotate: -1,
-                  }}
+                <iframe
+                  src={sphereTourUrl}
+                  title="360° Virtual Tour"
+                  className="h-full w-full border-0"
+                  allowFullScreen
+                  loading="lazy"
                 />
               </div>
             )}

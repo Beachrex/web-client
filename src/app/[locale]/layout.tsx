@@ -1,5 +1,4 @@
 import '@/styles/globals.css';
-import 'pannellum/build/pannellum.css';
 
 import { ApiClientProvider } from '@/components/ApiClientProvider';
 import DefaultLayout from '@/components/Layout';

@@ -231,7 +231,88 @@ https://beachrex-tests.fra1.digitaloceanspaces.com/playwright-reports/2025-11-27
 
 ---
 
-## 3. GitLab CI/CD Integration
+## 3. 360° Virtual Tour Viewer
+
+### Background
+The beach details page displays 360° virtual tours using iframe-embedded HTML tour files. Previously, the project used ReactPannellum library, which has been removed in favor of a simpler iframe-based approach.
+
+### Implementation
+
+**File**: `src/components/Beach/BeachPageView.tsx`
+
+The component now uses a native `<iframe>` element to display virtual tours:
+
+```typescript
+// Get the virtual tour URL from the API
+const sphereTourUrl = spheres[0]?.tour_url
+  ? `${env.NEXT_PUBLIC_CDN_ASSETS}/${spheres[0].tour_url}`
+  : null;
+
+// Only show 360° viewer if tour URL exists
+const hasSphere = spheres.length > 0 && Boolean(sphereTourUrl);
+
+// Render iframe
+{activeMedia === 'sphere' && sphereTourUrl && (
+  <div className="relative h-[75vh] w-full overflow-hidden rounded-xl bg-black">
+    <iframe
+      src={sphereTourUrl}
+      title="360° Virtual Tour"
+      className="h-full w-full border-0"
+      allowFullScreen
+      loading="lazy"
+    />
+  </div>
+)}
+```
+
+### API Integration
+
+The backend provides `tour_url` in the `spheres_360` media collection:
+
+```json
+"media": {
+  "spheres_360": [
+    {
+      "id": 123,
+      "file_name": "hr-6-o-hvar-Panorama.jpg",
+      "url": "img/beaches/hr-6-o-hvar/hr-6-o-hvar-Panorama.jpg",
+      "thumbnail_url": "img/beaches/hr-6-o-hvar/hr-6-o-hvar-Panorama.jpg",
+      "tour_url": "img/beaches/hr-6-o-hvar/vtour/tour.html"
+    }
+  ]
+}
+```
+
+The frontend constructs the full URL:
+```
+https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-6-o-hvar/vtour/tour.html
+```
+
+### Removed Dependencies
+
+The following packages were removed as they are no longer needed:
+
+- ❌ `pannellum` - 360° panorama viewer library
+- ❌ `react-pannellum` - React wrapper for Pannellum
+- ❌ `import 'pannellum/build/pannellum.css'` - CSS import removed from layout
+
+### Benefits
+
+1. **Simpler implementation** - No external library dependencies
+2. **Smaller bundle size** - Removed ~100KB of unused code
+3. **Better compatibility** - Native iframe works everywhere
+4. **Lazy loading** - Tours only load when user clicks to view them
+5. **Full-featured tours** - The HTML tour files can include custom navigation, hotspots, and multi-scene tours
+
+### Notes
+
+- The `tour_url` field is only present for beaches that have virtual tours
+- The component gracefully handles missing tours by not showing the 360° option
+- The `url` and `thumbnail_url` fields are used for preview images in the media card selector
+
+---
+
+## 4. GitLab CI/CD Integration
 
 ### Overview
 Automated E2E testing in GitLab CI with test report upload to DigitalOcean Spaces.
@@ -390,7 +471,7 @@ Or download artifacts from GitLab UI: **CI/CD → Pipelines → Job → Browse a
 
 ---
 
-## 4. Zephyr Scale Integration (Optional)
+## 5. Zephyr Scale Integration (Optional)
 
 Zephyr Scale integration for Jira is configured but currently disabled. To enable:
 
@@ -1054,7 +1135,7 @@ This gives you:
 
 ---
 
-## 7. Advanced Map Optimization Strategies (Future Implementation)
+## 8. Advanced Map Optimization Strategies (Future Implementation)
 
 This section documents advanced optimization strategies for the beach map that can be implemented when the application scales beyond 10,000+ beaches or when further performance improvements are needed.
 
