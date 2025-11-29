@@ -8,7 +8,6 @@ import type { GetBeachFiltersResponse, BeachSchema } from '@/lib/api-client/type
 import { DynamicPropertyCard } from '@/components/PropertyCard/DynamicPropertyCard';
 import { useTranslations } from 'next-intl';
 import { SingleColumnIcon, DoubleColumnIcon } from '@/components/Icons/LayoutIcons';
-import { expandBounds } from '@/lib/utils/debounce';
 
 type ColumnLayout = 1 | 2;
 
@@ -292,23 +291,20 @@ const MapWithSidebar = () => {
         // Mark that viewport changed by user - don't fit bounds from this change
         viewportChangedByUserRef.current = true;
 
-        // Expand bounding box by 1.5x to prefetch beaches in adjacent areas
-        // This reduces API calls when user pans the map slightly
-        const expandedBounds = expandBounds(bounds, 1.5);
-
         // Update bounding box when user moves/zooms the map
+        // Use exact viewport bounds to ensure list matches map markers
         setBoundingBox((prev) => {
             if (
                 prev &&
-                Math.abs(prev.min_lat - expandedBounds.min_lat) < 0.0001 &&
-                Math.abs(prev.min_lon - expandedBounds.min_lon) < 0.0001 &&
-                Math.abs(prev.max_lat - expandedBounds.max_lat) < 0.0001 &&
-                Math.abs(prev.max_lon - expandedBounds.max_lon) < 0.0001
+                Math.abs(prev.min_lat - bounds.min_lat) < 0.0001 &&
+                Math.abs(prev.min_lon - bounds.min_lon) < 0.0001 &&
+                Math.abs(prev.max_lat - bounds.max_lat) < 0.0001 &&
+                Math.abs(prev.max_lon - bounds.max_lon) < 0.0001
             ) {
                 return prev;
             }
-            console.log('[MapWithSidebar] Updating bounding box (expanded 1.5x for prefetching)');
-            return expandedBounds;
+            console.log('[MapWithSidebar] Updating bounding box (exact viewport bounds)');
+            return bounds;
         });
     }, []);
 

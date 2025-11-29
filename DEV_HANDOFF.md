@@ -51,10 +51,32 @@ const bannerImage = getMainBeachImage(gallery, folderName, false, 'banner');
 ```
 
 ### Environment Variables Required
+Add these to your `.env` file:
 ```env
 NEXT_PUBLIC_CDN_TEASER=https://s3.beachrex.com/teaser/
 NEXT_PUBLIC_CDN_LARGE=https://s3.beachrex.com/large/
 NEXT_PUBLIC_CDN_ASSETS=https://s3.beachrex.com/assets/
+```
+
+### About `env.ts` File
+The project uses `@t3-oss/env-nextjs` with a `src/env.ts` file for environment variable management. This is **optional** - Next.js can access `.env` variables directly:
+- **Client-side**: Variables prefixed with `NEXT_PUBLIC_` via `process.env.NEXT_PUBLIC_*`
+- **Server-side**: Any variable via `process.env.*`
+
+The `env.ts` file provides additional benefits:
+- **Type safety**: TypeScript autocomplete and type checking for env vars
+- **Runtime validation**: Zod schema validates required variables at build/runtime
+- **Fail fast**: App won't start if required env vars are missing or invalid
+- **Documentation**: All env vars documented in one place with their types
+
+You can use either approach:
+```typescript
+// With env.ts (current approach)
+import { env } from '@/env';
+const url = env.NEXT_PUBLIC_CDN_TEASER;
+
+// Without env.ts (standard Next.js)
+const url = process.env.NEXT_PUBLIC_CDN_TEASER;
 ```
 
 ### Files Updated (Multi-CDN Implementation)
@@ -582,21 +604,15 @@ Implemented marker clustering using `MarkerClusterGroup` to automatically group 
 
 **Impact**: Reduces DOM elements from hundreds to dozens. Improves rendering performance significantly.
 
-#### 3. Expanded Bounding Box (1.5x Prefetching)
+#### 3. ~~Expanded Bounding Box (1.5x Prefetching)~~ - REMOVED
+**Status**: This optimization was removed because it caused a mismatch between beaches shown on the map and beaches in the sidebar list.
+
+The map now uses **exact viewport bounds** to ensure the sidebar list shows exactly the same beaches as the map markers.
+
 **Files Modified**:
-- `src/lib/utils/debounce.ts` - Added `expandBounds()` utility
-- `src/components/Map/MapWithSidebar.tsx` - Implemented prefetching
+- `src/components/Map/MapWithSidebar.tsx` - Uses exact viewport bounds (no expansion)
 
-The map now fetches beaches in a 1.5x larger area than the visible viewport, prefetching data for adjacent areas.
-
-```typescript
-export function expandBounds(
-  bounds: { min_lat, max_lat, min_lon, max_lon },
-  factor = 1.5
-): { min_lat, max_lat, min_lon, max_lon }
-```
-
-**Impact**: Reduces API calls when user pans the map slightly. Beaches in adjacent areas are already loaded.
+**Reason for Removal**: With expanded bounds, users would see 2 beaches on the map but 3 in the list, causing confusion. Exact bounds ensure UI consistency.
 
 #### 4. Increased Cache Time (TanStack Query Configuration)
 **File**: `src/components/ApiClientProvider.tsx`
@@ -791,13 +807,8 @@ The `MapEventHandler` component now:
 3. Only triggers viewport changes when bounds/zoom actually change
 4. Applies 300ms debounce before calling parent callback
 
-#### Bounding Box Expansion
-The `expandBounds` function calculates the expansion mathematically:
-```typescript
-const latDiff = ((bounds.max_lat - bounds.min_lat) * (factor - 1)) / 2;
-const lonDiff = ((bounds.max_lon - bounds.min_lon) * (factor - 1)) / 2;
-```
-This ensures the expanded area is centered on the original viewport.
+#### ~~Bounding Box Expansion~~ - REMOVED
+The bounding box expansion feature was removed to ensure the sidebar beach list matches exactly what's visible on the map. The map now uses exact viewport bounds without any expansion.
 
 ### Testing Recommendations
 After deployment, verify:
