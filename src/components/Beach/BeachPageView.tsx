@@ -6,9 +6,8 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import React from 'react';
 
-import { env } from '@/env';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
-import { encodeCdnImagePath } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 // disable SSR for pannellum viewer
 const ReactPannellum = dynamic(() => import('react-pannellum'), {
@@ -46,7 +45,6 @@ const buildYoutubeEmbedUrl = (rawUrl: string): string => {
 
 const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const t = useTranslations('BeachDetails');
-  const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
 
   // ✅ Hook vedno pokličemo, brez pogojev
   const [activeMedia, setActiveMedia] =
@@ -59,24 +57,19 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const videos = media?.videos ?? [];
   const spheres = media?.spheres_360 ?? [];
 
-  const buildCdnUrl = (path?: string | null): string | null => {
-    if (!path) return null;
-    return `${cdnEndpoint}${encodeCdnImagePath(path)}`;
-  };
-
   const primaryGalleryUrlTmp =
-    buildCdnUrl(gallery[0]?.thumbnail_url ?? gallery[0]?.url) ??
+    buildCdnUrl(gallery[0]?.thumbnail_url ?? gallery[0]?.url, 'gallery') ??
     '/images/beachmedia/beach-gallery.jpg';
 
   const rawVideoUrl =
     (typeof embeds?.video_url === 'string' ? embeds.video_url : null) ??
-    (videos[0]?.url ? buildCdnUrl(videos[0]?.url) : null) ??
+    (videos[0]?.url ? buildCdnUrl(videos[0]?.url, 'video') : null) ??
     null;
 
   const videoEmbedUrl = rawVideoUrl ? buildYoutubeEmbedUrl(rawVideoUrl) : null;
 
   const sphereImageUrl =
-    buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url) ??
+    buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url, 'gallery') ??
     primaryGalleryUrlTmp;
 
   const hasGallery = gallery.length > 0;
@@ -171,7 +164,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
                     {gallery.map((img) => {
                       const rawSrc = img.url ?? img.thumbnail_url;
                       const src =
-                        (rawSrc ? `${env.NEXT_PUBLIC_CDN_TEASER}${encodeCdnImagePath(rawSrc)}` : null) ??
+                        buildCdnUrl(rawSrc, 'gallery') ??
                         primaryGalleryUrlTmp;
                       const key = String(img.id ?? src);
 

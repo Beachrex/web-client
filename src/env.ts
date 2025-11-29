@@ -17,6 +17,8 @@ const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_CDN_TEASER: z.string().url(),
+    NEXT_PUBLIC_CDN_LARGE: z.string().url(),
+    NEXT_PUBLIC_CDN_ASSETS: z.string().url(),
     NEXT_PUBLIC_API_ENDPOINT: z.string().url().optional().default('https://dev-api.beachrex.com'),
   },
 
@@ -27,6 +29,8 @@ const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_CDN_TEASER: process.env.NEXT_PUBLIC_CDN_TEASER,
+    NEXT_PUBLIC_CDN_LARGE: process.env.NEXT_PUBLIC_CDN_LARGE,
+    NEXT_PUBLIC_CDN_ASSETS: process.env.NEXT_PUBLIC_CDN_ASSETS,
     NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com',
   },
   /**

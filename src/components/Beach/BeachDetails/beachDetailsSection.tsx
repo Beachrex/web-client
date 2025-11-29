@@ -5,9 +5,8 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
 
-import { env } from '@/env';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
-import { encodeCdnImagePath } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import InfoRow from './InfoRow';
 import SingleValue from './SingleValue';
 
@@ -43,15 +42,8 @@ const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
 
   if (validImages.length === 0) return null;
 
-  const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
-
-  const toCdnUrl = (url?: string | null): string | null => {
-    if (!url) return null;
-    return `${cdnEndpoint}${encodeCdnImagePath(url)}`;
-  };
-
   if (validImages.length === 1) {
-    const src = toCdnUrl(validImages[0]?.url);
+    const src = buildCdnUrl(validImages[0]?.url, 'carousel');
     if (!src) return null;
 
     return (
@@ -69,7 +61,7 @@ const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
     <div className="h-[300px] w-full overflow-hidden rounded-lg shadow-md">
       <Carousel slide={false}>
         {validImages.map((img, index) => {
-          const src = toCdnUrl(img.url);
+          const src = buildCdnUrl(img.url, 'carousel');
           if (!src) return null;
 
           return (

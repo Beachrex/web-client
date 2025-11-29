@@ -1,7 +1,7 @@
 'use client';
 
 import type { Country } from '@/lib/api-client/types.gen';
-import { encodeCdnImagePath } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { Pagination } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -24,7 +24,7 @@ const CitySearchBeaches: React.FC<CitySearchBeachesProps> = ({
       ? countries.map((country) => ({
           id: country.code,
           image: country.image_path
-            ? `${process.env.NEXT_PUBLIC_CDN_TEASER}${encodeCdnImagePath(country.image_path)}`
+            ? buildCdnUrl(country.image_path, 'carousel') ?? '/images/spain.jpg'
             : '/images/spain.jpg',
           title: country.full_name ?? country.name,
           location: `${country.name}, ${townName}`,

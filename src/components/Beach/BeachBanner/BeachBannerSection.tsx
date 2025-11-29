@@ -35,6 +35,7 @@ const beachName = beachDetails?.basic_info?.name ?? '';
     beachDetails?.media?.gallery,
     beachDetails?.basic_info?.folder_name,
     beachDetails?.basic_info?.mobile_upload,
+    'banner', // Use large CDN for banner images
   );
 
   // TODO: Map beach characteristics to badges dynamically

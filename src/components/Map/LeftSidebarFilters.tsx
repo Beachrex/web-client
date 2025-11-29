@@ -6,8 +6,8 @@ import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
-import { env } from '@/env';
 import { useTranslations } from 'next-intl';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 type FilterValue = string | number | boolean | undefined;
 type FilterOptions = GetBeachFiltersResponse['data'];
@@ -32,8 +32,6 @@ const LeftSidebarFilters = ({
     const t = useTranslations('BeachesMap');
     const [isExpanded, setIsExpanded] = useState(false);
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
-
-    const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
 
     // Extract all selected filters from currentFilters to pass as query parameters
     // These filters cascade - selecting a filter will update other filter options
@@ -270,7 +268,7 @@ const LeftSidebarFilters = ({
                                                 <div className="flex items-center gap-2">
                                                     {filterData.icon && (
                                                         <Image
-                                                            src={`${cdnEndpoint}${filterData.icon}`}
+                                                            src={buildCdnUrl(filterData.icon, 'icon') ?? ''}
                                                             alt=""
                                                             width={20}
                                                             height={20}

@@ -4,7 +4,7 @@ This document summarizes recent changes made to the Beachrex frontend applicatio
 
 ---
 
-## 1. CDN Image Path Updates
+## 1. CDN Image Path Updates & Multi-Endpoint Strategy
 
 ### Background
 The backend API was updated to return **relative paths** instead of full CDN URLs for all media. Previously, the API returned full URLs like:
@@ -17,36 +17,83 @@ Now it returns only relative paths:
 img/beaches/hr-6-o-hvar/hr-6-o-hvar-sl3.jpg
 ```
 
-### Frontend Changes Required
-The frontend must now prepend the CDN endpoint and use `encodeCdnImagePath()` to properly encode non-ASCII characters (e.g., Croatian characters like 'č', 'ž', 'š').
+### Multi-CDN Endpoint Strategy (Updated Nov 29, 2025)
+
+The frontend now uses **three different CDN endpoints** optimized for different image sizes and use cases:
+
+1. **`NEXT_PUBLIC_CDN_TEASER`** - For lists, carousels, thumbnails (up to 600x600)
+   - Used for: Beach cards, country cards, destination carousels, gallery thumbnails
+   - Optimized for: Fast loading in grid/list views
+
+2. **`NEXT_PUBLIC_CDN_LARGE`** - For banners and hero images
+   - Used for: Hero sections, banner backgrounds, full-width images
+   - Optimized for: High-quality large format images
+
+3. **`NEXT_PUBLIC_CDN_ASSETS`** - For icons, videos, and non-compressible assets
+   - Used for: SVG icons, video files, 360° sphere images, filter icons
+   - Optimized for: Assets that shouldn't be compressed or resized
 
 ### Pattern to Use
 ```typescript
-import { env } from '@/env';
-import { encodeCdnImagePath } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 
-// For any image URL from the API:
-const imageUrl = `${env.NEXT_PUBLIC_CDN_ENDPOINT}${encodeCdnImagePath(apiImagePath)}`;
+// Automatic endpoint selection based on context:
+const imageUrl = buildCdnUrl(apiImagePath, 'list');      // Uses TEASER
+const bannerUrl = buildCdnUrl(apiImagePath, 'banner');   // Uses LARGE
+const iconUrl = buildCdnUrl(apiImagePath, 'icon');       // Uses ASSETS
+const videoUrl = buildCdnUrl(apiImagePath, 'video');     // Uses ASSETS
+
+// For beach images with context:
+import { buildBeachImageUrl, getMainBeachImage } from '@/lib/utils/beach-images';
+
+const cardImage = buildBeachImageUrl(folderName, filename, false, 'list');
+const bannerImage = getMainBeachImage(gallery, folderName, false, 'banner');
 ```
 
-### Files Updated
+### Environment Variables Required
+```env
+NEXT_PUBLIC_CDN_TEASER=https://s3.beachrex.com/teaser/
+NEXT_PUBLIC_CDN_LARGE=https://s3.beachrex.com/large/
+NEXT_PUBLIC_CDN_ASSETS=https://s3.beachrex.com/assets/
+```
+
+### Files Updated (Multi-CDN Implementation)
+
+#### Core Utilities
 | File | Changes |
 |------|---------|
-| `src/app/[locale]/page.tsx` | Added `buildCdnUrl` helper, fixed mapImageUrl, beachViewsItems, accommodationImages, featuredItems |
-| `src/components/Home/HeroSection.tsx` | Fixed backgroundImage URL from hero banner media |
-| `src/components/IslandPage/IslandSearchBeaches.tsx` | Fixed `country.image_path` |
-| `src/components/WorldPage/WorldSearchBeaches.tsx` | Fixed `country.image_path` |
-| `src/app/[locale]/beaches/[continent]/page.tsx` | Replaced hardcoded CDN URL with dynamic URL using `country.image_path` |
-| `src/components/Beach/BeachDetails/beachDetailsSection.tsx` | Fixed TypeScript type assertions |
+| `src/env.ts` | Added `NEXT_PUBLIC_CDN_LARGE` and `NEXT_PUBLIC_CDN_ASSETS` environment variables |
+| `src/lib/utils/beach-images.ts` | Added `buildCdnUrl()`, `getCdnEndpoint()`, `determineCdnEndpointType()` functions; Updated `buildBeachImageUrl()` and `getMainBeachImage()` to accept context parameter |
 
-### Files Already Correctly Implemented
-- `src/components/CountryPage/CountrySearchBeaches.tsx`
-- `src/components/CityPage/citySearchBeaches.tsx`
-- `src/components/regions/RegionSearchBeaches.tsx`
-- `src/components/Continent/SearchBeach.tsx`
-- `src/components/DestinationCard.tsx`
-- `src/components/Beach/BeachPageView.tsx`
-- `src/components/PropertyCard/DynamicPropertyCard.tsx`
+#### List & Carousel Components (TEASER CDN)
+| File | Changes |
+|------|---------|
+| `src/app/[locale]/page.tsx` | Updated to use `buildCdnUrl()` with 'carousel' context for map, beach views, and accommodation images |
+| `src/components/DestinationCard.tsx` | Updated to use `buildCdnUrl()` with 'carousel' context for country images |
+| `src/components/PropertyCard/DynamicPropertyCard.tsx` | Updated to use `buildCdnUrl()` with 'list' context for beach main images |
+| `src/app/[locale]/beaches/[continent]/page.tsx` | Updated to use `buildCdnUrl()` with 'carousel' context for country images |
+
+#### Banner Components (LARGE CDN)
+| File | Changes |
+|------|---------|
+| `src/components/Home/HeroSection.tsx` | Updated to use `buildCdnUrl()` with 'hero' context for hero banner background |
+| `src/components/Beach/BeachBanner/BeachBannerSection.tsx` | Updated `getMainBeachImage()` call with 'banner' context for beach banner images |
+
+#### Icon & Video Components (ASSETS CDN)
+| File | Changes |
+|------|---------|
+| `src/components/Beach/BeachPageView.tsx` | Updated to use `buildCdnUrl()` with 'gallery' and 'video' contexts for beach media (gallery, videos, 360° spheres) |
+| `src/components/Beach/BeachDetails/beachDetailsSection.tsx` | Updated MediaBlock component to use `buildCdnUrl()` with 'carousel' context for parking and path images |
+
+### Context Parameter Options
+The `buildCdnUrl()` function accepts the following context hints:
+- `'list'` - List items and cards (uses TEASER)
+- `'carousel'` - Carousel images (uses TEASER)
+- `'gallery'` - Gallery thumbnails (uses TEASER)
+- `'banner'` - Banner backgrounds (uses LARGE)
+- `'hero'` - Hero section backgrounds (uses LARGE)
+- `'icon'` - Icon images (uses ASSETS)
+- `'video'` - Video files (uses ASSETS)
 
 ---
 

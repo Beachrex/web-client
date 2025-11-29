@@ -1,11 +1,10 @@
 'use client';
 import { Heart, MapPin } from 'lucide-react';
-import { env } from '@/env';
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
-import { encodeCdnImagePath } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 interface DynamicPropertyCardProps {
   beach: BeachSchema;
@@ -14,7 +13,6 @@ interface DynamicPropertyCardProps {
 }
 
 export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: DynamicPropertyCardProps) {
-  const cdnEndpoint = env.NEXT_PUBLIC_CDN_TEASER;
   const locale = useLocale();
 
   // Define size-specific classes (responsive width, max fixed size)
@@ -25,9 +23,9 @@ export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: Dy
 
   const cardWidth = sizeClasses[size];
 
-  // Build the image URL
+  // Build the image URL (list context for carousel/grid display)
   const imageUrl = beach.main_image
-    ? `${cdnEndpoint}${encodeCdnImagePath(beach.main_image)}`
+    ? buildCdnUrl(beach.main_image, 'list') ?? '/images/propertycard/card-banner.jpg'
     : '/images/propertycard/card-banner.jpg'; // fallback image
 
   // Get display values with fallbacks

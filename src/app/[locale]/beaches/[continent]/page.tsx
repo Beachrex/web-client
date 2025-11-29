@@ -11,7 +11,7 @@ import {
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { encodeCdnImagePath } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 interface PageProps {
   params: Promise<{
@@ -147,7 +147,7 @@ const Page = async ({ params }: PageProps) => {
       .map((country) => ({
         id: country.code!,
         image: country.image_path
-          ? `${process.env.NEXT_PUBLIC_CDN_TEASER}${encodeCdnImagePath(country.image_path)}`
+          ? buildCdnUrl(country.image_path, 'carousel') ?? '/images/spain.jpg'
           : '/images/spain.jpg',
         title: country.full_name ?? country.name!,
         location: `${country.name}, ${continent.name}`,

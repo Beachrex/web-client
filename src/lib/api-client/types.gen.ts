@@ -862,10 +862,6 @@ export type BeachSchema = {
    */
   slug?: string;
   /**
-   * Beach description (with English fallback if translation missing)
-   */
-  description?: string | null;
-  /**
    * Beach latitude
    */
   latitude?: string;
@@ -906,7 +902,7 @@ export type BeachSchema = {
    */
   city_slug?: string | null;
   /**
-   * Primary beach image path (relative, without CDN/domain prefix). Frontend should prepend its own base URL or CDN.
+   * Primary beach image path (relative, without CDN/domain prefix). Frontend constructs Imagor URLs by prepending IMAGOR_ENDPOINT + transformation params (e.g., 'unsafe/fit-in/400x300/filters:quality(85)/') + main_image.
    */
   main_image?: string | null;
 };
