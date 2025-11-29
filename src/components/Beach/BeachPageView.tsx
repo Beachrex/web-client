@@ -69,7 +69,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
 
   // Get the virtual tour URL from the first sphere
   const sphereTourUrl = spheres[0]?.tour_url
-    ? `${env.NEXT_PUBLIC_CDN_ASSETS}/${spheres[0].tour_url}`
+    ? `${env.NEXT_PUBLIC_CDN_ASSETS}${spheres[0].tour_url}`
     : null;
 
   const hasGallery = gallery.length > 0;
