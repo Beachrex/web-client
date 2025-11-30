@@ -144,6 +144,9 @@ import type {
   GetLocationLengthsData,
   GetLocationLengthsErrors,
   GetLocationLengthsResponses,
+  GetMostVisitedBeachesData,
+  GetMostVisitedBeachesErrors,
+  GetMostVisitedBeachesResponses,
   GetNaturalLocationConditionByIdData,
   GetNaturalLocationConditionByIdErrors,
   GetNaturalLocationConditionByIdResponses,
@@ -537,6 +540,24 @@ export const getBeachById = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Get most visited beaches
+ *
+ * Returns the most visited beaches ordered by beach_views counter. Supports filtering by continent, country, region, city, or island. Only returns active beaches (status_id = 1). Cached for 24 hours for optimal performance.
+ */
+export const getMostVisitedBeaches = <ThrowOnError extends boolean = false>(
+  options?: Options<GetMostVisitedBeachesData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetMostVisitedBeachesResponses,
+    GetMostVisitedBeachesErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/beaches/most-visited",
+    ...options,
+  });
+};
+
+/**
  * Get comprehensive beach details by slug or ID
  *
  * Returns all beach information including media galleries, characteristics, facilities, and related data. Accepts either beach ID (numeric) or slug (string) in any language.
@@ -647,7 +668,7 @@ export const getBeachTypeById = <ThrowOnError extends boolean = false>(
 /**
  * Get all cities that have beaches
  *
- * Returns a list of cities that have at least one beach. Can be filtered by country. Returns minimal data: id, code, name, slug, country_code, region_id, beaches_count, and country object (without continent, badges, articles).
+ * Returns a list of cities that have at least one active beach (status_id = 1). Supports multiple filter parameters that can be combined: country_code (e.g., HR, IT), region_code (e.g., istria, kvarner), island_code (e.g., krk, rab). Returns minimal data: id, code, name, slug, country_code, region_id, island_id, beaches_count, accommodation_count, and country object (without continent, badges, articles).
  */
 export const getCities = <ThrowOnError extends boolean = false>(
   options?: Options<GetCitiesData, ThrowOnError>,
@@ -665,7 +686,7 @@ export const getCities = <ThrowOnError extends boolean = false>(
 /**
  * Get a specific city
  *
- * Returns a specific city by slug with full details including country, region, badges, and articles. Can be filtered by country code.
+ * Returns a specific city by slug with full details including country, region, badges, articles, and navigation. Supports filter parameters (country_code, region_code, island_code) to ensure the city matches the specified criteria - returns 404 if filters don't match.
  */
 export const getCity = <ThrowOnError extends boolean = false>(
   options: Options<GetCityData, ThrowOnError>,
@@ -683,7 +704,7 @@ export const getCity = <ThrowOnError extends boolean = false>(
 /**
  * Get current weather for a city
  *
- * Returns real-time weather data from OpenWeatherMap for a specific city. Weather data is cached for 1 hour.
+ * Returns real-time weather data from OpenWeatherMap for a specific city. Weather data is cached for 1 hour. Supports filter parameters (country_code, region_code, island_code) to disambiguate cities with the same name or ensure the city matches specified criteria.
  */
 export const getCityWeather = <ThrowOnError extends boolean = false>(
   options: Options<GetCityWeatherData, ThrowOnError>,
@@ -881,7 +902,7 @@ export const getFirstPageContentByCode = <ThrowOnError extends boolean = false>(
 /**
  * Get all islands that have beaches
  *
- * Returns a list of islands that have at least one beach. Returns minimal data: id, code, name, slug, beaches_count.
+ * Returns a list of islands that have at least one active beach (status_id = 1). Can be filtered by country_code and/or region_code. Filters can be combined. Returns minimal data: id, code, name, slug, country_code, region_id, main_image, beaches_count, accommodation_count.
  */
 export const getIslands = <ThrowOnError extends boolean = false>(
   options?: Options<GetIslandsData, ThrowOnError>,
@@ -899,7 +920,7 @@ export const getIslands = <ThrowOnError extends boolean = false>(
 /**
  * Get a specific island
  *
- * Returns a specific island by slug with full details including beaches count, badges, and articles.
+ * Returns a specific island by slug with full details including beaches count, badges, and articles. Optional filters (country_code, region_code) can be used to validate the island matches the specified criteria - returns 404 if filters don't match.
  */
 export const getIsland = <ThrowOnError extends boolean = false>(
   options: Options<GetIslandData, ThrowOnError>,
@@ -917,7 +938,7 @@ export const getIsland = <ThrowOnError extends boolean = false>(
 /**
  * Get current weather for an island
  *
- * Returns real-time weather data from OpenWeatherMap for a specific island. Weather data is cached for 1 hour.
+ * Returns real-time weather data from OpenWeatherMap for a specific island. Weather data is cached for 1 hour. Optional filters (country_code, region_code) can be used to disambiguate islands with the same name or validate the island matches specified criteria.
  */
 export const getIslandWeather = <ThrowOnError extends boolean = false>(
   options: Options<GetIslandWeatherData, ThrowOnError>,

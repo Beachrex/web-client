@@ -48,6 +48,7 @@ import {
   getLocationInfrastructureById,
   getLocationLengthById,
   getLocationLengths,
+  getMostVisitedBeaches,
   getNaturalLocationConditionById,
   getNaturalLocationConditions,
   getNearestBeaches,
@@ -124,6 +125,7 @@ import type {
   GetLocationInfrastructureData,
   GetLocationLengthByIdData,
   GetLocationLengthsData,
+  GetMostVisitedBeachesData,
   GetNaturalLocationConditionByIdData,
   GetNaturalLocationConditionsData,
   GetNearestBeachesData,
@@ -468,6 +470,32 @@ export const getBeachByIdOptions = (options: Options<GetBeachByIdData>) => {
   });
 };
 
+export const getMostVisitedBeachesQueryKey = (
+  options?: Options<GetMostVisitedBeachesData>,
+) => createQueryKey("getMostVisitedBeaches", options);
+
+/**
+ * Get most visited beaches
+ *
+ * Returns the most visited beaches ordered by beach_views counter. Supports filtering by continent, country, region, city, or island. Only returns active beaches (status_id = 1). Cached for 24 hours for optimal performance.
+ */
+export const getMostVisitedBeachesOptions = (
+  options?: Options<GetMostVisitedBeachesData>,
+) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getMostVisitedBeaches({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getMostVisitedBeachesQueryKey(options),
+  });
+};
+
 export const getBeachDetailsQueryKey = (
   options: Options<GetBeachDetailsData>,
 ) => createQueryKey("getBeachDetails", options);
@@ -627,7 +655,7 @@ export const getCitiesQueryKey = (options?: Options<GetCitiesData>) =>
 /**
  * Get all cities that have beaches
  *
- * Returns a list of cities that have at least one beach. Can be filtered by country. Returns minimal data: id, code, name, slug, country_code, region_id, beaches_count, and country object (without continent, badges, articles).
+ * Returns a list of cities that have at least one active beach (status_id = 1). Supports multiple filter parameters that can be combined: country_code (e.g., HR, IT), region_code (e.g., istria, kvarner), island_code (e.g., krk, rab). Returns minimal data: id, code, name, slug, country_code, region_id, island_id, beaches_count, accommodation_count, and country object (without continent, badges, articles).
  */
 export const getCitiesOptions = (options?: Options<GetCitiesData>) => {
   return queryOptions({
@@ -650,7 +678,7 @@ export const getCityQueryKey = (options: Options<GetCityData>) =>
 /**
  * Get a specific city
  *
- * Returns a specific city by slug with full details including country, region, badges, and articles. Can be filtered by country code.
+ * Returns a specific city by slug with full details including country, region, badges, articles, and navigation. Supports filter parameters (country_code, region_code, island_code) to ensure the city matches the specified criteria - returns 404 if filters don't match.
  */
 export const getCityOptions = (options: Options<GetCityData>) => {
   return queryOptions({
@@ -673,7 +701,7 @@ export const getCityWeatherQueryKey = (options: Options<GetCityWeatherData>) =>
 /**
  * Get current weather for a city
  *
- * Returns real-time weather data from OpenWeatherMap for a specific city. Weather data is cached for 1 hour.
+ * Returns real-time weather data from OpenWeatherMap for a specific city. Weather data is cached for 1 hour. Supports filter parameters (country_code, region_code, island_code) to disambiguate cities with the same name or ensure the city matches specified criteria.
  */
 export const getCityWeatherOptions = (options: Options<GetCityWeatherData>) => {
   return queryOptions({
@@ -944,7 +972,7 @@ export const getIslandsQueryKey = (options?: Options<GetIslandsData>) =>
 /**
  * Get all islands that have beaches
  *
- * Returns a list of islands that have at least one beach. Returns minimal data: id, code, name, slug, beaches_count.
+ * Returns a list of islands that have at least one active beach (status_id = 1). Can be filtered by country_code and/or region_code. Filters can be combined. Returns minimal data: id, code, name, slug, country_code, region_id, main_image, beaches_count, accommodation_count.
  */
 export const getIslandsOptions = (options?: Options<GetIslandsData>) => {
   return queryOptions({
@@ -967,7 +995,7 @@ export const getIslandQueryKey = (options: Options<GetIslandData>) =>
 /**
  * Get a specific island
  *
- * Returns a specific island by slug with full details including beaches count, badges, and articles.
+ * Returns a specific island by slug with full details including beaches count, badges, and articles. Optional filters (country_code, region_code) can be used to validate the island matches the specified criteria - returns 404 if filters don't match.
  */
 export const getIslandOptions = (options: Options<GetIslandData>) => {
   return queryOptions({
@@ -991,7 +1019,7 @@ export const getIslandWeatherQueryKey = (
 /**
  * Get current weather for an island
  *
- * Returns real-time weather data from OpenWeatherMap for a specific island. Weather data is cached for 1 hour.
+ * Returns real-time weather data from OpenWeatherMap for a specific island. Weather data is cached for 1 hour. Optional filters (country_code, region_code) can be used to disambiguate islands with the same name or validate the island matches specified criteria.
  */
 export const getIslandWeatherOptions = (
   options: Options<GetIslandWeatherData>,

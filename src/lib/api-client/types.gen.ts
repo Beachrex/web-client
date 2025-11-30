@@ -799,6 +799,39 @@ export type BeachMapBoundsResponse = {
 };
 
 /**
+ * Beach Most Visited Response
+ *
+ * Response schema for most visited beaches endpoint - returns beaches ordered by beach_views counter with optional geographic filtering. Cached for 24 hours.
+ */
+export type BeachMostVisitedResponse = {
+  /**
+   * Indicates if the request was successful
+   */
+  success: boolean;
+  /**
+   * Array of beach objects ordered by beach_views (descending)
+   */
+  data: Array<BeachSchema>;
+  /**
+   * Success message
+   */
+  message: string;
+  /**
+   * Metadata about the response
+   */
+  meta: {
+    /**
+     * Number of beaches returned in this response
+     */
+    total: number;
+    /**
+     * Maximum number of beaches requested (default: 20, max: 100)
+     */
+    limit: number;
+  };
+};
+
+/**
  * Beach Radius Response Schema
  *
  * Response schema for beaches within radius endpoint
@@ -1095,7 +1128,7 @@ export type BeachWeatherResponse = {
 /**
  * City
  *
- * City model
+ * City model. Can be filtered by country_code, region_code, or island_code in list endpoints.
  */
 export type City = {
   /**
@@ -1115,13 +1148,17 @@ export type City = {
    */
   slug?: string;
   /**
-   * Two-letter country code
+   * Two-letter country code (can be used as filter parameter)
    */
   country_code?: string;
   /**
-   * Region ID
+   * Region ID (use region_code parameter to filter)
    */
   region_id?: number | null;
+  /**
+   * Island ID (use island_code parameter to filter)
+   */
+  island_id?: number | null;
   /**
    * City latitude (centroid of beaches)
    */
@@ -1131,9 +1168,17 @@ export type City = {
    */
   longitude?: number | null;
   /**
+   * Relative path to main image from most viewed beach
+   */
+  main_image?: string | null;
+  /**
    * Number of beaches in this city
    */
   beaches_count?: number;
+  /**
+   * Number of accommodations in this city (hardcoded to 0 until booking integration)
+   */
+  accommodation_count?: number;
   country?: Country;
   region?: Region;
   /**
@@ -1165,9 +1210,17 @@ export type Continent = {
    */
   slug?: string;
   /**
+   * Relative path to main image from most viewed beach
+   */
+  main_image?: string | null;
+  /**
    * Number of beaches in this continent
    */
   beaches_count?: number;
+  /**
+   * Number of accommodations in this continent (hardcoded to 0 until booking integration)
+   */
+  accommodation_count?: number;
 };
 
 /**
@@ -1209,9 +1262,9 @@ export type Country = {
    */
   longitude?: number | null;
   /**
-   * Path to the country image
+   * Relative path to main image from most viewed beach
    */
-  image_path?: string | null;
+  main_image?: string | null;
   /**
    * Number of beaches in this country
    */
@@ -1380,7 +1433,7 @@ export type FirstPageContent = {
 /**
  * Island
  *
- * Island model
+ * Island model. Can be filtered by country_code or region_code in list endpoints.
  */
 export type Island = {
   /**
@@ -1400,6 +1453,14 @@ export type Island = {
    */
   slug?: string;
   /**
+   * Two-letter country code (can be used as filter parameter)
+   */
+  country_code?: string;
+  /**
+   * Region ID (use region_code parameter to filter)
+   */
+  region_id?: number | null;
+  /**
    * Island latitude (centroid of beaches)
    */
   latitude?: number | null;
@@ -1408,9 +1469,17 @@ export type Island = {
    */
   longitude?: number | null;
   /**
+   * Relative path to main image from most viewed beach
+   */
+  main_image?: string | null;
+  /**
    * Number of beaches on this island
    */
   beaches_count?: number;
+  /**
+   * Number of accommodations on this island (hardcoded to 0 until booking integration)
+   */
+  accommodation_count?: number;
   /**
    * Badges associated with this island (when included)
    */
@@ -1932,9 +2001,17 @@ export type Region = {
    */
   longitude?: number | null;
   /**
+   * Relative path to main image from most viewed beach
+   */
+  main_image?: string | null;
+  /**
    * Number of beaches in this region
    */
   beaches_count?: number;
+  /**
+   * Number of accommodations in this region (hardcoded to 0 until booking integration)
+   */
+  accommodation_count?: number;
   country?: Country;
   /**
    * Badges associated with this region (when included)
@@ -3159,6 +3236,75 @@ export type GetBeachByIdResponses = {
 export type GetBeachByIdResponse =
   GetBeachByIdResponses[keyof GetBeachByIdResponses];
 
+export type GetMostVisitedBeachesData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: {
+    /**
+     * Filter by continent code (e.g., EU, AS, AF, NA, SA, OC, AN)
+     */
+    continent_code?: string;
+    /**
+     * Filter by ISO country code (e.g., HR, IT, SI, GR, ES, PT, FR)
+     */
+    country_code?: string;
+    /**
+     * Filter by region code (e.g., dalmatia-split, kvarner, istra)
+     */
+    region_code?: string;
+    /**
+     * Filter by city code (e.g., split, dubrovnik, zadar)
+     */
+    city_code?: string;
+    /**
+     * Filter by island code (e.g., hvar, brac, krk)
+     */
+    island_code?: string;
+    /**
+     * Maximum number of beaches to return (default: 20, max: 100)
+     */
+    limit?: number;
+  };
+  url: "/api/v1/beaches/most-visited";
+};
+
+export type GetMostVisitedBeachesErrors = {
+  /**
+   * Bad request - invalid parameters
+   */
+  400: unknown;
+};
+
+export type GetMostVisitedBeachesResponses = {
+  /**
+   * Successfully retrieved most visited beaches
+   */
+  200: BeachMostVisitedResponse;
+};
+
+export type GetMostVisitedBeachesResponse =
+  GetMostVisitedBeachesResponses[keyof GetMostVisitedBeachesResponses];
+
 export type GetBeachDetailsData = {
   body?: never;
   headers?: {
@@ -3553,6 +3699,14 @@ export type GetCitiesData = {
      * Filter by country code (e.g., SI, HR, IT)
      */
     country_code?: string;
+    /**
+     * Filter by region code (e.g., istria, kvarner, dalmatia-split)
+     */
+    region_code?: string;
+    /**
+     * Filter by island code (e.g., krk, rab, hvar)
+     */
+    island_code?: string;
   };
   url: "/api/v1/cities";
 };
@@ -3615,6 +3769,14 @@ export type GetCityData = {
      * Filter by country code (e.g., SI, HR, IT)
      */
     country_code?: string;
+    /**
+     * Filter by region code (e.g., istria, kvarner, dalmatia-split)
+     */
+    region_code?: string;
+    /**
+     * Filter by island code (e.g., krk, rab, hvar)
+     */
+    island_code?: string;
   };
   url: "/api/v1/cities/{slug}";
 };
@@ -3637,7 +3799,41 @@ export type GetCityResponses = {
    */
   200: {
     success?: boolean;
-    data?: City;
+    data?: City & {
+      /**
+       * Navigation to previous and next cities with beaches in the same island, region, or country
+       */
+      navigation?: {
+        previous?: {
+          id?: number;
+          name?: string;
+          slug?: string;
+          latitude?: string;
+          longitude?: string;
+          main_image?: string | null;
+          location?: {
+            continent_slug?: string;
+            country_slug?: string;
+            region_slug?: string;
+            island_slug?: string | null;
+          };
+        } | null;
+        next?: {
+          id?: number;
+          name?: string;
+          slug?: string;
+          latitude?: string;
+          longitude?: string;
+          main_image?: string | null;
+          location?: {
+            continent_slug?: string;
+            country_slug?: string;
+            region_slug?: string;
+            island_slug?: string | null;
+          };
+        } | null;
+      };
+    };
     message?: string;
   };
 };
@@ -3677,6 +3873,14 @@ export type GetCityWeatherData = {
      * Country code to disambiguate cities with same name (e.g., HR, SI)
      */
     country_code?: string;
+    /**
+     * Region code to filter cities (e.g., istria, kvarner)
+     */
+    region_code?: string;
+    /**
+     * Island code to filter cities (e.g., krk, rab)
+     */
+    island_code?: string;
   };
   url: "/api/v1/cities/{slug}/weather";
 };
@@ -3801,7 +4005,15 @@ export type GetContinentsResponses = {
       code?: string;
       name?: string;
       slug?: string;
+      /**
+       * Relative path to main image from most viewed beach
+       */
+      main_image?: string | null;
       beaches_count?: number;
+      /**
+       * Number of accommodations (hardcoded to 0 until booking integration)
+       */
+      accommodation_count?: number;
     }>;
     message?: string;
   };
@@ -3864,7 +4076,44 @@ export type GetContinentResponses = {
       code?: string;
       name?: string;
       slug?: string;
+      /**
+       * Relative path to main image from most viewed beach
+       */
+      main_image?: string | null;
       beaches_count?: number;
+      /**
+       * Number of accommodations (hardcoded to 0 until booking integration)
+       */
+      accommodation_count?: number;
+      /**
+       * Navigation to previous and next continents with beaches
+       */
+      navigation?: {
+        previous?: {
+          code?: string;
+          name?: string;
+          slug?: string;
+          main_image?: string | null;
+          /**
+           * Empty object for continents (top level)
+           */
+          location?: {
+            [key: string]: unknown;
+          };
+        } | null;
+        next?: {
+          code?: string;
+          name?: string;
+          slug?: string;
+          main_image?: string | null;
+          /**
+           * Empty object for continents (top level)
+           */
+          location?: {
+            [key: string]: unknown;
+          };
+        } | null;
+      };
     };
     message?: string;
   };
@@ -3909,7 +4158,7 @@ export type GetCountriesResponses = {
       full_name?: string;
       iso3?: string;
       continent_code?: string;
-      image_path?: string | null;
+      main_image?: string | null;
       beaches_count?: number;
     }>;
     message?: string;
@@ -3955,11 +4204,37 @@ export type GetCountryResponses = {
       full_name?: string;
       iso3?: string;
       continent_code?: string;
-      image_path?: string | null;
+      latitude?: number | null;
+      longitude?: number | null;
+      main_image?: string | null;
       beaches_count?: number;
       continent?: {
         code?: string;
         name?: string;
+      };
+      navigation?: {
+        previous?: {
+          code?: string;
+          name?: string;
+          slug?: string;
+          latitude?: string;
+          longitude?: string;
+          main_image?: string | null;
+          location?: {
+            continent_slug?: string;
+          };
+        } | null;
+        next?: {
+          code?: string;
+          name?: string;
+          slug?: string;
+          latitude?: string;
+          longitude?: string;
+          main_image?: string | null;
+          location?: {
+            continent_slug?: string;
+          };
+        } | null;
       };
     };
     message?: string;
@@ -4486,7 +4761,16 @@ export type GetIslandsData = {
       | "sk";
   };
   path?: never;
-  query?: never;
+  query?: {
+    /**
+     * Filter by country code (e.g., SI, HR, IT)
+     */
+    country_code?: string;
+    /**
+     * Filter by region code (e.g., istria, kvarner, dalmatia-split)
+     */
+    region_code?: string;
+  };
   url: "/api/v1/islands";
 };
 
@@ -4543,7 +4827,16 @@ export type GetIslandData = {
      */
     slug: string;
   };
-  query?: never;
+  query?: {
+    /**
+     * Optional: Validate island is in specified country (e.g., HR, IT, SI)
+     */
+    country_code?: string;
+    /**
+     * Optional: Validate island is in specified region (e.g., kvarner, istria)
+     */
+    region_code?: string;
+  };
   url: "/api/v1/islands/{slug}";
 };
 
@@ -4565,7 +4858,39 @@ export type GetIslandResponses = {
    */
   200: {
     success?: boolean;
-    data?: Island;
+    data?: Island & {
+      /**
+       * Navigation to previous and next islands with beaches in the same region or country
+       */
+      navigation?: {
+        previous?: {
+          id?: number;
+          name?: string;
+          slug?: string;
+          latitude?: string;
+          longitude?: string;
+          main_image?: string | null;
+          location?: {
+            continent_slug?: string;
+            country_slug?: string;
+            region_slug?: string;
+          };
+        } | null;
+        next?: {
+          id?: number;
+          name?: string;
+          slug?: string;
+          latitude?: string;
+          longitude?: string;
+          main_image?: string | null;
+          location?: {
+            continent_slug?: string;
+            country_slug?: string;
+            region_slug?: string;
+          };
+        } | null;
+      };
+    };
     message?: string;
   };
 };
@@ -4600,7 +4925,16 @@ export type GetIslandWeatherData = {
      */
     slug: string;
   };
-  query?: never;
+  query?: {
+    /**
+     * Optional: Filter by country code to disambiguate (e.g., HR, IT, SI)
+     */
+    country_code?: string;
+    /**
+     * Optional: Filter by region code to disambiguate (e.g., kvarner, istria)
+     */
+    region_code?: string;
+  };
   url: "/api/v1/islands/{slug}/weather";
 };
 
@@ -6404,7 +6738,37 @@ export type GetRegionResponses = {
    */
   200: {
     success?: boolean;
-    data?: Region;
+    data?: Region & {
+      /**
+       * Navigation to previous and next regions with beaches in the same country
+       */
+      navigation?: {
+        previous?: {
+          id?: number;
+          name?: string;
+          slug?: string;
+          latitude?: string;
+          longitude?: string;
+          main_image?: string | null;
+          location?: {
+            continent_slug?: string;
+            country_slug?: string;
+          };
+        } | null;
+        next?: {
+          id?: number;
+          name?: string;
+          slug?: string;
+          latitude?: string;
+          longitude?: string;
+          main_image?: string | null;
+          location?: {
+            continent_slug?: string;
+            country_slug?: string;
+          };
+        } | null;
+      };
+    };
     message?: string;
   };
 };
