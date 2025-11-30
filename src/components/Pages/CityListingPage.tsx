@@ -2,10 +2,11 @@
 
 import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import { usePathname } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
 import PropertySection, { type Property } from '@/components/PropertySection';
+import { useCityWeather } from '@/hooks/useWeather';
 import { type Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
@@ -24,6 +25,7 @@ export default function CityListingPage({
   cityDataProp: _cityDataProp,
 }: CityListingPageProps) {
   const pathname = usePathname();
+  const locale = useLocale();
 
   const tTown = useTranslations('TownPage');
   const tProperty = useTranslations('PropertySection');
@@ -34,10 +36,24 @@ export default function CityListingPage({
     if (!pathname) return;
   }, [pathname]);
 
-  // TEST DATA
-  const cityName = _citySlug ?? 'Malinska';
+  // City slug & name – from route
+  const citySlug = _citySlug ?? '';
+  const cityName = citySlug;
+
+  // TODO: replace with real API data later
   const cityBeachesCount = 112;
   const cityAccommodationsCount = 245;
+
+  // TODO: later this should come from API (cityDataProp)
+  const countryCode = 'HR';
+
+  const { data: cityWeatherResponse, isLoading: isCityWeatherLoading } =
+    useCityWeather({
+      slug: citySlug,
+      countryCode,
+      locale,
+      enabled: !!citySlug && !!countryCode,
+    });
 
   // Temporary mock beach data (replace with real API later)
   const baseBeach: Property = {
@@ -84,6 +100,10 @@ export default function CityListingPage({
     name: `City ${i + 1}`,
   })) as Country[];
 
+  const cityWeather = cityWeatherResponse?.data?.weather ?? null;
+
+  const cityWeatherLocationName = cityWeather?.location_name ?? cityName;
+
   return (
     <>
       {/* Simple header with breadcrumbs – same style as Continent Banner */}
@@ -99,6 +119,9 @@ export default function CityListingPage({
         topBarVariant="city"
         accommodationCount={cityAccommodationsCount}
         beachCount={cityBeachesCount}
+        weather={cityWeather}
+        weatherLocationName={cityWeatherLocationName}
+        isWeatherLoading={isCityWeatherLoading}
       />
 
       {/* Most visited beaches in town */}

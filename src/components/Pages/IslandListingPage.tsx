@@ -2,8 +2,7 @@
 import BannerSection from '@/components/BannerSection/BannerSection';
 import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import { usePathname } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import PropertySection, { type Property } from '@/components/PropertySection';
@@ -11,6 +10,7 @@ import { type Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
 import IslandDestinationsSection from '../IslandPage/IslandDestinationsSection';
 import IslandSearchBeaches from '../IslandPage/IslandSearchBeaches';
+import { useIslandWeather } from '@/hooks/useWeather';
 
 interface IslandListingPageProps {
   islandSlug?: string;
@@ -22,17 +22,27 @@ export default function IslandListingPage({
   islandDataProp: _islandDataProp,
 }: IslandListingPageProps) {
   const pathname = usePathname();
+  const locale = useLocale();
+
   const tIsland = useTranslations('IslandPage');
   const tProperty = useTranslations('PropertySection');
 
-  useEffect(() => {
-    if (!pathname) return;
-  }, [pathname]);
+  const islandSlugValue = _islandSlug ?? '';
+  const islandName = _islandSlug ?? '';
 
-  // TEST DATA
-  const islandName = _islandSlug ?? 'Cres';
   const islandBeachesCount = 112;
   const islandAccommodationsCount = 245;
+
+  const { data: islandWeatherResponse, isLoading: isIslandWeatherLoading } =
+    useIslandWeather({
+      slug: islandSlugValue,
+      locale,
+      enabled: !!islandSlugValue,
+    });
+
+  const islandWeather = islandWeatherResponse?.data?.weather ?? null;
+
+  const islandWeatherLocationName = islandWeather?.location_name ?? islandName;
 
   // Temporary mock beach data (replace with real API later)
   const baseBeach: Property = {
@@ -79,11 +89,11 @@ export default function IslandListingPage({
   return (
     <>
       {/* Simple header with breadcrumbs – same style as Continent Banner */}
-            <div className="border-b bg-white py-4">
-              <div className="container mx-auto">
-                <DynamicBreadcrumbs pathname={pathname ?? ''} />
-              </div>
-            </div>
+      <div className="border-b bg-white py-4">
+        <div className="container mx-auto">
+          <DynamicBreadcrumbs pathname={pathname ?? ''} />
+        </div>
+      </div>
 
       <BannerSection
         image="/images/banner/island-banner.jpg"
@@ -91,6 +101,9 @@ export default function IslandListingPage({
         topBarVariant="island"
         accommodationCount={islandAccommodationsCount}
         beachCount={islandBeachesCount}
+        weather={islandWeather}
+        weatherLocationName={islandWeatherLocationName}
+        isWeatherLoading={isIslandWeatherLoading}
       />
 
       {/* Most visited beaches on island */}

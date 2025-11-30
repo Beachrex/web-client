@@ -1,17 +1,18 @@
 'use client';
 
 import { usePathname } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
 import PropertySection, { type Property } from '@/components/PropertySection';
+import { useRegionWeather } from '@/hooks/useWeather';
 import type { Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import DestinationsCarousel from '../DestinationsCarousel';
-import RegionSearchBeaches from '../regions/RegionSearchBeaches';
 import DynamicBreadcrumbs from '../DynamicBreadcrumbs';
+import RegionSearchBeaches from '../regions/RegionSearchBeaches';
 
 interface RegionListingPageProps {
   regionSlug?: string;
@@ -21,15 +22,32 @@ export default function RegionListingPage({
   regionSlug,
 }: RegionListingPageProps) {
   const pathname = usePathname();
+  const locale = useLocale();
 
   const tRegion = useTranslations('RegionPage');
   const tProperty = useTranslations('PropertySection');
 
-  const regionName = regionSlug ?? 'Kvarner';
+  const regionSlugValue = regionSlug ?? '';
+  const regionName = regionSlugValue;
+
+  // TODO: real country code from API when region data is wired
+  const countryCode = 'HR';
 
   // TODO: replace with real API data later
   const regionBeachesCount = 123;
   const regionAccommodationsCount = 569;
+
+  const { data: regionWeatherResponse, isLoading: isRegionWeatherLoading } =
+    useRegionWeather({
+      slug: regionSlugValue,
+      countryCode,
+      locale,
+      enabled: !!regionSlugValue,
+    });
+
+  const regionWeather = regionWeatherResponse?.data?.weather ?? null;
+
+  const regionWeatherLocationName = regionWeather?.location_name ?? regionName;
 
   const baseBeach: Property = {
     id: '1',
@@ -91,7 +109,7 @@ export default function RegionListingPage({
 
   return (
     <>
-    {/* Simple header with breadcrumbs – same style as Continent Banner */}
+      {/* Simple header with breadcrumbs – same style as Continent Banner */}
       <div className="border-b bg-white py-4">
         <div className="container mx-auto">
           <DynamicBreadcrumbs pathname={pathname ?? ''} />
@@ -104,6 +122,9 @@ export default function RegionListingPage({
         topBarVariant="region"
         accommodationCount={regionAccommodationsCount}
         beachCount={regionBeachesCount}
+        weather={regionWeather}
+        weatherLocationName={regionWeatherLocationName}
+        isWeatherLoading={isRegionWeatherLoading}
       />
 
       {/* Most visited beaches in region */}

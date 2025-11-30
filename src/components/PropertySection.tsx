@@ -1,11 +1,11 @@
 'use client';
 
 import { Carousel } from 'flowbite-react';
-import { ChevronRight } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PropertyCard from './PropertyCard/PropertyCard';
+import Image from 'next/image';
+import { ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 // TODO: optionally export this type so you can reuse it elsewhere
 export interface Property {
@@ -37,21 +37,22 @@ interface PropertyCarouselProps {
 function PropertyFlowbiteCarousel({ items = [] }: PropertyCarouselProps) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
 
-  // Update itemsPerSlide on resize
+  // Update itemsPerSlide on resize based on Tailwind breakpoints
   useEffect(() => {
     const onResize = () => {
       const w = window.innerWidth;
-      if (w >= 1536) setItemsPerSlide(4); // 2xl: 4
-      else if (w >= 1280) setItemsPerSlide(3); // xl: 3
-      else if (w >= 640) setItemsPerSlide(2); // sm/md/lg: 2
-      else setItemsPerSlide(1); // base: 1
+      if (w >= 1536) setItemsPerSlide(4); // 2xl: 4 cards
+      else if (w >= 1280) setItemsPerSlide(3); // xl: 3 cards
+      else if (w >= 640) setItemsPerSlide(2); // sm/md/lg: 2 cards
+      else setItemsPerSlide(1); // base: 1 card
     };
+
     onResize();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // itemsPerSlide
+  // Chunk items into slides based on itemsPerSlide
   const slides = useMemo(() => {
     const chunks: Property[][] = [];
     for (let i = 0; i < items.length; i += itemsPerSlide) {
@@ -60,25 +61,34 @@ function PropertyFlowbiteCarousel({ items = [] }: PropertyCarouselProps) {
     return chunks;
   }, [items, itemsPerSlide]);
 
-  // Dynamic measuring
+  // Dynamic height measurement so all slides share the same height
   const measurementRef = useRef<HTMLDivElement | null>(null);
   const [measuredHeight, setMeasuredHeight] = useState<number | undefined>();
 
   useEffect(() => {
     if (!measurementRef.current) return;
+
     const ro = new ResizeObserver((entries) => {
       const h = entries[0]?.contentRect?.height;
       if (h) setMeasuredHeight(Math.ceil(h));
     });
+
     ro.observe(measurementRef.current);
     return () => ro.disconnect();
   }, [slides.length]);
+
+  // Prevent dragging/swiping the outer Flowbite carousel.
+  // We want navigation between slides ONLY via controls (arrows/indicators),
+  // not via touch drag on the cards themselves.
+  const stopOuterSwipe = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+  };
 
   if (!items.length) return null;
 
   return (
     <div>
-      {/* Measurer*/}
+      {/* Hidden measurer for consistent card height */}
       <div className="invisible absolute left-0 top-0 -z-10 w-full">
         <div ref={measurementRef}>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
@@ -89,16 +99,26 @@ function PropertyFlowbiteCarousel({ items = [] }: PropertyCarouselProps) {
         </div>
       </div>
 
-      {/* Main Carousel */}
+      {/* Main carousel wrapper */}
       <div style={{ height: measuredHeight ? `${measuredHeight}px` : undefined }}>
         <Carousel
           indicators={false}
-          slide={false} //
+          slide={false} // static; no auto sliding
           className="h-full"
-
         >
           {slides.map((chunk, idx) => (
-            <div key={idx} className="h-full px-0">
+            <div
+              key={idx}
+              className="h-full px-0"
+              // Stop drag / swipe events on the slides so the outer carousel
+              // does not move when the user drags over the cards.
+              onTouchStart={stopOuterSwipe}
+              onTouchMove={stopOuterSwipe}
+              onTouchEnd={stopOuterSwipe}
+              onMouseDown={stopOuterSwipe}
+              onMouseMove={stopOuterSwipe}
+              onMouseUp={stopOuterSwipe}
+            >
               <div className="grid h-full grid-cols-1 content-center gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                 {chunk.map((card, i) => (
                   <PropertyCard key={`${idx}_${i}`} {...card} />
@@ -111,6 +131,8 @@ function PropertyFlowbiteCarousel({ items = [] }: PropertyCarouselProps) {
     </div>
   );
 }
+
+// ---------- PropertySection component (ostane skoraj isto) ----------
 
 export const PropertySection: React.FC<PropertySectionProps> = ({
   title,

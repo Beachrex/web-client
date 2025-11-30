@@ -1,10 +1,16 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
-import type { BeachWeatherResponse } from '@/lib/api-client/types.gen';
+
+interface SimpleWeather {
+  temperature?: number | null;
+  description?: string | null;
+  icon_url?: string | null;
+  location_name?: string | null;
+}
 
 interface WeatherWidgetProps {
-  weather?: BeachWeatherResponse['data']['weather'];
+  weather?: SimpleWeather | null;
   locationName?: string;
   isLoading?: boolean;
 }
@@ -18,6 +24,8 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({
   const temperature = weather?.temperature ?? null;
   const location = locationName ?? weather?.location_name ?? 'Loading...';
   const weatherIcon = weather?.icon_url;
+
+  console.log('WEATHER ICON URL:', weatherIcon);
 
   // Show loading state
   if (isLoading) {
@@ -73,7 +81,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({
             width={10}
             height={10}
           />
-          <span className="text-[12px] font-bold leading-[100%] truncate max-w-[100px]">
+          <span className="max-w-[100px] truncate text-[12px] font-bold leading-[100%]">
             {location}
           </span>
         </div>

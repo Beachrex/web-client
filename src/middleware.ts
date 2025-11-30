@@ -1,7 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
-import { routing } from './i18n/routing';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { routing } from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -34,10 +34,7 @@ export default function middleware(request: NextRequest) {
       // Rewrite ANY localized beaches word to 'beaches' for internal routing
       // e.g., /en/plaze/evropa/... -> /en/beaches/evropa/...
       // e.g., /si/plaze/evropa/... -> /si/beaches/evropa/...
-      const rewrittenPath = pathname.replace(
-        `/${beachesWord}/`,
-        '/beaches/'
-      );
+      const rewrittenPath = pathname.replace(`/${beachesWord}/`, '/beaches/');
 
       // Create a new URL with the rewritten path
       const url = request.nextUrl.clone();
@@ -53,14 +50,14 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: [
-        /*
-         * Match all request paths except for the ones starting with:
-         * - api (API routes)
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-         */
-        '/((?!api|_next/static|_next/image|favicon.ico|favicon.png|sitemap.xml|robots.txt|images).*)',
-    ],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|favicon.png|sitemap.xml|robots.txt|images).*)',
+  ],
 };
