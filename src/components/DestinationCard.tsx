@@ -32,8 +32,8 @@ export default function DestinationCard({
 
   const countryUrl = buildCountryUrl(locale, continentSlug, countrySlug);
 
-  const src = country.image_path
-    ? buildCdnUrl(country.image_path, 'carousel') ?? '/images/topdestination/spain.jpg'
+  const src = country.main_image
+    ? buildCdnUrl(country.main_image, 'carousel') ?? '/images/topdestination/spain.jpg'
     : '/images/topdestination/spain.jpg';
 
   const accommodationCount =

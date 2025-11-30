@@ -23,8 +23,8 @@ const SearchBeach: React.FC<SearchBeachProps> = ({
     countries.length > 0
       ? countries.map((country) => ({
           id: country.code,
-          image: country.image_path
-            ? buildCdnUrl(country.image_path, 'carousel') ?? '/images/spain.jpg'
+          image: country.main_image
+            ? buildCdnUrl(country.main_image, 'carousel') ?? '/images/spain.jpg'
             : '/images/spain.jpg',
           title: country.full_name ?? country.name,
           location: `${country.name}${continent ? `, ${continent.name}` : ''}`,
