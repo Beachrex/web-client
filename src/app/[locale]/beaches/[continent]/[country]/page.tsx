@@ -2,18 +2,18 @@
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
+import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
 import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
-import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
-import CountrySearchBeaches from '@/components/CountryPage/CountrySearchBeaches';
 
 import { usePathname } from '@/i18n/routing';
-import { useLocale, useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 
+import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
+import { useCountryDetails } from '@/hooks/useCountryDetails';
 import type { Country } from '@/lib/api-client/types.gen';
 import { buildCountryUrlFromNavigation } from '@/lib/utils/beach-urls';
-import { useCountryDetails } from '@/hooks/useCountryDetails';
 
 interface PageProps {
   params: {
@@ -172,10 +172,17 @@ const Page = ({ params }: PageProps) => {
         islandItems={islandItems}
       />
 
-      <CountrySearchBeaches
-        countries={countryCountries}
-        countryName={countryName}
-      />
+    <DynamicSearchBeaches
+  countries={countryCountries}
+  contextName={countryName}
+
+  translationNamespace="countryPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ country: countryName }}
+
+  filterButtonColor="#DD0000"
+    />
+
     </>
   );
 };

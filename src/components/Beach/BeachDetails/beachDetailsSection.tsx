@@ -67,10 +67,8 @@ const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
           return (
             <div key={index} className="relative h-[300px] w-full">
               <Image
-                src={src}
-                alt={`media-${index}`}
-                fill
-                className="object-cover"
+src={src} alt={`media-${index}`} fill
+className="object-cover"
               />
             </div>
           );
@@ -80,9 +78,7 @@ const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
   );
 };
 
-const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
-  beachDetails,
-}) => {
+const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({ beachDetails }) => {
   const tMain = useTranslations('BeachDetails');
   const tGroups = useTranslations('BeachDetails.groups');
   const tButtons = useTranslations('BeachDetails.buttons');
@@ -102,7 +98,7 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
     naturalFeatures: getNameList(natural?.natural_location_conditions),
     occupancy: getName(dimensions?.occupancy_rate),
     access: getName(accessibility?.accessibility),
-    paid: null as string | null, // hidden row (Option C)
+    paid: null as string | null, // hidden row
     length: getName(dimensions?.location_length),
     width: getName(dimensions?.bay_length),
     slope: getName(dimensions?.beach_inclination),
@@ -114,13 +110,9 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
   };
 
   const userTypesFromApi = getNameList(activities?.user_types);
-
   const beachInfrastructure = getNameList(facilities?.location_infrastructure);
-
   const accommodation = getNameList(facilities?.accommodation_around);
-
   const culinary = getNameList(facilities?.culinary_offers);
-
   const sports = getNameList(activities?.sporting_activities);
 
   /* -------------------------------------------
@@ -133,7 +125,6 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({
   };
 
   const parkingImages = beachDetails.media?.parking_images ?? [];
-
   const [showParkingPhoto, setShowParkingPhoto] = React.useState(false);
 
   /* -------------------------------------------
@@ -216,7 +207,6 @@ height={20}
            * BEACH + USER TYPE
            * ------------------------------------------- */}
           <div>
-            {/* Beach header */}
             <div className="flex items-center gap-3">
               <Image
                 src="/images/beachicons/wave.png"
@@ -230,7 +220,6 @@ height={20}
             </div>
             <div className="mt-3 border-b border-[#E7E7E7]" />
 
-            {/* Beach data */}
             <div className="mt-4 flex flex-col">
               <InfoRow labelKey="type">
                 <SingleValue valueRaw={beachFromApi.type} />
@@ -269,7 +258,6 @@ height={20}
               </InfoRow>
             </div>
 
-            {/* User type */}
             <div className="mt-8">
               <div className="flex items-center gap-3">
                 <Image
@@ -364,7 +352,7 @@ height={20}
           </div>
 
           {/* -------------------------------------------
-           * PARKING + PATH
+           * PARKING + PATH (original block)
            * ------------------------------------------- */}
           <div>
             {/* Parking */}
@@ -418,7 +406,7 @@ height={20}
               </div>
             </div>
 
-            {/* Path to beach */}
+            {/* Path */}
             <div className="mt-8">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -439,9 +427,7 @@ height={20}
                       icon="/images/beachicons/pic-gallery.png"
                       label={tButtons('photo')}
                       onClick={() =>
-                        setPathView((prev) =>
-                          prev === 'photo' ? null : 'photo',
-                        )
+                        setPathView((prev) => (prev === 'photo' ? null : 'photo'))
                       }
                     />
                   )}

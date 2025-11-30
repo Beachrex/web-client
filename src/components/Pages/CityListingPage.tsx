@@ -9,7 +9,6 @@ import PropertySection, { type Property } from '@/components/PropertySection';
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import CityCategories from '../CityPage/CityCategories';
-import CitySearchBeaches from '../CityPage/citySearchBeaches';
 import DestinationsCarousel from '../DestinationsCarousel';
 
 import { type Country } from '@/lib/api-client/types.gen';
@@ -17,6 +16,7 @@ import { ChevronRight } from 'lucide-react';
 
 import { useCityDetails } from '@/hooks/useCityDetails';
 import { buildCityUrlFromNavigation } from '@/lib/utils/beach-urls';
+import DynamicSearchBeaches from '../DynamicSearchBeaches';
 
 interface CityListingPageProps {
   citySlug?: string;
@@ -157,7 +157,17 @@ export default function CityListingPage({
 
       <CityCategories />
 
-      <CitySearchBeaches countries={cityCountries} townName={cityName} />
+     <DynamicSearchBeaches
+  countries={cityCountries}
+  contextName={cityName}
+
+  translationNamespace="TownPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ town: cityName }}
+
+  filterButtonColor="#FF8000"
+     />
+
 
       {/* Cities carousel */}
       <DestinationsCarousel
