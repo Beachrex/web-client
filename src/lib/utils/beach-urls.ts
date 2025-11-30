@@ -244,3 +244,155 @@ export function buildBeachUrlFromSchema(
   return '/' + segments.join('/');
 }
 
+
+/**
+ * Build country URL from navigation data (previous/next country)
+ * Format: /[locale]/beaches/[continent]/[country]
+ */
+export function buildCountryUrlFromNavigation(
+  navigationCountry: {
+    slug?: string;
+    location?: {
+      continent_slug?: string | null;
+    };
+  },
+  locale: string,
+): string {
+  const continentSlug = navigationCountry.location?.continent_slug;
+  const countrySlug = navigationCountry.slug;
+
+  if (!continentSlug || !countrySlug) {
+    console.error(
+      'Navigation country missing required slugs:',
+      navigationCountry,
+    );
+    return '#';
+  }
+
+  return buildCountryUrl(locale, continentSlug, countrySlug);
+}
+
+/**
+ * Build region URL from navigation data (previous/next region)
+ * Format: /[locale]/beaches/[continent]/[country]/[region]
+ */
+export function buildRegionUrlFromNavigation(
+  navigationRegion: {
+    slug?: string;
+    location?: {
+      continent_slug?: string | null;
+      country_slug?: string | null;
+    };
+  },
+  locale: string,
+): string {
+  const continentSlug = navigationRegion.location?.continent_slug;
+  const countrySlug = navigationRegion.location?.country_slug;
+  const regionSlug = navigationRegion.slug;
+
+  if (!continentSlug || !countrySlug || !regionSlug) {
+    console.error(
+      'Navigation region missing required slugs:',
+      navigationRegion,
+    );
+    return '#';
+  }
+
+  const beachesWord = getBeachesWord(locale);
+  return `/${locale}/${beachesWord}/${continentSlug}/${countrySlug}/${regionSlug}`;
+}
+
+
+export function buildIslandUrlFromNavigation(
+  navigationIsland: {
+    slug?: string;
+    location?: {
+      continent_slug?: string | null;
+      country_slug?: string | null;
+      region_slug?: string | null;
+    };
+  },
+  locale: string,
+): string {
+  const continentSlug = navigationIsland.location?.continent_slug;
+  const countrySlug = navigationIsland.location?.country_slug;
+  const regionSlug = navigationIsland.location?.region_slug;
+  const islandSlug = navigationIsland.slug;
+
+  if (!continentSlug || !countrySlug || !islandSlug) {
+    console.error(
+      'Navigation island missing required slugs:',
+      navigationIsland,
+    );
+    return '#';
+  }
+
+  const beachesWord = getBeachesWord(locale);
+
+  const segments = [
+    locale,
+    beachesWord,
+    continentSlug,
+    countrySlug,
+  ];
+
+  if (regionSlug) {
+    segments.push(regionSlug);
+  }
+
+  segments.push(islandSlug);
+
+  return '/' + segments.join('/');
+}
+
+
+/**
+ * Build city URL from navigation data (previous/next city)
+ * Typical formats:
+ * - /[locale]/beaches/[continent]/[country]/[region]/[city]
+ * - /[locale]/beaches/[continent]/[country]/[island]/[city]
+ * (depending on whether city is on mainland or on an island)
+ */
+export function buildCityUrlFromNavigation(
+  navigationCity: {
+    slug?: string;
+    location?: {
+      continent_slug?: string | null;
+      country_slug?: string | null;
+      region_slug?: string | null;
+      island_slug?: string | null;
+    };
+  },
+  locale: string,
+): string {
+  const continentSlug = navigationCity.location?.continent_slug;
+  const countrySlug = navigationCity.location?.country_slug;
+  const regionSlug = navigationCity.location?.region_slug;
+  const islandSlug = navigationCity.location?.island_slug;
+  const citySlug = navigationCity.slug;
+
+  if (!continentSlug || !countrySlug || !citySlug) {
+    console.error('Navigation city missing required slugs:', navigationCity);
+    return '#';
+  }
+
+  const beachesWord = getBeachesWord(locale);
+
+  const segments: string[] = [
+    locale,
+    beachesWord,
+    continentSlug,
+    countrySlug,
+  ];
+
+  // If island is present, we prefer island branch, otherwise region
+  if (islandSlug) {
+    segments.push(islandSlug);
+  } else if (regionSlug) {
+    segments.push(regionSlug);
+  }
+
+  segments.push(citySlug);
+
+  return '/' + segments.join('/');
+}

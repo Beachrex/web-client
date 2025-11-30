@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
 import PropertySection, { type Property } from '@/components/PropertySection';
@@ -11,24 +11,41 @@ import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import DestinationsCarousel from '../DestinationsCarousel';
 import RegionSearchBeaches from '../regions/RegionSearchBeaches';
-import DynamicBreadcrumbs from '../DynamicBreadcrumbs';
+import DynamicTopBar from '../DynamicTopBar';
+import { useRegionDetails } from '@/hooks/useRegionDetails';
+import { buildRegionUrlFromNavigation } from '@/lib/utils/beach-urls';
 
 interface RegionListingPageProps {
   regionSlug?: string;
+  /** Optional country code from URL if jo imaš (e.g. "HR") */
+  countryCode?: string;
 }
 
 export default function RegionListingPage({
   regionSlug,
+  countryCode,
 }: RegionListingPageProps) {
   const pathname = usePathname();
+  const locale = useLocale();
 
   const tRegion = useTranslations('RegionPage');
   const tProperty = useTranslations('PropertySection');
 
-  const regionName = regionSlug ?? 'Kvarner';
+  // Fetch region details from API
+  const { regionDetails, loading, error } = useRegionDetails(
+    regionSlug ?? '',
+    countryCode,
+    Boolean(regionSlug),
+  );
 
-  // TODO: replace with real API data later
-  const regionBeachesCount = 123;
+  // Region display name – prefer API, fallback to slug / mock
+  const regionName =
+    regionDetails?.name ?? regionSlug ?? 'Kvarner';
+
+  // Use real beaches count if available, otherwise fallback mock
+  const regionBeachesCount = regionDetails?.beaches_count ?? 123;
+
+  // For now we don't have accommodations count on API, so keep mock
   const regionAccommodationsCount = 569;
 
   const baseBeach: Property = {
@@ -87,16 +104,38 @@ export default function RegionListingPage({
 
   useEffect(() => {
     if (!pathname) return;
+    // You can add tracking or side-effects here later if needed
   }, [pathname]);
+
+  // Simple loading / error states (can style nicer later)
+  if (loading && !regionDetails) {
+    return <div className="container mx-auto py-8">Loading region…</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto py-8 text-red-600">
+        Failed to load region: {error}
+      </div>
+    );
+  }
 
   return (
     <>
-    {/* Simple header with breadcrumbs – same style as Continent Banner */}
-      <div className="border-b bg-white py-4">
-        <div className="container mx-auto">
-          <DynamicBreadcrumbs pathname={pathname ?? ''} />
-        </div>
-      </div>
+      {/* Shared top bar: breadcrumbs + region prev/next */}
+      <DynamicTopBar
+        pathname={pathname ?? ''}
+        navigation={regionDetails?.navigation}
+        buildUrl={(item) =>
+          buildRegionUrlFromNavigation(
+            {
+              slug: item.slug ?? undefined,
+              location: item.location ?? undefined,
+            },
+            locale,
+          )
+        }
+      />
 
       <BannerSection
         image="/images/banner/region-banner.jpg"
@@ -125,7 +164,7 @@ export default function RegionListingPage({
       {/* Featured accommodations in region */}
       <AccommodationSection
         title={tRegion('featuredAccommodationsTitle', { region: regionName })}
-        totalCount={569}
+        totalCount={regionAccommodationsCount}
         showDropdown
         selectedDistance={{ value: 1, label: '1 km' }}
         onDistanceChange={(v) => console.log('distance', v)}

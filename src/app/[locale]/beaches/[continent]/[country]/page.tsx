@@ -2,41 +2,48 @@
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
-import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
-import { usePathname } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
-
 import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
 import CountrySearchBeaches from '@/components/CountryPage/CountrySearchBeaches';
-import type { Country } from '@/lib/api-client/types.gen';
+
+import { usePathname } from '@/i18n/routing';
+import { useLocale, useTranslations } from 'next-intl';
 import { ChevronRight } from 'lucide-react';
+
+import type { Country } from '@/lib/api-client/types.gen';
+import { buildCountryUrlFromNavigation } from '@/lib/utils/beach-urls';
+import { useCountryDetails } from '@/hooks/useCountryDetails';
 
 interface PageProps {
   params: {
     locale: string;
     continent: string;
-    country: string;
+    country: string; // expected to be ISO code, e.g. "si", "hr"
   };
   searchParams?: Record<string, string | string[] | undefined>;
 }
 
 const Page = ({ params }: PageProps) => {
   const pathname = usePathname();
+  const locale = useLocale();
 
-  useEffect(() => {
-    if (!pathname) return;
-  }, [pathname]);
+  const { country: countryParam } = params;
 
-  const countrySlug = params.country;
-  const countryName = countrySlug ?? 'Hrvaška';
-
-  const countryBeachesCount = 112;
-  const countryAccommodationsCount = 245;
+  // Fetch country details by ISO code (e.g. "SI", "HR")
+  const { countryDetails } = useCountryDetails(countryParam);
 
   const tCountry = useTranslations('countryPage');
   const tProperty = useTranslations('PropertySection');
+
+  // Name & counts from API with sensible fallbacks
+  const countryName =
+    countryDetails?.name ??
+    countryDetails?.full_name ??
+    countryParam.toUpperCase();
+
+  const countryBeachesCount = countryDetails?.beaches_count ?? 112;
+  const countryAccommodationsCount = 245; // still mock until real data exists
 
   // Temporary mock beach data (replace with real API later)
   const baseBeach: Property = {
@@ -108,12 +115,19 @@ const Page = ({ params }: PageProps) => {
 
   return (
     <>
-      {/* Simple header with breadcrumbs – same style as Continent Banner */}
-      <div className="border-b bg-white py-4">
-        <div className="container mx-auto">
-          <DynamicBreadcrumbs pathname={pathname ?? ''} />
-        </div>
-      </div>
+      {/* Shared top bar: breadcrumbs on left, country prev/next on right */}
+      <DynamicTopBar
+        pathname={pathname ?? ''}
+        navigation={countryDetails?.navigation}
+        buildUrl={(item) =>  buildCountryUrlFromNavigation(
+            {
+              slug: item.slug ?? undefined,
+              location: item.location ?? undefined,
+            },
+            locale,
+          )
+        }
+      />
 
       <BannerSection
         image="/images/banner/island-banner.jpg"

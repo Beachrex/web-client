@@ -9,9 +9,9 @@ import {
   getCountries,
 } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 interface PageProps {
   params: Promise<{
@@ -146,8 +146,8 @@ const Page = async ({ params }: PageProps) => {
       .filter((country) => country.code && country.name)
       .map((country) => ({
         id: country.code!,
-        image: country.image_path
-          ? buildCdnUrl(country.image_path, 'carousel') ?? '/images/spain.jpg'
+        image: country.main_image
+          ? buildCdnUrl(country.main_image, 'carousel') ?? '/images/spain.jpg'
           : '/images/spain.jpg',
         title: country.full_name ?? country.name!,
         location: `${country.name}, ${continent.name}`,
@@ -193,11 +193,14 @@ const Page = async ({ params }: PageProps) => {
         <SearchBeach countries={countries} continent={continent} />
       </>
     );
-  } catch (error) {
-    console.error('Error loading continent data:', error);
-    // Return 404 if continent not found
-    notFound();
-  }
+  } catch (error: unknown) {
+  console.error(
+    'Error loading continent data:',
+    error instanceof Error ? error : String(error)
+  );
+  notFound();
+}
+
 };
 
 export default Page;
