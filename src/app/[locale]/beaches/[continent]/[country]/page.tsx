@@ -2,16 +2,15 @@
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
+import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
+import CountrySearchBeaches from '@/components/CountryPage/CountrySearchBeaches';
 import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import { usePathname } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
-
-import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
-import CountrySearchBeaches from '@/components/CountryPage/CountrySearchBeaches';
 import type { Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import { useEffect } from 'react';
 
 interface PageProps {
   params: {
@@ -23,7 +22,11 @@ interface PageProps {
 }
 
 const Page = ({ params }: PageProps) => {
+const locale = useLocale();
+  console.log('ACTIVE LOCALE:', locale); // <-- to boš zdaj videla v konzoli
+
   const pathname = usePathname();
+
 
   useEffect(() => {
     if (!pathname) return;
@@ -105,6 +108,7 @@ const Page = ({ params }: PageProps) => {
     beaches_count: 112,
     image_path: null,
   })) as Country[];
+
 
   return (
     <>

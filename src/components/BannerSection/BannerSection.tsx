@@ -32,6 +32,14 @@ interface BannerSectionProps {
   topBarVariant?: PageVariant;
   /** Explicit beach count for non-continent variants */
   beachCount?: number;
+  weather?: {
+    temperature?: number | null;
+    description?: string | null;
+    icon_url?: string | null;
+    location_name?: string | null;
+  } | null;
+  weatherLocationName?: string;
+  isWeatherLoading?: boolean;
 }
 
 const BannerSection: React.FC<BannerSectionProps> = ({
@@ -41,6 +49,9 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   accommodationCount,
   topBarVariant = 'continent',
   beachCount,
+  weather,
+  weatherLocationName,
+  isWeatherLoading,
 }) => {
   const t = useTranslations('BannerSection');
   const tRoutes = useTranslations('routes');
@@ -172,7 +183,11 @@ const BannerSection: React.FC<BannerSectionProps> = ({
               {/* Widgets */}
               <div className="flex shrink-0 justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
                 <MapWidget />
-                <WeatherWidget />
+                <WeatherWidget
+                  weather={weather}
+                  locationName={weatherLocationName}
+                  isLoading={isWeatherLoading}
+                />
               </div>
             </div>
           </div>

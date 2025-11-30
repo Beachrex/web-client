@@ -2,7 +2,7 @@
 
 import MapWidget from '@/components/BannerSection/MapWidget';
 import WeatherWidget from '@/components/BannerSection/WeatherWidget';
-import { useBeachWeather } from '@/hooks/useBeachWeather';
+import { useBeachWeather } from '@/hooks/useWeather';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { getMainBeachImage } from '@/lib/utils/beach-images';
 import { useLocale, useTranslations } from 'next-intl';
@@ -42,11 +42,12 @@ export default function BeachBannerSection({
   );
 
   // Fetch real-time weather data from API
-  const { data: weatherResponse, isLoading: isWeatherLoading } = useBeachWeather({
-    identifier: beachSlug ?? beachId ?? '',
-    locale,
-    enabled: !!(beachSlug ?? beachId), // Only fetch if we have an identifier
-  });
+  const { data: weatherResponse, isLoading: isWeatherLoading } =
+    useBeachWeather({
+      identifier: beachSlug ?? beachId ?? '',
+      locale,
+      enabled: !!(beachSlug ?? beachId), // Only fetch if we have an identifier
+    });
 
   // Extract weather data from API response
   const weatherData = weatherResponse?.data?.weather ?? null;
@@ -118,7 +119,10 @@ export default function BeachBannerSection({
               locationName={locationName}
               isLoading={isWeatherLoading}
             />
-            <SeaTempWidget tempC={seaTemperature} isLoading={isWeatherLoading} />
+            <SeaTempWidget
+              tempC={seaTemperature}
+              isLoading={isWeatherLoading}
+            />
           </div>
         </div>
       </div>
