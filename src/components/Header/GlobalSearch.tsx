@@ -413,7 +413,7 @@ rounded-lg hover:bg-blue-50 transition-all duration-150 ${
                                 {result.main_image ? (
                                     <div className="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden bg-gray-100">
                                         <Image
-                                            src={`${buildCdnUrl(result.main_image, 'icon')}`}
+                                            src={`${buildCdnUrl(result.main_image, 'list')}`}
                                             alt={result.name}
                                             width={48}
                                             height={48}
