@@ -118,7 +118,8 @@ const config = {
     "src/lib/api-client/**/*.gen.ts",
     "src/lib/api-client/client/**/*.ts",
     "src/lib/api-client/core/**/*.ts",
-    "src/lib/api-client/@tanstack/**/*.ts"
+    "src/lib/api-client/@tanstack/**/*.ts",
+    "playwright-report/**"
   ]
 }
 module.exports = config;

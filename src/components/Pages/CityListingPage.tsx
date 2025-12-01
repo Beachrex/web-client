@@ -1,23 +1,31 @@
 'use client';
 
-import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import { usePathname } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
+import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import { useCityWeather } from '@/hooks/useWeather';
-import { type Country } from '@/lib/api-client/types.gen';
-import { ChevronRight } from 'lucide-react';
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import CityCategories from '../CityPage/CityCategories';
 import CitySearchBeaches from '../CityPage/citySearchBeaches';
 import DestinationsCarousel from '../DestinationsCarousel';
 
+import { type Country } from '@/lib/api-client/types.gen';
+import { ChevronRight } from 'lucide-react';
+
+import { useCityDetails } from '@/hooks/useCityDetails';
+import { buildCityUrlFromNavigation } from '@/lib/utils/beach-urls';
+
 interface CityListingPageProps {
   citySlug?: string;
   cityDataProp?: unknown;
+  // If you later want, you can extend with:
+  // countryCode?: string;
+  // regionCode?: string;
+  // islandCode?: string;
 }
 
 export default function CityListingPage({
@@ -29,30 +37,39 @@ export default function CityListingPage({
 
   const tTown = useTranslations('TownPage');
   const tProperty = useTranslations('PropertySection');
-
   const tRegion = useTranslations('RegionPage');
+
+ const { cityDetails, loading: _loading, error: _error } = useCityDetails(
+  _citySlug ?? '',
+  undefined,
+  undefined,
+  undefined,
+  Boolean(_citySlug),
+);
 
   useEffect(() => {
     if (!pathname) return;
+    // Optional: analytics / scroll logic here later
   }, [pathname]);
 
-  // City slug & name – from route
-  const citySlug = _citySlug ?? '';
-  const cityName = citySlug;
+  // Prefer API name, then slug, then fallback test name
+  const cityName =
+    cityDetails?.name ??
+    _citySlug ??
+    'Malinska';
 
-  // TODO: replace with real API data later
-  const cityBeachesCount = 112;
-  const cityAccommodationsCount = 245;
+  const cityBeachesCount = cityDetails?.beaches_count ?? 112;
+  const cityAccommodationsCount = 245; // TODO: wire to real API when available
 
   // TODO: later this should come from API (cityDataProp)
   const countryCode = 'HR';
 
   const { data: cityWeatherResponse, isLoading: isCityWeatherLoading } =
     useCityWeather({
-      slug: citySlug,
+      slug: _citySlug ?? '',
       countryCode,
       locale,
-      enabled: !!citySlug && !!countryCode,
+      enabled: !!_citySlug && !!countryCode,
     });
 
   // Temporary mock beach data (replace with real API later)
@@ -85,8 +102,6 @@ export default function CityListingPage({
     image_path: null,
   })) as Country[];
 
-  // Temporary mock islands data (replace with real API later)
-
   // Temporary mock cities data (replace with real API later)
   const baseCity: Country = {
     code: 'BASKA',
@@ -106,15 +121,23 @@ export default function CityListingPage({
 
   return (
     <>
-      {/* Simple header with breadcrumbs – same style as Continent Banner */}
-      <div className="border-b bg-white py-4">
-        <div className="container mx-auto">
-          <DynamicBreadcrumbs pathname={pathname ?? ''} />
-        </div>
-      </div>
+      {/* Shared top bar: breadcrumbs + city prev/next navigation */}
+      <DynamicTopBar
+        pathname={pathname ?? ''}
+        navigation={cityDetails?.navigation}
+        buildUrl={(item) =>
+          buildCityUrlFromNavigation(
+            {
+              slug: item.slug ?? undefined,
+              location: item.location ?? undefined,
+            },
+            locale,
+          )
+        }
+      />
 
       <BannerSection
-        image="/images/banner/island-banner.jpg"
+        image="/images/banner/island-banner.jpg" // če imaš city-banner, ga lahko zamenjaš
         title={cityName}
         topBarVariant="city"
         accommodationCount={cityAccommodationsCount}

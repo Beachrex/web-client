@@ -1,10 +1,12 @@
 'use client';
-import BannerSection from '@/components/BannerSection/BannerSection';
-import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+
 import { usePathname } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
+import { useEffect } from 'react';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
+import BannerSection from '@/components/BannerSection/BannerSection';
+import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import { type Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
@@ -12,9 +14,12 @@ import IslandDestinationsSection from '../IslandPage/IslandDestinationsSection';
 import IslandSearchBeaches from '../IslandPage/IslandSearchBeaches';
 import { useIslandWeather } from '@/hooks/useWeather';
 
+import { useIslandDetails } from '@/hooks/useIslandDetails';
+import { buildIslandUrlFromNavigation } from '@/lib/utils/beach-urls';
+
 interface IslandListingPageProps {
   islandSlug?: string;
-  islandDataProp?: unknown;
+  islandDataProp?: unknown; // reserved for possible server data hydration later
 }
 
 export default function IslandListingPage({
@@ -23,21 +28,40 @@ export default function IslandListingPage({
 }: IslandListingPageProps) {
   const pathname = usePathname();
   const locale = useLocale();
-
   const tIsland = useTranslations('IslandPage');
   const tProperty = useTranslations('PropertySection');
 
-  const islandSlugValue = _islandSlug ?? '';
-  const islandName = _islandSlug ?? '';
+ // Fetch island details from API by slug
+const { islandDetails, loading: _loading, error: _error } = useIslandDetails(
+  _islandSlug ?? '',
+  // countryCode – optional filter, not used for now
+  undefined,
+  // regionCode – optional filter, not used for now
+  undefined,
+  Boolean(_islandSlug),
+);
 
-  const islandBeachesCount = 112;
-  const islandAccommodationsCount = 245;
+
+  useEffect(() => {
+    if (!pathname) return;
+    // Optional: analytics / side-effects for route changes
+  }, [pathname]);
+
+  // Island name – prefer API, then slug, then fallback
+  const islandName =
+    islandDetails?.name ??
+    _islandSlug ??
+    'Cres';
+
+  // Beach / accommodation counts – use API when available, otherwise fallback
+  const islandBeachesCount = islandDetails?.beaches_count ?? 112;
+  const islandAccommodationsCount = 245; // TODO: wire from API when backend exposes this
 
   const { data: islandWeatherResponse, isLoading: isIslandWeatherLoading } =
     useIslandWeather({
-      slug: islandSlugValue,
+      slug: _islandSlug ?? '',
       locale,
-      enabled: !!islandSlugValue,
+      enabled: !!_islandSlug,
     });
 
   const islandWeather = islandWeatherResponse?.data?.weather ?? null;
@@ -88,12 +112,20 @@ export default function IslandListingPage({
 
   return (
     <>
-      {/* Simple header with breadcrumbs – same style as Continent Banner */}
-      <div className="border-b bg-white py-4">
-        <div className="container mx-auto">
-          <DynamicBreadcrumbs pathname={pathname ?? ''} />
-        </div>
-      </div>
+      {/* Shared top bar: breadcrumbs + island prev/next navigation */}
+      <DynamicTopBar
+        pathname={pathname ?? ''}
+        navigation={islandDetails?.navigation}
+        buildUrl={(item) =>
+          buildIslandUrlFromNavigation(
+            {
+              slug: item.slug ?? undefined,
+              location: item.location ?? undefined,
+            },
+            locale,
+          )
+        }
+      />
 
       <BannerSection
         image="/images/banner/island-banner.jpg"
