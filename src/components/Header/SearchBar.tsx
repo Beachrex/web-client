@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiSearch } from 'react-icons/fi';
 import { useTranslations } from 'next-intl';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import GlobalSearch from './GlobalSearch';
 
 const NavIcon = ({ src, alt, label }: { src: string; alt: string; label: string }) => (
     <button className="flex flex-col items-center text-sm text-gray-600 hover:text-gray-900">
@@ -38,18 +38,11 @@ const SearchBar = () => {
                     </div>
 
                     {/* Search Bar */}
-                    <div className="flex items-center border rounded-lg shadow-sm w-[95%] sm:w-[90%] p-[3px]">
-                        <FiSearch className="text-gray-500 ml-2 sm:ml-3" size={18} />
-                        <input
-                            type="text"
-                            placeholder={t('search_placeholder')}
-                            aria-label={t('search_placeholder')}
-                            className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none px-2 sm:px-3 py-2 text-sm text-gray-600 placeholder-gray-400"
-                        />
-                        <div className="w-[38px] sm:w-[43px] h-[36px] sm:h-[41px] bg-[#e6e6e6] rounded-md justify-center items-center flex">
-                            <FiSearch className="text-gray-500" size={16} />
-                        </div>
-                    </div>
+                    <GlobalSearch
+                        className="w-[95%] sm:w-[90%]"
+                        inputClassName="text-xs sm:text-sm"
+                        buttonClassName="w-[38px] sm:w-[43px] h-[36px] sm:h-[41px] px-0"
+                    />
 
                     {/* Quick Action Icons (Mobile Only) */}
                     <div className="flex items-center justify-center space-x-6 mt-3 w-full px-4">
@@ -108,18 +101,11 @@ const SearchBar = () => {
                     {/* Bottom Row: Search Bar and Icons */}
                     <div className="flex items-center space-x-3">
                         {/* Search Bar */}
-                        <div className="flex items-center border rounded-lg shadow-sm flex-1 p-[4px]">
-                            <FiSearch className="text-gray-500 ml-2" size={18} />
-                            <input
-                                type="text"
-                                placeholder={t('search_placeholder')}
-                                aria-label={t('search_placeholder')}
-                                className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none px-2 py-2 text-sm text-gray-600 placeholder-gray-400"
-                            />
-                            <div className="w-[80px] h-[36px] px-3 py-2 bg-[#e6e6e6] rounded-md justify-center items-center flex">
-                                <div className="text-center text-[#8d8d8d] text-xs font-bold">{t('search')}</div>
-                            </div>
-                        </div>
+                        <GlobalSearch
+                            className="flex-1"
+                            inputClassName="text-sm"
+                            buttonClassName="w-[80px] h-[36px] px-3 py-2"
+                        />
 
                         {/* Compact Navigation Icons */}
                         <div className="flex items-center space-x-2">
@@ -153,18 +139,11 @@ const SearchBar = () => {
                     {/* Middle Section (Search Bar + Icons) */}
                     <div className="flex items-center justify-center flex-1 space-x-4 mx-6">
                         {/* Search Bar */}
-                        <div className="flex items-center border rounded-lg shadow-sm max-w-[500px] w-full p-[5px]">
-                            <FiSearch className="text-gray-500 ml-3" size={20} />
-                            <input
-                                type="text"
-                                placeholder={t('search_placeholder')}
-                                aria-label={t('search_placeholder')}
-                                className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none px-3 py-2 text-sm text-gray-600 placeholder-gray-400"
-                            />
-                            <div className="w-[113px] h-[41px] px-[34px] py-[11px] bg-[#e6e6e6] rounded-md justify-center items-center gap-2.5 flex">
-                                <div className="text-center text-[#8d8d8d] text-sm font-bold">{t('search')}</div>
-                            </div>
-                        </div>
+                        <GlobalSearch
+                            className="max-w-[500px] w-full"
+                            inputClassName="px-3 py-2 text-sm"
+                            buttonClassName="w-[113px] h-[41px] px-[34px] py-[11px]"
+                        />
 
                         {/* Navigation Icons */}
                         <NavIcon

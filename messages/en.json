@@ -17,8 +17,18 @@
     "save": "save",
     "share": "share",
     "reviews": "reviews",
-"paidFallback": "No information"
-
+    "paidFallback": "No information"
+  },
+  "Search": {
+    "typeBeach": "Beach",
+    "typeCity": "City",
+    "typeIsland": "Island",
+    "typeRegion": "Region",
+    "typeCountry": "Country",
+    "beaches": "beaches",
+    "noResults": "No results found. Try a different search term.",
+    "searching": "Searching...",
+    "clearSearch": "Clear search"
   },
   "HomePage": {
     "allBeaches": "All Beaches",

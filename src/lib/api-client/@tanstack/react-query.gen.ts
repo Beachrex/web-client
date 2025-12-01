@@ -77,6 +77,7 @@ import {
   getUserTypes,
   getWaterbodies,
   getWaterbodyById,
+  globalSearch,
   type Options,
   resolveSlug,
 } from "../sdk.gen";
@@ -154,6 +155,7 @@ import type {
   GetUserTypesData,
   GetWaterbodiesData,
   GetWaterbodyByIdData,
+  GlobalSearchData,
   ResolveSlugData,
 } from "../types.gen";
 
@@ -793,7 +795,7 @@ export const getCountryQueryKey = (options: Options<GetCountryData>) =>
 /**
  * Get a specific country
  *
- * Returns a specific country by code with its beaches count and continent information
+ * Returns a specific country by code or slug with its beaches count and continent information.
  */
 export const getCountryOptions = (options: Options<GetCountryData>) => {
   return queryOptions({
@@ -1753,6 +1755,29 @@ export const getRoadToParkingTypeByIdOptions = (
       return data;
     },
     queryKey: getRoadToParkingTypeByIdQueryKey(options),
+  });
+};
+
+export const globalSearchQueryKey = (options: Options<GlobalSearchData>) =>
+  createQueryKey("globalSearch", options);
+
+/**
+ * Global search across all entities
+ *
+ * Search across beaches, cities, islands, regions, and countries with grouped results. Returns localized slugs based on Accept-Language header for URL building. Results are grouped by entity type with highlighting and typo tolerance.
+ */
+export const globalSearchOptions = (options: Options<GlobalSearchData>) => {
+  return queryOptions({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await globalSearch({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: globalSearchQueryKey(options),
   });
 };
 

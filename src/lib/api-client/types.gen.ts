@@ -4170,14 +4170,34 @@ export type GetCountriesResponse =
 
 export type GetCountryData = {
   body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
   path: {
     /**
-     * Country code (e.g., SI, US, DE)
+     * Country code (e.g., SI, US, DE) or localized slug (e.g., italy, slovenia)
      */
-    code: string;
+    codeOrSlug: string;
   };
   query?: never;
-  url: "/api/v1/countries/{code}";
+  url: "/api/v1/countries/{codeOrSlug}";
 };
 
 export type GetCountryErrors = {
@@ -4202,6 +4222,7 @@ export type GetCountryResponses = {
       code?: string;
       name?: string;
       full_name?: string;
+      slug?: string;
       iso3?: string;
       continent_code?: string;
       latitude?: number | null;
@@ -4267,12 +4288,12 @@ export type GetCountryWeatherData = {
   };
   path: {
     /**
-     * Country code (e.g., HR, SI, IT)
+     * Country code (e.g., HR, SI, IT) or localized slug (e.g., italy, slovenia)
      */
-    code: string;
+    codeOrSlug: string;
   };
   query?: never;
-  url: "/api/v1/countries/{code}/weather";
+  url: "/api/v1/countries/{codeOrSlug}/weather";
 };
 
 export type GetCountryWeatherErrors = {
@@ -7016,6 +7037,156 @@ export type GetRoadToParkingTypeByIdResponses = {
 
 export type GetRoadToParkingTypeByIdResponse =
   GetRoadToParkingTypeByIdResponses[keyof GetRoadToParkingTypeByIdResponses];
+
+export type GlobalSearchData = {
+  body?: never;
+  headers?: {
+    /**
+     * Locale for localized slugs (e.g., en, si, de, hr). Defaults to 'en' if not provided or translation not available.
+     */
+    "Accept-Language"?: string;
+  };
+  path?: never;
+  query: {
+    /**
+     * Search query string
+     */
+    q: string;
+    /**
+     * Maximum number of results per entity type (default: 5, max: 20)
+     */
+    limit?: number;
+    /**
+     * Filter results by country code (e.g., US, HR)
+     */
+    country_code?: string;
+    /**
+     * Comma-separated list of entity types to search (beach,city,island,region,country). If not provided, searches all types.
+     */
+    types?: string;
+  };
+  url: "/api/v1/search";
+};
+
+export type GlobalSearchErrors = {
+  /**
+   * Bad request - missing or invalid query parameter
+   */
+  400: unknown;
+};
+
+export type GlobalSearchResponses = {
+  /**
+   * Search results grouped by entity type
+   */
+  200: {
+    success?: boolean;
+    data?: {
+      beaches?: Array<{
+        id?: number;
+        name?: string;
+        /**
+         * Localized beach slug
+         */
+        slug?: string;
+        country_code?: string;
+        country_name?: string;
+        region_name?: string;
+        city_name?: string;
+        island_name?: string;
+        main_image?: string;
+        type?: string;
+        /**
+         * Localized continent slug for URL building
+         */
+        continent_slug?: string;
+        /**
+         * Localized country slug for URL building
+         */
+        country_slug?: string;
+        /**
+         * Localized region slug for URL building (nullable)
+         */
+        region_slug?: string;
+        /**
+         * Localized city slug for URL building (nullable)
+         */
+        city_slug?: string;
+        /**
+         * Localized island slug for URL building (nullable)
+         */
+        island_slug?: string;
+      }>;
+      cities?: Array<{
+        id?: number;
+        code?: string;
+        name?: string;
+        /**
+         * Localized city slug
+         */
+        slug?: string;
+        country_code?: string;
+        country_name?: string;
+        region_name?: string;
+        island_name?: string;
+        main_image?: string;
+        type?: string;
+        /**
+         * Localized continent slug for URL building
+         */
+        continent_slug?: string;
+        /**
+         * Localized country slug for URL building
+         */
+        country_slug?: string;
+        /**
+         * Localized region slug for URL building (nullable)
+         */
+        region_slug?: string;
+        /**
+         * Localized island slug for URL building (nullable)
+         */
+        island_slug?: string;
+      }>;
+      /**
+       * Island results with localized slugs for URL building
+       */
+      islands?: Array<{
+        continent_slug?: string;
+        country_slug?: string;
+        region_slug?: string;
+      }>;
+      /**
+       * Region results with localized slugs for URL building
+       */
+      regions?: Array<{
+        continent_slug?: string;
+        country_slug?: string;
+      }>;
+      /**
+       * Country results with localized slugs for URL building
+       */
+      countries?: Array<{
+        continent_slug?: string;
+      }>;
+    };
+    meta?: {
+      query?: string;
+      total_results?: number;
+      results_by_type?: {
+        beaches?: number;
+        cities?: number;
+        islands?: number;
+        regions?: number;
+        countries?: number;
+      };
+    };
+    message?: string;
+  };
+};
+
+export type GlobalSearchResponse =
+  GlobalSearchResponses[keyof GlobalSearchResponses];
 
 export type ResolveSlugData = {
   body?: never;

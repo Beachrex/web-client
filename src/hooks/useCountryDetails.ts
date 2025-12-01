@@ -16,8 +16,8 @@ export const useCountryDetails = (code: string | undefined, enabled = true) => {
   const { data, isLoading, error } = useQuery({
     ...getCountryOptions({
       path: {
-        // Country endpoint expects a code in path
-        code: String(code),
+        // Country endpoint expects codeOrSlug in path
+        codeOrSlug: String(code),
       },
     }),
     enabled: enabled && !!code,

@@ -230,6 +230,9 @@ import type {
   GetWaterbodyByIdData,
   GetWaterbodyByIdErrors,
   GetWaterbodyByIdResponses,
+  GlobalSearchData,
+  GlobalSearchErrors,
+  GlobalSearchResponses,
   LoginUserData,
   LoginUserErrors,
   LoginUserResponses,
@@ -776,7 +779,7 @@ export const getCountries = <ThrowOnError extends boolean = false>(
 /**
  * Get a specific country
  *
- * Returns a specific country by code with its beaches count and continent information
+ * Returns a specific country by code or slug with its beaches count and continent information.
  */
 export const getCountry = <ThrowOnError extends boolean = false>(
   options: Options<GetCountryData, ThrowOnError>,
@@ -786,7 +789,7 @@ export const getCountry = <ThrowOnError extends boolean = false>(
     GetCountryErrors,
     ThrowOnError
   >({
-    url: "/api/v1/countries/{code}",
+    url: "/api/v1/countries/{codeOrSlug}",
     ...options,
   });
 };
@@ -804,7 +807,7 @@ export const getCountryWeather = <ThrowOnError extends boolean = false>(
     GetCountryWeatherErrors,
     ThrowOnError
   >({
-    url: "/api/v1/countries/{code}/weather",
+    url: "/api/v1/countries/{codeOrSlug}/weather",
     ...options,
   });
 };
@@ -1572,6 +1575,24 @@ export const getRoadToParkingTypeById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/road-to-parking-types/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Global search across all entities
+ *
+ * Search across beaches, cities, islands, regions, and countries with grouped results. Returns localized slugs based on Accept-Language header for URL building. Results are grouped by entity type with highlighting and typo tolerance.
+ */
+export const globalSearch = <ThrowOnError extends boolean = false>(
+  options: Options<GlobalSearchData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GlobalSearchResponses,
+    GlobalSearchErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/search",
     ...options,
   });
 };

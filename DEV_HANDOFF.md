@@ -15,6 +15,244 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2025-12-01 – Global Search with Meilisearch Integration
+
+### Overview
+
+Implemented a powerful global search feature in the header that searches across all entities (beaches, cities, islands, regions, countries) using the Meilisearch API. The search provides real-time autocomplete with keyboard navigation, localized URLs, and thumbnail images.
+
+### What Changed
+
+**Backend:**
+- Meilisearch server deployed on Hetzner (https://search.beachrex.com)
+- API endpoint: `GET /api/v1/search?q={query}&limit={limit}`
+- Returns grouped results by entity type with localized slugs for URL building
+- All geographic slugs (continent, country, region, island, city) included in response
+
+**Frontend:**
+- Created `GlobalSearch` component with autocomplete dropdown
+- Integrated with OpenAPI-generated client using React Query
+- Proper URL building with localized routes for all 14 languages
+- Thumbnail images from CDN for visual search results
+- Keyboard navigation support (↑↓ Enter Esc)
+
+### Key Features
+
+✅ **Real-time search** - Autocomplete with 300ms debouncing
+✅ **Multi-entity search** - Beaches, cities, islands, regions, countries
+✅ **Localized URLs** - Proper URL structure with locale-specific "beaches" word
+✅ **Visual results** - Thumbnail images from CDN (48x48px from teaser endpoint)
+✅ **Keyboard navigation** - Arrow keys, Enter to select, Esc to close
+✅ **Type-safe API** - Uses OpenAPI-generated client with React Query
+✅ **Responsive design** - Works on mobile, tablet, and desktop
+✅ **Loading states** - Shows "..." in search button while loading
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/components/Header/GlobalSearch.tsx` | Main search component with autocomplete dropdown |
+| `src/hooks/useDebounce.ts` | Custom hook for debouncing search queries |
+| `docs/features/GLOBAL_SEARCH.md` | Comprehensive documentation |
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `src/components/Header/SearchBar.tsx` | Integrated GlobalSearch component at all responsive breakpoints |
+| `messages/en.json` | Added Search namespace with translations |
+| `messages/si.json` | Added Search namespace with Slovenian translations |
+| `src/styles/globals.css` | Added fadeIn animation and custom scrollbar styles |
+
+### API Integration
+
+**Using OpenAPI Generated Client:**
+```typescript
+import { useQuery } from '@tanstack/react-query';
+import { globalSearchOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+
+const { data: searchData, isLoading } = useQuery({
+    ...globalSearchOptions({
+        query: {
+            q: debouncedQuery,
+            limit: 10,
+        },
+    }),
+    enabled: debouncedQuery.length >= 2,
+});
+```
+
+**API Response Structure:**
+```typescript
+{
+  success: boolean;
+  data: {
+    beaches: Array<{
+      id: number;
+      name: string;
+      slug: string;
+      main_image?: string;
+      continent_slug: string;
+      country_slug: string;
+      region_slug?: string;
+      island_slug?: string;
+      city_slug?: string;
+      // ... location names for display
+    }>;
+    cities: [...];
+    islands: [...];
+    regions: [...];
+    countries: [...];
+  };
+  meta: {
+    query: string;
+    total_results: number;
+    results_by_type: {...};
+  };
+}
+```
+
+### URL Building
+
+The component builds proper localized URLs using the geographic slugs from the API:
+
+**Beach URL:**
+```
+/{locale}/{beaches-word}/{continent}/{country}/[region]/[island]/[city]/{beach}
+Example: /en/beaches/europe/croatia/dalmatia/hvar/hvar/bacvice
+```
+
+**City URL:**
+```
+/{locale}/{beaches-word}/{continent}/{country}/[region]/[island]/{city}
+Example: /si/plaze/europe/croatia/dalmatia/split
+```
+
+**Island URL:**
+```
+/{locale}/{beaches-word}/{continent}/{country}/[region]/{island}
+Example: /de/strande/europe/croatia/dalmatia/hvar
+```
+
+**Region URL:**
+```
+/{locale}/{beaches-word}/{continent}/{country}/{region}
+Example: /hr/plaze/europe/croatia/dalmatia
+```
+
+**Country URL:**
+```
+/{locale}/{beaches-word}/{continent}/{country}
+Example: /en/beaches/europe/croatia
+```
+
+### Localized "Beaches" Word
+
+The component uses the correct translation for "beaches" in each locale:
+
+| Locale | Word |
+|--------|------|
+| en | beaches |
+| si | plaze |
+| de | strande |
+| hr | plaze |
+| fr | plages |
+| es | playas |
+| it | spiagge |
+| ua | plyazhi |
+| ru | plyazhi |
+| pl | plaze |
+| cs | plaze |
+| hu | strandok |
+| bg | plyazhove |
+| sk | plaze |
+
+### Image Display
+
+Search results show thumbnail images when available:
+
+```typescript
+{result.main_image ? (
+    <Image
+        src={buildCdnUrl(result.main_image, 'icon')}
+        alt={result.name}
+        width={48}
+        height={48}
+        className="w-full h-full object-cover"
+    />
+) : (
+    // Fallback to icon
+)}
+```
+
+Images are loaded from the CDN teaser endpoint (800x800) and displayed at 48x48px.
+
+### User Experience
+
+**Search Flow:**
+1. User types in search input (minimum 2 characters)
+2. Query is debounced (300ms delay)
+3. API call made via React Query
+4. Results appear in dropdown grouped by type
+5. User can navigate with keyboard or mouse
+6. Clicking result navigates to proper localized URL
+7. Clear button (X) resets search
+
+**Keyboard Shortcuts:**
+- `↑` / `↓` - Navigate results
+- `Enter` - Select highlighted result
+- `Esc` - Close dropdown
+- Click outside - Close dropdown
+
+### Integration Points
+
+**Header Integration:**
+The search is integrated into the header at three responsive breakpoints:
+
+1. **Desktop** - Full search bar with button
+2. **Tablet** - Compact search bar
+3. **Mobile** - Icon-based search (future enhancement)
+
+**ApiClientProvider:**
+The search automatically uses the correct locale from `ApiClientProvider` which sets the `Accept-Language` header for all API calls.
+
+### Performance
+
+- ✅ **Debounced queries** - Prevents excessive API calls
+- ✅ **React Query caching** - Results cached for 5 minutes
+- ✅ **Lazy image loading** - Images load on demand
+- ✅ **Memoized transformations** - Results transformed once via useMemo
+- ✅ **Optimized re-renders** - Only updates when data changes
+
+### Testing
+
+To test the search:
+
+1. Navigate to any page with the header
+2. Type in the search bar (e.g., "split", "hvar", "croatia")
+3. Verify dropdown appears with results
+4. Check that images load correctly
+5. Click a result and verify navigation to correct URL
+6. Test keyboard navigation
+7. Test in different locales (e.g., /si/, /de/)
+
+### Documentation
+
+- **Feature Guide**: `docs/features/GLOBAL_SEARCH.md`
+- **Backend Setup**: `../Api/docs/deployment/MEILISEARCH_*.md`
+- **API Endpoint**: `GET /api/v1/search` (see OpenAPI spec)
+
+### Notes
+
+- Search requires minimum 2 characters to trigger
+- Results are limited to 10 items (configurable)
+- API returns localized slugs based on Accept-Language header
+- All URLs are properly localized for SEO
+- Images fallback to icons if not available
+- Component is fully responsive and accessible
+
+---
+
 ## 2025-11-29 – OpenWeatherMap Integration (Real-Time Weather Data)
 
 ### Overview

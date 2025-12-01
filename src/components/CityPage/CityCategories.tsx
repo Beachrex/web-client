@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 const CityCategories: React.FC = () => {
   const t = useTranslations('TownPage');
@@ -93,7 +94,7 @@ const CityCategories: React.FC = () => {
               type="button"
               className="flex h-[100px] w-[100px] flex-col items-center justify-center gap-3 rounded-md border border-[#E7E7E7] bg-[#F5F5F5] p-2"
             >
-              <img
+              <Image
                 src={c.icon}
                 alt={t(c.labelKey)}
                 width={32}
