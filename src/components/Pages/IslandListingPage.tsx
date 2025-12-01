@@ -7,15 +7,16 @@ import { useEffect } from 'react';
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
 import DynamicTopBar from '@/components/DynamicTopBar';
+import IslandDestinationsSection from '@/components/IslandPage/IslandDestinationsSection';
 import PropertySection, { type Property } from '@/components/PropertySection';
-import { type Country } from '@/lib/api-client/types.gen';
+
+import type { Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
-import IslandDestinationsSection from '../IslandPage/IslandDestinationsSection';
-import IslandSearchBeaches from '../IslandPage/IslandSearchBeaches';
 import { useIslandWeather } from '@/hooks/useWeather';
 
 import { useIslandDetails } from '@/hooks/useIslandDetails';
 import { buildIslandUrlFromNavigation } from '@/lib/utils/beach-urls';
+import DynamicSearchBeaches from '../DynamicSearchBeaches';
 
 interface IslandListingPageProps {
   islandSlug?: string;
@@ -165,15 +166,19 @@ const { islandDetails, loading: _loading, error: _error } = useIslandDetails(
         onMapClick={() => console.log('map')}
       />
 
-      <IslandDestinationsSection
-        islandName={islandName}
-        cityItems={cityItems}
-      />
+      <IslandDestinationsSection islandName={islandName} cityItems={cityItems} />
 
-      <IslandSearchBeaches
-        countries={islandCountries}
-        islandName={islandName}
-      />
+     <DynamicSearchBeaches
+  countries={islandCountries}
+  contextName={islandName}
+
+  translationNamespace="IslandPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ island: islandName }}
+
+  filterButtonColor="#FFC422"
+     />
+
     </>
   );
 }

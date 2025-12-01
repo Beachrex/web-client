@@ -1,7 +1,7 @@
 import Banner from '@/components/Continent/Banner';
 import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
-import SearchBeach from '@/components/Continent/SearchBeach';
 import SearchContinent from '@/components/Continent/SearchContinent';
+import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import { PropertySection } from '@/components/PropertySection';
 import {
   getContinent,
@@ -190,7 +190,16 @@ const Page = async ({ params }: PageProps) => {
         {/* top destination section HERE */}
         <ContinentCountriesSection />
 
-        <SearchBeach countries={countries} continent={continent} />
+    <DynamicSearchBeaches
+  countries={countries}
+  contextName={continent?.name ?? resolvedParams.continent}
+
+  translationNamespace="SearchBeach"
+  titleKey="title"
+
+  filterButtonColor="#5E1CA5"
+    />
+
       </>
     );
   } catch (error: unknown) {

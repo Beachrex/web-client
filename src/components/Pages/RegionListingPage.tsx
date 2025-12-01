@@ -5,19 +5,20 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
 import PropertySection, { type Property } from '@/components/PropertySection';
+import { useRegionDetails } from '@/hooks/useRegionDetails';
 import { useRegionWeather } from '@/hooks/useWeather';
 import type { Country } from '@/lib/api-client/types.gen';
+import { buildRegionUrlFromNavigation } from '@/lib/utils/beach-urls';
 import { ChevronRight } from 'lucide-react';
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import DestinationsCarousel from '../DestinationsCarousel';
-import RegionSearchBeaches from '../regions/RegionSearchBeaches';
+import DynamicSearchBeaches from '../DynamicSearchBeaches';
 import DynamicTopBar from '../DynamicTopBar';
-import { useRegionDetails } from '@/hooks/useRegionDetails';
-import { buildRegionUrlFromNavigation } from '@/lib/utils/beach-urls';
 
 interface RegionListingPageProps {
   regionSlug?: string;
+  /** Optional country code from URL if jo imaš (e.g. "HR") */
   countryCode: string;
 }
 
@@ -210,9 +211,15 @@ export default function RegionListingPage({
         cardVariant="city"
       />
 
-      <RegionSearchBeaches
-        countries={regionCountries}
-        regionName={regionName}
+      <DynamicSearchBeaches
+  countries={regionCountries}
+  contextName={regionName}
+
+  translationNamespace="RegionPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ region: regionName }}
+
+  filterButtonColor="#FF2877"
       />
     </>
   );

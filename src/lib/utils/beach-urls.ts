@@ -396,3 +396,78 @@ export function buildCityUrlFromNavigation(
 
   return '/' + segments.join('/');
 }
+
+/**
+ * Build a human-readable location label based on geographic hierarchy.
+ *
+ * Works with the same logic as URL segments:
+ * continent -> country -> region -> island -> city
+ *
+ * It automatically selects the most relevant "context" label,
+ * depending on which slugs exist on the object.
+ *
+ * Examples:
+ *  - Region page: country.name + region name
+ *  - Island page: country.name + island name
+ *  - City page:   country.name + city name
+ *
+ * If contextName is provided (e.g. "Krk"), it overrides automatic inference.
+ */
+export function buildLocationLabelAdvanced(
+  country: {
+    name?: string | null;
+    full_name?: string | null;
+
+    continent_slug?: string | null;
+    country_slug?: string | null;
+    region_slug?: string | null;
+    island_slug?: string | null;
+    city_slug?: string | null;
+
+    location?: {
+      continent?: { name?: string | null };
+      country?: { name?: string | null };
+      region?: { name?: string | null };
+      island?: { name?: string | null };
+      city?: { name?: string | null };
+    };
+  },
+  contextName?: string
+): string {
+  const baseName =
+    country?.full_name ??
+    country?.name ??
+    '';
+
+  // Use explicit contextName first (from page-level)
+  if (contextName) {
+    return `${baseName}, ${contextName}`;
+  }
+
+  // Otherwise infer from available location fields
+  const loc = country.location;
+
+  // Prefer the most specific available level
+  if (loc?.city?.name) {
+    return `${baseName}, ${loc.city.name}`;
+  }
+
+  if (loc?.island?.name) {
+    return `${baseName}, ${loc.island.name}`;
+  }
+
+  if (loc?.region?.name) {
+    return `${baseName}, ${loc.region.name}`;
+  }
+
+  if (loc?.country?.name) {
+    return `${baseName}, ${loc.country.name}`;
+  }
+
+  if (loc?.continent?.name) {
+    return `${baseName}, ${loc.continent.name}`;
+  }
+
+  // Fallback to country name only
+  return baseName;
+}
