@@ -1,21 +1,21 @@
 // src/hooks/useWeather.ts
-import { useQuery } from '@tanstack/react-query';
 import {
   getBeachWeather,
   getCityWeather,
-  getRegionWeather,
   getIslandWeather,
+  getRegionWeather,
 } from '@/lib/api-client';
 import type {
   BeachWeatherResponse,
   GetBeachWeatherData,
   GetCityWeatherData,
   GetCityWeatherResponse,
-  GetRegionWeatherData,
-  GetRegionWeatherResponse,
   GetIslandWeatherData,
   GetIslandWeatherResponse,
+  GetRegionWeatherData,
+  GetRegionWeatherResponse,
 } from '@/lib/api-client/types.gen';
+import { useQuery } from '@tanstack/react-query';
 
 const WEATHER_QUERY_DEFAULTS = {
   staleTime: 60 * 60 * 1000,
@@ -84,7 +84,12 @@ export function useCityWeather({ slug, countryCode, locale, enabled = true }: {
 // REGION
 type RegionLocale = NonNullable<GetRegionWeatherData['headers']>['Accept-Language'];
 
-export function useRegionWeather({ slug, countryCode, locale, enabled = true }: {
+export function useRegionWeather({
+  slug,
+  countryCode,
+  locale,
+  enabled = true,
+}: {
   slug: string;
   countryCode: string;
   locale?: string;
@@ -96,7 +101,9 @@ export function useRegionWeather({ slug, countryCode, locale, enabled = true }: 
       const response = await getRegionWeather({
         path: { slug },
         query: { country_code: countryCode },
-        headers: locale ? { 'Accept-Language': locale as RegionLocale } : undefined,
+        headers: locale
+          ? { 'Accept-Language': locale as RegionLocale }
+          : undefined,
       });
 
       if (!response.data) {

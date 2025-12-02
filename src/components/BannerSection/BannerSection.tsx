@@ -19,25 +19,40 @@ import {
 } from '../ui/pageVariants';
 
 interface BannerSectionProps {
-  image: string;
+  image: string | null;
   title: string;
-  categoryType?: string;
-  subtitle?: string;
-  badges?: { label: string; color?: string; icon?: string }[];
+
+  badges?: {
+    label: string;
+    icon: string;
+    color?: string;
+  }[];
+
+  infoCards?: {
+    title: string;
+    subtitle: string;
+    image: string;
+    link?: string;
+  }[];
+
   rightWidgets?: React.ReactNode;
   children?: React.ReactNode;
+
   continent?: Continent;
   accommodationCount?: number;
+
   /** continent | region | island | city | country */
   topBarVariant?: PageVariant;
-  /** Explicit beach count for non-continent variants */
+
   beachCount?: number;
+
   weather?: {
     temperature?: number | null;
     description?: string | null;
     icon_url?: string | null;
     location_name?: string | null;
   } | null;
+
   weatherLocationName?: string;
   isWeatherLoading?: boolean;
 }
@@ -49,6 +64,12 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   accommodationCount,
   topBarVariant = 'continent',
   beachCount,
+
+  badges,
+  infoCards,
+  rightWidgets,
+  children,
+
   weather,
   weatherLocationName,
   isWeatherLoading,
@@ -57,65 +78,10 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   const tRoutes = useTranslations('routes');
 
   const variant = topBarVariant;
-
   const variantBgClass = VARIANT_BG_CLASS[variant];
   const categoryLabelKey = VARIANT_CATEGORY_LABEL_KEY[variant];
 
   const floatingButtonColorClass = variantBgClass;
-
-  const infoCards = [
-    {
-      title: t('cardHistoryTitle'),
-      subtitle:
-        'Krk is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
-      image: '/images/banner/history.jpg',
-    },
-    {
-      title: t('cardCuisineTitle'),
-      subtitle:
-        'Krk is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
-      image: '/images/banner/cuisine.jpg',
-    },
-    {
-      title: t('cardCultureTitle'),
-      subtitle:
-        'Krk is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
-      image: '/images/banner/culture.jpg',
-    },
-    {
-      title: t('cardSightsTitle'),
-      subtitle:
-        'Krk is a Croatian island in the northern Adriatic Sea, located near Rijeka in the Bay of Kvarner and part of Primorje-Gorski Kotar County.',
-      image: '/images/banner/sights.jpg',
-    },
-  ];
-
-  const badges = [
-    {
-      label: t('badgeFestival'),
-      icon: '/images/banner/regions-icons/party.png',
-    },
-    { label: t('badgeWine'), icon: '/images/banner/regions-icons/wine.png' },
-    { label: t('badgeLamb'), icon: '/images/banner/regions-icons/food.png' },
-    {
-      label: t('badgeFestival'),
-      icon: '/images/banner/regions-icons/party.png',
-    },
-    { label: t('badgeWine'), icon: '/images/banner/regions-icons/wine.png' },
-    { label: t('badgeLamb'), icon: '/images/banner/regions-icons/food.png' },
-    {
-      label: t('badgeFestival'),
-      icon: '/images/banner/regions-icons/party.png',
-    },
-    { label: t('badgeWine'), icon: '/images/banner/regions-icons/wine.png' },
-    { label: t('badgeLamb'), icon: '/images/banner/regions-icons/food.png' },
-    {
-      label: t('badgeFestival'),
-      icon: '/images/banner/regions-icons/party.png',
-    },
-    { label: t('badgeWine'), icon: '/images/banner/regions-icons/wine.png' },
-    { label: t('badgeLamb'), icon: '/images/banner/regions-icons/food.png' },
-  ];
 
   return (
     <>
@@ -125,27 +91,25 @@ const BannerSection: React.FC<BannerSectionProps> = ({
           'overflow-hidden rounded-b-[10px] rounded-t-[10px]',
           'bg-cover bg-center sm:h-[700px] lg:h-[798px]',
         ].join(' ')}
-        style={{ backgroundImage: `url(${image})` }}
+        style={{
+          backgroundImage: image ? `url(${image})` : undefined,
+        }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-white/10" />
+        <div className="absolute inset-0 bg-black/20" />
 
         <div className="relative z-10 flex h-full flex-col p-4 sm:p-6 lg:p-8">
-          {/* Top bar */}
-          <div>
-            <TopBar
-              variant={variant}
-              continent={continent}
-              accommodationCount={accommodationCount}
-              title={title}
-              beachCount={beachCount}
-            />
-          </div>
+          {/* Top Bar */}
+          <TopBar
+            variant={variant}
+            continent={continent}
+            accommodationCount={accommodationCount}
+            title={title}
+            beachCount={beachCount}
+          />
 
           <div className="flex flex-1 flex-col justify-center">
-            {/* Title block */}
+            {/* Title */}
             <div className="relative">
-              {/* Big background category label */}
               <span
                 className={[
                   'left-0 block font-figtree font-bold leading-[100%] text-white opacity-30',
@@ -155,7 +119,6 @@ const BannerSection: React.FC<BannerSectionProps> = ({
                 {t(categoryLabelKey)}
               </span>
 
-              {/* Foreground title (e.g. Kvarner, Krk, Baška) */}
               <span
                 className={[
                   'absolute bottom-0 left-[30px] font-figtree font-bold leading-[100%] text-white',
@@ -175,33 +138,39 @@ const BannerSection: React.FC<BannerSectionProps> = ({
                 'lg:flex-row lg:items-end',
               ].join(' ')}
             >
-              {/* Badges */}
-              <div className="hidden min-w-0 flex-1 md:block">
-                <BottomBadges badges={badges} variant={variant} />
-              </div>
+              {/* ✔ CONDITIONAL → SHOW ONLY IF BADGES EXIST */}
+              {badges && badges.length > 0 && (
+                <div className="hidden min-w-0 flex-1 md:block">
+                  <BottomBadges badges={badges} variant={variant} />
+                </div>
+              )}
 
               {/* Widgets */}
               <div className="flex shrink-0 justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
                 <MapWidget />
-                <WeatherWidget
-                  weather={weather}
-                  locationName={weatherLocationName}
-                  isLoading={isWeatherLoading}
-                />
+
+                {variant !== 'country' && variant !== 'continent' && (
+  <WeatherWidget
+    weather={weather}
+    locationName={weatherLocationName}
+    isLoading={isWeatherLoading}
+  />
+)}
+{rightWidgets}
+
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right side floating buttons */}
+        {/* Floating Icons */}
         <div className="absolute right-0 top-1/2 z-20 flex -translate-y-1/2 flex-col">
-          {/* Map button */}
           <Link
             href={tRoutes('beachMap')}
             className={[
               'mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px]',
               'sm:h-[68.46px] sm:w-[71px]',
-              'bg-variable-collection-temno-modro', //
+              'bg-variable-collection-temno-modro',
             ].join(' ')}
           >
             <Image
@@ -213,7 +182,6 @@ const BannerSection: React.FC<BannerSectionProps> = ({
             />
           </Link>
 
-          {/* Filters button */}
           <button
             type="button"
             className={[
@@ -233,8 +201,12 @@ const BannerSection: React.FC<BannerSectionProps> = ({
         </div>
       </section>
 
-      {/* Info cards */}
-      <InfoCardsSection cards={infoCards} variant={variant} />
+      {/* ✔ CONDITIONAL → SHOW ONLY IF INFOCARDS EXIST */}
+      {infoCards && infoCards.length > 0 && (
+        <InfoCardsSection cards={infoCards} variant={variant} />
+      )}
+
+      {children}
     </>
   );
 };

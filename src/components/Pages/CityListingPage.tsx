@@ -16,6 +16,8 @@ import { type Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
 
 import { useCityDetails } from '@/hooks/useCityDetails';
+import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildCityUrlFromNavigation } from '@/lib/utils/beach-urls';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
 
@@ -58,8 +60,10 @@ export default function CityListingPage({
     _citySlug ??
     'Malinska';
 
-  const cityBeachesCount = cityDetails?.beaches_count ?? 112;
-  const cityAccommodationsCount = 245; // TODO: wire to real API when available
+    const bannerImage = buildCdnUrl(cityDetails?.main_image, 'banner');
+
+  const cityBeachesCount = cityDetails?.beaches_count ?? 0;
+  const cityAccommodationsCount = 0; // TODO: wire to real API when available
 
   // TODO: later this should come from API (cityDataProp)
   const countryCode = 'HR';
@@ -72,26 +76,27 @@ export default function CityListingPage({
       enabled: !!_citySlug && !!countryCode,
     });
 
-  // Temporary mock beach data (replace with real API later)
-  const baseBeach: Property = {
-    id: '1',
-    image:
-      'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-    title: 'Plaža Ladinka',
-    location: `${cityName}, Croatia`,
-    price: 25,
-    originalPrice: 40,
-    rating: 7.2,
-    reviews: 120,
-    discount: '15',
-    isFreeBreakfast: false,
-    isFreeCancellation: true,
-  };
+const { data: mostVisitedBeaches } = useMostVisitedBeaches({
+  city_code: _citySlug,
+  limit: 20,
+});
 
-  const beachProperties: Property[] = Array.from({ length: 4 }, (_, i) => ({
-    ...baseBeach,
-    id: String(i + 1),
-  }));
+const formatName = (s?: string | null) =>
+  s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+
+const beachProperties: Property[] =
+  mostVisitedBeaches?.map((b) => ({
+    id: String(b.id),
+    image: buildCdnUrl(b.main_image, 'carousel') ?? '/images/default.jpg',
+    title: b.name ?? 'Unknown Beach',
+    location: formatName(b.city_slug ?? cityName),
+    price: Math.floor(Math.random() * 30) + 10,
+    originalPrice: Math.floor(Math.random() * 50) + 50,
+    rating: 4 + Math.random(),
+    reviews: Math.floor(Math.random() * 300) + 20,
+    discount: `${Math.floor(Math.random() * 20) + 5}`,
+  })) ?? [];
+
 
   // Temporary mock countries data for city search (replace with real API later)
   const cityCountries: Country[] = Array.from({ length: 16 }, (_, i) => ({
@@ -119,6 +124,26 @@ export default function CityListingPage({
 
   const cityWeatherLocationName = cityWeather?.location_name ?? cityName;
 
+
+    const bottomBadges =
+  cityDetails?.badges
+    ?.filter(b => b.name && b.icon)
+    ?.map(b => ({
+      label: b.name!,
+      icon: buildCdnUrl(b.icon, 'icon')!,
+    })) ?? [];
+
+const infoCards =
+  cityDetails?.articles
+    ?.filter(a => a.title && a.excerpt && a.feature_image)
+    ?.map(a => ({
+      title: a.title!,
+      subtitle: a.excerpt!,
+      image: buildCdnUrl(a.feature_image, 'list')!,
+      link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
+    })) ?? [];
+
+
   return (
     <>
       {/* Shared top bar: breadcrumbs + city prev/next navigation */}
@@ -137,7 +162,7 @@ export default function CityListingPage({
       />
 
       <BannerSection
-        image="/images/banner/island-banner.jpg" // če imaš city-banner, ga lahko zamenjaš
+        image={bannerImage}
         title={cityName}
         topBarVariant="city"
         accommodationCount={cityAccommodationsCount}
@@ -145,6 +170,8 @@ export default function CityListingPage({
         weather={cityWeather}
         weatherLocationName={cityWeatherLocationName}
         isWeatherLoading={isCityWeatherLoading}
+        badges={bottomBadges.length > 0 ? bottomBadges : undefined}
+        infoCards={infoCards.length > 0 ? infoCards : undefined}
       />
 
       {/* Most visited beaches in town */}

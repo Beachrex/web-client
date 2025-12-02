@@ -2,6 +2,7 @@
 'use client';
 
 import { getCountryOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import { type CountryDetails } from '@/types/CountryDetails';
 import { useQuery } from '@tanstack/react-query';
 
 /**
@@ -16,15 +17,18 @@ export const useCountryDetails = (code: string | undefined, enabled = true) => {
   const { data, isLoading, error } = useQuery({
     ...getCountryOptions({
       path: {
-        // Country endpoint expects codeOrSlug in path
         codeOrSlug: String(code),
       },
     }),
     enabled: enabled && !!code,
+    select: (response): CountryDetails | null => {
+      // API returns { success, data, message }, so we extract .data
+      return (response?.data ?? null) as CountryDetails;
+    },
   });
 
   return {
-    countryDetails: data?.data,
+    countryDetails: data,
     loading: isLoading,
     error: error
       ? error instanceof Error

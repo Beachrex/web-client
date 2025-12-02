@@ -7,8 +7,9 @@ import { VARIANT_BG_CLASS } from '../ui/pageVariants';
 
 interface Badge {
   label: string;
-  icon: string;
+  icon: string; // nikoli undefined
 }
+
 
 interface BottomBadgesProps {
   badges: Badge[];
