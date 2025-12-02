@@ -41,23 +41,16 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({
   return (
     <div className="relative h-[144px] w-[144px] overflow-hidden rounded-[10px] bg-black/30 font-figtree text-white">
       {/* Weather Icon (top right) */}
-      {weatherIcon ? (
-        <Image
-          src={weatherIcon}
-          alt={weather?.description ?? 'weather icon'}
-          width={36}
-          height={36}
-          className="absolute right-[14px] top-[14px]"
-        />
-      ) : (
-        <Image
-          src="/images/beach.png"
-          alt="weather icon"
-          width={36}
-          height={36}
-          className="absolute right-[14px] top-[14px]"
-        />
-      )}
+      {weatherIcon && (
+  <Image
+    src={weatherIcon}
+    alt={weather?.description ?? 'weather icon'}
+    width={45}
+    height={45}
+    className="absolute right-[14px] top-[14px]"
+  />
+)}
+
 
       {/* Content bottom-left */}
       <div className="absolute bottom-[14px] left-[14px] z-10 flex flex-col items-start justify-end">

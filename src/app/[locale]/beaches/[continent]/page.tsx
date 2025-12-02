@@ -1,6 +1,7 @@
-import Banner from '@/components/Continent/Banner';
+import BannerSection from '@/components/BannerSection/BannerSection';
 import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
 import SearchContinent from '@/components/Continent/SearchContinent';
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import { PropertySection } from '@/components/PropertySection';
 import {
@@ -12,6 +13,7 @@ import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+
 
 interface PageProps {
   params: Promise<{
@@ -116,30 +118,7 @@ const Page = async ({ params }: PageProps) => {
     });
     const countries = countriesResponse?.data ?? [];
 
-    // Get all continents for navigation
-    const { data: continentsResponse } = await getContinents({
-      headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
-    });
-    const allContinents = continentsResponse?.data ?? [];
 
-    // Find current continent index for navigation
-    const currentIndex = allContinents.findIndex(
-      (c) => c.code === continentCode,
-    );
-    const prevContinent =
-      currentIndex > 0
-        ? allContinents[currentIndex - 1]
-        : allContinents[allContinents.length - 1];
-    const nextContinent =
-      currentIndex < allContinents.length - 1
-        ? allContinents[currentIndex + 1]
-        : allContinents[0];
-
-    // Get URL slugs for navigation using API slugs (already localized)
-    const prevSlug =
-      prevContinent?.slug ?? prevContinent?.code?.toLowerCase() ?? 'unknown';
-    const nextSlug =
-      nextContinent?.slug ?? nextContinent?.code?.toLowerCase() ?? 'unknown';
     // Transform countries to property format for now (until we have real accommodation data)
     const transformedProperties = countries
       .slice(0, 8)
@@ -161,22 +140,30 @@ const Page = async ({ params }: PageProps) => {
         beaches_count: country.beaches_count,
       }));
 
+const bannerImage =
+  continent.main_image
+    ? buildCdnUrl(continent.main_image, 'banner')
+    : null;
+
+
     return (
       <>
-        <Banner
-          pathname={pathname}
-          title={continent.name}
-          continent={continent}
-          accommodationCount={Math.floor(Math.random() * 100) + 20}
-          prevBeach={{
-            name: prevContinent?.name ?? '',
-            url: `/beaches/${prevSlug}`,
-          }}
-          nextBeach={{
-            name: nextContinent?.name ?? '',
-            url: `/beaches/${nextSlug}`,
-          }}
+<div className="bg-white py-4">
+  <div className="container mx-auto">
+    <DynamicBreadcrumbs pathname={pathname} />
+  </div>
+</div>
+
+        <BannerSection
+  image={bannerImage ?? null}
+  title={continent.name ?? ''}
+  continent={continent}
+  accommodationCount={continent.accommodation_count ?? 0}
+  beachCount={continent.beaches_count ?? 0}
+  topBarVariant="continent"
         />
+
+
         <PropertySection
           title={t('popularDestinations', { continent: continent.name })}
           properties={transformedProperties ?? []}

@@ -7,9 +7,14 @@ import { useEffect } from 'react';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import { useRegionDetails } from '@/hooks/useRegionDetails';
 import { useRegionWeather } from '@/hooks/useWeather';
+
 import type { Country } from '@/lib/api-client/types.gen';
 import { buildRegionUrlFromNavigation } from '@/lib/utils/beach-urls';
 import { ChevronRight } from 'lucide-react';
+
+import { useCities } from '@/hooks/useCities';
+import { useIslands } from '@/hooks/useIslands';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import DestinationsCarousel from '../DestinationsCarousel';
@@ -18,50 +23,65 @@ import DynamicTopBar from '../DynamicTopBar';
 
 interface RegionListingPageProps {
   regionSlug?: string;
-  /** Optional country code from URL if jo imaš (e.g. "HR") */
-  countryCode: string;
 }
 
 export default function RegionListingPage({
   regionSlug,
-  countryCode,
 }: RegionListingPageProps) {
+
   const pathname = usePathname();
   const locale = useLocale();
 
   const tRegion = useTranslations('RegionPage');
   const tProperty = useTranslations('PropertySection');
 
-  // Fetch region details from API
+  // ---- FETCH REGION DETAILS ----
   const { regionDetails, loading, error } = useRegionDetails(
     regionSlug ?? '',
-    countryCode,
-    Boolean(regionSlug),
+    undefined,          // ⛔ no countryCode needed from URL
+    Boolean(regionSlug)
   );
 
-  // Region display name – prefer API, fallback to slug / mock
+
+  // Extract countryCode from regionDetails
+  const regionCountryCode =
+    regionDetails?.country?.code ?? '';
+
+
+const { cities } = useCities(undefined, regionSlug);
+const { islands } = useIslands(undefined, regionSlug);
+
+
+  // Basic region info
   const regionName =
     regionDetails?.name ?? regionSlug ?? 'Kvarner';
+
+
+    const bannerImage = buildCdnUrl(regionDetails?.main_image, 'banner');
+
+
   const regionSlugValue = regionSlug ?? '';
 
-  // Use real beaches count if available, otherwise fallback mock
-  const regionBeachesCount = regionDetails?.beaches_count ?? 123;
+  const regionBeachesCount =
+    regionDetails?.beaches_count ?? 123;
 
-  // For now we don't have accommodations count on API, so keep mock
+  // Mock (API later)
   const regionAccommodationsCount = 569;
 
+  // ---- FETCH WEATHER USING COUNTRY FROM API ----
   const { data: regionWeatherResponse, isLoading: isRegionWeatherLoading } =
     useRegionWeather({
       slug: regionSlugValue,
-      countryCode,
+      countryCode: regionCountryCode,
       locale,
-      enabled: !!regionSlugValue,
+      enabled: !!regionSlugValue && !!regionCountryCode, // ⛔ Must have both
     });
 
   const regionWeather = regionWeatherResponse?.data?.weather ?? null;
+  const regionWeatherLocationName =
+    regionWeather?.location_name ?? regionName;
 
-  const regionWeatherLocationName = regionWeather?.location_name ?? regionName;
-
+  // ---- MOCK LISTS (TEMP) ----
   const baseBeach: Property = {
     id: '1',
     image:
@@ -90,40 +110,34 @@ export default function RegionListingPage({
     image_path: null,
   })) as Country[];
 
-  // Temporary mock islands data (replace with real API later)
-  const baseIsland: Country = {
-    code: 'KRK',
-    name: 'Krk',
-    beaches_count: 112,
-  } as Country;
 
-  const islandItems: Country[] = Array.from({ length: 6 }, (_, i) => ({
-    ...baseIsland,
-    code: `ISL-${i + 1}`,
-    name: `Island ${i + 1}`,
-  })) as Country[];
+// ---- MAP API ISLANDS ----
+const islandItems =
+  islands?.map((i) => ({
+    ...i,
+    main_image: buildCdnUrl(i.main_image, 'carousel'),
+  })) ?? [];
 
-  // Temporary mock cities data (replace with real API later)
-  const baseCity: Country = {
-    code: 'BASKA',
-    name: 'Baška',
-    beaches_count: 112,
-  } as Country;
+// ---- MAP API CITIES ----
+const cityItems =
+  cities?.map((c) => ({
+    ...c,
+    main_image: buildCdnUrl(c.main_image, 'carousel'),
+  })) ?? [];
 
-  const cityItems: Country[] = Array.from({ length: 6 }, (_, i) => ({
-    ...baseCity,
-    code: `CITY-${i + 1}`,
-    name: `City ${i + 1}`,
-  })) as Country[];
 
+  // ---- EFFECT ----
   useEffect(() => {
     if (!pathname) return;
-    // You can add tracking or side-effects here later if needed
   }, [pathname]);
 
-  // Simple loading / error states (can style nicer later)
+  // ---- LOADING & ERROR HANDLING ----
   if (loading && !regionDetails) {
-    return <div className="container mx-auto py-8">Loading region…</div>;
+    return (
+      <div className="container mx-auto py-8">
+        Loading region…
+      </div>
+    );
   }
 
   if (error) {
@@ -134,9 +148,30 @@ export default function RegionListingPage({
     );
   }
 
+  // ---- MAP REGION BADGES ----
+const regionBadges =
+  regionDetails?.badges
+    ?.filter(b => b.name && b.icon)
+    ?.map(b => ({
+      label: b.name!,
+      icon: buildCdnUrl(b.icon, 'icon')!,
+    })) ?? [];
+
+// ---- MAP REGION INFOCARDS (articles) ----
+const regionInfoCards =
+  regionDetails?.articles
+    ?.filter(a => a.title && a.excerpt && a.feature_image)
+    ?.map(a => ({
+      title: a.title!,
+      subtitle: a.excerpt!,
+      image: buildCdnUrl(a.feature_image, 'list')!,
+      link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
+    })) ?? [];
+
+
+  // ---- RENDER ----
   return (
     <>
-      {/* Shared top bar: breadcrumbs + region prev/next */}
       <DynamicTopBar
         pathname={pathname ?? ''}
         navigation={regionDetails?.navigation}
@@ -152,7 +187,7 @@ export default function RegionListingPage({
       />
 
       <BannerSection
-        image="/images/banner/region-banner.jpg"
+        image={bannerImage}
         title={regionName}
         topBarVariant="region"
         accommodationCount={regionAccommodationsCount}
@@ -160,9 +195,10 @@ export default function RegionListingPage({
         weather={regionWeather}
         weatherLocationName={regionWeatherLocationName}
         isWeatherLoading={isRegionWeatherLoading}
+         badges={regionBadges.length ? regionBadges : undefined}
+  infoCards={regionInfoCards.length ? regionInfoCards : undefined}
       />
 
-      {/* Most visited beaches in region */}
       <PropertySection
         title={tRegion('popularBeachesTitle', { region: regionName })}
         totalCount={beachProperties.length}
@@ -178,7 +214,6 @@ export default function RegionListingPage({
         }
       />
 
-      {/* Featured accommodations in region */}
       <AccommodationSection
         title={tRegion('featuredAccommodationsTitle', { region: regionName })}
         totalCount={regionAccommodationsCount}
@@ -189,37 +224,29 @@ export default function RegionListingPage({
         onMapClick={() => console.log('map')}
       />
 
-      {/* Islands carousel */}
       <DestinationsCarousel
         items={islandItems}
         title={tRegion('islandsTitle', { region: regionName })}
-        countLabel={tRegion('allIslandsCount', {
-          count: islandItems.length,
-        })}
+        countLabel={tRegion('allIslandsCount', { count: islandItems.length })}
         badgeLabel={tRegion('islandBadge')}
         cardVariant="island"
       />
 
-      {/* Cities carousel */}
       <DestinationsCarousel
         items={cityItems}
         title={tRegion('citiesTitle', { region: regionName })}
-        countLabel={tRegion('allCitiesCount', {
-          count: cityItems.length,
-        })}
+        countLabel={tRegion('allCitiesCount', { count: cityItems.length })}
         badgeLabel={tRegion('cityBadge')}
         cardVariant="city"
       />
 
       <DynamicSearchBeaches
-  countries={regionCountries}
-  contextName={regionName}
-
-  translationNamespace="RegionPage"
-  titleKey="browseBeachesTitle"
-  titleParams={{ region: regionName }}
-
-  filterButtonColor="#FF2877"
+        countries={regionCountries}
+        contextName={regionName}
+        translationNamespace="RegionPage"
+        titleKey="browseBeachesTitle"
+        titleParams={{ region: regionName }}
+        filterButtonColor="#FF2877"
       />
     </>
   );

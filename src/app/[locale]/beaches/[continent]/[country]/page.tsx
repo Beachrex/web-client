@@ -5,13 +5,18 @@ import BannerSection from '@/components/BannerSection/BannerSection';
 import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
 import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
+
 
 import { usePathname } from '@/i18n/routing';
 import { ChevronRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
+import { useCities } from '@/hooks/useCities';
 import { useCountryDetails } from '@/hooks/useCountryDetails';
+import { useIslands } from '@/hooks/useIslands';
+import { useRegions } from '@/hooks/useRegions';
 import type { Country } from '@/lib/api-client/types.gen';
 import { buildCountryUrlFromNavigation } from '@/lib/utils/beach-urls';
 
@@ -33,6 +38,11 @@ const Page = ({ params }: PageProps) => {
   // Fetch country details by ISO code (e.g. "SI", "HR")
   const { countryDetails } = useCountryDetails(countryParam);
 
+const { regions } = useRegions(countryDetails?.code ?? '');
+const { cities } = useCities(countryDetails?.code ?? '');
+const { islands } = useIslands(countryDetails?.code ?? '');
+
+
   const tCountry = useTranslations('countryPage');
   const tProperty = useTranslations('PropertySection');
 
@@ -42,8 +52,8 @@ const Page = ({ params }: PageProps) => {
     countryDetails?.full_name ??
     countryParam.toUpperCase();
 
-  const countryBeachesCount = countryDetails?.beaches_count ?? 112;
-  const countryAccommodationsCount = 245; // still mock until real data exists
+  const countryBeachesCount = countryDetails?.beaches_count ?? 0;
+  const countryAccommodationsCount = 0; // still mock until real data exists
 
   // Temporary mock beach data (replace with real API later)
   const baseBeach: Property = {
@@ -66,44 +76,14 @@ const Page = ({ params }: PageProps) => {
     id: String(i + 1),
   }));
 
-  // Temporary mock regions data
-  const baseRegion: Country = {
-    code: 'DAL',
-    name: 'Dalmacija',
-    beaches_count: 112,
-  } as Country;
 
-  const regionItems: Country[] = Array.from({ length: 6 }, (_, i) => ({
-    ...baseRegion,
-    code: `REG-${i + 1}`,
-    name: `Regija ${i + 1}`,
-  })) as Country[];
+  const regionItems = regions ?? [];
 
-  // Temporary mock cities data
-  const baseCity: Country = {
-    code: 'BAŠKA',
-    name: 'Baška',
-    beaches_count: 112,
-  } as Country;
 
-  const cityItems: Country[] = Array.from({ length: 6 }, (_, i) => ({
-    ...baseCity,
-    code: `CITY-${i + 1}`,
-    name: `Mesto ${i + 1}`,
-  })) as Country[];
+  const cityItems = cities ?? [];
 
-  // Temporary mock islands data
-  const baseIsland: Country = {
-    code: 'KRK',
-    name: 'Krk',
-    beaches_count: 112,
-  } as Country;
 
-  const islandItems: Country[] = Array.from({ length: 6 }, (_, i) => ({
-    ...baseIsland,
-    code: `ISL-${i + 1}`,
-    name: `Otok ${i + 1}`,
-  })) as Country[];
+  const islandItems = islands ?? [];
 
   const countryCountries: Country[] = Array.from({ length: 16 }, (_, i) => ({
     code: `country-${i}`,
@@ -112,6 +92,29 @@ const Page = ({ params }: PageProps) => {
     beaches_count: 112,
     image_path: null,
   })) as Country[];
+
+
+const bannerImage = buildCdnUrl(countryDetails?.main_image, 'banner');
+
+const bottomBadges =
+  countryDetails?.badges
+    ?.filter((badge) => badge.name && badge.icon) // only complete
+    ?.map((badge) => ({
+      label: badge.name!,
+      icon: buildCdnUrl(badge.icon, 'icon')!,
+    })) ?? [];
+
+
+const infoCards =
+  countryDetails?.articles
+    ?.filter((article) => article.title && article.excerpt && article.feature_image)
+    ?.map((article) => ({
+      title: article.title!,
+      subtitle: article.excerpt!,
+      image: buildCdnUrl(article.feature_image, 'list')!,
+      link: article.slug ? `/${locale}/articles/${article.slug}` : undefined,
+    })) ?? [];
+
 
   return (
     <>
@@ -130,11 +133,13 @@ const Page = ({ params }: PageProps) => {
       />
 
       <BannerSection
-        image="/images/banner/island-banner.jpg"
+        image={bannerImage}
         title={countryName}
         topBarVariant="country"
         accommodationCount={countryAccommodationsCount}
         beachCount={countryBeachesCount}
+           badges={bottomBadges.length > 0 ? bottomBadges : undefined}
+  infoCards={infoCards.length > 0 ? infoCards : undefined}
       />
 
       {/* Most visited beaches in country */}

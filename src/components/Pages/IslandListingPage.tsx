@@ -10,11 +10,12 @@ import DynamicTopBar from '@/components/DynamicTopBar';
 import IslandDestinationsSection from '@/components/IslandPage/IslandDestinationsSection';
 import PropertySection, { type Property } from '@/components/PropertySection';
 
+import { useIslandWeather } from '@/hooks/useWeather';
 import type { Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
-import { useIslandWeather } from '@/hooks/useWeather';
 
 import { useIslandDetails } from '@/hooks/useIslandDetails';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildIslandUrlFromNavigation } from '@/lib/utils/beach-urls';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
 
@@ -54,9 +55,11 @@ const { islandDetails, loading: _loading, error: _error } = useIslandDetails(
     _islandSlug ??
     'Cres';
 
+    const bannerImage = buildCdnUrl(islandDetails?.main_image, 'banner');
+
   // Beach / accommodation counts – use API when available, otherwise fallback
-  const islandBeachesCount = islandDetails?.beaches_count ?? 112;
-  const islandAccommodationsCount = 245; // TODO: wire from API when backend exposes this
+  const islandBeachesCount = islandDetails?.beaches_count ?? 0;
+  const islandAccommodationsCount = 0; // TODO: wire from API when backend exposes this
 
   const { data: islandWeatherResponse, isLoading: isIslandWeatherLoading } =
     useIslandWeather({
@@ -111,6 +114,25 @@ const { islandDetails, loading: _loading, error: _error } = useIslandDetails(
     image_path: null,
   })) as Country[];
 
+  const bottomBadges =
+  islandDetails?.badges
+    ?.filter(b => b.name && b.icon)
+    ?.map(b => ({
+      label: b.name!,
+      icon: buildCdnUrl(b.icon, 'icon')!,
+    })) ?? [];
+
+const infoCards =
+  islandDetails?.articles
+    ?.filter(a => a.title && a.excerpt && a.feature_image)
+    ?.map(a => ({
+      title: a.title!,
+      subtitle: a.excerpt!,
+      image: buildCdnUrl(a.feature_image, 'list')!,
+      link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
+    })) ?? [];
+
+
   return (
     <>
       {/* Shared top bar: breadcrumbs + island prev/next navigation */}
@@ -129,7 +151,7 @@ const { islandDetails, loading: _loading, error: _error } = useIslandDetails(
       />
 
       <BannerSection
-        image="/images/banner/island-banner.jpg"
+        image={bannerImage}
         title={islandName}
         topBarVariant="island"
         accommodationCount={islandAccommodationsCount}
@@ -137,6 +159,8 @@ const { islandDetails, loading: _loading, error: _error } = useIslandDetails(
         weather={islandWeather}
         weatherLocationName={islandWeatherLocationName}
         isWeatherLoading={isIslandWeatherLoading}
+        badges={bottomBadges.length > 0 ? bottomBadges : undefined}
+        infoCards={infoCards.length > 0 ? infoCards : undefined}
       />
 
       {/* Most visited beaches on island */}
