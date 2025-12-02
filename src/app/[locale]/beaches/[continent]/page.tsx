@@ -4,11 +4,14 @@ import SearchContinent from '@/components/Continent/SearchContinent';
 import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import { PropertySection } from '@/components/PropertySection';
+
 import {
   getContinent,
   getContinents,
   getCountries,
+  getMostVisitedBeaches,
 } from '@/lib/api-client/sdk.gen';
+
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { getTranslations } from 'next-intl/server';
@@ -22,7 +25,7 @@ interface PageProps {
   }>;
 }
 
-// Validate continent slug and get code by fetching from API
+// Validate continent slug
 const validateAndGetContinentCode = async (
   continentSlug: string,
   locale: string,
@@ -37,8 +40,7 @@ const validateAndGetContinentCode = async (
     );
 
     return continent?.code ?? null;
-  } catch (error) {
-    console.error('Error validating continent:', error);
+  } catch {
     return null;
   }
 };
@@ -51,19 +53,18 @@ export async function generateMetadata({ params }: PageProps) {
   });
 
   try {
-    // Validate and get continent code
     const continentCode = await validateAndGetContinentCode(
       resolvedParams.continent,
       resolvedParams.locale,
     );
-    if (!continentCode) {
-      throw new Error('Invalid continent');
-    }
+
+    if (!continentCode) throw new Error('Invalid continent');
 
     const { data } = await getContinent({
       path: { code: continentCode },
       headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
     });
+
     const continent = data?.data;
 
     return {
@@ -71,102 +72,108 @@ export async function generateMetadata({ params }: PageProps) {
       description: t('description', { continent: continent?.name ?? '' }),
     };
   } catch {
-    // Fallback to capitalized slug if API fails
-    const capitalizedContinent =
+    const fallback =
       resolvedParams.continent.charAt(0).toUpperCase() +
       resolvedParams.continent.slice(1);
 
     return {
-      title: t('metaTitle', { continent: capitalizedContinent }),
-      description: t('description', { continent: capitalizedContinent }),
+      title: t('metaTitle', { continent: fallback }),
+      description: t('description', { continent: fallback }),
     };
   }
 }
 
 const Page = async ({ params }: PageProps) => {
   const resolvedParams = await params;
+  const pathname = `/beaches/${resolvedParams.continent}`;
+
   const t = await getTranslations({
     locale: resolvedParams.locale,
     namespace: 'ContinentPage',
   });
-  const pathname = `/beaches/${resolvedParams.continent}`;
 
   try {
-    // Validate and get continent code
     const continentCode = await validateAndGetContinentCode(
       resolvedParams.continent,
       resolvedParams.locale,
     );
-    if (!continentCode) {
-      notFound();
-    }
 
+    if (!continentCode) notFound();
+
+    // Fetch continent data
     const { data: continentResponse } = await getContinent({
       path: { code: continentCode },
       headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
     });
+
     const continent = continentResponse?.data;
+    if (!continent) notFound();
 
-    if (!continent) {
-      notFound();
-    }
-
-    // Get countries for this continent
+    // Fetch countries
     const { data: countriesResponse } = await getCountries({
       query: { continent: continentCode },
       headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
     });
+
     const countries = countriesResponse?.data ?? [];
 
+    // Fetch MOST VISITED beaches
+    const { data: mostVisitedResponse } = await getMostVisitedBeaches({
+      query: {
+        continent_code: continentCode,
+        limit: 20,
+      },
+      headers: {
+        'Accept-Language': resolvedParams.locale as AcceptLanguage,
+      },
+    });
 
-    // Transform countries to property format for now (until we have real accommodation data)
-    const transformedProperties = countries
-      .slice(0, 8)
-      .filter((country) => country.code && country.name)
-      .map((country) => ({
-        id: country.code!,
-        image: country.main_image
-          ? buildCdnUrl(country.main_image, 'carousel') ?? '/images/spain.jpg'
-          : '/images/spain.jpg',
-        title: country.full_name ?? country.name!,
-        location: `${country.name}, ${continent.name}`,
-        price: Math.floor(Math.random() * 200) + 50, // Mock price until we have real data
-        originalPrice: Math.floor(Math.random() * 100) + 200,
-        rating: 4.0 + Math.random() * 0.9,
-        reviews: Math.floor(Math.random() * 300) + 50,
-        discount: `${Math.floor(Math.random() * 25) + 10}`, // Convert to string
-        isFreeBreakfast: Math.random() > 0.5,
-        isFreeCancellation: Math.random() > 0.3,
-        beaches_count: country.beaches_count,
-      }));
+    const mostVisited = mostVisitedResponse?.data ?? [];
 
-const bannerImage =
-  continent.main_image
-    ? buildCdnUrl(continent.main_image, 'banner')
-    : null;
+  const transformedProperties = mostVisited.map((beach, index) => ({
+  id: String(beach.id ?? `beach-${index}`),
 
+  image:
+    buildCdnUrl(beach.main_image, 'carousel') ??
+    '/images/propertycard/card-banner.jpg', // <-- fallback string
+
+  title: beach.name ?? 'Unknown beach',
+
+ location: beach.city_slug ?? beach.region_slug ?? '',
+
+
+  price: Math.floor(Math.random() * 30) + 10,
+  originalPrice: Math.floor(Math.random() * 40) + 40,
+  rating: 4 + Math.random(),
+  reviews: Math.floor(Math.random() * 400) + 10,
+  discount: `${Math.floor(Math.random() * 20) + 5}`,
+}));
+
+
+    const bannerImage = continent.main_image
+      ? buildCdnUrl(continent.main_image, 'banner')
+      : null;
 
     return (
       <>
-<div className="bg-white py-4">
-  <div className="container mx-auto">
-    <DynamicBreadcrumbs pathname={pathname} />
-  </div>
-</div>
+        <div className="bg-white py-4">
+          <div className="container mx-auto">
+            <DynamicBreadcrumbs pathname={pathname} />
+          </div>
+        </div>
 
         <BannerSection
-  image={bannerImage ?? null}
-  title={continent.name ?? ''}
-  continent={continent}
-  accommodationCount={continent.accommodation_count ?? 0}
-  beachCount={continent.beaches_count ?? 0}
-  topBarVariant="continent"
+          image={bannerImage}
+          title={continent.name ?? ''}
+          continent={continent}
+          accommodationCount={continent.accommodation_count ?? 0}
+          beachCount={continent.beaches_count ?? 0}
+          topBarVariant="continent"
         />
-
 
         <PropertySection
           title={t('popularDestinations', { continent: continent.name })}
-          properties={transformedProperties ?? []}
+          properties={transformedProperties}
         />
 
         <SearchContinent
@@ -174,29 +181,21 @@ const bannerImage =
           continentSlug={resolvedParams.continent}
         />
 
-        {/* top destination section HERE */}
         <ContinentCountriesSection />
 
-    <DynamicSearchBeaches
-  countries={countries}
-  contextName={continent?.name ?? resolvedParams.continent}
-
-  translationNamespace="SearchBeach"
-  titleKey="title"
-
-  filterButtonColor="#5E1CA5"
-    />
-
+        <DynamicSearchBeaches
+          countries={countries}
+          contextName={continent?.name ?? resolvedParams.continent}
+          translationNamespace="SearchBeach"
+          titleKey="title"
+          filterButtonColor="#5E1CA5"
+        />
       </>
     );
-  } catch (error: unknown) {
-  console.error(
-    'Error loading continent data:',
-    error instanceof Error ? error : String(error)
-  );
-  notFound();
-}
-
+  } catch (error) {
+    console.error('Error loading continent:', error);
+    notFound();
+  }
 };
 
 export default Page;

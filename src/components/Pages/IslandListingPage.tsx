@@ -2,7 +2,6 @@
 
 import { usePathname } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect } from 'react';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
@@ -10,57 +9,60 @@ import DynamicTopBar from '@/components/DynamicTopBar';
 import IslandDestinationsSection from '@/components/IslandPage/IslandDestinationsSection';
 import PropertySection, { type Property } from '@/components/PropertySection';
 
-import { useIslandWeather } from '@/hooks/useWeather';
-import type { Country } from '@/lib/api-client/types.gen';
-import { ChevronRight } from 'lucide-react';
-
+import { useCities } from '@/hooks/useCities';
 import { useIslandDetails } from '@/hooks/useIslandDetails';
+import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
+import { useIslandWeather } from '@/hooks/useWeather';
+
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildIslandUrlFromNavigation } from '@/lib/utils/beach-urls';
+
+import { ChevronRight } from 'lucide-react';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
 
 interface IslandListingPageProps {
   islandSlug?: string;
-  islandDataProp?: unknown; // reserved for possible server data hydration later
+  islandDataProp?: unknown;
 }
 
 export default function IslandListingPage({
   islandSlug: _islandSlug,
-  islandDataProp: _islandDataProp,
 }: IslandListingPageProps) {
   const pathname = usePathname();
   const locale = useLocale();
+
   const tIsland = useTranslations('IslandPage');
   const tProperty = useTranslations('PropertySection');
 
- // Fetch island details from API by slug
-const { islandDetails, loading: _loading, error: _error } = useIslandDetails(
-  _islandSlug ?? '',
-  // countryCode – optional filter, not used for now
-  undefined,
-  // regionCode – optional filter, not used for now
-  undefined,
-  Boolean(_islandSlug),
-);
+  // ---------------------------------------
+  // FETCH ISLAND DETAILS
+  // ---------------------------------------
+  const { islandDetails, loading, error } = useIslandDetails(
+    _islandSlug ?? '',
+    undefined,
+    undefined,
+    Boolean(_islandSlug)
+  );
 
+  // ---------------------------------------
+  // FETCH CITIES INSIDE ISLAND
+  // ---------------------------------------
+  const { cities } = useCities(undefined, undefined);
 
-  useEffect(() => {
-    if (!pathname) return;
-    // Optional: analytics / side-effects for route changes
-  }, [pathname]);
-
-  // Island name – prefer API, then slug, then fallback
+  // ---------------------------------------
+  // BASIC ISLAND INFO
+  // ---------------------------------------
   const islandName =
-    islandDetails?.name ??
-    _islandSlug ??
-    'Cres';
+    islandDetails?.name ?? _islandSlug ?? 'Island';
 
-    const bannerImage = buildCdnUrl(islandDetails?.main_image, 'banner');
+  const bannerImage = buildCdnUrl(islandDetails?.main_image, 'banner');
 
-  // Beach / accommodation counts – use API when available, otherwise fallback
   const islandBeachesCount = islandDetails?.beaches_count ?? 0;
-  const islandAccommodationsCount = 0; // TODO: wire from API when backend exposes this
+  const islandAccommodationsCount = 0;
 
+  // ---------------------------------------
+  // WEATHER
+  // ---------------------------------------
   const { data: islandWeatherResponse, isLoading: isIslandWeatherLoading } =
     useIslandWeather({
       slug: _islandSlug ?? '',
@@ -69,73 +71,84 @@ const { islandDetails, loading: _loading, error: _error } = useIslandDetails(
     });
 
   const islandWeather = islandWeatherResponse?.data?.weather ?? null;
+  const islandWeatherLocationName =
+    islandWeather?.location_name ?? islandName;
 
-  const islandWeatherLocationName = islandWeather?.location_name ?? islandName;
+  // ---------------------------------------
+  // MOST VISITED BEACHES (REAL API)
+  // ---------------------------------------
+  const { data: mostVisitedBeachesData } = useMostVisitedBeaches({
+    island_code: _islandSlug,
+    limit: 20,
+  });
 
-  // Temporary mock beach data (replace with real API later)
-  const baseBeach: Property = {
-    id: '1',
-    image:
-      'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
-    title: 'Plaža Ladinka',
-    location: `${islandName}, Croatia`,
-    price: 25,
-    originalPrice: 40,
-    rating: 7.2,
-    reviews: 120,
-    discount: '15',
-    isFreeBreakfast: false,
-    isFreeCancellation: true,
-  };
+  const formatName = (s?: string | null) =>
+    s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
 
-  const beachProperties: Property[] = Array.from({ length: 4 }, (_, i) => ({
-    ...baseBeach,
-    id: String(i + 1),
-  }));
+  const beachProperties: Property[] =
+    mostVisitedBeachesData?.map((b) => ({
+      id: String(b.id),
+      image: buildCdnUrl(b.main_image, 'carousel') ?? '/images/default.jpg',
+      title: b.name ?? 'Unknown Beach',
+      location: formatName(b.city_slug ?? islandName),
+      price: Math.floor(Math.random() * 30) + 10,
+      originalPrice: Math.floor(Math.random() * 50) + 50,
+      rating: 4 + Math.random(),
+      reviews: Math.floor(Math.random() * 300) + 20,
+      discount: `${Math.floor(Math.random() * 20) + 5}`,
+    })) ?? [];
 
-  // Temporary mock cities data (replace with real API later)
-  const baseCity: Country = {
-    code: 'BASKA',
-    name: 'Baška',
-    beaches_count: 112,
-  } as Country;
+  // ---------------------------------------
+  // CITY DESTINATIONS
+  // ---------------------------------------
+  const cityItems =
+    cities?.map((c) => ({
+      ...c,
+      main_image: buildCdnUrl(c.main_image, 'carousel'),
+    })) ?? [];
 
-  const cityItems: Country[] = Array.from({ length: 6 }, (_, i) => ({
-    ...baseCity,
-    code: `CITY-${i + 1}`,
-    name: `City ${i + 1}`,
-  })) as Country[];
-
-  const islandCountries: Country[] = Array.from({ length: 16 }, (_, i) => ({
-    code: `country-${i}`,
-    name: `Country ${i + 1}`,
-    full_name: `Country ${i + 1}`,
-    beaches_count: 112,
-    image_path: null,
-  })) as Country[];
-
+  // ---------------------------------------
+  // BADGES
+  // ---------------------------------------
   const bottomBadges =
-  islandDetails?.badges
-    ?.filter(b => b.name && b.icon)
-    ?.map(b => ({
-      label: b.name!,
-      icon: buildCdnUrl(b.icon, 'icon')!,
-    })) ?? [];
+    islandDetails?.badges
+      ?.filter((b) => b.name && b.icon)
+      ?.map((b) => ({
+        label: b.name!,
+        icon: buildCdnUrl(b.icon, 'icon')!,
+      })) ?? [];
 
-const infoCards =
-  islandDetails?.articles
-    ?.filter(a => a.title && a.excerpt && a.feature_image)
-    ?.map(a => ({
-      title: a.title!,
-      subtitle: a.excerpt!,
-      image: buildCdnUrl(a.feature_image, 'list')!,
-      link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
-    })) ?? [];
+  // ---------------------------------------
+  // INFO CARDS
+  // ---------------------------------------
+  const infoCards =
+    islandDetails?.articles
+      ?.filter((a) => a.title && a.excerpt && a.feature_image)
+      ?.map((a) => ({
+        title: a.title!,
+        subtitle: a.excerpt!,
+        image: buildCdnUrl(a.feature_image, 'list')!,
+        link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
+      })) ?? [];
 
+  // ---------------------------------------
+  // RENDER
+  // ---------------------------------------
+  if (loading && !islandDetails) {
+    return <div className="container mx-auto py-8">Loading island…</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto py-8 text-red-600">
+        Failed to load island: {error}
+      </div>
+    );
+  }
 
   return (
     <>
-      {/* Shared top bar: breadcrumbs + island prev/next navigation */}
+      {/* Top Navigation */}
       <DynamicTopBar
         pathname={pathname ?? ''}
         navigation={islandDetails?.navigation}
@@ -145,11 +158,12 @@ const infoCards =
               slug: item.slug ?? undefined,
               location: item.location ?? undefined,
             },
-            locale,
+            locale
           )
         }
       />
 
+      {/* Banner */}
       <BannerSection
         image={bannerImage}
         title={islandName}
@@ -159,11 +173,11 @@ const infoCards =
         weather={islandWeather}
         weatherLocationName={islandWeatherLocationName}
         isWeatherLoading={isIslandWeatherLoading}
-        badges={bottomBadges.length > 0 ? bottomBadges : undefined}
-        infoCards={infoCards.length > 0 ? infoCards : undefined}
+        badges={bottomBadges.length ? bottomBadges : undefined}
+        infoCards={infoCards.length ? infoCards : undefined}
       />
 
-      {/* Most visited beaches on island */}
+      {/* MOST VISITED BEACHES */}
       <PropertySection
         title={tIsland('popularBeachesTitle', { island: islandName })}
         totalCount={beachProperties.length}
@@ -179,7 +193,7 @@ const infoCards =
         }
       />
 
-      {/* Featured accommodations on island */}
+      {/* ACCOMMODATIONS */}
       <AccommodationSection
         title={tIsland('featuredAccommodationsTitle', { island: islandName })}
         totalCount={islandAccommodationsCount}
@@ -190,19 +204,18 @@ const infoCards =
         onMapClick={() => console.log('map')}
       />
 
+      {/* CITIES */}
       <IslandDestinationsSection islandName={islandName} cityItems={cityItems} />
 
-     <DynamicSearchBeaches
-  countries={islandCountries}
-  contextName={islandName}
-
-  translationNamespace="IslandPage"
-  titleKey="browseBeachesTitle"
-  titleParams={{ island: islandName }}
-
-  filterButtonColor="#FFC422"
-     />
-
+      {/* SEARCH BEACHES */}
+      <DynamicSearchBeaches
+        countries={[]} // islands do NOT have sub-countries
+        contextName={islandName}
+        translationNamespace="IslandPage"
+        titleKey="browseBeachesTitle"
+        titleParams={{ island: islandName }}
+        filterButtonColor="#FFC422"
+      />
     </>
   );
 }
