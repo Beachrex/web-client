@@ -87,7 +87,6 @@ function FitBounds({
     // Store reset function to allow MapEventHandler to reset the flag after skipping
     extendedMap.__resetFitBoundsFlag = () => {
       fitBoundsRef.current = false;
-      console.log('Fit bounds flag reset by MapEventHandler');
     };
   }, [map]);
 
@@ -107,17 +106,14 @@ function FitBounds({
 
     // Skip if we already fitted to this exact bounding box
     if (lastFittedBoundsRef.current === boundsKey) {
-      console.log('Fit bounds skipped - already fitted to this bounding box');
       return;
     }
 
     // Skip if we're currently fitting bounds (prevent multiple simultaneous calls)
     if (fitBoundsRef.current) {
-      console.log('Fit bounds skipped - already fitting bounds');
       return;
     }
 
-    console.log('Fit bounds called with boundingBox:', boundingBox);
     fitBoundsRef.current = true;
     lastFittedBoundsRef.current = boundsKey;
 
@@ -173,8 +169,6 @@ function MapEventHandler({
       const extendedMap = map as ExtendedMap;
       const isFitting = extendedMap.__isFittingBounds?.();
       if (isFitting) {
-        console.log('[MapEventHandler] Skipping viewport change - came from fitBounds');
-
         // Clear any existing reset timeout
         if (resetTimeout) {
           clearTimeout(resetTimeout);
@@ -241,7 +235,6 @@ function MapEventHandler({
       const boundsChanged = lastBoundsRef.current !== boundsString;
 
       if (boundsChanged || zoomChanged) {
-        console.log('[MapEventHandler] Viewport changed (debounced) - zoom:', zoom, 'bounds:', boundsString);
         lastBoundsRef.current = boundsString;
         lastZoomRef.current = zoom;
 
@@ -327,8 +320,55 @@ const ReactLeafletMap = ({
   onMarkerClick,
 }: ReactLeafletMapProps) => {
 
-  // Ensure beaches is always an array
-  const safeBeaches = Array.isArray(beaches) ? beaches : [];
+  // Check for duplicate beach IDs and log them
+  const uniqueBeaches = useMemo(() => {
+    // Ensure beaches is always an array
+    const safeBeaches = Array.isArray(beaches) ? beaches : [];
+
+    const seenIds = new Map<number, number>();
+    const duplicateIds = new Set<number>();
+
+    // First filter out beaches without IDs
+    const beachesWithIds = safeBeaches.filter(beach => beach.id !== undefined);
+
+    beachesWithIds.forEach((beach, index) => {
+      const beachId = beach.id!; // Safe to use ! because we filtered above
+
+      if (seenIds.has(beachId)) {
+        duplicateIds.add(beachId);
+        const firstIndex = seenIds.get(beachId);
+        if (firstIndex !== undefined) {
+          console.warn(
+            `⚠️ Duplicate beach ID detected: ${beachId}`,
+            `\nFirst occurrence at index ${firstIndex}:`,
+            beachesWithIds[firstIndex],
+            `\nDuplicate at index ${index}:`,
+            beach
+          );
+        }
+      } else {
+        seenIds.set(beachId, index);
+      }
+    });
+
+    if (duplicateIds.size > 0) {
+      console.error(
+        `❌ Found ${duplicateIds.size} duplicate beach ID(s):`,
+        Array.from(duplicateIds).join(', ')
+      );
+    }
+
+    // Remove duplicates by keeping only the first occurrence of each ID
+    const uniqueMap = new Map<number, Beach>();
+    beachesWithIds.forEach(beach => {
+      const beachId = beach.id!;
+      if (!uniqueMap.has(beachId)) {
+        uniqueMap.set(beachId, beach);
+      }
+    });
+
+    return Array.from(uniqueMap.values());
+  }, [beaches]);
 
   // Memoize icons to prevent recreation on every render
   const beachIcon = useMemo(() => L.icon({
@@ -372,7 +412,7 @@ const ReactLeafletMap = ({
             showCoverageOnHover={false}
             zoomToBoundsOnClick={true}
           >
-            {safeBeaches.map((beach) => (
+            {uniqueBeaches.map((beach) => (
               <BeachMarker
                 key={beach.id}
                 beach={beach}

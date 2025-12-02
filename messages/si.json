@@ -179,7 +179,10 @@
     "searchForBeaches": "Vnesi naslov",
     "loadingMap": "Nalaganje zemljevida...",
     "radiusLabel": "Radij:",
-    "loadingBeaches": "Nalaganje plaž..."
+    "loadingBeaches": "Nalaganje plaž...",
+    "openMap": "Odpri zemljevid",
+    "filters": "Filtri",
+    "scrollToTop": "Pomakni se na vrh"
   },
   "TopBar": {
     "continentLabel": "Kontinent",

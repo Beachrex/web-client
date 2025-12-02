@@ -179,7 +179,10 @@
     "searchForBeaches": "Enter address",
     "loadingMap": "Loading map...",
     "radiusLabel": "Radius:",
-    "loadingBeaches": "Loading beaches..."
+    "loadingBeaches": "Loading beaches...",
+    "openMap": "Open Map",
+    "filters": "Filters",
+    "scrollToTop": "Scroll to top"
   },
   "TopBar": {
     "continentLabel": "Continent",

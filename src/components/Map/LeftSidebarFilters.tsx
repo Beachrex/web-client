@@ -8,6 +8,7 @@ import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.g
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 
 type FilterValue = string | number | boolean | undefined;
 type FilterOptions = GetBeachFiltersResponse['data'];
@@ -30,8 +31,40 @@ const LeftSidebarFilters = ({
     onFilterOptionsLoadingChange,
 }: LeftSidebarFiltersProps) => {
     const t = useTranslations('BeachesMap');
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const [isExpanded, setIsExpanded] = useState(false);
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    // Initialize filters from URL query params on mount
+    useEffect(() => {
+        if (!isInitialized && searchParams) {
+            const urlFilters: Record<string, FilterValue> = {};
+
+            searchParams.forEach((value, key) => {
+                // Store the filter value
+                urlFilters[key] = value;
+            });
+
+            const hasFilters = Object.keys(urlFilters).length > 0;
+
+            if (hasFilters) {
+                console.log('[LeftSidebarFilters] Initializing from URL params:', urlFilters);
+
+                // Expand advanced filters section if there are filters in URL
+                setIsExpanded(true);
+
+                // Apply filters from URL
+                if (onFiltersChange) {
+                    onFiltersChange(urlFilters);
+                }
+            }
+
+            setIsInitialized(true);
+        }
+    }, [isInitialized, searchParams, onFiltersChange]);
 
     // Extract all selected filters from currentFilters to pass as query parameters
     // These filters cascade - selecting a filter will update other filter options
@@ -105,17 +138,61 @@ const LeftSidebarFilters = ({
         }));
     };
 
+    // Build URL with query parameters from filters
+    const updateUrlWithFilters = (filters: Record<string, FilterValue>) => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        // Remove all existing filter params first
+        const keysToRemove: string[] = [];
+        params.forEach((_, key) => {
+            keysToRemove.push(key);
+        });
+        keysToRemove.forEach(key => params.delete(key));
+
+        // Add new filter params
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                params.set(key, String(value));
+            }
+        });
+
+        // Build the new URL
+        const queryString = params.toString();
+        const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+
+        console.log('[LeftSidebarFilters] Updating URL with filters:', {
+            filters,
+            queryString,
+            newUrl,
+        });
+
+        // Update URL without page reload
+        router.replace(newUrl, { scroll: false });
+    };
+
     const handleFilterChange = (filterKey: string, value: string | undefined) => {
+        const newFilters = {
+            ...currentFilters,
+            [filterKey]: value ?? undefined, // Remove key if value is empty
+        };
+
+        // Remove undefined values from the object
+        const cleanedFilters = Object.fromEntries(
+            Object.entries(newFilters).filter(([_, v]) => v !== undefined)
+        );
+
         if (onFiltersChange) {
-            onFiltersChange({
-                ...currentFilters,
-                [filterKey]: value ?? undefined, // Remove key if value is empty
-            });
+            onFiltersChange(cleanedFilters);
         }
+
+        // Update URL with new filters
+        updateUrlWithFilters(cleanedFilters);
     };
 
     const handleResetFilters = () => {
         onFiltersChange?.({});
+        // Reset URL to pathname without query params
+        router.replace(pathname, { scroll: false });
     };
 
     const renderFilterOptions = (

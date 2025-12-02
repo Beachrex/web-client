@@ -205,10 +205,9 @@ const MapWithSidebar = () => {
     // When filters change, use initial bounding box instead of current viewport bounding box
     const boundingBoxFilters: BoundingBoxSearchFilters = useMemo(() => {
         // Determine which bounding box to use
-        // If filters have changed (validatedFilters is not empty), use initial bounding box
-        // Otherwise, use current viewport bounding box
-        const hasFilters = Object.keys(validatedFilters).length > 0;
-        const boundingBoxToUse = hasFilters && initialBoundingBoxRef.current
+        // If viewport hasn't changed by user (filters changed/reset), use initial bounding box
+        // Otherwise, use current viewport bounding box (user panned/zoomed)
+        const boundingBoxToUse = !viewportChangedByUserRef.current && initialBoundingBoxRef.current
             ? initialBoundingBoxRef.current
             : boundingBox;
 
@@ -303,7 +302,6 @@ const MapWithSidebar = () => {
             ) {
                 return prev;
             }
-            console.log('[MapWithSidebar] Updating bounding box (exact viewport bounds)');
             return bounds;
         });
     }, []);
