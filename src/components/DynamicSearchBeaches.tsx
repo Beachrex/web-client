@@ -1,36 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
 import type { Country } from '@/lib/api-client/types.gen';
-import { useTranslations, type TranslationValues } from 'next-intl';
 import { Pagination } from 'flowbite-react';
+import { useTranslations, type TranslationValues } from 'next-intl';
 import Image from 'next/image';
+import React, { useState } from 'react';
 
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-
-// NEW IMPORT: advanced location label
 import { buildLocationLabelAdvanced } from '@/lib/utils/beach-urls';
+
 import PropertyCard from './PropertyCard/PropertyCard';
+import type { PropertyCardProps } from './PropertyCard/PropertyCard';
 
 interface DynamicSearchBeachesProps {
   countries?: Country[];
-
-  // Dynamic name of region/island/city/country/continent
   contextName: string;
-
-  // Namespace for translations (e.g. RegionPage, IslandPage)
   translationNamespace: string;
-
-  // Translation key inside that namespace
   titleKey: string;
-
-  // Parameters for translations
   titleParams?: TranslationValues;
-
-  // Color of "Filter" button
   filterButtonColor: string;
-
-  // (optional) custom image selector, default is main_image
   imageSelector?: (country: Country) => string | null;
 }
 
@@ -43,43 +31,46 @@ const DynamicSearchBeaches: React.FC<DynamicSearchBeachesProps> = ({
   filterButtonColor,
   imageSelector,
 }) => {
-  // Translation function using dynamic namespace
+  // Translations
   const t = useTranslations(translationNamespace);
-
-  // Generate dynamic title
   const title = t(titleKey, titleParams);
 
-  // Pagination state
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Transform API countries into PropertyCard shape
-  const allProperties = countries.length
+  // Convert countries → PropertyCardProps[]
+  const allProperties: PropertyCardProps[] = countries.length
     ? countries.map((country) => {
         const rawImage =
           imageSelector?.(country) ??
           country.main_image ??
           '/images/spain.jpg';
 
-        const image = buildCdnUrl(rawImage, 'carousel') ?? '/images/spain.jpg';
+        const image =
+          buildCdnUrl(rawImage, 'carousel') ?? '/images/spain.jpg';
 
         const location = buildLocationLabelAdvanced(country, contextName);
 
-        return {
-          id: country.code,
+        // PropertyCardProps strict type:
+        const card: PropertyCardProps = {
           image,
-          title: country.full_name ?? country.name,
+          title: String(country.full_name ?? country.name ?? 'Unknown'),
           location,
           price: Math.floor(Math.random() * 200) + 50,
-          originalPrice: Math.floor(Math.random() * 100) + 200,
-          rating: 4.0 + Math.random() * 0.9,
+          rating: Number((4.0 + Math.random() * 0.9).toFixed(1)),
           reviews: Math.floor(Math.random() * 300) + 50,
-          discount: Math.floor(Math.random() * 25) + 10,
-          isFreeBreakfast: Math.random() > 0.5,
-          isFreeCancellation: Math.random() > 0.3,
-          beaches_count: country.beaches_count,
         };
+
+        return card;
       })
-    : Array.from({ length: 16 }, (_, i) => ({ id: i + 1 }));
+    : Array.from({ length: 16 }, () => ({
+        image: '/images/default.jpg',
+        title: 'Loading…',
+        location: '',
+        price: 0,
+        rating: 0,
+        reviews: 0,
+      }));
 
   // Pagination logic
   const itemsPerPage = 16;
@@ -94,7 +85,6 @@ const DynamicSearchBeaches: React.FC<DynamicSearchBeachesProps> = ({
       <div className="container mx-auto">
         {/* Header */}
         <div className="mb-8 flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">
-          {/* Dynamic translated title */}
           <h2 className="text-left font-figtree text-[26px] font-bold leading-[100%] text-[#222222] sm:text-[28px] lg:text-[30px]">
             {title}
           </h2>
@@ -108,8 +98,10 @@ const DynamicSearchBeaches: React.FC<DynamicSearchBeachesProps> = ({
               style={{ backgroundColor: filterButtonColor }}
             >
               <Image
-src="/images/filters.png" alt="Filter icon" width={20}
-height={20}
+                src="/images/filters.png"
+                alt="Filter icon"
+                width={20}
+                height={20}
               />
               <span>{t('filterButton')}</span>
             </button>
@@ -117,8 +109,10 @@ height={20}
             {/* Map button */}
             <button className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-6 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#2a4c78]">
               <Image
-src="/images/map.png" alt="Map icon" width={20}
-height={20}
+                src="/images/map.png"
+                alt="Map icon"
+                width={20}
+                height={20}
               />
               <span>{t('mapButton')}</span>
             </button>
@@ -131,26 +125,26 @@ height={20}
 
               <div className="flex items-center gap-[10px]">
                 <Image
-src="/images/beachmedia/photo.png" alt="photo" width={24}
-height={24}
+src="/images/beachmedia/photo.png" width={24} height={24}
+alt="photo"
                 />
                 <div className="h-[25px] w-[1px] bg-white" />
 
                 <Image
-src="/images/beachmedia/video-icon-white.png" alt="video" width={24}
-height={24}
+src="/images/beachmedia/video-icon-white.png" width={24} height={24}
+alt="video"
                 />
                 <div className="h-[25px] w-[1px] bg-white" />
 
                 <Image
-src="/images/beachmedia/360-degree-white.png" alt="360 view" width={24}
-height={24}
+src="/images/beachmedia/360-degree-white.png" width={24} height={24}
+alt="360"
                 />
                 <div className="h-[25px] w-[1px] bg-white" />
 
                 <Image
-src="/images/beachmedia/play-button-arrowhead-white.png" alt="live cam" width={24}
-height={24}
+src="/images/beachmedia/play-button-arrowhead-white.png" width={24} height={24}
+alt="live cam"
                 />
               </div>
             </div>
@@ -166,8 +160,8 @@ height={24}
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {paginatedProperties.map((p) => (
-            <PropertyCard key={p.id} />
+          {paginatedProperties.map((p, i) => (
+            <PropertyCard key={i} {...p} />
           ))}
         </div>
 
