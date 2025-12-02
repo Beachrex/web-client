@@ -23,13 +23,13 @@ const WorldSearchBeaches: React.FC<WorldSearchBeachesProps> = ({
   const allProperties =
     countries.length > 0
       ? countries.map((country) => ({
-          id: country.code,
+          id: country.code ?? '',
           image: country.main_image
             ? buildCdnUrl(country.main_image, 'carousel') ?? '/images/spain.jpg'
             : '/images/spain.jpg',
 
-          title: country.full_name ?? country.name,
-          location: country.name, // world-level location
+          title: country.full_name ?? country.name ?? '',
+          location: country.name ?? '',
 
           price: Math.floor(Math.random() * 200) + 50,
           originalPrice: Math.floor(Math.random() * 100) + 200,
@@ -38,9 +38,22 @@ const WorldSearchBeaches: React.FC<WorldSearchBeachesProps> = ({
           discount: Math.floor(Math.random() * 25) + 10,
           isFreeBreakfast: Math.random() > 0.5,
           isFreeCancellation: Math.random() > 0.3,
-          beaches_count: country.beaches_count,
+          beaches_count: country.beaches_count ?? 0,
         }))
-      : Array.from({ length: 16 }, (_, i) => ({ id: i + 1 }));
+      : Array.from({ length: 16 }, (_, i) => ({
+          id: `placeholder-${i + 1}`,
+          image: '/images/spain.jpg',
+          title: 'Loading...',
+          location: 'Loading...',
+          price: 0,
+          originalPrice: 0,
+          rating: 0,
+          reviews: 0,
+          discount: 0,
+          isFreeBreakfast: false,
+          isFreeCancellation: false,
+          beaches_count: 0,
+        }));
 
   const itemsPerPage = 16;
   const totalPages = Math.ceil(allProperties.length / itemsPerPage);
@@ -145,7 +158,15 @@ height={20}
         {/* Grid */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {paginatedProperties.map((p) => (
-            <PropertyCard key={p.id} />
+            <PropertyCard
+              key={p.id}
+              image={p.image}
+              title={p.title}
+              location={p.location}
+              price={p.price}
+              rating={p.rating}
+              reviews={p.reviews}
+            />
           ))}
         </div>
 
