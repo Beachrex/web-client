@@ -29,10 +29,9 @@ interface SimilarBeachesSectionProps {
 const SimilarBeachesSection: React.FC<SimilarBeachesSectionProps> = ({
   properties,
   distanceOptions = [
-    { value: 0.25, label: '250 m' },
-    { value: 0.5, label: '500 m' },
-    { value: 1, label: '1 km' },
-    { value: 2, label: '2 km' },
+    { value: 10, label: '10 km' },
+    { value: 15, label: '15 km' },
+    { value: 20, label: '20 km' },
   ],
   selectedDistance,
   onDistanceChange,
@@ -45,14 +44,16 @@ const SimilarBeachesSection: React.FC<SimilarBeachesSectionProps> = ({
       properties={properties}
       headerRight={
         <DistanceDropdown
-          value={selectedDistance?.value ?? distanceOptions[0]?.value ?? ''}
-          options={distanceOptions}
-          onChange={(val) => onDistanceChange?.(val)}
-          ariaLabel={t('dropdownAria')}
-          renderOptionLabel={(opt) =>
-            t('dropdownOption', { distance: opt.label })
-          }
+  value={selectedDistance?.value ?? distanceOptions[1]?.value ?? ''}
+  options={distanceOptions}
+  onChange={(val) => onDistanceChange?.(val)}
+  ariaLabel={t('dropdownAria')}
+  renderOptionLabel={(opt) =>
+    t('dropdownOption', { distance: opt.label })
+  }
         />
+
+
       }
     />
   );

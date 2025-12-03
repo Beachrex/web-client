@@ -84,28 +84,39 @@ const { data: mostVisitedBeaches } = useMostVisitedBeaches({
 const formatName = (s?: string | null) =>
   s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
 
+const { data: cityMost = [] } = useMostVisitedBeaches({
+  city_code: _citySlug,
+  limit: 20,
+});
+const mostVisitedSet = new Set(cityMost.map(b => b.id));
+
+
 const beachProperties: Property[] =
-  mostVisitedBeaches?.map((b) => ({
-    id: String(b.id),
-    image: buildCdnUrl(b.main_image, 'carousel') ?? '/images/default.jpg',
-    title: b.name ?? 'Unknown Beach',
-    location: formatName(b.city_slug ?? cityName),
-    price: Math.floor(Math.random() * 30) + 10,
-    originalPrice: Math.floor(Math.random() * 50) + 50,
-    rating: 4 + Math.random(),
-    reviews: Math.floor(Math.random() * 300) + 20,
-    discount: `${Math.floor(Math.random() * 20) + 5}`,
-  })) ?? [];
+  mostVisitedBeaches?.map((b) => {
+    const image = buildCdnUrl(b.main_image, 'list');
+    if (!image) throw new Error(`CITY PAGE: Beach ${b.id} missing main_image`);
 
+    return {
+      id: String(b.id),
+      image,
+      title: b.name ?? 'Unknown Beach',
+      location: formatName(b.city_slug ?? cityName),
 
-  // Temporary mock countries data for city search (replace with real API later)
-  const cityCountries: Country[] = Array.from({ length: 16 }, (_, i) => ({
-    code: `country-${i}`,
-    name: `Country ${i + 1}`,
-    full_name: `Country ${i + 1}`,
-    beaches_count: 112,
-    image_path: null,
-  })) as Country[];
+      // NO RANDOM — SSR SAFE
+      price: 0,
+      originalPrice: 0,
+      rating: 0,
+      reviews: 0,
+      discount: '0',
+
+      isFreeBreakfast: false,
+      isFreeCancellation: false,
+
+      isMostVisited: mostVisitedSet.has(b.id),
+
+    };
+  }) ?? [];
+
 
   // Temporary mock cities data (replace with real API later)
   const baseCity: Country = {
@@ -204,14 +215,14 @@ const infoCards =
       <CityCategories />
 
      <DynamicSearchBeaches
-  countries={cityCountries}
-  contextName={cityName}
-
   translationNamespace="TownPage"
   titleKey="browseBeachesTitle"
   titleParams={{ town: cityName }}
-
   filterButtonColor="#FF8000"
+  filters={{
+    city: _citySlug,
+    limit: 100,
+  }}
      />
 
 

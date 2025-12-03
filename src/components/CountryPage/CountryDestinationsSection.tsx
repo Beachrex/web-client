@@ -8,7 +8,7 @@ interface CountryDestinationsSectionProps {
   countryName: string;
   regionItems: Country[];
   cityItems: Country[];
-  islandItems: Country[];
+  islandItems?: Country[];
 }
 
 export default function CountryDestinationsSection({
@@ -44,16 +44,19 @@ export default function CountryDestinationsSection({
         cardVariant="city"
       />
 
-      {/* Islands carousel */}
-      <DestinationsCarousel
-        items={islandItems}
-        title={tCountry('islandsTitle', { country: countryName })}
-        countLabel={tCountry('allIslandsCount', {
-          count: islandItems.length,
-        })}
-        badgeLabel={tCountry('islandBadge')}
-        cardVariant="island"
-      />
+     {/* Islands carousel (only if country has islands) */}
+{islandItems && islandItems.length > 0 && (
+  <DestinationsCarousel
+    items={islandItems}
+    title={tCountry('islandsTitle', { country: countryName })}
+    countLabel={tCountry('allIslandsCount', {
+      count: islandItems.length,
+    })}
+    badgeLabel={tCountry('islandBadge')}
+    cardVariant="island"
+  />
+)}
+
 
     </>
   );

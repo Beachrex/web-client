@@ -212,7 +212,7 @@
   "AccommodationSection": {
     "accomodationTitle": "Nearby accommodations",
     "accommodationsLink": "All accommodations ({count})",
-    "dropdownLabel": "Distance ({distance}) from the beach",
+    "dropdownLabel": "Distance {distance} from the beach",
     "filterButton": "Filter",
     "mapButton": "View map",
     "dropdownOption": "Distance {distance} from the beach",
@@ -408,7 +408,7 @@
   "BeachSimilarBeaches": {
     "title": "Nearby beaches with similar characteristics",
     "dropdownAria": "Filter similar beaches by distance",
-    "dropdownOption": "Distance ({distance}) from the beach"
+    "dropdownOption": "Distance {distance} from the beach"
   },
 
   "BeachDetails": {

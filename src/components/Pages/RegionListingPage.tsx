@@ -86,33 +86,65 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
   const formatName = (str?: string | null) =>
     str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
-  const beachProperties: Property[] =
-    mostVisitedBeaches?.map((b) => ({
+  const { data: regionMost = [] } = useMostVisitedBeaches({
+  region_code: regionSlug,
+  limit: 20,
+});
+const mostVisitedSet = new Set(regionMost.map(b => b.id));
+
+
+ const beachProperties: Property[] =
+  mostVisitedBeaches?.map((b) => {
+    const image = buildCdnUrl(b.main_image, 'list');
+    if (!image) throw new Error(`Beach ${b.id} missing main_image`);
+
+    return {
       id: String(b.id),
-      image: buildCdnUrl(b.main_image, 'carousel') ?? '/images/default.jpg',
+      image,
       title: b.name ?? 'Unknown Beach',
       location: formatName(b.city_slug ?? b.region_slug ?? ''),
-      price: Math.floor(Math.random() * 30) + 10,
-      originalPrice: Math.floor(Math.random() * 40) + 40,
-      rating: 4 + Math.random(),
-      reviews: Math.floor(Math.random() * 300) + 20,
-      discount: `${Math.floor(Math.random() * 20) + 5}`,
-    })) ?? [];
+
+      // NO RANDOM ALLOWED
+      price: 0,
+      originalPrice: 0,
+      rating: 0,
+      reviews: 0,
+      discount: '0',
+
+      isFreeBreakfast: false,
+      isFreeCancellation: false,
+
+      isMostVisited: mostVisitedSet.has(b.id),
+
+    };
+  }) ?? [];
+
 
   // ----------------------------
   // DESTINATIONS
   // ----------------------------
-  const islandItems =
-    islands?.map((i) => ({
+ const islandItems =
+  islands?.map((i) => {
+    const image = buildCdnUrl(i.main_image, 'list');
+    if (!image) throw new Error(`Island ${i.slug} missing main_image`);
+
+    return {
       ...i,
-      main_image: buildCdnUrl(i.main_image, 'carousel'),
-    })) ?? [];
+      main_image: image,
+    };
+  }) ?? [];
+
 
   const cityItems =
-    cities?.map((c) => ({
+  cities?.map((c) => {
+    const image = buildCdnUrl(c.main_image, 'list');
+    if (!image) throw new Error(`City ${c.slug} missing main_image`);
+
+    return {
       ...c,
-      main_image: buildCdnUrl(c.main_image, 'carousel'),
-    })) ?? [];
+      main_image: image,
+    };
+  }) ?? [];
 
   // ----------------------------
   // BADGES + INFOCARDS
@@ -204,30 +236,39 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
         onMapClick={() => console.log('map')}
       />
 
-      <DestinationsCarousel
-        items={islandItems}
-        title={tRegion('islandsTitle', { region: regionName })}
-        countLabel={tRegion('allIslandsCount', { count: islandItems.length })}
-        badgeLabel={tRegion('islandBadge')}
-        cardVariant="island"
-      />
+      {islandItems.length > 0 && (
+  <DestinationsCarousel
+    items={islandItems}
+    title={tRegion('islandsTitle', { region: regionName })}
+    countLabel={tRegion('allIslandsCount', { count: islandItems.length })}
+    badgeLabel={tRegion('islandBadge')}
+    cardVariant="island"
+  />
+)}
 
-      <DestinationsCarousel
-        items={cityItems}
-        title={tRegion('citiesTitle', { region: regionName })}
-        countLabel={tRegion('allCitiesCount', { count: cityItems.length })}
-        badgeLabel={tRegion('cityBadge')}
-        cardVariant="city"
-      />
+
+      {cityItems.length > 0 && (
+  <DestinationsCarousel
+    items={cityItems}
+    title={tRegion('citiesTitle', { region: regionName })}
+    countLabel={tRegion('allCitiesCount', { count: cityItems.length })}
+    badgeLabel={tRegion('cityBadge')}
+    cardVariant="city"
+  />
+)}
+
 
       <DynamicSearchBeaches
-        countries={[]}
-        contextName={regionName}
-        translationNamespace="RegionPage"
-        titleKey="browseBeachesTitle"
-        titleParams={{ region: regionName }}
-        filterButtonColor="#FF2877"
+  translationNamespace="RegionPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ region: regionName }}
+  filterButtonColor="#FF2877"
+  filters={{
+    region: regionSlug,   // PRAVILEN API QUERY
+    limit: 100,
+  }}
       />
+
     </>
   );
 }

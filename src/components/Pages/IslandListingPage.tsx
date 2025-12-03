@@ -85,27 +85,56 @@ export default function IslandListingPage({
   const formatName = (s?: string | null) =>
     s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
 
+  const { data: islandMost = [] } = useMostVisitedBeaches({
+  island_code: _islandSlug,
+  limit: 20,
+});
+const mostVisitedSet = new Set(islandMost.map(b => b.id));
+
+
   const beachProperties: Property[] =
-    mostVisitedBeachesData?.map((b) => ({
+  mostVisitedBeachesData?.map((b) => {
+    const image = buildCdnUrl(b.main_image, 'list');
+    if (!image) {
+      throw new Error(`Island MOST VISITED: Beach ${b.id} missing main_image`);
+    }
+
+    return {
       id: String(b.id),
-      image: buildCdnUrl(b.main_image, 'carousel') ?? '/images/default.jpg',
+      image,
       title: b.name ?? 'Unknown Beach',
       location: formatName(b.city_slug ?? islandName),
-      price: Math.floor(Math.random() * 30) + 10,
-      originalPrice: Math.floor(Math.random() * 50) + 50,
-      rating: 4 + Math.random(),
-      reviews: Math.floor(Math.random() * 300) + 20,
-      discount: `${Math.floor(Math.random() * 20) + 5}`,
-    })) ?? [];
+
+      price: 0,
+      originalPrice: 0,
+      rating: 0,
+      reviews: 0,
+      discount: '0',
+
+      isFreeBreakfast: false,
+      isFreeCancellation: false,
+
+      isMostVisited: mostVisitedSet.has(b.id),
+
+    };
+  }) ?? [];
+
 
   // ---------------------------------------
   // CITY DESTINATIONS
   // ---------------------------------------
-  const cityItems =
-    cities?.map((c) => ({
+ const cityItems =
+  cities?.map((c) => {
+    const image = buildCdnUrl(c.main_image, 'list');
+    if (!image) {
+      throw new Error(`Island CITY DESTINATION: City ${c.slug} missing main_image`);
+    }
+
+    return {
       ...c,
-      main_image: buildCdnUrl(c.main_image, 'carousel'),
-    })) ?? [];
+      main_image: image, // replace API path with CDN URL
+    };
+  }) ?? [];
 
   // ---------------------------------------
   // BADGES
@@ -209,13 +238,16 @@ export default function IslandListingPage({
 
       {/* SEARCH BEACHES */}
       <DynamicSearchBeaches
-        countries={[]} // islands do NOT have sub-countries
-        contextName={islandName}
-        translationNamespace="IslandPage"
-        titleKey="browseBeachesTitle"
-        titleParams={{ island: islandName }}
-        filterButtonColor="#FFC422"
+  translationNamespace="IslandPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ island: islandName }}
+  filterButtonColor="#FFC422"
+  filters={{
+    island: _islandSlug,
+    limit: 100,
+  }}
       />
+
     </>
   );
 }
