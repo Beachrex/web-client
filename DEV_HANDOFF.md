@@ -15,6 +15,120 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2025-12-03 – Imagor Image Optimization & TypeScript Fixes
+
+### Overview
+
+Disabled Vercel's built-in image optimization in favor of using Imagor CDN for all image optimization. This prevents hitting Vercel's image optimization limits and ensures consistent image delivery through our CDN infrastructure.
+
+### What Changed
+
+**Next.js Configuration:**
+- Added `unoptimized: true` to `next.config.js` images configuration
+- All images now served directly from Imagor CDN endpoints without Vercel processing
+- Prevents Vercel from proxying images through `/_next/image` endpoint
+
+**TypeScript Fixes:**
+- Fixed unsafe assignment errors in `WorldSearchBeaches.tsx`
+- Added proper type safety for fallback placeholder data
+- All properties now have explicit fallback values with `??` operators
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `next.config.js` | Added `unoptimized: true` to disable Vercel image optimization |
+| `src/components/WorldPage/WorldSearchBeaches.tsx` | Fixed TypeScript unsafe assignment errors with proper fallback values |
+
+### Image Optimization Strategy
+
+**Before:**
+```typescript
+// Vercel would proxy and optimize images
+<Image src="https://s3.beachrex.com/teaser/img/beaches/..." />
+// → Proxied through /_next/image?url=...&w=...&q=...
+```
+
+**After:**
+```typescript
+// Images served directly from Imagor CDN
+<Image src="https://s3.beachrex.com/teaser/img/beaches/..." />
+// → Served directly from CDN (already optimized by Imagor)
+```
+
+### Configuration Details
+
+**next.config.js:**
+```javascript
+images: {
+  remotePatterns: [
+    // ... CDN domains
+  ],
+
+  // Disable Vercel Image Optimization - we use Imagor for optimization
+  // This prevents hitting Vercel's image optimization limits
+  unoptimized: true,
+
+  dangerouslyAllowSVG: true,
+  contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+}
+```
+
+### Benefits
+
+✅ **No Vercel limits** - Unlimited image requests without hitting Vercel's optimization quota
+✅ **Faster delivery** - Images served directly from CDN without Vercel proxy
+✅ **Consistent optimization** - All images optimized by Imagor with consistent quality
+✅ **Cost savings** - No Vercel image optimization charges
+✅ **Better caching** - CDN caching without Vercel intermediary
+
+### TypeScript Fixes
+
+**WorldSearchBeaches.tsx:**
+- Fixed unsafe assignment errors by providing complete fallback objects
+- Placeholder data now includes all required PropertyCard props
+- Added explicit type safety with `??` operators for all optional fields
+
+**Before:**
+```typescript
+: Array.from({ length: 16 }, (_, i) => ({ id: i + 1 }));
+// ❌ Missing required props: image, title, location, price, rating, reviews
+```
+
+**After:**
+```typescript
+: Array.from({ length: 16 }, (_, i) => ({
+    id: `placeholder-${i + 1}`,
+    image: '/images/spain.jpg',
+    title: 'Loading...',
+    location: 'Loading...',
+    price: 0,
+    originalPrice: 0,
+    rating: 0,
+    reviews: 0,
+    discount: 0,
+    isFreeBreakfast: false,
+    isFreeCancellation: false,
+    beaches_count: 0,
+  }));
+// ✅ All required props provided with proper types
+```
+
+### Notes
+
+- The `remotePatterns` configuration is still required for Next.js to allow external images
+- SVG support remains enabled with CSP for security
+- All existing CDN endpoints (teaser, large, assets) continue to work as before
+- No changes needed to existing image URLs or `buildCdnUrl()` utility
+
+### Related Documentation
+
+- **CDN Strategy**: See "Multi-CDN Endpoint Strategy" section below
+- **Image Utilities**: `src/lib/utils/beach-images.ts`
+- **Environment Variables**: `NEXT_PUBLIC_CDN_TEASER`, `NEXT_PUBLIC_CDN_LARGE`, `NEXT_PUBLIC_CDN_ASSETS`
+
+---
+
 ## 2025-12-01 – Global Search with Meilisearch Integration
 
 ### Overview
