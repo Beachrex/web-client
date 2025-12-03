@@ -8,7 +8,6 @@ import { PropertySection } from '@/components/PropertySection';
 import {
   getContinent,
   getContinents,
-  getCountries,
   getMostVisitedBeaches,
 } from '@/lib/api-client/sdk.gen';
 
@@ -109,13 +108,6 @@ const Page = async ({ params }: PageProps) => {
     const continent = continentResponse?.data;
     if (!continent) notFound();
 
-    // Fetch countries
-    const { data: countriesResponse } = await getCountries({
-      query: { continent: continentCode },
-      headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
-    });
-
-    const countries = countriesResponse?.data ?? [];
 
     // Fetch MOST VISITED beaches
     const { data: mostVisitedResponse } = await getMostVisitedBeaches({
@@ -130,24 +122,31 @@ const Page = async ({ params }: PageProps) => {
 
     const mostVisited = mostVisitedResponse?.data ?? [];
 
-  const transformedProperties = mostVisited.map((beach, index) => ({
-  id: String(beach.id ?? `beach-${index}`),
+ // MOST VISITED → PropertySection (SSR-safe, no fallback, no random)
+const transformedProperties = mostVisited.map((beach) => {
+  const image = buildCdnUrl(beach.main_image, 'list');
+  if (!image) {
+    throw new Error(`Beach ID ${beach.id} is missing main_image`);
+  }
 
-  image:
-    buildCdnUrl(beach.main_image, 'carousel') ??
-    '/images/propertycard/card-banner.jpg', // <-- fallback string
+  return {
+    id: String(beach.id),
 
-  title: beach.name ?? 'Unknown beach',
+    image, // ✔ guaranteed string
+    title: beach.name ?? 'Unknown beach',
+    location: beach.city_slug ?? beach.region_slug ?? '',
 
- location: beach.city_slug ?? beach.region_slug ?? '',
+    // ✔ no random → SSR stable (until API gives real values)
+    price: 0,
+    originalPrice: 0,
+    rating: 0,
+    reviews: 0,
+    discount: '0',
 
-
-  price: Math.floor(Math.random() * 30) + 10,
-  originalPrice: Math.floor(Math.random() * 40) + 40,
-  rating: 4 + Math.random(),
-  reviews: Math.floor(Math.random() * 400) + 10,
-  discount: `${Math.floor(Math.random() * 20) + 5}`,
-}));
+    isFreeBreakfast: false,
+    isFreeCancellation: false,
+  };
+});
 
 
     const bannerImage = continent.main_image
@@ -184,12 +183,15 @@ const Page = async ({ params }: PageProps) => {
         <ContinentCountriesSection />
 
         <DynamicSearchBeaches
-          countries={countries}
-          contextName={continent?.name ?? resolvedParams.continent}
-          translationNamespace="SearchBeach"
-          titleKey="title"
-          filterButtonColor="#5E1CA5"
+  translationNamespace="SearchBeach"
+  titleKey="title"
+  filterButtonColor="#5E1CA5"
+  filters={{
+    continent_code: continent.code,
+    limit: 100,
+  }}
         />
+
       </>
     );
   } catch (error) {

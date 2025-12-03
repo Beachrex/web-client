@@ -3,9 +3,9 @@
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
 import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
+import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
-import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 
 import { usePathname } from '@/i18n/routing';
 import { ChevronRight } from 'lucide-react';
@@ -14,13 +14,12 @@ import { useLocale, useTranslations } from 'next-intl';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildCountryUrlFromNavigation } from '@/lib/utils/beach-urls';
 
-import { useCountryDetails } from '@/hooks/useCountryDetails';
-import { useRegions } from '@/hooks/useRegions';
 import { useCities } from '@/hooks/useCities';
+import { useCountryDetails } from '@/hooks/useCountryDetails';
 import { useIslands } from '@/hooks/useIslands';
 import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
+import { useRegions } from '@/hooks/useRegions';
 
-import type { Country } from '@/lib/api-client/types.gen';
 
 interface PageProps {
   params: {
@@ -58,74 +57,102 @@ export default function Page({ params }: PageProps) {
   const countryBeachesCount = countryDetails?.beaches_count ?? 0;
   const countryAccommodationsCount = 0;
 
-  // 📌 MOST VISITED BEACHES — REAL API
   const { data: mostVisited = [] } = useMostVisitedBeaches({
     country_code: countryDetails?.code,
     limit: 20,
   });
 
-  // Capitalize
+  // CAPITALIZE helper
   const cap = (str?: string | null) =>
     str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
-  // Transform for PropertySection
-  const beachProperties: Property[] = mostVisited.map((beach) => ({
-    id: String(beach.id ?? ''),
+  const { data: mostVisitedTop = [] } = useMostVisitedBeaches({
+  country_code: countryDetails?.code,
+  limit: 20,
+});
 
-    image:
-      buildCdnUrl(beach.main_image, 'carousel') ??
-      '/images/propertycard/card-banner.jpg',
+const mostVisitedSet = new Set(mostVisitedTop.map(b => b.id));
 
+
+ const beachProperties: Property[] = mostVisited.map((beach) => {
+  const image = buildCdnUrl(beach.main_image, 'list');
+  if (!image) throw new Error(`Beach ID ${beach.id} missing main_image`);
+
+  return {
+    id: String(beach.id),
+    image,
     title: beach.name ?? 'Unknown beach',
+    location: cap(beach.city_slug ?? beach.region_slug),
 
-    location: cap(beach.city_slug ?? beach.region_slug), // brez države
-
-    price: Math.floor(Math.random() * 20) + 15,
-    originalPrice: Math.floor(Math.random() * 40) + 45,
-    rating: 3.5 + Math.random() * 1.5,
-    reviews: Math.floor(Math.random() * 300) + 10,
-    discount: `${Math.floor(Math.random() * 20) + 5}`,
+    price: 0,
+    originalPrice: 0,
+    rating: 0,
+    reviews: 0,
+    discount: '0',
 
     isFreeBreakfast: false,
     isFreeCancellation: true,
-  }));
 
-  // Destination carousels
-  const regionItems = regions ?? [];
-  const cityItems = cities ?? [];
-  const islandItems = islands ?? [];
+    // ⭐ NEW:
+    isMostVisited: mostVisitedSet.has(beach.id),
+  };
+});
 
-  // Search dropdown countries — MOCK (will be replaced later)
-  const countryCountries: Country[] = Array.from({ length: 16 }, (_, i) => ({
-    code: `country-${i}`,
-    name: `Country ${i + 1}`,
-    full_name: `Country ${i + 1}`,
-    beaches_count: 112,
-    image_path: null,
-  }));
 
-  // Banner image
+  const regionItems =
+    regions?.map((r) => ({
+      ...r,
+      image: buildCdnUrl(r.main_image, 'list'),
+    })) ?? [];
+
+  const cityItems =
+    cities?.map((c) => ({
+      ...c,
+      image: buildCdnUrl(c.main_image, 'list'),
+    })) ?? [];
+
+  const islandItems =
+    islands?.map((i) => ({
+      ...i,
+      image: buildCdnUrl(i.main_image, 'list'),
+    })) ?? [];
+
+  // BANNER IMAGE (NO FALLBACK)
   const bannerImage = buildCdnUrl(countryDetails?.main_image, 'banner');
 
   // BADGES
   const bottomBadges =
-    countryDetails?.badges
-      ?.filter((b) => b.name && b.icon)
-      ?.map((b) => ({
-        label: b.name!,
-        icon: buildCdnUrl(b.icon, 'icon')!,
-      })) ?? [];
+  countryDetails?.badges
+    ?.filter((b) => b.name && b.icon)
+    ?.map((b) => {
+      const icon = buildCdnUrl(b.icon, 'icon');
+      if (!icon) {
+        throw new Error(`Missing icon for badge ${b.name}`);
+      }
 
-  // INFOCARDS
+      return {
+        label: b.name!,
+        icon,
+      };
+    }) ?? [];
+
+
   const infoCards =
-    countryDetails?.articles
-      ?.filter((a) => a.title && a.excerpt && a.feature_image)
-      ?.map((a) => ({
+  countryDetails?.articles
+    ?.filter((a) => a.title && a.excerpt && a.feature_image)
+    ?.map((a) => {
+      const image = buildCdnUrl(a.feature_image, 'list');
+      if (!image) {
+        throw new Error(`Missing feature_image for article ${a.title}`);
+      }
+
+      return {
         title: a.title!,
         subtitle: a.excerpt!,
-        image: buildCdnUrl(a.feature_image, 'list')!,
+        image,
         link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
-      })) ?? [];
+      };
+    }) ?? [];
 
   return (
     <>
@@ -191,14 +218,17 @@ export default function Page({ params }: PageProps) {
       />
 
       {/* SEARCH BEACHES */}
-      <DynamicSearchBeaches
-        countries={countryCountries}
-        contextName={countryName}
-        translationNamespace="countryPage"
-        titleKey="browseBeachesTitle"
-        titleParams={{ country: countryName }}
-        filterButtonColor="#DD0000"
-      />
+    <DynamicSearchBeaches
+  translationNamespace="countryPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ country: countryName }}
+  filterButtonColor="#DD0000"
+  filters={{
+    country: countryDetails?.code,
+    limit: 100,
+  }}
+    />
+
     </>
   );
 }

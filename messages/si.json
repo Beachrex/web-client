@@ -202,7 +202,7 @@
   "AccommodationSection": {
     "accomodationTitle": "Nastanitve v bližini",
     "accommodationsLink": "Vse nastanitve ({count})",
-    "dropdownLabel": "Oddaljenost ({distance}) od plaže",
+    "dropdownLabel": "Oddaljenost {distance} od plaže",
     "filterButton": "Filtriraj",
     "mapButton": "Poglej zemljevid",
     "dropdownOption": "Razdalja {distance} od plaže",
@@ -408,7 +408,7 @@
   "BeachSimilarBeaches": {
     "title": "Bližnje plaže s podobnimi karakteristikami",
     "dropdownAria": "Filtriraj podobne plaže po oddaljenosti",
-    "dropdownOption": "Oddaljenost ({distance}) od plaže"
+    "dropdownOption": "Oddaljenost {distance} od plaže"
   },
   "BeachDetails": {
     "title": "Podrobne informacije",
