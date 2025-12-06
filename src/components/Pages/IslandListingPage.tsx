@@ -115,6 +115,7 @@ const mostVisitedSet = new Set(islandMost.map(b => b.id));
       isFreeCancellation: false,
 
       isMostVisited: mostVisitedSet.has(b.id),
+      countryCode: b.country_code,
 
     };
   }) ?? [];
@@ -141,11 +142,11 @@ const mostVisitedSet = new Set(islandMost.map(b => b.id));
   // ---------------------------------------
   const bottomBadges =
     islandDetails?.badges
-      ?.filter((b) => b.name && b.icon)
-      ?.map((b) => ({
-        label: b.name!,
-        icon: buildCdnUrl(b.icon, 'icon')!,
-      })) ?? [];
+        ?.filter((b) => b.name)
+    ?.map((b) => ({
+      label: b.name!,
+      icon: b.icon ? buildCdnUrl(b.icon, 'icon') : null,
+    })) ?? [];
 
   // ---------------------------------------
   // INFO CARDS

@@ -95,6 +95,9 @@ const mostVisitedSet = new Set(mostVisitedTop.map(b => b.id));
 
     // ⭐ NEW:
     isMostVisited: mostVisitedSet.has(beach.id),
+
+    countryCode: beach.country_code,
+
   };
 });
 
@@ -120,21 +123,21 @@ const mostVisitedSet = new Set(mostVisitedTop.map(b => b.id));
   // BANNER IMAGE (NO FALLBACK)
   const bannerImage = buildCdnUrl(countryDetails?.main_image, 'banner');
 
-  // BADGES
-  const bottomBadges =
+const bottomBadges =
   countryDetails?.badges
-    ?.filter((b) => b.name && b.icon)
-    ?.map((b) => {
-      const icon = buildCdnUrl(b.icon, 'icon');
-      if (!icon) {
-        throw new Error(`Missing icon for badge ${b.name}`);
-      }
+    ?.filter((b) => b.name)
+    ?.map((b) => ({
+      label: b.name!,
+      icon: b.icon ? buildCdnUrl(b.icon, 'icon') : null,
+    })) ?? [];
 
-      return {
-        label: b.name!,
-        icon,
-      };
-    }) ?? [];
+// Build minimal country object for TopBar
+const topBarCountry = countryDetails
+  ? {
+      code: countryDetails.code,
+      name: countryDetails.name,
+    }
+  : undefined;
 
 
   const infoCards =
@@ -172,15 +175,18 @@ const mostVisitedSet = new Set(mostVisitedTop.map(b => b.id));
       />
 
       {/* HERO */}
-      <BannerSection
-        image={bannerImage}
-        title={countryName}
-        topBarVariant="country"
-        accommodationCount={countryAccommodationsCount}
-        beachCount={countryBeachesCount}
-        badges={bottomBadges.length ? bottomBadges : undefined}
-        infoCards={infoCards.length ? infoCards : undefined}
-      />
+    <BannerSection
+  image={bannerImage}
+  title={countryName}
+  topBarVariant="country"
+  country={topBarCountry}
+  continent={countryDetails?.continent}   // ✅ DODANO
+  accommodationCount={countryAccommodationsCount}
+  beachCount={countryBeachesCount}
+  badges={bottomBadges.length ? bottomBadges : undefined}
+  infoCards={infoCards.length ? infoCards : undefined}
+    />
+
 
       {/* MOST VISITED BEACHES */}
       <PropertySection

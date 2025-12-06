@@ -1,13 +1,13 @@
 'use client';
 
-import { Carousel } from 'flowbite-react';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import PropertyCard from './PropertyCard/PropertyCard';
-import Image from 'next/image';
-import { ChevronRight } from 'lucide-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import { ChevronRight as ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import React, { useEffect, useMemo, useState } from 'react';
+import PropertyCard from './PropertyCard/PropertyCard';
 
-// TODO: optionally export this type so you can reuse it elsewhere
+// Property type
 export interface Property {
   id: string;
   image: string;
@@ -20,13 +20,13 @@ export interface Property {
   discount?: string;
   isFreeBreakfast?: boolean;
   isFreeCancellation?: boolean;
+  countryCode?: string;
 }
 
 interface PropertySectionProps {
   title: string;
   totalCount?: number;
   properties: Property[];
-  // Optional: custom right-side element (e.g. dropdown instead of link)
   headerRight?: React.ReactNode;
 }
 
@@ -34,25 +34,28 @@ interface PropertyCarouselProps {
   items: Property[];
 }
 
-function PropertyFlowbiteCarousel({ items = [] }: PropertyCarouselProps) {
+/* -----------------------------------------------------
+   EMBLA CAROUSEL (NO DRAGGING) — 100% FLOWBITE UI MATCH
+------------------------------------------------------- */
+function PropertyEmblaCarousel({ items = [] }: PropertyCarouselProps) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
 
-  // Update itemsPerSlide on resize based on Tailwind breakpoints
+  // Responsive: number of cards per slide
   useEffect(() => {
-    const onResize = () => {
+    const update = () => {
       const w = window.innerWidth;
-      if (w >= 1536) setItemsPerSlide(4); // 2xl: 4 cards
-      else if (w >= 1280) setItemsPerSlide(3); // xl: 3 cards
-      else if (w >= 640) setItemsPerSlide(2); // sm/md/lg: 2 cards
-      else setItemsPerSlide(1); // base: 1 card
+      if (w >= 1536) setItemsPerSlide(4);
+      else if (w >= 1280) setItemsPerSlide(3);
+      else if (w >= 640) setItemsPerSlide(2);
+      else setItemsPerSlide(1);
     };
 
-    onResize();
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, []);
 
-  // Chunk items into slides based on itemsPerSlide
+  // Group cards into slides
   const slides = useMemo(() => {
     const chunks: Property[][] = [];
     for (let i = 0; i < items.length; i += itemsPerSlide) {
@@ -61,79 +64,60 @@ function PropertyFlowbiteCarousel({ items = [] }: PropertyCarouselProps) {
     return chunks;
   }, [items, itemsPerSlide]);
 
-  // Dynamic height measurement so all slides share the same height
-  const measurementRef = useRef<HTMLDivElement | null>(null);
-  const [measuredHeight, setMeasuredHeight] = useState<number | undefined>();
+  const [emblaRef, embla] = useEmblaCarousel({
+  dragFree: false,   // optional
+  loop: false,
+  watchDrag: false,  // 🔥 KLJUČNO! Onemogoči analiziranje draga
+});
 
-  useEffect(() => {
-    if (!measurementRef.current) return;
 
-    const ro = new ResizeObserver((entries) => {
-      const h = entries[0]?.contentRect?.height;
-      if (h) setMeasuredHeight(Math.ceil(h));
-    });
-
-    ro.observe(measurementRef.current);
-    return () => ro.disconnect();
-  }, [slides.length]);
-
-  // Prevent dragging/swiping the outer Flowbite carousel.
-  // We want navigation between slides ONLY via controls (arrows/indicators),
-  // not via touch drag on the cards themselves.
-  const stopOuterSwipe = (e: React.SyntheticEvent) => {
-    e.stopPropagation();
-  };
+  const scrollPrev = () => embla?.scrollPrev();
+  const scrollNext = () => embla?.scrollNext();
 
   if (!items.length) return null;
 
   return (
-    <div>
-      {/* Hidden measurer for consistent card height */}
-      <div className="invisible absolute left-0 top-0 -z-10 w-full">
-        <div ref={measurementRef}>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-            {(slides[0] ?? []).map((card, i) => (
-              <PropertyCard key={`measure_${i}`} {...card} />
-            ))}
-          </div>
-        </div>
-      </div>
+    <div className="relative">
 
-      {/* Main carousel wrapper */}
-      <div style={{ height: measuredHeight ? `${measuredHeight}px` : undefined }}>
-        <Carousel
-          indicators={false}
-          slide={false} // static; no auto sliding
-          className="h-full"
-        >
+      {/* VIEWPORT */}
+      <div className="embla overflow-hidden" ref={emblaRef}>
+        <div className="embla__container flex">
           {slides.map((chunk, idx) => (
-            <div
-              key={idx}
-              className="h-full px-0"
-              // Stop drag / swipe events on the slides so the outer carousel
-              // does not move when the user drags over the cards.
-              onTouchStart={stopOuterSwipe}
-              onTouchMove={stopOuterSwipe}
-              onTouchEnd={stopOuterSwipe}
-              onMouseDown={stopOuterSwipe}
-              onMouseMove={stopOuterSwipe}
-              onMouseUp={stopOuterSwipe}
-            >
-              <div className="grid h-full grid-cols-1 content-center gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+            <div key={idx} className="embla__slide flex-shrink-0 w-full px-1">
+
+              <div className="grid grid-cols-1 h-full gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                 {chunk.map((card, i) => (
                   <PropertyCard key={`${idx}_${i}`} {...card} />
                 ))}
               </div>
+
             </div>
           ))}
-        </Carousel>
+        </div>
       </div>
+
+      {/* LEFT ARROW */}
+      <button
+        onClick={scrollPrev}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
+      >
+        <ChevronLeft size={24} />
+      </button>
+
+      {/* RIGHT ARROW */}
+      <button
+        onClick={scrollNext}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
+      >
+        <ChevronRight size={24} />
+      </button>
     </div>
   );
 }
 
-// ---------- PropertySection component (ostane skoraj isto) ----------
-
+/* -----------------------------------------------------
+   PROPERTY SECTION COMPONENT
+------------------------------------------------------- */
 export const PropertySection: React.FC<PropertySectionProps> = ({
   title,
   totalCount = 124,
@@ -144,7 +128,8 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
 
   return (
     <section className="relative overflow-x-hidden bg-white py-10 sm:py-14 lg:py-20">
-      {/* Decorative background image (fixed to left edge) */}
+
+      {/* Decorative background image */}
       <div className="pointer-events-none absolute left-0 top-1/2 z-[1] -translate-y-1/2">
         <div className="relative h-[400px] w-[250px] opacity-70 sm:w-[300px] lg:w-[350px]">
           <Image
@@ -158,105 +143,69 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
         </div>
       </div>
 
-      {/* Main content container */}
+      {/* Main container */}
       <div className="container relative z-10 mx-auto">
-        {/* Header row: title (left) | controls (right) */}
+
+        {/* Header */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4 sm:mb-6">
-          {/* Left: Section title */}
-          <h2 className="font-figtree text-[22px] font-bold leading-[100%] text-[#222222] sm:text-[26px] lg:text-[30px]">
+
+          {/* Title */}
+          <h2 className="font-figtree text-[22px] sm:text-[26px] lg:text-[30px] font-bold text-[#222222]">
             {title}
           </h2>
 
-          {/* Right: media icons + secondary action (link or dropdown) */}
+          {/* Right side icons */}
           <div className="flex flex-wrap items-center gap-[16px]">
-            {/* Media display toggle section – ALWAYS visible */}
-            <div className="flex flex-wrap items-center justify-center gap-[10px] rounded-[6px] bg-[#E7E7E7] px-[8px] py-[6px]">
-              <span className="whitespace-nowrap font-figtree text-[14px] font-semibold text-[#4D4D4D]">
+
+            {/* Display mode icons */}
+            <div className="flex items-center gap-[10px] rounded-[6px] bg-[#E7E7E7] px-[8px] py-[6px]">
+              <span className="font-figtree text-[14px] font-semibold text-[#4D4D4D]">
                 {t('displayLabel')}
               </span>
 
-              {/* Media icons */}
               <div className="flex items-center gap-[10px]">
-                {/* Photo */}
-                <button
-                  type="button"
-                  onClick={() => console.log('photo clicked')}
-                >
-                  <Image
-                    src="/images/beachmedia/photo.png"
-                    alt="photo"
-                    width={24}
-                    height={24}
-                  />
-                </button>
-
-                <div className="h-[25px] w-[1px] bg-[#ffffff]" />
-
-                {/* Video */}
-                <button
-                  type="button"
-                  onClick={() => console.log('video clicked')}
-                >
-                  <Image
-                    src="/images/beachmedia/video-icon-white.png"
-                    alt="video"
-                    width={24}
-                    height={24}
-                  />
-                </button>
-
-                <div className="h-[25px] w-[1px] bg-[#ffffff]" />
-
-                {/* 360° view */}
-                <button
-                  type="button"
-                  onClick={() => console.log('360 clicked')}
-                >
-                  <Image
-                    src="/images/beachmedia/360-degree-white.png"
-                    alt="360 view"
-                    width={24}
-                    height={24}
-                  />
-                </button>
-
-                <div className="h-[25px] w-[1px] bg-[#ffffff]" />
-
-                {/* Live cam */}
-                <button
-                  type="button"
-                  onClick={() => console.log('live cam clicked')}
-                >
-                  <Image
-                    src="/images/beachmedia/play-button-arrowhead-white.png"
-                    alt="live cam"
-                    width={24}
-                    height={24}
-                  />
-                </button>
+                <button><Image
+src="/images/beachmedia/photo.png" width={24} height={24}
+alt="photo"
+                        /></button>
+                <div className="h-[25px] w-[1px] bg-white" />
+                <button><Image
+src="/images/beachmedia/video-icon-white.png" width={24} height={24}
+alt="video"
+                        /></button>
+                <div className="h-[25px] w-[1px] bg-white" />
+                <button><Image
+src="/images/beachmedia/360-degree-white.png" width={24} height={24}
+alt="360"
+                        /></button>
+                <div className="h-[25px] w-[1px] bg-white" />
+                <button><Image
+src="/images/beachmedia/play-button-arrowhead-white.png" width={24} height={24}
+alt="live cam"
+                        /></button>
               </div>
             </div>
 
-            {/* Secondary action: default link OR custom headerRight */}
+            {/* Right link */}
             {headerRight ?? (
               <a
                 href="#"
-                className="flex items-center gap-1 font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
+                className="flex items-center gap-1 font-figtree text-[14px] font-bold text-[#8D8D8D] underline hover:text-[#555]"
               >
                 {t('allBeachesLink', { count: totalCount })}
-                <ChevronRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4" />
               </a>
             )}
           </div>
         </div>
 
-        {/* Property cards carousel / or empty state */}
+        {/* Carousel or empty state */}
         {properties.length === 0 ? (
           <p className="font-figtree text-[14px] text-[#8D8D8D]">
             {t('noBeachesLabel')}
           </p>
         ) : (
-          <PropertyFlowbiteCarousel items={properties} />
+          <PropertyEmblaCarousel items={properties} />
         )}
       </div>
     </section>

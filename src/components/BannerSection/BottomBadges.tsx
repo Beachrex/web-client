@@ -7,7 +7,7 @@ import { VARIANT_BG_CLASS } from '../ui/pageVariants';
 
 interface Badge {
   label: string;
-  icon: string; // nikoli undefined
+  icon: string | null; // nikoli undefined
 }
 
 
@@ -33,6 +33,7 @@ const BadgeItem: React.FC<BadgeItemProps> = ({ label, icon, colorClass }) => (
       colorClass,
     ].join(' ')}
   >
+    {icon && (
     <Image
       src={icon}
       alt={label}
@@ -40,6 +41,7 @@ const BadgeItem: React.FC<BadgeItemProps> = ({ label, icon, colorClass }) => (
       height={20}
       className="mr-2 h-[1.1em] w-[1.1em] flex-none object-contain"
     />
+    )}
     <span className="truncate">{label}</span>
   </div>
 );
