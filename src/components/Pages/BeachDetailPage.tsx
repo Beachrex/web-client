@@ -65,32 +65,36 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
   // Transform similar beaches → Property[]
   // ------------------------------------
   const similarProperties: Property[] = useMemo(() => {
-    if (!beachId) return [];
+  if (!beachId) return [];
 
-    return radiusBeaches
-      .filter((b) => b.id !== beachId)
-      .map((b) => {
-        const image = buildCdnUrl(b.main_image, 'list');
-        if (!image) return null;
+  return radiusBeaches
+    .filter((b) => b.id !== beachId)
+    .map((b) => {
+      const image = buildCdnUrl(b.main_image, 'list');
+      if (!image) return null;
 
-        const item: Property = {
-          id: String(b.id),
-          image,
-          title: b.name ?? 'Unknown beach',
-          location: b.city_slug ?? '',
-          price: 0,
-          originalPrice: 0,
-          rating: 0,
-          reviews: 0,
-          discount: '0',
-          isFreeBreakfast: false,
-          isFreeCancellation: false,
-        };
+      const item: Property = {
+        id: String(b.id),
+        image,
+        title: b.name ?? 'Unknown beach',
+        location: b.city_slug ?? b.region_slug ?? '',
+        price: 0,
+        originalPrice: 0,
+        rating: 0,
+        reviews: 0,
+        discount: '0',
+        isFreeBreakfast: false,
+        isFreeCancellation: false,
 
-        return item;
-      })
-      .filter((x): x is Property => x !== null);
-  }, [radiusBeaches, beachId]);
+        // ⭐ MUST ADD THIS
+        countryCode: b.country_code,
+      };
+
+      return item;
+    })
+    .filter((x): x is Property => x !== null);
+}, [radiusBeaches, beachId]);
+
 
   return (
     <>

@@ -2,10 +2,12 @@
 
 import type { Continent, Country } from '@/lib/api-client/types.gen';
 import { continentCodeToKey } from '@/lib/constants/mappings';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { getContinentIcon } from '@/lib/utils/icons';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
+
 import {
   type PageVariant,
   VARIANT_BG_CLASS,
@@ -13,20 +15,14 @@ import {
   VARIANT_TEXT_CLASS,
 } from '../ui/pageVariants';
 
-// Local extension so we can safely use country.flag_icon later
-type CountryWithFlag = Country & {
-  flag_icon?: string | null;
-};
+type CountryWithFlag = Country & { flag_icon?: string | null };
 
 interface TopBarProps {
   continent?: Continent;
   country?: CountryWithFlag;
   accommodationCount?: number;
-  /** Used for region/island/city/country title (e.g. "Kvarner", "Krk") */
   title?: string;
-  /** Controls visual style: continent | region | island | city | country */
   variant?: PageVariant;
-  /** Explicit beach count for non-continent variants */
   beachCount?: number;
 }
 
@@ -41,60 +37,68 @@ const TopBar: React.FC<TopBarProps> = ({
   const t = useTranslations('TopBar');
   const tContinent = useTranslations('Continents');
 
-  const isContinent = variant === 'continent';
+  // ------------------------------------------------
+  // EFFECTIVE CONTINENT CODE (works for ALL pages)
+  // ------------------------------------------------
+  const effectiveContinentCode =
+    continent?.code ??
+    (country?.code ? continentCodeToKey[country.code] : null) ??
+    'europe';
 
-  // Continent-related data (only relevant for continent variant)
-  const continentKey = continent?.code
-    ? (continentCodeToKey[continent.code] ?? 'europe')
-    : 'europe';
+  const continentIcon = getContinentIcon(effectiveContinentCode);
+  const continentName = tContinent(effectiveContinentCode);
 
-  const continentIcon = continent
-    ? getContinentIcon(continentKey)
-    : '/images/continents/evropa.png';
+  // ------------------------------------------------
+  // COUNTRY FLAG (CDN)
+  // ------------------------------------------------
+  let countryIcon: string | null = null;
+  if (country?.code) {
+    countryIcon = buildCdnUrl(`img/flag/${country.code.toLowerCase()}.svg`, 'icon');
+  }
 
-  const continentName = continent
-    ? (continent.name ?? tContinent('europe'))
-    : tContinent('europe');
+  // ------------------------------------------------
+  // TITLE
+  // ------------------------------------------------
+const displayTitle =
+  variant === 'continent'
+    ? continent?.name ?? continentName
+    : title ?? country?.name ?? '';
 
-  // Country flag icon (only relevant for country variant)
-  const countryIcon =
-    variant === 'country'
-      ? (country?.flag_icon ?? '/images/common/croatia-icon.png')
-      : null;
-
-  // For continent we show continent name, for others we expect title or fall back to country name
-  const displayTitle = isContinent
-    ? continentName
-    : (title ?? country?.name ?? '');
 
   const displayBeachCount =
     typeof beachCount === 'number'
       ? beachCount
-      : (continent?.beaches_count ?? 0);
+      : continent?.beaches_count ?? 0;
 
+  // ------------------------------------------------
+  // COLORS
+  // ------------------------------------------------
   const barBgClass = VARIANT_BG_CLASS[variant];
   const accentTextClass = VARIANT_TEXT_CLASS[variant];
   const pillLabelKey = VARIANT_PILL_LABEL_KEY[variant];
-  const barRadiusClass = isContinent ? 'rounded-r-[10px]' : 'rounded-[10px]';
 
-  // Filter icon per variant
+  const barRadiusClass =
+    variant === 'continent' ? 'rounded-r-[10px]' : 'rounded-[10px]';
+
+  // ------------------------------------------------
+  // FILTER ICON
+  // ------------------------------------------------
   let filterIcon = '/images/common/purple-filter.svg';
-  if (variant === 'region') {
-    filterIcon = '/images/common/pink-filter.svg';
-  } else if (variant === 'island') {
-    filterIcon = '/images/common/yellow-filter.svg';
-  } else if (variant === 'city') {
-    filterIcon = '/images/common/orange-filter.svg';
-  } else if (variant === 'country') {
-    filterIcon = '/images/common/red-filter.svg';
-  }
+  if (variant === 'region') filterIcon = '/images/common/pink-filter.svg';
+  if (variant === 'island') filterIcon = '/images/common/yellow-filter.svg';
+  if (variant === 'city') filterIcon = '/images/common/orange-filter.svg';
+  if (variant === 'country') filterIcon = '/images/common/red-filter.svg';
 
+  // ------------------------------------------------
+  // MAIN TOPBAR WRAPPER
+  // ------------------------------------------------
   const containerClasses = [
     'flex h-full items-center',
     'gap-[6px] px-[8px]',
     'sm:gap-[10px] sm:px-[16px]',
     barBgClass,
     barRadiusClass,
+    '-ml-[7px]', // overlap visual effect
   ].join(' ');
 
   const pillClasses = [
@@ -111,85 +115,91 @@ const TopBar: React.FC<TopBarProps> = ({
   ].join(' ');
 
   return (
-    <div className="flex h-[54px] items-center rounded-[10px]">
-      <div className={containerClasses}>
-        {/* Label pill (Continent / Region / Island / City / Country) */}
-        <span className={pillClasses}>{t(pillLabelKey)}</span>
+    <div className="flex h-[54px] items-center">
 
-        {/* Country icon – only for country variant (between pill and title) */}
-        {variant === 'country' && countryIcon && (
-          <div className="flex items-center justify-center overflow-hidden">
+      {/*  CONTINENT PILL — for country, region, island, city */}
+      {(['country', 'region', 'island', 'city'].includes(variant)) && (
+        <div className="flex h-full w-[54px] items-center justify-center rounded-l-[10px] bg-[#5E1CA5]">
+          <Image
+            src={continentIcon}
+            alt={continentName}
+            width={35}
+            height={35}
+            className="object-contain"
+          />
+        </div>
+      )}
+
+      {/*  COUNTRY FLAG PILL — for region, island, city */}
+      {(variant === 'region' || variant === 'island' || variant === 'city') &&
+        countryIcon && (
+          <div className="flex h-full w-[54px] items-center justify-center bg-[#DD0000] -ml-[7px] rounded-l-[10px]">
             <Image
               src={countryIcon}
-              alt={displayTitle || 'country flag'}
-              width={32}
-              height={55}
+              alt={country?.name ?? 'country icon'}
+              width={28}
+              height={26}
               className="object-contain"
             />
           </div>
         )}
 
-        {/* Continent icon – only for continent variant */}
-        {isContinent && (
-          <div className="flex h-full w-[54px] items-center justify-center overflow-hidden rounded-l-[10px] bg-[#5E1CA5]">
+      {/*  MAIN TOPBAR */}
+      <div className={containerClasses}>
+
+        {/* White label pill */}
+        <span className={pillClasses}>{t(pillLabelKey)}</span>
+
+        {/* Country flag ONLY for country topbar */}
+        {variant === 'country' && countryIcon && (
+          <div className="flex items-center justify-center overflow-hidden rounded-[5px]">
             <Image
-              src={continentIcon}
-              alt={continentName}
-              width={35}
-              height={35}
+              src={countryIcon}
+              alt={displayTitle}
+              width={32}
+              height={30}
               className="object-contain"
             />
           </div>
         )}
 
-        {/* Title: continent name or custom title */}
+        {/* Title */}
         <span className="hidden font-figtree text-[30px] font-bold leading-[100%] text-white md:block">
           {displayTitle}
         </span>
 
-        {/* Number of beaches */}
-        <div className="flex h-[41px] items-center gap-[4px] rounded-[6px] bg-white px-[6px] sm:gap-[8px] sm:px-[10px]">
+        {/* Beaches count */}
+        <div className="flex h-[41px] items-center gap-[4px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
           <Image
-            src="/images/beach-black.png"
-            alt={t('numBeachesLabel')}
-            width={26}
-            height={26}
-            className="h-[20px] w-[20px] sm:h-[26px] sm:w-[26px]"
+src="/images/beach-black.png" alt="" width={26}
+height={26}
           />
-          <span className="hidden font-figtree text-[14px] font-medium text-[#222222] sm:block">
+          <span className="hidden sm:block font-figtree text-[14px] font-medium text-[#222]">
             {t('numBeachesLabel')}
           </span>
           <span className={numberTextClasses}>{displayBeachCount}</span>
         </div>
 
-        {/* Number of accommodations */}
-        <div className="flex h-[41px] items-center gap-[4px] rounded-[6px] bg-white px-[6px] sm:gap-[8px] sm:px-[10px]">
+        {/* Accommodation count */}
+        <div className="flex h-[41px] items-center gap-[4px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
           <Image
-            src="/images/common/accommodation-black.svg"
-            alt={t('numAccommodationsLabel')}
-            width={26}
-            height={26}
-            className="h-[20px] w-[20px] sm:h-[26px] sm:w-[26px]"
+src="/images/common/accommodation-black.svg" alt="" width={26}
+height={26}
           />
-          <span className="hidden font-figtree text-[14px] font-medium text-[#222222] sm:block">
+          <span className="hidden sm:block font-figtree text-[14px] font-medium text-[#222]">
             {t('numAccommodationsLabel')}
           </span>
           <span className={numberTextClasses}>{accommodationCount}</span>
         </div>
 
         {/* Filter button */}
-        <button
-          type="button"
-          className="flex h-[41px] w-[35px] items-center justify-center rounded-[6px] bg-white sm:w-[41px]"
-        >
+        <button className="flex h-[41px] w-[35px] items-center justify-center rounded-[6px] bg-white sm:w-[41px]">
           <Image
-            src={filterIcon}
-            alt="filter"
-            width={20}
-            height={20}
-            className="h-[20px] w-[20px]"
+src={filterIcon} alt="filter" width={20}
+height={20}
           />
         </button>
+
       </div>
     </div>
   );

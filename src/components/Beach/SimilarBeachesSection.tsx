@@ -17,6 +17,7 @@ interface Property {
   discount?: string;
   isFreeBreakfast?: boolean;
   isFreeCancellation?: boolean;
+  countryCode?: string;
 }
 
 interface SimilarBeachesSectionProps {

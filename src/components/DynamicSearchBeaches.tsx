@@ -54,6 +54,8 @@ export default function DynamicSearchBeaches({
       price: 0,
       rating: 0,
       reviews: 0,
+      countryCode: b.country_code,
+
     };
   });
 

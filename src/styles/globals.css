@@ -158,3 +158,17 @@ div[style*="background-image"] {
 .search-results-scroll::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
 }
+
+
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+}

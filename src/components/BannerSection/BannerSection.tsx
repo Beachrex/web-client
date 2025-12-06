@@ -1,6 +1,6 @@
 'use client';
 
-import type { Continent } from '@/lib/api-client/types.gen';
+import type { Continent, Country } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,10 +21,15 @@ import {
 interface BannerSectionProps {
   image: string | null;
   title: string;
+   continentCode?: string;
+countryCode?: string;
+countryName?: string;
+regionName?: string;
+islandName?: string;
 
   badges?: {
     label: string;
-    icon: string;
+    icon: string | null;
     color?: string;
   }[];
 
@@ -39,11 +44,11 @@ interface BannerSectionProps {
   children?: React.ReactNode;
 
   continent?: Continent;
+  country?: Country;
+
   accommodationCount?: number;
 
-  /** continent | region | island | city | country */
   topBarVariant?: PageVariant;
-
   beachCount?: number;
 
   weather?: {
@@ -69,7 +74,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   infoCards,
   rightWidgets,
   children,
-
+  country,
   weather,
   weatherLocationName,
   isWeatherLoading,
@@ -102,6 +107,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
           <TopBar
             variant={variant}
             continent={continent}
+            country={country}
             accommodationCount={accommodationCount}
             title={title}
             beachCount={beachCount}
@@ -138,12 +144,16 @@ const BannerSection: React.FC<BannerSectionProps> = ({
                 'lg:flex-row lg:items-end',
               ].join(' ')}
             >
-              {/* ✔ CONDITIONAL → SHOW ONLY IF BADGES EXIST */}
-              {badges && badges.length > 0 && (
-                <div className="hidden min-w-0 flex-1 md:block">
-                  <BottomBadges badges={badges} variant={variant} />
-                </div>
-              )}
+                 {/* LEFT COLUMN — ALWAYS RENDER, even if badges do not exist */}
+<div className="hidden min-w-0 flex-1 md:block">
+  {badges && badges.length > 0 ? (
+    <BottomBadges badges={badges} variant={variant} />
+  ) : (
+    // Empty placeholder so layout stays stable
+    <div className="h-[1px] w-full" />
+  )}
+</div>
+
 
               {/* Widgets */}
               <div className="flex shrink-0 justify-center gap-[6px] sm:gap-[10px] lg:justify-end">

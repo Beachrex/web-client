@@ -116,6 +116,9 @@ const mostVisitedSet = new Set(regionMost.map(b => b.id));
 
       isMostVisited: mostVisitedSet.has(b.id),
 
+      countryCode: b.country_code,
+
+
     };
   }) ?? [];
 
@@ -199,17 +202,20 @@ const mostVisitedSet = new Set(regionMost.map(b => b.id));
       />
 
       <BannerSection
-        image={bannerImage}
-        title={regionName}
-        topBarVariant="region"
-        accommodationCount={regionAccommodationsCount}
-        beachCount={regionBeachesCount}
-        weather={regionWeather}
-        weatherLocationName={regionWeatherLocationName}
-        isWeatherLoading={isWeatherLoading}
-        badges={regionBadges.length ? regionBadges : undefined}
-        infoCards={regionInfoCards.length ? regionInfoCards : undefined}
+  image={bannerImage}
+  title={regionName}
+  topBarVariant="region"
+  country={regionDetails?.country}
+
+  accommodationCount={regionAccommodationsCount}
+  beachCount={regionBeachesCount}
+  weather={regionWeather}
+  weatherLocationName={regionWeatherLocationName}
+  isWeatherLoading={isWeatherLoading}
+  badges={regionBadges.length ? regionBadges : undefined}
+  infoCards={regionInfoCards.length ? regionInfoCards : undefined}
       />
+
 
       <PropertySection
         title={tRegion('popularBeachesTitle', { region: regionName })}

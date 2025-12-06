@@ -41,7 +41,8 @@ const SearchBar = () => {
                     <GlobalSearch
                         className="w-[95%] sm:w-[90%]"
                         inputClassName="text-xs sm:text-sm"
-                        buttonClassName="w-[38px] sm:w-[43px] h-[36px] sm:h-[41px] px-0"
+                        buttonClassName="h-[36px] sm:h-[41px] px-3 py-0 whitespace-nowrap"
+
                     />
 
                     {/* Quick Action Icons (Mobile Only) */}

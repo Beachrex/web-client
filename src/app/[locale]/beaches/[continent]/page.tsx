@@ -6,6 +6,7 @@ import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import { PropertySection } from '@/components/PropertySection';
 
 import {
+  getBeachDetails,
   getContinent,
   getContinents,
   getMostVisitedBeaches,
@@ -24,7 +25,8 @@ interface PageProps {
   }>;
 }
 
-// Validate continent slug
+// ---------------- VALIDATION -----------------
+
 const validateAndGetContinentCode = async (
   continentSlug: string,
   locale: string,
@@ -43,6 +45,8 @@ const validateAndGetContinentCode = async (
     return null;
   }
 };
+
+// ---------------- METADATA -----------------
 
 export async function generateMetadata({ params }: PageProps) {
   const resolvedParams = await params;
@@ -82,6 +86,8 @@ export async function generateMetadata({ params }: PageProps) {
   }
 }
 
+// ---------------- PAGE -----------------
+
 const Page = async ({ params }: PageProps) => {
   const resolvedParams = await params;
   const pathname = `/beaches/${resolvedParams.continent}`;
@@ -92,6 +98,7 @@ const Page = async ({ params }: PageProps) => {
   });
 
   try {
+    // 1) Get continent code
     const continentCode = await validateAndGetContinentCode(
       resolvedParams.continent,
       resolvedParams.locale,
@@ -99,7 +106,7 @@ const Page = async ({ params }: PageProps) => {
 
     if (!continentCode) notFound();
 
-    // Fetch continent data
+    // 2) Fetch continent info
     const { data: continentResponse } = await getContinent({
       path: { code: continentCode },
       headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
@@ -108,8 +115,7 @@ const Page = async ({ params }: PageProps) => {
     const continent = continentResponse?.data;
     if (!continent) notFound();
 
-
-    // Fetch MOST VISITED beaches
+    // 3) Fetch MOST VISITED (basic beach list)
     const { data: mostVisitedResponse } = await getMostVisitedBeaches({
       query: {
         continent_code: continentCode,
@@ -122,21 +128,50 @@ const Page = async ({ params }: PageProps) => {
 
     const mostVisited = mostVisitedResponse?.data ?? [];
 
- // MOST VISITED → PropertySection (SSR-safe, no fallback, no random)
-const transformedProperties = mostVisited.map((beach) => {
-  const image = buildCdnUrl(beach.main_image, 'list');
-  if (!image) {
-    throw new Error(`Beach ID ${beach.id} is missing main_image`);
-  }
+const detailsList = await Promise.all(
+  mostVisited.map(async (b) => {
+    try {
+      const { data } = await getBeachDetails({
+        path: { identifier: String(b.id) }, // <-- FIXED
+        headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
+      });
+
+      return data?.data ?? null;
+    } catch {
+      return null;
+    }
+  })
+);
+
+
+    // 5) Transform into PropertySection items
+    const transformedProperties = mostVisited.map((beach, index) => {
+  const details = detailsList[index];
+
+  // Convert full gallery to CDN URLs
+  const gallery =
+    details?.media?.gallery?.map((img) =>
+      buildCdnUrl(img.url, 'list')
+    ) ?? [];
+
+  // Use first gallery image as preview, but keep entire gallery
+  const image =
+    gallery[0] ??
+    buildCdnUrl(beach.main_image, 'list') ??
+    '/images/default-beach.jpg';
 
   return {
     id: String(beach.id),
 
-    image, // ✔ guaranteed string
-    title: beach.name ?? 'Unknown beach',
+    // FIRST image used by PropertySection
+    image,
+
+    // ENTIRE gallery for slider (nothing breaks yet)
+    galleryImages: gallery,
+
+    title: beach.name ?? '',
     location: beach.city_slug ?? beach.region_slug ?? '',
 
-    // ✔ no random → SSR stable (until API gives real values)
     price: 0,
     originalPrice: 0,
     rating: 0,
@@ -145,6 +180,8 @@ const transformedProperties = mostVisited.map((beach) => {
 
     isFreeBreakfast: false,
     isFreeCancellation: false,
+
+    countryCode: beach.country_code,
   };
 });
 
@@ -153,14 +190,18 @@ const transformedProperties = mostVisited.map((beach) => {
       ? buildCdnUrl(continent.main_image, 'banner')
       : null;
 
+    // ---------------- RENDER -----------------
+
     return (
       <>
+        {/* Breadcrumbs */}
         <div className="bg-white py-4">
           <div className="container mx-auto">
             <DynamicBreadcrumbs pathname={pathname} />
           </div>
         </div>
 
+        {/* Banner */}
         <BannerSection
           image={bannerImage}
           title={continent.name ?? ''}
@@ -170,28 +211,31 @@ const transformedProperties = mostVisited.map((beach) => {
           topBarVariant="continent"
         />
 
+        {/* Most visited */}
         <PropertySection
           title={t('popularDestinations', { continent: continent.name })}
           properties={transformedProperties}
         />
 
+        {/* Search continent */}
         <SearchContinent
           continent={continent}
           continentSlug={resolvedParams.continent}
         />
 
+        {/* Countries list */}
         <ContinentCountriesSection />
 
+        {/* Search beaches */}
         <DynamicSearchBeaches
-  translationNamespace="SearchBeach"
-  titleKey="title"
-  filterButtonColor="#5E1CA5"
-  filters={{
-    continent_code: continent.code,
-    limit: 100,
-  }}
+          translationNamespace="SearchBeach"
+          titleKey="title"
+          filterButtonColor="#5E1CA5"
+          filters={{
+            continent_code: continent.code,
+            limit: 100,
+          }}
         />
-
       </>
     );
   } catch (error) {

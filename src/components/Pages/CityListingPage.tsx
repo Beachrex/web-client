@@ -113,6 +113,7 @@ const beachProperties: Property[] =
       isFreeCancellation: false,
 
       isMostVisited: mostVisitedSet.has(b.id),
+      countryCode: b.country_code,
 
     };
   }) ?? [];
@@ -136,12 +137,12 @@ const beachProperties: Property[] =
   const cityWeatherLocationName = cityWeather?.location_name ?? cityName;
 
 
-    const bottomBadges =
+const bottomBadges =
   cityDetails?.badges
-    ?.filter(b => b.name && b.icon)
-    ?.map(b => ({
+    ?.filter((b) => b.name)
+    ?.map((b) => ({
       label: b.name!,
-      icon: buildCdnUrl(b.icon, 'icon')!,
+      icon: b.icon ? buildCdnUrl(b.icon, 'icon') : null,
     })) ?? [];
 
 const infoCards =
