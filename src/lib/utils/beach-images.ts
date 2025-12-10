@@ -7,8 +7,14 @@ import type { MediaItem } from '@/lib/api-client/types.gen';
 export type CdnEndpointType = 'teaser' | 'large' | 'assets';
 
 /**
- * Encode a single path segment only when it contains non-ASCII characters.
- * This avoids double-encoding already percent-encoded segments.
+ * Check if path contains non-ASCII characters (special characters like č, š, ž)
+ */
+function hasNonAsciiCharacters(path: string): boolean {
+  return !/^[\x00-\x7F]*$/.test(path);
+}
+
+/**
+ * Encode path segment with NFD normalization for DigitalOcean Spaces compatibility
  */
 function encodePathSegment(segment: string): string {
   if (!segment) return segment;
@@ -18,39 +24,9 @@ function encodePathSegment(segment: string): string {
     return segment;
   }
 
-  // Normalize to NFD so characters like "č" become "c" + combining caron,
-  // then percent-encode the bytes. This matches how objects are stored in the CDN
-  // (e.g. 'brač' -> 'brac%CC%8C').
+  // Use NFD normalization (decomposed form) to match how files are stored on DigitalOcean Spaces
+  // This ensures 'č' becomes 'c' + combining caron (U+0063 + U+030C)
   return encodeURIComponent(segment.normalize('NFD'));
-}
-
-/**
- * Encode only the non-ASCII characters in a CDN image path while preserving
- * path separators and already-encoded segments.
- *
- * Example:
- *   '/public/img/beaches/hr-37-o-brač/hr-37-o-brač-sl10.jpg'
- * becomes
- *   '/public/img/beaches/hr-37-o-bra%C4%8D/hr-37-o-bra%C4%8D-sl10.jpg'
- */
-export function encodeCdnImagePath(path: string): string {
-  if (!path) return path;
-
-  const queryIndex = path.search(/[?#]/);
-  let main = path;
-  let suffix = '';
-
-  if (queryIndex !== -1) {
-    main = path.slice(0, queryIndex);
-    suffix = path.slice(queryIndex);
-  }
-
-  const encoded = main
-    .split('/')
-    .map(segment => encodePathSegment(segment))
-    .join('/');
-
-  return encoded + suffix;
 }
 
 /**
@@ -128,6 +104,9 @@ export function determineCdnEndpointType(
 /**
  * Build full CDN URL with automatic endpoint selection
  *
+ * For images with special characters (č, š, ž, etc.), uses direct DigitalOcean Spaces URL
+ * to bypass Imagor (which doesn't handle UTF-8 paths correctly).
+ *
  * @param path - Relative image path from API
  * @param context - Optional context hint for endpoint selection
  * @returns Full CDN URL or null if path is invalid
@@ -138,11 +117,21 @@ export function buildCdnUrl(
 ): string | null {
   if (!path) return null;
 
+  // If path contains special characters, use direct DigitalOcean Spaces URL
+  // Imagor doesn't handle UTF-8 paths correctly, so we bypass it
+  if (hasNonAsciiCharacters(path)) {
+    const segments = path.split('/');
+    const encodedSegments = segments.map(encodePathSegment);
+    const encodedPath = encodedSegments.join('/');
+
+    return `${env.NEXT_PUBLIC_CDN_ASSETS}${encodedPath}`;
+  }
+
+  // For ASCII-only paths, use Imagor optimization
   const endpointType = determineCdnEndpointType(path, context);
   const endpoint = getCdnEndpoint(endpointType);
-  const encodedPath = encodeCdnImagePath(path);
 
-  return `${endpoint}${encodedPath}`;
+  return `${endpoint}${path}`;
 }
 
 /**
@@ -169,9 +158,7 @@ export function buildBeachImageUrl(
   }
 
   const basePath = mobileUpload ? 'img/beaches_mobile' : 'img/beaches';
-  const safeFolder = encodePathSegment(folderName);
-  const safeFilename = encodePathSegment(filename);
-  const path = `${basePath}/${safeFolder}/${safeFilename}`;
+  const path = `${basePath}/${folderName}/${filename}`;
 
   return buildCdnUrl(path, context);
 }

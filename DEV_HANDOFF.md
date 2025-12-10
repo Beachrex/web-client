@@ -15,11 +15,13 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
-## 2025-12-03 – Imagor Image Optimization & TypeScript Fixes
+## 2025-12-10 – Imagor Image Optimization & Special Characters Workaround
 
 ### Overview
 
 Disabled Vercel's built-in image optimization in favor of using Imagor CDN for all image optimization. This prevents hitting Vercel's image optimization limits and ensures consistent image delivery through our CDN infrastructure.
+
+**✅ RESOLVED:** Implemented workaround for images with special characters (č, š, ž, etc.) by using direct DigitalOcean Spaces URLs, bypassing Imagor for these files.
 
 ### What Changed
 
@@ -119,13 +121,135 @@ images: {
 - The `remotePatterns` configuration is still required for Next.js to allow external images
 - SVG support remains enabled with CSP for security
 - All existing CDN endpoints (teaser, large, assets) continue to work as before
-- No changes needed to existing image URLs or `buildCdnUrl()` utility
+
+### ✅ RESOLVED: Special Characters in Image Paths - Hybrid CDN Strategy
+
+**Problem:**
+Images with special characters (č, š, ž, etc.) in their paths did not load through Imagor CDN. ASCII-only images worked perfectly.
+
+**Root Cause:**
+1. **Files are stored with NFD encoding on DigitalOcean Spaces**
+   - `č` is stored as `c` + combining caron (U+0063 + U+030C)
+   - URL-encoded as `brac%CC%8C` (not `bra%C4%8D`)
+
+2. **Imagor cannot handle UTF-8/NFD-encoded paths**
+   - Despite proper S3 configuration, Imagor fails to fetch files with special characters
+   - Multiple encoding strategies attempted (percent-encoding, base64, base64url) all failed
+   - Imagor consistently returns "invalid" error for any UTF-8 path encoding
+
+3. **API Returns Unencoded UTF-8 Paths**
+   ```json
+   "main_image": "img/beaches/hr-114-o-brač/hr-114-o-brač-sl17.jpg"
+   ```
+
+**Solution Implemented: Hybrid CDN Strategy**
+
+Modified `buildCdnUrl()` in `src/lib/utils/beach-images.ts` to use different CDN endpoints based on path content:
+
+```typescript
+export function buildCdnUrl(path: string): string | null {
+  if (!path) return null;
+
+  // If path contains special characters, use direct DigitalOcean Spaces URL
+  if (hasNonAsciiCharacters(path)) {
+    // Split path into segments and encode each with NFD normalization
+    const segments = path.split('/');
+    const encodedSegments = segments.map(encodePathSegment);
+    const encodedPath = encodedSegments.join('/');
+
+    return `${env.NEXT_PUBLIC_CDN_ASSETS}${encodedPath}`;
+  }
+
+  // For ASCII-only paths, use Imagor optimization
+  const endpointType = determineCdnEndpointType(path, context);
+  const endpoint = getCdnEndpoint(endpointType);
+  return `${endpoint}${path}`;
+}
+```
+
+**How It Works:**
+
+1. **Detect Special Characters**: Check if path contains non-ASCII characters using regex `/^[\x00-\x7F]*$/`
+
+2. **For Paths with Special Characters**:
+   - Use `NEXT_PUBLIC_CDN_ASSETS` (direct DigitalOcean Spaces URL)
+   - Encode each path segment with NFD normalization
+   - Example: `https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-114-o-brac%CC%8C/hr-114-o-brac%CC%8C-sl17.jpg`
+   - ✅ Images load correctly (no optimization)
+
+3. **For ASCII-Only Paths**:
+   - Use Imagor CDN endpoints (`NEXT_PUBLIC_CDN_TEASER` or `NEXT_PUBLIC_CDN_LARGE`)
+   - Example: `https://s3.beachrex.com/unsafe/fit-in/2800x2800/img/beaches/hr-6-o-hvar/hr-6-o-hvar-sl3.jpg`
+   - ✅ Images load with optimization (resizing, WebP conversion, caching)
+
+**Helper Functions Added:**
+
+```typescript
+// Check if path contains non-ASCII characters
+function hasNonAsciiCharacters(path: string): boolean {
+  return !/^[\x00-\x7F]*$/.test(path);
+}
+
+// Encode path segment with NFD normalization
+function encodePathSegment(segment: string): string {
+  if (!segment) return segment;
+
+  // Fast path: already pure ASCII
+  if (/^[\u0000-\u007F]*$/.test(segment)) {
+    return segment;
+  }
+
+  // Use NFD normalization to match DigitalOcean Spaces storage
+  return encodeURIComponent(segment.normalize('NFD'));
+}
+```
+
+**Trade-offs:**
+
+✅ **Pros:**
+- All images load correctly (special characters and ASCII)
+- ASCII images get full Imagor optimization (90%+ of images)
+- No changes needed to API or database
+- No file renaming required on DigitalOcean Spaces
+- Simple, maintainable solution
+
+⚠️ **Cons:**
+- Images with special characters bypass Imagor (no optimization)
+- These images are served at full resolution from DigitalOcean Spaces
+- Slightly higher bandwidth usage for special character images
+- No WebP/AVIF conversion for special character images
+
+**Impact:**
+- Estimated ~5-10% of beach images contain special characters (Croatian beaches: č, š, ž, đ)
+- 90%+ of images still benefit from Imagor optimization
+- User experience: All images load correctly, slight performance impact on special character images
+
+**Future Improvements:**
+
+1. **Rename Files**: Consider renaming files on DigitalOcean Spaces to use ASCII-only slugs
+   - Example: `hr-114-o-brač` → `hr-114-o-brac`
+   - Would allow all images to use Imagor optimization
+   - Major undertaking: requires database updates, file migrations, URL redirects
+
+2. **Alternative Image CDN**: Evaluate other image optimization services that handle UTF-8 paths
+   - Cloudinary, Imgix, or Cloudflare Images might handle UTF-8 better
+   - Would require migration and cost evaluation
+
+3. **Pre-optimize Special Character Images**: Run batch optimization on DigitalOcean Spaces
+   - Generate optimized versions (WebP, multiple sizes) for special character images
+   - Store in separate folders with ASCII names
+   - Update API to return optimized paths
+
+**Files Modified:**
+- `src/lib/utils/beach-images.ts` - Implemented hybrid CDN strategy
+- `next.config.js` - Added `unoptimized: true` to disable Vercel image optimization
 
 ### Related Documentation
 
 - **CDN Strategy**: See "Multi-CDN Endpoint Strategy" section below
 - **Image Utilities**: `src/lib/utils/beach-images.ts`
 - **Environment Variables**: `NEXT_PUBLIC_CDN_TEASER`, `NEXT_PUBLIC_CDN_LARGE`, `NEXT_PUBLIC_CDN_ASSETS`
+- **Imagor Documentation**: https://github.com/cshum/imagor
 
 ---
 
