@@ -944,6 +944,67 @@ export type BeachSchema = {
    * Primary beach image path (relative, without CDN/domain prefix). Frontend constructs Imagor URLs by prepending IMAGOR_ENDPOINT + transformation params (e.g., 'unsafe/fit-in/400x300/filters:quality(85)/') + main_image.
    */
   main_image?: string | null;
+  /**
+   * Media collections for the beach. Only non-empty collections are included. Only essential fields to reduce response size.
+   */
+  media?: {
+    /**
+     * Beach gallery images (only if beach has gallery images)
+     */
+    gallery?: Array<{
+      /**
+       * Relative path to image file
+       */
+      url?: string;
+      /**
+       * Whether this is the primary image
+       */
+      is_primary?: boolean;
+      /**
+       * Display order
+       */
+      order?: number;
+    }>;
+    /**
+     * Beach videos (only if beach has videos)
+     */
+    videos?: Array<{
+      /**
+       * Relative path to video file
+       */
+      url?: string;
+      /**
+       * Whether this is the primary video
+       */
+      is_primary?: boolean;
+      /**
+       * Display order
+       */
+      order?: number;
+    }>;
+    /**
+     * 360-degree sphere tours (only if beach has 360° spheres)
+     */
+    spheres_360?: Array<{
+      /**
+       * URL to 360° virtual tour
+       */
+      tour_url?: string;
+    }>;
+    /**
+     * External embeds for the beach
+     */
+    embeds?: {
+      /**
+       * YouTube video URL
+       */
+      video_url?: string | null;
+      /**
+       * Webcam embed code
+       */
+      webcam?: string | null;
+    };
+  };
 };
 
 /**
