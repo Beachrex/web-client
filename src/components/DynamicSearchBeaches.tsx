@@ -60,7 +60,7 @@ export default function DynamicSearchBeaches({
 }: DynamicSearchBeachesProps) {
   const t = useTranslations(translationNamespace);
 
-  // Fetch real beaches from API
+  // Fetch beaches
   const { beaches, loading } = useAllBeaches(filters, true);
 
   // Pagination
