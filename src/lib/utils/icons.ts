@@ -1,18 +1,30 @@
 // Icon and image path utilities
+export const getContinentIcon = (value = ''): string => {
+  const key = value.toLowerCase();
 
-// Continent Icons
-export const getContinentIcon = (key: string): string => {
   const iconMap: Record<string, string> = {
-    'europe': '/images/continents/evropa.png',
-    'africa': '/images/continents/africa.png',
-    'asia': '/images/continents/asia.png',
-    'northAmerica': '/images/continents/north-america.png',
-    'southAmerica': '/images/continents/south-america.png',
-    'australia': '/images/continents/australia.png',
+    eu: '/images/continents/evropa.png',
+    europe: '/images/continents/evropa.png',
+
+    af: '/images/continents/africa.png',
+    africa: '/images/continents/africa.png',
+
+    as: '/images/continents/asia.png',
+    asia: '/images/continents/asia.png',
+
+    na: '/images/continents/north-america.png',
+    'north-america': '/images/continents/north-america.png',
+
+    sa: '/images/continents/south-america.png',
+    'south-america': '/images/continents/south-america.png',
+
+    oc: '/images/continents/australia.png',
+    australia: '/images/continents/australia.png',
   };
 
   return iconMap[key] ?? '/images/continents/default.png';
 };
+
 
 // Country Icons
 export const getDefaultCountryImage = (): string => {

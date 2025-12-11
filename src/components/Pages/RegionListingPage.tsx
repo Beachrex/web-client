@@ -98,13 +98,49 @@ const mostVisitedSet = new Set(regionMost.map(b => b.id));
     const image = buildCdnUrl(b.main_image, 'list');
     if (!image) throw new Error(`Beach ${b.id} missing main_image`);
 
+   // Local type for gallery items
+interface GalleryItem {
+  url: string;
+  order?: number | null;
+}
+
+const galleryImages =
+  (b.media?.gallery as GalleryItem[] | undefined)
+    ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    ?.slice(0, 5)
+    ?.map((img) => buildCdnUrl(img.url, 'gallery'))
+    ?.filter((u): u is string => Boolean(u)) ?? [];
+
+    // sphere support
+    const sphere = b.media?.spheres_360?.[0] ?? null;
+
+    const sphereThumbnail = sphere ? image : undefined;
+
+    const sphereTourUrl = sphere
+      ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
+      : undefined;
+
+    // video support
+    const rawVideo = b.media?.embeds?.video_url ?? null;
+    const videoEmbedUrl = rawVideo
+      ? (rawVideo.includes('youtu')
+          ? rawVideo.replace('youtu.be/', 'www.youtube.com/embed/').replace('watch?v=', 'embed/')
+          : undefined)
+      : undefined;
+
     return {
       id: String(b.id),
       image,
+      galleryImages,
+
+      sphereThumbnail,
+      sphereTourUrl,
+
+      videoEmbedUrl,
+
       title: b.name ?? 'Unknown Beach',
       location: formatName(b.city_slug ?? b.region_slug ?? ''),
 
-      // NO RANDOM ALLOWED
       price: 0,
       originalPrice: 0,
       rating: 0,
@@ -112,13 +148,11 @@ const mostVisitedSet = new Set(regionMost.map(b => b.id));
       discount: '0',
 
       isFreeBreakfast: false,
-      isFreeCancellation: false,
+      isFreeCancellation: true,
 
       isMostVisited: mostVisitedSet.has(b.id),
 
       countryCode: b.country_code,
-
-
     };
   }) ?? [];
 
@@ -270,8 +304,8 @@ const mostVisitedSet = new Set(regionMost.map(b => b.id));
   titleParams={{ region: regionName }}
   filterButtonColor="#FF2877"
   filters={{
-    region: regionSlug,   // PRAVILEN API QUERY
-    limit: 100,
+    region: regionSlug,
+    limit: 20,
   }}
       />
 

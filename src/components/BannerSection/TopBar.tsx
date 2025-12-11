@@ -1,7 +1,6 @@
 'use client';
 
 import type { Continent, Country } from '@/lib/api-client/types.gen';
-import { continentCodeToKey } from '@/lib/constants/mappings';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { getContinentIcon } from '@/lib/utils/icons';
 import { useTranslations } from 'next-intl';
@@ -41,9 +40,10 @@ const TopBar: React.FC<TopBarProps> = ({
   // EFFECTIVE CONTINENT CODE (works for ALL pages)
   // ------------------------------------------------
   const effectiveContinentCode =
-    continent?.code ??
-    (country?.code ? continentCodeToKey[country.code] : null) ??
-    'europe';
+  continent?.code ??
+  country?.continent_code ??
+  'EU';
+
 
   const continentIcon = getContinentIcon(effectiveContinentCode);
   const continentName = tContinent(effectiveContinentCode);
@@ -118,7 +118,7 @@ const displayTitle =
     <div className="flex h-[54px] items-center">
 
       {/*  CONTINENT PILL — for country, region, island, city */}
-      {(['country', 'region', 'island', 'city'].includes(variant)) && (
+      {(['continent', 'country', 'region', 'island', 'city'].includes(variant)) && (
         <div className="flex h-full w-[54px] items-center justify-center rounded-l-[10px] bg-[#5E1CA5]">
           <Image
             src={continentIcon}
