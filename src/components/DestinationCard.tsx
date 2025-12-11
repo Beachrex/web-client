@@ -2,8 +2,8 @@
 'use client';
 
 import type { Country } from '@/lib/api-client/types.gen';
-import { buildCountryUrl } from '@/lib/utils/beach-urls';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildCountryUrl } from '@/lib/utils/beach-urls';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,6 +13,7 @@ interface DestinationCardProps {
   badgeLabel?: string;
   bottomVariant?: 'default' | 'city' | 'island' | 'region';
 }
+
 
 export default function DestinationCard({
   country,
@@ -31,6 +32,21 @@ export default function DestinationCard({
     country.continent?.slug ?? country.continent_code?.toLowerCase() ?? '';
 
   const countryUrl = buildCountryUrl(locale, continentSlug, countrySlug);
+
+const countryLike = country as Record<string, unknown>;
+
+const countryCode =
+  ((typeof countryLike.country_code === 'string' && countryLike.country_code) ||
+    country.code) ??
+  country.slug ??
+  '';
+
+
+const flagUrl =
+  typeof countryCode === 'string' && countryCode
+    ? buildCdnUrl(`img/flag/${countryCode.toLowerCase()}.svg`, 'icon')
+    : null;
+
 
   const src = country.main_image
     ? buildCdnUrl(country.main_image, 'carousel') ?? '/images/topdestination/spain.jpg'
@@ -116,14 +132,18 @@ className="object-cover" priority
         className={`flex items-center justify-between p-3 sm:p-4 ${bottomBgClass}`}
       >
         <div className="flex items-center gap-2">
-          <Image
-            src="/images/topdestination/country.png"
-            alt="Country flag"
-            width={24}
-            height={24}
-            className="sm:h-8 sm:w-8"
-          />
-          <span className="text-lg font-bold text-[#0A2342] sm:text-xl">
+          {flagUrl && (
+  <Image
+    src={flagUrl}
+    alt={`${name} flag`}
+    width={32}
+    height={24}
+    className="w-[32px] h-[24px] rounded-md object-cover sm:w-[32px] sm:h-[24px]"
+  />
+)}
+
+
+          <span className="text-lg font-bold text-[#0A2342] truncate sm:text-xl">
             {name}
           </span>
         </div>

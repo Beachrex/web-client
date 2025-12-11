@@ -92,16 +92,53 @@ export default function IslandListingPage({
 const mostVisitedSet = new Set(islandMost.map(b => b.id));
 
 
-  const beachProperties: Property[] =
+ const beachProperties: Property[] =
   mostVisitedBeachesData?.map((b) => {
     const image = buildCdnUrl(b.main_image, 'list');
     if (!image) {
       throw new Error(`Island MOST VISITED: Beach ${b.id} missing main_image`);
     }
 
+ interface GalleryItem {
+  url: string;
+  order?: number | null;
+}
+
+  /* GALLERY IMAGES */
+const galleryImages =
+  (b.media?.gallery as GalleryItem[] | undefined)
+    ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    ?.slice(0, 5)
+    ?.map((img) => buildCdnUrl(img.url, 'gallery'))
+    ?.filter((u): u is string => Boolean(u)) ?? [];
+
+    /* SPHERE (360°) */
+    const sphere = b.media?.spheres_360?.[0] ?? null;
+    const sphereThumbnail = sphere ? image : undefined;
+    const sphereTourUrl = sphere
+      ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
+      : undefined;
+
+    /* VIDEO SUPPORT */
+    const rawVideo = b.media?.embeds?.video_url ?? null;
+    const videoEmbedUrl = rawVideo
+      ? rawVideo.includes('youtu')
+        ? rawVideo
+            .replace('youtu.be/', 'www.youtube.com/embed/')
+            .replace('watch?v=', 'embed/')
+        : undefined
+      : undefined;
+
     return {
       id: String(b.id),
       image,
+      galleryImages,
+
+      sphereThumbnail,
+      sphereTourUrl,
+
+      videoEmbedUrl,
+
       title: b.name ?? 'Unknown Beach',
       location: formatName(b.city_slug ?? islandName),
 
@@ -115,8 +152,8 @@ const mostVisitedSet = new Set(islandMost.map(b => b.id));
       isFreeCancellation: false,
 
       isMostVisited: mostVisitedSet.has(b.id),
-      countryCode: b.country_code,
 
+      countryCode: b.country_code,
     };
   }) ?? [];
 
@@ -245,7 +282,7 @@ const mostVisitedSet = new Set(islandMost.map(b => b.id));
   filterButtonColor="#FFC422"
   filters={{
     island: _islandSlug,
-    limit: 100,
+    limit: 20,
   }}
       />
 
