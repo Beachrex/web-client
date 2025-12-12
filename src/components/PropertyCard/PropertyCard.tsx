@@ -51,21 +51,16 @@ export default function PropertyCard({
 }: PropertyCardProps) {
   const { isMobile, ready } = useIsMobile();
 
-  const { mediaMode, openSphere, openVideo } =
-    React.useContext(PropertyMediaContext);
+  const { mediaMode } = React.useContext(PropertyMediaContext);
 
   /**
    * IMAGES TO SHOW
-   * -------------------------------
-   * - gallery mode → galleryImages
-   * - sphere mode → sphereThumbnail (fallback = image)
-   * - video mode → still show main image (no thumbnails needed)
    */
   const imagesToShow =
     mediaMode === 'sphere' && sphereThumbnail
       ? [sphereThumbnail]
       : mediaMode === 'video' && videoEmbedUrl
-      ? [image] // keep same image, do NOT add thumbnails
+      ? [image]
       : galleryImages.length > 0
       ? galleryImages
       : [image];
@@ -83,79 +78,93 @@ export default function PropertyCard({
   }
 
   /**
-   * CARD CLICK HANDLER
-   * ------------------------------------
-   * - gallery: do nothing
-   * - sphere: open fullscreen sphere viewer
-   * - video: open fullscreen YT video
+   * NO POPUPS ANYMORE
+   * CARD CLICK DOES NOTHING IN SPHERE/VIDEO MODE
    */
-  const handleClick = () => {
-    if (mediaMode === 'sphere' && sphereTourUrl) {
-      openSphere(sphereTourUrl);
-      return;
-    }
-    if (mediaMode === 'video' && videoEmbedUrl) {
-      openVideo(videoEmbedUrl);
-      return;
-    }
-  };
+const handleClick = () => {
+  // Intentionally left empty
+};
+
 
   return (
     <div
       className="flex h-[395px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md hover:-translate-y-[3px] hover:shadow-lg transition-all duration-300"
       onClick={handleClick}
-      style={{ cursor: mediaMode !== 'gallery' ? 'pointer' : 'default' }}
+      style={{ cursor: 'default' }}
     >
       <div className="relative grow overflow-hidden">
 
-        {/* MOBILE EMBLA */}
-        {isMobile ? (
-          <div className="embla h-full overflow-hidden">
-            <div className="embla__viewport h-full" ref={emblaRef}>
-              <div className="embla__container flex h-full touch-pan-y">
-                {imagesToShow.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="embla__slide relative min-w-full h-full"
-                  >
-                    <Image
-                      src={img}
-                      alt={title}
-                      fill
-                      className="object-cover"
-                      sizes="100vw"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+      {/* MEDIA DISPLAY */}
+{mediaMode === 'sphere' && sphereTourUrl ? (
+  /* INLINE 360° VIEWER */
+  <div className="relative h-full w-full">
+    <iframe
+      src={sphereTourUrl}
+      className="absolute inset-0 h-full w-full border-0"
+      allowFullScreen
+      loading="lazy"
+    />
+  </div>
+
+) : mediaMode === 'video' && videoEmbedUrl ? (
+  /* INLINE VIDEO PLAYER (YouTube embed) */
+  <div className="relative h-full w-full">
+    <iframe
+      src={videoEmbedUrl}
+      className="absolute inset-0 h-full w-full border-0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+      loading="lazy"
+    />
+  </div>
+
+) : isMobile ? (
+  /* MOBILE CAROUSEL */
+  <div className="embla h-full overflow-hidden">
+    <div className="embla__viewport h-full" ref={emblaRef}>
+      <div className="embla__container flex h-full touch-pan-y">
+        {imagesToShow.map((img, idx) => (
+          <div key={idx} className="embla__slide relative min-w-full h-full">
+            <Image
+              src={img}
+              alt={title}
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
           </div>
-        ) : (
-          /* DESKTOP FLOWBITE CAROUSEL */
-          <Carousel
-            indicators
-            slide={false}
-            theme={carouselTheme}
-            className="h-full"
-            leftControl={<></>}
-            rightControl={<></>}
-          >
-            {imagesToShow.map((img, idx) => (
-              <div key={idx} className="relative h-full w-full">
-                <Image
-                  src={img}
-                  alt={title}
-                  fill
-                  className="object-cover"
-                  sizes="100vw"
-                />
-              </div>
-            ))}
-          </Carousel>
-        )}
+        ))}
+      </div>
+    </div>
+  </div>
+
+) : (
+  /* DESKTOP CAROUSEL */
+  <Carousel
+    indicators
+    slide={false}
+    theme={carouselTheme}
+    className="h-full"
+    leftControl={<></>}
+    rightControl={<></>}
+  >
+    {imagesToShow.map((img, idx) => (
+      <div key={idx} className="relative h-full w-full">
+        <Image
+          src={img}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+      </div>
+    ))}
+  </Carousel>
+)}
+
 
         {/* BADGES */}
-        <div className="absolute left-2 top-2 flex gap-1">
+        <div className="absolute left-2 top-2 flex gap-1 z-20">
           {isMostVisited && (
             <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
               <span className="text-[10px] text-[#4D4D4D] font-semibold">
@@ -173,43 +182,46 @@ export default function PropertyCard({
         </div>
 
         {/* HEART ICON */}
-        <div className="absolute right-2 top-2">
+        <div className="absolute right-2 top-2 z-20">
           <Heart
             size={22}
             className="text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.5)]"
           />
         </div>
 
-        {/* BOTTOM LABELS */}
-        <div className="absolute bottom-2 left-2 right-2 flex justify-between pointer-events-none">
-          <div className="pointer-events-auto flex h-[40px] items-center gap-1 bg-[#008260] text-white px-3 rounded">
-            <Image
-              src="/images/accomodation.png"
-              alt="acc"
-              width={16}
-              height={16}
-            />
-            <span className="text-[12px] font-medium">from {price} €</span>
-          </div>
+        {/* BOTTOM LABELS — hidden in sphere mode */}
+        {!(mediaMode === 'sphere' && sphereTourUrl) &&
+ !(mediaMode === 'video' && videoEmbedUrl) && (
+          <div className="absolute bottom-2 left-2 right-2 flex justify-between pointer-events-none z-20">
 
-          <div className="pointer-events-auto flex items-center gap-2">
-            <div className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#FF8000] px-[12px]">
-              <span className="text-[12px] font-bold text-white">
-                {location}
-              </span>
-            </div>
-
-            <div className="h-[40px] w-[50px] overflow-hidden rounded-[6px]">
+            <div className="pointer-events-auto flex h-[40px] items-center gap-1 bg-[#008260] text-white px-3 rounded">
               <Image
-                src={flagUrl ?? '/images/propertycard/default-flag.png'}
-                width={50}
-                height={40}
-                alt="flag"
-                className="h-full w-full object-cover"
+                src="/images/accomodation.png"
+                alt="acc"
+                width={16}
+                height={16}
               />
+              <span className="text-[12px] font-medium">from {price} €</span>
             </div>
+
+            <div className="pointer-events-auto flex items-center gap-2">
+              <div className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#FF8000] px-[12px]">
+                <span className="text-[12px] font-bold text-white">{location}</span>
+              </div>
+
+              <div className="h-[40px] w-[50px] overflow-hidden rounded-[6px]">
+                <Image
+                  src={flagUrl ?? '/images/propertycard/default-flag.png'}
+                  width={50}
+                  height={40}
+                  alt="flag"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+
           </div>
-        </div>
+        )}
       </div>
 
       {/* BOTTOM DETAILS */}

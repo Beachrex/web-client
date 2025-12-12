@@ -22,6 +22,38 @@ interface BeachDetailPageProps {
   beachDetails: BeachDetailsSchema;
 }
 
+/* -------------------------------------------------------------
+   Build gallery (max 5 images)
+   Same logic as Country, Region, Search pages
+-------------------------------------------------------------- */
+
+interface BeachGalleryImage {
+  url?: string | null;
+  order?: number | null;
+}
+
+interface BeachWithMedia {
+  media?: {
+    gallery?: BeachGalleryImage[] | null;
+  } | null;
+}
+
+
+function buildGallery(beach: BeachWithMedia): string[] {
+  return (
+    beach.media?.gallery
+      ?.filter(
+        (img): img is BeachGalleryImage & { url: string } =>
+          typeof img.url === 'string'
+      )
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      .slice(0, 5)
+      .map((img) => buildCdnUrl(img.url, 'gallery'))
+      .filter((url): url is string => Boolean(url)) ?? []
+  );
+}
+
+
 export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) {
   const pathname = usePathname();
   const locale = useLocale();
@@ -34,14 +66,13 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
   const latitude = Number(beachDetails.basic_info?.latitude);
   const longitude = Number(beachDetails.basic_info?.longitude);
 
-  // Proper safety check → radius API enabled only when both coords exist & are valid numbers
   const canSearchRadius =
     beachId !== null &&
     !Number.isNaN(latitude) &&
     !Number.isNaN(longitude);
 
   // ------------------------------------
-  // Distance dropdown (default = 1 km)
+  // Distance dropdown (default = 10 km)
   // ------------------------------------
   const [selectedDistance, setSelectedDistance] = useState({
     value: 10,
@@ -63,37 +94,40 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
 
   // ------------------------------------
   // Transform similar beaches → Property[]
+  // WITH galleryImages support
   // ------------------------------------
   const similarProperties: Property[] = useMemo(() => {
-  if (!beachId) return [];
+    if (!beachId) return [];
 
-  return radiusBeaches
-    .filter((b) => b.id !== beachId)
-    .map((b) => {
-      const image = buildCdnUrl(b.main_image, 'list');
-      if (!image) return null;
+    return radiusBeaches
+      .filter((b) => b.id !== beachId)
+      .map((b) => {
+        const image = buildCdnUrl(b.main_image, 'list');
+        if (!image) return null;
 
-      const item: Property = {
-        id: String(b.id),
-        image,
-        title: b.name ?? 'Unknown beach',
-        location: b.city_slug ?? b.region_slug ?? '',
-        price: 0,
-        originalPrice: 0,
-        rating: 0,
-        reviews: 0,
-        discount: '0',
-        isFreeBreakfast: false,
-        isFreeCancellation: false,
+        const galleryImages = buildGallery(b);
 
-        // ⭐ MUST ADD THIS
-        countryCode: b.country_code,
-      };
+        const item: Property = {
+          id: String(b.id),
+          image,
+          galleryImages,   // ⭐ FULL GALLERY SUPPORT ADDED HERE
 
-      return item;
-    })
-    .filter((x): x is Property => x !== null);
-}, [radiusBeaches, beachId]);
+          title: b.name ?? 'Unknown beach',
+          location: b.city_slug ?? b.region_slug ?? '',
+          price: 0,
+          originalPrice: 0,
+          rating: 0,
+          reviews: 0,
+          discount: '0',
+          isFreeBreakfast: false,
+          isFreeCancellation: false,
+          countryCode: b.country_code,
+        };
+
+        return item;
+      })
+      .filter((x): x is Property => x !== null);
+  }, [radiusBeaches, beachId]);
 
 
   return (
@@ -131,10 +165,10 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
         onFilterClick={() => console.log('filter')}
         onMapClick={() => console.log('map')}
       />
-
       <GetYourGuideSection />
       <BeachDetailsSection beachDetails={beachDetails} />
 
+      {/* ⭐ SIMILAR BEACHES WITH GALLERY */}
       <SimilarBeachesSection
         properties={similarProperties}
         selectedDistance={selectedDistance}
