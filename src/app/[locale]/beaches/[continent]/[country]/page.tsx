@@ -128,6 +128,8 @@ export default function Page({ params }: PageProps) {
     /* VIDEO SUPPORT (FIX) */
     const rawVideo = beach.media?.embeds?.video_url ?? null;
     const videoEmbedUrl = toYouTubeEmbed(rawVideo);
+/* WEBCAM SUPPORT */
+const webcamEmbed = beach.media?.embeds?.webcam ?? null;
 
     return {
       id: String(beach.id),
@@ -138,7 +140,7 @@ export default function Page({ params }: PageProps) {
       sphereTourUrl,
 
       videoEmbedUrl, // ← FINAL FIX
-
+webcamEmbed,
       title: beach.name ?? 'Unknown beach',
       location: cap(beach.city_slug ?? beach.region_slug),
       price: 0,

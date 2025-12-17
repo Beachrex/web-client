@@ -168,7 +168,7 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
       <GetYourGuideSection />
       <BeachDetailsSection beachDetails={beachDetails} />
 
-      {/* ⭐ SIMILAR BEACHES WITH GALLERY */}
+      {/* SIMILAR BEACHES WITH GALLERY */}
       <SimilarBeachesSection
         properties={similarProperties}
         selectedDistance={selectedDistance}

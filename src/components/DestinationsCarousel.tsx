@@ -15,6 +15,7 @@ interface DestinationsCarouselProps {
   cardVariant?: 'default' | 'city' | 'island' | 'region';
   backgroundClassName?: string; // new
   titleClassName?: string;      // new
+  showFlag?: boolean;
 }
 
 export default function DestinationsCarousel(props: DestinationsCarouselProps) {
@@ -24,8 +25,9 @@ export default function DestinationsCarousel(props: DestinationsCarouselProps) {
     countLabel,
     badgeLabel,
     cardVariant = 'default',
-    backgroundClassName = 'bg-white',      // default = white (prejšnje stanje)
-    titleClassName = 'text-[#222222]',     // default = prejšnja barva naslova
+    backgroundClassName = 'bg-white',
+    titleClassName = 'text-[#222222]',
+    showFlag = false,
   } = props;
 
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
@@ -92,6 +94,7 @@ export default function DestinationsCarousel(props: DestinationsCarouselProps) {
                       country={c}
                       badgeLabel={badgeLabel}
                       bottomVariant={cardVariant}
+                      showFlag={showFlag}
                     />
                   ))}
                 </div>

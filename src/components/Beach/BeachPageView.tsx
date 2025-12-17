@@ -102,7 +102,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
 
   const mediaItems: MediaCard[] = rawItems.filter((i) => i.enabled);
 
-  // ✅ Navadna zgodnja vrnitev je ok – hook je zgoraj že poklican
+
   if (mediaItems.length === 0) {
     return null;
   }

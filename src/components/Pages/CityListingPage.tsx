@@ -128,6 +128,9 @@ const beachProperties: Property[] =
         : undefined
       : undefined;
 
+      /* WEBCAM SUPPORT */
+const webcamEmbed = b.media?.embeds?.webcam ?? null;
+
     return {
       id: String(b.id),
       image,
@@ -137,6 +140,7 @@ const beachProperties: Property[] =
       sphereTourUrl,
 
       videoEmbedUrl,
+      webcamEmbed,
 
       title: b.name ?? 'Unknown Beach',
       location: formatName(b.city_slug ?? cityName),

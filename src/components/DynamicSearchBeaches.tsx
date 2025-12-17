@@ -68,9 +68,10 @@ export default function DynamicSearchBeaches({
   /* -------------------------------------------------------------
      MEDIA MODE (gallery | sphere | video)
 -------------------------------------------------------------- */
-  const [mediaMode, setMediaMode] = useState<'gallery' | 'sphere' | 'video'>(
-    'gallery'
-  );
+const [mediaMode, setMediaMode] = useState<
+  'gallery' | 'sphere' | 'video' | 'webcam'
+>('gallery');
+
 
   // Reset page when switching display mode
   useEffect(() => {
@@ -101,12 +102,17 @@ export default function DynamicSearchBeaches({
             .replace('watch?v=', 'embed/')
         : undefined;
 
+        // webcam support
+const webcamEmbed = b.media?.embeds?.webcam ?? null;
+
+
     return {
       image: mainImage,
       galleryImages,
       sphereThumbnail: sphere ? mainImage : undefined,
       sphereTourUrl,
       videoEmbedUrl,
+      webcamEmbed,
       title: b.name ?? 'Unknown beach',
       location: b.city_slug ?? '',
       price: 0,
@@ -116,14 +122,19 @@ export default function DynamicSearchBeaches({
     };
   });
 
+const hasAnyWebcam = properties.some(p => Boolean(p.webcamEmbed));
+
+
   /* -------------------------------------------------------------
-     ⭐ FILTER PROPERTIES BASED ON MEDIA MODE
+      FILTER PROPERTIES BASED ON MEDIA MODE
 -------------------------------------------------------------- */
-  const filteredProperties = properties.filter((p) => {
-    if (mediaMode === 'sphere') return Boolean(p.sphereTourUrl);
-    if (mediaMode === 'video') return Boolean(p.videoEmbedUrl);
-    return true; // gallery mode = show all
-  });
+const filteredProperties = properties.filter((p) => {
+  if (mediaMode === 'sphere') return Boolean(p.sphereTourUrl);
+  if (mediaMode === 'video') return Boolean(p.videoEmbedUrl);
+  if (mediaMode === 'webcam') return Boolean(p.webcamEmbed);
+  return true;
+});
+
 
   /* -------------------------------------------------------------
      PAGINATE AFTER FILTERING
@@ -177,69 +188,112 @@ alt=""
               <div className="flex items-center gap-[10px]">
 
                 {/* GALLERY */}
-                <button
-                  onClick={() => setMediaMode('gallery')}
-                  className={`relative p-1 rounded-[6px] transition
-                  ${mediaMode === 'gallery'
-                    ? 'bg-[#D9EBF6]'
-                    : 'opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <Image
-src="/images/beachmedia/photo.png" width={24} height={24}
-alt="gallery"
-                  />
-                </button>
+               <button
+  onClick={() => setMediaMode('gallery')}
+  className={`relative p-1 rounded-[6px] transition
+    ${mediaMode === 'gallery'
+      ? 'bg-[#D9EBF6]'
+      : 'opacity-60 hover:opacity-100'
+    }`}
+               >
+  <Image
+    src="/images/beachmedia/photo.png"
+    width={24}
+    height={24}
+    alt="gallery"
+  />
+
+  {mediaMode === 'gallery' && (
+    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
+  )}
+</button>
+
 
                 <div className="h-[25px] w-[1px] bg-white" />
 
-                {/* VIDEO — real video */}
-                <button
-                  onClick={() => setMediaMode(m => (m === 'video' ? 'gallery' : 'video'))}
-                  className={`relative p-1 rounded-[6px] transition
-                  ${mediaMode === 'video'
-                    ? 'bg-[#D9EBF6]'
-                    : 'opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <Image
-                    src="/images/beachmedia/play-button-arrowhead-white.png"
-                    width={24}
-                    height={24}
-                    alt="video"
-                  />
-                </button>
 
-                <div className="h-[25px] w-[1px] bg-white" />
+             {/* WEBCAM */}
+{hasAnyWebcam ? (
+  <button
+    onClick={() =>
+      setMediaMode(m => (m === 'webcam' ? 'gallery' : 'webcam'))
+    }
+    className={`relative p-1 rounded-[6px] transition
+      ${mediaMode === 'webcam'
+        ? 'bg-[#D9EBF6]'
+        : 'opacity-60 hover:opacity-100'
+      }`}
+  >
+    <Image
+      src="/images/beachmedia/video-icon-white.png"
+      width={24}
+      height={24}
+      alt="webcam"
+    />
+    {mediaMode === 'webcam' && (
+      <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
+    )}
+  </button>
+) : (
+  <div className="opacity-40 cursor-not-allowed p-1">
+    <Image
+      src="/images/beachmedia/video-icon-white.png"
+      width={24}
+      height={24}
+      alt="webcam"
+    />
+  </div>
+)}
 
+
+ <div className="h-[25px] w-[1px] bg-white" />
                 {/* SPHERE */}
-                <button
-                  onClick={() => setMediaMode(m => (m === 'sphere' ? 'gallery' : 'sphere'))}
-                  className={`relative p-1 rounded-[6px] transition
-                  ${mediaMode === 'sphere'
-                    ? 'bg-[#D9EBF6]'
-                    : 'opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <Image
-                    src="/images/beachmedia/360-degree-white.png"
-                    width={24}
-                    height={24}
-                    alt="sphere"
-                  />
-                </button>
+             <button
+  onClick={() => setMediaMode(m => (m === 'sphere' ? 'gallery' : 'sphere'))}
+  className={`relative p-1 rounded-[6px] transition
+    ${mediaMode === 'sphere'
+      ? 'bg-[#D9EBF6]'
+      : 'opacity-60 hover:opacity-100'
+    }`}
+             >
+  <Image
+    src="/images/beachmedia/360-degree-white.png"
+    width={24}
+    height={24}
+    alt="sphere"
+  />
+
+  {mediaMode === 'sphere' && (
+    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
+  )}
+</button>
+
 
                 <div className="h-[25px] w-[1px] bg-white" />
 
-                {/* WEBCAM — DISABLED */}
-                <div className="opacity-40 cursor-not-allowed p-1">
-                  <Image
-                    src="/images/beachmedia/video-icon-white.png"
-                    width={24}
-                    height={24}
-                    alt="webcam"
-                  />
-                </div>
+
+  {/* VIDEO — real video */}
+           <button
+  onClick={() => setMediaMode(m => (m === 'video' ? 'gallery' : 'video'))}
+  className={`relative p-1 rounded-[6px] transition
+    ${mediaMode === 'video'
+      ? 'bg-[#D9EBF6]'
+      : 'opacity-60 hover:opacity-100'
+    }`}
+           >
+  <Image
+    src="/images/beachmedia/play-button-arrowhead-white.png"
+    width={24}
+    height={24}
+    alt="video"
+  />
+
+  {mediaMode === 'video' && (
+    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
+  )}
+</button>
+
+
               </div>
             </div>
 
@@ -252,7 +306,7 @@ alt="gallery"
           </div>
         </div>
 
-        {/* ⭐ CARDS WRAPPED IN CONTEXT */}
+        {/* CARDS WRAPPED IN CONTEXT */}
         <PropertyMediaContext.Provider
           value={{
             mediaMode,

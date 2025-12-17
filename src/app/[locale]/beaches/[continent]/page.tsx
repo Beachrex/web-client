@@ -16,6 +16,24 @@ import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
+
+function toYouTubeEmbed(raw?: string | null) {
+  if (!raw) return undefined;
+
+  if (raw.includes('youtu.be/')) {
+    return raw.replace('youtu.be/', 'www.youtube.com/embed/');
+  }
+
+  if (raw.includes('watch?v=')) {
+    const u = new URL(raw);
+    const v = u.searchParams.get('v');
+    if (v) return `https://www.youtube.com/embed/${v}`;
+  }
+
+  return undefined;
+}
+
+
 interface PageProps {
   params: Promise<{
     locale: string;
@@ -34,6 +52,11 @@ interface GalleryItem {
 interface BeachMediaInput {
   media?: {
     gallery?: GalleryItem[];
+    spheres_360?: { tour_url?: string }[];
+    embeds?: {
+      video_url?: string | null;
+      webcam?: string | null;
+    };
   };
 }
 
@@ -154,27 +177,39 @@ const Page = async ({ params }: PageProps) => {
     // 4) Transform into PropertySection items
     const transformedProperties = mostVisited.map((beach) => {
       const gallery = buildGallery(beach);
-      const image = buildCdnUrl(beach.main_image, 'list')!;
+     const mainImage = buildCdnUrl(beach.main_image, 'list')!;
 
-      return {
-        id: String(beach.id),
-        image,
-        galleryImages: gallery,
+/* Sphere */
+const sphere = beach.media?.spheres_360?.[0] ?? null;
+const sphereThumbnail = sphere ? mainImage : undefined;
+const sphereTourUrl = sphere
+  ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
+  : undefined;
 
-        title: beach.name ?? '',
-        location: beach.city_slug ?? beach.region_slug ?? '',
+/* Video */
+const rawVideo = beach.media?.embeds?.video_url ?? null;
+const videoEmbedUrl = toYouTubeEmbed(rawVideo);
 
-        price: 0,
-        originalPrice: 0,
-        rating: 0,
-        reviews: 0,
-        discount: '0',
+/* Webcam */
+const webcamEmbed = beach.media?.embeds?.webcam ?? null;
 
-        isFreeBreakfast: false,
-        isFreeCancellation: false,
+return {
+  id: String(beach.id),
+  image: mainImage,
+  galleryImages: gallery,
 
-        countryCode: beach.country_code,
-      };
+  sphereThumbnail,
+  sphereTourUrl,
+  videoEmbedUrl,
+  webcamEmbed,
+
+  title: beach.name ?? '',
+  location: beach.city_slug ?? beach.region_slug ?? '',
+  price: 0,
+  rating: 0,
+  reviews: 0,
+  countryCode: beach.country_code,
+};
     });
 
     const bannerImage = continent.main_image

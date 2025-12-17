@@ -18,6 +18,7 @@ export default function ContinentCountriesSection() {
       title={tContinent('countriesContinent', { continent: 'Europe' })}
       countLabel={tHome('allCountriesCount', { count: countries.length })}
       badgeLabel={tHome('seaExperiences')}
+      showFlag={true}
     />
   );
 }
