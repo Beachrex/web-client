@@ -12,6 +12,7 @@ interface DestinationCardProps {
   country: Country;
   badgeLabel?: string;
   bottomVariant?: 'default' | 'city' | 'island' | 'region';
+  showFlag?: boolean;
 }
 
 
@@ -19,6 +20,7 @@ export default function DestinationCard({
   country,
   badgeLabel,
   bottomVariant = 'default',
+  showFlag = false,
 }: DestinationCardProps) {
   const tHome = useTranslations('HomePage');
   const tDest = useTranslations('Destinations');
@@ -132,7 +134,7 @@ className="object-cover" priority
         className={`flex items-center justify-between p-3 sm:p-4 ${bottomBgClass}`}
       >
         <div className="flex items-center gap-2">
-          {flagUrl && (
+         {showFlag && flagUrl && (
   <Image
     src={flagUrl}
     alt={`${name} flag`}

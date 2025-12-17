@@ -47,7 +47,8 @@ export default function IslandListingPage({
   // ---------------------------------------
   // FETCH CITIES INSIDE ISLAND
   // ---------------------------------------
-  const { cities } = useCities(undefined, undefined);
+ const { cities } = useCities(undefined, undefined, _islandSlug);
+
 
   // ---------------------------------------
   // BASIC ISLAND INFO
@@ -129,6 +130,9 @@ const galleryImages =
         : undefined
       : undefined;
 
+      /* WEBCAM SUPPORT */
+const webcamEmbed = b.media?.embeds?.webcam ?? null;
+
     return {
       id: String(b.id),
       image,
@@ -138,6 +142,7 @@ const galleryImages =
       sphereTourUrl,
 
       videoEmbedUrl,
+      webcamEmbed,
 
       title: b.name ?? 'Unknown Beach',
       location: formatName(b.city_slug ?? islandName),

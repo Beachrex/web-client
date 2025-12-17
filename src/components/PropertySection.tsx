@@ -1,3 +1,5 @@
+
+
 'use client';
 
 import useEmblaCarousel from 'embla-carousel-react';
@@ -12,6 +14,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import PropertyCard from './PropertyCard/PropertyCard';
 
 export interface Property {
+   webcamEmbed?: string | null;
   id: string;
   image: string;
   galleryImages?: string[];
@@ -52,8 +55,7 @@ const noop = () => undefined;
 
 
 export const PropertyMediaContext = React.createContext({
-  mediaMode: 'gallery' as 'gallery' | 'sphere' | 'video',
-
+  mediaMode: 'gallery' as 'gallery' | 'sphere' | 'video' | 'webcam',
   openSphere: (_url: string) => noop(),
   openVideo: (_url: string) => noop(),
 });
@@ -143,8 +145,13 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
 }) => {
   const t = useTranslations('PropertySection');
 
-  const [mediaMode, setMediaMode] =
-    useState<'gallery' | 'sphere' | 'video'>('gallery');
+ const [mediaMode, setMediaMode] =
+  useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
+const hasAnyWebcam = React.useMemo(
+  () => properties.some((p) => Boolean(p.webcamEmbed)),
+  [properties]
+);
+
 
   return (
     <section className="relative overflow-x-hidden bg-white py-10 sm:py-14 lg:py-20">
@@ -199,15 +206,38 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
 
                 <div className="h-[25px] w-[1px] bg-white" />
 
-                {/* WEBCAM – INACTIVE */}
-                <div className="opacity-40 cursor-not-allowed p-1">
-                  <Image
-                    src="/images/beachmedia/video-icon-white.png"
-                    width={24}
-                    height={24}
-                    alt="webcam"
-                  />
-                </div>
+              {/* WEBCAM */}
+{hasAnyWebcam ? (
+  <button
+    onClick={() =>
+      setMediaMode((m) => (m === 'webcam' ? 'gallery' : 'webcam'))
+    }
+    className={`relative p-1 rounded-[6px] transition-all duration-150 ${
+      mediaMode === 'webcam'
+        ? 'bg-[#D9EBF6] shadow-inner'
+        : 'opacity-60 hover:opacity-100'
+    }`}
+  >
+    <Image
+      src="/images/beachmedia/video-icon-white.png"
+      width={24}
+      height={24}
+      alt="webcam"
+    />
+    {mediaMode === 'webcam' && (
+      <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
+    )}
+  </button>
+) : (
+  <div className="opacity-40 cursor-not-allowed p-1">
+    <Image
+      src="/images/beachmedia/video-icon-white.png"
+      width={24}
+      height={24}
+      alt="webcam"
+    />
+  </div>
+)}
 
                 <div className="h-[25px] w-[1px] bg-white" />
 
@@ -288,3 +318,4 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
 };
 
 export default PropertySection;
+

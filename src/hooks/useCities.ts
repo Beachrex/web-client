@@ -12,12 +12,13 @@ import { useQuery } from '@tanstack/react-query';
  * @param countryCode ISO code (HR, IT, SI...)
  */
 
-export const useCities = (countryCode?: string, regionCode?: string) => {
+export const useCities = (countryCode?: string, regionCode?: string, islandCode?: string,) => {
   const { data, isLoading, error } = useQuery(
     getCitiesOptions({
       query: {
         ...(countryCode ? { country_code: countryCode } : {}),
         ...(regionCode ? { region_code: regionCode } : {}),
+        ...(islandCode ? { island_code: islandCode } : {}),
       },
     })
   );
