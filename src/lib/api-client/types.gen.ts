@@ -1282,8 +1282,18 @@ export type City = {
    * Number of accommodations in this city (hardcoded to 0 until booking integration)
    */
   accommodation_count?: number;
+  /**
+   * Location slugs for URL building (included when relationships are loaded)
+   */
+  location?: {
+    continent_slug?: string;
+    country_slug?: string;
+    region_slug?: string | null;
+    island_slug?: string | null;
+  };
   country?: Country;
   region?: Region;
+  island?: Island;
   /**
    * Badges associated with this city (when included)
    */
@@ -1583,6 +1593,16 @@ export type Island = {
    * Number of accommodations on this island (hardcoded to 0 until booking integration)
    */
   accommodation_count?: number;
+  /**
+   * Location slugs for URL building (included when relationships are loaded)
+   */
+  location?: {
+    continent_slug?: string;
+    country_slug?: string;
+    region_slug?: string | null;
+  };
+  country?: Country;
+  region?: Region;
   /**
    * Badges associated with this island (when included)
    */
