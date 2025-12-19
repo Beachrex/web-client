@@ -1092,6 +1092,218 @@ See `ZEPHYR_INTEGRATION.md` for detailed setup instructions.
 
 ---
 
+## 2025-12-19 – SEO Audit & SSR Implementation Plan
+
+### Overview
+
+Conducted comprehensive SEO audit of the Beachrex frontend application and discovered critical Server-Side Rendering (SSR) issues that severely impact SEO performance.
+
+### Critical Finding: Client-Side Rendering Issue
+
+**Problem**: All main pages use `'use client'` directive, making them entirely client-side rendered. This is a **MAJOR SEO issue**.
+
+**Pages Affected**:
+- ❌ Homepage (`src/app/[locale]/page.tsx`)
+- ❌ Beach detail pages (`src/app/[locale]/beaches/[continent]/[country]/[...segments]/page.tsx`)
+- ❌ Country pages (`src/app/[locale]/beaches/[continent]/[country]/page.tsx`)
+- ❌ Beaches listing (`src/app/[locale]/beaches/page.tsx`)
+- ❌ Beach map (`src/app/[locale]/beach-map/page.tsx`)
+
+**Impact**:
+- Search engines see empty HTML shells
+- Content loads only after JavaScript executes
+- Slower indexing and poor rankings
+- No static generation benefits
+- Poor Core Web Vitals scores
+
+### SEO Audit Results
+
+**Overall SEO Score: 42/100** ⚠️
+
+**Breakdown**:
+- Technical SEO: 15/30 (robots.txt blocks crawlers, no sitemaps, missing canonical URLs)
+- On-Page SEO: 12/25 (missing OpenGraph, Twitter Cards, structured data)
+- Content SEO: 8/15 (good URL structure, but content quality needs review)
+- Performance SEO: 7/15 (image optimization good, but bundle size needs work)
+- International SEO: 0/15 (hreflang completely missing despite 14 language support)
+
+**SSR is worth 33 points** - it's the foundation everything else builds on.
+
+### Documentation Created
+
+**1. SEO Audit Report** (`docs/SEO_AUDIT_REPORT.md`)
+- Comprehensive 2500+ line audit report
+- Detailed analysis of all SEO issues
+- Complete code examples for all fixes
+- 4-phase implementation plan
+- Testing checklist and monitoring plan
+
+**2. SSR & SEO Implementation Plan** (`docs/SSR_SEO_IMPLEMENTATION_PLAN.md`)
+- Step-by-step task breakdown
+- 25 tasks across 4 phases
+- Each task includes:
+  - Clear goals and success criteria
+  - Files to create/modify
+  - Testing commands
+  - Expected outcomes
+- Designed for incremental testing (test each step before proceeding)
+
+**3. Localization Requirements Section**
+Added comprehensive localization guidelines to SEO audit report:
+- Translation key structure for all SEO metadata
+- Examples for all 14 supported locales
+- Helper functions for localized metadata
+- Hreflang tag implementation
+- Structured data localization
+- Common mistakes to avoid
+
+### Implementation Phases
+
+**Phase 0: SSR Migration (3-5 days) - CRITICAL** 🔴
+- Convert all main pages from client-side to server-side rendering
+- Split pages into Server Components (data fetching) + Client Components (interactivity)
+- Add `generateMetadata()` functions with localized metadata
+- Enable ISR (Incremental Static Regeneration)
+- Add `generateStaticParams()` for top beaches
+- **Must be completed before other SEO work**
+
+**Phase 1: Critical SEO Fixes (2-3 days)** 🔴
+- Fix robots.txt (currently blocks all search engines!)
+- Create dynamic sitemaps (main, beaches, countries, regions, cities, islands)
+- Add canonical URLs and hreflang tags
+- Implement OpenGraph and Twitter Card metadata
+- Add JSON-LD structured data
+
+**Phase 2: Localization for SEO (2-3 days)** 🔴
+- Create SEO translation keys for all 14 locales
+- Update all metadata to use translations (no hardcoded strings)
+- Implement hreflang tags on all pages
+- Ensure all image alt text is localized
+
+**Phase 3: Advanced SEO Features (1-2 weeks)** 🟡
+- Image optimization and lazy loading
+- Performance improvements (Core Web Vitals)
+- PWA manifest
+- Advanced structured data (breadcrumbs, organization)
+
+**Phase 4: Performance & Testing (3-5 days)** 🟢
+- Bundle size optimization
+- Lighthouse audits
+- Search Console setup
+- Monitoring and analytics
+
+### Key Localization Requirements
+
+**CRITICAL**: Never hardcode strings in SEO metadata!
+
+The application supports **14 languages**: `en`, `si`, `de`, `hr`, `fr`, `es`, `it`, `ua`, `ru`, `pl`, `cs`, `hu`, `bg`, `sk`
+
+**All SEO content must be localized**:
+- ✅ Meta titles and descriptions
+- ✅ OpenGraph titles/descriptions
+- ✅ Twitter Card metadata
+- ✅ Image alt text
+- ✅ Structured data (JSON-LD)
+- ✅ Breadcrumb labels
+- ✅ Hreflang alternate language links
+
+**Translation System**:
+- Files: `messages/[locale].json`
+- Server Components: `getTranslations({ locale, namespace: 'SEO' })`
+- Client Components: `useTranslations('SEO')`
+
+**Example - WRONG ❌:**
+```typescript
+title: `${beach.name} Beach - ${city.name}, ${country.name} | BeachRex`
+```
+
+**Example - CORRECT ✅:**
+```typescript
+const t = await getTranslations({ locale, namespace: 'SEO' });
+title: t('beachTitle', { beachName: beach.name, cityName: city.name, countryName: country.name })
+```
+
+### SSR Pattern (Server + Client Components)
+
+**WRONG ❌ - Current approach:**
+```typescript
+'use client';  // Everything client-side
+
+export default function BeachPage() {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    fetchBeachDetails().then(setData);  // Client-side fetch
+  }, []);
+  return <div>{data?.name}</div>;
+}
+```
+
+**CORRECT ✅ - New approach:**
+```typescript
+// page.tsx - Server Component (NO 'use client')
+import { getTranslations } from 'next-intl/server';
+
+export async function generateMetadata({ params }) {
+  const t = await getTranslations({ locale: params.locale, namespace: 'SEO' });
+  const beach = await getBeachDetails(params.slug);
+
+  return {
+    title: t('beachTitle', { beachName: beach.name, ... }),
+    description: t('beachDescription', { ... }),
+    openGraph: { ... },
+    twitter: { ... },
+    alternates: {
+      canonical: `${baseUrl}/${locale}/beaches/...`,
+      languages: buildAlternateLanguages(...),
+    },
+  };
+}
+
+export default async function BeachPage({ params }) {
+  // Fetch data on SERVER
+  const beachDetails = await getBeachDetails(params.slug);
+
+  // Pass to client component
+  return <BeachDetailPageClient beachDetails={beachDetails} />;
+}
+
+export const revalidate = 3600; // ISR - revalidate every hour
+```
+
+### Testing SSR
+
+**Verify server-side rendering:**
+```bash
+# Build and start production server
+yarn build
+yarn start
+
+# Test SSR - should see full HTML content
+curl http://localhost:3000/en/beaches/europe/croatia/split/bacvice-beach | grep "<title>"
+
+# View page source in browser (Cmd+U / Ctrl+U)
+# Should see full HTML content, not empty shell
+```
+
+### Next Steps
+
+1. **Start with Phase 0 (SSR Migration)** - This is BLOCKING for all other SEO work
+2. **Test each task individually** - Don't proceed until current task is verified
+3. **Update progress in** `docs/SSR_SEO_IMPLEMENTATION_PLAN.md`
+4. **Follow localization guidelines** - Never hardcode strings
+5. **Use step-by-step plan** - Each task has clear success criteria
+
+### Files Created
+- `docs/SEO_AUDIT_REPORT.md` - Comprehensive SEO audit (2500+ lines)
+- `docs/SSR_SEO_IMPLEMENTATION_PLAN.md` - Step-by-step implementation plan (300 lines)
+
+### Related Documentation
+- **SEO Audit**: `docs/SEO_AUDIT_REPORT.md`
+- **Implementation Plan**: `docs/SSR_SEO_IMPLEMENTATION_PLAN.md`
+- **Localization**: See "CRITICAL: Localization Requirements" section in SEO audit report
+
+---
+
 ## Troubleshooting Local Development
 
 ### Upload fails with "Missing credentials"
