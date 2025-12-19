@@ -975,6 +975,10 @@ export type BeachSchema = {
    */
   island_slug?: string | null;
   /**
+   * City name (translated based on Accept-Language header, with English fallback)
+   */
+  city_name?: string | null;
+  /**
    * City slug (translated based on Accept-Language header)
    */
   city_slug?: string | null;
