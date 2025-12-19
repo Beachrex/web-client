@@ -1,137 +1,59 @@
 'use client';
-import { Heart, MapPin } from 'lucide-react';
+
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
-import Image from 'next/image';
+
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
+import PropertyCard from './PropertyCard';
 
 interface DynamicPropertyCardProps {
   beach: BeachSchema;
-  size?: 'small' | 'big';
   onLocationClick?: (latitude: string, longitude: string, beachId?: number) => void;
 }
 
-export function DynamicPropertyCard({ beach, size = 'big', onLocationClick }: DynamicPropertyCardProps) {
+export function DynamicPropertyCard({
+  beach,
+  onLocationClick,
+}: DynamicPropertyCardProps) {
   const locale = useLocale();
+  const property = mapBeachToProperty(beach);
 
-  // Define size-specific classes (responsive width, max fixed size)
-  const sizeClasses = {
-    small: 'w-full max-w-[289px]',
-    big: 'w-full max-w-[410px]',
-  };
+  if (!property) return null;
 
-  const cardWidth = sizeClasses[size];
-
-  // Build the image URL (list context for carousel/grid display)
-  const imageUrl = beach.main_image
-    ? buildCdnUrl(beach.main_image, 'list') ?? '/images/propertycard/card-banner.jpg'
-    : '/images/propertycard/card-banner.jpg'; // fallback image
-
-  // Get display values with fallbacks
-  const beachName = beach.name ?? 'Unknown Beach';
-  const countryName = beach.country_name ?? 'Unknown Country';
-  const latitude = beach.latitude ?? '0';
-  const longitude = beach.longitude ?? '0';
-
-  // Build beach detail URL using location slugs from API
   const beachUrl = buildBeachUrlFromSchema(beach, locale);
 
-  // Handle location icon click
-  const handleLocationClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigation when clicking location icon
-    if (onLocationClick) {
-      onLocationClick(latitude, longitude, beach.id);
-    }
-  };
-
-  const CardContent = (
-    <>
-      {/* Top banner */}
-      <div className="relative h-[278px] w-full overflow-hidden">
-        <Image
-          src={imageUrl}
-          alt={beach.name ?? 'Beach'}
-          fill
-          className="object-cover"
-          loading="lazy"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 410px"
-        />
-
-        {/* Top left badges - can be added later if needed */}
-        <div className="absolute left-2 top-2 flex gap-1 z-10">
-          {/* Placeholder for badges */}
-        </div>
-
-        {/* Top right heart */}
-        <div className="absolute right-2 top-2 cursor-pointer z-10">
-          <Heart
-            size={22}
-            className="text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.5)] hover:fill-red-500 transition-colors"
-          />
-        </div>
-
-        {/* Bottom overlay with location */}
-        <div className="absolute bottom-2 left-2 right-2 flex items-center justify-end">
-          {/* Location tag with country */}
-          <div className="flex items-center gap-2 rounded-[8px] bg-[#FF8000] px-[8px] py-[6px]">
-            <span className="text-[12px] font-bold text-white">
-              {countryName}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom section */}
-      <div className="flex flex-col gap-[2px] rounded-b-[10px] bg-[#E5F2FB] px-3 py-2">
-        {/* Title row */}
-        <div className="flex items-center justify-between">
-          <h3 className="font-figtree text-[16px] font-bold text-[#0069AB] line-clamp-1">
-            {beachName}
-          </h3>
-          <MapPin
-            size={24}
-            className="text-[#FF8000] flex-shrink-0 ml-2 cursor-pointer hover:text-[#CC6600] transition-colors"
-            strokeWidth={2}
-            onClick={handleLocationClick}
-          />
-        </div>
-
-        {/* Content row - placeholder for future details */}
-        <div className="flex items-center justify-between">
-
-          {/* Right icons - placeholder for beach attributes */}
-          <div className="flex gap-1">
-            {/* Placeholder for beach type icons */}
-          </div>
-        </div>
-      </div>
-    </>
+  const card = (
+    <PropertyCard
+      {...property}
+      onLocationClick={
+        onLocationClick
+          ? () =>
+              onLocationClick(
+                beach.latitude ?? '0',
+                beach.longitude ?? '0',
+                beach.id
+              )
+          : undefined
+      }
+    />
   );
 
-  // Wrap in Link if we have a valid URL, otherwise just return the card
-  if (beachUrl) {
-    return (
-      <Link
-        href={beachUrl}
-        className={`${cardWidth} overflow-hidden rounded-[10px]
-          bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg block`}
-      >
-        {CardContent}
-      </Link>
-    );
-  }
 
-  return (
-    <div
-      className={`${cardWidth} overflow-hidden rounded-[10px]
-        bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg`}
+  return beachUrl ? (
+    <Link
+  href={beachUrl}
+  className="block cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] focus-visible:ring-offset-2 rounded-[10px]"
     >
-      {CardContent}
+
+      {card}
+    </Link>
+  ) : (
+    <div className="block">
+      {card}
     </div>
   );
 }
 
 export default DynamicPropertyCard;
-

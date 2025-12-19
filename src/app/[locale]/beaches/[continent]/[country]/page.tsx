@@ -17,6 +17,8 @@ import { useCountryDetails } from '@/hooks/useCountryDetails';
 import { useIslands } from '@/hooks/useIslands';
 import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
 import { useRegions } from '@/hooks/useRegions';
+import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 
 interface PageProps {
   params: {
@@ -27,49 +29,10 @@ interface PageProps {
   searchParams?: Record<string, string | string[] | undefined>;
 }
 
-/* ---------------------------------------------
-   BUILD GALLERY IMAGES
----------------------------------------------- */
-interface GalleryItem {
-  url?: string;
-  order?: number | null;
-}
-
-interface BeachMediaInput {
-  media?: {
-    gallery?: GalleryItem[];
-  };
-}
-
-function buildGallery(beach: BeachMediaInput) {
-  const gallery = beach.media?.gallery ?? [];
-
-  return gallery
-    .filter((img): img is GalleryItem & { url: string } => typeof img.url === 'string')
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    .slice(0, 5)
-    .map((img) => buildCdnUrl(img.url, 'gallery'))
-    .filter((u): u is string => Boolean(u));
-}
 
 /* ---------------------------------------------
    FIX: YOUTUBE URL → EMBED URL
 ---------------------------------------------- */
-function toYouTubeEmbed(raw?: string | null) {
-  if (!raw) return undefined;
-
-  if (raw.includes('youtu.be/')) {
-    return raw.replace('youtu.be/', 'www.youtube.com/embed/');
-  }
-
-  if (raw.includes('watch?v=')) {
-    const u = new URL(raw);
-    const v = u.searchParams.get('v');
-    if (v) return `https://www.youtube.com/embed/${v}`;
-  }
-
-  return undefined;
-}
 
 export default function Page({ params }: PageProps) {
   const pathname = usePathname();
@@ -98,62 +61,27 @@ export default function Page({ params }: PageProps) {
     limit: 20,
   });
 
-  const cap = (str?: string | null) =>
-    str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
   const { data: mostVisitedTop = [] } = useMostVisitedBeaches({
     country_code: countryDetails?.code,
     limit: 20,
   });
-  const mostVisitedSet = new Set(mostVisitedTop.map((b) => b.id));
+const mostVisitedSet = new Set(
+  mostVisitedTop
+    .map((b) => b.id)
+    .filter((id): id is number => typeof id === 'number'),
+);
 
-  /* ---------------------------------------------
-     MAP BEACHES → PROPERTY CARD OBJECTS
-  ---------------------------------------------- */
-  const beachProperties: Property[] = mostVisited.map((beach) => {
-    const mainImage = buildCdnUrl(beach.main_image, 'list');
-    const galleryImages = buildGallery(beach);
 
-    if (!mainImage) throw new Error(`Beach ID ${beach.id} missing main_image`);
-
-    /* Sphere */
-    const sphere = beach.media?.spheres_360?.[0] ?? null;
-
-    const sphereThumbnail = sphere ? mainImage : undefined;
-
-    const sphereTourUrl = sphere
-      ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
-      : undefined;
-
-    /* VIDEO SUPPORT (FIX) */
-    const rawVideo = beach.media?.embeds?.video_url ?? null;
-    const videoEmbedUrl = toYouTubeEmbed(rawVideo);
-/* WEBCAM SUPPORT */
-const webcamEmbed = beach.media?.embeds?.webcam ?? null;
-
-    return {
-      id: String(beach.id),
-      image: mainImage,
-      galleryImages,
-
-      sphereThumbnail,
-      sphereTourUrl,
-
-      videoEmbedUrl, // ← FINAL FIX
-webcamEmbed,
-      title: beach.name ?? 'Unknown beach',
-      location: cap(beach.city_slug ?? beach.region_slug),
-      price: 0,
-      originalPrice: 0,
-      rating: 0,
-      reviews: 0,
-      discount: '0',
-      isFreeBreakfast: false,
-      isFreeCancellation: true,
-      isMostVisited: mostVisitedSet.has(beach.id),
-      countryCode: beach.country_code,
-    };
-  });
+  const beachProperties: Property[] =
+  mostVisited
+    ?.map((beach) =>
+      mapBeachToProperty(beach, {
+        mostVisitedSet,
+        locationFallback: countryName,
+      }),
+    )
+    .filter((p): p is Property => p !== null) ?? [];
 
   /* Regions / Cities / Islands */
   const regionItems =
@@ -191,20 +119,11 @@ webcamEmbed,
       }
     : undefined;
 
-  const infoCards =
-    countryDetails?.articles
-      ?.filter((a) => a.title && a.excerpt && a.feature_image)
-      ?.map((a) => {
-        const image = buildCdnUrl(a.feature_image, 'list');
-        if (!image)
-          throw new Error(`Missing feature_image for article ${a.title}`);
-        return {
-          title: a.title!,
-          subtitle: a.excerpt!,
-          image,
-          link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
-        };
-      }) ?? [];
+ const infoCards = mapArticlesToInfoCards(
+  countryDetails?.articles,
+  locale,
+);
+
 
   /* ---------------------------------------------
      RENDER PAGE

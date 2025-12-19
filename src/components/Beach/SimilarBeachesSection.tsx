@@ -1,24 +1,11 @@
 'use client';
 
-import PropertySection from '@/components/PropertySection';
+import PropertySection, {
+  type Property,
+} from '@/components/PropertySection';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import DistanceDropdown, { type DistanceOption } from '../DistanceDropdown';
-
-interface Property {
-  id: string;
-  image: string;
-  title: string;
-  location: string;
-  price: number;
-  originalPrice?: number;
-  rating: number;
-  reviews: number;
-  discount?: string;
-  isFreeBreakfast?: boolean;
-  isFreeCancellation?: boolean;
-  countryCode?: string;
-}
 
 interface SimilarBeachesSectionProps {
   properties: Property[];
@@ -45,16 +32,14 @@ const SimilarBeachesSection: React.FC<SimilarBeachesSectionProps> = ({
       properties={properties}
       headerRight={
         <DistanceDropdown
-  value={selectedDistance?.value ?? distanceOptions[1]?.value ?? ''}
-  options={distanceOptions}
-  onChange={(val) => onDistanceChange?.(val)}
-  ariaLabel={t('dropdownAria')}
-  renderOptionLabel={(opt) =>
-    t('dropdownOption', { distance: opt.label })
-  }
+          value={selectedDistance?.value ?? distanceOptions[1]?.value ?? ''}
+          options={distanceOptions}
+          onChange={(val) => onDistanceChange?.(val)}
+          ariaLabel={t('dropdownAria')}
+          renderOptionLabel={(opt) =>
+            t('dropdownOption', { distance: opt.label })
+          }
         />
-
-
       }
     />
   );

@@ -28,6 +28,7 @@ const baseBeach: Property = {
   title: 'Plaža Ladinka',
   price: 25,
   originalPrice: 40,
+  galleryImages: [],
   rating: 7.2,
   reviews: 120,
   discount: '15',

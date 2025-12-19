@@ -10,6 +10,7 @@ import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 import { PropertyMediaContext } from '@/components/PropertySection';
 
+import Dropdown from './Dropdown';
 import type { PropertyCardProps } from './PropertyCard/PropertyCard';
 import PropertyCard from './PropertyCard/PropertyCard';
 
@@ -60,6 +61,8 @@ export default function DynamicSearchBeaches({
 
   // Fetch beaches
   const { beaches, loading } = useAllBeaches(filters, true);
+  const [sort, setSort] = useState<'popular' | 'newest' | 'rating'>('popular');
+
 
   // Pagination
   const itemsPerPage = 16;
@@ -212,6 +215,53 @@ alt=""
                 <div className="h-[25px] w-[1px] bg-white" />
 
 
+  {/* VIDEO — real video */}
+           <button
+  onClick={() => setMediaMode(m => (m === 'video' ? 'gallery' : 'video'))}
+  className={`relative p-1 rounded-[6px] transition
+    ${mediaMode === 'video'
+      ? 'bg-[#D9EBF6]'
+      : 'opacity-60 hover:opacity-100'
+    }`}
+           >
+  <Image
+    src="/images/beachmedia/play-button-arrowhead-white.png"
+    width={24}
+    height={24}
+    alt="video"
+  />
+
+  {mediaMode === 'video' && (
+    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
+  )}
+</button>
+
+ <div className="h-[25px] w-[1px] bg-white" />
+                {/* SPHERE */}
+             <button
+  onClick={() => setMediaMode(m => (m === 'sphere' ? 'gallery' : 'sphere'))}
+  className={`relative p-1 rounded-[6px] transition
+    ${mediaMode === 'sphere'
+      ? 'bg-[#D9EBF6]'
+      : 'opacity-60 hover:opacity-100'
+    }`}
+             >
+  <Image
+    src="/images/beachmedia/360-degree-white.png"
+    width={24}
+    height={24}
+    alt="sphere"
+  />
+
+  {mediaMode === 'sphere' && (
+    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
+  )}
+</button>
+
+
+                <div className="h-[25px] w-[1px] bg-white" />
+
+
              {/* WEBCAM */}
 {hasAnyWebcam ? (
   <button
@@ -246,63 +296,24 @@ alt=""
 )}
 
 
- <div className="h-[25px] w-[1px] bg-white" />
-                {/* SPHERE */}
-             <button
-  onClick={() => setMediaMode(m => (m === 'sphere' ? 'gallery' : 'sphere'))}
-  className={`relative p-1 rounded-[6px] transition
-    ${mediaMode === 'sphere'
-      ? 'bg-[#D9EBF6]'
-      : 'opacity-60 hover:opacity-100'
-    }`}
-             >
-  <Image
-    src="/images/beachmedia/360-degree-white.png"
-    width={24}
-    height={24}
-    alt="sphere"
-  />
-
-  {mediaMode === 'sphere' && (
-    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-  )}
-</button>
-
-
-                <div className="h-[25px] w-[1px] bg-white" />
-
-
-  {/* VIDEO — real video */}
-           <button
-  onClick={() => setMediaMode(m => (m === 'video' ? 'gallery' : 'video'))}
-  className={`relative p-1 rounded-[6px] transition
-    ${mediaMode === 'video'
-      ? 'bg-[#D9EBF6]'
-      : 'opacity-60 hover:opacity-100'
-    }`}
-           >
-  <Image
-    src="/images/beachmedia/play-button-arrowhead-white.png"
-    width={24}
-    height={24}
-    alt="video"
-  />
-
-  {mediaMode === 'video' && (
-    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-  )}
-</button>
-
-
               </div>
             </div>
 
             {/* Sort dropdown */}
-            <select className="rounded-md border px-4 py-2 bg-white font-semibold">
-              <option>{t('sortPopular')}</option>
-              <option>{t('sortNewest')}</option>
-              <option>{t('sortTopRated')}</option>
-            </select>
+           <Dropdown
+  value={sort}
+  onChange={(v) => setSort(v as 'popular' | 'newest' | 'rating')}
+  showIcons={false}
+  buttonBg="#FFFFFF"
+  menuBg="#FFFFFF"
+  ariaLabel={t('sortPopular')}
+  options={[
+    { value: 'popular', label: t('sortPopular') },
+    { value: 'newest', label: t('sortNewest') },
+    { value: 'rating', label: t('sortTopRated') },
+  ]}
+           />
+
           </div>
         </div>
 

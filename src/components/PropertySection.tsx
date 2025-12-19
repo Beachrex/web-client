@@ -17,7 +17,7 @@ export interface Property {
    webcamEmbed?: string | null;
   id: string;
   image: string;
-  galleryImages?: string[];
+  galleryImages: string[];
 
   sphereThumbnail?: string;
   sphereTourUrl?: string;
@@ -206,7 +206,57 @@ const hasAnyWebcam = React.useMemo(
 
                 <div className="h-[25px] w-[1px] bg-white" />
 
-              {/* WEBCAM */}
+
+  {/* VIDEO */}
+                <button
+                  onClick={() =>
+                    setMediaMode((m) => (m === 'video' ? 'gallery' : 'video'))
+                  }
+                  className={`relative p-1 rounded-[6px] transition-all duration-150 ${
+                    mediaMode === 'video'
+                      ? 'bg-[#D9EBF6] shadow-inner'
+                      : 'opacity-60 hover:opacity-100'
+                  }`}
+                >
+                  <Image
+                    src="/images/beachmedia/play-button-arrowhead-white.png"
+                    width={24}
+                    height={24}
+                    alt="video"
+                  />
+                  {mediaMode === 'video' && (
+                    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
+                  )}
+                </button>
+
+                <div className="h-[25px] w-[1px] bg-white" />
+
+                {/* SPHERE */}
+                <button
+                  onClick={() =>
+                    setMediaMode((m) => (m === 'sphere' ? 'gallery' : 'sphere'))
+                  }
+                  className={`relative p-1 rounded-[6px] transition-all duration-150 ${
+                    mediaMode === 'sphere'
+                      ? 'bg-[#D9EBF6] shadow-inner'
+                      : 'opacity-60 hover:opacity-100'
+                  }`}
+                >
+                  <Image
+                    src="/images/beachmedia/360-degree-white.png"
+                    width={24}
+                    height={24}
+                    alt="360"
+                  />
+                  {mediaMode === 'sphere' && (
+                    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
+                  )}
+                </button>
+
+                <div className="h-[25px] w-[1px] bg-white" />
+
+
+  {/* WEBCAM */}
 {hasAnyWebcam ? (
   <button
     onClick={() =>
@@ -239,53 +289,7 @@ const hasAnyWebcam = React.useMemo(
   </div>
 )}
 
-                <div className="h-[25px] w-[1px] bg-white" />
 
-                {/* SPHERE */}
-                <button
-                  onClick={() =>
-                    setMediaMode((m) => (m === 'sphere' ? 'gallery' : 'sphere'))
-                  }
-                  className={`relative p-1 rounded-[6px] transition-all duration-150 ${
-                    mediaMode === 'sphere'
-                      ? 'bg-[#D9EBF6] shadow-inner'
-                      : 'opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <Image
-                    src="/images/beachmedia/360-degree-white.png"
-                    width={24}
-                    height={24}
-                    alt="360"
-                  />
-                  {mediaMode === 'sphere' && (
-                    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-                  )}
-                </button>
-
-                <div className="h-[25px] w-[1px] bg-white" />
-
-                {/* VIDEO */}
-                <button
-                  onClick={() =>
-                    setMediaMode((m) => (m === 'video' ? 'gallery' : 'video'))
-                  }
-                  className={`relative p-1 rounded-[6px] transition-all duration-150 ${
-                    mediaMode === 'video'
-                      ? 'bg-[#D9EBF6] shadow-inner'
-                      : 'opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <Image
-                    src="/images/beachmedia/play-button-arrowhead-white.png"
-                    width={24}
-                    height={24}
-                    alt="video"
-                  />
-                  {mediaMode === 'video' && (
-                    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-                  )}
-                </button>
               </div>
             </div>
 

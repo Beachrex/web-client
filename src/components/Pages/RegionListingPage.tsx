@@ -13,6 +13,7 @@ import { useRegionWeather } from '@/hooks/useWeather';
 
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildRegionUrlFromNavigation } from '@/lib/utils/beach-urls';
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 
 
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
@@ -22,6 +23,7 @@ import DynamicSearchBeaches from '../DynamicSearchBeaches';
 import DynamicTopBar from '../DynamicTopBar';
 
 import { ChevronRight } from 'lucide-react';
+import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 
 interface RegionListingPageProps {
   regionSlug?: string;
@@ -83,82 +85,23 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
     limit: 20,
   });
 
-  const formatName = (str?: string | null) =>
-    str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
-  const { data: regionMost = [] } = useMostVisitedBeaches({
-  region_code: regionSlug,
-  limit: 20,
-});
-const mostVisitedSet = new Set(regionMost.map(b => b.id));
+const mostVisitedSet = new Set(
+  (mostVisitedBeaches ?? [])
+    .map(b => b.id)
+    .filter((id): id is number => typeof id === 'number'),
+);
 
 
- const beachProperties: Property[] =
-  mostVisitedBeaches?.map((b) => {
-    const image = buildCdnUrl(b.main_image, 'list');
-    if (!image) throw new Error(`Beach ${b.id} missing main_image`);
-
-   // Local type for gallery items
-interface GalleryItem {
-  url: string;
-  order?: number | null;
-}
-
-const galleryImages =
-  (b.media?.gallery as GalleryItem[] | undefined)
-    ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    ?.slice(0, 5)
-    ?.map((img) => buildCdnUrl(img.url, 'gallery'))
-    ?.filter((u): u is string => Boolean(u)) ?? [];
-
-    // sphere support
-    const sphere = b.media?.spheres_360?.[0] ?? null;
-
-    const sphereThumbnail = sphere ? image : undefined;
-
-    const sphereTourUrl = sphere
-      ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
-      : undefined;
-
-    // video support
-    const rawVideo = b.media?.embeds?.video_url ?? null;
-    const videoEmbedUrl = rawVideo
-      ? (rawVideo.includes('youtu')
-          ? rawVideo.replace('youtu.be/', 'www.youtube.com/embed/').replace('watch?v=', 'embed/')
-          : undefined)
-      : undefined;
-
-
-const webcamEmbed = b.media?.embeds?.webcam ?? null;
-
-
-    return {
-      id: String(b.id),
-      image,
-      galleryImages,
-
-      sphereThumbnail,
-      sphereTourUrl,
-
-      videoEmbedUrl,
-webcamEmbed,
-      title: b.name ?? 'Unknown Beach',
-      location: formatName(b.city_slug ?? b.region_slug ?? ''),
-
-      price: 0,
-      originalPrice: 0,
-      rating: 0,
-      reviews: 0,
-      discount: '0',
-
-      isFreeBreakfast: false,
-      isFreeCancellation: true,
-
-      isMostVisited: mostVisitedSet.has(b.id),
-
-      countryCode: b.country_code,
-    };
-  }) ?? [];
+const beachProperties: Property[] =
+  mostVisitedBeaches
+    ?.map((b) =>
+      mapBeachToProperty(b, {
+        mostVisitedSet,
+        locationFallback: regionName,
+      }),
+    )
+    .filter((p): p is Property => p !== null) ?? [];
 
 
   // ----------------------------
@@ -198,15 +141,10 @@ webcamEmbed,
         icon: buildCdnUrl(b.icon, 'icon')!,
       })) ?? [];
 
-  const regionInfoCards =
-    regionDetails?.articles
-      ?.filter((a) => a.title && a.excerpt && a.feature_image)
-      ?.map((a) => ({
-        title: a.title!,
-        subtitle: a.excerpt!,
-        image: buildCdnUrl(a.feature_image, 'list')!,
-        link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
-      })) ?? [];
+ const regionInfoCards = mapArticlesToInfoCards(
+  regionDetails?.articles,
+  locale,
+);
 
   // ----------------------------
   // RENDER

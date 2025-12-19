@@ -19,6 +19,8 @@ import { buildIslandUrlFromNavigation } from '@/lib/utils/beach-urls';
 
 import { ChevronRight } from 'lucide-react';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
+import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 
 interface IslandListingPageProps {
   islandSlug?: string;
@@ -83,84 +85,23 @@ export default function IslandListingPage({
     limit: 20,
   });
 
-  const formatName = (s?: string | null) =>
-    s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
 
-  const { data: islandMost = [] } = useMostVisitedBeaches({
-  island_code: _islandSlug,
-  limit: 20,
-});
-const mostVisitedSet = new Set(islandMost.map(b => b.id));
+const mostVisitedSet = new Set(
+  (mostVisitedBeachesData ?? [])
+    .map(b => b.id)
+    .filter((id): id is number => typeof id === 'number'),
+);
 
 
- const beachProperties: Property[] =
-  mostVisitedBeachesData?.map((b) => {
-    const image = buildCdnUrl(b.main_image, 'list');
-    if (!image) {
-      throw new Error(`Island MOST VISITED: Beach ${b.id} missing main_image`);
-    }
-
- interface GalleryItem {
-  url: string;
-  order?: number | null;
-}
-
-  /* GALLERY IMAGES */
-const galleryImages =
-  (b.media?.gallery as GalleryItem[] | undefined)
-    ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    ?.slice(0, 5)
-    ?.map((img) => buildCdnUrl(img.url, 'gallery'))
-    ?.filter((u): u is string => Boolean(u)) ?? [];
-
-    /* SPHERE (360°) */
-    const sphere = b.media?.spheres_360?.[0] ?? null;
-    const sphereThumbnail = sphere ? image : undefined;
-    const sphereTourUrl = sphere
-      ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
-      : undefined;
-
-    /* VIDEO SUPPORT */
-    const rawVideo = b.media?.embeds?.video_url ?? null;
-    const videoEmbedUrl = rawVideo
-      ? rawVideo.includes('youtu')
-        ? rawVideo
-            .replace('youtu.be/', 'www.youtube.com/embed/')
-            .replace('watch?v=', 'embed/')
-        : undefined
-      : undefined;
-
-      /* WEBCAM SUPPORT */
-const webcamEmbed = b.media?.embeds?.webcam ?? null;
-
-    return {
-      id: String(b.id),
-      image,
-      galleryImages,
-
-      sphereThumbnail,
-      sphereTourUrl,
-
-      videoEmbedUrl,
-      webcamEmbed,
-
-      title: b.name ?? 'Unknown Beach',
-      location: formatName(b.city_slug ?? islandName),
-
-      price: 0,
-      originalPrice: 0,
-      rating: 0,
-      reviews: 0,
-      discount: '0',
-
-      isFreeBreakfast: false,
-      isFreeCancellation: false,
-
-      isMostVisited: mostVisitedSet.has(b.id),
-
-      countryCode: b.country_code,
-    };
-  }) ?? [];
+const beachProperties: Property[] =
+  mostVisitedBeachesData
+    ?.map((b) =>
+      mapBeachToProperty(b, {
+        mostVisitedSet,
+        locationFallback: islandName,
+      }),
+    )
+    .filter((p): p is Property => p !== null) ?? [];
 
 
   // ---------------------------------------
@@ -193,15 +134,11 @@ const webcamEmbed = b.media?.embeds?.webcam ?? null;
   // ---------------------------------------
   // INFO CARDS
   // ---------------------------------------
-  const infoCards =
-    islandDetails?.articles
-      ?.filter((a) => a.title && a.excerpt && a.feature_image)
-      ?.map((a) => ({
-        title: a.title!,
-        subtitle: a.excerpt!,
-        image: buildCdnUrl(a.feature_image, 'list')!,
-        link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
-      })) ?? [];
+ const infoCards = mapArticlesToInfoCards(
+  islandDetails?.articles,
+  locale,
+);
+
 
   // ---------------------------------------
   // RENDER

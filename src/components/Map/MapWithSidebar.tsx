@@ -1,18 +1,56 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import { DoubleColumnIcon, SingleColumnIcon } from '@/components/Icons/LayoutIcons';
+import { DynamicPropertyCard } from '@/components/PropertyCard/DynamicPropertyCard';
+import { PropertyMediaContext } from '@/components/PropertySection';
+import { useBeachesBoundingBox, useBeachesMapBounds, type BoundingBoxSearchFilters } from '@/hooks/useBeaches';
+import type { BeachSchema, GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
+import { useTranslations } from 'next-intl';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Dropdown, { MediaToggleInline } from '../Dropdown';
 import LeftSidebarFilters from './LeftSidebarFilters';
 import ReactLeafletMap from './ReactLeafletMap';
-import { useBeachesBoundingBox, useBeachesMapBounds, type BoundingBoxSearchFilters } from '@/hooks/useBeaches';
-import type { GetBeachFiltersResponse, BeachSchema } from '@/lib/api-client/types.gen';
-import { DynamicPropertyCard } from '@/components/PropertyCard/DynamicPropertyCard';
-import { useTranslations } from 'next-intl';
-import { SingleColumnIcon, DoubleColumnIcon } from '@/components/Icons/LayoutIcons';
 
 type ColumnLayout = 1 | 2;
 
+
 const MapWithSidebar = () => {
     const t = useTranslations('BeachesMap');
+    const d = useTranslations('BeachDetails');
+    const c = useTranslations('SearchBeach');
+
+
+const mediaOptions = [
+  {
+    value: 'gallery',
+    label: d('beachMediaGallery'),
+    icon: '/images/beachmedia/photo.png',
+  },
+  {
+    value: 'sphere',
+    label: d('beachMedia360'),
+    icon: '/images/beachmedia/360-degree-white.png',
+  },
+  {
+    value: 'video',
+    label: d('beachMediaVideo'),
+    icon: '/images/beachmedia/play-button-arrowhead-white.png',
+  },
+  {
+    value: 'webcam',
+    label: d('beachMediaLiveCam'),
+    icon: '/images/beachmedia/video-icon-white.png',
+  },
+];
+
+
+const [mediaMode, setMediaMode] =
+  useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
+
+const [sort, setSort] =
+  useState<'popular' | 'rating' | 'newest'>('popular');
+
+
     const [mapCenter, setMapCenter] = useState<[number, number] | null>(null);
     const [mapZoom, setMapZoom] = useState<number>(6);
     const [columnLayout, setColumnLayout] = useState<ColumnLayout>(1);
@@ -277,6 +315,7 @@ const MapWithSidebar = () => {
         }
     };
 
+
     const handleMapViewportChange = useCallback(
         (
             center: [number, number],
@@ -326,6 +365,7 @@ const MapWithSidebar = () => {
             ? cardWidth * 2 + gap + padding
             : cardWidth + padding;
     };
+
 
     return (
         <div className="min-h-screen w-full overflow-x-hidden md:h-screen md:overflow-hidden">
@@ -377,27 +417,80 @@ const MapWithSidebar = () => {
                                 msOverflowStyle: 'none',
                             }}
                         >
-                            {/* Column Layout Toggle (desktop only) */}
-                            <div className='sticky top-0 z-10 bg-white p-3 hidden md:flex items-center justify-end'>
-                                <div className="flex">
-                                    <button
-                                        onClick={() => setColumnLayout(1)}
-                                        className='py-1.5 pl-1.5 pr-0.5 transition-all hover:bg-gray-50'
-                                        aria-label='Single column layout'
-                                    >
-                                        <SingleColumnIcon isActive={columnLayout === 1} />
-                                    </button>
-                                    <button
-                                        onClick={() => setColumnLayout(2)}
-                                        className='py-1.5 pl-0.5 pr-1.5 transition-all hover:bg-gray-50'
-                                        aria-label='Double column layout'
-                                    >
-                                        <DoubleColumnIcon isActive={columnLayout === 2} />
-                                    </button>
-                                </div>
-                            </div>
 
-                            <div className="p-4">
+
+{/* MAP LIST HEADER */}
+<div
+  className="
+    sticky top-0 z-40 hidden md:flex
+    items-center justify-between
+    bg-white px-3 py-2 border-b
+  "
+>
+  {/* LEFT SIDE: dropdowns */}
+  <div className="flex items-center gap-3">
+    <Dropdown
+      value={sort}
+      onChange={(v) =>
+        setSort(v as 'popular' | 'rating' | 'newest')
+      }
+      showIcons={false}
+      buttonBg="#F5F5F5"
+      menuBg="#F5F5F5"
+      options={[
+        { value: 'popular', label: c('sortPopular') },
+        { value: 'newest', label: c('sortNewest') },
+        { value: 'rating', label: c('sortTopRated') },
+      ]}
+      ariaLabel={c('sortPopular')}
+    />
+
+  {columnLayout === 2 ? (
+  <MediaToggleInline
+    mediaMode={mediaMode}
+    setMediaMode={setMediaMode}
+    label={c('displayLabel')}
+  />
+) : (
+  <Dropdown
+    value={mediaMode}
+    onChange={(v) =>
+      setMediaMode(v as 'gallery' | 'sphere' | 'video' | 'webcam')
+    }
+    options={mediaOptions}
+    buttonBg="#E7E7E7"
+    menuBg="#E7E7E7"
+    hideActiveLabel
+    hideShadow
+    ariaLabel={t('displayLabel')}
+  />
+)}
+
+  </div>
+
+  {/* RIGHT SIDE: layout toggle */}
+  <div className="flex items-center">
+    <button
+      onClick={() => setColumnLayout(1)}
+      className="py-1.5 pl-1.5 pr-0.5 hover:bg-gray-50 rounded"
+      aria-label="Single column layout"
+    >
+      <SingleColumnIcon isActive={columnLayout === 1} />
+    </button>
+
+    <button
+      onClick={() => setColumnLayout(2)}
+      className="py-1.5 pl-0.5 pr-1.5 hover:bg-gray-50 rounded"
+      aria-label="Double column layout"
+    >
+      <DoubleColumnIcon isActive={columnLayout === 2} />
+    </button>
+  </div>
+</div>
+
+
+<div className="p-4">
+
                                 {/* Only show loading on initial load when no beaches exist */}
                                 {isLoading && beaches.length === 0 && (
                                     <div className="text-center py-8">
@@ -418,20 +511,32 @@ const MapWithSidebar = () => {
                                 )}
 
                                 {/* Show grid whenever we have beaches, even while loading new data */}
-                                {!error && beaches.length > 0 && (
-                                    <div
-                                        className={`grid gap-4 grid-cols-1 ${columnLayout === 2 ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}
-                                    >
-                                        {beaches.map((beach, index) => (
-                                            <div key={`${beach.id ?? index}-${index}`} data-beach-id={beach.id}>
-                                                <DynamicPropertyCard
-                                                    beach={beach}
-                                                    onLocationClick={handleLocationClick}
-                                                />
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                           {!error && beaches.length > 0 && (
+  <PropertyMediaContext.Provider
+    value={{
+      mediaMode,
+      openSphere: () => void 0,
+openVideo: () => void 0,
+
+    }}
+  >
+    <div
+      className={`grid gap-4 grid-cols-1 ${
+        columnLayout === 2 ? 'md:grid-cols-2' : 'md:grid-cols-1'
+      }`}
+    >
+      {beaches.map((beach, index) => (
+        <div key={`${beach.id ?? index}-${index}`} data-beach-id={beach.id}>
+          <DynamicPropertyCard
+            beach={beach}
+            onLocationClick={handleLocationClick}
+          />
+        </div>
+      ))}
+    </div>
+  </PropertyMediaContext.Provider>
+)}
+
                             </div>
                         </div>
 
