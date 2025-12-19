@@ -832,6 +832,44 @@ export type BeachMostVisitedResponse = {
 };
 
 /**
+ * Beach Nearest Response Schema
+ *
+ * Response schema for nearest beaches endpoint
+ */
+export type BeachNearestResponseSchema = {
+  /**
+   * Array of beaches ordered by distance from reference point
+   */
+  data?: Array<BeachSchema>;
+  /**
+   * Metadata about the response
+   */
+  meta?: {
+    /**
+     * The reference point used for distance calculation
+     */
+    reference_point?: {
+      /**
+       * Reference point latitude
+       */
+      latitude?: number;
+      /**
+       * Reference point longitude
+       */
+      longitude?: number;
+    };
+    /**
+     * Maximum number of beaches requested
+     */
+    limit?: number;
+    /**
+     * Number of beaches returned
+     */
+    count?: number;
+  };
+};
+
+/**
  * Beach Radius Response Schema
  *
  * Response schema for beaches within radius endpoint
@@ -6313,10 +6351,13 @@ export type GetNearestBeachesData = {
 
 export type GetNearestBeachesResponses = {
   /**
-   * Nearest beaches found
+   * Nearest beaches found, ordered by distance from reference point
    */
-  200: unknown;
+  200: BeachNearestResponseSchema;
 };
+
+export type GetNearestBeachesResponse =
+  GetNearestBeachesResponses[keyof GetNearestBeachesResponses];
 
 export type CalculateDistanceData = {
   body?: never;
