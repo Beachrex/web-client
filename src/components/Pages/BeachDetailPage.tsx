@@ -15,8 +15,8 @@ import DynamicTopBar from '@/components/DynamicTopBar';
 import type { Property } from '@/components/PropertySection';
 import { useBeachesRadius } from '@/hooks/useBeaches';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromNavigation } from '@/lib/utils/beach-urls';
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 
 interface BeachDetailPageProps {
   beachDetails: BeachDetailsSchema;
@@ -26,32 +26,6 @@ interface BeachDetailPageProps {
    Build gallery (max 5 images)
    Same logic as Country, Region, Search pages
 -------------------------------------------------------------- */
-
-interface BeachGalleryImage {
-  url?: string | null;
-  order?: number | null;
-}
-
-interface BeachWithMedia {
-  media?: {
-    gallery?: BeachGalleryImage[] | null;
-  } | null;
-}
-
-
-function buildGallery(beach: BeachWithMedia): string[] {
-  return (
-    beach.media?.gallery
-      ?.filter(
-        (img): img is BeachGalleryImage & { url: string } =>
-          typeof img.url === 'string'
-      )
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-      .slice(0, 5)
-      .map((img) => buildCdnUrl(img.url, 'gallery'))
-      .filter((url): url is string => Boolean(url)) ?? []
-  );
-}
 
 
 export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) {
@@ -97,37 +71,15 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
   // WITH galleryImages support
   // ------------------------------------
   const similarProperties: Property[] = useMemo(() => {
-    if (!beachId) return [];
+  if (!beachId) return [];
 
-    return radiusBeaches
-      .filter((b) => b.id !== beachId)
-      .map((b) => {
-        const image = buildCdnUrl(b.main_image, 'list');
-        if (!image) return null;
-
-        const galleryImages = buildGallery(b);
-
-        const item: Property = {
-          id: String(b.id),
-          image,
-          galleryImages,   // ⭐ FULL GALLERY SUPPORT ADDED HERE
-
-          title: b.name ?? 'Unknown beach',
-          location: b.city_slug ?? b.region_slug ?? '',
-          price: 0,
-          originalPrice: 0,
-          rating: 0,
-          reviews: 0,
-          discount: '0',
-          isFreeBreakfast: false,
-          isFreeCancellation: false,
-          countryCode: b.country_code,
-        };
-
-        return item;
-      })
-      .filter((x): x is Property => x !== null);
-  }, [radiusBeaches, beachId]);
+  return radiusBeaches
+    .filter((b) => b.id !== beachId)
+    .map((b) =>
+      mapBeachToProperty(b)
+    )
+    .filter((p): p is Property => p !== null);
+}, [radiusBeaches, beachId]);
 
 
   return (

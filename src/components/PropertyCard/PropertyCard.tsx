@@ -42,6 +42,8 @@ export interface PropertyCardProps {
   reviews: number;
   isMostVisited?: boolean;
   countryCode?: string;
+  onLocationClick?: () => void;
+
 }
 
 const carouselTheme: CustomFlowbiteTheme['carousel'] = {
@@ -65,8 +67,8 @@ export default function PropertyCard({
   rating,
   isMostVisited,
   countryCode,
-    webcamEmbed,
-
+  webcamEmbed,
+  onLocationClick,
 }: PropertyCardProps) {
 
   const { isMobile, ready } = useIsMobile();
@@ -127,7 +129,6 @@ const handleClick = () => {
     <div
       className="flex h-[395px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md hover:-translate-y-[3px] hover:shadow-lg transition-all duration-300"
       onClick={handleClick}
-      style={{ cursor: 'default' }}
     >
       <div className="relative grow overflow-hidden">
 
@@ -374,14 +375,23 @@ const handleClick = () => {
       <div className="bg-[#E5F2FB] px-4 py-3 lg:px-5 lg:py-4 rounded-b-[10px] flex flex-col gap-[2px]">
         <div className="flex justify-between items-center">
           <h3 className="text-[#0069AB] text-[20px] font-bold">{title}</h3>
-          <div className="pr-[2px]">
-            <Image
-              src="/images/propertycard/location.png"
-              alt="location"
-              width={32}
-              height={32}
-            />
-          </div>
+       <button
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    onLocationClick?.();
+  }}
+  className="pr-[2px] hover:scale-105 transition-transform cursor-pointer hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8000] focus-visible:ring-offset-2 rounded"
+  aria-label={`Show ${title} on map`}
+       >
+  <Image
+    src="/images/propertycard/location.png"
+    alt="location"
+    width={32}
+    height={32}
+  />
+</button>
+
         </div>
 
         <div className="flex justify-between items-center gap-x-4">

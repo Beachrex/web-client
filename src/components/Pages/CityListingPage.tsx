@@ -17,9 +17,11 @@ import { ChevronRight } from 'lucide-react';
 
 import { useCityDetails } from '@/hooks/useCityDetails';
 import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildCityUrlFromNavigation } from '@/lib/utils/beach-urls';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
+import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 
 interface CityListingPageProps {
   citySlug?: string;
@@ -49,6 +51,12 @@ export default function CityListingPage({
   Boolean(_citySlug),
 );
 
+const countryCode =
+  cityDetails?.country?.code ??
+  cityDetails?.country_code ??
+  '';
+
+
   useEffect(() => {
     if (!pathname) return;
     // Optional: analytics / scroll logic here later
@@ -65,8 +73,6 @@ export default function CityListingPage({
   const cityBeachesCount = cityDetails?.beaches_count ?? 0;
   const cityAccommodationsCount = 0; // TODO: wire to real API when available
 
-  // TODO: later this should come from API (cityDataProp)
-  const countryCode = 'HR';
 
   const { data: cityWeatherResponse, isLoading: isCityWeatherLoading } =
     useCityWeather({
@@ -81,83 +87,22 @@ const { data: mostVisitedBeaches } = useMostVisitedBeaches({
   limit: 20,
 });
 
-const formatName = (s?: string | null) =>
-  s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
 
-const { data: cityMost = [] } = useMostVisitedBeaches({
-  city_code: _citySlug,
-  limit: 20,
-});
-const mostVisitedSet = new Set(cityMost.map(b => b.id));
-
+const mostVisitedSet = new Set(
+  (mostVisitedBeaches ?? [])
+    .map(b => b.id)
+    .filter((id): id is number => typeof id === 'number'),
+);
 
 const beachProperties: Property[] =
-  mostVisitedBeaches?.map((b) => {
-    const image = buildCdnUrl(b.main_image, 'list');
-    if (!image) throw new Error(`CITY PAGE: Beach ${b.id} missing main_image`);
-
-
-    interface GalleryItem {
-  url: string;
-  order?: number | null;
-}
-
-    /* GALLERY IMAGES — take 5 */
-  const galleryImages =
-  (b.media?.gallery as GalleryItem[] | undefined)
-    ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    ?.slice(0, 5)
-    ?.map((img) => buildCdnUrl(img.url, 'gallery'))
-    ?.filter((u): u is string => Boolean(u)) ?? [];
-
-
-    /* 360° SPHERE */
-    const sphere = b.media?.spheres_360?.[0] ?? null;
-    const sphereThumbnail = sphere ? image : undefined;
-    const sphereTourUrl = sphere
-      ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
-      : undefined;
-
-    /* VIDEO SUPPORT */
-    const rawVideo = b.media?.embeds?.video_url ?? null;
-    const videoEmbedUrl = rawVideo
-      ? rawVideo.includes('youtu')
-        ? rawVideo
-            .replace('youtu.be/', 'www.youtube.com/embed/')
-            .replace('watch?v=', 'embed/')
-        : undefined
-      : undefined;
-
-      /* WEBCAM SUPPORT */
-const webcamEmbed = b.media?.embeds?.webcam ?? null;
-
-    return {
-      id: String(b.id),
-      image,
-      galleryImages,
-
-      sphereThumbnail,
-      sphereTourUrl,
-
-      videoEmbedUrl,
-      webcamEmbed,
-
-      title: b.name ?? 'Unknown Beach',
-      location: formatName(b.city_slug ?? cityName),
-
-      price: 0,
-      originalPrice: 0,
-      rating: 0,
-      reviews: 0,
-      discount: '0',
-
-      isFreeBreakfast: false,
-      isFreeCancellation: false,
-
-      isMostVisited: mostVisitedSet.has(b.id),
-      countryCode: b.country_code,
-    };
-  }) ?? [];
+  mostVisitedBeaches
+    ?.map((b) =>
+      mapBeachToProperty(b, {
+        mostVisitedSet,
+        locationFallback: cityName,
+      }),
+    )
+    .filter((p): p is Property => p !== null) ?? [];
 
 
   // Temporary mock cities data (replace with real API later)
@@ -186,15 +131,10 @@ const bottomBadges =
       icon: b.icon ? buildCdnUrl(b.icon, 'icon') : null,
     })) ?? [];
 
-const infoCards =
-  cityDetails?.articles
-    ?.filter(a => a.title && a.excerpt && a.feature_image)
-    ?.map(a => ({
-      title: a.title!,
-      subtitle: a.excerpt!,
-      image: buildCdnUrl(a.feature_image, 'list')!,
-      link: a.slug ? `/${locale}/articles/${a.slug}` : undefined,
-    })) ?? [];
+const infoCards = mapArticlesToInfoCards(
+  cityDetails?.articles,
+  locale,
+);
 
 
   return (
