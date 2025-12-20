@@ -6,6 +6,7 @@ import { env } from '@/env';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { Open_Sans } from 'next/font/google';
+import { buildOrganizationSchema, buildWebSiteSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 
 export async function generateMetadata({
   params,
@@ -47,8 +48,22 @@ export default async function LocaleLayout({
 
   const messages = (await getMessages()) as Record<string, string>;
 
+  // Build JSON-LD structured data for Organization and WebSite
+  const organizationSchema = buildOrganizationSchema();
+  const webSiteSchema = buildWebSiteSchema();
+
   return (
     <html lang={locale} className={openSans.className}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: renderJsonLd(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: renderJsonLd(webSiteSchema) }}
+        />
+      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           <ApiClientProvider locale={locale}>

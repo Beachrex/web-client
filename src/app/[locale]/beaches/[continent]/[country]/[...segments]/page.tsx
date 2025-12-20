@@ -20,6 +20,7 @@ import { buildBeachUrl, getBeachesWord } from '@/lib/utils/beach-urls';
 import {
   buildCompleteMetadata,
   buildBeachAlternateLanguages,
+  buildCanonicalUrl,
 } from '@/lib/utils/metadata-helpers';
 import {
   truncateTitle,
@@ -27,6 +28,7 @@ import {
   sanitizeMetaText,
 } from '@/lib/utils/seo-helpers';
 import { getMainBeachImage } from '@/lib/utils/beach-images';
+import { buildBeachSchema, buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 
 // Import page components
 import BeachDetailPage from '@/components/Pages/BeachDetailPage';
@@ -370,8 +372,48 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
         redirect(canonicalUrl);
       }
 
-      // Render beach detail page (SSR)
-      return <BeachDetailPage beachDetails={beach} />;
+      // Build JSON-LD structured data
+      const beachesWord = getBeachesWord(locale);
+      const pathSegments: string[] = [];
+      if (beach.location?.region?.slug) pathSegments.push(beach.location.region.slug);
+      if (beach.location?.island?.slug) pathSegments.push(beach.location.island.slug);
+      if (beach.location?.city?.slug) pathSegments.push(beach.location.city.slug);
+      if (beach.basic_info?.slug) pathSegments.push(beach.basic_info.slug);
+
+      const canonicalPath = `/${beachesWord}/${params.continent}/${params.country}/${pathSegments.join('/')}`;
+      const canonicalUrl = buildCanonicalUrl(locale, canonicalPath);
+
+      // Build breadcrumb schema
+      const breadcrumbs = [
+        { name: 'Home', url: buildCanonicalUrl(locale, '/') },
+        {
+          name: beach.location?.continent?.name ?? params.continent,
+          url: buildCanonicalUrl(locale, `/${beachesWord}/${params.continent}`),
+        },
+        {
+          name: beach.location?.country?.name ?? params.country,
+          url: buildCanonicalUrl(locale, `/${beachesWord}/${params.continent}/${params.country}`),
+        },
+        { name: beach.basic_info?.name ?? 'Beach', url: canonicalUrl },
+      ];
+
+      const beachSchema = buildBeachSchema(beach, locale, canonicalUrl);
+      const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs);
+
+      // Render beach detail page (SSR) with JSON-LD
+      return (
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: renderJsonLd(beachSchema) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumbSchema) }}
+          />
+          <BeachDetailPage beachDetails={beach} />
+        </>
+      );
     }
 
     // Step 4: Handle other entity types (region, island, city) - Client-side for now

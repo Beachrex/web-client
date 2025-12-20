@@ -1,0 +1,258 @@
+import { env } from '@/env';
+import type { BeachDetailsSchema, Country, Continent } from '@/lib/api-client/types.gen';
+
+const baseUrl = env.NEXT_PUBLIC_BASE_URL;
+
+/**
+ * Build Organization JSON-LD structured data
+ * Used in the root layout for the entire site
+ *
+ * @returns Organization schema object
+ */
+export function buildOrganizationSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'BeachRex',
+    url: baseUrl,
+    logo: `${baseUrl}/logo.png`,
+    description:
+      'Discover the world\'s best beaches. Find detailed information, photos, weather, facilities, and accommodations for your perfect beach destination.',
+    sameAs: [
+      // Add social media profiles when available
+      // 'https://www.facebook.com/beachrex',
+      // 'https://www.instagram.com/beachrex',
+      // 'https://twitter.com/beachrex',
+    ],
+  };
+}
+
+/**
+ * Build WebSite JSON-LD structured data
+ * Used in the root layout for search box functionality
+ *
+ * @returns WebSite schema object
+ */
+export function buildWebSiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'BeachRex',
+    url: baseUrl,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${baseUrl}/search?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+}
+
+/**
+ * Build BreadcrumbList JSON-LD structured data
+ *
+ * @param items - Array of breadcrumb items with name and url
+ * @returns BreadcrumbList schema object
+ *
+ * @example
+ * buildBreadcrumbSchema([
+ *   { name: 'Home', url: 'https://beachrex.com/en' },
+ *   { name: 'Europe', url: 'https://beachrex.com/en/beaches/europe' },
+ *   { name: 'Croatia', url: 'https://beachrex.com/en/beaches/europe/croatia' },
+ * ])
+ */
+export function buildBreadcrumbSchema(items: { name: string; url: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+/**
+ * Build TouristAttraction JSON-LD structured data for a beach
+ *
+ * @param beach - Beach data from API
+ * @param locale - Current locale
+ * @param url - Full URL to the beach page
+ * @returns TouristAttraction schema object
+ *
+ * @example
+ * buildBeachSchema(beachData, 'en', 'https://beachrex.com/en/beaches/europe/croatia/split/bacvice-beach')
+ */
+export function buildBeachSchema(beach: BeachDetailsSchema, locale: string, url: string) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristAttraction',
+    name: beach.basic_info?.name ?? 'Beach',
+    description: beach.basic_info?.description ?? undefined,
+    url,
+  };
+
+  // Add address if available
+  const cityName = beach.location?.city?.name;
+  const countryName = beach.location?.country?.name;
+  if (cityName || countryName) {
+    schema.address = {
+      '@type': 'PostalAddress',
+      addressLocality: cityName ?? undefined,
+      addressCountry: countryName ?? undefined,
+    };
+  }
+
+  // Add geo coordinates if available
+  const latitude = beach.basic_info?.latitude;
+  const longitude = beach.basic_info?.longitude;
+  if (latitude && longitude) {
+    schema.geo = {
+      '@type': 'GeoCoordinates',
+      latitude,
+      longitude,
+    };
+  }
+
+  // Add image if available
+  const firstImage = beach.media?.gallery?.[0];
+  const folderName = beach.basic_info?.folder_name;
+  if (firstImage?.filename && folderName) {
+    const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT as string;
+    const imageUrl = `${cdnEndpoint}/img/beaches/${folderName}/${firstImage.filename}`;
+    schema.image = imageUrl;
+  }
+
+  return schema;
+}
+
+/**
+ * Build Place JSON-LD structured data for a country
+ *
+ * @param country - Country data from API
+ * @param locale - Current locale
+ * @param url - Full URL to the country page
+ * @param beachCount - Number of beaches in the country
+ * @returns Place schema object
+ */
+export function buildCountrySchema(
+  country: Country,
+  locale: string,
+  url: string,
+  beachCount?: number
+) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Place',
+    name: country.name,
+    url,
+  };
+
+  // Add description if beach count is available
+  if (beachCount) {
+    schema.description = `Discover ${beachCount} beaches in ${country.name}`;
+  }
+
+  // Add image if available
+  if (country.main_image) {
+    const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT as string;
+    schema.image = `${cdnEndpoint}/${country.main_image}`;
+  }
+
+  return schema;
+}
+
+/**
+ * Build Place JSON-LD structured data for a continent
+ *
+ * @param continent - Continent data from API
+ * @param locale - Current locale
+ * @param url - Full URL to the continent page
+ * @param beachCount - Number of beaches in the continent
+ * @returns Place schema object
+ */
+export function buildContinentSchema(
+  continent: Continent,
+  locale: string,
+  url: string,
+  beachCount?: number
+) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Place',
+    name: continent.name,
+    url,
+  };
+
+  // Add description if beach count is available
+  if (beachCount) {
+    schema.description = `Discover ${beachCount} beaches in ${continent.name}`;
+  }
+
+  // Add image if available
+  if (continent.main_image) {
+    const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT as string;
+    schema.image = `${cdnEndpoint}/${continent.main_image}`;
+  }
+
+  return schema;
+}
+
+/**
+ * Build ItemList JSON-LD structured data for a list of beaches
+ *
+ * @param beaches - Array of beach data
+ * @param locale - Current locale
+ * @param listName - Name of the list (e.g., "Top Beaches in Croatia")
+ * @param listUrl - URL of the list page
+ * @returns ItemList schema object
+ */
+export function buildBeachListSchema(
+  beaches: BeachDetailsSchema[],
+  locale: string,
+  listName: string,
+  listUrl: string
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: listName,
+    url: listUrl,
+    numberOfItems: beaches.length,
+    itemListElement: beaches.map((beach, index) => {
+      const beachName = beach.basic_info?.name ?? 'Beach';
+      const beachDescription = beach.basic_info?.description;
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'TouristAttraction',
+          name: beachName,
+          description: beachDescription ?? undefined,
+        },
+      };
+    }),
+  };
+}
+
+/**
+ * Render JSON-LD script tag
+ * Use this in page components to add structured data
+ *
+ * @param schema - Schema object(s) to render
+ * @returns Script tag with JSON-LD data
+ *
+ * @example
+ * <script
+ *   type="application/ld+json"
+ *   dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBeachSchema(...)) }}
+ * />
+ */
+export function renderJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
+  return JSON.stringify(schema);
+}
+

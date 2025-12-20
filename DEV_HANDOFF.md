@@ -1601,6 +1601,301 @@ curl http://localhost:3000/en/beaches/europe/croatia/split/bacvice-beach | grep 
 
 ---
 
+## 2025-12-20 – Task 1.6: Add JSON-LD Structured Data
+
+### Status: ✅ COMPLETED
+
+**Objective**: Add JSON-LD structured data to improve search engine understanding and enable rich snippets in search results.
+
+### Files Created
+
+1. **`src/lib/utils/json-ld-helpers.ts`** - JSON-LD schema builders
+   - `buildOrganizationSchema()` - Organization schema for site-wide use
+   - `buildWebSiteSchema()` - WebSite schema with search functionality
+   - `buildBreadcrumbSchema()` - Breadcrumb navigation schema
+   - `buildBeachSchema()` - TouristAttraction schema for beach pages
+   - `buildCountrySchema()` - Place schema for country pages
+   - `buildContinentSchema()` - Place schema for continent pages
+   - `buildBeachListSchema()` - ItemList schema for beach listings
+   - `renderJsonLd()` - Helper to render JSON-LD script tags
+
+### Files Modified
+
+1. **`src/app/[locale]/layout.tsx`** - Added Organization and WebSite schemas
+   - Organization schema with site name, logo, description
+   - WebSite schema with search action for search box functionality
+   - Rendered in `<head>` for site-wide availability
+
+2. **`src/app/[locale]/beaches/[continent]/[country]/[...segments]/page.tsx`** - Added Beach and Breadcrumb schemas
+   - TouristAttraction schema for beach pages with:
+     - Name, description, URL
+     - Address (city, country)
+     - Geo coordinates (latitude, longitude)
+     - Main image
+   - BreadcrumbList schema with navigation hierarchy:
+     - Home → Continent → Country → Beach
+
+### JSON-LD Schemas Implemented
+
+#### 1. Organization Schema (Site-wide)
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "BeachRex",
+  "url": "https://beachrex.com",
+  "logo": "https://beachrex.com/logo.png",
+  "description": "Discover the world's best beaches..."
+}
+```
+
+#### 2. WebSite Schema (Site-wide)
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "BeachRex",
+  "url": "https://beachrex.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://beachrex.com/search?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+```
+
+#### 3. TouristAttraction Schema (Beach Pages)
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "TouristAttraction",
+  "name": "Bačvice Beach",
+  "description": "Beautiful sandy beach in Split...",
+  "url": "https://beachrex.com/en/beaches/europe/croatia/split/bacvice-beach",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Split",
+    "addressCountry": "Croatia"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 43.5051,
+    "longitude": 16.4598
+  },
+  "image": "https://cdn.beachrex.com/img/beaches/..."
+}
+```
+
+#### 4. BreadcrumbList Schema (Beach Pages)
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://beachrex.com/en"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Europe",
+      "item": "https://beachrex.com/en/beaches/europe"
+    },
+    ...
+  ]
+}
+```
+
+### Benefits
+
+✅ **Rich Snippets** - Enables enhanced search results with images, ratings, breadcrumbs
+✅ **Better SEO** - Helps search engines understand content structure and relationships
+✅ **Knowledge Graph** - Can appear in Google's Knowledge Graph
+✅ **Voice Search** - Improves discoverability in voice search results
+✅ **Search Features** - Enables sitelinks search box in Google search results
+
+### Testing
+
+```bash
+# Lint check
+yarn lint
+# ✅ All checks passed
+
+# Validate JSON-LD (when dev server running)
+# Use Google's Rich Results Test: https://search.google.com/test/rich-results
+# Or Schema.org validator: https://validator.schema.org/
+```
+
+### Future Enhancements
+
+The following schemas are ready to be added to other pages:
+
+1. **Country Pages** - Use `buildCountrySchema()` for Place schema
+2. **Continent Pages** - Use `buildContinentSchema()` for Place schema
+3. **Beach Listings** - Use `buildBeachListSchema()` for ItemList schema
+4. **Region/Island/City Pages** - Can use similar Place schemas
+
+### Next Steps
+
+Ready for next Phase 1 task or Phase 2: Localization for SEO.
+
+---
+
+## 2025-12-20 – Task 1.5: Submit Sitemaps to Search Engines
+
+### Status: ⏸️ DEFERRED (Waiting for Production Site)
+
+**Reason**: Cannot submit sitemaps to search engines until production site is deployed. This task will be completed later when `beachrex.com` is live.
+
+### Sitemap Submission Checklist (For Future Production Deployment)
+
+**Sitemaps Created**:
+- Main Sitemap Index: `https://beachrex.com/sitemap.xml`
+- Sub-sitemaps:
+  - `/sitemap/static.xml` - 84 URLs
+  - `/sitemap/beaches.xml` - 14,000 URLs
+  - `/sitemap/countries.xml` - 182 URLs
+  - `/sitemap/regions.xml` - 1,022 URLs
+  - `/sitemap/cities.xml` - 14,700 URLs
+  - `/sitemap/islands.xml` - 406 URLs
+  - **Total: 30,394 URLs**
+
+**Submission Steps (When Production is Ready)**:
+
+1. **Google Search Console**
+   - Add property for `beachrex.com`
+   - Submit: `https://beachrex.com/sitemap.xml`
+
+2. **Bing Webmaster Tools**
+   - Add site `beachrex.com`
+   - Submit: `https://beachrex.com/sitemap.xml`
+
+3. **Yandex Webmaster** (for Russian/Eastern European markets)
+   - Add site
+   - Submit: `https://beachrex.com/sitemap.xml`
+
+**Notes**:
+- ⚠️ Only submit to production, NOT dev/staging
+- Sitemaps auto-update every 24 hours (ISR)
+- `robots.txt` already includes sitemap reference ✅
+
+---
+
+## 2025-12-20 – Task 1.4: Create Geographic Sitemaps
+
+### Status: ✅ COMPLETED
+
+**Objective**: Create dynamic sitemaps for all geographic entities (countries, regions, cities, islands) with proper URL hierarchy and continent/country/region/island slug mappings.
+
+### Files Created
+
+1. **`src/app/sitemap/countries.xml/route.ts`** - Country pages sitemap
+   - 13 countries × 14 locales = **182 URLs**
+   - URL format: `/[locale]/beaches/[continent]/[country]`
+   - Fetches countries with nested continent data
+
+2. **`src/app/sitemap/regions.xml/route.ts`** - Region pages sitemap
+   - 73 regions × 14 locales = **1,022 URLs**
+   - URL format: `/[locale]/beaches/[continent]/[country]/[region]`
+   - Fetches regions with nested country and continent data
+
+3. **`src/app/sitemap/cities.xml/route.ts`** - City pages sitemap
+   - 1,050 cities × 14 locales = **14,700 URLs**
+   - URL format: `/[locale]/beaches/[continent]/[country]/[region]/[island]/[city]`
+   - Region and island are optional (only included if present)
+   - Fetches continents, regions, islands, and cities in parallel
+   - Builds mappings to enrich city data with continent/region/island slugs
+
+4. **`src/app/sitemap/islands.xml/route.ts`** - Island pages sitemap
+   - 29 islands × 14 locales = **406 URLs**
+   - URL format: `/[locale]/beaches/[continent]/[country]/[region]/[island]`
+   - Region is optional (only included if present)
+   - Fetches continents, countries, regions, and islands in parallel
+   - Builds mappings to enrich island data with continent/country/region slugs
+
+### Files Modified
+
+- **`src/app/sitemap.ts`** - Updated main sitemap index to reference all geographic sitemaps
+
+### Key Implementation Details
+
+**Challenge**: API responses have different nested structures:
+- Countries API: Returns `continent` object with `slug`
+- Regions API: Returns `country.continent` object with `slug` (nested)
+- Cities API: Returns `country` object but NO nested `continent` or `region` or `island` objects
+- Islands API: Returns NO nested objects at all
+
+**Solution**: Fetch related entities in parallel and build mappings:
+
+```typescript
+// Cities sitemap - fetch all dependencies
+const [continentsRes, regionsRes, islandsRes, citiesRes] = await Promise.all([...]);
+
+// Build mappings
+const continentMap = new Map(continentsData.map(c => [c.code, c.slug]));
+const regionMap = new Map(regionsData.map(r => [r.id, r.slug]));
+const islandMap = new Map(islandsData.map(i => [i.id, i.slug]));
+
+// Enrich cities with slugs
+const cities = citiesData.map(city => ({
+  ...city,
+  continentSlug: city.country?.continent_code ? continentMap.get(city.country.continent_code) : null,
+  regionSlug: city.region_id ? regionMap.get(city.region_id) : null,
+  islandSlug: city.island_id ? islandMap.get(city.island_id) : null,
+}));
+```
+
+### Sitemap Statistics
+
+| Sitemap | URLs | Content |
+|---------|------|---------|
+| `/sitemap.xml` | 6 | Sitemap index (references all sub-sitemaps) |
+| `/sitemap/static.xml` | 84 | Static pages |
+| `/sitemap/beaches.xml` | 14,000 | Beach pages |
+| `/sitemap/countries.xml` | 182 | Country pages |
+| `/sitemap/regions.xml` | 1,022 | Region pages |
+| `/sitemap/cities.xml` | 14,700 | City pages |
+| `/sitemap/islands.xml` | 406 | Island pages |
+| **Total** | **30,394** | **All URLs** |
+
+### Technical Features
+
+- ✅ **Parallel API fetching** - Fetches multiple endpoints simultaneously for performance
+- ✅ **Data enrichment** - Builds mappings to add missing nested data
+- ✅ **ISR caching** - 24-hour revalidation (`revalidate = 86400`)
+- ✅ **Hreflang alternates** - All 14 locales for each URL
+- ✅ **SEO metadata** - Priority, change frequency, last modified dates
+- ✅ **Error handling** - Graceful fallbacks if API fails
+- ✅ **Type safety** - Full TypeScript types from generated API client
+- ✅ **Localized URLs** - Different "beaches" word per locale
+
+### Testing
+
+```bash
+# Lint check
+yarn lint
+# ✅ All checks passed
+
+# Test sitemaps (when dev server running)
+curl http://localhost:3000/sitemap.xml
+curl http://localhost:3000/sitemap/countries.xml
+curl http://localhost:3000/sitemap/regions.xml
+curl http://localhost:3000/sitemap/cities.xml
+curl http://localhost:3000/sitemap/islands.xml
+```
+
+### Next Steps
+
+Ready for next Phase 1 task: Add canonical URLs and hreflang tags, OpenGraph metadata, or JSON-LD structured data.
+
+---
+
 ## 2025-12-20 – Task 1.3: Create Dynamic Beach Sitemap (Sitemap Index Architecture)
 
 ### Overview
