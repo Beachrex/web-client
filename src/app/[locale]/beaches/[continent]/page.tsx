@@ -20,11 +20,12 @@ import {
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
-import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { buildCompleteMetadata, buildCanonicalUrl } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { buildContinentSchema, buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 
 
 function toYouTubeEmbed(raw?: string | null) {
@@ -262,10 +263,38 @@ return {
       ? buildCdnUrl(continent.main_image, 'banner')
       : null;
 
+    // ---------------- BUILD JSON-LD STRUCTURED DATA -----------------
+    const beachesWord = getBeachesWord(resolvedParams.locale);
+    const canonicalPath = `/${beachesWord}/${resolvedParams.continent}`;
+    const canonicalUrl = buildCanonicalUrl(resolvedParams.locale, canonicalPath);
+
+    // Build breadcrumb schema
+    const breadcrumbs = [
+      { name: 'Home', url: buildCanonicalUrl(resolvedParams.locale, '/') },
+      { name: continent.name ?? resolvedParams.continent, url: canonicalUrl },
+    ];
+
+    const continentSchema = buildContinentSchema(
+      continent,
+      resolvedParams.locale,
+      canonicalUrl,
+      continent.beaches_count ?? 0
+    );
+    const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs);
+
     // ---------------- RENDER -----------------
 
     return (
       <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: renderJsonLd(continentSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumbSchema) }}
+        />
+
         {/* Breadcrumbs */}
         <div className="bg-white py-4">
           <div className="container mx-auto">

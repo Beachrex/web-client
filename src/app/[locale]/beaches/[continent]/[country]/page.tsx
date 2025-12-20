@@ -39,9 +39,10 @@ import type {
 import type { CountryDetails } from '@/types/CountryDetails';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
-import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { buildCompleteMetadata, buildCanonicalUrl } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
+import { buildCountrySchema, buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 
 interface PageProps {
   params: {
@@ -276,10 +277,42 @@ export default async function Page({ params }: PageProps) {
   } : undefined;
 
   /* ---------------------------------------------
+     BUILD JSON-LD STRUCTURED DATA
+  ---------------------------------------------- */
+  const canonicalPath = `/${beachesWord}/${params.continent}/${params.country}`;
+  const canonicalUrl = buildCanonicalUrl(locale, canonicalPath);
+
+  // Build breadcrumb schema
+  const breadcrumbs = [
+    { name: 'Home', url: buildCanonicalUrl(locale, '/') },
+    {
+      name: countryDetails?.continent?.name ?? params.continent,
+      url: buildCanonicalUrl(locale, `/${beachesWord}/${params.continent}`),
+    },
+    { name: countryName, url: canonicalUrl },
+  ];
+
+  const countrySchema = countryDetails
+    ? buildCountrySchema(countryDetails, locale, canonicalUrl, countryBeachesCount)
+    : null;
+  const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs);
+
+  /* ---------------------------------------------
      RENDER PAGE
   ---------------------------------------------- */
   return (
     <>
+      {countrySchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: renderJsonLd(countrySchema) }}
+        />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumbSchema) }}
+      />
+
       <DynamicTopBar
         pathname={pathname}
         navigation={navigationWithUrls}

@@ -103,9 +103,14 @@ export async function GET() {
 
     // For each region, create entries for all locales
     for (const region of regions) {
-      if (!region.slug || !region.continent_slug || !region.country_slug) {
+      if (!region.slug || !region.country?.slug || !region.country?.continent?.slug) {
         console.warn(
           `[sitemap/regions] Skipping region ${region.code ?? 'unknown'} - missing required slugs`,
+        );
+        console.warn(
+          `[sitemap/regions] Debug: slug=${region.slug}, ` +
+            `country.slug=${region.country?.slug}, ` +
+            `continent.slug=${region.country?.continent?.slug}`,
         );
         continue;
       }

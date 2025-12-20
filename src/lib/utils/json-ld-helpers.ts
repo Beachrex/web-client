@@ -1,5 +1,6 @@
-import { env } from '@/env';
 import type { BeachDetailsSchema, Country, Continent } from '@/lib/api-client/types.gen';
+import { buildBeachImageUrl, buildCdnUrl } from '@/lib/utils/beach-images';
+import { env } from '@/env';
 
 const baseUrl = env.NEXT_PUBLIC_BASE_URL;
 
@@ -119,12 +120,13 @@ export function buildBeachSchema(beach: BeachDetailsSchema, locale: string, url:
   }
 
   // Add image if available
-  const firstImage = beach.media?.gallery?.[0];
   const folderName = beach.basic_info?.folder_name;
-  if (firstImage?.filename && folderName) {
-    const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT as string;
-    const imageUrl = `${cdnEndpoint}/img/beaches/${folderName}/${firstImage.filename}`;
-    schema.image = imageUrl;
+  const firstImage = beach.media?.gallery?.[0];
+  if (folderName && firstImage?.file_name) {
+    const imageUrl = buildBeachImageUrl(folderName, firstImage.file_name, false, 'list');
+    if (imageUrl) {
+      schema.image = imageUrl;
+    }
   }
 
   return schema;
@@ -159,8 +161,10 @@ export function buildCountrySchema(
 
   // Add image if available
   if (country.main_image) {
-    const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT as string;
-    schema.image = `${cdnEndpoint}/${country.main_image}`;
+    const imageUrl = buildCdnUrl(country.main_image, 'list');
+    if (imageUrl) {
+      schema.image = imageUrl;
+    }
   }
 
   return schema;
@@ -195,8 +199,10 @@ export function buildContinentSchema(
 
   // Add image if available
   if (continent.main_image) {
-    const cdnEndpoint = env.NEXT_PUBLIC_CDN_ENDPOINT as string;
-    schema.image = `${cdnEndpoint}/${continent.main_image}`;
+    const imageUrl = buildCdnUrl(continent.main_image, 'list');
+    if (imageUrl) {
+      schema.image = imageUrl;
+    }
   }
 
   return schema;

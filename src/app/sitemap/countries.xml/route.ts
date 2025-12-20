@@ -102,7 +102,7 @@ export async function GET() {
 
     // For each country, create entries for all locales
     for (const country of countries) {
-      if (!country.slug || !country.continent_slug) {
+      if (!country.slug || !country.continent?.slug) {
         console.warn(
           `[sitemap/countries] Skipping country ${country.code ?? 'unknown'} - missing required slugs`,
         );
