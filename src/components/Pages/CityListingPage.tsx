@@ -17,11 +17,11 @@ import { ChevronRight } from 'lucide-react';
 
 import { useCityDetails } from '@/hooks/useCityDetails';
 import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
-import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
+import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
+import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildCityUrlFromNavigation } from '@/lib/utils/beach-urls';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
-import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 
 interface CityListingPageProps {
   citySlug?: string;
@@ -97,10 +97,14 @@ const mostVisitedSet = new Set(
 const beachProperties: Property[] =
   mostVisitedBeaches
     ?.map((b) =>
-      mapBeachToProperty(b, {
-        mostVisitedSet,
-        locationFallback: cityName,
-      }),
+      mapBeachToPropertyWithUrl(
+        b,
+        {
+          mostVisitedSet,
+          locationFallback: cityName,
+        },
+        locale,
+      ),
     )
     .filter((p): p is Property => p !== null) ?? [];
 

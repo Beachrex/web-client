@@ -2,7 +2,6 @@
 
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { useLocale } from 'next-intl';
-import Link from 'next/link';
 
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
@@ -19,14 +18,14 @@ export function DynamicPropertyCard({
 }: DynamicPropertyCardProps) {
   const locale = useLocale();
   const property = mapBeachToProperty(beach);
+const beachUrl = buildBeachUrlFromSchema(beach, locale) ?? undefined;
 
   if (!property) return null;
 
-  const beachUrl = buildBeachUrlFromSchema(beach, locale);
-
-  const card = (
+  return (
     <PropertyCard
       {...property}
+      beachUrl={beachUrl}
       onLocationClick={
         onLocationClick
           ? () =>
@@ -39,21 +38,7 @@ export function DynamicPropertyCard({
       }
     />
   );
-
-
-  return beachUrl ? (
-    <Link
-  href={beachUrl}
-  className="block cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] focus-visible:ring-offset-2 rounded-[10px]"
-    >
-
-      {card}
-    </Link>
-  ) : (
-    <div className="block">
-      {card}
-    </div>
-  );
 }
+
 
 export default DynamicPropertyCard;

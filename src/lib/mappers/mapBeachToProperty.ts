@@ -2,6 +2,7 @@
 
 import type { Property } from '@/components/PropertySection';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildBeachUrlFromSchema } from '../utils/beach-urls';
 
 /* ------------------------------------------------------------------
  * Minimal input types for mapper (NO any, NO API coupling)
@@ -27,11 +28,11 @@ interface BeachMedia {
   embeds?: BeachMediaEmbeds | null;
 }
 
-interface BeachLike {
+export interface BeachLike {
   id?: string | number | null;
   name?: string | null;
   main_image?: string | null;
-
+  slug?: string | null;
   country_code?: string | null;
   city_slug?: string | null;
   region_slug?: string | null;
@@ -52,6 +53,7 @@ export function mapBeachToProperty(
   options?: {
     mostVisitedSet?: Set<string | number>;
     locationFallback?: string;
+    locale?: string;
   },
 ): Property | null {
   if (!beach) return null;
@@ -129,11 +131,22 @@ export function mapBeachToProperty(
         options.mostVisitedSet.has(beach.id),
     );
 
+
+  const beachUrl =
+  typeof beach.slug === 'string' && options?.locale
+    ? buildBeachUrlFromSchema(
+        { slug: beach.slug },
+        options.locale
+      ) ?? undefined
+    : undefined;
+
+
   /* ---------------------------
    * FINAL PROPERTY OBJECT
    * --------------------------- */
   return {
     id: String(beach.id),
+    beachUrl,
     image: mainImage,
     galleryImages,
 

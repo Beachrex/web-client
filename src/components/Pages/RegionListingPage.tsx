@@ -13,7 +13,6 @@ import { useRegionWeather } from '@/hooks/useWeather';
 
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildRegionUrlFromNavigation } from '@/lib/utils/beach-urls';
-import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 
 
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
@@ -22,8 +21,9 @@ import DestinationsCarousel from '../DestinationsCarousel';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
 import DynamicTopBar from '../DynamicTopBar';
 
-import { ChevronRight } from 'lucide-react';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
+import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
+import { ChevronRight } from 'lucide-react';
 
 interface RegionListingPageProps {
   regionSlug?: string;
@@ -96,10 +96,14 @@ const mostVisitedSet = new Set(
 const beachProperties: Property[] =
   mostVisitedBeaches
     ?.map((b) =>
-      mapBeachToProperty(b, {
-        mostVisitedSet,
-        locationFallback: regionName,
-      }),
+      mapBeachToPropertyWithUrl(
+        b,
+        {
+          mostVisitedSet,
+          locationFallback: regionName,
+        },
+        locale,
+      ),
     )
     .filter((p): p is Property => p !== null) ?? [];
 

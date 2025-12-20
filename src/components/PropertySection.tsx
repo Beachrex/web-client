@@ -14,7 +14,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import PropertyCard from './PropertyCard/PropertyCard';
 
 export interface Property {
-   webcamEmbed?: string | null;
+  beachUrl?: string;
+  webcamEmbed?: string | null;
   id: string;
   image: string;
   galleryImages: string[];
@@ -155,7 +156,7 @@ const hasAnyWebcam = React.useMemo(
 
   return (
     <section className="relative overflow-x-hidden bg-white py-10 sm:py-14 lg:py-20">
-      <div className="pointer-events-none absolute left-0 top-1/2 z-[1] -translate-y-1/2">
+      <div className="pointer-events-none absolute left-0 top-1/2 -z-10 -translate-y-1/2">
         <div className="relative h-[400px] w-[250px] opacity-70 sm:w-[300px] lg:w-[350px]">
           <Image
             src="/images/propertycard/beach-gray.png"

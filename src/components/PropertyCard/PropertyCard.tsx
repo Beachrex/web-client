@@ -1,13 +1,13 @@
 'use client';
 
+import { useIsMobile } from '@/hooks/useIsMobile';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import useEmblaCarousel from 'embla-carousel-react';
 import { Carousel, type CustomFlowbiteTheme } from 'flowbite-react';
 import { Heart, Star } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
-
-import { useIsMobile } from '@/hooks/useIsMobile';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { PropertyMediaContext } from '../PropertySection';
 
 
@@ -26,7 +26,7 @@ function extractLookrUrl(html: string | null | undefined): string | null {
 
 export interface PropertyCardProps {
   webcamEmbed?: string | null;
-
+  beachUrl?: string;
   image: string;
   galleryImages?: string[];
 
@@ -56,6 +56,7 @@ const carouselTheme: CustomFlowbiteTheme['carousel'] = {
 
 
 export default function PropertyCard({
+  beachUrl,
   image,
   galleryImages = [],
   sphereThumbnail,
@@ -116,19 +117,10 @@ const webcamUrl = React.useMemo(
     );
   }
 
-  /**
-   * NO POPUPS ANYMORE
-   * CARD CLICK DOES NOTHING IN SPHERE/VIDEO MODE
-   */
-const handleClick = () => {
-  // Intentionally left empty
-};
-
 
   return (
     <div
       className="flex h-[395px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md hover:-translate-y-[3px] hover:shadow-lg transition-all duration-300"
-      onClick={handleClick}
     >
       <div className="relative grow overflow-hidden">
 
@@ -284,14 +276,15 @@ const handleClick = () => {
 
 ) : (
   /* DESKTOP CAROUSEL */
-  <Carousel
-    indicators
-    slide={false}
-    theme={carouselTheme}
-    className="h-full"
-    leftControl={<></>}
-    rightControl={<></>}
-  >
+ <Carousel
+  indicators
+  slide={false}
+  theme={carouselTheme}
+  className="h-full"
+  leftControl={<></>}
+  rightControl={<></>}
+ >
+
     {imagesToShow.map((img, idx) => (
       <div key={idx} className="relative h-full w-full">
         <Image
@@ -372,9 +365,22 @@ const handleClick = () => {
       </div>
 
       {/* BOTTOM DETAILS */}
-      <div className="bg-[#E5F2FB] px-4 py-3 lg:px-5 lg:py-4 rounded-b-[10px] flex flex-col gap-[2px]">
+      <div className="relative z-30 pointer-events-auto bg-[#E5F2FB] px-4 py-3 lg:px-5 lg:py-4 rounded-b-[10px] flex flex-col gap-[2px]">
         <div className="flex justify-between items-center">
-          <h3 className="text-[#0069AB] text-[20px] font-bold">{title}</h3>
+          <h3 className="text-[#0069AB] text-[20px] font-bold">
+  {beachUrl ? (
+    <Link
+      href={beachUrl}
+      onClick={(e) => e.stopPropagation()}
+      className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
+    >
+      {title}
+    </Link>
+  ) : (
+    title
+  )}
+</h3>
+
        <button
   type="button"
   onClick={(e) => {

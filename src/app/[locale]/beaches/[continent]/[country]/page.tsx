@@ -18,7 +18,7 @@ import { useIslands } from '@/hooks/useIslands';
 import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
 import { useRegions } from '@/hooks/useRegions';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
-import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
+import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
 
 interface PageProps {
   params: {
@@ -72,16 +72,20 @@ const mostVisitedSet = new Set(
     .filter((id): id is number => typeof id === 'number'),
 );
 
-
-  const beachProperties: Property[] =
+const beachProperties: Property[] =
   mostVisited
     ?.map((beach) =>
-      mapBeachToProperty(beach, {
-        mostVisitedSet,
-        locationFallback: countryName,
-      }),
+      mapBeachToPropertyWithUrl(
+        beach,
+        {
+          mostVisitedSet,
+          locationFallback: countryName,
+        },
+        locale,
+      ),
     )
     .filter((p): p is Property => p !== null) ?? [];
+
 
   /* Regions / Cities / Islands */
   const regionItems =
