@@ -17,10 +17,10 @@ import { useIslandWeather } from '@/hooks/useWeather';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildIslandUrlFromNavigation } from '@/lib/utils/beach-urls';
 
+import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
+import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
 import { ChevronRight } from 'lucide-react';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
-import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
-import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 
 interface IslandListingPageProps {
   islandSlug?: string;
@@ -96,10 +96,14 @@ const mostVisitedSet = new Set(
 const beachProperties: Property[] =
   mostVisitedBeachesData
     ?.map((b) =>
-      mapBeachToProperty(b, {
-        mostVisitedSet,
-        locationFallback: islandName,
-      }),
+      mapBeachToPropertyWithUrl(
+        b,
+        {
+          mostVisitedSet,
+          locationFallback: islandName,
+        },
+        locale,
+      ),
     )
     .filter((p): p is Property => p !== null) ?? [];
 

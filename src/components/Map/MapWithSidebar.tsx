@@ -409,7 +409,7 @@ const [sort, setSort] =
                         {/* Middle Column - Beach Cards List */}
                         <div
                             ref={beachCardsContainerRef}
-                            className={`bg-gray-50 rounded-lg scrollbar-hide w-full overflow-x-hidden md:flex-shrink-0 md:h-screen md:overflow-y-auto ${isListVisible ? 'block' : 'hidden'} md:block`}
+                            className={`rounded-lg scrollbar-hide w-full overflow-x-hidden md:flex-shrink-0 md:h-screen md:overflow-y-auto ${isListVisible ? 'block' : 'hidden'} md:block`}
                             style={{
                                 width: `${getContainerWidth()}px`,
                                 maxWidth: '100%',
@@ -424,7 +424,7 @@ const [sort, setSort] =
   className="
     sticky top-0 z-40 hidden md:flex
     items-center justify-between
-    bg-white px-3 py-2 border-b
+    bg-white px-3 py-2
   "
 >
   {/* LEFT SIDE: dropdowns */}
