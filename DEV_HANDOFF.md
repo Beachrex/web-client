@@ -1601,11 +1601,228 @@ curl http://localhost:3000/en/beaches/europe/croatia/split/bacvice-beach | grep 
 
 ---
 
+## 2025-12-20 – Task 1.3: Create Dynamic Beach Sitemap (Sitemap Index Architecture)
+
+### Overview
+
+Implemented a comprehensive sitemap architecture using Next.js 14 sitemap index pattern. Created separate sitemaps for static pages and dynamic beach content, with a main sitemap index that references all sub-sitemaps.
+
+### Problem
+
+The initial approach of creating `sitemap-beaches.ts` failed because:
+1. Next.js 14 has specific naming conventions for sitemap files (`sitemap.ts`, `sitemap-[number].ts`)
+2. Custom sitemap names like `sitemap-beaches.xml` are not recognized by Next.js
+3. The middleware was catching sitemap requests and returning HTML instead of XML
+4. Need to organize large numbers of URLs (14,000+) efficiently
+
+### Solution: Sitemap Index Architecture
+
+Implemented a proper sitemap index structure following Next.js 14 best practices:
+
+#### File Structure
+
+```
+src/app/
+├── sitemap.ts                          # Main sitemap index
+└── sitemap/
+    ├── static.xml/
+    │   └── route.ts                    # Static pages sitemap (84 URLs)
+    └── beaches.xml/
+        └── route.ts                    # Beach pages sitemap (14,000 URLs)
+```
+
+#### 1. Main Sitemap Index (`src/app/sitemap.ts`)
+
+Returns a sitemap index that references all sub-sitemaps:
+
+```typescript
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    {
+      url: `${baseUrl}/sitemap/static.xml`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/sitemap/beaches.xml`,
+      lastModified: new Date(),
+    },
+  ];
+}
+```
+
+**Output:** `/sitemap.xml`
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://localhost:3000/sitemap/static.xml</loc>
+    <lastmod>2025-12-20T19:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:3000/sitemap/beaches.xml</loc>
+    <lastmod>2025-12-20T19:00:00.000Z</lastmod>
+  </url>
+</urlset>
+```
+
+#### 2. Static Pages Sitemap (`src/app/sitemap/static.xml/route.ts`)
+
+Generates sitemap for all static pages across 14 locales:
+
+**Pages Included (6 pages × 14 locales = 84 URLs):**
+- Homepage (priority: 1.0, daily)
+- Beaches Listing (priority: 0.9, daily)
+- Beach Map (priority: 0.8, weekly)
+- Beach Type (priority: 0.7, weekly)
+- User Type (priority: 0.7, weekly)
+- About (priority: 0.5, monthly)
+
+**Features:**
+- Localized URLs for each language
+- Hreflang alternate links for all 14 locales
+- SEO metadata (priority, changefreq, lastmod)
+- Custom XML generation with proper formatting
+
+**Output:** `/sitemap/static.xml` (84 URLs)
+
+#### 3. Beach Pages Sitemap (`src/app/sitemap/beaches.xml/route.ts`)
+
+Generates sitemap for all beach pages across 14 locales:
+
+**Implementation:**
+```typescript
+export async function GET() {
+  const apiEndpoint = env.NEXT_PUBLIC_API_ENDPOINT;
+
+  // Fetch beaches from API (limit: 1000 due to API constraints)
+  const response = await fetch(`${apiEndpoint}/v1/beaches?limit=1000`, {
+    headers: { 'Accept-Language': 'en' },
+    next: { revalidate: 86400 }, // Cache for 24 hours
+  });
+
+  const data = (await response.json()) as { data?: BeachSchema[] };
+  const beaches = data.data ?? [];
+
+  // Generate URLs for all locales
+  for (const beach of beaches) {
+    for (const locale of locales) {
+      const url = buildBeachUrl(beach, locale, baseUrl);
+      // Add to sitemap with hreflang alternates
+    }
+  }
+}
+```
+
+**Features:**
+- Fetches beaches from API using native fetch (not generated client to avoid SSR issues)
+- Generates URLs for all 14 locales from single API call
+- Proper TypeScript types with `BeachSchema`
+- Error handling and logging
+- ISR caching (24-hour revalidation)
+- Hreflang alternate links for all locales
+
+**Output:** `/sitemap/beaches.xml` (14,000 URLs = 1,000 beaches × 14 locales)
+
+**URL Structure:**
+```
+/en/beaches/europe/croatia/dalmatia-split/split/beach-bacvice
+/si/plaze/europe/croatia/dalmatia-split/split/beach-bacvice
+/de/strande/europe/croatia/dalmatia-split/split/beach-bacvice
+... (14 locales per beach)
+```
+
+### Technical Details
+
+#### Why Route Handlers Instead of Sitemap Files?
+
+Next.js 14 requires sitemap files to follow specific naming patterns:
+- `sitemap.ts` → `/sitemap.xml`
+- `sitemap-0.ts` → `/sitemap-0.xml`
+- `sitemap-1.ts` → `/sitemap-1.xml`
+
+For custom sitemap names like `/sitemap/beaches.xml`, we use **route handlers** (`route.ts`) which give us:
+- Full control over URL structure
+- Custom XML generation
+- Ability to fetch data from APIs
+- Proper TypeScript type safety
+
+#### API Limitations
+
+The backend API has a limit of ~1,000-2,000 beaches per request:
+- `limit=1000` ✅ Works
+- `limit=5000` ❌ Returns 500 error
+- `limit=10000` ❌ Returns 500 error
+
+**Current Implementation:** Fetching 1,000 beaches (14,000 URLs)
+
+**Future Enhancement:** Implement pagination to fetch all beaches if count exceeds 1,000
+
+#### TypeScript Type Safety
+
+Fixed all linting errors by:
+1. Importing `BeachSchema` type from generated API client
+2. Typing API response: `(await response.json()) as { data?: BeachSchema[] }`
+3. Using proper type for beach objects in `buildBeachUrl()`
+4. Removing `async` from static sitemap (no await needed)
+
+### Files Created/Modified
+
+| File | Purpose |
+|------|---------|
+| `src/app/sitemap.ts` | Main sitemap index (references sub-sitemaps) |
+| `src/app/sitemap/static.xml/route.ts` | Static pages sitemap (84 URLs) |
+| `src/app/sitemap/beaches.xml/route.ts` | Beach pages sitemap (14,000 URLs) |
+| `src/app/robots.ts` | Updated to reference main sitemap index only |
+
+### Sitemap Statistics
+
+| Sitemap | URLs | Content |
+|---------|------|---------|
+| `/sitemap.xml` | 2 | Sitemap index (references other sitemaps) |
+| `/sitemap/static.xml` | 84 | Static pages (6 pages × 14 locales) |
+| `/sitemap/beaches.xml` | 14,000 | Beach pages (1,000 beaches × 14 locales) |
+| **Total** | **14,084** | **All URLs** |
+
+### Benefits
+
+✅ **Scalable Architecture** - Easy to add more sitemaps (countries, regions, cities, islands)
+✅ **Proper SEO** - Hreflang links, priority, change frequency for all URLs
+✅ **ISR Caching** - 24-hour revalidation for automatic updates
+✅ **Type Safety** - Full TypeScript support with proper types
+✅ **Error Handling** - Graceful fallback if API fails
+✅ **Performance** - Single API call generates URLs for all locales
+✅ **Maintainable** - Clear separation of concerns
+
+### Testing
+
+```bash
+# Test main sitemap index
+curl http://localhost:3000/sitemap.xml
+
+# Test static pages sitemap
+curl http://localhost:3000/sitemap/static.xml
+
+# Test beach pages sitemap
+curl http://localhost:3000/sitemap/beaches.xml
+
+# Count beach URLs
+curl -s http://localhost:3000/sitemap/beaches.xml | grep -c "<url>"
+# Output: 14000
+```
+
+### Next Steps
+
+Ready for **Task 1.4: Create Geographic Sitemaps** (countries, regions, cities, islands)
+
+---
+
 ## 2025-12-20 – Task 1.2: Create Main Sitemap
 
 ### Overview
 
 Created main sitemap (`sitemap.xml`) with all static pages across all 14 locales, including proper SEO metadata and hreflang alternate language links.
+
+**Note:** This task was later superseded by Task 1.3 which implemented a sitemap index architecture. The static pages sitemap was moved to `/sitemap/static.xml` as part of the new structure.
 
 ### Problem
 

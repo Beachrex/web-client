@@ -31,14 +31,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/_next/'],
       },
     ],
-    sitemap: [
-      `${baseUrl}/sitemap.xml`,
-      `${baseUrl}/sitemap-beaches.xml`,
-      `${baseUrl}/sitemap-countries.xml`,
-      `${baseUrl}/sitemap-regions.xml`,
-      `${baseUrl}/sitemap-cities.xml`,
-      `${baseUrl}/sitemap-islands.xml`,
-    ],
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
 
