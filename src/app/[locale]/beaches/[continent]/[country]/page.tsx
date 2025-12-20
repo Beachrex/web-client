@@ -283,8 +283,18 @@ export default async function Page({ params }: PageProps) {
   const canonicalUrl = buildCanonicalUrl(locale, canonicalPath);
 
   // Build breadcrumb schema
+  // Get translations for JSON-LD
+  const tSchema = await getTranslations({ locale, namespace: 'SEO' });
+  const homeLabel = tSchema('breadcrumbHome');
+  const schemaDescription = countryDetails
+    ? tSchema('countrySchemaDescription', {
+        beachCount: countryBeachesCount.toString(),
+        countryName: countryDetails.name ?? params.country,
+      })
+    : undefined;
+
   const breadcrumbs = [
-    { name: 'Home', url: buildCanonicalUrl(locale, '/') },
+    { name: homeLabel, url: buildCanonicalUrl(locale, '/') },
     {
       name: countryDetails?.continent?.name ?? params.continent,
       url: buildCanonicalUrl(locale, `/${beachesWord}/${params.continent}`),
@@ -293,7 +303,7 @@ export default async function Page({ params }: PageProps) {
   ];
 
   const countrySchema = countryDetails
-    ? buildCountrySchema(countryDetails, locale, canonicalUrl, countryBeachesCount)
+    ? buildCountrySchema(countryDetails, locale, canonicalUrl, schemaDescription)
     : null;
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs);
 

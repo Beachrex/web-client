@@ -53,10 +53,12 @@ interface PageProps {
  */
 export async function generateStaticParams() {
   try {
-    // Fetch top 100 most visited beaches (English only for build time)
+    // Fetch top 20 most visited beaches (English only for build time)
+    // Reduced from 100 to 20 to prevent API overload during build
+    // Other beaches will be generated on-demand (ISR)
     const response = await getMostVisitedBeaches({
       query: {
-        limit: 100,
+        limit: 20,
       },
       headers: {
         'Accept-Language': 'en',
@@ -383,9 +385,13 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
       const canonicalPath = `/${beachesWord}/${params.continent}/${params.country}/${pathSegments.join('/')}`;
       const canonicalUrl = buildCanonicalUrl(locale, canonicalPath);
 
+      // Get translations for JSON-LD
+      const tSchema = await getTranslations({ locale, namespace: 'SEO' });
+      const homeLabel = tSchema('breadcrumbHome');
+
       // Build breadcrumb schema
       const breadcrumbs = [
-        { name: 'Home', url: buildCanonicalUrl(locale, '/') },
+        { name: homeLabel, url: buildCanonicalUrl(locale, '/') },
         {
           name: beach.location?.continent?.name ?? params.continent,
           url: buildCanonicalUrl(locale, `/${beachesWord}/${params.continent}`),

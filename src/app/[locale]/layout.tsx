@@ -48,8 +48,12 @@ export default async function LocaleLayout({
 
   const messages = (await getMessages()) as Record<string, string>;
 
+  // Get localized description for Organization schema
+  const t = await getTranslations({ locale, namespace: 'SEO' });
+  const organizationDescription = t('organizationDescription');
+
   // Build JSON-LD structured data for Organization and WebSite
-  const organizationSchema = buildOrganizationSchema();
+  const organizationSchema = buildOrganizationSchema(organizationDescription);
   const webSiteSchema = buildWebSiteSchema();
 
   return (

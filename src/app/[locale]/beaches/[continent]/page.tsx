@@ -268,9 +268,17 @@ return {
     const canonicalPath = `/${beachesWord}/${resolvedParams.continent}`;
     const canonicalUrl = buildCanonicalUrl(resolvedParams.locale, canonicalPath);
 
+    // Get translations for JSON-LD
+    const tSchema = await getTranslations({ locale: resolvedParams.locale, namespace: 'SEO' });
+    const homeLabel = tSchema('breadcrumbHome');
+    const schemaDescription = tSchema('continentSchemaDescription', {
+      beachCount: (continent.beaches_count ?? 0).toString(),
+      continentName: continent.name ?? resolvedParams.continent,
+    });
+
     // Build breadcrumb schema
     const breadcrumbs = [
-      { name: 'Home', url: buildCanonicalUrl(resolvedParams.locale, '/') },
+      { name: homeLabel, url: buildCanonicalUrl(resolvedParams.locale, '/') },
       { name: continent.name ?? resolvedParams.continent, url: canonicalUrl },
     ];
 
@@ -278,7 +286,7 @@ return {
       continent,
       resolvedParams.locale,
       canonicalUrl,
-      continent.beaches_count ?? 0
+      schemaDescription
     );
     const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs);
 

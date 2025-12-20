@@ -8,17 +8,17 @@ const baseUrl = env.NEXT_PUBLIC_BASE_URL;
  * Build Organization JSON-LD structured data
  * Used in the root layout for the entire site
  *
+ * @param description - Localized organization description from translations
  * @returns Organization schema object
  */
-export function buildOrganizationSchema() {
+export function buildOrganizationSchema(description: string) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'BeachRex',
     url: baseUrl,
     logo: `${baseUrl}/logo.png`,
-    description:
-      'Discover the world\'s best beaches. Find detailed information, photos, weather, facilities, and accommodations for your perfect beach destination.',
+    description,
     sameAs: [
       // Add social media profiles when available
       // 'https://www.facebook.com/beachrex',
@@ -59,7 +59,7 @@ export function buildWebSiteSchema() {
  *
  * @example
  * buildBreadcrumbSchema([
- *   { name: 'Home', url: 'https://beachrex.com/en' },
+ *   { name: homeLabel, url: 'https://beachrex.com/en' },
  *   { name: 'Europe', url: 'https://beachrex.com/en/beaches/europe' },
  *   { name: 'Croatia', url: 'https://beachrex.com/en/beaches/europe/croatia' },
  * ])
@@ -138,14 +138,14 @@ export function buildBeachSchema(beach: BeachDetailsSchema, locale: string, url:
  * @param country - Country data from API
  * @param locale - Current locale
  * @param url - Full URL to the country page
- * @param beachCount - Number of beaches in the country
+ * @param description - Localized description from translations (optional)
  * @returns Place schema object
  */
 export function buildCountrySchema(
   country: Country,
   locale: string,
   url: string,
-  beachCount?: number
+  description?: string
 ) {
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -154,9 +154,9 @@ export function buildCountrySchema(
     url,
   };
 
-  // Add description if beach count is available
-  if (beachCount) {
-    schema.description = `Discover ${beachCount} beaches in ${country.name}`;
+  // Add description if provided
+  if (description) {
+    schema.description = description;
   }
 
   // Add image if available
@@ -176,14 +176,14 @@ export function buildCountrySchema(
  * @param continent - Continent data from API
  * @param locale - Current locale
  * @param url - Full URL to the continent page
- * @param beachCount - Number of beaches in the continent
+ * @param description - Localized description from translations (optional)
  * @returns Place schema object
  */
 export function buildContinentSchema(
   continent: Continent,
   locale: string,
   url: string,
-  beachCount?: number
+  description?: string
 ) {
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -192,9 +192,9 @@ export function buildContinentSchema(
     url,
   };
 
-  // Add description if beach count is available
-  if (beachCount) {
-    schema.description = `Discover ${beachCount} beaches in ${continent.name}`;
+  // Add description if provided
+  if (description) {
+    schema.description = description;
   }
 
   // Add image if available

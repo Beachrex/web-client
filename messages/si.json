@@ -307,6 +307,57 @@
     "destinationsTitle": "Najboljše plažne destinacije na svetu"
   },
 
+  "SEO": {
+    "homeTitle": "BeachRex - Odkrijte najboljše plaže sveta",
+    "homeDescription": "Raziščite tisoče plaž po vsem svetu. Najdite podrobne informacije, fotografije, vreme, storitve in nastanitve za vašo popolno plažno destinacijo.",
+
+    "continentTitle": "Plaže {continentName} - Odkrijte {beachCount} plažnih destinacij | BeachRex",
+    "continentDescription": "Raziščite {beachCount} plaž v {countryCount} državah v {continentName}. Najdite podrobne informacije, fotografije, vreme, storitve in nastanitve za najboljše plažne destinacije v {continentName}.",
+
+    "countryTitle": "Plaže {countryName} - Odkrijte {beachCount} plažnih destinacij | BeachRex",
+    "countryDescription": "Raziščite {beachCount} plaž v {countryName}. Najdite podrobne informacije, fotografije, vreme, storitve in nastanitve za najboljše plažne destinacije v {countryName}.",
+
+    "regionTitle": "Plaže {regionName} - {countryName} | BeachRex",
+    "regionDescription": "Odkrijte čudovite plaže v {regionName}, {countryName}. Najdite podrobne informacije, fotografije, vreme in storitve za plažne destinacije v tej regiji.",
+
+    "cityTitle": "Plaže {cityName} - {countryName} | BeachRex",
+    "cityDescription": "Raziščite plaže v {cityName}, {countryName}. Najdite podrobne informacije, fotografije, vreme in storitve za najboljše plažne destinacije v {cityName}.",
+
+    "islandTitle": "Plaže {islandName} - {countryName} | BeachRex",
+    "islandDescription": "Odkrijte plaže na {islandName}, {countryName}. Najdite podrobne informacije, fotografije, vreme in storitve za otoške plažne destinacije.",
+
+    "beachesPageTitle": "Raziščite plaže sveta | BeachRex",
+    "beachesPageDescription": "Brskajte po tisočih plaž po vsem svetu. Uporabite naše napredne filtre za iskanje vaše popolne plažne destinacije s podrobnimi informacijami, fotografijami in storitvami.",
+
+    "beachMapTitle": "Interaktivni zemljevid plaž | BeachRex",
+    "beachMapDescription": "Raziščite plaže na našem interaktivnem svetovnem zemljevidu. Odkrijte plažne destinacije, oglejte si fotografije in najdite podrobne informacije o plažah po vsem svetu.",
+
+    "aboutTitle": "O BeachRex - Vaša platforma za odkrivanje plaž",
+    "aboutDescription": "Spoznajte BeachRex, najbolj obsežno platformo za odkrivanje plaž na svetu. Najdite podrobne informacije o tisočih plaž po vsem svetu.",
+
+    "beachTitle": "{beachName} - {cityName}, {countryName} | BeachRex",
+    "beachTitleNoCity": "{beachName} - {countryName} | BeachRex",
+    "beachDescription": "Odkrijte {beachName} v {cityName}, {countryName}. {characteristics}. Najdite fotografije, ocene, storitve in vremenske informacije.",
+    "beachDescriptionFallback": "Raziščite {beachName} v {cityName}, {countryName}. Najdite podrobne informacije, fotografije, storitve in trenutne vremenske razmere.",
+
+    "beachImageAlt": "Plaža {beachName} v {cityName}, {countryName}",
+    "beachImageAltNoCity": "Plaža {beachName} v {countryName}",
+    "iconAlt": "Ikona {iconName}",
+    "facilityAlt": "Ikona storitve {facilityName}",
+    "countryFlagAlt": "Zastava {countryName}",
+    "continentImageAlt": "{continentName} - Raziščite plaže",
+    "countryImageAlt": "{countryName} - Plažne destinacije",
+    "regionImageAlt": "{regionName}, {countryName} - Plažna regija",
+    "cityImageAlt": "{cityName}, {countryName} - Plažno mesto",
+    "islandImageAlt": "{islandName}, {countryName} - Plažni otok",
+
+    "organizationDescription": "Odkrijte najboljše plaže sveta. Najdite podrobne informacije, fotografije, vreme, storitve in nastanitve za vašo popolno plažno destinacijo.",
+    "countrySchemaDescription": "Odkrijte {beachCount} plaž v {countryName}",
+    "continentSchemaDescription": "Odkrijte {beachCount} plaž v {continentName}",
+
+    "breadcrumbHome": "Domov"
+  },
+
   "WorldSEO": {
     "title": "Odkrij plaže sveta",
     "paragraph1": "Svet ponuja izjemno raznolikost plaž – od tropskih bežnih obal do mogočnih vulkanskih pokrajin. Ne glede na to, ali iščete mirne lagune, palmami obdane obale ali najbolj znane počitniške destinacije, vam naša globalna baza plaž pomaga najti popoln kotiček.",
