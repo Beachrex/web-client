@@ -1,214 +1,411 @@
-'use client';
+/**
+ * Flexible Geography Page - Server Component (SSR)
+ *
+ * This page handles multiple entity types: beach, region, island, city
+ * For Task 0.2, we're converting ONLY the beach detail part to SSR.
+ * Other entity types (region, island, city) will be converted in later tasks.
+ *
+ * Task 0.2: Convert Beach Detail Page to SSR
+ * Task 0.6: Add generateStaticParams for Top Beaches
+ */
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { notFound } from 'next/navigation';
-import { useBeachDetails } from '@/hooks/useBeachDetails';
-import { getBeachDetails, resolveSlug, getCountries } from '@/lib/api-client';
-import type { AcceptLanguage, BeachDetailsSchema, Country } from '@/lib/api-client/types.gen';
-import { buildBeachUrl } from '@/lib/utils/beach-urls';
+import { notFound, redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 import React from 'react';
+
+import { getBeachDetails, resolveSlug, getCountries, getMostVisitedBeaches } from '@/lib/api-client';
+import type { AcceptLanguage, BeachDetailsSchema, Country } from '@/lib/api-client/types.gen';
+import { buildBeachUrl, getBeachesWord } from '@/lib/utils/beach-urls';
+import {
+  buildCompleteMetadata,
+  buildBeachAlternateLanguages,
+} from '@/lib/utils/metadata-helpers';
+import {
+  truncateTitle,
+  truncateDescription,
+  sanitizeMetaText,
+} from '@/lib/utils/seo-helpers';
+import { getMainBeachImage } from '@/lib/utils/beach-images';
 
 // Import page components
 import BeachDetailPage from '@/components/Pages/BeachDetailPage';
 
-type PageType = 'region' | 'island' | 'city' | 'beach' | 'unknown';
-
-interface PageState {
-  type: PageType;
-  slug: string;
-  loading: boolean;
+interface PageProps {
+  params: {
+    locale: string;
+    continent: string;
+    country: string;
+    segments: string[];
+  };
 }
 
-export default function FlexibleGeographyPage() {
-  const params = useParams();
-  const router = useRouter();
-  const locale = (params?.locale as string) || 'en';
-  const country = (params?.country as string) || '';
+/**
+ * Generate static params for top beaches (Task 0.6)
+ *
+ * Pre-generates static pages for the top 100 most visited beaches at build time.
+ * This improves performance and SEO by generating pages at build time instead of on-demand.
+ *
+ * Note: We only generate for English locale to keep build times reasonable.
+ * Other locales will be generated on-demand (ISR).
+ */
+export async function generateStaticParams() {
+  try {
+    // Fetch top 100 most visited beaches (English only for build time)
+    const response = await getMostVisitedBeaches({
+      query: {
+        limit: 100,
+      },
+      headers: {
+        'Accept-Language': 'en',
+      },
+    });
 
-  const [pageState, setPageState] = useState<PageState>({
-    type: 'unknown',
-    slug: '',
-    loading: true,
-  });
+    const beaches = response.data?.data ?? [];
 
-  // Determine what type of page this is
-  useEffect(() => {
-    const segments = (params?.segments as string[]) || [];
+    // Generate params for each beach
+    const params = beaches
+      .filter((beach) => {
+        // Only include beaches with all required slugs
+        return (
+          beach.slug &&
+          beach.continent_slug &&
+          beach.country_slug &&
+          beach.city_slug
+        );
+      })
+      .map((beach) => {
+        // Build segments array based on beach location structure
+        const segments: string[] = [];
 
-    async function determinePage() {
-      console.log('🔍 Segments:', segments);
-
-      if (segments.length === 0) {
-        setPageState({ type: 'unknown', slug: '', loading: false });
-        return;
-      }
-
-      const lastSegment: string = segments[segments.length - 1] ?? '';
-
-      // Get country code from country slug (needed for resolve-slug API)
-      let countryCode: string | undefined;
-      try {
-        const countriesResponse = await getCountries({
-          headers: { 'Accept-Language': locale as AcceptLanguage },
-        });
-
-        const countryData = countriesResponse.data?.data?.find(
-          (c: Country) => c.slug?.toLowerCase() === country.toLowerCase()
-        ) ?? null;
-
-        countryCode = countryData?.code;
-      } catch {
-        // Ignore error - countryCode will remain undefined
-      }
-
-      // Strategy: Use resolve-slug API FIRST to determine entity type
-      // This is fast and optimized with segment_count parameter
-      try {
-        // Prepare query parameters for resolve-slug API
-        // segment_count helps optimize the search order
-        // parent_slug helps resolve ambiguity (e.g., island and city with same name)
-        const queryParams: {
-          country_code?: string;
-          segment_count?: number;
-          parent_slug?: string;
-        } = {};
-
-        if (countryCode) {
-          queryParams.country_code = countryCode;
+        // Add region if present
+        if (beach.region_slug) {
+          segments.push(beach.region_slug);
         }
 
-        // Pass segment count to optimize search
-        queryParams.segment_count = segments.length;
-
-        // If we have 2+ segments, pass the parent slug for context
-        // Example: /island-cres/cres → parent_slug=island-cres helps identify it's a city
-        if (segments.length >= 2) {
-          queryParams.parent_slug = segments[segments.length - 2];
+        // Add island if present
+        if (beach.island_slug) {
+          segments.push(beach.island_slug);
         }
 
-        console.log('🔍 Resolving slug with params:', {
-          slug: lastSegment,
-          ...queryParams,
-        });
-
-        // Call the resolve-slug API with optimized parameters
-        const resolveResponse = await resolveSlug({
-          path: { slug: lastSegment },
-          query: queryParams,
-          headers: { 'Accept-Language': locale as AcceptLanguage },
-        });
-
-        if (resolveResponse.data?.success && resolveResponse.data.data) {
-          const { type } = resolveResponse.data.data;
-          console.log('✅ Resolved page type:', type, 'for slug:', lastSegment);
-
-          // If it's a beach, validate the URL matches the beach location hierarchy
-          if (type === 'beach') {
-            try {
-              const beachResponse = await getBeachDetails({
-                path: { identifier: lastSegment },
-                headers: { 'Accept-Language': locale as AcceptLanguage },
-              });
-
-              if (beachResponse.data?.data) {
-                const beach = beachResponse.data.data;
-
-                console.log('🏖️ Beach data received:', {
-                  beach_slug: beach.basic_info?.slug,
-                  region_slug: beach.location?.region?.slug,
-                  island_slug: beach.location?.island?.slug,
-                  city_slug: beach.location?.city?.slug,
-                });
-
-                // Verify URL matches beach location hierarchy
-                if (urlMatchesBeachLocation(segments, beach)) {
-                  console.log('✅ Beach URL validated:', lastSegment);
-                  setPageState({ type: 'beach', slug: lastSegment, loading: false });
-                  return;
-                } else {
-                  // URL doesn't match - redirect to canonical URL
-                  console.log('⚠️ Beach URL mismatch - redirecting to canonical URL');
-                  const canonicalUrl = buildBeachUrl(beach, locale);
-                  console.log('🔀 Redirecting to:', canonicalUrl);
-                  void router.replace(canonicalUrl);
-                  return;
-                }
-              }
-            } catch (error) {
-              console.error('Error fetching beach details:', error);
-              setPageState({ type: 'unknown', slug: '', loading: false });
-              return;
-            }
-          }
-
-          // For non-beach types (region, island, city), use the resolved type directly
-          setPageState({ type: type as PageType, slug: lastSegment, loading: false });
-          return;
+        // Add city (required)
+        if (beach.city_slug) {
+          segments.push(beach.city_slug);
         }
-      } catch (error) {
-        console.error('Error resolving slug:', error);
-      }
 
-      // Not found
-      console.log('❌ Unknown page type');
-      setPageState({ type: 'unknown', slug: '', loading: false });
+        // Add beach slug (required)
+        segments.push(beach.slug!);
+
+        return {
+          locale: 'en',
+          continent: beach.continent_slug!,
+          country: beach.country_slug!,
+          segments,
+        };
+      });
+
+    console.log(`[generateStaticParams] Generated ${params.length} beach pages for static generation`);
+
+    return params;
+  } catch (error) {
+    console.error('[generateStaticParams] Error fetching top beaches:', error);
+    // Return empty array on error - pages will be generated on-demand
+    return [];
+  }
+}
+
+/**
+ * Generate metadata for SEO
+ * This runs on the server and generates all SEO tags
+ */
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale, continent, country, segments } = params;
+  const t = await getTranslations({ locale, namespace: 'SEO' });
+
+  // Get the last segment
+  const lastSegment = segments[segments.length - 1];
+
+  if (!lastSegment) {
+    return {
+      title: 'Page Not Found',
+    };
+  }
+
+  try {
+    // Step 1: Get country code
+    let countryCode: string | undefined;
+    try {
+      const countriesResponse = await getCountries({
+        headers: { 'Accept-Language': locale as AcceptLanguage },
+      });
+
+      const countryData = countriesResponse.data?.data?.find(
+        (c: Country) => c.slug?.toLowerCase() === country.toLowerCase()
+      ) ?? null;
+
+      countryCode = countryData?.code;
+    } catch {
+      // Ignore error - countryCode will remain undefined
     }
 
-    void determinePage();
-  }, [params?.segments, locale, country, router]);
+    // Step 2: Resolve slug to determine entity type
+    const queryParams: {
+      country_code?: string;
+      segment_count?: number;
+      parent_slug?: string;
+    } = {};
 
-  // Fetch beach details if this is a beach page
-  const { beachDetails, loading: beachLoading, error: beachError } = useBeachDetails(
-    pageState.slug,
-    pageState.type === 'beach'
-  );
+    if (countryCode) {
+      queryParams.country_code = countryCode;
+    }
 
-  // Loading state
-  if (pageState.loading || (pageState.type === 'beach' && beachLoading)) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600 mx-auto" />
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
+    queryParams.segment_count = segments.length;
+
+    if (segments.length >= 2) {
+      queryParams.parent_slug = segments[segments.length - 2];
+    }
+
+    const resolveResponse = await resolveSlug({
+      path: { slug: lastSegment },
+      query: queryParams,
+      headers: { 'Accept-Language': locale as AcceptLanguage },
+    });
+
+    const entityType = resolveResponse.data?.data?.type;
+
+    // Step 3: Only generate metadata for beach pages
+    // Other entity types (region, island, city) will be handled in later tasks
+    if (entityType !== 'beach') {
+      return {
+        title: lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1),
+      };
+    }
+
+    // Fetch beach details
+    const beachResponse = await getBeachDetails({
+      path: { identifier: lastSegment },
+      headers: { 'Accept-Language': locale as AcceptLanguage },
+    });
+
+    const beach = beachResponse.data?.data;
+
+    if (!beach) {
+      return {
+        title: 'Beach Not Found',
+      };
+    }
+
+    // Extract beach information
+    const beachName = beach.basic_info?.name ?? lastSegment;
+    const cityName = beach.location?.city?.name ?? null;
+    const countryName = beach.location?.country?.name ?? country;
+    const regionName = beach.location?.region?.name ?? null;
+    const islandName = beach.location?.island?.name ?? null;
+
+    // Build description from beach description or generate one
+    let description = beach.basic_info?.description ?? '';
+    if (!description) {
+      // Generate description from beach characteristics
+      const characteristics: string[] = [];
+
+      // Extract beach type (surface type: sand, stones, rock, etc.)
+      const beachType = beach.characteristics?.beach_type;
+      if (beachType?.name) {
+        characteristics.push(beachType.name);
+      }
+
+      // Extract water body type (sea, ocean, lake, etc.)
+      const waterBodyType = beach.characteristics?.water_body_type;
+      if (waterBodyType?.name) {
+        characteristics.push(waterBodyType.name);
+      }
+
+      description = t('beachDescriptionFallback', {
+        beachName,
+        cityName: cityName ?? countryName,
+        countryName,
+        characteristics: characteristics.join(', '),
+      });
+    }
+
+    // Sanitize and truncate
+    const cleanDescription = sanitizeMetaText(description);
+    const truncatedDescription = truncateDescription(cleanDescription);
+
+    // Build title
+    const titleParts = [beachName];
+    if (cityName) titleParts.push(cityName);
+    titleParts.push(countryName);
+    titleParts.push('BeachRex');
+
+    const title = truncateTitle(titleParts.join(' - '));
+
+    // Get main image from gallery
+    const mainImage = getMainBeachImage(
+      beach.media?.gallery,
+      beach.basic_info?.folder_name,
+      beach.basic_info?.mobile_upload ?? false,
+      'banner' // Use banner context for social sharing (larger image)
     );
-  }
 
-  // Beach detail page
-  if (pageState.type === 'beach') {
-    if (beachError || !beachDetails) {
-      notFound();
+    // Build canonical URL path with localized "beaches" word
+    const beachesWord = getBeachesWord(locale);
+    const pathSegments = [];
+    if (regionName && beach.location?.region?.slug) {
+      pathSegments.push(beach.location.region.slug);
+    }
+    if (islandName && beach.location?.island?.slug) {
+      pathSegments.push(beach.location.island.slug);
+    }
+    if (cityName && beach.location?.city?.slug) {
+      pathSegments.push(beach.location.city.slug);
+    }
+    if (beach.basic_info?.slug) {
+      pathSegments.push(beach.basic_info.slug);
     }
 
-    return <BeachDetailPage beachDetails={beachDetails} />;
-  }
+    const canonicalPath = `/${beachesWord}/${continent}/${country}/${pathSegments.join('/')}`;
 
-  // Listing pages (region, island, city)
-  if (pageState.type === 'region') {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-member-access
-    const RegionListingPage = require('@/components/Pages/RegionListingPage').default as React.ComponentType<{ regionSlug: string }>;
-    return <RegionListingPage regionSlug={pageState.slug} />;
-  }
+    // Build alternate language links
+    const alternateLanguages = buildBeachAlternateLanguages(
+      beach.basic_info?.slug ?? lastSegment,
+      continent,
+      country,
+      beach.location?.region?.slug,
+      beach.location?.island?.slug,
+      beach.location?.city?.slug
+    );
 
-  if (pageState.type === 'island') {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-member-access
-    const IslandListingPage = require('@/components/Pages/IslandListingPage').default as React.ComponentType<{ islandSlug: string }>;
-    return <IslandListingPage islandSlug={pageState.slug} />;
-  }
+    // Build complete metadata
+    return buildCompleteMetadata({
+      title,
+      description: truncatedDescription,
+      locale,
+      path: canonicalPath,
+      images: mainImage ? [mainImage] : undefined,
+      type: 'website',
+      alternateLanguages,
+    });
 
-  if (pageState.type === 'city') {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-member-access
-    const CityListingPage = require('@/components/Pages/CityListingPage').default as React.ComponentType<{ citySlug: string }>;
-    return <CityListingPage citySlug={pageState.slug} />;
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Beach Details',
+    };
   }
-
-  // Unknown page type
-  notFound();
 }
 
-// Helper function to verify URL matches beach location
+/**
+ * Server Component - Fetches data and determines page type
+ */
+export default async function FlexibleGeographyPage({ params }: PageProps) {
+  const { locale, country, segments } = params;
+
+  // Get the last segment
+  const lastSegment = segments[segments.length - 1];
+
+  if (!lastSegment) {
+    notFound();
+  }
+
+  try {
+    // Step 1: Get country code
+    let countryCode: string | undefined;
+    try {
+      const countriesResponse = await getCountries({
+        headers: { 'Accept-Language': locale as AcceptLanguage },
+      });
+
+      const countryData = countriesResponse.data?.data?.find(
+        (c: Country) => c.slug?.toLowerCase() === country.toLowerCase()
+      ) ?? null;
+
+      countryCode = countryData?.code;
+    } catch {
+      // Ignore error - countryCode will remain undefined
+    }
+
+    // Step 2: Resolve slug to determine entity type
+    const queryParams: {
+      country_code?: string;
+      segment_count?: number;
+      parent_slug?: string;
+    } = {};
+
+    if (countryCode) {
+      queryParams.country_code = countryCode;
+    }
+
+    queryParams.segment_count = segments.length;
+
+    if (segments.length >= 2) {
+      queryParams.parent_slug = segments[segments.length - 2];
+    }
+
+    const resolveResponse = await resolveSlug({
+      path: { slug: lastSegment },
+      query: queryParams,
+      headers: { 'Accept-Language': locale as AcceptLanguage },
+    });
+
+    const entityType = resolveResponse.data?.data?.type;
+
+    // Step 3: Handle beach pages (SSR)
+    if (entityType === 'beach') {
+      const beachResponse = await getBeachDetails({
+        path: { identifier: lastSegment },
+        headers: { 'Accept-Language': locale as AcceptLanguage },
+      });
+
+      const beach = beachResponse.data?.data;
+
+      if (!beach) {
+        notFound();
+      }
+
+      // Verify URL matches beach location hierarchy
+      if (!urlMatchesBeachLocation(segments, beach)) {
+        // Redirect to canonical URL using Next.js redirect
+        const canonicalUrl = buildBeachUrl(beach, locale);
+        redirect(canonicalUrl);
+      }
+
+      // Render beach detail page (SSR)
+      return <BeachDetailPage beachDetails={beach} />;
+    }
+
+    // Step 4: Handle other entity types (region, island, city) - Client-side for now
+    // These will be converted to SSR in later tasks
+    if (entityType === 'region') {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-member-access
+      const RegionListingPage = require('@/components/Pages/RegionListingPage').default as React.ComponentType<{ regionSlug: string }>;
+      return <RegionListingPage regionSlug={lastSegment} />;
+    }
+
+    if (entityType === 'island') {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-member-access
+      const IslandListingPage = require('@/components/Pages/IslandListingPage').default as React.ComponentType<{ islandSlug: string }>;
+      return <IslandListingPage islandSlug={lastSegment} />;
+    }
+
+    if (entityType === 'city') {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-member-access
+      const CityListingPage = require('@/components/Pages/CityListingPage').default as React.ComponentType<{ citySlug: string }>;
+      return <CityListingPage citySlug={lastSegment} />;
+    }
+
+    // Unknown entity type
+    notFound();
+
+  } catch (error) {
+    console.error('Error fetching page data:', error);
+    notFound();
+  }
+}
+
+/**
+ * Helper function to verify URL matches beach location
+ */
 function urlMatchesBeachLocation(segments: string[], beach: BeachDetailsSchema): boolean {
   const expectedSegments: string[] = [];
 
@@ -228,27 +425,21 @@ function urlMatchesBeachLocation(segments: string[], beach: BeachDetailsSchema):
     expectedSegments.push(beach.basic_info.slug);
   }
 
-  console.log('🔍 URL Match Check:', {
-    segments,
-    expectedSegments,
-    lengthMatch: segments.length === expectedSegments.length,
-  });
-
   // Check if segments match expected hierarchy
   if (segments.length !== expectedSegments.length) {
-    console.log('❌ Length mismatch:', segments.length, '!==', expectedSegments.length);
     return false;
   }
 
   // Check each segment
   for (let i = 0; i < segments.length; i++) {
     if (segments[i] !== expectedSegments[i]) {
-      console.log(`❌ Segment mismatch at index ${i}:`, segments[i], '!==', expectedSegments[i]);
       return false;
     }
   }
 
-  console.log('✅ All segments match!');
   return true;
 }
+
+// Enable ISR - Revalidate every hour (3600 seconds)
+export const revalidate = 3600;
 

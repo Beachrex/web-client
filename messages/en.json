@@ -129,6 +129,12 @@
     "northAmerica": "North America",
     "southAmerica": "South America",
     "australia": "Australia",
+    "EU": "Europe",
+    "AF": "Africa",
+    "AS": "Asia",
+    "NA": "North America",
+    "SA": "South America",
+    "OC": "Australia",
     "num_of_beaches": "Num. of beaches"
   },
   "PropertySection": {
@@ -182,7 +188,8 @@
     "loadingBeaches": "Loading beaches...",
     "openMap": "Open Map",
     "filters": "Filters",
-    "scrollToTop": "Scroll to top"
+    "scrollToTop": "Scroll to top",
+    "displayLabel": "Display mode"
   },
   "TopBar": {
     "continentLabel": "Continent",
@@ -317,6 +324,29 @@
   "worldOverviewSubtitle": "Beaches · Islands · Pools",
   "destinationsTitle": "Top beach destinations in the world"
   },
+
+"SEO": {
+  "homeTitle": "BeachRex - Discover the World's Best Beaches",
+  "homeDescription": "Explore thousands of beaches worldwide. Find detailed information, photos, weather, facilities, and accommodations for your perfect beach destination.",
+  "continentTitle": "{continentName} Beaches - Discover {beachCount} Beach Destinations | BeachRex",
+  "continentDescription": "Explore {beachCount} beaches across {countryCount} countries in {continentName}. Find detailed information, photos, weather, facilities, and accommodations for the best beach destinations in {continentName}.",
+  "countryTitle": "{countryName} Beaches - Discover {beachCount} Beach Destinations | BeachRex",
+  "countryDescription": "Explore {beachCount} beaches in {countryName}. Find detailed information, photos, weather, facilities, and accommodations for the best beach destinations in {countryName}.",
+  "beachTitle": "{beachName} - {cityName}, {countryName} | BeachRex",
+  "beachTitleNoCity": "{beachName} - {countryName} | BeachRex",
+  "beachDescription": "Discover {beachName} in {cityName}, {countryName}. {characteristics}. Find photos, reviews, facilities, and weather information.",
+  "beachDescriptionFallback": "Explore {beachName} in {cityName}, {countryName}. Find detailed information, photos, facilities, and current weather conditions.",
+  "beachImageAlt": "{beachName} beach in {cityName}, {countryName}",
+  "beachImageAltNoCity": "{beachName} beach in {countryName}",
+  "iconAlt": "{iconName} icon",
+  "facilityAlt": "{facilityName} facility icon",
+  "countryFlagAlt": "{countryName} flag",
+  "continentImageAlt": "{continentName} - Explore beaches",
+  "countryImageAlt": "{countryName} - Beach destinations",
+  "regionImageAlt": "{regionName}, {countryName} - Beach region",
+  "cityImageAlt": "{cityName}, {countryName} - Beach city",
+  "islandImageAlt": "{islandName}, {countryName} - Beach island"
+},
 
 "WorldSEO": {
   "title": "Discover the world's beaches",

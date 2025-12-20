@@ -10,9 +10,9 @@ import type React from 'react';
 interface DynamicTopBarProps {
   /** Full pathname including locale, used for breadcrumbs */
   pathname: string;
-  /** Navigation block from API (previous/next) */
+  /** Navigation block from API (previous/next) with pre-computed URLs */
   navigation?: NavigationData | null;
-  /** URL builder for navigation items; required if you want pagination */
+  /** URL builder for navigation items (optional, for backward compatibility with client components) */
   buildUrl?: (item: NavigationItem) => string;
   /** Show / hide breadcrumbs on the left */
   showBreadcrumbs?: boolean;
@@ -30,7 +30,11 @@ export default function DynamicTopBar({
   rightExtras,
   className = '',
 }: DynamicTopBarProps) {
-  const hasPagination = Boolean(navigation && buildUrl);
+  // Has pagination if navigation exists and either has pre-computed URLs or buildUrl function
+  const hasPagination = Boolean(
+    navigation &&
+    ((navigation.previous?.url != null) || (navigation.next?.url != null) || (buildUrl != null))
+  );
   const hasRightSide = hasPagination || Boolean(rightExtras);
 
   if (!showBreadcrumbs && !hasRightSide) {
@@ -51,7 +55,7 @@ export default function DynamicTopBar({
           {/* Right: Pagination + extras */}
           {hasRightSide && (
             <div className="ml-4 flex items-center gap-4">
-              {hasPagination && navigation && buildUrl && (
+              {hasPagination && navigation && (
                 <DynamicPagination
                   navigation={navigation}
                   buildUrl={buildUrl}

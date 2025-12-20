@@ -19,6 +19,7 @@ export interface NavigationItem {
   longitude?: string | number | null;
   main_image?: string | null;
   location?: NavigationItemLocation | null;
+  url?: string; // Pre-computed URL (for server components)
   // Allow extra fields from API
   [key: string]: unknown;
 }
@@ -29,10 +30,10 @@ export interface NavigationData {
 }
 
 interface DynamicPaginationProps {
-  /** Navigation object returned from API (previous/next) */
+  /** Navigation object returned from API (previous/next) with pre-computed URLs */
   navigation?: NavigationData | null;
-  /** URL builder for navigation items (depends on page type) */
-  buildUrl: (item: NavigationItem) => string;
+  /** URL builder for navigation items (optional, for backward compatibility with client components) */
+  buildUrl?: (item: NavigationItem) => string;
   /** Optional extra classes for outer wrapper */
   className?: string;
 }
@@ -51,10 +52,12 @@ export default function DynamicPagination({
   const renderPrev = () => {
     if (!prev) return null;
 
+    // Use pre-computed URL if available, otherwise use buildUrl function
+    const href = prev.url ?? (buildUrl ? buildUrl(prev) : '#');
 
     return (
       <Link
-        href={buildUrl(prev)}
+        href={href}
         className="flex items-center text-sm text-variable-collection-mesto transition-opacity duration-200 hover:opacity-80"
       >
         <svg
@@ -78,9 +81,12 @@ export default function DynamicPagination({
   const renderNext = () => {
     if (!next) return null;
 
+    // Use pre-computed URL if available, otherwise use buildUrl function
+    const href = next.url ?? (buildUrl ? buildUrl(next) : '#');
+
     return (
       <Link
-        href={buildUrl(next)}
+        href={href}
         className="flex items-center text-sm text-variable-collection-mesto transition-opacity duration-200 hover:opacity-80"
       >
         <span className="font-medium">{next.name}</span>

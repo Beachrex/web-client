@@ -14,10 +14,10 @@ export default async function NotFound() {
           <FaMap className="mx-auto text-6xl text-gray-400 mb-4" />
           <h1 className="text-4xl font-bold text-gray-900 mb-2">404</h1>
           <h2 className="text-xl font-semibold text-gray-700 mb-4">
-            Continent Not Found
+            Not Found
           </h2>
           <p className="text-gray-600 mb-8">
-            The continent you&apos;re looking for doesn&apos;t exist or may have been moved.
+            Page you&apos;re looking for doesn&apos;t exist or may have been moved.
           </p>
         </div>
 
@@ -36,33 +36,6 @@ export default async function NotFound() {
               Go Home
             </Button>
           </Link>
-        </div>
-
-        {/* Available Continents */}
-        <div className="mt-8 p-4 bg-white rounded-lg shadow-sm">
-          <h3 className="text-sm font-medium text-gray-700 mb-3">
-            Available Continents:
-          </h3>
-          <div className="flex flex-wrap gap-2 justify-center">
-            <Link href="/beaches/europe">
-              <Button size="xs" color="light">Europe</Button>
-            </Link>
-            <Link href="/beaches/asia">
-              <Button size="xs" color="light">Asia</Button>
-            </Link>
-            <Link href="/beaches/africa">
-              <Button size="xs" color="light">Africa</Button>
-            </Link>
-            <Link href="/beaches/north-america">
-              <Button size="xs" color="light">North America</Button>
-            </Link>
-            <Link href="/beaches/south-america">
-              <Button size="xs" color="light">South America</Button>
-            </Link>
-            <Link href="/beaches/oceania">
-              <Button size="xs" color="light">Oceania</Button>
-            </Link>
-          </div>
         </div>
       </div>
     </div>

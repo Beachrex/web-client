@@ -25,8 +25,6 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({
   const location = locationName ?? weather?.location_name ?? 'Loading...';
   const weatherIcon = weather?.icon_url;
 
-  console.log('WEATHER ICON URL:', weatherIcon);
-
   // Show loading state
   if (isLoading) {
     return (

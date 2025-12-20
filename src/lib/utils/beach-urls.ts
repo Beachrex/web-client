@@ -7,7 +7,7 @@ import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 /**
  * Get localized "beaches" word for URL
  */
-function getBeachesWord(locale: string): string {
+export function getBeachesWord(locale: string): string {
   const beachesRoutes: Record<string, string> = {
     en: 'beaches',
     si: 'plaze',

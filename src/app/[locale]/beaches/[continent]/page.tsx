@@ -1,3 +1,9 @@
+/**
+ * Continent Page - Server Component (SSR)
+ *
+ * Task 0.5: Convert Continent Page to SSR with comprehensive SEO metadata
+ */
+
 import BannerSection from '@/components/BannerSection/BannerSection';
 import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
 import SearchContinent from '@/components/Continent/SearchContinent';
@@ -13,8 +19,12 @@ import {
 
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { getBeachesWord } from '@/lib/utils/beach-urls';
+import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { truncateDescription } from '@/lib/utils/seo-helpers';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 
 
 function toYouTubeEmbed(raw?: string | null) {
@@ -94,40 +104,76 @@ const validateAndGetContinentCode = async (
 
 // ---------------- METADATA -----------------
 
-export async function generateMetadata({ params }: PageProps) {
+/**
+ * Generate metadata for SEO
+ * This runs on the server and generates all SEO tags
+ */
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const t = await getTranslations({
-    locale: resolvedParams.locale,
-    namespace: 'ContinentPage',
-  });
+  const { locale, continent: continentSlug } = resolvedParams;
+  const t = await getTranslations({ locale, namespace: 'SEO' });
 
   try {
-    const continentCode = await validateAndGetContinentCode(
-      resolvedParams.continent,
-      resolvedParams.locale,
-    );
+    // Validate and get continent code
+    const continentCode = await validateAndGetContinentCode(continentSlug, locale);
 
-    if (!continentCode) throw new Error('Invalid continent');
+    if (!continentCode) {
+      return {
+        title: 'Continent Not Found',
+      };
+    }
 
+    // Fetch continent details
     const { data } = await getContinent({
       path: { code: continentCode },
-      headers: { 'Accept-Language': resolvedParams.locale as AcceptLanguage },
+      headers: { 'Accept-Language': locale as AcceptLanguage },
     });
 
     const continent = data?.data;
 
-    return {
-      title: t('metaTitle', { continent: continent?.name ?? '' }),
-      description: t('description', { continent: continent?.name ?? '' }),
-    };
-  } catch {
-    const fallback =
-      resolvedParams.continent.charAt(0).toUpperCase() +
-      resolvedParams.continent.slice(1);
+    if (!continent) {
+      return {
+        title: 'Continent Not Found',
+      };
+    }
 
+    const continentName = continent.name ?? continentSlug;
+    const beachCount = continent.beaches_count ?? 0;
+
+    // Build title and description
+    const title = t('continentTitle', {
+      continentName,
+      beachCount: beachCount.toString(),
+    });
+    const description = truncateDescription(
+      t('continentDescription', {
+        continentName,
+        beachCount: beachCount.toString(),
+        countryCount: '0', // TODO: Add countries_count to API response
+      })
+    );
+
+    // Build canonical path with localized "beaches" word
+    const beachesWord = getBeachesWord(locale);
+    const canonicalPath = `/${beachesWord}/${continentSlug}`;
+
+    // Build image URL
+    const imageUrl = continent.main_image
+      ? buildCdnUrl(continent.main_image, 'banner')
+      : null;
+
+    return buildCompleteMetadata({
+      title,
+      description,
+      locale,
+      path: canonicalPath,
+      images: imageUrl ? [imageUrl] : undefined,
+      type: 'website',
+    });
+  } catch (error) {
+    console.error('Error generating continent metadata:', error);
     return {
-      title: t('metaTitle', { continent: fallback }),
-      description: t('description', { continent: fallback }),
+      title: 'Continent Beaches',
     };
   }
 }
@@ -271,3 +317,9 @@ return {
 };
 
 export default Page;
+
+/**
+ * ISR Configuration
+ * Revalidate continent pages every hour (3600 seconds)
+ */
+export const revalidate = 3600;
