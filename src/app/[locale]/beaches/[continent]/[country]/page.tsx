@@ -1,4 +1,16 @@
-'use client';
+/**
+ * Country Page - Server Component (SSR)
+ *
+ * Task 0.4: Convert Country Pages to SSR
+ * - Removed 'use client' directive
+ * - Added generateMetadata() for SEO
+ * - Fetch data on server
+ * - Pass data to existing components
+ * - Enable ISR with revalidate
+ */
+
+import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
@@ -6,19 +18,30 @@ import CountryDestinationsSection from '@/components/CountryPage/CountryDestinat
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
-import { usePathname } from '@/i18n/routing';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildCountryUrlFromNavigation } from '@/lib/utils/beach-urls';
 import { ChevronRight } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
 
-import { useCities } from '@/hooks/useCities';
-import { useCountryDetails } from '@/hooks/useCountryDetails';
-import { useIslands } from '@/hooks/useIslands';
-import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
-import { useRegions } from '@/hooks/useRegions';
+import {
+  getCountry,
+  getCities,
+  getIslands,
+  getRegions,
+  getMostVisitedBeaches,
+} from '@/lib/api-client';
+import type {
+  AcceptLanguage,
+  City,
+  Island,
+  Region,
+  BeachSchema,
+} from '@/lib/api-client/types.gen';
+import type { CountryDetails } from '@/types/CountryDetails';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
+import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { truncateDescription } from '@/lib/utils/seo-helpers';
+import { getBeachesWord } from '@/lib/utils/beach-urls';
 
 interface PageProps {
   params: {
@@ -29,24 +52,127 @@ interface PageProps {
   searchParams?: Record<string, string | string[] | undefined>;
 }
 
+/**
+ * Generate metadata for SEO
+ * This runs on the server and generates all SEO tags
+ */
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale, country: countrySlug } = params;
+  const t = await getTranslations({ locale, namespace: 'SEO' });
 
-/* ---------------------------------------------
-   FIX: YOUTUBE URL → EMBED URL
----------------------------------------------- */
+  try {
+    // Fetch country details
+    const countryResponse = await getCountry({
+      path: { codeOrSlug: countrySlug },
+      headers: { 'Accept-Language': locale as AcceptLanguage },
+    });
 
-export default function Page({ params }: PageProps) {
-  const pathname = usePathname();
-  const locale = useLocale();
-  const { country: countryParam } = params;
+    const countryDetails = countryResponse.data?.data;
 
-  const { countryDetails } = useCountryDetails(countryParam);
+    if (!countryDetails) {
+      return {
+        title: 'Country Not Found',
+      };
+    }
 
-  const { regions } = useRegions(countryDetails?.code ?? '');
-  const { cities } = useCities(countryDetails?.code ?? '');
-  const { islands } = useIslands(countryDetails?.code ?? '');
+    const countryName = countryDetails.name ?? countryDetails.full_name ?? countrySlug;
+    const beachCount = countryDetails.beaches_count ?? 0;
+    const continentSlug = params.continent;
 
-  const tCountry = useTranslations('countryPage');
-  const tProperty = useTranslations('PropertySection');
+    // Build title and description
+    const title = t('countryTitle', {
+      countryName,
+      beachCount: beachCount.toString(),
+    });
+    const description = truncateDescription(
+      t('countryDescription', {
+        countryName,
+        beachCount: beachCount.toString(),
+      })
+    );
+
+    // Build canonical path with localized "beaches" word
+    const beachesWord = getBeachesWord(locale);
+    const canonicalPath = `/${beachesWord}/${continentSlug}/${countrySlug}`;
+
+    // Build image URL
+    const imageUrl = countryDetails.main_image
+      ? buildCdnUrl(countryDetails.main_image, 'banner')
+      : null;
+
+    return buildCompleteMetadata({
+      title,
+      description,
+      locale,
+      path: canonicalPath,
+      images: imageUrl ? [imageUrl] : undefined,
+      type: 'website',
+    });
+  } catch (error) {
+    console.error('Error generating country metadata:', error);
+    return {
+      title: 'Country Beaches',
+    };
+  }
+}
+
+/**
+ * Server Component - Fetches data on server
+ */
+export default async function Page({ params }: PageProps) {
+  const { locale, country: countryParam } = params;
+
+  const tCountry = await getTranslations({ locale, namespace: 'countryPage' });
+  const tProperty = await getTranslations({ locale, namespace: 'PropertySection' });
+
+  // Fetch all data on server
+  let countryDetails: CountryDetails | null = null;
+  let regions: Region[] = [];
+  let cities: City[] = [];
+  let islands: Island[] = [];
+  let mostVisited: BeachSchema[] = [];
+
+  try {
+    // Fetch country details
+    const countryResponse = await getCountry({
+      path: { codeOrSlug: countryParam },
+      headers: { 'Accept-Language': locale as AcceptLanguage },
+    });
+    countryDetails = countryResponse.data?.data ?? null;
+
+    const countryCode = countryDetails?.code;
+
+    if (countryCode) {
+      // Fetch all related data in parallel
+      const [regionsResponse, citiesResponse, islandsResponse, mostVisitedResponse] =
+        await Promise.all([
+          getRegions({
+            query: { country_code: countryCode },
+            headers: { 'Accept-Language': locale as AcceptLanguage },
+          }),
+          getCities({
+            query: { country_code: countryCode },
+            headers: { 'Accept-Language': locale as AcceptLanguage },
+          }),
+          getIslands({
+            query: { country_code: countryCode },
+            headers: { 'Accept-Language': locale as AcceptLanguage },
+          }),
+          getMostVisitedBeaches({
+            query: { country_code: countryCode, limit: 20 },
+            headers: { 'Accept-Language': locale as AcceptLanguage },
+          }),
+        ]);
+
+      regions = regionsResponse.data?.data ?? [];
+      cities = citiesResponse.data?.data ?? [];
+      islands = islandsResponse.data?.data ?? [];
+      mostVisited = mostVisitedResponse.data?.data ?? [];
+    }
+  } catch (error) {
+    console.error('Error fetching country page data:', error);
+    // Continue with empty data - components will handle gracefully
+  }
 
   const countryName =
     countryDetails?.name ??
@@ -56,35 +182,27 @@ export default function Page({ params }: PageProps) {
   const countryBeachesCount = countryDetails?.beaches_count ?? 0;
   const countryAccommodationsCount = 0;
 
-  const { data: mostVisited = [] } = useMostVisitedBeaches({
-    country_code: countryDetails?.code,
-    limit: 20,
-  });
+  // Process most visited beaches
+  const mostVisitedSet = new Set(
+    mostVisited
+      .map((b) => b.id)
+      .filter((id): id is number => typeof id === 'number'),
+  );
 
-
-  const { data: mostVisitedTop = [] } = useMostVisitedBeaches({
-    country_code: countryDetails?.code,
-    limit: 20,
-  });
-const mostVisitedSet = new Set(
-  mostVisitedTop
-    .map((b) => b.id)
-    .filter((id): id is number => typeof id === 'number'),
-);
-
-const beachProperties: Property[] =
-  mostVisited
-    ?.map((beach) =>
-      mapBeachToPropertyWithUrl(
-        beach,
-        {
-          mostVisitedSet,
-          locationFallback: countryName,
-        },
-        locale,
-      ),
-    )
-    .filter((p): p is Property => p !== null) ?? [];
+  const beachProperties: Property[] =
+    mostVisited
+      ?.map((beach) =>
+        mapBeachToPropertyWithUrl(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+          beach as any,
+          {
+            mostVisitedSet,
+            locationFallback: countryName,
+          },
+          locale,
+        ),
+      )
+      .filter((p): p is Property => p !== null) ?? [];
 
 
   /* Regions / Cities / Islands */
@@ -123,11 +241,39 @@ const beachProperties: Property[] =
       }
     : undefined;
 
- const infoCards = mapArticlesToInfoCards(
-  countryDetails?.articles,
-  locale,
-);
+  const infoCards = mapArticlesToInfoCards(
+    countryDetails?.articles,
+    locale,
+  );
 
+  // Build canonical path for DynamicTopBar
+  const beachesWord = getBeachesWord(locale);
+  const continentSlug = countryDetails?.continent?.slug ?? params.continent;
+  const pathname = `/${beachesWord}/${continentSlug}/${countryParam}`;
+
+  // Pre-compute navigation URLs on the server (can't pass functions to client components)
+  const navigationWithUrls = countryDetails?.navigation ? {
+    previous: countryDetails.navigation.previous ? {
+      ...countryDetails.navigation.previous,
+      url: buildCountryUrlFromNavigation(
+        {
+          slug: countryDetails.navigation.previous.slug ?? undefined,
+          location: countryDetails.navigation.previous.location ?? undefined,
+        },
+        locale
+      ),
+    } : null,
+    next: countryDetails.navigation.next ? {
+      ...countryDetails.navigation.next,
+      url: buildCountryUrlFromNavigation(
+        {
+          slug: countryDetails.navigation.next.slug ?? undefined,
+          location: countryDetails.navigation.next.location ?? undefined,
+        },
+        locale
+      ),
+    } : null,
+  } : undefined;
 
   /* ---------------------------------------------
      RENDER PAGE
@@ -135,17 +281,8 @@ const beachProperties: Property[] =
   return (
     <>
       <DynamicTopBar
-        pathname={pathname ?? ''}
-        navigation={countryDetails?.navigation}
-        buildUrl={(item) =>
-          buildCountryUrlFromNavigation(
-            {
-              slug: item.slug ?? undefined,
-              location: item.location ?? undefined,
-            },
-            locale
-          )
-        }
+        pathname={pathname}
+        navigation={navigationWithUrls}
       />
 
       <BannerSection
@@ -183,11 +320,7 @@ const beachProperties: Property[] =
       <AccommodationSection
         title={tCountry('featuredAccommodationTitle', { country: countryName })}
         totalCount={countryAccommodationsCount}
-        showDropdown
-        selectedDistance={{ value: 1, label: '1 km' }}
-        onDistanceChange={(v) => console.log('distance', v)}
-        onFilterClick={() => console.log('filter')}
-        onMapClick={() => console.log('map')}
+        showDropdown={false}
       />
 
       <CountryDestinationsSection
@@ -210,3 +343,6 @@ const beachProperties: Property[] =
     </>
   );
 }
+
+// Enable ISR - Revalidate every hour (3600 seconds)
+export const revalidate = 3600;

@@ -20,6 +20,7 @@ const env = createEnv({
     NEXT_PUBLIC_CDN_LARGE: z.string().url(),
     NEXT_PUBLIC_CDN_ASSETS: z.string().url(),
     NEXT_PUBLIC_API_ENDPOINT: z.string().url().optional().default('https://dev-api.beachrex.com'),
+    NEXT_PUBLIC_BASE_URL: z.string().url().optional().default('http://localhost:3000'),
   },
 
   /**
@@ -32,6 +33,7 @@ const env = createEnv({
     NEXT_PUBLIC_CDN_LARGE: process.env.NEXT_PUBLIC_CDN_LARGE,
     NEXT_PUBLIC_CDN_ASSETS: process.env.NEXT_PUBLIC_CDN_ASSETS,
     NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com',
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000',
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
