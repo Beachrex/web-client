@@ -1597,7 +1597,165 @@ curl http://localhost:3000/en/beaches/europe/croatia/split/bacvice-beach | grep 
 - ✅ Task 0.6: Add generateStaticParams for Top Beaches
 - ✅ Task 0.7: Verify SSR Implementation
 
-**Next Phase**: Phase 1 - Critical SEO Fixes (sitemaps, etc.)
+**Next Phase**: Phase 1 - Critical SEO Fixes (dynamic sitemaps for beaches, countries, etc.)
+
+---
+
+## 2025-12-20 – Task 1.2: Create Main Sitemap
+
+### Overview
+
+Created main sitemap (`sitemap.xml`) with all static pages across all 14 locales, including proper SEO metadata and hreflang alternate language links.
+
+### Problem
+
+Search engines need a sitemap to discover and index all pages on the website. Without a sitemap:
+- Search engines may miss important pages
+- Indexing is slower and less efficient
+- No clear signal about page priority and update frequency
+- Missing hreflang signals for multilingual content
+
+### Solution
+
+Created `src/app/sitemap.ts` that generates a comprehensive sitemap with:
+
+#### Pages Included (6 pages × 14 locales = 84 URLs):
+
+1. **Homepage** (`/`)
+   - Priority: 1.0 (highest)
+   - Change frequency: daily
+   - All 14 locales
+
+2. **Beaches Listing** (`/beaches`, `/plaze`, `/strande`, etc.)
+   - Priority: 0.9 (very high)
+   - Change frequency: daily
+   - Localized URLs for each language
+
+3. **Beach Map** (`/beach-map`, `/zemljevid-plaz`, etc.)
+   - Priority: 0.8 (high)
+   - Change frequency: weekly
+   - Localized URLs
+
+4. **Beach Type** (`/beach-type`, `/tip-plaze`, etc.)
+   - Priority: 0.7 (medium)
+   - Change frequency: weekly
+   - Localized URLs
+
+5. **User Type** (`/user-type`, `/tip-uporabnika`, etc.)
+   - Priority: 0.7 (medium)
+   - Change frequency: weekly
+   - Localized URLs
+
+6. **About** (`/about`, `/o-nas`, `/uber-uns`, etc.)
+   - Priority: 0.5 (lower)
+   - Change frequency: monthly
+   - Localized URLs
+
+#### Key Features:
+
+✅ **Hreflang Alternate Links** - Each URL includes `<xhtml:link>` tags for all 14 language versions
+✅ **Localized URLs** - Uses correct localized paths (e.g., `/si/plaze` not `/si/beaches`)
+✅ **Priority Signals** - Homepage highest (1.0), About lowest (0.5)
+✅ **Change Frequency** - Daily for dynamic content, monthly for static
+✅ **ISR Enabled** - Revalidates every 24 hours
+✅ **Environment-Aware** - Uses `NEXT_PUBLIC_BASE_URL` for correct domain
+
+### Example Sitemap Entry:
+
+```xml
+<url>
+  <loc>http://localhost:3000/en/beaches</loc>
+  <xhtml:link rel="alternate" hreflang="en" href="http://localhost:3000/en/beaches" />
+  <xhtml:link rel="alternate" hreflang="si" href="http://localhost:3000/si/plaze" />
+  <xhtml:link rel="alternate" hreflang="de" href="http://localhost:3000/de/strande" />
+  <!-- ... all 14 locales ... -->
+  <lastmod>2025-12-20T18:29:11.503Z</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>0.9</priority>
+</url>
+```
+
+### Files Created:
+
+| File | Purpose |
+|------|---------|
+| `src/app/sitemap.ts` | Main sitemap generator for static pages |
+
+### Implementation Details:
+
+**Route Translations:**
+- Defined all localized route translations for 14 languages
+- Matches the routing configuration in `src/i18n/routing.ts`
+
+**Alternate Language Links:**
+- `generateAlternates()` function creates hreflang links
+- Each URL points to all 14 language versions
+- Helps search engines understand language relationships
+
+**Priority Strategy:**
+- Homepage: 1.0 (most important)
+- Beaches listing: 0.9 (very important)
+- Beach map: 0.8 (important)
+- Beach/User type: 0.7 (medium)
+- About: 0.5 (less important)
+
+**Change Frequency:**
+- Daily: Homepage, beaches listing (dynamic content)
+- Weekly: Maps, type pages (semi-dynamic)
+- Monthly: About page (static content)
+
+### Testing:
+
+**Local Testing:**
+```bash
+# Start dev server
+yarn dev
+
+# View sitemap
+curl http://localhost:3000/sitemap.xml
+
+# Count URLs
+curl -s http://localhost:3000/sitemap.xml | grep -c "<url>"
+# Output: 84
+```
+
+**Production Testing:**
+```bash
+# After deployment
+curl https://beachrex.com/sitemap.xml
+```
+
+### Build Output:
+
+```
+Route (app)
+...
+├ ○ /robots.txt                                                                0 B                0 B
+└ ○ /sitemap.xml                                                               0 B                0 B
+```
+
+### Benefits:
+
+✅ **Better SEO** - Search engines can discover all pages
+✅ **Faster Indexing** - Clear signals about page importance
+✅ **Multilingual Support** - Hreflang links for all 14 locales
+✅ **Automatic Updates** - ISR revalidates every 24 hours
+✅ **Proper Prioritization** - Important pages ranked higher
+✅ **Change Frequency Hints** - Helps search engines optimize crawl schedule
+
+### Next Steps:
+
+- **Task 1.3**: Create dynamic beach sitemap (~34,000 URLs for all beaches × locales)
+- **Task 1.4**: Create geographic sitemaps (countries, regions, cities, islands)
+- **Task 1.5**: Submit sitemaps to Google Search Console
+
+### Notes:
+
+- This sitemap only includes **static pages**
+- Dynamic content (beaches, countries, etc.) will be in separate sitemaps
+- Sitemap index will be created to reference all sitemaps
+- ISR ensures sitemap stays fresh without manual updates
+- Hreflang links help Google understand multilingual structure
 
 ---
 
