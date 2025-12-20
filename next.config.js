@@ -6,6 +6,29 @@ const nextConfig = {
   // Transpile flowbite-react to fix module resolution issues
   transpilePackages: ["flowbite-react"],
 
+  // Add X-Robots-Tag header to block search engines on dev/staging
+  async headers() {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+    const isProduction = baseUrl.includes('beachrex.com') && !baseUrl.includes('dev.');
+
+    // Only add noindex header on non-production environments
+    if (!isProduction) {
+      return [
+        {
+          source: '/:path*',
+          headers: [
+            {
+              key: 'X-Robots-Tag',
+              value: 'noindex, nofollow, noarchive, nosnippet',
+            },
+          ],
+        },
+      ];
+    }
+
+    return [];
+  },
+
   images: {
     remotePatterns: [
       {
