@@ -30,23 +30,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/sitemap/beaches.xml`,
       lastModified: new Date(),
     },
-    // Future sitemaps (uncomment when ready):
-    // {
-    //   url: `${baseUrl}/sitemap/countries.xml`,
-    //   lastModified: new Date(),
-    // },
-    // {
-    //   url: `${baseUrl}/sitemap/regions.xml`,
-    //   lastModified: new Date(),
-    // },
-    // {
-    //   url: `${baseUrl}/sitemap/cities.xml`,
-    //   lastModified: new Date(),
-    // },
-    // {
-    //   url: `${baseUrl}/sitemap/islands.xml`,
-    //   lastModified: new Date(),
-    // },
+    {
+      url: `${baseUrl}/sitemap/countries.xml`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/sitemap/regions.xml`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/sitemap/cities.xml`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/sitemap/islands.xml`,
+      lastModified: new Date(),
+    },
   ];
 }
 
