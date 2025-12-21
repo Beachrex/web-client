@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 export interface DropdownOption {
@@ -76,9 +77,11 @@ export default function Dropdown({
         style={{ backgroundColor: buttonBg }}
       >
       {showIcons && active?.icon && (
-  <img
-src={active.icon} width={20} height={20}
-alt=""
+  <Image
+    src={active.icon}
+    width={20}
+    height={20}
+    alt=""
   />
 )}
 
@@ -136,9 +139,11 @@ alt=""
 
             >
               {showIcons && opt.icon && (
-                <img
-src={opt.icon} width={18} height={18}
-alt=""
+                <Image
+                  src={opt.icon}
+                  width={18}
+                  height={18}
+                  alt=""
                 />
               )}
               {opt.label}
@@ -220,9 +225,11 @@ function MediaButton({
           : 'opacity-60 hover:opacity-100'
       }`}
     >
-      <img
-src={icon} width={24} height={24}
-alt=""
+      <Image
+        src={icon}
+        width={24}
+        height={24}
+        alt=""
       />
       {active && (
         <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />

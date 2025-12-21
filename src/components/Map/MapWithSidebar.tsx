@@ -579,6 +579,14 @@ const [sort, setSort] =
                                     </div>
                                 )}
 
+                                {/* Subtle loading indicator - doesn't hide the list */}
+                                {loading && beaches.length > 0 && (
+                                    <div className="mb-2 p-2 bg-blue-50 border border-blue-200 rounded-lg flex items-center gap-2">
+                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600" />
+                                        <p className="text-xs text-blue-800">{t('loadingBeaches')}</p>
+                                    </div>
+                                )}
+
                                 {/* Warning when beaches are limited for performance */}
                                 {!error && beaches.length === MAX_BEACHES && (
                                     <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -589,7 +597,7 @@ const [sort, setSort] =
                                 )}
 
                                 {/* Show virtualized list whenever we have beaches, even while loading new data */}
-                           {!error && beaches.length > 0 && containerDimensions.width > 0 && (
+                           {!error && beaches.length > 0 && (
   <PropertyMediaContext.Provider
     value={{
       mediaMode,

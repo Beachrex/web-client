@@ -3,7 +3,7 @@
 import { DynamicPropertyCard } from '@/components/PropertyCard/DynamicPropertyCard';
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import React, { useCallback } from 'react';
-import { List, type ListImperativeAPI } from 'react-window';
+import { List } from 'react-window';
 
 interface VirtualizedBeachListProps {
   beaches: BeachSchema[];
@@ -11,6 +11,16 @@ interface VirtualizedBeachListProps {
   onLocationClick: (latitude: string, longitude: string, beachId?: number) => void;
   containerHeight: number;
   containerWidth: number;
+}
+
+// Type for react-window List ref
+interface ListRef {
+  readonly element: HTMLDivElement | null;
+  scrollToRow(config: {
+    align?: 'auto' | 'center' | 'end' | 'start' | 'smart';
+    behavior?: 'auto' | 'instant' | 'smooth';
+    index: number;
+  }): void;
 }
 
 const CARD_HEIGHT = 395; // Height of PropertyCard
@@ -24,7 +34,7 @@ export const VirtualizedBeachList = React.memo(({
   containerHeight,
   containerWidth,
 }: VirtualizedBeachListProps) => {
-  const listRef = React.useRef<ListImperativeAPI | null>(null);
+  const listRef = React.useRef<ListRef | null>(null);
 
   // Determine if we're in mobile view
   const isMobile = containerWidth < MOBILE_BREAKPOINT;
@@ -37,6 +47,23 @@ export const VirtualizedBeachList = React.memo(({
 
   // Calculate row height (card height + gap)
   const rowHeight = CARD_HEIGHT + GAP;
+
+  // OPTIMIZATION: Reset scroll position when beaches change significantly
+  // But don't reset on minor updates (prevents blinking)
+  const prevBeachCountRef = React.useRef(beaches.length);
+  React.useEffect(() => {
+    const beachCountChanged = Math.abs(prevBeachCountRef.current - beaches.length) > 10;
+    if (beachCountChanged && listRef.current?.scrollToRow) {
+      // Only reset scroll if beach count changed significantly (>10 beaches)
+      try {
+        listRef.current.scrollToRow({ index: 0, align: 'start' });
+      } catch (error) {
+        // Silently fail if scrollToRow doesn't work
+        console.debug('Could not scroll to top:', error);
+      }
+    }
+    prevBeachCountRef.current = beaches.length;
+  }, [beaches.length]);
 
   // Row renderer component - uses closure to access beaches, columns, onLocationClick
   const RowComponent = useCallback((props: {
@@ -52,11 +79,15 @@ export const VirtualizedBeachList = React.memo(({
     const startIndex = index * columns;
     const rowBeaches = beaches.slice(startIndex, startIndex + columns);
 
+    // FIX: Remove width from style to prevent overflow
+    // The grid will naturally fit within the container
+    const { width: _width, ...styleWithoutWidth } = style;
+
     return (
       <div
-        style={style}
+        style={styleWithoutWidth}
         {...ariaAttributes}
-        className={`grid gap-4 px-1 ${
+        className={`grid gap-4 px-4 ${
           columns === 2 ? 'grid-cols-2' : 'grid-cols-1'
         }`}
       >

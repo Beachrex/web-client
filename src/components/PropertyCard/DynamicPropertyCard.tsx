@@ -2,6 +2,7 @@
 
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { useLocale } from 'next-intl';
+import React from 'react';
 
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
@@ -12,13 +13,14 @@ interface DynamicPropertyCardProps {
   onLocationClick?: (latitude: string, longitude: string, beachId?: number) => void;
 }
 
-export function DynamicPropertyCard({
+// OPTIMIZATION: Memoize to prevent unnecessary re-renders and blinking
+export const DynamicPropertyCard = React.memo(({
   beach,
   onLocationClick,
-}: DynamicPropertyCardProps) {
+}: DynamicPropertyCardProps) => {
   const locale = useLocale();
   const property = mapBeachToProperty(beach);
-const beachUrl = buildBeachUrlFromSchema(beach, locale) ?? undefined;
+  const beachUrl = buildBeachUrlFromSchema(beach, locale) ?? undefined;
 
   if (!property) return null;
 
@@ -38,7 +40,11 @@ const beachUrl = buildBeachUrlFromSchema(beach, locale) ?? undefined;
       }
     />
   );
-}
+}, (prevProps, nextProps) => {
+  // Only re-render if beach ID changed
+  return prevProps.beach.id === nextProps.beach.id;
+});
 
+DynamicPropertyCard.displayName = 'DynamicPropertyCard';
 
 export default DynamicPropertyCard;
