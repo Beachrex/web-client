@@ -182,7 +182,10 @@
     "loadingBeaches": "Nalaganje plaž...",
     "openMap": "Odpri zemljevid",
     "filters": "Filtri",
-    "scrollToTop": "Pomakni se na vrh"
+    "scrollToTop": "Pomakni se na vrh",
+    "displayLabel": "Način prikaza",
+    "performanceLimitNote": "Opomba:",
+    "performanceLimitMessage": "Prikazanih {count} plaž zaradi zmogljivosti. Povečajte ali uporabite filtre za bolj specifične rezultate."
   },
   "TopBar": {
     "continentLabel": "Kontinent",

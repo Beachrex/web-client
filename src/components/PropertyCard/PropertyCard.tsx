@@ -55,7 +55,7 @@ const carouselTheme: CustomFlowbiteTheme['carousel'] = {
 };
 
 
-export default function PropertyCard({
+const PropertyCard = React.memo(function PropertyCard({
   beachUrl,
   image,
   galleryImages = [],
@@ -77,6 +77,7 @@ export default function PropertyCard({
   const { mediaMode } = React.useContext(PropertyMediaContext);
 
 const [sphereActive, setSphereActive] = React.useState(false);
+const cardRef = React.useRef<HTMLDivElement>(null);
 
 
 /* reset when switching media mode */
@@ -94,15 +95,23 @@ const webcamUrl = React.useMemo(
 
   /**
    * IMAGES TO SHOW
+   * Show gallery images immediately (no lazy loading)
    */
-  const imagesToShow =
-  mediaMode === 'sphere' && sphereThumbnail
-    ? [sphereThumbnail]
-    : mediaMode === 'video' && videoEmbedUrl
-    ? [image]
-    : galleryImages.length > 0
-    ? galleryImages
-    : [image];
+  const imagesToShow = React.useMemo(() => {
+    if (mediaMode === 'sphere' && sphereThumbnail) {
+      return [sphereThumbnail];
+    }
+    if (mediaMode === 'video' && videoEmbedUrl) {
+      return [image];
+    }
+
+    // Show gallery images if they exist, otherwise main image
+    if (galleryImages.length > 0) {
+      return galleryImages;
+    }
+
+    return [image];
+  }, [mediaMode, sphereThumbnail, videoEmbedUrl, galleryImages, image]);
 
 
   const [emblaRef] = useEmblaCarousel({ loop: false });
@@ -120,6 +129,7 @@ const webcamUrl = React.useMemo(
 
   return (
     <div
+      ref={cardRef}
       className="flex h-[395px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md hover:-translate-y-[3px] hover:shadow-lg transition-all duration-300"
     >
       <div className="relative grow overflow-hidden">
@@ -267,6 +277,8 @@ const webcamUrl = React.useMemo(
               fill
               className="object-cover"
               sizes="100vw"
+              loading={idx === 0 ? 'eager' : 'lazy'}
+              priority={idx === 0}
             />
           </div>
         ))}
@@ -293,6 +305,8 @@ const webcamUrl = React.useMemo(
           fill
           className="object-cover"
           sizes="100vw"
+          loading={idx === 0 ? 'eager' : 'lazy'}
+          priority={idx === 0}
         />
       </div>
     ))}
@@ -430,5 +444,22 @@ const webcamUrl = React.useMemo(
       </div>
     </div>
   );
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent unnecessary re-renders
+  return (
+    prevProps.beachUrl === nextProps.beachUrl &&
+    prevProps.image === nextProps.image &&
+    prevProps.title === nextProps.title &&
+    prevProps.location === nextProps.location &&
+    prevProps.price === nextProps.price &&
+    prevProps.rating === nextProps.rating &&
+    prevProps.isMostVisited === nextProps.isMostVisited &&
+    prevProps.countryCode === nextProps.countryCode &&
+    prevProps.galleryImages?.length === nextProps.galleryImages?.length &&
+    prevProps.sphereTourUrl === nextProps.sphereTourUrl &&
+    prevProps.videoEmbedUrl === nextProps.videoEmbedUrl &&
+    prevProps.webcamEmbed === nextProps.webcamEmbed
+  );
+});
 
+export default PropertyCard;

@@ -189,7 +189,9 @@
     "openMap": "Open Map",
     "filters": "Filters",
     "scrollToTop": "Scroll to top",
-    "displayLabel": "Display mode"
+    "displayLabel": "Display mode",
+    "performanceLimitNote": "Note:",
+    "performanceLimitMessage": "Showing {count} beaches for performance. Zoom in or use filters to see more specific results."
   },
   "TopBar": {
     "continentLabel": "Continent",

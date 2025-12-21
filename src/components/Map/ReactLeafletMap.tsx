@@ -407,10 +407,15 @@ const ReactLeafletMap = ({
           {/* Marker clustering for better performance with many beaches */}
           <MarkerClusterGroup
             chunkedLoading
+            chunkInterval={200}
+            chunkDelay={50}
             maxClusterRadius={50}
             spiderfyOnMaxZoom={true}
             showCoverageOnHover={false}
             zoomToBoundsOnClick={true}
+            disableClusteringAtZoom={15}
+            animate={true}
+            animateAddingMarkers={false}
           >
             {uniqueBeaches.map((beach) => (
               <BeachMarker

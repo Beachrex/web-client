@@ -1,7 +1,6 @@
 'use client';
 
 import { DoubleColumnIcon, SingleColumnIcon } from '@/components/Icons/LayoutIcons';
-import { DynamicPropertyCard } from '@/components/PropertyCard/DynamicPropertyCard';
 import { PropertyMediaContext } from '@/components/PropertySection';
 import { useBeachesBoundingBox, useBeachesMapBounds, type BoundingBoxSearchFilters } from '@/hooks/useBeaches';
 import type { BeachSchema, GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
@@ -10,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Dropdown, { MediaToggleInline } from '../Dropdown';
 import LeftSidebarFilters from './LeftSidebarFilters';
 import ReactLeafletMap from './ReactLeafletMap';
+import { VirtualizedBeachList } from './VirtualizedBeachList';
 
 type ColumnLayout = 1 | 2;
 
@@ -86,18 +86,74 @@ const [sort, setSort] =
     const mapContainerRef = useRef<HTMLDivElement>(null);
     // Keep previous beaches visible while loading new data
     const previousBeachesRef = useRef<BeachSchema[]>([]);
+    // Container dimensions for virtualization
+    const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
     // Show scroll-to-top button on mobile when page scrolled down
+    // OPTIMIZATION: Throttle scroll event to reduce re-renders
     useEffect(() => {
+        let ticking = false;
+
         const handleScroll = () => {
-            const y = window.scrollY || document.documentElement.scrollTop || 0;
-            setShowScrollTop(y > 50);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const y = window.scrollY || document.documentElement.scrollTop || 0;
+                    setShowScrollTop(y > 50);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         handleScroll();
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    // Track container dimensions for virtualization
+    // OPTIMIZATION: Debounce resize updates to reduce re-renders
+    useEffect(() => {
+        if (!beachCardsContainerRef.current) return;
+
+        let resizeTimeout: NodeJS.Timeout;
+
+        const updateDimensions = () => {
+            if (beachCardsContainerRef.current) {
+                const rect = beachCardsContainerRef.current.getBoundingClientRect();
+                const newWidth = rect.width;
+                const newHeight = rect.height || window.innerHeight;
+
+                // Only update if dimensions actually changed (avoid unnecessary re-renders)
+                setContainerDimensions(prev => {
+                    if (Math.abs(prev.width - newWidth) > 5 || Math.abs(prev.height - newHeight) > 5) {
+                        return { width: newWidth, height: newHeight };
+                    }
+                    return prev;
+                });
+            }
+        };
+
+        const debouncedUpdate = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(updateDimensions, 150);
+        };
+
+        // Initial measurement
+        updateDimensions();
+
+        // Use ResizeObserver to track size changes
+        const resizeObserver = new ResizeObserver(debouncedUpdate);
+        resizeObserver.observe(beachCardsContainerRef.current);
+
+        // Also listen to window resize
+        window.addEventListener('resize', debouncedUpdate);
+
+        return () => {
+            clearTimeout(resizeTimeout);
+            resizeObserver.disconnect();
+            window.removeEventListener('resize', debouncedUpdate);
         };
     }, []);
 
@@ -278,7 +334,13 @@ const [sort, setSort] =
     );
 
     // Keep previous beaches visible while loading new data (smooth UX)
-    const newBeaches = useMemo(() => boundingBoxResult.data?.data ?? [], [boundingBoxResult.data?.data]);
+    // PERFORMANCE: Limit beaches to 500 max to prevent browser crashes
+    const MAX_BEACHES = 500;
+    const newBeaches = useMemo(() => {
+        const allBeaches = boundingBoxResult.data?.data ?? [];
+        return allBeaches.length > MAX_BEACHES ? allBeaches.slice(0, MAX_BEACHES) : allBeaches;
+    }, [boundingBoxResult.data?.data]);
+
     const beaches = newBeaches.length > 0 ? newBeaches : previousBeachesRef.current;
 
     // Update ref when we have new data
@@ -316,6 +378,9 @@ const [sort, setSort] =
     };
 
 
+    // OPTIMIZATION: Debounce viewport changes to reduce API calls
+    const viewportDebounceRef = useRef<NodeJS.Timeout>();
+
     const handleMapViewportChange = useCallback(
         (
             center: [number, number],
@@ -329,20 +394,24 @@ const [sort, setSort] =
         // Mark that viewport changed by user - don't fit bounds from this change
         viewportChangedByUserRef.current = true;
 
-        // Update bounding box when user moves/zooms the map
-        // Use exact viewport bounds to ensure list matches map markers
-        setBoundingBox((prev) => {
-            if (
-                prev &&
-                Math.abs(prev.min_lat - bounds.min_lat) < 0.0001 &&
-                Math.abs(prev.min_lon - bounds.min_lon) < 0.0001 &&
-                Math.abs(prev.max_lat - bounds.max_lat) < 0.0001 &&
-                Math.abs(prev.max_lon - bounds.max_lon) < 0.0001
-            ) {
-                return prev;
-            }
-            return bounds;
-        });
+        // Debounce bounding box updates to avoid excessive API calls during pan/zoom
+        clearTimeout(viewportDebounceRef.current);
+        viewportDebounceRef.current = setTimeout(() => {
+            // Update bounding box when user moves/zooms the map
+            // Use exact viewport bounds to ensure list matches map markers
+            setBoundingBox((prev) => {
+                if (
+                    prev &&
+                    Math.abs(prev.min_lat - bounds.min_lat) < 0.0001 &&
+                    Math.abs(prev.min_lon - bounds.min_lon) < 0.0001 &&
+                    Math.abs(prev.max_lat - bounds.max_lat) < 0.0001 &&
+                    Math.abs(prev.max_lon - bounds.max_lon) < 0.0001
+                ) {
+                    return prev;
+                }
+                return bounds;
+            });
+        }, 300); // Wait 300ms after user stops panning/zooming
     }, []);
 
     const handleMarkerClick = useCallback((beachId: number) => {
@@ -510,8 +579,17 @@ const [sort, setSort] =
                                     </div>
                                 )}
 
-                                {/* Show grid whenever we have beaches, even while loading new data */}
-                           {!error && beaches.length > 0 && (
+                                {/* Warning when beaches are limited for performance */}
+                                {!error && beaches.length === MAX_BEACHES && (
+                                    <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                        <p className="text-sm text-yellow-800">
+                                            <strong>{t('performanceLimitNote')}</strong> {t('performanceLimitMessage', { count: MAX_BEACHES })}
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/* Show virtualized list whenever we have beaches, even while loading new data */}
+                           {!error && beaches.length > 0 && containerDimensions.width > 0 && (
   <PropertyMediaContext.Provider
     value={{
       mediaMode,
@@ -520,20 +598,13 @@ openVideo: () => void 0,
 
     }}
   >
-    <div
-      className={`grid gap-4 grid-cols-1 ${
-        columnLayout === 2 ? 'md:grid-cols-2' : 'md:grid-cols-1'
-      }`}
-    >
-      {beaches.map((beach, index) => (
-        <div key={`${beach.id ?? index}-${index}`} data-beach-id={beach.id}>
-          <DynamicPropertyCard
-            beach={beach}
-            onLocationClick={handleLocationClick}
-          />
-        </div>
-      ))}
-    </div>
+    <VirtualizedBeachList
+      beaches={beaches}
+      columnLayout={columnLayout}
+      onLocationClick={handleLocationClick}
+      containerHeight={containerDimensions.height}
+      containerWidth={containerDimensions.width}
+    />
   </PropertyMediaContext.Provider>
 )}
 

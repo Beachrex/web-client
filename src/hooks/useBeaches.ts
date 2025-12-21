@@ -147,6 +147,7 @@ export function useBeachesRadius(filters: RadiusSearchFilters, enabled = true): 
 
 /**
  * Hook to fetch beaches within a bounding box with optional filters
+ * OPTIMIZATION: Added staleTime to reduce redundant API calls
  */
 export function useBeachesBoundingBox(filters: BoundingBoxSearchFilters, enabled = true): {
   data: BeachBoundingBoxResponseSchema | undefined;
@@ -168,6 +169,8 @@ export function useBeachesBoundingBox(filters: BoundingBoxSearchFilters, enabled
       },
     }),
     enabled,
+    staleTime: 2 * 60 * 1000, // Consider data fresh for 2 minutes
+    gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
   });
 
   return {
@@ -179,6 +182,7 @@ export function useBeachesBoundingBox(filters: BoundingBoxSearchFilters, enabled
 
 /**
  * Hook to fetch map bounds for all active beaches (used for initial map load)
+ * OPTIMIZATION: Map bounds rarely change, cache aggressively
  */
 export function useBeachesMapBounds(enabled = true): {
   data: BeachMapBoundsResponse | undefined;
@@ -188,6 +192,8 @@ export function useBeachesMapBounds(enabled = true): {
   const { data, isLoading, error } = useQuery({
     ...getBeachesMapBoundsOptions(),
     enabled,
+    staleTime: 10 * 60 * 1000, // Consider fresh for 10 minutes (bounds rarely change)
+    gcTime: 30 * 60 * 1000, // Keep in cache for 30 minutes
   });
 
   return {

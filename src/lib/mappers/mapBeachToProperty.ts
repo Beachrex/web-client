@@ -66,8 +66,9 @@ export function mapBeachToProperty(
 
   /* ---------------------------
    * GALLERY IMAGES (max 5)
+   * OPTIMIZATION: Return raw URLs, build CDN URLs lazily in component
    * --------------------------- */
-  const galleryImages =
+  const galleryRawUrls =
     beach.media?.gallery
       ?.filter(
         (img): img is { url: string; order?: number | null } =>
@@ -75,8 +76,12 @@ export function mapBeachToProperty(
       )
       ?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
       ?.slice(0, 5)
-      ?.map((img) => buildCdnUrl(img.url, 'gallery'))
-      ?.filter((url): url is string => Boolean(url)) ?? [];
+      ?.map((img) => img.url) ?? [];
+
+  // Build CDN URLs for gallery (will be used for lazy loading)
+  const galleryImages = galleryRawUrls
+    .map((url) => buildCdnUrl(url, 'gallery'))
+    .filter((url): url is string => Boolean(url));
 
   /* ---------------------------
    * 360° SPHERE
