@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { FiSearch, FiMapPin, FiCalendar, FiUsers, FiMap } from 'react-icons/fi';
+import { Search, MapPin, Calendar, Users, Map } from 'lucide-react';
 import { Button } from 'flowbite-react';
 import { Link } from '@/i18n/routing';
 
@@ -51,7 +51,7 @@ className="absolute inset-0" style={{
                                     Destinacija
                                 </label>
                                 <div className="relative">
-                                    <FiMapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                                     <input
                                         type="text"
                                         placeholder="Kam greste?"
@@ -68,7 +68,7 @@ className="absolute inset-0" style={{
                                     Datum prihoda
                                 </label>
                                 <div className="relative">
-                                    <FiCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                                     <input
                                         type="date"
                                         value={checkIn}
@@ -84,7 +84,7 @@ className="absolute inset-0" style={{
                                     Gostje
                                 </label>
                                 <div className="relative">
-                                    <FiUsers className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                                    <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                                     <select
                                         value={guests}
                                         onChange={(e) => setGuests(e.target.value)}
@@ -106,7 +106,7 @@ className="absolute inset-0" style={{
                                     className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 h-[52px]"
                                     size="lg"
                                 >
-                                    <FiSearch className="mr-2" size={20} />
+                                    <Search className="mr-2" size={20} />
                                     Poišči plaže
                                 </Button>
                                 <Link href="/beach-map">
@@ -114,7 +114,7 @@ className="absolute inset-0" style={{
                                         className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 h-[52px]"
                                         size="lg"
                                     >
-                                        <FiMap size={20} />
+                                        <Map size={20} />
                                     </Button>
                                 </Link>
                             </div>
@@ -124,7 +124,7 @@ className="absolute inset-0" style={{
                         <div className="lg:hidden space-y-4">
                             {/* Main Search Input */}
                             <div className="relative">
-                                <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                                 <input
                                     type="text"
                                     placeholder="Poiščite plaže, destinacije..."
@@ -137,7 +137,7 @@ className="absolute inset-0" style={{
                             {/* Quick Filters */}
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="relative">
-                                    <FiCalendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                                     <input
                                         type="date"
                                         value={checkIn}
@@ -146,7 +146,7 @@ className="absolute inset-0" style={{
                                     />
                                 </div>
                                 <div className="relative">
-                                    <FiUsers className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                                    <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                                     <select
                                         value={guests}
                                         onChange={(e) => setGuests(e.target.value)}
@@ -167,7 +167,7 @@ className="absolute inset-0" style={{
                                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200"
                                 size="lg"
                             >
-                                <FiSearch className="mr-2" size={20} />
+                                <Search className="mr-2" size={20} />
                                 Poišči plaže
                             </Button>
                         </div>

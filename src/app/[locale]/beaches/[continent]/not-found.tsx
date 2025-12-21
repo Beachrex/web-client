@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
 import { Button } from 'flowbite-react';
-import { FaHome, FaMap } from 'react-icons/fa';
+import { Home, Map } from 'lucide-react';
 
 export default async function NotFound() {
   const _t = await getTranslations('NotFoundPage');
@@ -11,7 +11,7 @@ export default async function NotFound() {
       <div className="max-w-md w-full text-center">
         {/* 404 Icon */}
         <div className="mb-8">
-          <FaMap className="mx-auto text-6xl text-gray-400 mb-4" />
+          <Map className="mx-auto text-6xl text-gray-400 mb-4" />
           <h1 className="text-4xl font-bold text-gray-900 mb-2">404</h1>
           <h2 className="text-xl font-semibold text-gray-700 mb-4">
             Not Found
@@ -25,14 +25,14 @@ export default async function NotFound() {
         <div className="space-y-4">
           <Link href="/beaches" className="block">
             <Button className="w-full" size="lg">
-              <FaMap className="mr-2" />
+              <Map className="mr-2" />
               Browse All Beaches
             </Button>
           </Link>
 
           <Link href="/" className="block">
             <Button color="gray" className="w-full" size="lg">
-              <FaHome className="mr-2" />
+              <Home className="mr-2" />
               Go Home
             </Button>
           </Link>

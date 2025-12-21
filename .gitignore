@@ -45,9 +45,16 @@ yarn-error.log*
 # idea files
 .idea
 
+# backup files
+*.backup
+
+# build logs
+build-output.log
+bundle-analysis.log
+
 # playwright
 /test-results/
 /playwright-report/
 /blob-report/
-/playwright/.cache/git 
-yarn 
+/playwright/.cache/git
+yarn

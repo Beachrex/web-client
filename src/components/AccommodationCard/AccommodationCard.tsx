@@ -13,14 +13,23 @@ export interface AccommodationCardProps {
   priceText?: string; // e.g., "od 25 €"
 }
 
-const AccommodationCard: React.FC<AccommodationCardProps> = ({
+/**
+ * Memoized AccommodationCard component to prevent unnecessary re-renders in carousels
+ * Only re-renders when props change
+ */
+const AccommodationCard = React.memo<AccommodationCardProps>(function AccommodationCard({
   title = 'Apartma Pehta',
   locationLabel = 'Baška',
   distanceText = '250 m od plaže',
   beachName = 'Plaža Haludovo',
   priceText = 'od 25 €',
-}) => {
+}) {
   const [isFavorite, setIsFavorite] = useState(false);
+
+  // Memoize toggle handler to prevent recreation on every render
+  const toggleFavorite = React.useCallback(() => {
+    setIsFavorite((prev) => !prev);
+  }, []);
 
   return (
     <div className="flex h-[400px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md transition-all duration-300 hover:-translate-y-[3px] hover:shadow-lg">
@@ -53,7 +62,7 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
         {/* Top-right heart */}
         <button
           type="button"
-          onClick={() => setIsFavorite((prev) => !prev)}
+          onClick={toggleFavorite}
           aria-pressed={isFavorite}
           aria-label={
             isFavorite ? 'Remove from favourites' : 'Save to favourites'
@@ -129,6 +138,6 @@ const AccommodationCard: React.FC<AccommodationCardProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default AccommodationCard;

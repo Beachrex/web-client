@@ -4,6 +4,17 @@ import { getIslandOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { useQuery } from '@tanstack/react-query';
 
 /**
+ * Detail page cache settings
+ * Island details change infrequently, cache moderately
+ */
+const DETAIL_PAGE_CACHE = {
+  staleTime: 30 * 60 * 1000, // 30 minutes - consider data fresh
+  gcTime: 2 * 60 * 60 * 1000, // 2 hours - keep in cache
+  refetchOnMount: false, // Don't refetch on component mount
+  refetchOnWindowFocus: false, // Don't refetch on window focus
+} as const;
+
+/**
  * Hook to fetch island details by slug
  *
  * @param slug        Island slug (e.g. "krk")
@@ -36,6 +47,7 @@ export const useIslandDetails = (
         : {}),
     }),
     enabled: enabled && Boolean(slug),
+    ...DETAIL_PAGE_CACHE,
   });
 
   return {

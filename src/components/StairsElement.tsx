@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link'; // Import Link from Next.js
-import { FaBed, FaTasks } from 'react-icons/fa'; // Importing the icons
+import { Bed, ListTodo } from 'lucide-react'; // Importing the icons
 
 const StairsElement = () => {
     const elements = [
@@ -77,14 +77,14 @@ const StairsElement = () => {
                         <div className="flex items-center gap-1 sm:gap-4">
                             {/* Number of Accommodations */}
                             <div className="shadow px-1 sm:px-2.5 py-1 sm:py-[11px] bg-white rounded-md flex items-center gap-1 sm:gap-2">
-                                <FaBed className="text-[#0069ab] w-3 h-3 sm:w-5 sm:h-5" /> {/* Accommodation Icon */}
+                                <Bed className="text-[#0069ab] w-3 h-3 sm:w-5 sm:h-5" /> {/* Accommodation Icon */}
                                 <div className="text-center text-[#222222] text-xs sm:text-sm font-medium hidden sm:block">{element.statTitle}</div>
                                 <div className="text-center text-[#0069ab] text-xs sm:text-sm font-bold">{element.statValue}</div>
                             </div>
 
                             {/* Number of Activities */}
                             <div className="shadow px-1 sm:px-2.5 py-1 sm:py-[11px] bg-white rounded-md flex items-center gap-1 sm:gap-2">
-                                <FaTasks className="text-[#0069ab] w-3 h-3 sm:w-5 sm:h-5" /> {/* Activity Icon */}
+                                <ListTodo className="text-[#0069ab] w-3 h-3 sm:w-5 sm:h-5" /> {/* Activity Icon */}
                                 <div className="text-center text-[#222222] text-xs sm:text-sm font-medium hidden sm:block">{element.activityTitle}</div>
                                 <div className="text-center text-[#0069ab] text-xs sm:text-sm font-bold">{element.activityValue}</div>
                             </div>

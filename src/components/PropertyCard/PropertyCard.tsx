@@ -2,13 +2,41 @@
 
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import useEmblaCarousel from 'embla-carousel-react';
-import { Carousel, type CustomFlowbiteTheme } from 'flowbite-react';
+import type { CustomFlowbiteTheme } from 'flowbite-react';
 import { Heart, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import dynamic from 'next/dynamic';
+import React, { useCallback } from 'react';
 import { PropertyMediaContext } from '../PropertySection';
+import { useQueryClient } from '@tanstack/react-query';
+import { prefetchBeachDetails, debouncedPrefetch, cancelPrefetch } from '@/lib/prefetch-utils';
+
+// Dynamically import EmblaCarousel for mobile to reduce initial bundle size
+const EmblaCarousel = dynamic(
+  () => import('./EmblaCarousel'),
+  {
+    loading: () => (
+      <div className="relative h-full w-full flex items-center justify-center bg-gray-100">
+        <div className="animate-pulse text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: false,
+  }
+);
+
+// Dynamically import Flowbite Carousel for desktop to reduce initial bundle size
+const Carousel = dynamic(
+  () => import('flowbite-react').then((mod) => ({ default: mod.Carousel })),
+  {
+    loading: () => (
+      <div className="relative h-full w-full flex items-center justify-center bg-gray-100">
+        <div className="animate-pulse text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 
 function extractLookrUrl(html: string | null | undefined): string | null {
@@ -27,6 +55,7 @@ function extractLookrUrl(html: string | null | undefined): string | null {
 export interface PropertyCardProps {
   webcamEmbed?: string | null;
   beachUrl?: string;
+  beachSlug?: string; // Add beach slug for prefetching
   image: string;
   galleryImages?: string[];
 
@@ -57,6 +86,7 @@ const carouselTheme: CustomFlowbiteTheme['carousel'] = {
 
 const PropertyCard = React.memo(function PropertyCard({
   beachUrl,
+  beachSlug,
   image,
   galleryImages = [],
   sphereThumbnail,
@@ -71,6 +101,7 @@ const PropertyCard = React.memo(function PropertyCard({
   webcamEmbed,
   onLocationClick,
 }: PropertyCardProps) {
+  const queryClient = useQueryClient();
 
   const { isMobile, ready } = useIsMobile();
 
@@ -113,8 +144,45 @@ const webcamUrl = React.useMemo(
     return [image];
   }, [mediaMode, sphereThumbnail, videoEmbedUrl, galleryImages, image]);
 
+  // Memoize event handlers to prevent recreation on every render
+  const handleWebcamClick = React.useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (webcamUrl) {
+      window.open(webcamUrl, '_blank', 'noopener,noreferrer');
+    }
+  }, [webcamUrl]);
 
-  const [emblaRef] = useEmblaCarousel({ loop: false });
+  const handleSphereClick = React.useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSphereActive(true);
+  }, []);
+
+  const handleTitleClick = React.useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+  }, []);
+
+  const handleLocationClick = React.useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    onLocationClick?.();
+  }, [onLocationClick]);
+
+  /**
+   * Prefetch beach details on hover to improve perceived performance
+   */
+  const handleMouseEnter = useCallback(() => {
+    if (!beachSlug) return;
+
+    debouncedPrefetch(async () => {
+      await prefetchBeachDetails(queryClient, beachSlug);
+    });
+  }, [queryClient, beachSlug]);
+
+  /**
+   * Cancel prefetch if user moves mouse away quickly
+   */
+  const handleMouseLeave = useCallback(() => {
+    cancelPrefetch();
+  }, []);
 
   const flagUrl = countryCode
     ? buildCdnUrl(`img/flag/${countryCode.toLowerCase()}.svg`, 'icon')
@@ -131,6 +199,8 @@ const webcamUrl = React.useMemo(
     <div
       ref={cardRef}
       className="flex h-[395px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md hover:-translate-y-[3px] hover:shadow-lg transition-all duration-300"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="relative grow overflow-hidden">
 
@@ -149,10 +219,7 @@ const webcamUrl = React.useMemo(
       {/* OPEN WEBCAM IN NEW TAB */}
       <button
         type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          window.open(webcamUrl, '_blank', 'noopener,noreferrer');
-        }}
+        onClick={handleWebcamClick}
         className="absolute inset-0 z-30 flex items-center justify-center"
       >
         <div className="flex items-center gap-3 rounded-full bg-black/60 px-6 py-4 backdrop-blur-sm hover:bg-black/70 transition">
@@ -196,10 +263,7 @@ const webcamUrl = React.useMemo(
           {/* 360 BUTTON OVERLAY – CENTER */}
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setSphereActive(true);
-            }}
+            onClick={handleSphereClick}
             className="absolute inset-0 z-30 flex items-center justify-center"
           >
             <div className="flex items-center gap-3 rounded-full bg-black/60 px-6 py-4 backdrop-blur-sm hover:bg-black/70 transition">
@@ -265,26 +329,8 @@ const webcamUrl = React.useMemo(
   )
 
 ) : isMobile ? (
-  /* MOBILE CAROUSEL */
-  <div className="embla h-full overflow-hidden">
-    <div className="embla__viewport h-full" ref={emblaRef}>
-      <div className="embla__container flex h-full touch-pan-y">
-        {imagesToShow.map((img, idx) => (
-          <div key={idx} className="embla__slide relative min-w-full h-full">
-            <Image
-              src={img}
-              alt={title}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              loading={idx === 0 ? 'eager' : 'lazy'}
-              priority={idx === 0}
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
+  /* MOBILE CAROUSEL - Dynamically loaded */
+  <EmblaCarousel images={imagesToShow} title={title} />
 
 ) : (
   /* DESKTOP CAROUSEL */
@@ -385,7 +431,7 @@ const webcamUrl = React.useMemo(
   {beachUrl ? (
     <Link
       href={beachUrl}
-      onClick={(e) => e.stopPropagation()}
+      onClick={handleTitleClick}
       className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
     >
       {title}
@@ -397,10 +443,7 @@ const webcamUrl = React.useMemo(
 
        <button
   type="button"
-  onClick={(e) => {
-    e.stopPropagation();
-    onLocationClick?.();
-  }}
+  onClick={handleLocationClick}
   className="pr-[2px] hover:scale-105 transition-transform cursor-pointer hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8000] focus-visible:ring-offset-2 rounded"
   aria-label={`Show ${title} on map`}
        >
@@ -448,6 +491,7 @@ const webcamUrl = React.useMemo(
   // Custom comparison to prevent unnecessary re-renders
   return (
     prevProps.beachUrl === nextProps.beachUrl &&
+    prevProps.beachSlug === nextProps.beachSlug &&
     prevProps.image === nextProps.image &&
     prevProps.title === nextProps.title &&
     prevProps.location === nextProps.location &&

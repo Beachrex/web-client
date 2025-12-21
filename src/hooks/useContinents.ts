@@ -7,9 +7,23 @@ import { continentCodeToKey } from '@/lib/constants/mappings';
 import { getContinentIcon } from '@/lib/utils/icons';
 import type { ContinentWithUI } from '@/types/domain';
 
+/**
+ * Reference data cache settings
+ * Continents are static data, cache very aggressively
+ */
+const REFERENCE_DATA_CACHE = {
+  staleTime: 60 * 60 * 1000, // 1 hour - consider data fresh
+  gcTime: 24 * 60 * 60 * 1000, // 24 hours - keep in cache
+  refetchOnMount: false, // Don't refetch on component mount
+  refetchOnWindowFocus: false, // Don't refetch on window focus
+} as const;
+
 export const useContinents = () => {
   // Fetch continents using TanStack Query
-  const { data, isLoading, error } = useQuery(getContinentsOptions());
+  const { data, isLoading, error } = useQuery({
+    ...getContinentsOptions(),
+    ...REFERENCE_DATA_CACHE,
+  });
 
   // Transform API data to UI format
   const continents = useMemo(() => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { SlBriefcase } from 'react-icons/sl';
+import { Briefcase } from 'lucide-react';
 
 const NavIcon = ({
                      src,
@@ -132,7 +132,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
                     {/* Right Section (Social Icons) */}
                     <div className="flex items-center space-x-4">
                         <div className="flex items-center gap-2 pr-6">
-                            <SlBriefcase className="w-[26px] h-[26px] text-variable-collection-dark-grey"/>
+                            <Briefcase className="w-[26px] h-[26px] text-variable-collection-dark-grey"/>
                             <span className="text-sm text-variable-collection-middle-grey font-bold cursor-pointer">
                                 O nas
                             </span>

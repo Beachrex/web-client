@@ -1,8 +1,6 @@
 'use client';
 
-import { CiHeart } from 'react-icons/ci';
-import { PiUserCircle } from 'react-icons/pi';
-import { MdKeyboardArrowDown } from 'react-icons/md';
+import { Heart, UserCircle, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import { Dropdown } from 'flowbite-react';
 import { locales, languageNames } from '@/app/config/locales';
@@ -73,7 +71,7 @@ const TopBar = () => {
                                 label={
                                     <span className="inline-flex items-center cursor-pointer text-white text-[9px] font-semibold">
                                         {(languageNames[locale] ?? locale).slice(0, 2).toUpperCase()}
-                                        <MdKeyboardArrowDown className="text-white ml-1 h-3 w-3" />
+                                        <ChevronDown className="text-white ml-1 h-3 w-3" />
                                     </span>
                                 }
                             >
@@ -89,7 +87,7 @@ const TopBar = () => {
                         ) : (
                             <span className="inline-flex items-center cursor-pointer text-white text-[9px] font-semibold">
                                 {(languageNames[locale] ?? locale).slice(0, 2).toUpperCase()}
-                                <MdKeyboardArrowDown className="text-white ml-1 h-3 w-3" />
+                                <ChevronDown className="text-white ml-1 h-3 w-3" />
                             </span>
                         )}
                     </div>
@@ -102,10 +100,10 @@ const TopBar = () => {
                     {/* Right: Icons Only */}
                     <div className="flex items-center space-x-2">
                         <button className="flex items-center">
-                            <CiHeart className="w-[18px] h-[18px]" />
+                            <Heart className="w-[18px] h-[18px]" />
                         </button>
                         <button className="flex items-center">
-                            <PiUserCircle className="w-[18px] h-[18px]" />
+                            <UserCircle className="w-[18px] h-[18px]" />
                         </button>
                     </div>
                 </div>
@@ -127,7 +125,7 @@ const TopBar = () => {
                                 label={
                                     <span className="inline-flex items-center cursor-pointer text-white text-[10px] font-semibold">
                                         {languageNames[locale] ?? locale}
-                                        <MdKeyboardArrowDown className="text-white ml-2 h-4 w-4" />
+                                        <ChevronDown className="text-white ml-2 h-4 w-4" />
                                     </span>
                                 }
                             >
@@ -143,7 +141,7 @@ const TopBar = () => {
                         ) : (
                             <span className="inline-flex items-center cursor-pointer text-white text-[10px] font-semibold">
                                 {languageNames[locale] ?? locale}
-                                <MdKeyboardArrowDown className="text-white ml-2 h-4 w-4" />
+                                <ChevronDown className="text-white ml-2 h-4 w-4" />
                             </span>
                         )}
                     </div>
@@ -155,8 +153,8 @@ const TopBar = () => {
 
                     {/* Right Section */}
                     <div className="flex items-center space-x-4">
-                        <IconButton icon={CiHeart} label={t('favorite_beaches')} />
-                        <IconButton icon={PiUserCircle} label={t('my_account')} />
+                        <IconButton icon={Heart} label={t('favorite_beaches')} />
+                        <IconButton icon={UserCircle} label={t('my_account')} />
                     </div>
                 </div>
             </div>

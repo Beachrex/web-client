@@ -1,11 +1,23 @@
 'use client';
 
 import type { Country } from '@/lib/api-client/types.gen';
-import { Carousel } from 'flowbite-react';
-import { ChevronRight } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import DestinationCard from './DestinationCard';
+
+// Dynamically import Flowbite Carousel to reduce initial bundle size
+const FlowbiteCarousel = dynamic(
+  () => import('./DestinationsCarousel/FlowbiteCarousel'),
+  {
+    loading: () => (
+      <div className="h-96 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">
+        <div className="text-gray-400">Loading carousel...</div>
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 interface DestinationsCarouselProps {
   items: Country[];
@@ -18,7 +30,11 @@ interface DestinationsCarouselProps {
   showFlag?: boolean;
 }
 
-export default function DestinationsCarousel(props: DestinationsCarouselProps) {
+/**
+ * Memoized DestinationsCarousel component to prevent unnecessary re-renders
+ * Uses useMemo for slides calculation and useCallback for event handlers
+ */
+const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function DestinationsCarousel(props) {
   const {
     items,
     title,
@@ -32,23 +48,29 @@ export default function DestinationsCarousel(props: DestinationsCarouselProps) {
 
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
 
-  useEffect(() => {
-    const onResize = () => {
-      const w = window.innerWidth;
-      if (w >= 1280) setItemsPerSlide(5);
-      else if (w >= 1024) setItemsPerSlide(3);
-      else if (w >= 640) setItemsPerSlide(2);
-      else setItemsPerSlide(1);
-    };
-    onResize();
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+  // Memoize resize handler to prevent recreation on every render
+  const handleResize = useCallback(() => {
+    const w = window.innerWidth;
+    if (w >= 1280) setItemsPerSlide(5);
+    else if (w >= 1024) setItemsPerSlide(3);
+    else if (w >= 640) setItemsPerSlide(2);
+    else setItemsPerSlide(1);
   }, []);
 
-  const slides: Country[][] = [];
-  for (let i = 0; i < items.length; i += itemsPerSlide) {
-    slides.push(items.slice(i, i + itemsPerSlide));
-  }
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [handleResize]);
+
+  // Memoize slides calculation to prevent recalculation on every render
+  const slides = useMemo(() => {
+    const result: Country[][] = [];
+    for (let i = 0; i < items.length; i += itemsPerSlide) {
+      result.push(items.slice(i, i + itemsPerSlide));
+    }
+    return result;
+  }, [items, itemsPerSlide]);
 
   return (
     <section className={`${backgroundClassName} py-12`}>
@@ -70,16 +92,16 @@ export default function DestinationsCarousel(props: DestinationsCarouselProps) {
         </div>
 
         <div className="h-[340px] lg:h-[350px]">
-          <Carousel
+          <FlowbiteCarousel
             className="h-full pb-8 [&>div>div>div:last-child]:!bottom-[-30px]"
             leftControl={
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
-                <HiChevronLeft className="h-5 w-5 text-gray-600" />
+                <ChevronLeft className="h-5 w-5 text-gray-600" />
               </div>
             }
             rightControl={
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
-                <HiChevronRight className="h-5 w-5 text-gray-600" />
+                <ChevronRight className="h-5 w-5 text-gray-600" />
               </div>
             }
             indicators={false}
@@ -100,9 +122,11 @@ export default function DestinationsCarousel(props: DestinationsCarouselProps) {
                 </div>
               </div>
             ))}
-          </Carousel>
+          </FlowbiteCarousel>
         </div>
       </div>
     </section>
   );
-}
+});
+
+export default DestinationsCarousel;

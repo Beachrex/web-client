@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { HiX } from 'react-icons/hi';
+import { X } from 'lucide-react';
 import { Sidebar } from 'flowbite-react';
 import { Link, usePathname } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -129,7 +129,7 @@ const BurgerMenu = () => {
                         <div className="flex justify-between items-center p-4">
                             <h2 className="text-lg font-bold">Menu</h2>
                             <button onClick={closeMenu} className="p-1 rounded-md">
-                                <HiX className="h-6 w-6 text-gray-800" />
+                                <X className="h-6 w-6 text-gray-800" />
                             </button>
                         </div>
                         <div className="overflow-y-auto max-h-[calc(100vh-64px)]">

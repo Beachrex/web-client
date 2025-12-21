@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
@@ -357,9 +357,9 @@ const LeftSidebarFilters = ({
                                                     </h3>
                                                 </div>
                                                 {expandedSections[filterKey] ? (
-                                                    <FiChevronUp className="text-gray-500" />
+                                                    <ChevronUp className="text-gray-500" />
                                                 ) : (
-                                                    <FiChevronDown className="text-gray-500" />
+                                                    <ChevronDown className="text-gray-500" />
                                                 )}
                                             </button>
                                             {expandedSections[filterKey] &&

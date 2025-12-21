@@ -3,7 +3,7 @@
 import { Link } from '@/i18n/routing';
 import { Breadcrumb } from 'flowbite-react';
 import { useLocale } from 'next-intl';
-import { HiHome } from 'react-icons/hi';
+import { Home } from 'lucide-react';
 
 interface DynamicBreadcrumbsProps {
   pathname: string;
@@ -54,7 +54,7 @@ export default function DynamicBreadcrumbs({
           href="/"
           className="text-variable-collection-middle-grey hover:text-variable-collection-mesto"
         >
-          <HiHome className="h-5 w-5" />
+          <Home className="h-5 w-5" />
         </Link>
       </div>
 
@@ -69,7 +69,7 @@ export default function DynamicBreadcrumbs({
               href="/"
               className="flex items-center justify-center text-variable-collection-middle-grey hover:text-variable-collection-mesto"
             >
-              <HiHome className="h-4 w-4" />
+              <Home className="h-4 w-4" />
             </Link>
           </Breadcrumb.Item>
 

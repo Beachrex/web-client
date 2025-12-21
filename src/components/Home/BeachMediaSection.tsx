@@ -13,10 +13,14 @@ interface BeachMediaSectionProps {
   items: MediaItem[];
 }
 
-const BeachMediaSection: React.FC<BeachMediaSectionProps> = ({
+/**
+ * Memoized BeachMediaSection component to prevent unnecessary re-renders
+ * Only re-renders when title or items array changes
+ */
+const BeachMediaSection = React.memo<BeachMediaSectionProps>(function BeachMediaSection({
   title,
   items,
-}) => {
+}) {
   return (
     <section className="bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
       <div className="container mx-auto px-4">
@@ -58,6 +62,6 @@ const BeachMediaSection: React.FC<BeachMediaSectionProps> = ({
       </div>
     </section>
   );
-};
+});
 
 export default BeachMediaSection;

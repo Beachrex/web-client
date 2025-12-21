@@ -1,10 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { FiSearch, FiMapPin, FiX } from 'react-icons/fi';
-import { HiLocationMarker } from 'react-icons/hi';
-import { MdLocationCity, MdLandscape } from 'react-icons/md';
-import { GiIsland, GiWorld } from 'react-icons/gi';
+import { Search, MapPin, X, Mountain, Globe } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -310,17 +307,17 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 
         switch (type) {
             case 'beach':
-                return <HiLocationMarker className={iconClass} size={iconSize} />;
+                return <MapPin className={iconClass} size={iconSize} />;
             case 'city':
-                return <MdLocationCity className={iconClass} size={iconSize} />;
+                return <MapPin className={iconClass} size={iconSize} />;
             case 'island':
-                return <GiIsland className={iconClass} size={iconSize} />;
+                return <Mountain className={iconClass} size={iconSize} />;
             case 'region':
-                return <MdLandscape className={iconClass} size={iconSize} />;
+                return <Mountain className={iconClass} size={iconSize} />;
             case 'country':
-                return <GiWorld className={iconClass} size={iconSize} />;
+                return <Globe className={iconClass} size={iconSize} />;
             default:
-                return <FiMapPin className={iconClass} size={iconSize} />;
+                return <MapPin className={iconClass} size={iconSize} />;
         }
     };
 
@@ -348,7 +345,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         <div ref={searchRef} className={`relative ${className}`}>
             {/* Search Input */}
             <div className="flex items-center border rounded-lg shadow-sm bg-white">
-                <FiSearch className="text-gray-500 ml-3" size={20} />
+                <Search className="text-gray-500 ml-3" size={20} />
                 <input
                     ref={inputRef}
                     type="text"
@@ -371,7 +368,7 @@ focus:outline-none px-3 py-2 text-sm text-gray-600 placeholder-gray-400 ${inputC
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                         aria-label="Clear search"
                     >
-                        <FiX className="text-gray-400" size={18} />
+                        <X className="text-gray-400" size={18} />
                     </button>
                 )}
 

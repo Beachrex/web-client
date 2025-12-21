@@ -1,11 +1,24 @@
 'use client';
 
-import { Carousel } from 'flowbite-react';
+import dynamic from 'next/dynamic';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import AccommodationCard, {
   type AccommodationCardProps,
 } from './AccommodationCard';
+
+// Dynamically import Flowbite Carousel to reduce initial bundle size
+const Carousel = dynamic(
+  () => import('flowbite-react').then((mod) => ({ default: mod.Carousel })),
+  {
+    loading: () => (
+      <div className="h-96 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">
+        <div className="text-gray-400">Loading carousel...</div>
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 interface Props {
   items: AccommodationCardProps[];
@@ -77,12 +90,12 @@ export default function AccommodationFlowbiteCarousel({ items = [] }: Props) {
           className="h-full" // stretch to measured height
           leftControl={
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
-              <HiChevronLeft className="h-5 w-5 text-gray-600" />
+              <ChevronLeft className="h-5 w-5 text-gray-600" />
             </div>
           }
           rightControl={
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
-              <HiChevronRight className="h-5 w-5 text-gray-600" />
+              <ChevronRight className="h-5 w-5 text-gray-600" />
             </div>
           }
         >

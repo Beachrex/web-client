@@ -7,6 +7,16 @@ import { buildCountryUrl } from '@/lib/utils/beach-urls';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import React, { useCallback } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import {
+  prefetchCountryDetails,
+  prefetchRegionDetails,
+  prefetchIslandDetails,
+  prefetchCityDetails,
+  debouncedPrefetch,
+  cancelPrefetch,
+} from '@/lib/prefetch-utils';
 
 interface DestinationCardProps {
   country: Country;
@@ -15,16 +25,20 @@ interface DestinationCardProps {
   showFlag?: boolean;
 }
 
-
-export default function DestinationCard({
+/**
+ * Memoized DestinationCard component to prevent unnecessary re-renders in carousels
+ * Only re-renders when country data, badgeLabel, bottomVariant, or showFlag changes
+ */
+const DestinationCard = React.memo<DestinationCardProps>(function DestinationCard({
   country,
   badgeLabel,
   bottomVariant = 'default',
   showFlag = false,
-}: DestinationCardProps) {
+}) {
   const tHome = useTranslations('HomePage');
   const tDest = useTranslations('Destinations');
   const locale = useLocale();
+  const queryClient = useQueryClient();
 
   const name = country.name ?? '';
   const beachCount = country.beaches_count ?? 0;
@@ -79,10 +93,47 @@ const flagUrl =
         ? '/images/beachicons/location-icon-yellow.svg'
         : '/images/topdestination/icon.png';
 
+  /**
+   * Prefetch data on hover to improve perceived performance
+   * Debounced to avoid excessive prefetching on quick mouse movements
+   */
+  const handleMouseEnter = useCallback(() => {
+    const code = country.code ?? country.slug ?? '';
+    if (!code) return;
+
+    debouncedPrefetch(async () => {
+      // Prefetch based on card variant
+      switch (bottomVariant) {
+        case 'city':
+          await prefetchCityDetails(queryClient, code);
+          break;
+        case 'island':
+          await prefetchIslandDetails(queryClient, code);
+          break;
+        case 'region':
+          await prefetchRegionDetails(queryClient, code);
+          break;
+        default:
+          // Default is country
+          await prefetchCountryDetails(queryClient, code);
+          break;
+      }
+    });
+  }, [queryClient, country.code, country.slug, bottomVariant]);
+
+  /**
+   * Cancel prefetch if user moves mouse away quickly
+   */
+  const handleMouseLeave = useCallback(() => {
+    cancelPrefetch();
+  }, []);
+
   return (
     <Link
       href={countryUrl}
       className="flex h-[310px] flex-col overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="relative w-full flex-1">
         <Image
@@ -188,4 +239,6 @@ height={26}
       </div>
     </Link>
   );
-}
+});
+
+export default DestinationCard;
