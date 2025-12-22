@@ -1,7 +1,7 @@
 // src/lib/mappers/mapBeachToProperty.ts
 
 import type { Property } from '@/components/PropertySection';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema } from '../utils/beach-urls';
 
 /* ------------------------------------------------------------------
@@ -91,10 +91,8 @@ export function mapBeachToProperty(
   const sphereThumbnail =
     typeof sphere?.tour_url === 'string' ? mainImage : undefined;
 
-  const sphereTourUrl =
-    typeof sphere?.tour_url === 'string'
-      ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
-      : undefined;
+  // Use buildSphereTourUrl to handle special characters in paths (č, š, ž, etc.)
+  const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
 
   /* ---------------------------
    * VIDEO (YouTube embed)

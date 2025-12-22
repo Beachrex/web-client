@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { useAllBeaches } from '@/hooks/useBeaches';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 
 import { PropertyMediaContext } from '@/components/PropertySection';
 
@@ -90,11 +90,9 @@ const [mediaMode, setMediaMode] = useState<
 
     if (!mainImage) throw new Error(`Missing main_image for beach ${b.id}`);
 
-    // 360 support
+    // 360 support - use buildSphereTourUrl to handle special characters (č, š, ž, etc.)
     const sphere = b.media?.spheres_360?.[0] ?? null;
-    const sphereTourUrl = sphere
-      ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
-      : undefined;
+    const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
 
     // video support
     const rawVideo = b.media?.embeds?.video_url ?? null;

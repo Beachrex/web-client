@@ -369,8 +369,20 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
 
       // Verify URL matches beach location hierarchy
       if (!urlMatchesBeachLocation(segments, beach)) {
-        // Redirect to canonical URL using Next.js redirect
+        // Log the mismatch for debugging
         const canonicalUrl = buildBeachUrl(beach, locale);
+        const requestedPath = `/${params.continent}/${params.country}/${segments.join('/')}`;
+        console.warn(`[beaches] URL mismatch detected for beach: ${beach.basic_info?.slug}`);
+        console.warn(`  Requested path: ${requestedPath}`);
+        console.warn('  API location data:', {
+          region: beach.location?.region?.slug,
+          island: beach.location?.island?.slug,
+          city: beach.location?.city?.slug,
+        });
+        console.warn(`  Expected canonical URL: ${canonicalUrl}`);
+        console.warn('  This indicates incorrect region/city data in the database!');
+
+        // Redirect to canonical URL based on API data
         redirect(canonicalUrl);
       }
 
@@ -446,6 +458,11 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
     notFound();
 
   } catch (error) {
+    // Re-throw NEXT_REDIRECT errors - these are expected redirects, not actual errors
+    if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+      throw error;
+    }
+
     console.error('Error fetching page data:', error);
     notFound();
   }

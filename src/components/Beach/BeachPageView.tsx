@@ -6,8 +6,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { env } from '@/env';
+import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 
 interface BeachPageViewProps {
   beachDetails: BeachDetailsSchema;
@@ -68,9 +67,8 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
     primaryGalleryUrlTmp;
 
   // Get the virtual tour URL from the first sphere
-  const sphereTourUrl = spheres[0]?.tour_url
-    ? `${env.NEXT_PUBLIC_CDN_ASSETS}${spheres[0].tour_url}`
-    : null;
+  // Use buildSphereTourUrl to handle special characters in paths (č, š, ž, etc.)
+  const sphereTourUrl = buildSphereTourUrl(spheres[0]?.tour_url);
 
   const hasGallery = gallery.length > 0;
   const hasVideo = Boolean(videoEmbedUrl);

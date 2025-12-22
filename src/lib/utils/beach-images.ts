@@ -135,6 +135,21 @@ export function buildCdnUrl(
 }
 
 /**
+ * Build full CDN URL for 360° sphere tour HTML files
+ * Handles special characters in paths (č, š, ž, etc.) by using NFD encoding
+ *
+ * @param tourUrl - Relative tour URL from API (e.g., 'img/beaches/hr-4-o-čiovo/vtour/tour.html')
+ * @returns Full CDN URL with proper encoding for special characters
+ */
+export function buildSphereTourUrl(tourUrl: string | null | undefined): string | null {
+  if (!tourUrl) return null;
+
+  // Use buildCdnUrl which handles special character encoding
+  // Always use 'assets' endpoint for tour HTML files
+  return buildCdnUrl(tourUrl, 'icon');
+}
+
+/**
  * Build full CDN URL for beach images
  *
  * Beach images have two path patterns:

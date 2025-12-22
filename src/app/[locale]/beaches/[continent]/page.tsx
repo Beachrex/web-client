@@ -18,7 +18,7 @@ import {
 } from '@/lib/api-client/sdk.gen';
 
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildCompleteMetadata, buildCanonicalUrl } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
@@ -226,12 +226,10 @@ const Page = async ({ params }: PageProps) => {
       const gallery = buildGallery(beach);
      const mainImage = buildCdnUrl(beach.main_image, 'list')!;
 
-/* Sphere */
+/* Sphere - use buildSphereTourUrl to handle special characters (č, š, ž, etc.) */
 const sphere = beach.media?.spheres_360?.[0] ?? null;
 const sphereThumbnail = sphere ? mainImage : undefined;
-const sphereTourUrl = sphere
-  ? `${process.env.NEXT_PUBLIC_CDN_ASSETS}${sphere.tour_url}`
-  : undefined;
+const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
 
 /* Video */
 const rawVideo = beach.media?.embeds?.video_url ?? null;
