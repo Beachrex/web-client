@@ -1,12 +1,12 @@
 'use client';
 
-import { Pagination } from 'flowbite-react';
-import { useTranslations, type TranslationValues } from 'next-intl';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-
 import { useAllBeaches } from '@/hooks/useBeaches';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
+import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
+import { Pagination } from 'flowbite-react';
+import { useLocale, useTranslations, type TranslationValues } from 'next-intl';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 import { PropertyMediaContext } from '@/components/PropertySection';
 
@@ -17,6 +17,8 @@ import PropertyCard from './PropertyCard/PropertyCard';
 /* -------------------------------------------------------------
    BUILD GALLERY
 -------------------------------------------------------------- */
+
+
 interface GalleryItem {
   url?: string;
   order?: number | null;
@@ -64,6 +66,7 @@ export default function DynamicSearchBeaches({
   const [sort, setSort] = useState<'popular' | 'newest' | 'rating'>('popular');
 
 
+const locale = useLocale();
   // Pagination
   const itemsPerPage = 16;
   const [currentPage, setCurrentPage] = useState(1);
@@ -85,43 +88,46 @@ const [mediaMode, setMediaMode] = useState<
      TRANSFORM BEACH → PROPERTY CARD
 -------------------------------------------------------------- */
   const properties: PropertyCardProps[] = beaches.map((b) => {
-    const mainImage = buildCdnUrl(b.main_image, 'list');
-    const galleryImages = buildGallery(b);
+  const mainImage = buildCdnUrl(b.main_image, 'list');
+  const galleryImages = buildGallery(b);
 
-    if (!mainImage) throw new Error(`Missing main_image for beach ${b.id}`);
+  if (!mainImage) {
+    throw new Error(`Missing main_image for beach ${b.id}`);
+  }
 
-    // 360 support - use buildSphereTourUrl to handle special characters (č, š, ž, etc.)
-    const sphere = b.media?.spheres_360?.[0] ?? null;
-    const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
+  const sphere = b.media?.spheres_360?.[0] ?? null;
+  const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
 
-    // video support
-    const rawVideo = b.media?.embeds?.video_url ?? null;
-    const videoEmbedUrl =
-      rawVideo?.includes('youtu')
-        ? rawVideo
-            .replace('youtu.be/', 'www.youtube.com/embed/')
-            .replace('watch?v=', 'embed/')
-        : undefined;
+  const rawVideo = b.media?.embeds?.video_url ?? null;
+  const videoEmbedUrl =
+    rawVideo?.includes('youtu')
+      ? rawVideo
+          .replace('youtu.be/', 'www.youtube.com/embed/')
+          .replace('watch?v=', 'embed/')
+      : undefined;
 
-        // webcam support
-const webcamEmbed = b.media?.embeds?.webcam ?? null;
+  const webcamEmbed = b.media?.embeds?.webcam ?? null;
 
+  const beachUrl =
+    buildBeachUrlFromSchema(b, locale) ?? undefined;
 
-    return {
-      image: mainImage,
-      galleryImages,
-      sphereThumbnail: sphere ? mainImage : undefined,
-      sphereTourUrl,
-      videoEmbedUrl,
-      webcamEmbed,
-      title: b.name ?? 'Unknown beach',
-      location: b.city_slug ?? '',
-      price: 0,
-      rating: 0,
-      reviews: 0,
-      countryCode: b.country_code,
-    };
-  });
+  return {
+    beachUrl,
+    image: mainImage,
+    galleryImages,
+    sphereThumbnail: sphere ? mainImage : undefined,
+    sphereTourUrl,
+    videoEmbedUrl,
+    webcamEmbed,
+    title: b.name ?? 'Unknown beach',
+    location: b.city_slug ?? '',
+    price: 0,
+    rating: 0,
+    reviews: 0,
+    countryCode: b.country_code,
+  };
+});
+
 
 const hasAnyWebcam = properties.some(p => Boolean(p.webcamEmbed));
 

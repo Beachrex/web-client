@@ -47,7 +47,8 @@ islandName?: string;
   country?: Country;
 
   accommodationCount?: number;
-
+  regionPillLabel?: string | null;
+  islandPillLabel?: string | null;
   topBarVariant?: PageVariant;
   beachCount?: number;
 
@@ -67,6 +68,8 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   title,
   continent,
   accommodationCount,
+  regionPillLabel,
+  islandPillLabel,
   topBarVariant = 'continent',
   beachCount,
 
@@ -108,6 +111,8 @@ const BannerSection: React.FC<BannerSectionProps> = ({
             variant={variant}
             continent={continent}
             country={country}
+            regionPillLabel={regionPillLabel}
+            islandPillLabel={islandPillLabel}
             accommodationCount={accommodationCount}
             title={title}
             beachCount={beachCount}

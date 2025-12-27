@@ -1,6 +1,10 @@
+
+
 {
   "Common": {
     "search": "Išči",
+    "mapButtonFilter": "Zemljevid plaž s filtri",
+    "menu": "Meni",
     "about": "O nas",
     "numBeaches": "Št. plaž",
     "hotelPrice": "Cena hotela",
@@ -17,7 +21,8 @@
     "save": "shrani",
     "share": "deli",
     "reviews": "ocene",
-    "paidFallback": "Ni podatka"
+    "paidFallback": "Ni podatka",
+    "mobileApp": "Prenesi mobilno aplikacijo"
   },
   "Search": {
     "typeBeach": "Plaža",
@@ -195,7 +200,8 @@
     "regionLabel": "Regija",
     "islandLabel": "Otok",
     "cityLabel": "Mesto",
-    "countryLabel": "Država"
+    "countryLabel": "Država",
+    "beachLabel": "Morska plaža"
   },
   "TopBarBeach": {
     "beachLabel": "Morska plaža",

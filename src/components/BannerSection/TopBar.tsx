@@ -20,6 +20,9 @@ interface TopBarProps {
   continent?: Continent;
   country?: CountryWithFlag;
   accommodationCount?: number;
+  regionPillLabel?: string | null;
+  islandPillLabel?: string | null;
+  cityPillLabel?: string | null;
   title?: string;
   variant?: PageVariant;
   beachCount?: number;
@@ -29,6 +32,9 @@ const TopBar: React.FC<TopBarProps> = ({
   continent,
   country,
   accommodationCount = 0,
+  regionPillLabel = null,
+  islandPillLabel = null,
+  cityPillLabel = null,
   title,
   variant = 'continent',
   beachCount,
@@ -39,13 +45,10 @@ const TopBar: React.FC<TopBarProps> = ({
   // ------------------------------------------------
   // EFFECTIVE CONTINENT CODE (works for ALL pages)
   // ------------------------------------------------
-  const effectiveContinentCode =
-  continent?.code ??
-  country?.continent_code ??
-  'EU';
+const effectiveContinentCode =
+  continent?.code ?? country?.continent_code;
 
 
-  const continentIcon = getContinentIcon(effectiveContinentCode);
   const continentName = tContinent(effectiveContinentCode);
 
   // ------------------------------------------------
@@ -117,32 +120,67 @@ const displayTitle =
   return (
     <div className="flex h-[54px] items-center">
 
-      {/*  CONTINENT PILL — for country, region, island, city */}
-      {(['continent', 'country', 'region', 'island', 'city'].includes(variant)) && (
-        <div className="flex h-full w-[54px] items-center justify-center rounded-l-[10px] bg-[#5E1CA5]">
-          <Image
-            src={continentIcon}
-            alt={continentName}
-            width={35}
-            height={35}
-            className="object-contain"
-          />
-        </div>
-      )}
+     {/* CONTINENT PILL */}
+{effectiveContinentCode && (
+  <div className="flex h-full w-[54px] items-center justify-center rounded-l-[10px] bg-[#5E1CA5]">
+    <Image
+      src={getContinentIcon(effectiveContinentCode)}
+      alt={tContinent(effectiveContinentCode)}
+      width={35}
+      height={35}
+      className="object-contain"
+    />
+  </div>
+)}
 
-      {/*  COUNTRY FLAG PILL — for region, island, city */}
-      {(variant === 'region' || variant === 'island' || variant === 'city') &&
-        countryIcon && (
-          <div className="flex h-full w-[54px] items-center justify-center bg-[#DD0000] -ml-[7px] rounded-l-[10px]">
-            <Image
-              src={countryIcon}
-              alt={country?.name ?? 'country icon'}
-              width={28}
-              height={26}
-              className="object-contain"
-            />
-          </div>
-        )}
+{/* COUNTRY FLAG PILL — for region, island, city, beach */}
+{(variant === 'region' ||
+  variant === 'island' ||
+  variant === 'city' ||
+  variant === 'beach') &&
+  countryIcon && (
+    <div className="flex h-full w-[54px] items-center justify-center bg-[#DD0000] -ml-[7px] rounded-l-[10px]">
+      <Image
+        src={countryIcon}
+        alt={country?.name ?? 'country icon'}
+        width={28}
+        height={26}
+        className="object-contain"
+      />
+    </div>
+)}
+
+
+{/* REGION PILL — ALWAYS PINK */}
+{regionPillLabel &&
+  (variant === 'island' || variant === 'city' || variant === 'beach') && (
+    <div className="flex h-full w-[54px] items-center justify-center bg-[#FF2877] -ml-[7px] rounded-l-[10px]">
+      <span className="font-figtree text-[14px] font-bold text-white">
+        {regionPillLabel}
+      </span>
+    </div>
+)}
+
+
+{/* ISLAND PILL — for city and beach */}
+{(variant === 'city' || variant === 'beach') && islandPillLabel && (
+  <div className="flex h-full w-[54px] items-center justify-center bg-[#FFC422] -ml-[7px] rounded-l-[10px]">
+    <span className="font-figtree text-[14px] font-bold text-white">
+      {islandPillLabel}
+    </span>
+  </div>
+)}
+
+
+{/* CITY PILL — ONLY for beach */}
+{variant === 'beach' && cityPillLabel && (
+  <div className="flex h-full w-[54px] items-center justify-center bg-[#FF8000] -ml-[7px] rounded-l-[10px]">
+    <span className="font-figtree text-[14px] font-bold text-white">
+      {cityPillLabel}
+    </span>
+  </div>
+)}
+
 
       {/*  MAIN TOPBAR */}
       <div className={containerClasses}>

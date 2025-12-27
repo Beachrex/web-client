@@ -21,54 +21,60 @@ const TopBarBeach: React.FC<TopBarBeach> = ({
   const t = useTranslations('TopBarBeach');
 
   return (
-    <div className="flex h-[54px] items-center rounded-[10px]">
-      {/* Textual block */}
-      <div className="flex h-full items-center gap-[6px] rounded-[10px] bg-[#0069AB] px-[8px] sm:gap-[10px] sm:px-[16px]">
-        {/* Beach label (white pill) — hidden on mobile */}
-        <span className="hidden items-center justify-center gap-[7px] rounded-full bg-white px-[10px] py-[3px] font-figtree text-[20px] font-bold leading-[100%] text-[#0069AB] md:flex">
-          {t('beachLabel')}
-        </span>
+   <div className="flex h-[54px] items-center rounded-[12px]">
+  <div className="flex h-full items-center gap-[8px] rounded-[12px] bg-[#0069AB] px-[10px] sm:gap-[12px] sm:px-[18px]">
 
-        {/* Beach name */}
-        <span className="hidden font-figtree text-[30px] font-bold leading-[100%] text-white md:block">
-          {beachName}
-        </span>
+    {/* Beach label */}
+    <span
+className="hidden md:flex items-center rounded-full bg-white/95 px-[12px] py-[2px]
+                     font-figtree text-[16px] font-semibold leading-none text-[#0069AB]
+                     shadow-sm"
+    >
+      {t('beachLabel')}
+    </span>
 
-        {/* Accommodations count */}
-        <div className="flex h-[41px] items-center gap-[4px] rounded-[6px] bg-white px-[6px] sm:gap-[8px] sm:px-[10px]">
-          <Image
-            src="/images/accommodation-black.png"
-            alt={t('numAccommodationsLabel')}
-            width={26}
-            height={26}
-            className="h-[20px] w-[20px] sm:h-[26px] sm:w-[26px]"
-          />
-          <span className="hidden font-figtree text-[14px] font-medium text-[#222222] sm:block">
-            {t('numAccommodationsLabel')}
-          </span>
-          <span className="font-figtree text-[12px] font-bold text-[#0069AB] sm:text-[14px]">
-            {accommodationCount}
-          </span>
-        </div>
+    {/* Beach name */}
+    <span className="hidden md:block font-figtree text-[26px] font-bold leading-none text-white tracking-tight">
+      {beachName}
+    </span>
 
-        {/* Activities count */}
-        <div className="flex h-[41px] items-center gap-[4px] rounded-[6px] bg-white px-[6px] sm:gap-[8px] sm:px-[10px]">
-          <Image
-            src="/images/banner/signpost.png"
-            alt={t('numActivitiesLabel')}
-            width={26}
-            height={26}
-            className="h-[20px] w-[20px] sm:h-[26px] sm:w-[26px]"
-          />
-          <span className="hidden font-figtree text-[14px] font-medium text-[#222222] sm:block">
-            {t('numActivitiesLabel')}
-          </span>
-          <span className="font-figtree text-[12px] font-bold text-[#0069AB] sm:text-[14px]">
-            {activityCount}
-          </span>
-        </div>
-      </div>
+    {/* Accommodations */}
+    <div className="flex h-[36px] items-center gap-[6px] rounded-[8px] bg-white px-[8px] sm:px-[10px]">
+      <Image
+        src="/images/accommodation-black.png"
+        alt={t('numAccommodationsLabel')}
+        width={22}
+        height={22}
+        className="opacity-80"
+      />
+      <span className="hidden sm:block text-[13px] font-medium text-[#333]">
+        {t('numAccommodationsLabel')}
+      </span>
+      <span className="text-[13px] font-bold text-[#0069AB]">
+        {accommodationCount}
+      </span>
     </div>
+
+    {/* Activities */}
+    <div className="flex h-[36px] items-center gap-[6px] rounded-[8px] bg-white px-[8px] sm:px-[10px]">
+      <Image
+        src="/images/banner/signpost.png"
+        alt={t('numActivitiesLabel')}
+        width={22}
+        height={22}
+        className="opacity-80"
+      />
+      <span className="hidden sm:block text-[13px] font-medium text-[#333]">
+        {t('numActivitiesLabel')}
+      </span>
+      <span className="text-[13px] font-bold text-[#0069AB]">
+        {activityCount}
+      </span>
+    </div>
+
+  </div>
+</div>
+
   );
 };
 

@@ -12,7 +12,7 @@ import { useRegionDetails } from '@/hooks/useRegionDetails';
 import { useRegionWeather } from '@/hooks/useWeather';
 
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { buildRegionUrlFromNavigation } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema, buildRegionUrlFromNavigation } from '@/lib/utils/beach-urls';
 
 
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
@@ -22,7 +22,7 @@ import DynamicSearchBeaches from '../DynamicSearchBeaches';
 import DynamicTopBar from '../DynamicTopBar';
 
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
-import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { ChevronRight } from 'lucide-react';
 
 interface RegionListingPageProps {
@@ -92,19 +92,27 @@ const mostVisitedSet = new Set(
     .filter((id): id is number => typeof id === 'number'),
 );
 
-
 const beachProperties: Property[] =
   mostVisitedBeaches
-    ?.map((b) =>
-      mapBeachToPropertyWithUrl(
-        b,
+    ?.map((beach) => {
+      const p = mapBeachToProperty(
+        beach,
         {
           mostVisitedSet,
           locationFallback: regionName,
+          locale,
         },
-        locale,
-      ),
-    )
+      );
+
+      if (!p) return null;
+
+      const url = buildBeachUrlFromSchema(beach, locale);
+
+      return {
+        ...p,
+        ...(url ? { beachUrl: url } : {}),
+      };
+    })
     .filter((p): p is Property => p !== null) ?? [];
 
 

@@ -15,11 +15,12 @@ import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
 import { useIslandWeather } from '@/hooks/useWeather';
 
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { buildIslandUrlFromNavigation } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema, buildIslandUrlFromNavigation } from '@/lib/utils/beach-urls';
 
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
-import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { ChevronRight } from 'lucide-react';
+import { formatRegionPillLabel } from '../BannerSection/topbar-utils';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
 
 interface IslandListingPageProps {
@@ -35,6 +36,7 @@ export default function IslandListingPage({
 
   const tIsland = useTranslations('IslandPage');
   const tProperty = useTranslations('PropertySection');
+
 
   // ---------------------------------------
   // FETCH ISLAND DETAILS
@@ -92,19 +94,27 @@ const mostVisitedSet = new Set(
     .filter((id): id is number => typeof id === 'number'),
 );
 
-
 const beachProperties: Property[] =
   mostVisitedBeachesData
-    ?.map((b) =>
-      mapBeachToPropertyWithUrl(
-        b,
+    ?.map((beach) => {
+      const p = mapBeachToProperty(
+        beach,
         {
           mostVisitedSet,
           locationFallback: islandName,
+          locale,
         },
-        locale,
-      ),
-    )
+      );
+
+      if (!p) return null;
+
+      const url = buildBeachUrlFromSchema(beach, locale);
+
+      return {
+        ...p,
+        ...(url ? { beachUrl: url } : {}),
+      };
+    })
     .filter((p): p is Property => p !== null) ?? [];
 
 
@@ -159,6 +169,12 @@ const beachProperties: Property[] =
     );
   }
 
+
+  const regionPillLabel = islandDetails?.region?.name
+  ? formatRegionPillLabel(islandDetails.region.name)
+  : null;
+
+
   return (
     <>
       {/* Top Navigation */}
@@ -177,18 +193,24 @@ const beachProperties: Property[] =
       />
 
       {/* Banner */}
-      <BannerSection
-        image={bannerImage}
-        title={islandName}
-        topBarVariant="island"
-        accommodationCount={islandAccommodationsCount}
-        beachCount={islandBeachesCount}
-        weather={islandWeather}
-        weatherLocationName={islandWeatherLocationName}
-        isWeatherLoading={isIslandWeatherLoading}
-        badges={bottomBadges.length ? bottomBadges : undefined}
-        infoCards={infoCards.length ? infoCards : undefined}
-      />
+     <BannerSection
+  image={bannerImage}
+  title={islandName}
+  topBarVariant="island"
+
+  continent={islandDetails?.country?.continent}
+  country={islandDetails?.country}
+  regionPillLabel={regionPillLabel}
+
+  accommodationCount={islandAccommodationsCount}
+  beachCount={islandBeachesCount}
+  weather={islandWeather}
+  weatherLocationName={islandWeatherLocationName}
+  isWeatherLoading={isIslandWeatherLoading}
+  badges={bottomBadges.length ? bottomBadges : undefined}
+  infoCards={infoCards.length ? infoCards : undefined}
+     />
+
 
       {/* MOST VISITED BEACHES */}
       <PropertySection

@@ -1,6 +1,9 @@
+
 {
   "Common": {
     "search": "Search",
+    "mapButtonFilter": "Beaches map with filters",
+    "menu": "Menu",
     "about": "About",
     "numBeaches": "Num. beaches",
     "hotelPrice": "Hotel price",
@@ -17,8 +20,10 @@
     "save": "save",
     "share": "share",
     "reviews": "reviews",
-    "paidFallback": "No information"
+    "paidFallback": "No information",
+    "mobileApp": "Download mobile app"
   },
+
   "Search": {
     "typeBeach": "Beach",
     "typeCity": "City",
@@ -196,17 +201,19 @@
   "TopBar": {
     "continentLabel": "Continent",
     "continentName": "Europe",
-    "numBeachesLabel": "Num. of beaches:",
-    "numAccommodationsLabel": "Num. of accommodations:",
+    "numBeachesLabel": "beaches:",
+    "numAccommodationsLabel": "accommodations:",
     "regionLabel": "Region",
     "islandLabel": "Island",
     "cityLabel": "City",
-    "countryLabel": "Country"
+    "countryLabel": "Country",
+    "beachLabel": "Sea beach"
+
   },
   "TopBarBeach": {
     "beachLabel": "Sea beach",
-    "numActivitiesLabel": "No. of activities",
-    "numAccommodationsLabel": "No. of accommodations"
+    "numActivitiesLabel": "activities",
+    "numAccommodationsLabel": "accommodations"
   },
   "BottomBadgesBeach": {
     "badges": {
