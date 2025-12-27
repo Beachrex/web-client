@@ -2,7 +2,6 @@
 
 import type { Property } from '@/components/PropertySection';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema } from '../utils/beach-urls';
 
 /* ------------------------------------------------------------------
  * Minimal input types for mapper (NO any, NO API coupling)
@@ -31,14 +30,20 @@ interface BeachMedia {
 export interface BeachLike {
   id?: string | number | null;
   name?: string | null;
-  main_image?: string | null;
   slug?: string | null;
-  country_code?: string | null;
-  city_slug?: string | null;
+
+  continent_slug?: string | null;
+  country_slug?: string | null;
   region_slug?: string | null;
+  island_slug?: string | null;
+  city_slug?: string | null;
+
+  country_code?: string | null;
+  main_image?: string | null;
 
   media?: BeachMedia | null;
 }
+
 
 /* ------------------------------------------------------------------
  * Mapper
@@ -135,21 +140,11 @@ export function mapBeachToProperty(
     );
 
 
-  const beachUrl =
-  typeof beach.slug === 'string' && options?.locale
-    ? buildBeachUrlFromSchema(
-        { slug: beach.slug },
-        options.locale
-      ) ?? undefined
-    : undefined;
-
-
   /* ---------------------------
    * FINAL PROPERTY OBJECT
    * --------------------------- */
   return {
     id: String(beach.id),
-    beachUrl,
     image: mainImage,
     galleryImages,
 

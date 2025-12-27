@@ -18,9 +18,10 @@ import { ChevronRight } from 'lucide-react';
 import { useCityDetails } from '@/hooks/useCityDetails';
 import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
-import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { buildCityUrlFromNavigation } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema, buildCityUrlFromNavigation } from '@/lib/utils/beach-urls';
+import { formatRegionPillLabel } from '../BannerSection/topbar-utils';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
 
 interface CityListingPageProps {
@@ -96,16 +97,25 @@ const mostVisitedSet = new Set(
 
 const beachProperties: Property[] =
   mostVisitedBeaches
-    ?.map((b) =>
-      mapBeachToPropertyWithUrl(
-        b,
+    ?.map((beach) => {
+      const p = mapBeachToProperty(
+        beach,
         {
           mostVisitedSet,
           locationFallback: cityName,
+          locale,
         },
-        locale,
-      ),
-    )
+      );
+
+      if (!p) return null;
+
+      const url = buildBeachUrlFromSchema(beach, locale);
+
+      return {
+        ...p,
+        ...(url ? { beachUrl: url } : {}),
+      };
+    })
     .filter((p): p is Property => p !== null) ?? [];
 
 
@@ -141,6 +151,15 @@ const infoCards = mapArticlesToInfoCards(
 );
 
 
+const regionPillLabel = cityDetails?.region?.name
+  ? formatRegionPillLabel(cityDetails.region.name)
+  : null;
+
+const islandPillLabel = cityDetails?.island?.name
+  ? formatRegionPillLabel(cityDetails.island.name)
+  : null;
+
+
   return (
     <>
       {/* Shared top bar: breadcrumbs + city prev/next navigation */}
@@ -158,18 +177,25 @@ const infoCards = mapArticlesToInfoCards(
         }
       />
 
-      <BannerSection
-        image={bannerImage}
-        title={cityName}
-        topBarVariant="city"
-        accommodationCount={cityAccommodationsCount}
-        beachCount={cityBeachesCount}
-        weather={cityWeather}
-        weatherLocationName={cityWeatherLocationName}
-        isWeatherLoading={isCityWeatherLoading}
-        badges={bottomBadges.length > 0 ? bottomBadges : undefined}
-        infoCards={infoCards.length > 0 ? infoCards : undefined}
-      />
+     <BannerSection
+  image={bannerImage}
+  title={cityName}
+  topBarVariant="city"
+
+  continent={cityDetails?.country?.continent}
+  country={cityDetails?.country}
+  regionPillLabel={regionPillLabel}
+  islandPillLabel={islandPillLabel}
+
+  accommodationCount={cityAccommodationsCount}
+  beachCount={cityBeachesCount}
+  weather={cityWeather}
+  weatherLocationName={cityWeatherLocationName}
+  isWeatherLoading={isCityWeatherLoading}
+  badges={bottomBadges.length > 0 ? bottomBadges : undefined}
+  infoCards={infoCards.length > 0 ? infoCards : undefined}
+     />
+
 
       {/* Most visited beaches in town */}
       <PropertySection

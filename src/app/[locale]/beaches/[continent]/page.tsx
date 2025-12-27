@@ -19,13 +19,13 @@ import {
 
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
-import { getBeachesWord } from '@/lib/utils/beach-urls';
-import { buildCompleteMetadata, buildCanonicalUrl } from '@/lib/utils/metadata-helpers';
+import { buildBeachUrlFromSchema, getBeachesWord } from '@/lib/utils/beach-urls';
+import { buildBreadcrumbSchema, buildContinentSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
+import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
-import { buildContinentSchema, buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 
 
 function toYouTubeEmbed(raw?: string | null) {
@@ -238,8 +238,14 @@ const videoEmbedUrl = toYouTubeEmbed(rawVideo);
 /* Webcam */
 const webcamEmbed = beach.media?.embeds?.webcam ?? null;
 
+const beachUrl =
+  buildBeachUrlFromSchema(beach, resolvedParams.locale) ?? undefined;
+
 return {
   id: String(beach.id),
+
+  beachUrl,
+
   image: mainImage,
   galleryImages: gallery,
 
@@ -255,6 +261,7 @@ return {
   reviews: 0,
   countryCode: beach.country_code,
 };
+
     });
 
     const bannerImage = continent.main_image

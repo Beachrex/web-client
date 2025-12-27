@@ -9,8 +9,8 @@
  * - Enable ISR with revalidate
  */
 
-import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
@@ -19,30 +19,30 @@ import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { buildCountryUrlFromNavigation } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema, buildCountryUrlFromNavigation } from '@/lib/utils/beach-urls';
 import { ChevronRight } from 'lucide-react';
 
 import {
-  getCountry,
   getCities,
+  getCountry,
   getIslands,
-  getRegions,
   getMostVisitedBeaches,
+  getRegions,
 } from '@/lib/api-client';
 import type {
   AcceptLanguage,
+  BeachSchema,
   City,
   Island,
   Region,
-  BeachSchema,
 } from '@/lib/api-client/types.gen';
-import type { CountryDetails } from '@/types/CountryDetails';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
-import { mapBeachToPropertyWithUrl } from '@/lib/mappers/mapBeachToPropertyWithUrl';
-import { buildCompleteMetadata, buildCanonicalUrl } from '@/lib/utils/metadata-helpers';
-import { truncateDescription } from '@/lib/utils/seo-helpers';
+import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
-import { buildCountrySchema, buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
+import { buildBreadcrumbSchema, buildCountrySchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
+import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { truncateDescription } from '@/lib/utils/seo-helpers';
+import type { CountryDetails } from '@/types/CountryDetails';
 
 interface PageProps {
   params: {
@@ -190,20 +190,21 @@ export default async function Page({ params }: PageProps) {
       .filter((id): id is number => typeof id === 'number'),
   );
 
-  const beachProperties: Property[] =
-    mostVisited
-      ?.map((beach) =>
-        mapBeachToPropertyWithUrl(
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
-          beach as any,
-          {
-            mostVisitedSet,
-            locationFallback: countryName,
-          },
-          locale,
-        ),
-      )
-      .filter((p): p is Property => p !== null) ?? [];
+const beachProperties: Property[] =
+  mostVisited.map((beach) => {
+    const p = mapBeachToProperty(
+      beach,
+      { mostVisitedSet, locationFallback: countryName, locale },
+    );
+
+    if (!p) return null;
+
+    return {
+      ...p,
+      beachUrl:
+        buildBeachUrlFromSchema(beach, locale) ?? undefined,
+    };
+  }).filter(Boolean) as Property[];
 
 
   /* Regions / Cities / Islands */

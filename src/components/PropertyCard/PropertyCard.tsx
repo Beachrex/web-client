@@ -1,16 +1,16 @@
 'use client';
 
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/prefetch-utils';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { useQueryClient } from '@tanstack/react-query';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import { Heart, Star } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import React, { useCallback } from 'react';
 import { PropertyMediaContext } from '../PropertySection';
-import { useQueryClient } from '@tanstack/react-query';
-import { prefetchBeachDetails, debouncedPrefetch, cancelPrefetch } from '@/lib/prefetch-utils';
 
 // Dynamically import EmblaCarousel for mobile to reduce initial bundle size
 const EmblaCarousel = dynamic(
@@ -157,9 +157,6 @@ const webcamUrl = React.useMemo(
     setSphereActive(true);
   }, []);
 
-  const handleTitleClick = React.useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-  }, []);
 
   const handleLocationClick = React.useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -431,7 +428,6 @@ const webcamUrl = React.useMemo(
   {beachUrl ? (
     <Link
       href={beachUrl}
-      onClick={handleTitleClick}
       className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
     >
       {title}

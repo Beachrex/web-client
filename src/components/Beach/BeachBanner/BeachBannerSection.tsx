@@ -11,8 +11,10 @@ import Link from 'next/link';
 import BeachTitleBlock from './BeachTitleBlock';
 import BottomBadgesBeach from './BottomBadgesBeach';
 import SeaTempWidget from './SeaTempWidget';
-import TopBarBeach from './TopBarBeach';
 import TopBarBeachRight from './TopBarBeachRight';
+
+import TopBar from '@/components/BannerSection/TopBar';
+import { mapBeachLocationToTopBar } from '@/lib/mappers/mapBeachLocationToTopBar';
 
 interface BeachBannerSectionProps {
   beachDetails?: BeachDetailsSchema;
@@ -23,7 +25,6 @@ interface BeachBannerSectionProps {
 export default function BeachBannerSection({
   beachDetails,
   accommodationCount,
-  activityCount,
 }: BeachBannerSectionProps) {
   const tRoutes = useTranslations('routes');
   const locale = useLocale();
@@ -74,6 +75,8 @@ export default function BeachBannerSection({
     { id: 'windsurfing', icon: '/images/categories/windsurfing.png' },
   ];
 
+  const topBarData = mapBeachLocationToTopBar(beachDetails);
+
   return (
     <section className="relative mx-auto mb-10 h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-visible pb-40 sm:h-[700px] md:min-h-[400px] md:pb-48 lg:h-[798px]">
       {/* Background with rounded corners */}
@@ -96,11 +99,20 @@ export default function BeachBannerSection({
       <div className="z-1 relative flex flex-row items-center justify-between p-4 sm:p-6 lg:p-8">
         {/* Left: Title + counters */}
         <div className="flex flex-col">
-          <TopBarBeach
-            beachName={beachName}
-            accommodationCount={accommodationCount}
-            activityCount={activityCount}
-          />
+
+
+<TopBar
+  variant="beach"
+  title={beachName}
+  continent={topBarData.continent}
+  country={topBarData.country}
+  regionPillLabel={topBarData.regionPillLabel}
+  islandPillLabel={topBarData.islandPillLabel}
+  cityPillLabel={topBarData.cityPillLabel}
+  accommodationCount={accommodationCount}
+  beachCount={1}
+/>
+
         </div>
 
         {/* Right: review / save / share */}

@@ -1,9 +1,10 @@
 'use client';
 
-import BurgerMenu from './BurgerMenu';
+
 import TopBar from './Header/TopBar';
 import SearchBar from './Header/SearchBar';
 import Footer from './Footer/Footer';
+import BurgerMenu from './Header/BurgerMenu';
 
 interface DefaultLayoutProps {
     children: React.ReactNode;

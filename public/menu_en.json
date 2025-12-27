@@ -1,150 +1,66 @@
+
+
+
+
 {
   "MenuItems": [
     {
-      "label": "Beach Map with filter",
-      "href": "/beach-map",
-      "subItems": []
+      "label": "Browse Beaches",
+      "href": "/beaches/europe",
+      "icon": "/images/menu/world.svg",
+      "subItems": [],
+      "enabled": true
     },
-    {
-      "label": "Beaches around the world",
-      "href": "/beaches",
-      "subItems": [
-        { "label": "Europe", "href": "/beaches/europe", "subItems": [] },
-        { "label": "S. America", "href": "/beaches/south-america", "subItems": [] },
-        { "label": "N. America", "href": "/beaches/north-america", "subItems": [] },
-        { "label": "Central America", "href": "/beaches/central-america", "subItems": [] },
-        { "label": "Caribbean", "href": "/beaches/caribbean", "subItems": [] },
-        { "label": "Central Asia", "href": "/beaches/central-asia", "subItems": [] },
-        { "label": "South Asia", "href": "/beaches/south-asia", "subItems": [] },
-        { "label": "Southeast Asia", "href": "/beaches/southeast-asia", "subItems": [] },
-        { "label": "Australia & Oceania", "href": "/beaches/australia-oceania", "subItems": [] },
-        { "label": "Middle East", "href": "/beaches/middle-east", "subItems": [] },
-        { "label": "Africa", "href": "/beaches/africa", "subItems": [] }
-      ]
-    },
-    {
-      "label": "Beach Type",
-      "href": "/beach-type",
-      "subItems": [
-        { "label": "Sandy Beach", "href": "/beach-type/sandy", "subItems": [] },
-        { "label": "Gravel Beach", "href": "/beach-type/gravel", "subItems": [] },
-        { "label": "Rocky Beach", "href": "/beach-type/rocky", "subItems": [] },
-        { "label": "Cliff Beach", "href": "/beach-type/cliff", "subItems": [] },
-        { "label": "Grass Beach", "href": "/beach-type/grass", "subItems": [] },
-        { "label": "Concrete Beach", "href": "/beach-type/concrete", "subItems": [] },
-        { "label": "Marine Beach", "href": "/beach-type/marine", "subItems": [] },
-        { "label": "Freshwater Beach", "href": "/beach-type/freshwater", "subItems": [
-          { "label": "River Beach", "href": "/beach-type/freshwater/rivers", "subItems": [] },
-          { "label": "Lake Beach", "href": "/beach-type/freshwater/lakes", "subItems": [] }
-        ]},
-        { "label": "Island Beach", "href": "/beach-type/island", "subItems": [] },
-        { "label": "Summer Pool", "href": "/beach-type/summer-pool", "subItems": [] },
-        { "label": "Indoor Pool", "href": "/beach-type/indoor-pool", "subItems": [] },
-        { "label": "Boat Access Beach", "href": "/beach-type/boat-access", "subItems": [] },
-        { "label": "Beach with Slide", "href": "/beach-type/slides", "subItems": [] },
-        { "label": "Shaded Beach", "href": "/beach-type/shaded", "subItems": [] },
-        { "label": "Kids & Babies Beach", "href": "/beach-type/kids", "subItems": [] }
-      ]
-    },
-    {
-      "label": "User Type",
-      "href": "/user-type",
-      "subItems": [
-        { "label": "Family Beach", "href": "/user-type/families", "subItems": [] },
-        { "label": "Fun Beach", "href": "/user-type/fun", "subItems": [] },
-        { "label": "Adventurers Beach", "href": "/user-type/adventurers", "subItems": [] }
-      ]
-    },
+    
     {
       "label": "Beach Store",
       "href": "/beach-store",
-      "subItems": []
+      "icon": "/images/menu/shopping-store.svg",
+      "subItems": [],
+      "enabled": false
     },
     {
       "label": "Beach Accommodation",
       "href": "/beach-accommodation",
-      "subItems": []
-    },
-    {
-      "label": "360 Beaches",
-      "href": "/beach-360",
-      "subItems": []
-    },
-    {
-      "label": "Beach Videos",
-      "href": "/beach-video",
-      "subItems": []
-    },
-    {
-      "label": "Beach Webcam",
-      "href": "/beach-webcam",
-      "subItems": []
-    },
-    {
-      "label": "Beach Services",
-      "href": "/beach-services",
-      "subItems": [
-        { "label": "Beach Activities GYG", "href": "/beach-services/activities", "subItems": [] },
-        { "label": "Rent a Car", "href": "/beach-services/rent-car", "subItems": [] },
-        { "label": "Rent a Motorhome", "href": "/beach-services/rent-motorhome", "subItems": [] },
-        { "label": "Rent a Boat/Yacht", "href": "/beach-services/rent-boat", "subItems": [] },
-        { "label": "Rent a Sea Scooter", "href": "/beach-services/rent-sea-scooter", "subItems": [] },
-        { "label": "Rent a SUP/Kayak", "href": "/beach-services/rent-sup-kayak", "subItems": [] },
-        { "label": "Buy Airplane Tickets", "href": "/beach-services/airplane-tickets", "subItems": [] },
-        { "label": "Beach Events", "href": "/beach-services/events", "subItems": [] }
-      ]
-    },
-    {
-      "label": "Beach Market",
-      "href": "/beach-market",
-      "icon": "",
-      "subItems": []
+      "icon": "/images/menu/accomodation.svg",
+      "subItems": [],
+      "enabled": false
     },
     {
       "label": "Tourist Organizations",
       "href": "/tourist-organizations",
-      "icon": "",
-      "subItems": []
+      "icon": "/images/menu/baggage.svg",
+      "subItems": [],
+      "enabled": false
     },
     {
-      "label": "Top Beaches",
-      "href": "/top-beaches",
-      "icon": "",
-      "subItems": []
-    },
-    {
-      "label": "Beach Blog",
+      "label": "Blog",
       "href": "/beach-blog",
-      "icon": "",
-      "subItems": []
+      "icon": "/images/menu/article.svg",
+      "subItems": [],
+      "enabled": false
     },
     {
       "label": "Beach Fitness",
       "href": "/beach-fitness",
-      "icon": "",
-      "subItems": []
+      "icon": "/images/menu/sport.svg",
+      "subItems": [],
+      "enabled": false
     },
     {
-      "label": "Mobile App",
-      "href": "/mobile-app",
-      "icon": "",
-      "subItems": []
-    },
-    {
-      "label": "Miscellaneous",
+      "label": "Information",
       "href": "/miscellaneous",
-      "icon": "",
-      "subItems": [
-        { "label": "About Us", "icon": "", "href": "/miscellaneous/about", "subItems": [] },
-        { "label": "Terms of Service", "icon": "", "href": "/miscellaneous/terms", "subItems": [] },
-        { "label": "Privacy", "icon": "", "href": "/miscellaneous/privacy", "subItems": [] },
-        { "label": "All Destinations", "icon": "", "href": "/miscellaneous/all-destinations", "subItems": [] },
-        { "label": "Social Media", "icon": "", "href": "/miscellaneous/social-media", "subItems": [] },
-        { "label": "Contact", "icon": "", "href": "/miscellaneous/contact", "subItems": [] },
-        { "label": "App", "icon": "", "href": "/miscellaneous/app", "subItems": [] },
-        { "label": "Contribution Rules", "icon": "", "href": "/miscellaneous/contribution-rules", "subItems": [] },
-        { "label": "Map Filter", "icon": "", "href": "/miscellaneous/map-filter", "subItems": [] }
-      ]
+      "icon": "/images/menu/info.svg",
+      "subItems": [],
+      "enabled": false
     }
   ]
 }
+
+
+
+
+
+
+
+
