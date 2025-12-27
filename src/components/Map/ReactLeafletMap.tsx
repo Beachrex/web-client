@@ -3,7 +3,7 @@
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
 import { useEffect, useRef, useMemo, memo } from 'react';
@@ -11,6 +11,11 @@ import type { Beach } from '@/types';
 import MapSearch from './MapSearch';
 import { getMarkerIcon } from '@/lib/utils/icons';
 import { debounce } from '@/lib/utils/debounce';
+import BeachMarkerTooltip from './BeachMarkerTooltip';
+
+// Performance logging (disabled - map renders are naturally slow ~200ms)
+const ENABLE_MAP_PERF_LOGGING = false;
+let mapRenderCount = 0;
 
 interface ReactLeafletMapProps {
   beaches: Beach[];
@@ -24,6 +29,7 @@ interface ReactLeafletMapProps {
     max_latitude?: number;
     max_longitude?: number;
   } | null;
+  isLoading?: boolean; // Disable map interactions while loading
   onViewportChange?: (
     center: [number, number],
     zoom: number,
@@ -155,7 +161,7 @@ function MapEventHandler({
         if (onViewportChange) {
           onViewportChange(center, zoom, radius, bounds);
         }
-      }, 600), // 600ms debounce - wait for user to stop moving (increased to reduce API calls)
+      }, 150), // 150ms debounce - quick API response, just enough to batch rapid events
     [onViewportChange]
   );
 
@@ -259,6 +265,33 @@ function MapEventHandler({
   return null;
 }
 
+// Component to disable/enable map interactions based on loading state
+function MapInteractionController({ isLoading }: { isLoading: boolean }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (isLoading) {
+      // Disable all map interactions while loading
+      map.dragging.disable();
+      map.touchZoom.disable();
+      map.doubleClickZoom.disable();
+      map.scrollWheelZoom.disable();
+      map.boxZoom.disable();
+      map.keyboard.disable();
+    } else {
+      // Re-enable all map interactions
+      map.dragging.enable();
+      map.touchZoom.enable();
+      map.doubleClickZoom.enable();
+      map.scrollWheelZoom.enable();
+      map.boxZoom.enable();
+      map.keyboard.enable();
+    }
+  }, [isLoading, map]);
+
+  return null;
+}
+
 // Memoized beach marker component to prevent unnecessary re-renders
 const BeachMarker = memo(({
   beach,
@@ -273,6 +306,7 @@ const BeachMarker = memo(({
   selectedBeachIcon: L.Icon;
   onMarkerClick?: (beachId: number) => void;
 }) => {
+  const markerRef = useRef<L.Marker | null>(null);
   const lat = typeof beach.latitude === 'string' ? parseFloat(beach.latitude) : beach.latitude;
   const lng = typeof beach.longitude === 'string' ? parseFloat(beach.longitude) : beach.longitude;
 
@@ -284,22 +318,30 @@ const BeachMarker = memo(({
 
   return (
     <Marker
+      ref={markerRef}
       position={[lat, lng]}
       icon={markerIcon}
       zIndexOffset={isSelected ? 1000 : 0}
       eventHandlers={{
         click: () => {
+          // Update selected marker style
           if (onMarkerClick && beach.id) {
             onMarkerClick(beach.id);
           }
+          // Open popup on click
+          markerRef.current?.openPopup();
         },
       }}
     >
-      <Tooltip offset={[10, -10]}>
-        <div>
-          <h3 className="font-bold">{beach.name ?? 'Beach'}</h3>
-        </div>
-      </Tooltip>
+      {/* Popup - opens on click, closes with X button or clicking another marker */}
+      <Popup
+        offset={[0, -10]}
+        autoPan={true}
+        closeButton={false}
+        className="beach-marker-popup"
+      >
+        <BeachMarkerTooltip beach={beach} />
+      </Popup>
     </Marker>
   );
 }, (prevProps, nextProps) =>
@@ -316,9 +358,36 @@ const ReactLeafletMap = ({
   radius: _radius = 100,
   selectedBeachId,
   boundingBox,
+  isLoading = false,
   onViewportChange,
   onMarkerClick,
 }: ReactLeafletMapProps) => {
+  const renderStart = useRef(performance.now());
+  const currentRenderCount = useRef(++mapRenderCount);
+
+  // Performance logging
+  if (ENABLE_MAP_PERF_LOGGING) {
+    renderStart.current = performance.now();
+    console.log(`🗺️ [ReactLeafletMap] RENDER #${currentRenderCount.current} START`, {
+      beachesCount: beaches?.length ?? 0,
+      isLoading,
+      center,
+      zoom,
+    });
+  }
+
+  // Log render completion
+  useEffect(() => {
+    if (ENABLE_MAP_PERF_LOGGING) {
+      const renderTime = performance.now() - renderStart.current;
+      console.log(`✅ [ReactLeafletMap] RENDER #${currentRenderCount.current} COMPLETE in ${renderTime.toFixed(2)}ms`, {
+        beachesCount: beaches?.length ?? 0,
+      });
+      if (renderTime > 100) {
+        console.warn(`⚠️ [ReactLeafletMap] Slow render: ${renderTime.toFixed(2)}ms`);
+      }
+    }
+  });
 
   // Check for duplicate beach IDs and log them
   const uniqueBeaches = useMemo(() => {
@@ -397,6 +466,7 @@ const ReactLeafletMap = ({
           <MapUpdater center={center} zoom={zoom} />
           <MapEventHandler onViewportChange={onViewportChange} />
           <FitBounds boundingBox={boundingBox} />
+          <MapInteractionController isLoading={isLoading} />
           <MapSearch />
           {/* <MapRadiusControl radius={radius} /> */}
           <TileLayer
@@ -429,7 +499,6 @@ const ReactLeafletMap = ({
             ))}
           </MarkerClusterGroup>
         </MapContainer>
-        {/* Loading overlay removed - markers update in background for smooth UX */}
       </div>
     </div>
   );

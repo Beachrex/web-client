@@ -13,43 +13,46 @@ import { VirtualizedBeachList } from './VirtualizedBeachList';
 
 type ColumnLayout = 1 | 2;
 
+interface Bounds {
+    min_lat: number;
+    min_lon: number;
+    max_lat: number;
+    max_lon: number;
+}
 
 const MapWithSidebar = () => {
     const t = useTranslations('BeachesMap');
     const d = useTranslations('BeachDetails');
     const c = useTranslations('SearchBeach');
 
+    const mediaOptions = [
+        {
+            value: 'gallery',
+            label: d('beachMediaGallery'),
+            icon: '/images/beachmedia/photo.png',
+        },
+        {
+            value: 'sphere',
+            label: d('beachMedia360'),
+            icon: '/images/beachmedia/360-degree-white.png',
+        },
+        {
+            value: 'video',
+            label: d('beachMediaVideo'),
+            icon: '/images/beachmedia/play-button-arrowhead-white.png',
+        },
+        {
+            value: 'webcam',
+            label: d('beachMediaLiveCam'),
+            icon: '/images/beachmedia/video-icon-white.png',
+        },
+    ];
 
-const mediaOptions = [
-  {
-    value: 'gallery',
-    label: d('beachMediaGallery'),
-    icon: '/images/beachmedia/photo.png',
-  },
-  {
-    value: 'sphere',
-    label: d('beachMedia360'),
-    icon: '/images/beachmedia/360-degree-white.png',
-  },
-  {
-    value: 'video',
-    label: d('beachMediaVideo'),
-    icon: '/images/beachmedia/play-button-arrowhead-white.png',
-  },
-  {
-    value: 'webcam',
-    label: d('beachMediaLiveCam'),
-    icon: '/images/beachmedia/video-icon-white.png',
-  },
-];
+    const [mediaMode, setMediaMode] =
+        useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
 
-
-const [mediaMode, setMediaMode] =
-  useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
-
-const [sort, setSort] =
-  useState<'popular' | 'rating' | 'newest'>('popular');
-
+    const [sort, setSort] =
+        useState<'popular' | 'rating' | 'newest'>('popular');
 
     const [mapCenter, setMapCenter] = useState<[number, number] | null>(null);
     const [mapZoom, setMapZoom] = useState<number>(6);
@@ -158,6 +161,7 @@ const [sort, setSort] =
     }, []);
 
     const ignoreNextViewportChangeRef = useRef(false);
+    const skipNextBoundingBoxUpdateRef = useRef(false); // Skip API call when zooming to beach
     const hasInitialBoundsRef = useRef(false);
 
     // Fetch map bounds only on initial load (when we don't have initial bounds yet)
@@ -295,9 +299,18 @@ const [sort, setSort] =
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [validatedFilters, filterOptions, filterOptionsLoading]);
 
+    // Store last valid bounding box filters to use when skipping updates
+    const lastBoundingBoxFiltersRef = useRef<BoundingBoxSearchFilters | null>(null);
+
     // Prepare bounding box filters with validated filters only
     // When filters change, use initial bounding box instead of current viewport bounding box
     const boundingBoxFilters: BoundingBoxSearchFilters = useMemo(() => {
+        // If we should skip this update (e.g., zooming to a beach), return previous filters
+        if (skipNextBoundingBoxUpdateRef.current && lastBoundingBoxFiltersRef.current) {
+            skipNextBoundingBoxUpdateRef.current = false; // Reset flag
+            return lastBoundingBoxFiltersRef.current;
+        }
+
         // Determine which bounding box to use
         // If viewport hasn't changed by user (filters changed/reset), use initial bounding box
         // Otherwise, use current viewport bounding box (user panned/zoomed)
@@ -306,7 +319,7 @@ const [sort, setSort] =
             : boundingBox;
 
         if (!boundingBoxToUse) {
-            return { min_lat: 0, min_lon: 0, max_lat: 0, max_lon: 0 };
+            return lastBoundingBoxFiltersRef.current ?? { min_lat: 0, min_lon: 0, max_lat: 0, max_lon: 0 };
         }
 
         // Create a copy of the bounding box to avoid mutation
@@ -320,10 +333,15 @@ const [sort, setSort] =
         // Update last fetched bounds when we're about to fetch
         lastFetchedBoundsRef.current = boundingBoxCopy;
 
-        return {
+        const newFilters = {
             ...boundingBoxCopy,
             ...(validatedFilters as Partial<BoundingBoxSearchFilters>),
         };
+
+        // Store for future skips
+        lastBoundingBoxFiltersRef.current = newFilters;
+
+        return newFilters;
     }, [boundingBox, validatedFilters]);
 
     // Call bounding box API when we have a bounding box
@@ -334,21 +352,23 @@ const [sort, setSort] =
     );
 
     // Keep previous beaches visible while loading new data (smooth UX)
-    // PERFORMANCE: Limit beaches to 500 max to prevent browser crashes
-    const MAX_BEACHES = 500;
-    const newBeaches = useMemo(() => {
+    // PERFORMANCE: Limit beaches to prevent browser performance issues
+
+    // OPTIMIZATION: Use state instead of ref to properly trigger re-renders
+    // and ensure we never show empty list while loading
+    const [displayedBeaches, setDisplayedBeaches] = useState<BeachSchema[]>([]);
+
+    // Update displayed beaches only when we have actual new data
+    useEffect(() => {
         const allBeaches = boundingBoxResult.data?.data ?? [];
-        return allBeaches.length > MAX_BEACHES ? allBeaches.slice(0, MAX_BEACHES) : allBeaches;
+        if (allBeaches.length > 0) {
+            setDisplayedBeaches(allBeaches);
+            previousBeachesRef.current = allBeaches;
+        }
     }, [boundingBoxResult.data?.data]);
 
-    const beaches = newBeaches.length > 0 ? newBeaches : previousBeachesRef.current;
-
-    // Update ref when we have new data
-    useEffect(() => {
-        if (newBeaches.length > 0) {
-            previousBeachesRef.current = newBeaches;
-        }
-    }, [newBeaches]);
+    // Use displayed beaches, or fall back to previous if we don't have any yet
+    const beaches = displayedBeaches.length > 0 ? displayedBeaches : previousBeachesRef.current;
 
     const loading = boundingBoxResult.loading;
     const error = boundingBoxResult.error;
@@ -365,21 +385,99 @@ const [sort, setSort] =
     }, []);
 
 
-    const handleLocationClick = (latitude: string, longitude: string, beachId?: number) => {
+    // OPTIMIZATION: Memoize to prevent VirtualizedBeachList re-renders
+    // Zoom level that guarantees markers are ungrouped (disableClusteringAtZoom is 15)
+    const BEACH_DETAIL_ZOOM = 16;
+
+    const handleLocationClick = useCallback((latitude: string, longitude: string, beachId?: number) => {
         const lat = parseFloat(latitude);
         const lng = parseFloat(longitude);
         if (!isNaN(lat) && !isNaN(lng)) {
             // Ignore the next viewport change event (caused by programmatic center change)
+            // Also skip bounding box update to prevent API refetch - we're just zooming to a beach
             ignoreNextViewportChangeRef.current = true;
+            skipNextBoundingBoxUpdateRef.current = true;
             setMapCenter([lat, lng]);
-            setMapZoom(13);
+            setMapZoom(BEACH_DETAIL_ZOOM);
+            // Setting selectedBeachId will trigger popup via isSelected effect in BeachMarker
             setSelectedBeachId(beachId ?? null);
         }
-    };
+    }, []);
+
+    // OPTIMIZATION: Memoize context value to prevent re-renders when mediaMode doesn't change
+    const mediaContextValue = useMemo(() => ({
+        mediaMode,
+        openSphere: () => undefined,
+        openVideo: () => undefined,
+    }), [mediaMode]);
 
 
-    // OPTIMIZATION: Debounce viewport changes to reduce API calls
+    // OPTIMIZATION: Debounce + Throttle viewport changes to reduce API calls
     const viewportDebounceRef = useRef<NodeJS.Timeout>();
+    const lastBoundingBoxUpdateRef = useRef<number>(0);
+    const pendingBoundsRef = useRef<Bounds | null>(null);
+    const throttleTimeoutRef = useRef<NodeJS.Timeout>();
+
+    // Minimum time between API calls (in ms)
+    const API_THROTTLE_MS = 1000;
+    // Debounce delay - wait for user to stop interacting
+    const DEBOUNCE_MS = 500;
+
+    // Cleanup timeouts on unmount to prevent memory leaks
+    useEffect(() => {
+        return () => {
+            clearTimeout(viewportDebounceRef.current);
+            clearTimeout(throttleTimeoutRef.current);
+        };
+    }, []);
+
+    const applyBoundingBoxUpdate = useCallback((bounds: Bounds) => {
+        const now = Date.now();
+        const timeSinceLastUpdate = now - lastBoundingBoxUpdateRef.current;
+
+        // Check if we're within throttle window
+        if (timeSinceLastUpdate < API_THROTTLE_MS) {
+            // Store pending bounds and schedule update after throttle expires
+            pendingBoundsRef.current = bounds;
+            clearTimeout(throttleTimeoutRef.current);
+            throttleTimeoutRef.current = setTimeout(() => {
+                if (pendingBoundsRef.current) {
+                    const pendingBounds = pendingBoundsRef.current;
+                    pendingBoundsRef.current = null;
+                    lastBoundingBoxUpdateRef.current = Date.now();
+                    setBoundingBox((prev) => {
+                        if (
+                            prev &&
+                            Math.abs(prev.min_lat - pendingBounds.min_lat) < 0.0001 &&
+                            Math.abs(prev.min_lon - pendingBounds.min_lon) < 0.0001 &&
+                            Math.abs(prev.max_lat - pendingBounds.max_lat) < 0.0001 &&
+                            Math.abs(prev.max_lon - pendingBounds.max_lon) < 0.0001
+                        ) {
+                            return prev;
+                        }
+                        return pendingBounds;
+                    });
+                }
+            }, API_THROTTLE_MS - timeSinceLastUpdate);
+            return;
+        }
+
+        // Not throttled - update immediately
+        lastBoundingBoxUpdateRef.current = now;
+        pendingBoundsRef.current = null;
+        setBoundingBox((prev) => {
+            if (
+                prev &&
+                Math.abs(prev.min_lat - bounds.min_lat) < 0.0001 &&
+                Math.abs(prev.min_lon - bounds.min_lon) < 0.0001 &&
+                Math.abs(prev.max_lat - bounds.max_lat) < 0.0001 &&
+                Math.abs(prev.max_lon - bounds.max_lon) < 0.0001
+            ) {
+                return prev;
+            }
+            return bounds;
+        });
+    }, []);
 
     const handleMapViewportChange = useCallback(
         (
@@ -390,39 +488,39 @@ const [sort, setSort] =
     ) => {
         // radius parameter is available but not used in current implementation
         void radius;
+        void center;
+        void zoom;
+
+        // Check if we should ignore this viewport change (e.g., from handleLocationClick)
+        if (ignoreNextViewportChangeRef.current) {
+
+            ignoreNextViewportChangeRef.current = false;
+            // Also reset skip flag since both were set together - no debounce runs when we return early
+            skipNextBoundingBoxUpdateRef.current = false;
+            return;
+        }
 
         // Mark that viewport changed by user - don't fit bounds from this change
         viewportChangedByUserRef.current = true;
 
-        // Debounce bounding box updates to avoid excessive API calls during pan/zoom
+        // Debounce bounding box updates - wait for user to stop panning/zooming
         clearTimeout(viewportDebounceRef.current);
         viewportDebounceRef.current = setTimeout(() => {
-            // Update bounding box when user moves/zooms the map
-            // Use exact viewport bounds to ensure list matches map markers
-            setBoundingBox((prev) => {
-                if (
-                    prev &&
-                    Math.abs(prev.min_lat - bounds.min_lat) < 0.0001 &&
-                    Math.abs(prev.min_lon - bounds.min_lon) < 0.0001 &&
-                    Math.abs(prev.max_lat - bounds.max_lat) < 0.0001 &&
-                    Math.abs(prev.max_lon - bounds.max_lon) < 0.0001
-                ) {
-                    return prev;
-                }
-                return bounds;
-            });
-        }, 300); // Wait 300ms after user stops panning/zooming
-    }, []);
+            // Check skip flag again in case it was set during debounce
+            if (skipNextBoundingBoxUpdateRef.current) {
 
-    const handleMarkerClick = useCallback((beachId: number) => {
+                skipNextBoundingBoxUpdateRef.current = false;
+                return;
+            }
+
+            // Apply bounding box update with throttling
+            applyBoundingBoxUpdate(bounds);
+        }, DEBOUNCE_MS);
+    }, [applyBoundingBoxUpdate]);
+
+       const handleMarkerClick = useCallback((beachId: number) => {
+        // Select the beach for highlighting - popup will open via isSelected effect
         setSelectedBeachId(beachId);
-        const beachCard = document.querySelector(`[data-beach-id="${beachId}"]`);
-        if (beachCard && beachCardsContainerRef.current) {
-            beachCard.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-            });
-        }
     }, []);
 
     const getContainerWidth = () => {
@@ -486,79 +584,62 @@ const [sort, setSort] =
                                 msOverflowStyle: 'none',
                             }}
                         >
+                            {/* MAP LIST HEADER */}
+                            <div className="sticky top-0 z-40 hidden md:flex items-center justify-between bg-white px-3 py-2">
+                                {/* LEFT SIDE: dropdowns */}
+                                <div className="flex items-center gap-3">
+                                    <Dropdown
+                                        value={sort}
+                                        onChange={(v) => setSort(v as 'popular' | 'rating' | 'newest')}
+                                        showIcons={false}
+                                        buttonBg="#F5F5F5"
+                                        menuBg="#F5F5F5"
+                                        options={[
+                                            { value: 'popular', label: c('sortPopular') },
+                                            { value: 'newest', label: c('sortNewest') },
+                                            { value: 'rating', label: c('sortTopRated') },
+                                        ]}
+                                        ariaLabel={c('sortPopular')}
+                                    />
+                                    {columnLayout === 2 ? (
+                                        <MediaToggleInline
+                                            mediaMode={mediaMode}
+                                            setMediaMode={setMediaMode}
+                                            label={c('displayLabel')}
+                                        />
+                                    ) : (
+                                        <Dropdown
+                                            value={mediaMode}
+                                            onChange={(v) => setMediaMode(v as 'gallery' | 'sphere' | 'video' | 'webcam')}
+                                            options={mediaOptions}
+                                            buttonBg="#E7E7E7"
+                                            menuBg="#E7E7E7"
+                                            hideActiveLabel
+                                            hideShadow
+                                            ariaLabel={t('displayLabel')}
+                                        />
+                                    )}
+                                </div>
 
+                                {/* RIGHT SIDE: layout toggle */}
+                                <div className="flex items-center">
+                                    <button
+                                        onClick={() => setColumnLayout(1)}
+                                        className="py-1.5 pl-1.5 pr-0.5 hover:bg-gray-50 rounded"
+                                        aria-label="Single column layout"
+                                    >
+                                        <SingleColumnIcon isActive={columnLayout === 1} />
+                                    </button>
+                                    <button
+                                        onClick={() => setColumnLayout(2)}
+                                        className="py-1.5 pl-0.5 pr-1.5 hover:bg-gray-50 rounded"
+                                        aria-label="Double column layout"
+                                    >
+                                        <DoubleColumnIcon isActive={columnLayout === 2} />
+                                    </button>
+                                </div>
+                            </div>
 
-{/* MAP LIST HEADER */}
-<div
-  className="
-    sticky top-0 z-40 hidden md:flex
-    items-center justify-between
-    bg-white px-3 py-2
-  "
->
-  {/* LEFT SIDE: dropdowns */}
-  <div className="flex items-center gap-3">
-    <Dropdown
-      value={sort}
-      onChange={(v) =>
-        setSort(v as 'popular' | 'rating' | 'newest')
-      }
-      showIcons={false}
-      buttonBg="#F5F5F5"
-      menuBg="#F5F5F5"
-      options={[
-        { value: 'popular', label: c('sortPopular') },
-        { value: 'newest', label: c('sortNewest') },
-        { value: 'rating', label: c('sortTopRated') },
-      ]}
-      ariaLabel={c('sortPopular')}
-    />
-
-  {columnLayout === 2 ? (
-  <MediaToggleInline
-    mediaMode={mediaMode}
-    setMediaMode={setMediaMode}
-    label={c('displayLabel')}
-  />
-) : (
-  <Dropdown
-    value={mediaMode}
-    onChange={(v) =>
-      setMediaMode(v as 'gallery' | 'sphere' | 'video' | 'webcam')
-    }
-    options={mediaOptions}
-    buttonBg="#E7E7E7"
-    menuBg="#E7E7E7"
-    hideActiveLabel
-    hideShadow
-    ariaLabel={t('displayLabel')}
-  />
-)}
-
-  </div>
-
-  {/* RIGHT SIDE: layout toggle */}
-  <div className="flex items-center">
-    <button
-      onClick={() => setColumnLayout(1)}
-      className="py-1.5 pl-1.5 pr-0.5 hover:bg-gray-50 rounded"
-      aria-label="Single column layout"
-    >
-      <SingleColumnIcon isActive={columnLayout === 1} />
-    </button>
-
-    <button
-      onClick={() => setColumnLayout(2)}
-      className="py-1.5 pl-0.5 pr-1.5 hover:bg-gray-50 rounded"
-      aria-label="Double column layout"
-    >
-      <DoubleColumnIcon isActive={columnLayout === 2} />
-    </button>
-  </div>
-</div>
-
-
-<div className="p-4">
 
                                 {/* Only show loading on initial load when no beaches exist */}
                                 {isLoading && beaches.length === 0 && (
@@ -573,50 +654,22 @@ const [sort, setSort] =
                                     </div>
                                 )}
 
-                                {!isLoading && !error && beaches.length === 0 && (
-                                    <div className="text-center py-8">
-                                        <p className="text-gray-600">{t('noBeachesFound')}</p>
-                                    </div>
-                                )}
-
-                                {/* Subtle loading indicator - doesn't hide the list */}
-                                {loading && beaches.length > 0 && (
-                                    <div className="mb-2 p-2 bg-blue-50 border border-blue-200 rounded-lg flex items-center gap-2">
-                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600" />
-                                        <p className="text-xs text-blue-800">{t('loadingBeaches')}</p>
-                                    </div>
-                                )}
-
-                                {/* Warning when beaches are limited for performance */}
-                                {!error && beaches.length === MAX_BEACHES && (
-                                    <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                                        <p className="text-sm text-yellow-800">
-                                            <strong>{t('performanceLimitNote')}</strong> {t('performanceLimitMessage', { count: MAX_BEACHES })}
-                                        </p>
-                                    </div>
-                                )}
 
                                 {/* Show virtualized list whenever we have beaches, even while loading new data */}
-                           {!error && beaches.length > 0 && (
-  <PropertyMediaContext.Provider
-    value={{
-      mediaMode,
-      openSphere: () => void 0,
-openVideo: () => void 0,
+                                {!error && beaches.length > 0 && (
+                                    <PropertyMediaContext.Provider value={mediaContextValue}>
+                                        <VirtualizedBeachList
+                                            beaches={beaches}
+                                            columnLayout={columnLayout}
+                                            onLocationClick={handleLocationClick}
+                                            containerHeight={containerDimensions.height}
+                                            containerWidth={containerDimensions.width}
+                                            scrollContainerRef={beachCardsContainerRef}
+                                        />
+                                    </PropertyMediaContext.Provider>
+                                )}
 
-    }}
-  >
-    <VirtualizedBeachList
-      beaches={beaches}
-      columnLayout={columnLayout}
-      onLocationClick={handleLocationClick}
-      containerHeight={containerDimensions.height}
-      containerWidth={containerDimensions.width}
-    />
-  </PropertyMediaContext.Provider>
-)}
 
-                            </div>
                         </div>
 
                         {/* Right Side - Map (desktop only, mobile uses popup) */}
@@ -633,6 +686,7 @@ openVideo: () => void 0,
                                                 ? null
                                                 : boundingBoxMeta?.bounding_box
                                         }
+                                        isLoading={loading}
                                         onViewportChange={handleMapViewportChange}
                                         onMarkerClick={handleMarkerClick}
                                     />
@@ -666,6 +720,7 @@ openVideo: () => void 0,
                                                     ? null
                                                     : boundingBoxMeta?.bounding_box
                                             }
+                                            isLoading={loading}
                                             onViewportChange={handleMapViewportChange}
                                             onMarkerClick={handleMarkerClick}
                                         />
@@ -688,8 +743,8 @@ openVideo: () => void 0,
                                 </button>
                             </div>
                         </div>
-	                    </div>
-	                )}
+                    </div>
+                )}
 
                 {/* Mobile slide-in filters panel */}
                 {isMobileFiltersOpen && (

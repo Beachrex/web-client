@@ -190,7 +190,8 @@
     "scrollToTop": "Pomakni se na vrh",
     "displayLabel": "Način prikaza",
     "performanceLimitNote": "Opomba:",
-    "performanceLimitMessage": "Prikazanih {count} plaž zaradi zmogljivosti. Povečajte ali uporabite filtre za bolj specifične rezultate."
+    "performanceLimitMessage": "Prikazanih {count} plaž zaradi zmogljivosti. Povečajte ali uporabite filtre za bolj specifične rezultate.",
+    "viewDetails": "Ogled →"
   },
   "TopBar": {
     "continentLabel": "Kontinent",

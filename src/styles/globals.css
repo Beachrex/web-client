@@ -171,6 +171,22 @@ div[style*="background-image"] {
   min-width: 100%;
 }
 
+/* Leaflet map popup styles for beach markers */
+.beach-marker-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.beach-marker-popup .leaflet-popup-content {
+  margin: 0;
+  min-width: 280px;
+}
+
+.beach-marker-popup .leaflet-popup-tip {
+  background: #E5F2FB;
+}
+
 
 
 
