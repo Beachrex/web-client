@@ -5,12 +5,19 @@ import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/p
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { useQueryClient } from '@tanstack/react-query';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
+import { Carousel } from 'flowbite-react';
 import { Heart, Star } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { PropertyMediaContext } from '../PropertySection';
+
+// Performance logging
+const ENABLE_PERF_LOGGING = false;
+let propertyCardRenderCount = 0;
+
+const moduleLoadStart = performance.now();
 
 // Dynamically import EmblaCarousel for mobile to reduce initial bundle size
 const EmblaCarousel = dynamic(
@@ -25,18 +32,10 @@ const EmblaCarousel = dynamic(
   }
 );
 
-// Dynamically import Flowbite Carousel for desktop to reduce initial bundle size
-const Carousel = dynamic(
-  () => import('flowbite-react').then((mod) => ({ default: mod.Carousel })),
-  {
-    loading: () => (
-      <div className="relative h-full w-full flex items-center justify-center bg-gray-100">
-        <div className="animate-pulse text-gray-400">Loading...</div>
-      </div>
-    ),
-    ssr: false,
-  }
-);
+// Log when module finishes loading
+if (ENABLE_PERF_LOGGING) {
+  console.log(`✅ [PropertyCard Module] Loaded in ${(performance.now() - moduleLoadStart).toFixed(2)}ms`);
+}
 
 
 function extractLookrUrl(html: string | null | undefined): string | null {
@@ -101,6 +100,22 @@ const PropertyCard = React.memo(function PropertyCard({
   webcamEmbed,
   onLocationClick,
 }: PropertyCardProps) {
+  const renderStartTime = useRef(performance.now());
+  const currentRenderCount = useRef(++propertyCardRenderCount);
+
+  // Performance: Log render (only first 10)
+  if (ENABLE_PERF_LOGGING && currentRenderCount.current <= 10) {
+    console.log(`🏖️ [PropertyCard] RENDER #${currentRenderCount.current}`, { title });
+  }
+
+  // Performance: Log when component mounts/completes
+  useEffect(() => {
+    if (ENABLE_PERF_LOGGING && currentRenderCount.current <= 10) {
+      const renderTime = performance.now() - renderStartTime.current;
+      console.log(`✅ [PropertyCard] #${currentRenderCount.current} MOUNTED in ${renderTime.toFixed(2)}ms`, { title });
+    }
+  }, [title]);
+
   const queryClient = useQueryClient();
 
   const { isMobile, ready } = useIsMobile();
@@ -191,7 +206,6 @@ const webcamUrl = React.useMemo(
     );
   }
 
-
   return (
     <div
       ref={cardRef}
@@ -210,7 +224,8 @@ const webcamUrl = React.useMemo(
         alt={title}
         fill
         className="object-cover"
-        sizes="100vw"
+        sizes="(max-width: 768px) 100vw, 50vw"
+        loading="lazy"
       />
 
       {/* OPEN WEBCAM IN NEW TAB */}
@@ -254,7 +269,8 @@ const webcamUrl = React.useMemo(
             alt={title}
             fill
             className="object-cover"
-            sizes="100vw"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            loading="lazy"
           />
 
           {/* 360 BUTTON OVERLAY – CENTER */}
@@ -347,16 +363,15 @@ const webcamUrl = React.useMemo(
           alt={title}
           fill
           className="object-cover"
-          sizes="100vw"
-          loading={idx === 0 ? 'eager' : 'lazy'}
-          priority={idx === 0}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          loading="lazy"
         />
       </div>
     ))}
   </Carousel>
 )}
 
-
+     {/* BADGES - only show when not sphere/video mode */}
      {mediaMode !== 'sphere' && mediaMode !== 'video' && (
   <>
     {/* BADGES */}

@@ -1,0 +1,117 @@
+'use client';
+
+import type { BeachSchema } from '@/lib/api-client/types.gen';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
+import { Star } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
+import React from 'react';
+
+interface BeachMarkerTooltipProps {
+    beach: BeachSchema;
+}
+
+/**
+ * Compact beach card tooltip for map marker popups
+ * Uses same design language as PropertyCard
+ */
+export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps) => {
+    const locale = useLocale();
+    const t = useTranslations('BeachesMap');
+    const beachUrl = buildBeachUrlFromSchema(beach, locale) ?? undefined;
+
+    // Get the main image using CDN URL builder
+    const mainImage = buildCdnUrl(beach.main_image ?? null, 'list')
+        ?? '/images/placeholder-beach.jpg';
+
+    // Get country flag
+    const flagUrl = beach.country_code
+        ? buildCdnUrl(`img/flag/${beach.country_code.toLowerCase()}.svg`, 'icon')
+        : null;
+
+    const location = beach.city_name ?? beach.country_name ?? '';
+    const title = beach.name ?? 'Beach';
+
+    return (
+        <div className="w-[280px] flex flex-col overflow-hidden rounded-[10px] bg-white shadow-md">
+            {/* Image section - matches PropertyCard structure */}
+            <div className="relative h-[140px] w-full overflow-hidden">
+                <Image
+                    src={mainImage}
+                    alt={title}
+                    fill
+                    className="object-cover"
+                    sizes="280px"
+                />
+
+                {/* BADGES - same style as PropertyCard */}
+                <div className="absolute left-2 top-2 flex gap-1 z-20">
+                    <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
+                        <Star size={14} className="text-[#FFD700]" fill="#FFD700" />
+                        <span className="text-[10px] text-[#4D4D4D] font-semibold">
+                            {Number(0).toFixed(1)}
+                        </span>
+                    </div>
+                </div>
+
+                {/* BOTTOM LABELS - same style as PropertyCard */}
+                <div className="absolute bottom-2 left-2 right-2 flex justify-between pointer-events-none z-20">
+                    <div className="pointer-events-auto flex items-center gap-1">
+                        {location && (
+                            <div className="flex h-[32px] items-center justify-center rounded-[6px] bg-[#FF8000] px-[10px]">
+                                <span className="text-[11px] font-bold text-white">{location}</span>
+                            </div>
+                        )}
+
+                        {flagUrl && (
+                            <div className="h-[32px] w-[40px] overflow-hidden rounded-[6px]">
+                                <Image
+                                    src={flagUrl}
+                                    width={40}
+                                    height={32}
+                                    alt={beach.country_name ?? 'flag'}
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* BOTTOM DETAILS - same style as PropertyCard */}
+            <div className="relative z-30 pointer-events-auto bg-[#E5F2FB] px-3 py-2 rounded-b-[10px] flex flex-col gap-[2px]">
+                <div className="flex justify-between items-center">
+                    <h3 className="text-[#0069AB] text-[16px] font-bold leading-tight">
+                        {beachUrl ? (
+                            <Link
+                                href={beachUrl}
+                                onClick={(e) => e.stopPropagation()}
+                                className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
+                            >
+                                {title}
+                            </Link>
+                        ) : (
+                            title
+                        )}
+                    </h3>
+
+                    {beachUrl && (
+                        <Link
+                            href={beachUrl}
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-[11px] text-[#0069AB] font-medium hover:underline whitespace-nowrap ml-2"
+                        >
+                            {t('viewDetails')}
+                        </Link>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+});
+
+BeachMarkerTooltip.displayName = 'BeachMarkerTooltip';
+
+export default BeachMarkerTooltip;
