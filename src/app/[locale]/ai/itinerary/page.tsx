@@ -27,7 +27,7 @@ interface ItineraryResponse {
 }
 
 interface EntitlementsResponse {
-  credits: {
+  entitlements: {
     itinerary_3day_credits: number;
     itinerary_7day_credits: number;
     itinerary_14day_credits: number;
@@ -67,9 +67,9 @@ export default function AIItineraryPage() {
         const data = (await response.json()) as EntitlementsResponse;
         // Sum all credits for display
         const totalCredits =
-          data.credits.itinerary_3day_credits +
-          data.credits.itinerary_7day_credits +
-          data.credits.itinerary_14day_credits;
+          data.entitlements.itinerary_3day_credits +
+          data.entitlements.itinerary_7day_credits +
+          data.entitlements.itinerary_14day_credits;
         setCredits(totalCredits);
       }
     } catch (err) {
