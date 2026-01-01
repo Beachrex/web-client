@@ -35,6 +35,30 @@ export type AiBeachRecommendation = {
    */
   surface: string;
   /**
+   * Continent slug for URL building
+   */
+  continent_slug?: string | null;
+  /**
+   * Country slug for URL building
+   */
+  country_slug?: string | null;
+  /**
+   * Region slug for URL building (optional)
+   */
+  region_slug?: string | null;
+  /**
+   * Island slug for URL building (optional)
+   */
+  island_slug?: string | null;
+  /**
+   * City slug for URL building (optional)
+   */
+  city_slug?: string | null;
+  /**
+   * Primary beach image path (relative, without CDN/domain prefix)
+   */
+  main_image?: string | null;
+  /**
    * Available facilities
    */
   facilities: Array<string>;

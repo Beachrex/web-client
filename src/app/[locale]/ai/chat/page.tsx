@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Button, Textarea, Alert } from 'flowbite-react';
 import { GoogleLoginButton, UserProfile, LogoutButton } from '@/components/Auth';
 import { Send } from 'lucide-react';
+import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 
 /**
  * AI Chat Page
@@ -28,8 +29,15 @@ interface Beach {
   city?: string;
   surface?: string;
   facilities?: string[];
-  distance_km?: number;
+  distance_km?: number | null;
   match_score?: number;
+  main_image?: string | null;
+  // Location slugs needed for buildBeachUrlFromSchema
+  continent_slug?: string | null;
+  country_slug?: string | null;
+  region_slug?: string | null;
+  island_slug?: string | null;
+  city_slug?: string | null;
 }
 
 interface Message {
@@ -43,6 +51,7 @@ interface Message {
 export default function AIChatPage() {
   const { isAuthenticated, user } = useAuth();
   const t = useTranslations('AI.chat');
+  const locale = useLocale();
 
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -166,64 +175,90 @@ export default function AIChatPage() {
 
                   {/* Render beaches if present */}
                   {message.beaches && message.beaches.length > 0 && (
-                    <div className="mt-4 space-y-2">
-                      {message.beaches.map((beach) => (
-                        <div
-                          key={beach.id}
-                          className="bg-white rounded-lg p-3 border border-gray-200"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-blue-600">
-                                {beach.name}
-                              </h4>
-                              {beach.city && (
-                                <p className="text-sm text-gray-600">
-                                  {beach.city}, {beach.country_code}
-                                </p>
-                              )}
-                              {beach.surface && (
-                                <p className="text-sm text-gray-500">
-                                  Surface: {beach.surface}
-                                </p>
-                              )}
-                              {beach.facilities && beach.facilities.length > 0 && (
-                                <div className="flex flex-wrap gap-1 mt-1">
-                                  {beach.facilities.map((facility) => (
-                                    <span
-                                      key={facility}
-                                      className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded"
-                                    >
-                                      {facility}
-                                    </span>
-                                  ))}
+                    <div className="mt-4 space-y-3">
+                      {message.beaches.map((beach) => {
+                        const beachUrl = buildBeachUrlFromSchema(beach, locale);
+                        const imagorEndpoint = process.env.NEXT_PUBLIC_IMAGOR_ENDPOINT ?? '';
+                        const imageUrl = beach.main_image
+                          ? `${imagorEndpoint}/unsafe/fit-in/400x200/filters:quality(85)/${beach.main_image}`
+                          : null;
+
+                        return (
+                          <div
+                            key={beach.id}
+                            className="bg-white rounded-lg overflow-hidden border border-gray-200"
+                          >
+                            {/* Beach Image */}
+                            {imageUrl && (
+                              <img
+                                src={imageUrl}
+                                alt={beach.name}
+                                className="w-full h-32 object-cover"
+                              />
+                            )}
+
+                            {/* Beach Details */}
+                            <div className="p-3">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <h4 className="font-semibold text-blue-600">
+                                    {beach.name}
+                                  </h4>
+                                  {beach.city && (
+                                    <p className="text-sm text-gray-600">
+                                      {beach.city}, {beach.country_code}
+                                    </p>
+                                  )}
+                                  {beach.surface && (
+                                    <p className="text-sm text-gray-500">
+                                      Surface: {beach.surface}
+                                    </p>
+                                  )}
+                                  {beach.facilities && beach.facilities.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                      {beach.facilities.map((facility) => (
+                                        <span
+                                          key={facility}
+                                          className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded"
+                                        >
+                                          {facility}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
                                 </div>
+                                {(beach.distance_km !== undefined && beach.distance_km !== null)
+                                || beach.match_score !== undefined ? (
+                                  <div className="ml-2 text-right">
+                                    {beach.distance_km !== undefined && beach.distance_km !== null && (
+                                      <p className="text-sm font-medium text-gray-700">
+                                        {beach.distance_km.toFixed(1)} km
+                                      </p>
+                                    )}
+                                    {beach.match_score !== undefined && (
+                                      <p className="text-xs text-gray-500">
+                                        {(beach.match_score * 100).toFixed(0)}% match
+                                      </p>
+                                    )}
+                                  </div>
+                                ) : null}
+                              </div>
+
+                              {/* Beach Link */}
+                              {beachUrl && (
+                                <a
+                                  href={beachUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-sm text-blue-600 hover:underline mt-2 inline-block"
+                                >
+                                  View details →
+                                </a>
                               )}
                             </div>
-                            {(beach.distance_km !== undefined && beach.distance_km !== null)
-                            || beach.match_score !== undefined ? (
-                              <div className="ml-2 text-right">
-                                {beach.distance_km !== undefined && beach.distance_km !== null && (
-                                  <p className="text-sm font-medium text-gray-700">
-                                    {beach.distance_km.toFixed(1)} km
-                                  </p>
-                                )}
-                                {beach.match_score !== undefined && (
-                                  <p className="text-xs text-gray-500">
-                                    {(beach.match_score * 100).toFixed(0)}% match
-                                  </p>
-                                )}
-                              </div>
-                            ) : null}
                           </div>
-                          <a
-                            href={`/en/beaches/${beach.slug}`}
-                            className="text-sm text-blue-600 hover:underline mt-2 inline-block"
-                          >
-                            View details →
-                          </a>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
 
