@@ -20,10 +20,24 @@ import { Send } from 'lucide-react';
  * - Calls POST /ai/chat endpoint
  */
 
+interface Beach {
+  id: number;
+  name: string;
+  slug: string;
+  country_code: string;
+  city?: string;
+  surface?: string;
+  facilities?: string[];
+  distance_km?: number;
+  match_score?: number;
+}
+
 interface Message {
   role: 'user' | 'assistant';
   content: string;
-  timestamp: Date;
+  timestamp: string; // Store as ISO string to avoid hydration issues
+  beaches?: Beach[]; // Optional beaches array
+  suggestions?: string[]; // Optional suggestions
 }
 
 export default function AIChatPage() {
@@ -34,7 +48,7 @@ export default function AIChatPage() {
     {
       role: 'assistant',
       content: t('welcome'),
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     },
   ]);
   const [input, setInput] = useState('');
@@ -47,7 +61,7 @@ export default function AIChatPage() {
     const userMessage: Message = {
       role: 'user',
       content: input.trim(),
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(),
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -74,12 +88,18 @@ export default function AIChatPage() {
         throw new Error(`Failed to send message: ${response.status}`);
       }
 
-      const data = await response.json() as { response: string };
+      const data = await response.json() as {
+        message: string;
+        beaches?: Beach[];
+        suggestions?: string[];
+      };
 
       const assistantMessage: Message = {
         role: 'assistant',
-        content: data.response,
-        timestamp: new Date(),
+        content: data.message,
+        timestamp: new Date().toISOString(),
+        beaches: data.beaches,
+        suggestions: data.suggestions,
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
@@ -143,12 +163,97 @@ export default function AIChatPage() {
                   }`}
                 >
                   <p className="whitespace-pre-wrap">{message.content}</p>
+
+                  {/* Render beaches if present */}
+                  {message.beaches && message.beaches.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      {message.beaches.map((beach) => (
+                        <div
+                          key={beach.id}
+                          className="bg-white rounded-lg p-3 border border-gray-200"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-blue-600">
+                                {beach.name}
+                              </h4>
+                              {beach.city && (
+                                <p className="text-sm text-gray-600">
+                                  {beach.city}, {beach.country_code}
+                                </p>
+                              )}
+                              {beach.surface && (
+                                <p className="text-sm text-gray-500">
+                                  Surface: {beach.surface}
+                                </p>
+                              )}
+                              {beach.facilities && beach.facilities.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-1">
+                                  {beach.facilities.map((facility) => (
+                                    <span
+                                      key={facility}
+                                      className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded"
+                                    >
+                                      {facility}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                            {(beach.distance_km !== undefined && beach.distance_km !== null)
+                            || beach.match_score !== undefined ? (
+                              <div className="ml-2 text-right">
+                                {beach.distance_km !== undefined && beach.distance_km !== null && (
+                                  <p className="text-sm font-medium text-gray-700">
+                                    {beach.distance_km.toFixed(1)} km
+                                  </p>
+                                )}
+                                {beach.match_score !== undefined && (
+                                  <p className="text-xs text-gray-500">
+                                    {(beach.match_score * 100).toFixed(0)}% match
+                                  </p>
+                                )}
+                              </div>
+                            ) : null}
+                          </div>
+                          <a
+                            href={`/en/beaches/${beach.slug}`}
+                            className="text-sm text-blue-600 hover:underline mt-2 inline-block"
+                          >
+                            View details →
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Render suggestions if present */}
+                  {message.suggestions && message.suggestions.length > 0 && (
+                    <div className="mt-3 space-y-1">
+                      <p className="text-xs font-medium text-gray-600">
+                        Suggestions:
+                      </p>
+                      {message.suggestions.map((suggestion, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setInput(suggestion)}
+                          className="block text-sm text-blue-600 hover:underline text-left"
+                        >
+                          • {suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
                   <p
                     className={`text-xs mt-2 ${
                       message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
                     }`}
                   >
-                    {message.timestamp.toLocaleTimeString()}
+                    {new Date(message.timestamp).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
                   </p>
                 </div>
               </div>
