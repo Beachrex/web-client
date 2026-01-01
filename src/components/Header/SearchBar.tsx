@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Map } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import GlobalSearch from './GlobalSearch';
@@ -46,7 +47,7 @@ const SearchBar = () => {
                     />
 
                     {/* Quick Action Icons (Mobile Only) */}
-                    <div className="flex items-center justify-center space-x-6 mt-3 w-full px-4">
+                    <div className="grid grid-cols-3 gap-4 mt-3 w-full px-4 max-w-xs mx-auto">
                         <div className="flex flex-col items-center">
                             <Image
                                 src={buildCdnUrl('img/icon/accomodation.svg', 'icon') ?? ''}
@@ -54,7 +55,7 @@ const SearchBar = () => {
                                 width={24}
                                 height={24}
                             />
-                            <span className="text-xs text-gray-600 mt-1">{t('accommodations')}</span>
+                            <span className="text-xs text-gray-600 mt-1 text-center">{t('accommodations')}</span>
                         </div>
                         <div className="flex flex-col items-center">
                             <Image
@@ -63,16 +64,11 @@ const SearchBar = () => {
                                 width={24}
                                 height={24}
                             />
-                            <span className="text-xs text-gray-600 mt-1">{t('shop')}</span>
+                            <span className="text-xs text-gray-600 mt-1 text-center">{t('shop')}</span>
                         </div>
                         <Link href={tRoutes('beachMap')} className="flex flex-col items-center">
-                            <Image
-                                src={buildCdnUrl('img/icon/map.svg', 'icon') ?? ''}
-                                alt="Map"
-                                width={24}
-                                height={24}
-                            />
-                            <span className="text-xs text-gray-600 mt-1">{t('map')}</span>
+                            <Map size={24} className="text-gray-600" />
+                            <span className="text-xs text-gray-600 mt-1 text-center">{t('map')}</span>
                         </Link>
                     </div>
                 </div>
@@ -162,12 +158,7 @@ const SearchBar = () => {
                     {/* Right Section (Map Button) */}
                     <div className="flex items-center">
                         <Link href={tRoutes('beachMap')} className="inline-flex items-center justify-center gap-5 px-10 py-[10px] bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] flex-shrink-0 hover:bg-variable-collection-morje">
-                            <Image
-                                src={buildCdnUrl('img/icon/map.svg', 'icon') ?? ''}
-                                alt={`${t('map')} ${t('icon')}`}
-                                width={26}
-                                height={26}
-                            />
+                            <Map size={26} />
                             {t('map')}
                         </Link>
                     </div>

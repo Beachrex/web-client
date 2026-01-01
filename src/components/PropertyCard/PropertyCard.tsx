@@ -5,32 +5,18 @@ import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/p
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { useQueryClient } from '@tanstack/react-query';
 import type { CustomFlowbiteTheme } from 'flowbite-react';
-import { Carousel } from 'flowbite-react';
 import { Heart, Star } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { PropertyMediaContext } from '../PropertySection';
+import { PropertyCardCarousel } from './PropertyCardCarousel';
 
 // Performance logging
 const ENABLE_PERF_LOGGING = false;
 let propertyCardRenderCount = 0;
 
 const moduleLoadStart = performance.now();
-
-// Dynamically import EmblaCarousel for mobile to reduce initial bundle size
-const EmblaCarousel = dynamic(
-  () => import('./EmblaCarousel'),
-  {
-    loading: () => (
-      <div className="relative h-full w-full flex items-center justify-center bg-gray-100">
-        <div className="animate-pulse text-gray-400">Loading...</div>
-      </div>
-    ),
-    ssr: false,
-  }
-);
 
 // Log when module finishes loading
 if (ENABLE_PERF_LOGGING) {
@@ -118,7 +104,7 @@ const PropertyCard = React.memo(function PropertyCard({
 
   const queryClient = useQueryClient();
 
-  const { isMobile, ready } = useIsMobile();
+  const { ready } = useIsMobile();
 
   const { mediaMode } = React.useContext(PropertyMediaContext);
 
@@ -341,34 +327,12 @@ const webcamUrl = React.useMemo(
     </div>
   )
 
-) : isMobile ? (
-  /* MOBILE CAROUSEL - Dynamically loaded */
-  <EmblaCarousel images={imagesToShow} title={title} />
-
 ) : (
-  /* DESKTOP CAROUSEL */
- <Carousel
-  indicators
-  slide={false}
-  theme={carouselTheme}
-  className="h-full"
-  leftControl={<></>}
-  rightControl={<></>}
- >
-
-    {imagesToShow.map((img, idx) => (
-      <div key={idx} className="relative h-full w-full">
-        <Image
-          src={img}
-          alt={title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          loading="lazy"
-        />
-      </div>
-    ))}
-  </Carousel>
+  <PropertyCardCarousel
+    images={imagesToShow}
+    title={title}
+    carouselTheme={carouselTheme}
+  />
 )}
 
      {/* BADGES - only show when not sphere/video mode */}
