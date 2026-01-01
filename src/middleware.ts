@@ -26,11 +26,6 @@ const beachesRoutes: Record<string, string> = {
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip i18n middleware for internal routes
-  if (pathname.startsWith('/internal')) {
-    return NextResponse.next();
-  }
-
   // Check if pathname contains ANY of the localized beaches words
   // This handles cases where the URL has a beaches word from a different locale
   // (e.g., /en/plaze/... when switching from SI to EN)
@@ -62,8 +57,7 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap*.xml, robots.txt (metadata files)
-     * - internal (internal dev/testing routes)
      */
-    '/((?!api|_next/static|_next/image|favicon\\.ico|favicon\\.png|sitemap|robots\\.txt|images|internal).*)',
+    '/((?!api|_next/static|_next/image|favicon\\.ico|favicon\\.png|sitemap|robots\\.txt|images).*)',
   ],
 };

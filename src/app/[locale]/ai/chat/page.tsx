@@ -8,6 +8,9 @@ import { GoogleLoginButton, UserProfile, LogoutButton } from '@/components/Auth'
 import { Send } from 'lucide-react';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 
+// Disable static generation for this page (uses client-side auth)
+export const dynamic = 'force-dynamic';
+
 /**
  * AI Chat Page
  *

@@ -69,35 +69,98 @@ export async function GET() {
 
   try {
     console.log('[sitemap/beaches] Fetching beaches from API...');
-    console.log('[sitemap/beaches] API Endpoint:', apiEndpoint);
+    console.log('[sitemap/beaches] API ' +
+        '' +
+        '' +
+        '' +
+        '' +
+        '' +
+        'Endpoint:', apiEndpoint);
 
-    // Fetch all beaches using native fetch (English locale for base data)
-    // The URL structure is the same across all locales, only the "beaches" word changes
-    // Note: API has a limit of ~1000-2000 beaches per request. For more beaches, we'll need pagination.
-    const response = await fetch(`${apiEndpoint}/api/v1/beaches?limit=1000`, {
-      headers: {
-        'Accept-Language': 'en',
-        'Content-Type': 'application/json',
-      },
-      next: { revalidate: 86400 }, // Cache for 24 hours
-    });
+    // Fetch beaches with pagination to avoid memory exhaustion
+    // The API has memory limits, so we fetch in smaller batches
+    const limit = 50; // Reduced from 100 to avoid 502 errors
+    let page = 1;
+    let allBeaches: BeachSchema[] = [];
+    let hasMore = true;
+    const maxRetries = 3;
+    let consecutiveErrors = 0;
 
-    console.log('[sitemap/beaches] API Response:', {
-      status: response.status,
-      statusText: response.statusText,
-      ok: response.ok,
-    });
+    while (hasMore) {
+      console.log(`[sitemap/beaches] Fetching page ${page} (limit: ${limit})...`);
 
-    if (!response.ok) {
-      throw new Error(`API returned ${response.status}: ${response.statusText}`);
+      const response = await fetch(`${apiEndpoint}/api/v1/beaches?limit=${limit}&page=${page}`, {
+        headers: {
+          'Accept-Language': 'en',
+          'Content-Type': 'application/json',
+        },
+        next: { revalidate: 86400 }, // Cache for 24 hours
+      });
+
+      console.log('[sitemap/beaches] API Response:', {
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.ok,
+      });
+
+      if (!response.ok) {
+        console.error(`[sitemap/beaches] API returned ${response.status}: ${response.statusText}`);
+        consecutiveErrors++;
+
+        if (consecutiveErrors >= maxRetries) {
+          console.log(`[sitemap/beaches] Stopping pagination after ${consecutiveErrors} consecutive errors`);
+          break;
+        }
+
+        console.log(`[sitemap/beaches] Retrying... (attempt ${consecutiveErrors}/${maxRetries})`);
+        // Wait a bit before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000 * consecutiveErrors));
+        continue; // Retry same page
+      }
+
+      // Reset error counter on success
+      consecutiveErrors = 0;
+
+      const data = (await response.json()) as {
+        data?: BeachSchema[];
+        meta?: { current_page?: number; last_page?: number; total?: number }
+      };
+      const beaches = data.data ?? [];
+      const meta = data.meta;
+
+      console.log(`[sitemap/beaches] Fetched ${beaches.length} beaches from page ${page}`);
+      console.log('[sitemap/beaches] Pagination meta:', JSON.stringify(meta));
+
+      allBeaches = [...allBeaches, ...beaches];
+
+      // Check if there are more pages
+      if (meta?.current_page && meta?.last_page) {
+        hasMore = meta.current_page < meta.last_page;
+        console.log(`[sitemap/beaches] Page ${meta.current_page} of ${meta.last_page}, hasMore: ${hasMore}`);
+        page++;
+      } else if (beaches.length === limit) {
+        // No pagination metadata, but we got a full page - try next page
+        console.log(`[sitemap/beaches] No pagination metadata, but got full page 
+        (${beaches.length}), trying next page`);
+        page++;
+        hasMore = true;
+      } else {
+        // No pagination metadata and partial page - assume we're done
+        console.log(`[sitemap/beaches] No pagination metadata and partial page (${beaches.length}), stopping`);
+        hasMore = false;
+      }
+
+      // Safety limit: stop after 50 pages (5000 beaches)
+      if (page > 50) {
+        console.warn('[sitemap/beaches] Reached safety limit of 50 pages, stopping pagination');
+        hasMore = false;
+      }
     }
 
-    const data = (await response.json()) as { data?: BeachSchema[] };
-    const beaches = data.data ?? [];
-    console.log(`[sitemap/beaches] Fetched ${beaches.length} beaches`);
+    console.log(`[sitemap/beaches] Total beaches fetched: ${allBeaches.length}`);
 
     // For each beach, create entries for all locales
-    for (const beach of beaches) {
+    for (const beach of allBeaches) {
       if (!beach.slug || !beach.continent_slug || !beach.country_slug) {
         console.warn(
           `[sitemap/beaches] Skipping beach ${beach.id ?? 'unknown'} - missing required slugs`,
@@ -177,4 +240,8 @@ ${urls}
 
 // Revalidate every 24 hours (ISR)
 export const revalidate = 86400;
+
+// Make this route dynamic to avoid blocking the build
+// The sitemap will be generated on first request instead of at build time
+export const dynamic = 'force-dynamic';
 

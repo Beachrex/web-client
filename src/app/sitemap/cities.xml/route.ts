@@ -144,3 +144,4 @@ export async function GET() {
   }
 }
 
+export const dynamic = 'force-dynamic'; // Generate on-demand to avoid blocking build
