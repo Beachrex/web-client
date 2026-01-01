@@ -101,16 +101,23 @@ export default function AIItineraryPage() {
         headers.Authorization = `Bearer ${token}`;
       }
 
+      // Parse destination (could be country code like "HR" or country name like "Croatia")
+      const destinationTrimmed = destination.trim();
+      const isCountryCode = destinationTrimmed.length === 2;
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com'}/api/v1/ai/itineraries`,
         {
           method: 'POST',
           headers,
           body: JSON.stringify({
-            destination: destination.trim(),
-            days: numDays,
-            interests: interests.trim() || undefined,
-            budget_level: budget,
+            destination: {
+              country_code: isCountryCode ? destinationTrimmed.toUpperCase() : 'HR', // Default to HR if not a code
+            },
+            duration_days: numDays,
+            preferences: {
+              interests: interests.trim() ? [interests.trim()] : undefined,
+            },
           }),
         }
       );
@@ -140,8 +147,21 @@ export default function AIItineraryPage() {
 
   const handlePurchase = async () => {
     try {
+      // Map days to product type
+      const productTypeMap: Record<3 | 7 | 14, string> = {
+        3: 'itinerary_3day',
+        7: 'itinerary_7day',
+        14: 'itinerary_14day',
+      };
+
+      const productType = productTypeMap[numDays as 3 | 7 | 14];
+
+      if (!productType) {
+        throw new Error('Invalid duration selected');
+      }
+
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com'}/api/v1/ai/purchase/itinerary`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com'}/api/v1/payments/stripe/checkout`,
         {
           method: 'POST',
           headers: {
@@ -150,7 +170,7 @@ export default function AIItineraryPage() {
             Accept: 'application/json',
           },
           body: JSON.stringify({
-            quantity: 1,
+            product_type: productType,
           }),
         }
       );

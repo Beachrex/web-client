@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslations, useLocale } from 'next-intl';
 import { Button, Textarea, Alert } from 'flowbite-react';
@@ -193,11 +194,15 @@ export default function AIChatPage() {
                           >
                             {/* Beach Image */}
                             {imageUrl && (
-                              <img
-                                src={imageUrl}
-                                alt={beach.name}
-                                className="w-full h-32 object-cover"
-                              />
+                              <div className="relative w-full h-32">
+                                <Image
+                                  src={imageUrl}
+                                  alt={beach.name}
+                                  fill
+                                  className="object-cover"
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                />
+                              </div>
                             )}
 
                             {/* Beach Details */}
