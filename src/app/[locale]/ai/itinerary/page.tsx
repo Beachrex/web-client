@@ -147,6 +147,8 @@ export default function AIItineraryPage() {
 
   const handlePurchase = async () => {
     try {
+      const numDays = parseInt(days, 10);
+
       // Map days to product type
       const productTypeMap: Record<3 | 7 | 14, string> = {
         3: 'itinerary_3day',
