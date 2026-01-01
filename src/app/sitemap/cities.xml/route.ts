@@ -61,19 +61,19 @@ export async function GET() {
   try {
     // Fetch continents, regions, islands, and cities in parallel
     const [continentsRes, regionsRes, islandsRes, citiesRes] = await Promise.all([
-      fetch(`${apiEndpoint}/v1/continents`, {
+      fetch(`${apiEndpoint}/api/v1/continents`, {
         headers: { 'Accept-Language': 'en', 'Content-Type': 'application/json' },
         next: { revalidate: 86400 },
       }),
-      fetch(`${apiEndpoint}/v1/regions`, {
+      fetch(`${apiEndpoint}/api/v1/regions`, {
         headers: { 'Accept-Language': 'en', 'Content-Type': 'application/json' },
         next: { revalidate: 86400 },
       }),
-      fetch(`${apiEndpoint}/v1/islands`, {
+      fetch(`${apiEndpoint}/api/v1/islands`, {
         headers: { 'Accept-Language': 'en', 'Content-Type': 'application/json' },
         next: { revalidate: 86400 },
       }),
-      fetch(`${apiEndpoint}/v1/cities?limit=2000`, {
+      fetch(`${apiEndpoint}/api/v1/cities?limit=2000`, {
         headers: { 'Accept-Language': 'en', 'Content-Type': 'application/json' },
         next: { revalidate: 86400 },
       }),

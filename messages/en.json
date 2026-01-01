@@ -1,4 +1,3 @@
-
 {
   "Common": {
     "search": "Search",
@@ -23,7 +22,6 @@
     "paidFallback": "No information",
     "mobileApp": "Download mobile app"
   },
-
   "Search": {
     "typeBeach": "Beach",
     "typeCity": "City",
@@ -209,7 +207,6 @@
     "cityLabel": "City",
     "countryLabel": "Country",
     "beachLabel": "Sea beach"
-
   },
   "TopBarBeach": {
     "beachLabel": "Sea beach",
@@ -242,18 +239,15 @@
     "beachesMap": "Map of all beaches",
     "similarBeaches": "Show similar beaches"
   },
-
   "RegionPage": {
     "popularBeachesTitle": "Most visited beaches in {region}",
     "featuredAccommodationsTitle": "Featured accommodations in {region}",
-
     "islandsTitle": "Islands of {region}",
     "citiesTitle": "Towns of {region}",
     "allIslandsCount": "All islands ({count})",
     "allCitiesCount": "All towns ({count})",
     "islandBadge": "Scenic island",
     "cityBadge": "Scenic town",
-
     "browseBeachesTitle": "Browse all beaches in {region}",
     "filterButton": "Filter",
     "mapButton": "View map",
@@ -265,17 +259,13 @@
   "IslandPage": {
     "popularBeachesTitle": "Most visited beaches {island}",
     "featuredAccommodationsTitle": "Featured accommodations {island}",
-
     "citiesTitle": "Towns of {island}",
     "allCitiesCount": "All towns ({count})",
     "cityBadge": "Scenic town",
-
     "browseBeachesTitle": "Browse all beaches on the island of {island}",
-
     "filterButton": "Filters",
     "mapButton": "Map",
     "displayLabel": "Display:",
-
     "sortPopular": "Most popular",
     "sortNewest": "Newest",
     "sortTopRated": "Top rated"
@@ -283,7 +273,6 @@
   "TownPage": {
     "popularBeachesTitle": "Most visited beaches of {town}",
     "featuredAccommodationsTitle": "Featured accommodations in {town}",
-
     "browseBeachesTitle": "Browse all beaches in {town}",
     "filterButton": "Filters",
     "mapButton": "Map",
@@ -291,7 +280,6 @@
     "sortPopular": "Most popular",
     "sortNewest": "Newest",
     "sortTopRated": "Top rated",
-
     "categories": {
       "sandBeaches": "Sandy beaches",
       "rockBeaches": "Rocky beaches",
@@ -311,7 +299,6 @@
       "citiesTitle": "Nearby cities"
     }
   },
-
   "WorldTopBar": {
     "worldLabel": "World",
     "countriesWithBeachesLabel": "Countries with beaches",
@@ -322,7 +309,6 @@
     "riverBeachesLabel": "River beaches",
     "lakeBeachesLabel": "Lake beaches",
     "popularBeachesTitle": "Most visited beaches in the world",
-
     "browseBeachesTitle": "Browse all beaches in the world",
     "filterButton": "Filter",
     "mapButton": "View map",
@@ -330,70 +316,54 @@
     "sortPopular": "Most popular",
     "sortNewest": "Newest",
     "sortTopRated": "Top rated",
-     "worldOverviewTitle": "World overview",
-  "worldOverviewSubtitle": "Beaches · Islands · Pools",
-  "destinationsTitle": "Top beach destinations in the world"
+    "worldOverviewTitle": "World overview",
+    "worldOverviewSubtitle": "Beaches · Islands · Pools",
+    "destinationsTitle": "Top beach destinations in the world"
   },
-
-"SEO": {
-  "homeTitle": "BeachRex - Discover the World's Best Beaches",
-  "homeDescription": "Explore thousands of beaches worldwide. Find detailed information, photos, weather, facilities, and accommodations for your perfect beach destination.",
-
-  "continentTitle": "{continentName} Beaches - Discover {beachCount} Beach Destinations | BeachRex",
-  "continentDescription": "Explore {beachCount} beaches across {countryCount} countries in {continentName}. Find detailed information, photos, weather, facilities, and accommodations for the best beach destinations in {continentName}.",
-
-  "countryTitle": "{countryName} Beaches - Discover {beachCount} Beach Destinations | BeachRex",
-  "countryDescription": "Explore {beachCount} beaches in {countryName}. Find detailed information, photos, weather, facilities, and accommodations for the best beach destinations in {countryName}.",
-
-  "regionTitle": "{regionName} Beaches - {countryName} | BeachRex",
-  "regionDescription": "Discover beautiful beaches in {regionName}, {countryName}. Find detailed information, photos, weather, and facilities for beach destinations in this region.",
-
-  "cityTitle": "{cityName} Beaches - {countryName} | BeachRex",
-  "cityDescription": "Explore beaches in {cityName}, {countryName}. Find detailed information, photos, weather, and facilities for the best beach destinations in {cityName}.",
-
-  "islandTitle": "{islandName} Beaches - {countryName} | BeachRex",
-  "islandDescription": "Discover beaches on {islandName}, {countryName}. Find detailed information, photos, weather, and facilities for island beach destinations.",
-
-  "beachesPageTitle": "Explore the World's Beaches | BeachRex",
-  "beachesPageDescription": "Browse thousands of beaches worldwide. Use our advanced filters to find your perfect beach destination with detailed information, photos, and facilities.",
-
-  "beachMapTitle": "Interactive Beach Map | BeachRex",
-  "beachMapDescription": "Explore beaches on our interactive world map. Discover beach destinations, view photos, and find detailed information about beaches worldwide.",
-
-  "aboutTitle": "About BeachRex - Your Beach Discovery Platform",
-  "aboutDescription": "Learn about BeachRex, the world's most comprehensive beach discovery platform. Find detailed information about thousands of beaches worldwide.",
-
-  "beachTitle": "{beachName} - {cityName}, {countryName} | BeachRex",
-  "beachTitleNoCity": "{beachName} - {countryName} | BeachRex",
-  "beachDescription": "Discover {beachName} in {cityName}, {countryName}. {characteristics}. Find photos, reviews, facilities, and weather information.",
-  "beachDescriptionFallback": "Explore {beachName} in {cityName}, {countryName}. Find detailed information, photos, facilities, and current weather conditions.",
-
-  "beachImageAlt": "{beachName} beach in {cityName}, {countryName}",
-  "beachImageAltNoCity": "{beachName} beach in {countryName}",
-  "iconAlt": "{iconName} icon",
-  "facilityAlt": "{facilityName} facility icon",
-  "countryFlagAlt": "{countryName} flag",
-  "continentImageAlt": "{continentName} - Explore beaches",
-  "countryImageAlt": "{countryName} - Beach destinations",
-  "regionImageAlt": "{regionName}, {countryName} - Beach region",
-  "cityImageAlt": "{cityName}, {countryName} - Beach city",
-  "islandImageAlt": "{islandName}, {countryName} - Beach island",
-
-  "organizationDescription": "Discover the world's best beaches. Find detailed information, photos, weather, facilities, and accommodations for your perfect beach destination.",
-  "countrySchemaDescription": "Discover {beachCount} beaches in {countryName}",
-  "continentSchemaDescription": "Discover {beachCount} beaches in {continentName}",
-
-  "breadcrumbHome": "Home"
-},
-
-"WorldSEO": {
-  "title": "Discover the world's beaches",
-  "paragraph1": "The world is home to an incredible variety of beaches, from tropical white sands to rugged volcanic shores. Whether you're dreaming of quiet lagoons, palm-lined coasts, or iconic tourist destinations, our global beach database helps you find the perfect spot.",
-  "paragraph2": "With beaches across oceans, lakes, rivers, and islands, travellers can explore everything from hidden gems to world-famous coastlines. Each destination offers unique culture, climate, and experiences.",
-  "paragraph3": "Browse through thousands of beaches across all continents and discover where your next unforgettable seaside adventure will take you."
-},
-
-
+  "SEO": {
+    "homeTitle": "BeachRex - Discover the World's Best Beaches",
+    "homeDescription": "Explore thousands of beaches worldwide. Find detailed information, photos, weather, facilities, and accommodations for your perfect beach destination.",
+    "continentTitle": "{continentName} Beaches - Discover {beachCount} Beach Destinations | BeachRex",
+    "continentDescription": "Explore {beachCount} beaches across {countryCount} countries in {continentName}. Find detailed information, photos, weather, facilities, and accommodations for the best beach destinations in {continentName}.",
+    "countryTitle": "{countryName} Beaches - Discover {beachCount} Beach Destinations | BeachRex",
+    "countryDescription": "Explore {beachCount} beaches in {countryName}. Find detailed information, photos, weather, facilities, and accommodations for the best beach destinations in {countryName}.",
+    "regionTitle": "{regionName} Beaches - {countryName} | BeachRex",
+    "regionDescription": "Discover beautiful beaches in {regionName}, {countryName}. Find detailed information, photos, weather, and facilities for beach destinations in this region.",
+    "cityTitle": "{cityName} Beaches - {countryName} | BeachRex",
+    "cityDescription": "Explore beaches in {cityName}, {countryName}. Find detailed information, photos, weather, and facilities for the best beach destinations in {cityName}.",
+    "islandTitle": "{islandName} Beaches - {countryName} | BeachRex",
+    "islandDescription": "Discover beaches on {islandName}, {countryName}. Find detailed information, photos, weather, and facilities for island beach destinations.",
+    "beachesPageTitle": "Explore the World's Beaches | BeachRex",
+    "beachesPageDescription": "Browse thousands of beaches worldwide. Use our advanced filters to find your perfect beach destination with detailed information, photos, and facilities.",
+    "beachMapTitle": "Interactive Beach Map | BeachRex",
+    "beachMapDescription": "Explore beaches on our interactive world map. Discover beach destinations, view photos, and find detailed information about beaches worldwide.",
+    "aboutTitle": "About BeachRex - Your Beach Discovery Platform",
+    "aboutDescription": "Learn about BeachRex, the world's most comprehensive beach discovery platform. Find detailed information about thousands of beaches worldwide.",
+    "beachTitle": "{beachName} - {cityName}, {countryName} | BeachRex",
+    "beachTitleNoCity": "{beachName} - {countryName} | BeachRex",
+    "beachDescription": "Discover {beachName} in {cityName}, {countryName}. {characteristics}. Find photos, reviews, facilities, and weather information.",
+    "beachDescriptionFallback": "Explore {beachName} in {cityName}, {countryName}. Find detailed information, photos, facilities, and current weather conditions.",
+    "beachImageAlt": "{beachName} beach in {cityName}, {countryName}",
+    "beachImageAltNoCity": "{beachName} beach in {countryName}",
+    "iconAlt": "{iconName} icon",
+    "facilityAlt": "{facilityName} facility icon",
+    "countryFlagAlt": "{countryName} flag",
+    "continentImageAlt": "{continentName} - Explore beaches",
+    "countryImageAlt": "{countryName} - Beach destinations",
+    "regionImageAlt": "{regionName}, {countryName} - Beach region",
+    "cityImageAlt": "{cityName}, {countryName} - Beach city",
+    "islandImageAlt": "{islandName}, {countryName} - Beach island",
+    "organizationDescription": "Discover the world's best beaches. Find detailed information, photos, weather, facilities, and accommodations for your perfect beach destination.",
+    "countrySchemaDescription": "Discover {beachCount} beaches in {countryName}",
+    "continentSchemaDescription": "Discover {beachCount} beaches in {continentName}",
+    "breadcrumbHome": "Home"
+  },
+  "WorldSEO": {
+    "title": "Discover the world's beaches",
+    "paragraph1": "The world is home to an incredible variety of beaches, from tropical white sands to rugged volcanic shores. Whether you're dreaming of quiet lagoons, palm-lined coasts, or iconic tourist destinations, our global beach database helps you find the perfect spot.",
+    "paragraph2": "With beaches across oceans, lakes, rivers, and islands, travellers can explore everything from hidden gems to world-famous coastlines. Each destination offers unique culture, climate, and experiences.",
+    "paragraph3": "Browse through thousands of beaches across all continents and discover where your next unforgettable seaside adventure will take you."
+  },
   "countryPage": {
     "popularBeachesTitle": "Most visited beaches in {country}",
     "featuredAccommodationTitle": "Featured accommodations in {country}",
@@ -405,19 +375,15 @@
     "list": "List",
     "grid": "Grid",
     "map": "Map",
-
     "regionsTitle": "Regions of {country}",
     "citiesTitle": "Towns of {country}",
     "islandsTitle": "Islands of {country}",
-
     "allRegionsCount": "All regions ({count})",
     "allCitiesCount": "All towns ({count})",
     "allIslandsCount": "All islands ({count})",
-
     "regionBadge": "Sea experiences",
     "cityBadge": "Scenic town",
     "islandBadge": "Scenic island",
-
     "browseBeachesTitle": "Browse all beaches in {country}",
     "filterButton": "Filters",
     "mapButton": "Map",
@@ -425,13 +391,11 @@
     "sortNewest": "Newest",
     "sortTopRated": "Top rated"
   },
-
   "Footer": {
     "brand": {
       "desc": "Find your perfect beach and BeachRex will acquaint you with every single detail it possibly can.",
       "cta": "Browse the map"
     },
-
     "mostViewed": {
       "title": "Most viewed beaches",
       "links": [
@@ -446,20 +410,47 @@
     "info": {
       "title": "Key information",
       "links": [
-        { "label": "About us", "href": "/about" },
-        { "label": "Terms of use", "href": "/legal/terms" },
-        { "label": "Privacy policy", "href": "/legal/privacy" },
-        { "label": "Contribution rules", "href": "/legal/contribution-rules" },
-        { "label": "Contact", "href": "/contact" }
+        {
+          "label": "About us",
+          "href": "/about"
+        },
+        {
+          "label": "Terms of use",
+          "href": "/legal/terms"
+        },
+        {
+          "label": "Privacy policy",
+          "href": "/legal/privacy"
+        },
+        {
+          "label": "Contribution rules",
+          "href": "/legal/contribution-rules"
+        },
+        {
+          "label": "Contact",
+          "href": "/contact"
+        }
       ]
     },
     "browse": {
       "title": "Browse the site",
       "links": [
-        { "label": "All destinations overview", "href": "/destinations" },
-        { "label": "Search by beaches", "href": "/beaches" },
-        { "label": "Search by accommodations", "href": "/accommodations" },
-        { "label": "Map view", "href": "/map" }
+        {
+          "label": "All destinations overview",
+          "href": "/destinations"
+        },
+        {
+          "label": "Search by beaches",
+          "href": "/beaches"
+        },
+        {
+          "label": "Search by accommodations",
+          "href": "/accommodations"
+        },
+        {
+          "label": "Map view",
+          "href": "/map"
+        }
       ]
     },
     "newsletter": {
@@ -472,13 +463,11 @@
       "rights": "All rights reserved BeachRex"
     }
   },
-
   "BeachSimilarBeaches": {
     "title": "Nearby beaches with similar characteristics",
     "dropdownAria": "Filter similar beaches by distance",
     "dropdownOption": "Distance {distance} from the beach"
   },
-
   "BeachDetails": {
     "title": "Detailed information",
     "beachMediaGallery": "Beach gallery",
@@ -506,11 +495,9 @@
       "slope": "Slope",
       "swimmingArea": "Swimming area",
       "seabed": "Seabed",
-
       "parkingSpots": "No. of parking spaces",
       "wayToParking": "Surface to parking",
       "recommendedAccess": "Recommended access",
-
       "distance": "Distance (parking—beach)",
       "elevationDiff": "Elevation difference (parking to beach)"
     },
@@ -522,7 +509,6 @@
       "yes": "Yes",
       "no": "No",
       "asphalt": "Asphalt",
-
       "sand": "Sand",
       "pebble": "Pebble",
       "brownSand": "Brown sand",
@@ -532,15 +518,12 @@
       "medium": "Medium",
       "low": "Low",
       "easy": "Easy",
-
       "accessOnFoot": "on foot",
       "accessBike": "bicycle",
       "accessCar": "car",
       "accessOffroad": "off-road vehicle",
       "accessMotorhome": "motorhome",
-
       "familyBeach": "Family-friendly beach",
-
       "toilet": "Toilet",
       "shower": "Shower",
       "accommodation": "Accommodation",
@@ -556,19 +539,86 @@
       "apartments": "Apartments",
       "rooms": "Rooms",
       "campground": "Campground",
-
       "restaurant": "Restaurant",
       "fastFood": "Fast food restaurant",
       "bakery": "Bakery",
       "cafe": "Cafe",
-
       "swimming": "Swimming",
       "snorkeling": "Snorkeling",
       "waterSports": "Water sports",
-
       "unit": {
         "meters": "m"
       }
+    }
+  },
+  "Auth": {
+    "continueWithGoogle": "Continue with Google",
+    "signOut": "Sign out",
+    "signingIn": "Signing in...",
+    "signingOut": "Signing out...",
+    "completingSignIn": "Completing sign in",
+    "pleaseWait": "Please wait while we complete your authentication...",
+    "authenticationError": "Authentication Error",
+    "authenticationFailed": "Authentication failed. Please try again.",
+    "googleAuthError": "Google authentication error: {error}",
+    "missingParameters": "Missing required authentication parameters.",
+    "returnHome": "Return to Home",
+    "loginRequired": "Login Required",
+    "loginRequiredMessage": "You need to sign in to access this feature.",
+    "creditsRequired": "Credits Required",
+    "creditsRequiredMessage": "You need credits to generate itineraries. Please purchase credits to continue."
+  },
+  "AI": {
+    "landing": {
+      "title": "AI Beach Assistant",
+      "subtitle": "Your personal beach discovery companion powered by AI",
+      "description": "Get personalized beach recommendations, chat with our AI assistant, and create custom itineraries for your perfect beach vacation.",
+      "chatButton": "Start Chatting",
+      "itineraryButton": "Create Itinerary"
+    },
+    "chat": {
+      "title": "Chat with AI",
+      "subtitle": "Ask me anything about beaches, travel tips, or recommendations",
+      "placeholder": "Ask about beaches, destinations, or travel tips...",
+      "send": "Send",
+      "sending": "Sending...",
+      "error": "Failed to send message. Please try again.",
+      "welcome": "Hello! I'm your AI beach assistant. How can I help you today?",
+      "anonymousNote": "You're chatting anonymously. Sign in to save your conversations and access premium features."
+    },
+    "itinerary": {
+      "title": "Create Beach Itinerary",
+      "subtitle": "Generate a personalized multi-day beach vacation plan",
+      "form": {
+        "destination": "Destination",
+        "destinationPlaceholder": "e.g., Croatia, Bali, Caribbean",
+        "days": "Number of Days",
+        "daysPlaceholder": "e.g., 7",
+        "interests": "Interests",
+        "interestsPlaceholder": "e.g., snorkeling, relaxation, nightlife",
+        "budget": "Budget Level",
+        "budgetLow": "Budget",
+        "budgetMedium": "Moderate",
+        "budgetHigh": "Luxury",
+        "generate": "Generate Itinerary",
+        "generating": "Generating your itinerary..."
+      },
+      "error": "Failed to generate itinerary. Please try again.",
+      "paymentRequired": "Multi-day itineraries require credits. Please purchase credits to continue.",
+      "creditsRemaining": "Credits remaining: {count}",
+      "purchaseCredits": "Purchase Credits"
+    },
+    "entitlements": {
+      "title": "My Credits",
+      "subtitle": "Manage your AI itinerary credits",
+      "balance": "Current Balance",
+      "credits": "credits",
+      "history": "Purchase History",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status",
+      "noHistory": "No purchase history yet.",
+      "purchase": "Purchase More Credits"
     }
   }
 }

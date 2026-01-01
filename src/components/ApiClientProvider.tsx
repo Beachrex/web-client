@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { client } from '@/lib/api-client/client.gen';
 import { useEffect, useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ApiClientProviderProps {
   children: React.ReactNode;
@@ -10,6 +11,8 @@ interface ApiClientProviderProps {
 }
 
 export function ApiClientProvider({ children, locale }: ApiClientProviderProps) {
+  const { token } = useAuth();
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -26,15 +29,23 @@ export function ApiClientProvider({ children, locale }: ApiClientProviderProps) 
   );
 
   useEffect(() => {
+    const headers: Record<string, string> = {
+      'Accept-Language': locale,
+    };
+
+    // Inject Bearer token if user is authenticated
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     client.setConfig({
-      headers: {
-        'Accept-Language': locale,
-      },
+      baseUrl: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com',
+      headers,
     });
 
     void queryClient.resetQueries();
 
-  }, [locale, queryClient]);
+  }, [locale, token, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -42,4 +53,3 @@ export function ApiClientProvider({ children, locale }: ApiClientProviderProps) 
     </QueryClientProvider>
   );
 }
-

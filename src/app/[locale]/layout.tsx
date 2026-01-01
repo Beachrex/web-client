@@ -7,6 +7,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { Open_Sans } from 'next/font/google';
 import { buildOrganizationSchema, buildWebSiteSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 export async function generateMetadata({
   params,
@@ -70,9 +71,11 @@ export default async function LocaleLayout({
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <ApiClientProvider locale={locale}>
-            <DefaultLayout>{children}</DefaultLayout>
-          </ApiClientProvider>
+          <AuthProvider>
+            <ApiClientProvider locale={locale}>
+              <DefaultLayout>{children}</DefaultLayout>
+            </ApiClientProvider>
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

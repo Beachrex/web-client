@@ -84,7 +84,7 @@ export async function GET() {
     console.log('[sitemap/countries] Fetching countries from API...');
     console.log('[sitemap/countries] API Endpoint:', apiEndpoint);
 
-    const response = await fetch(`${apiEndpoint}/v1/countries`, {
+    const response = await fetch(`${apiEndpoint}/api/v1/countries`, {
       headers: {
         'Accept-Language': 'en',
         'Content-Type': 'application/json',

@@ -8,11 +8,20 @@ import {
 } from "./client";
 import { client } from "./client.gen";
 import type {
+  A5F92F332537A406934C0832A0A08A7fData,
+  A5F92F332537A406934C0832A0A08A7fErrors,
+  A5F92F332537A406934C0832A0A08A7fResponses,
   A772Fcf0B465F9Cbba29F104D89A465Data,
   A772Fcf0B465F9Cbba29F104D89A465Responses,
+  A957Abdc0A1F026Bb8B6F4D5Ec975B8eData,
+  A957Abdc0A1F026Bb8B6F4D5Ec975B8eErrors,
+  A957Abdc0A1F026Bb8B6F4D5Ec975B8eResponses,
   Aa759989C685509Bf36Ff8153A83fData,
   Aa759989C685509Bf36Ff8153A83fErrors,
   Aa759989C685509Bf36Ff8153A83fResponses,
+  AiChatData,
+  AiChatErrors,
+  AiChatResponses,
   B0722F9026Fe14D1F2Be5Ffa1A33E9aData,
   B0722F9026Fe14D1F2Be5Ffa1A33E9aResponses,
   CalculateDistanceData,
@@ -22,9 +31,15 @@ import type {
   CreateBeachResponses,
   D5F3076785B02F519F50Dbec06cData,
   D5F3076785B02F519F50Dbec06cResponses,
+  E3A9C3C756B5255539Aa1Ab9F3A2A6A8Data,
+  E3A9C3C756B5255539Aa1Ab9F3A2A6A8Errors,
+  E3A9C3C756B5255539Aa1Ab9F3A2A6A8Responses,
   Ff50Fb7Baeca2626Aeb337957Ff2001Data,
   Ff50Fb7Baeca2626Aeb337957Ff2001Errors,
   Ff50Fb7Baeca2626Aeb337957Ff2001Responses,
+  GenerateItineraryData,
+  GenerateItineraryErrors,
+  GenerateItineraryResponses,
   GetAccessibilitiesData,
   GetAccessibilitiesErrors,
   GetAccessibilitiesResponses,
@@ -49,9 +64,9 @@ import type {
   GetBayLengthsData,
   GetBayLengthsErrors,
   GetBayLengthsResponses,
-  GetBeachByIdData,
-  GetBeachByIdErrors,
-  GetBeachByIdResponses,
+  GetBeachByIdentifierData,
+  GetBeachByIdentifierErrors,
+  GetBeachByIdentifierResponses,
   GetBeachDensityGridData,
   GetBeachDensityGridResponses,
   GetBeachDetailsData,
@@ -144,6 +159,9 @@ import type {
   GetLocationLengthsData,
   GetLocationLengthsErrors,
   GetLocationLengthsResponses,
+  GetMeData,
+  GetMeErrors,
+  GetMeResponses,
   GetMostVisitedBeachesData,
   GetMostVisitedBeachesErrors,
   GetMostVisitedBeachesResponses,
@@ -233,9 +251,20 @@ import type {
   GlobalSearchData,
   GlobalSearchErrors,
   GlobalSearchResponses,
+  GoogleCallbackData,
+  GoogleCallbackErrors,
+  GoogleExchangeData,
+  GoogleExchangeErrors,
+  GoogleExchangeResponses,
+  GoogleRedirectData,
+  GoogleRedirectErrors,
+  GoogleRedirectResponses,
   LoginUserData,
   LoginUserErrors,
   LoginUserResponses,
+  LogoutData,
+  LogoutErrors,
+  LogoutResponses,
   LogoutUserData,
   LogoutUserErrors,
   LogoutUserResponses,
@@ -262,6 +291,62 @@ export type Options<
    * used to access values that aren't defined as part of the SDK function.
    */
   meta?: Record<string, unknown>;
+};
+
+/**
+ * Send message to AI agent
+ *
+ * Send a message to the AI agent and get a response with beach recommendations. Authentication is optional - anonymous users can use free tier features, authenticated users can access paid features.
+ */
+export const aiChat = <ThrowOnError extends boolean = false>(
+  options: Options<AiChatData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    AiChatResponses,
+    AiChatErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/ai/chat",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Generate multi-day beach itinerary
+ *
+ * Generate an optimized multi-day beach itinerary (3, 7, or 14 days). This is a PAID feature - multi-day itineraries (2+ days) require payment. Returns 402 Payment Required if user is not entitled.
+ */
+export const generateItinerary = <ThrowOnError extends boolean = false>(
+  options: Options<GenerateItineraryData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    GenerateItineraryResponses,
+    GenerateItineraryErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/ai/itineraries",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
 };
 
 /**
@@ -368,6 +453,112 @@ export const getAreaDescriptionById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/area-descriptions/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Get Google OAuth authorization URL
+ *
+ * Returns the Google OAuth URL to redirect the user to for authentication. The URL includes a state parameter for CSRF protection.
+ */
+export const googleRedirect = <ThrowOnError extends boolean = false>(
+  options?: Options<GoogleRedirectData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GoogleRedirectResponses,
+    GoogleRedirectErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/auth/google/redirect",
+    ...options,
+  });
+};
+
+/**
+ * Handle Google OAuth callback
+ *
+ * Exchanges the authorization code for a Google access token, fetches user profile, creates or updates the user in the database, and redirects to frontend with one-time exchange code. The state parameter is validated for CSRF protection.
+ */
+export const googleCallback = <ThrowOnError extends boolean = false>(
+  options: Options<GoogleCallbackData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    unknown,
+    GoogleCallbackErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/auth/google/callback",
+    ...options,
+  });
+};
+
+/**
+ * Exchange one-time code for Sanctum token
+ *
+ * Exchanges a one-time code (received from OAuth callback redirect) for a Sanctum Bearer token and user profile. The code is single-use and expires after 5 minutes.
+ */
+export const googleExchange = <ThrowOnError extends boolean = false>(
+  options: Options<GoogleExchangeData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    GoogleExchangeResponses,
+    GoogleExchangeErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/auth/google/exchange",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Logout current user
+ *
+ * Revokes the current Sanctum Bearer token. The user will need to re-authenticate to access protected endpoints.
+ */
+export const logout = <ThrowOnError extends boolean = false>(
+  options?: Options<LogoutData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).post<
+    LogoutResponses,
+    LogoutErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/auth/logout",
+    ...options,
+  });
+};
+
+/**
+ * Get current authenticated user profile
+ *
+ * Returns the profile of the currently authenticated user. Requires a valid Sanctum Bearer token.
+ */
+export const getMe = <ThrowOnError extends boolean = false>(
+  options?: Options<GetMeData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetMeResponses,
+    GetMeErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me",
     ...options,
   });
 };
@@ -527,17 +718,17 @@ export const createBeach = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Get a single beach by ID
+ * Get a single beach by ID or slug
  */
-export const getBeachById = <ThrowOnError extends boolean = false>(
-  options: Options<GetBeachByIdData, ThrowOnError>,
+export const getBeachByIdentifier = <ThrowOnError extends boolean = false>(
+  options: Options<GetBeachByIdentifierData, ThrowOnError>,
 ) => {
   return (options.client ?? client).get<
-    GetBeachByIdResponses,
-    GetBeachByIdErrors,
+    GetBeachByIdentifierResponses,
+    GetBeachByIdentifierErrors,
     ThrowOnError
   >({
-    url: "/api/v1/beaches/{id}",
+    url: "/api/v1/beaches/{identifier}",
     ...options,
   });
 };
@@ -1820,5 +2011,81 @@ export const getWaterbodyById = <ThrowOnError extends boolean = false>(
   >({
     url: "/api/v1/waterbodies/{id}",
     ...options,
+  });
+};
+
+/**
+ * Create Stripe Checkout session for itinerary purchase
+ */
+export const a957Abdc0A1F026Bb8B6F4D5Ec975B8E = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<A957Abdc0A1F026Bb8B6F4D5Ec975B8eData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    A957Abdc0A1F026Bb8B6F4D5Ec975B8eResponses,
+    A957Abdc0A1F026Bb8B6F4D5Ec975B8eErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/payments/stripe/checkout",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Get current user's entitlements and purchase history
+ */
+export const e3A9C3C756B5255539Aa1Ab9F3A2A6A8 = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<E3A9C3C756B5255539Aa1Ab9F3A2A6A8Data, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    E3A9C3C756B5255539Aa1Ab9F3A2A6A8Responses,
+    E3A9C3C756B5255539Aa1Ab9F3A2A6A8Errors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/entitlements",
+    ...options,
+  });
+};
+
+/**
+ * Receive Stripe webhook events
+ *
+ * Handle Stripe webhook events.
+ */
+export const a5F92F332537A406934C0832A0A08A7F = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<A5F92F332537A406934C0832A0A08A7fData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    A5F92F332537A406934C0832A0A08A7fResponses,
+    A5F92F332537A406934C0832A0A08A7fErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/payments/stripe/webhook",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };

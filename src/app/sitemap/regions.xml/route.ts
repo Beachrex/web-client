@@ -85,7 +85,7 @@ export async function GET() {
     console.log('[sitemap/regions] Fetching regions from API...');
     console.log('[sitemap/regions] API Endpoint:', apiEndpoint);
 
-    const response = await fetch(`${apiEndpoint}/v1/regions`, {
+    const response = await fetch(`${apiEndpoint}/api/v1/regions`, {
       headers: {
         'Accept-Language': 'en',
         'Content-Type': 'application/json',

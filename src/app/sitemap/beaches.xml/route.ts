@@ -74,7 +74,7 @@ export async function GET() {
     // Fetch all beaches using native fetch (English locale for base data)
     // The URL structure is the same across all locales, only the "beaches" word changes
     // Note: API has a limit of ~1000-2000 beaches per request. For more beaches, we'll need pagination.
-    const response = await fetch(`${apiEndpoint}/v1/beaches?limit=1000`, {
+    const response = await fetch(`${apiEndpoint}/api/v1/beaches?limit=1000`, {
       headers: {
         'Accept-Language': 'en',
         'Content-Type': 'application/json',

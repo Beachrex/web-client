@@ -5,6 +5,557 @@ export type ClientOptions = {
 };
 
 /**
+ * AI Beach Recommendation
+ *
+ * Beach recommendation from AI agent
+ */
+export type AiBeachRecommendation = {
+  /**
+   * Beach ID
+   */
+  id: number;
+  /**
+   * Beach name
+   */
+  name: string;
+  /**
+   * Beach slug for URL
+   */
+  slug: string;
+  /**
+   * ISO 3166-1 alpha-2 country code
+   */
+  country_code: string;
+  /**
+   * City name
+   */
+  city?: string | null;
+  /**
+   * Beach surface type
+   */
+  surface: string;
+  /**
+   * Available facilities
+   */
+  facilities: Array<string>;
+  /**
+   * Distance from user location in kilometers (if location provided)
+   */
+  distance_km?: number | null;
+  /**
+   * Relevance score (0-1)
+   */
+  match_score: number;
+};
+
+/**
+ * AI Chat Request
+ *
+ * Request schema for AI chat endpoint
+ */
+export type AiChatRequest = {
+  /**
+   * User message to send to AI agent
+   */
+  message: string;
+  /**
+   * Optional session ID. Auto-generated if not provided
+   */
+  session_id?: string | null;
+  /**
+   * Optional context for the request
+   */
+  context?: {
+    /**
+     * User's current location
+     */
+    location?: {
+      /**
+       * Latitude coordinate
+       */
+      latitude?: number;
+      /**
+       * Longitude coordinate
+       */
+      longitude?: number;
+    } | null;
+    /**
+     * User preferences for beach search
+     */
+    preferences?: {
+      /**
+       * Maximum distance from user location in kilometers
+       */
+      max_distance_km?: number | null;
+      /**
+       * Preferred beach surface types
+       */
+      surface_types?: Array<"sand" | "pebble" | "rock" | "concrete"> | null;
+      /**
+       * Required facilities
+       */
+      facilities?: Array<string> | null;
+    } | null;
+  } | null;
+};
+
+/**
+ * AI Chat Response
+ *
+ * Successful response from AI chat endpoint
+ */
+export type AiChatResponse = {
+  /**
+   * Session identifier
+   */
+  session_id: string;
+  /**
+   * AI response message
+   */
+  message: string;
+  /**
+   * Detected user intent
+   */
+  intent:
+    | "beach_search"
+    | "beach_comparison"
+    | "weather_query"
+    | "itinerary_request"
+    | "accessibility_query"
+    | "general_question"
+    | "unknown";
+  /**
+   * Beach results (if applicable)
+   */
+  beaches?: Array<AiBeachRecommendation> | null;
+  /**
+   * Filters used in search
+   */
+  filters_applied?: {
+    country?: string | null;
+    region?: string | null;
+    city?: string | null;
+    surface?: Array<string> | null;
+    facilities?: Array<string> | null;
+    family_friendly?: boolean | null;
+    wheelchair_accessible?: boolean | null;
+  } | null;
+  /**
+   * Follow-up suggestions
+   */
+  suggestions?: Array<string> | null;
+  metadata: AiResponseMetadata;
+};
+
+/**
+ * AI Error Response
+ *
+ * Error response from AI endpoints
+ */
+export type AiErrorResponse = {
+  /**
+   * Machine-readable error code
+   */
+  error:
+    | "payment_required"
+    | "rate_limit_exceeded"
+    | "token_budget_exceeded"
+    | "service_unavailable"
+    | "invalid_request"
+    | "unauthorized"
+    | "forbidden"
+    | "session_expired"
+    | "internal_error";
+  /**
+   * Human-readable error message
+   */
+  message: string;
+};
+
+/**
+ * AI Payment Required Error (402)
+ *
+ * Error response when paid feature is requested
+ */
+export type AiPaymentRequiredError = {
+  error: "payment_required";
+  message: string;
+  /**
+   * Product information
+   */
+  product: {
+    type?: string;
+    duration_days?: number;
+    price?: number;
+    currency?: string;
+  };
+  purchase_url: string;
+};
+
+/**
+ * AI Rate Limit Error (429)
+ *
+ * Error response when rate limit is exceeded
+ */
+export type AiRateLimitError = {
+  error: "rate_limit_exceeded";
+  message: string;
+  /**
+   * Rate limit threshold
+   */
+  limit: number;
+  /**
+   * When the rate limit resets (ISO 8601)
+   */
+  reset_at: string;
+  upgrade_url: string;
+};
+
+/**
+ * AI Token Budget Error (413)
+ *
+ * Error response when token budget is exceeded
+ */
+export type AiTokenBudgetError = {
+  error: "token_budget_exceeded";
+  message: string;
+  /**
+   * Estimated tokens required
+   */
+  estimated_tokens: number;
+  /**
+   * Maximum tokens allowed
+   */
+  max_tokens: number;
+  suggestion: string;
+};
+
+/**
+ * AI Service Unavailable Error (503)
+ *
+ * Error response when AI service is temporarily unavailable
+ */
+export type AiServiceUnavailableError = {
+  error: "service_unavailable";
+  message: string;
+  /**
+   * Seconds until retry
+   */
+  retry_after: number;
+  /**
+   * Fallback URL for regular search
+   */
+  fallback_url: string;
+};
+
+/**
+ * AI Itinerary Day
+ *
+ * Single day in the itinerary
+ */
+export type AiItineraryDay = {
+  /**
+   * Day number (1-indexed)
+   */
+  day_number: number;
+  /**
+   * Short theme for the day
+   */
+  theme: string;
+  /**
+   * Base area/city for the day
+   */
+  base_area: string;
+  /**
+   * Activities/beaches for the day (2-6 items)
+   */
+  items: Array<AiItineraryItem>;
+  /**
+   * Logistics information for the day
+   */
+  logistics: {
+    /**
+     * Estimated travel distance in kilometers
+     */
+    estimated_travel_km?: number | null;
+    /**
+     * Parking information
+     */
+    parking_notes?: string | null;
+    /**
+     * Accessibility information
+     */
+    accessibility_notes?: string | null;
+  };
+};
+
+/**
+ * AI Itinerary Item
+ *
+ * Single item (beach/activity) in a day's itinerary
+ */
+export type AiItineraryItem = {
+  /**
+   * Item type
+   */
+  type: "beach" | "activity" | "food" | "viewpoint";
+  /**
+   * Time block for this item
+   */
+  time_block: "morning" | "afternoon" | "evening";
+  /**
+   * Beach details (required if type=beach, null otherwise)
+   */
+  beach?: {
+    /**
+     * Beach ID
+     */
+    id?: number;
+    /**
+     * Beach name
+     */
+    name?: string;
+    /**
+     * Beach slug
+     */
+    slug?: string;
+    /**
+     * City name
+     */
+    city?: string | null;
+    /**
+     * ISO 3166-1 alpha-2 country code
+     */
+    country_code?: string;
+    /**
+     * Beach surface type
+     */
+    surface?: string | null;
+    /**
+     * Available facilities
+     */
+    facilities?: Array<string>;
+    /**
+     * Distance from user location (usually null for itineraries)
+     */
+    distance_km?: number | null;
+  } | null;
+  /**
+   * Notes for this item (1-3 sentences)
+   */
+  notes: string;
+  /**
+   * Short justification (must not claim ratings/reviews unless available)
+   */
+  why: string;
+};
+
+/**
+ * AI Itinerary Request
+ *
+ * Request schema for generating multi-day beach itinerary
+ */
+export type AiItineraryRequest = {
+  /**
+   * Destination for the itinerary
+   */
+  destination: {
+    /**
+     * ISO 3166-1 alpha-2 country code
+     */
+    country_code: string;
+    /**
+     * Optional region slug
+     */
+    region_slug?: string | null;
+    /**
+     * Optional city slug
+     */
+    city_slug?: string | null;
+  };
+  /**
+   * Trip duration in days (3, 7, or 14 only)
+   */
+  duration_days: 3 | 7 | 14;
+  /**
+   * Optional start date (YYYY-MM-DD). If omitted, itinerary is date-agnostic
+   */
+  start_date?: string | null;
+  /**
+   * Travel party composition
+   */
+  travel_party?: {
+    /**
+     * Number of adults
+     */
+    adults?: number;
+    /**
+     * Number of children
+     */
+    children?: number;
+  } | null;
+  /**
+   * User preferences for the itinerary
+   */
+  preferences?: {
+    /**
+     * Trip pace
+     */
+    pace?: "relaxed" | "balanced" | "packed";
+    /**
+     * User interests (max 10)
+     */
+    interests?: Array<
+      | "swimming"
+      | "snorkeling"
+      | "family"
+      | "quiet"
+      | "nightlife"
+      | "nature"
+      | "diving"
+      | "surfing"
+      | "kayaking"
+      | "hiking"
+    >;
+    /**
+     * Required facilities (max 10)
+     */
+    must_have_facilities?: Array<string>;
+    /**
+     * Preferred beach surface types (max 10)
+     */
+    surface_types?: Array<"sand" | "pebble" | "rock" | "concrete" | "grass">;
+    /**
+     * Accessibility requirements (max 10)
+     */
+    accessibility?: Array<
+      | "wheelchair_accessible"
+      | "ramp_available"
+      | "accessible_parking"
+      | "accessible_toilets"
+    >;
+  } | null;
+  /**
+   * Travel constraints
+   */
+  constraints?: {
+    /**
+     * Maximum travel distance per day in kilometers
+     */
+    max_travel_km_per_day?: number;
+    /**
+     * Avoid ferry routes
+     */
+    avoid_ferries?: boolean;
+  } | null;
+  /**
+   * Preferred language for itinerary (ISO 639-1). If missing, uses Accept-Language header
+   */
+  locale?: string | null;
+  /**
+   * Optional session ID for continuity with AI chat session
+   */
+  session_id?: string | null;
+};
+
+/**
+ * AI Itinerary Response
+ *
+ * Successful response from itinerary generation endpoint
+ */
+export type AiItineraryResponse = {
+  /**
+   * Generated itinerary ID for tracking and caching
+   */
+  itinerary_id: string;
+  /**
+   * Session ID if linked to chat session
+   */
+  session_id?: string | null;
+  /**
+   * Localized itinerary title
+   */
+  title: string;
+  /**
+   * Brief summary (2-5 sentences)
+   */
+  summary: string;
+  /**
+   * Destination details
+   */
+  destination: {
+    country_code?: string;
+    region_slug?: string | null;
+    city_slug?: string | null;
+  };
+  /**
+   * Trip duration in days
+   */
+  duration_days: 3 | 7 | 14;
+  /**
+   * Day-by-day itinerary (length = duration_days)
+   */
+  days: Array<AiItineraryDay>;
+  /**
+   * Transparent statements about data sources and ordering
+   */
+  assumptions: Array<string>;
+  /**
+   * Response metadata
+   */
+  metadata: {
+    /**
+     * Unique request identifier
+     */
+    request_id: string;
+    /**
+     * User tier
+     */
+    tier: string;
+    /**
+     * LLM tokens consumed
+     */
+    tokens_used: number;
+    /**
+     * LLM model used
+     */
+    model: string;
+    /**
+     * Response time in milliseconds
+     */
+    response_time_ms: number;
+    /**
+     * Was response cached?
+     */
+    cached: boolean;
+  };
+};
+
+/**
+ * AI Response Metadata
+ *
+ * Metadata about the AI response
+ */
+export type AiResponseMetadata = {
+  /**
+   * LLM tokens consumed
+   */
+  tokens_used: number;
+  /**
+   * LLM model used
+   */
+  model: string;
+  /**
+   * Response time in milliseconds
+   */
+  response_time_ms: number;
+  /**
+   * Was response cached?
+   */
+  cached: boolean;
+};
+
+/**
  * Accessibility
  *
  * Accessibility option model (easy, medium, difficult)
@@ -204,6 +755,99 @@ export type Article = {
    * Full article content (only included in single article view)
    */
   content?: string | null;
+};
+
+export type GoogleCallbackErrorResponse = {
+  /**
+   * Error code
+   */
+  error:
+    | "invalid_state"
+    | "invalid_code"
+    | "google_api_error"
+    | "user_creation_failed";
+  /**
+   * Human-readable error message
+   */
+  message: string;
+  /**
+   * Additional error details (only in development mode)
+   */
+  details?: {
+    [key: string]: unknown;
+  } | null;
+};
+
+export type GoogleCallbackResponse = {
+  /**
+   * Sanctum personal access token (Bearer token)
+   */
+  token: string;
+  /**
+   * Token type (always 'Bearer')
+   */
+  token_type: string;
+  /**
+   * Token expiration time in seconds. 0 means token does not expire (Sanctum PAT default behavior)
+   */
+  expires_in: number;
+  user: MeResponse;
+};
+
+export type GoogleRedirectResponse = {
+  /**
+   * Google OAuth authorization URL to redirect the user to
+   */
+  url: string;
+};
+
+export type LogoutResponse = {
+  /**
+   * Indicates successful token revocation
+   */
+  success: boolean;
+};
+
+export type MeResponse = {
+  /**
+   * User ID
+   */
+  id: number;
+  /**
+   * User's full name
+   */
+  name: string;
+  /**
+   * User's email address
+   */
+  email: string;
+  /**
+   * User's avatar/profile picture URL (from Google)
+   */
+  avatar_url?: string | null;
+  /**
+   * User's preferred locale (ISO 639-1 language code)
+   */
+  locale?: string | null;
+  /**
+   * Account creation timestamp
+   */
+  created_at: string;
+};
+
+export type RateLimitErrorResponse = {
+  /**
+   * Error code
+   */
+  error: string;
+  /**
+   * Human-readable error message
+   */
+  message: string;
+  /**
+   * Seconds until rate limit resets
+   */
+  retry_after?: number;
 };
 
 /**
@@ -2037,6 +2681,117 @@ export type ParkingCapacityTranslation = {
   slug?: string;
 };
 
+export type CheckoutRequest = {
+  /**
+   * Type of product to purchase
+   */
+  product_type: "itinerary_3day" | "itinerary_7day" | "itinerary_14day";
+};
+
+export type CheckoutResponse = {
+  /**
+   * Stripe Checkout session URL to redirect user to
+   */
+  checkout_url: string;
+  /**
+   * Stripe Checkout session ID
+   */
+  session_id: string;
+  product: Product;
+};
+
+export type EntitlementsResponse = {
+  entitlements: {
+    /**
+     * Number of 3-day itinerary credits available
+     */
+    itinerary_3day_credits: number;
+    /**
+     * Number of 7-day itinerary credits available
+     */
+    itinerary_7day_credits: number;
+    /**
+     * Number of 14-day itinerary credits available
+     */
+    itinerary_14day_credits: number;
+  };
+  /**
+   * User's purchase history
+   */
+  purchases: Array<Purchase>;
+};
+
+export type PaymentErrorResponse = {
+  /**
+   * Error code
+   */
+  error: string;
+  /**
+   * Human-readable error message
+   */
+  message: string;
+  /**
+   * Validation errors (if applicable)
+   */
+  errors?: {
+    [key: string]: unknown;
+  } | null;
+};
+
+export type Product = {
+  /**
+   * Product type identifier
+   */
+  type: string;
+  /**
+   * Price in the specified currency
+   */
+  price: number;
+  /**
+   * ISO 4217 currency code
+   */
+  currency: string;
+  /**
+   * Number of credits granted upon purchase
+   */
+  credits: number;
+  /**
+   * Human-readable product name
+   */
+  name: string;
+};
+
+export type Purchase = {
+  /**
+   * Purchase ID
+   */
+  id: number;
+  /**
+   * Product type purchased
+   */
+  product_type: string;
+  /**
+   * Purchase amount
+   */
+  amount: number;
+  /**
+   * ISO 4217 currency code
+   */
+  currency: string;
+  /**
+   * Purchase status
+   */
+  status: "pending" | "completed" | "failed" | "refunded";
+  /**
+   * ISO 8601 timestamp of purchase completion
+   */
+  purchased_at?: string | null;
+  /**
+   * Stripe Checkout session ID
+   */
+  stripe_session_id?: string | null;
+};
+
 /**
  * Recommended Transport Type
  *
@@ -2540,6 +3295,152 @@ export const AcceptLanguage = {
 export type AcceptLanguage =
   (typeof AcceptLanguage)[keyof typeof AcceptLanguage];
 
+export type AiChatData = {
+  /**
+   * Chat request with user message and optional context
+   */
+  body: AiChatRequest;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/ai/chat";
+};
+
+export type AiChatErrors = {
+  /**
+   * Bad Request - Invalid input
+   */
+  400: AiErrorResponse;
+  /**
+   * Payment Required - Paid feature requested
+   */
+  402: AiPaymentRequiredError;
+  /**
+   * Payload Too Large - Token budget exceeded
+   */
+  413: AiTokenBudgetError;
+  /**
+   * Too Many Requests - Rate limit exceeded
+   */
+  429: AiRateLimitError;
+  /**
+   * Internal Server Error
+   */
+  500: AiErrorResponse;
+  /**
+   * Service Unavailable - AI service temporarily disabled
+   */
+  503: AiServiceUnavailableError;
+};
+
+export type AiChatError = AiChatErrors[keyof AiChatErrors];
+
+export type AiChatResponses = {
+  /**
+   * Successful response with AI recommendations
+   */
+  200: AiChatResponse;
+};
+
+export type AiChatResponse2 = AiChatResponses[keyof AiChatResponses];
+
+export type GenerateItineraryData = {
+  /**
+   * Itinerary request with destination, duration, and preferences
+   */
+  body: AiItineraryRequest;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/ai/itineraries";
+};
+
+export type GenerateItineraryErrors = {
+  /**
+   * Payment Required - Multi-day itineraries require payment
+   */
+  402: AiPaymentRequiredError;
+  /**
+   * Payload Too Large - Token budget exceeded
+   */
+  413: AiTokenBudgetError;
+  /**
+   * Unprocessable Entity - Validation failed (missing destination, invalid duration, etc.)
+   */
+  422: {
+    message: string;
+    /**
+     * Field-specific validation errors
+     */
+    errors: {
+      [key: string]: unknown;
+    };
+  };
+  /**
+   * Too Many Requests - Rate limit exceeded
+   */
+  429: AiRateLimitError;
+  /**
+   * Internal Server Error - Unexpected failure
+   */
+  500: AiErrorResponse;
+  /**
+   * Service Unavailable - Circuit breaker triggered or AI service disabled
+   */
+  503: AiServiceUnavailableError;
+};
+
+export type GenerateItineraryError =
+  GenerateItineraryErrors[keyof GenerateItineraryErrors];
+
+export type GenerateItineraryResponses = {
+  /**
+   * Successful itinerary generation
+   */
+  200: AiItineraryResponse;
+};
+
+export type GenerateItineraryResponse =
+  GenerateItineraryResponses[keyof GenerateItineraryResponses];
+
 export type GetAccessibilitiesData = {
   body?: never;
   headers?: {
@@ -2919,6 +3820,260 @@ export type GetAreaDescriptionByIdResponses = {
 
 export type GetAreaDescriptionByIdResponse =
   GetAreaDescriptionByIdResponses[keyof GetAreaDescriptionByIdResponses];
+
+export type GoogleRedirectData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/auth/google/redirect";
+};
+
+export type GoogleRedirectErrors = {
+  /**
+   * Rate limit exceeded
+   */
+  429: RateLimitErrorResponse;
+  /**
+   * Internal server error (e.g., missing Google OAuth configuration)
+   */
+  500: {
+    error?: string;
+    message?: string;
+  };
+};
+
+export type GoogleRedirectError =
+  GoogleRedirectErrors[keyof GoogleRedirectErrors];
+
+export type GoogleRedirectResponses = {
+  /**
+   * Google OAuth URL generated successfully
+   */
+  200: GoogleRedirectResponse;
+};
+
+export type GoogleRedirectResponse2 =
+  GoogleRedirectResponses[keyof GoogleRedirectResponses];
+
+export type GoogleCallbackData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query: {
+    /**
+     * Authorization code from Google OAuth
+     */
+    code: string;
+    /**
+     * CSRF protection state parameter (must match the state sent in redirect)
+     */
+    state: string;
+    /**
+     * Error code from Google (if user denied access or other error occurred)
+     */
+    error?: string;
+  };
+  url: "/api/v1/auth/google/callback";
+};
+
+export type GoogleCallbackErrors = {
+  /**
+   * Rate limit exceeded
+   */
+  429: RateLimitErrorResponse;
+};
+
+export type GoogleCallbackError =
+  GoogleCallbackErrors[keyof GoogleCallbackErrors];
+
+export type GoogleExchangeData = {
+  body: {
+    /**
+     * One-time exchange code from OAuth callback
+     */
+    code: string;
+  };
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/auth/google/exchange";
+};
+
+export type GoogleExchangeErrors = {
+  /**
+   * Invalid or expired code
+   */
+  400: GoogleCallbackErrorResponse;
+  /**
+   * Rate limit exceeded
+   */
+  429: RateLimitErrorResponse;
+};
+
+export type GoogleExchangeError =
+  GoogleExchangeErrors[keyof GoogleExchangeErrors];
+
+export type GoogleExchangeResponses = {
+  /**
+   * Token exchange successful
+   */
+  200: GoogleCallbackResponse;
+};
+
+export type GoogleExchangeResponse =
+  GoogleExchangeResponses[keyof GoogleExchangeResponses];
+
+export type LogoutData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/auth/logout";
+};
+
+export type LogoutErrors = {
+  /**
+   * Unauthenticated (missing or invalid token)
+   */
+  401: {
+    message?: string;
+  };
+};
+
+export type LogoutError = LogoutErrors[keyof LogoutErrors];
+
+export type LogoutResponses = {
+  /**
+   * Logout successful, token revoked
+   */
+  200: LogoutResponse;
+};
+
+export type LogoutResponse2 = LogoutResponses[keyof LogoutResponses];
+
+export type GetMeData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/me";
+};
+
+export type GetMeErrors = {
+  /**
+   * Unauthenticated (missing or invalid token)
+   */
+  401: {
+    message?: string;
+  };
+};
+
+export type GetMeError = GetMeErrors[keyof GetMeErrors];
+
+export type GetMeResponses = {
+  /**
+   * User profile retrieved successfully
+   */
+  200: MeResponse;
+};
+
+export type GetMeResponse = GetMeResponses[keyof GetMeResponses];
 
 export type RegisterUserData = {
   body: {
@@ -3308,7 +4463,7 @@ export type CreateBeachResponses = {
 export type CreateBeachResponse =
   CreateBeachResponses[keyof CreateBeachResponses];
 
-export type GetBeachByIdData = {
+export type GetBeachByIdentifierData = {
   body?: never;
   headers?: {
     /**
@@ -3332,22 +4487,22 @@ export type GetBeachByIdData = {
   };
   path: {
     /**
-     * Beach ID
+     * Beach ID (integer) or slug (string)
      */
-    id: number;
+    identifier: number | string;
   };
   query?: never;
-  url: "/api/v1/beaches/{id}";
+  url: "/api/v1/beaches/{identifier}";
 };
 
-export type GetBeachByIdErrors = {
+export type GetBeachByIdentifierErrors = {
   /**
    * Not found
    */
   404: unknown;
 };
 
-export type GetBeachByIdResponses = {
+export type GetBeachByIdentifierResponses = {
   /**
    * Beach found
    */
@@ -3356,8 +4511,8 @@ export type GetBeachByIdResponses = {
   };
 };
 
-export type GetBeachByIdResponse =
-  GetBeachByIdResponses[keyof GetBeachByIdResponses];
+export type GetBeachByIdentifierResponse =
+  GetBeachByIdentifierResponses[keyof GetBeachByIdentifierResponses];
 
 export type GetMostVisitedBeachesData = {
   body?: never;
@@ -8038,3 +9193,99 @@ export type GetWaterbodyByIdResponses = {
 
 export type GetWaterbodyByIdResponse =
   GetWaterbodyByIdResponses[keyof GetWaterbodyByIdResponses];
+
+export type A957Abdc0A1F026Bb8B6F4D5Ec975B8eData = {
+  body: CheckoutRequest;
+  path?: never;
+  query?: never;
+  url: "/api/v1/payments/stripe/checkout";
+};
+
+export type A957Abdc0A1F026Bb8B6F4D5Ec975B8eErrors = {
+  /**
+   * Invalid product type
+   */
+  400: PaymentErrorResponse;
+  /**
+   * Unauthenticated
+   */
+  401: PaymentErrorResponse;
+  /**
+   * Payment gateway error
+   */
+  500: PaymentErrorResponse;
+};
+
+export type A957Abdc0A1F026Bb8B6F4D5Ec975B8eError =
+  A957Abdc0A1F026Bb8B6F4D5Ec975B8eErrors[keyof A957Abdc0A1F026Bb8B6F4D5Ec975B8eErrors];
+
+export type A957Abdc0A1F026Bb8B6F4D5Ec975B8eResponses = {
+  /**
+   * Checkout session created successfully
+   */
+  200: CheckoutResponse;
+};
+
+export type A957Abdc0A1F026Bb8B6F4D5Ec975B8eResponse =
+  A957Abdc0A1F026Bb8B6F4D5Ec975B8eResponses[keyof A957Abdc0A1F026Bb8B6F4D5Ec975B8eResponses];
+
+export type E3A9C3C756B5255539Aa1Ab9F3A2A6A8Data = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/v1/me/entitlements";
+};
+
+export type E3A9C3C756B5255539Aa1Ab9F3A2A6A8Errors = {
+  /**
+   * Unauthenticated
+   */
+  401: PaymentErrorResponse;
+};
+
+export type E3A9C3C756B5255539Aa1Ab9F3A2A6A8Error =
+  E3A9C3C756B5255539Aa1Ab9F3A2A6A8Errors[keyof E3A9C3C756B5255539Aa1Ab9F3A2A6A8Errors];
+
+export type E3A9C3C756B5255539Aa1Ab9F3A2A6A8Responses = {
+  /**
+   * Entitlements retrieved successfully
+   */
+  200: EntitlementsResponse;
+};
+
+export type E3A9C3C756B5255539Aa1Ab9F3A2A6A8Response =
+  E3A9C3C756B5255539Aa1Ab9F3A2A6A8Responses[keyof E3A9C3C756B5255539Aa1Ab9F3A2A6A8Responses];
+
+export type A5F92F332537A406934C0832A0A08A7fData = {
+  /**
+   * Stripe webhook payload
+   */
+  body: {
+    [key: string]: unknown;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/payments/stripe/webhook";
+};
+
+export type A5F92F332537A406934C0832A0A08A7fErrors = {
+  /**
+   * Invalid signature or webhook data
+   */
+  400: PaymentErrorResponse;
+};
+
+export type A5F92F332537A406934C0832A0A08A7fError =
+  A5F92F332537A406934C0832A0A08A7fErrors[keyof A5F92F332537A406934C0832A0A08A7fErrors];
+
+export type A5F92F332537A406934C0832A0A08A7fResponses = {
+  /**
+   * Webhook received successfully
+   */
+  200: {
+    received?: boolean;
+  };
+};
+
+export type A5F92F332537A406934C0832A0A08A7fResponse =
+  A5F92F332537A406934C0832A0A08A7fResponses[keyof A5F92F332537A406934C0832A0A08A7fResponses];
