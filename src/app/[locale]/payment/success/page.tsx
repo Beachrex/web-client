@@ -148,7 +148,7 @@ style={{
         }}
         >
           <Link
-            href="/internal/ai-entitlements"
+            href="/ai/itinerary"
             style={{
               display: 'block',
               padding: '12px 24px',
@@ -160,11 +160,11 @@ style={{
               fontSize: '16px',
             }}
           >
-            View My Credits
+            Generate Itinerary
           </Link>
 
           <Link
-            href="/internal/ai-playground"
+            href="/ai/chat"
             style={{
               display: 'block',
               padding: '12px 24px',
@@ -176,7 +176,7 @@ style={{
               fontSize: '16px',
             }}
           >
-            Try AI Playground
+            Try AI Chat
           </Link>
 
           <Link

@@ -27,7 +27,11 @@ interface ItineraryResponse {
 }
 
 interface EntitlementsResponse {
-  itinerary_credits: number;
+  credits: {
+    itinerary_3day_credits: number;
+    itinerary_7day_credits: number;
+    itinerary_14day_credits: number;
+  };
 }
 
 export default function AIItineraryPage() {
@@ -50,7 +54,7 @@ export default function AIItineraryPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com'}/api/v1/ai/entitlements`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com'}/api/v1/me/entitlements`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -60,8 +64,13 @@ export default function AIItineraryPage() {
       );
 
       if (response.ok) {
-        const data = await response.json() as EntitlementsResponse;
-        setCredits(data.itinerary_credits);
+        const data = (await response.json()) as EntitlementsResponse;
+        // Sum all credits for display
+        const totalCredits =
+          data.credits.itinerary_3day_credits +
+          data.credits.itinerary_7day_credits +
+          data.credits.itinerary_14day_credits;
+        setCredits(totalCredits);
       }
     } catch (err) {
       console.error('[AIItineraryPage] Failed to fetch credits:', err);
