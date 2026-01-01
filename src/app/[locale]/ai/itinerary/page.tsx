@@ -20,10 +20,46 @@ import { MapPin, CreditCard } from 'lucide-react';
  */
 
 interface ItineraryResponse {
-  itinerary: string;
-  days: number;
-  destination: string;
-  credits_remaining: number;
+  title: string;
+  summary: string;
+  destination: {
+    country_code: string;
+  };
+  duration_days: number;
+  days: {
+    day_number: number;
+    theme: string;
+    base_area: string;
+    items: {
+      type: string;
+      time_block: string;
+      beach?: {
+        id: number;
+        name: string;
+        slug: string;
+        city: string;
+        country_code: string;
+      };
+      notes: string;
+      why: string;
+    }[];
+    logistics: {
+      estimated_travel_km: number;
+      parking_notes: string;
+      accessibility_notes: string;
+    };
+  }[];
+  assumptions: string[];
+  itinerary_id: string;
+  session_id: string;
+  metadata: {
+    request_id: string;
+    tier: string;
+    tokens_used: number;
+    model: string;
+    response_time_ms: number;
+    cached: boolean;
+  };
 }
 
 interface EntitlementsResponse {
@@ -143,9 +179,11 @@ export default function AIItineraryPage() {
         throw new Error(errorData.message ?? `Failed to generate itinerary: ${response.status}`);
       }
 
-      const data = await response.json() as ItineraryResponse;
+      const data = (await response.json()) as ItineraryResponse;
       setItinerary(data);
-      setCredits(data.credits_remaining);
+
+      // Refresh credits after successful generation
+      await fetchCredits();
     } catch (err) {
       console.error('[AIItineraryPage] Failed to generate itinerary:', err);
       setError(err instanceof Error ? err.message : t('error'));
@@ -318,13 +356,58 @@ export default function AIItineraryPage() {
         {itinerary && (
           <Card>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              {itinerary.days}-Day {itinerary.destination} Itinerary
+              {itinerary.title}
             </h2>
-            <div className="prose max-w-none">
-              <pre className="whitespace-pre-wrap text-gray-700 font-sans">
-                {itinerary.itinerary}
-              </pre>
+            <p className="text-gray-600 mb-6">{itinerary.summary}</p>
+
+            <div className="space-y-6">
+              {itinerary.days.map((day) => (
+                <div key={day.day_number} className="border-l-4 border-blue-500 pl-4">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    Day {day.day_number}: {day.theme}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-3">Base: {day.base_area}</p>
+
+                  <div className="space-y-3">
+                    {day.items.map((item, idx) => (
+                      <div key={idx} className="bg-gray-50 p-3 rounded">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <span className="text-xs font-medium text-blue-600 uppercase">
+                              {item.time_block} - {item.type}
+                            </span>
+                            {item.beach && (
+                              <h4 className="font-medium text-gray-900 mt-1">
+                                {item.beach.name}
+                              </h4>
+                            )}
+                            <p className="text-sm text-gray-700 mt-1">{item.notes}</p>
+                            <p className="text-xs text-gray-500 mt-1 italic">{item.why}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-3 text-xs text-gray-500">
+                    <p>🚗 {day.logistics.estimated_travel_km} km</p>
+                    <p>🅿️ {day.logistics.parking_notes}</p>
+                    <p>♿ {day.logistics.accessibility_notes}</p>
+                  </div>
+                </div>
+              ))}
             </div>
+
+            {itinerary.assumptions.length > 0 && (
+              <div className="mt-6 p-4 bg-yellow-50 rounded">
+                <h4 className="font-medium text-gray-900 mb-2">Assumptions:</h4>
+                <ul className="list-disc list-inside text-sm text-gray-700">
+                  {itinerary.assumptions.map((assumption, idx) => (
+                    <li key={idx}>{assumption}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </Card>
         )}
       </div>
