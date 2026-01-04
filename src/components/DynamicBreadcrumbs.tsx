@@ -11,12 +11,11 @@ interface DynamicBreadcrumbsProps {
   accentColor: string;
 }
 
-
 function formatBreadcrumbSegment(segment: string): string {
   return segment
     .replace(/[-_]/g, ' ')
     .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
 }
 
@@ -24,12 +23,22 @@ export default function DynamicBreadcrumbs({
   pathname,
   textClass,
   accentColor,
-}: DynamicBreadcrumbsProps)
- {
+}: DynamicBreadcrumbsProps) {
   const locale = useLocale();
 
-  const pathSegments = pathname.split('/').filter((s) => s.length > 0);
-  const filteredSegments = pathSegments.filter((s) => s !== locale);
+  if (!pathname) {
+    return null;
+  }
+
+  const pathSegments = pathname.split('/').filter(s => s.length > 0);
+  const filteredSegments: string[] = pathSegments.filter(s => s !== locale);
+
+ const lastSegment = filteredSegments.at(-1);
+
+const currentSegment = lastSegment
+  ? formatBreadcrumbSegment(lastSegment)
+  : null;
+
 
   const breadcrumbs = filteredSegments.map((segment, index) => {
     const href = `/${filteredSegments.slice(0, index + 1).join('/')}`;
@@ -39,29 +48,19 @@ export default function DynamicBreadcrumbs({
     return (
       <Breadcrumb.Item key={index}>
         <Link
-  href={href}
-  className={`text-xs transition-colors duration-200 ${
-    isCurrent
-      ? `font-medium ${textClass}`
-      : 'text-variable-collection-middle-grey'
-  }`}
-  style={
-    !isCurrent
-      ? { color: undefined }
-      : undefined
-  }
-  onMouseEnter={(e) => {
-    if (!isCurrent) {
-      e.currentTarget.style.color = accentColor;
-    }
-  }}
-  onMouseLeave={(e) => {
-    if (!isCurrent) {
-      e.currentTarget.style.color = '';
-    }
-  }}
+          href={href}
+          className={`text-xs transition-colors duration-200 ${
+            isCurrent
+              ? `font-medium ${textClass}`
+              : 'text-variable-collection-middle-grey'
+          }`}
+          onMouseEnter={e => {
+            if (!isCurrent) e.currentTarget.style.color = accentColor;
+          }}
+          onMouseLeave={e => {
+            if (!isCurrent) e.currentTarget.style.color = '';
+          }}
         >
-
           {formatted}
         </Link>
       </Breadcrumb.Item>
@@ -70,17 +69,39 @@ export default function DynamicBreadcrumbs({
 
   return (
     <div className="w-full px-4 sm:px-6">
-      {/* 📱 MOBILE: only home icon, centered */}
-      <div className="flex justify-center py-1 sm:hidden">
+      {/* MOBILE: Home + current location */}
+      <div className="flex items-center justify-start gap-2 py-1 sm:hidden">
+
+
         <Link
-          href="/"
-          className="text-variable-collection-middle-grey hover:text-variable-collection-mesto"
+  href="/"
+  style={{ '--accent': accentColor } as React.CSSProperties}
+  className="
+    flex items-center justify-center
+    text-variable-collection-middle-grey
+    transition-colors duration-200
+    hover:text-[var(--accent)]
+    active:text-[var(--accent)]
+  "
         >
-          <Home className="h-5 w-5" />
-        </Link>
+  <Home className="h-5 w-5 stroke-current" />
+</Link>
+
+
+ {currentSegment && (
+  <>
+    <span
+      className={`text-xs font-medium ${textClass} max-w-[50vw] truncate`}
+    >
+      {currentSegment}
+    </span>
+  </>
+)}
+
+
       </div>
 
-      {/* 🖥️ DESKTOP: normal breadcrumbs */}
+      {/* DESKTOP: full breadcrumbs */}
       <div className="scrollbar-hide hidden max-w-full overflow-x-auto sm:block">
         <Breadcrumb
           aria-label="Dynamic breadcrumbs"
@@ -88,11 +109,20 @@ export default function DynamicBreadcrumbs({
         >
           <Breadcrumb.Item>
             <Link
-              href="/"
-              className="flex items-center justify-center text-variable-collection-middle-grey hover:text-variable-collection-mesto"
+  href="/"
+  style={{ '--accent': accentColor } as React.CSSProperties}
+  className="
+    flex items-center justify-center
+    text-variable-collection-middle-grey
+    transition-colors duration-200
+    hover:text-[var(--accent)]
+    active:text-[var(--accent)]
+  "
             >
-              <Home className="h-4 w-4" />
-            </Link>
+  <Home className="h-4 w-4 stroke-current" />
+</Link>
+
+
           </Breadcrumb.Item>
 
           {breadcrumbs}
