@@ -4,7 +4,8 @@
     "mapButtonFilter": "Beaches map with filters",
     "menu": "Menu",
     "about": "About",
-    "numBeaches": "Num. beaches",
+    "numBeaches": "Beaches: ",
+    "numAccommodations": "Accommodations: ",
     "hotelPrice": "Hotel price",
     "home": "Home",
     "favorite_beaches": "Favorite beaches",
@@ -20,7 +21,8 @@
     "share": "share",
     "reviews": "reviews",
     "paidFallback": "No information",
-    "mobileApp": "Download mobile app"
+    "mobileApp": "Download mobile app",
+    "activities":"Activities"
   },
   "Search": {
     "typeBeach": "Beach",
@@ -206,7 +208,9 @@
     "islandLabel": "Island",
     "cityLabel": "City",
     "countryLabel": "Country",
-    "beachLabel": "Sea beach"
+    "beachLabel": "Sea beach",
+    "beachCountLabel": "Beach count:",
+  "accommodationCountLabel": "Accommodation count:"
   },
   "TopBarBeach": {
     "beachLabel": "Sea beach",
