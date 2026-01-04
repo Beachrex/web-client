@@ -47,3 +47,14 @@ export const VARIANT_CATEGORY_LABEL_KEY: Record<PageVariant, string> = {
   country: 'categoryLabelCountry',
   beach: 'categoryLabelBeach',
 };
+
+
+// Accent color (CSS variable friendly)
+export const VARIANT_ACCENT_COLOR: Record<PageVariant, string> = {
+  continent: '#5E1CA5',
+  region: '#FF2877',
+  island: '#FFC422',
+  city: '#FF8000',
+  country: '#DD0000',
+  beach: '#0069AB',
+};

@@ -87,6 +87,7 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
       {/* TOP BAR */}
       <DynamicTopBar
         pathname={pathname ?? ''}
+        variant="beach"
         navigation={beachDetails.navigation}
         buildUrl={(item) =>
           buildBeachUrlFromNavigation(

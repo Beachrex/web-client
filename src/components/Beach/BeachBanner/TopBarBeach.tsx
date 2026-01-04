@@ -41,7 +41,7 @@ className="hidden md:flex items-center rounded-full bg-white/95 px-[12px] py-[2p
     {/* Accommodations */}
     <div className="flex h-[36px] items-center gap-[6px] rounded-[8px] bg-white px-[8px] sm:px-[10px]">
       <Image
-        src="/images/accommodation-black.png"
+        src="/images/menu/accomodation.svg"
         alt={t('numAccommodationsLabel')}
         width={22}
         height={22}
@@ -58,7 +58,7 @@ className="hidden md:flex items-center rounded-full bg-white/95 px-[12px] py-[2p
     {/* Activities */}
     <div className="flex h-[36px] items-center gap-[6px] rounded-[8px] bg-white px-[8px] sm:px-[10px]">
       <Image
-        src="/images/banner/signpost.png"
+        src="/images/banner/signpost.svg"
         alt={t('numActivitiesLabel')}
         width={22}
         height={22}

@@ -7,7 +7,10 @@ import { Home } from 'lucide-react';
 
 interface DynamicBreadcrumbsProps {
   pathname: string;
+  textClass: string;
+  accentColor: string;
 }
+
 
 function formatBreadcrumbSegment(segment: string): string {
   return segment
@@ -19,7 +22,10 @@ function formatBreadcrumbSegment(segment: string): string {
 
 export default function DynamicBreadcrumbs({
   pathname,
-}: DynamicBreadcrumbsProps) {
+  textClass,
+  accentColor,
+}: DynamicBreadcrumbsProps)
+ {
   const locale = useLocale();
 
   const pathSegments = pathname.split('/').filter((s) => s.length > 0);
@@ -33,13 +39,29 @@ export default function DynamicBreadcrumbs({
     return (
       <Breadcrumb.Item key={index}>
         <Link
-          href={href}
-          className={`text-xs transition-colors duration-200 ${
-            isCurrent
-              ? 'font-medium text-variable-collection-mesto'
-              : 'text-variable-collection-middle-grey hover:text-variable-collection-mesto'
-          }`}
+  href={href}
+  className={`text-xs transition-colors duration-200 ${
+    isCurrent
+      ? `font-medium ${textClass}`
+      : 'text-variable-collection-middle-grey'
+  }`}
+  style={
+    !isCurrent
+      ? { color: undefined }
+      : undefined
+  }
+  onMouseEnter={(e) => {
+    if (!isCurrent) {
+      e.currentTarget.style.color = accentColor;
+    }
+  }}
+  onMouseLeave={(e) => {
+    if (!isCurrent) {
+      e.currentTarget.style.color = '';
+    }
+  }}
         >
+
           {formatted}
         </Link>
       </Breadcrumb.Item>

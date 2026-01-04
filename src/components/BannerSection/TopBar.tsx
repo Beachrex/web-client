@@ -120,6 +120,7 @@ const displayTitle =
   return (
     <div className="flex h-[54px] items-center">
 
+<div className="hidden md:flex h-full items-center">
      {/* CONTINENT PILL */}
 {effectiveContinentCode && (
   <div className="flex h-full w-[54px] items-center justify-center rounded-l-[10px] bg-[#5E1CA5]">
@@ -180,8 +181,7 @@ const displayTitle =
     </span>
   </div>
 )}
-
-
+</div>
       {/*  MAIN TOPBAR */}
       <div className={containerClasses}>
 
