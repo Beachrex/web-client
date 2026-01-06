@@ -7,8 +7,8 @@
 import BannerSection from '@/components/BannerSection/BannerSection';
 import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
 import SearchContinent from '@/components/Continent/SearchContinent';
-import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
+import DynamicTopBar from '@/components/DynamicTopBar';
 import { PropertySection } from '@/components/PropertySection';
 
 import {
@@ -309,11 +309,10 @@ return {
         />
 
         {/* Breadcrumbs */}
-        <div className="bg-white py-4">
-          <div className="container mx-auto">
-            <DynamicBreadcrumbs pathname={pathname} />
-          </div>
-        </div>
+    <DynamicTopBar
+  pathname={pathname}
+  variant="continent"
+    />
 
         {/* Banner */}
         <BannerSection

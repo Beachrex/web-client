@@ -177,6 +177,7 @@ const beachProperties: Property[] =
     <>
       <DynamicTopBar
         pathname={pathname ?? ''}
+        variant="region"
         navigation={regionDetails?.navigation}
         buildUrl={(item) =>
           buildRegionUrlFromNavigation(

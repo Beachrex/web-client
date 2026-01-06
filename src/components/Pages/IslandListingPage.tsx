@@ -180,6 +180,7 @@ const beachProperties: Property[] =
       {/* Top Navigation */}
       <DynamicTopBar
         pathname={pathname ?? ''}
+        variant='island'
         navigation={islandDetails?.navigation}
         buildUrl={(item) =>
           buildIslandUrlFromNavigation(

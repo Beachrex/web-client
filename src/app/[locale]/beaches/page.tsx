@@ -1,6 +1,5 @@
 'use client';
 
-import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 import TopDestinationsSection from '@/components/Home/TopDestinationSection'; // ← ADDED
 import PropertySection, { type Property } from '@/components/PropertySection';
 import WorldBannerSection from '@/components/WorldPage/WorldBanner/WorldBannerSection';
@@ -57,12 +56,6 @@ const Page = () => {
 
   return (
     <>
-      {/* Breadcrumbs */}
-      <div className="py-4">
-        <div className="container mx-auto">
-          <DynamicBreadcrumbs pathname={pathname ?? ''} />
-        </div>
-      </div>
 
       {/* Banner */}
       <WorldBannerSection

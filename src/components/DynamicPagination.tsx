@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import React from 'react';
 
 export interface NavigationItemLocation {
   continent_slug?: string | null;
@@ -36,18 +37,33 @@ interface DynamicPaginationProps {
   buildUrl?: (item: NavigationItem) => string;
   /** Optional extra classes for outer wrapper */
   className?: string;
+  textClass?: string;
+  accentColor?: string;
 }
 
 export default function DynamicPagination({
   navigation,
   buildUrl,
   className = '',
+  textClass,
+  accentColor,
 }: DynamicPaginationProps) {
+
   const prev = navigation?.previous ?? null;
   const next = navigation?.next ?? null;
 
   // Nothing to show
   if (!prev && !next) return null;
+
+const handleEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  if (accentColor) {
+    e.currentTarget.style.color = accentColor;
+  }
+};
+
+const handleLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  e.currentTarget.style.color = '';
+};
 
   const renderPrev = () => {
     if (!prev) return null;
@@ -58,7 +74,15 @@ export default function DynamicPagination({
     return (
       <Link
         href={href}
-        className="flex items-center text-sm text-variable-collection-mesto transition-opacity duration-200 hover:opacity-80"
+       className={`flex items-center text-sm font-medium
+  transition-colors duration-200 ease-out
+  hover:underline hover:underline-offset-4
+  ${textClass ?? 'text-variable-collection-mesto'}
+`}
+
+onMouseEnter={handleEnter}
+onMouseLeave={handleLeave}
+
       >
         <svg
           className="mr-1 h-4 w-4"
@@ -84,10 +108,20 @@ export default function DynamicPagination({
     // Use pre-computed URL if available, otherwise use buildUrl function
     const href = next.url ?? (buildUrl ? buildUrl(next) : '#');
 
+
     return (
       <Link
         href={href}
-        className="flex items-center text-sm text-variable-collection-mesto transition-opacity duration-200 hover:opacity-80"
+        className={`flex items-center text-sm font-medium
+  transition-colors duration-200 ease-out
+  hover:underline hover:underline-offset-4
+  ${textClass ?? 'text-variable-collection-mesto'}
+`}
+
+
+onMouseEnter={handleEnter}
+onMouseLeave={handleLeave}
+
       >
         <span className="font-medium">{next.name}</span>
         <svg
@@ -108,7 +142,7 @@ export default function DynamicPagination({
   };
 
   return (
-    <div className={`flex items-center space-x-4 font-light ${className}`}>
+    <div className={`flex items-center gap-8 font-light ${className}`}>
       {renderPrev()}
       {renderNext()}
     </div>

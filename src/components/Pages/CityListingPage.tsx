@@ -165,6 +165,7 @@ const islandPillLabel = cityDetails?.island?.name
       {/* Shared top bar: breadcrumbs + city prev/next navigation */}
       <DynamicTopBar
         pathname={pathname ?? ''}
+        variant="city"
         navigation={cityDetails?.navigation}
         buildUrl={(item) =>
           buildCityUrlFromNavigation(

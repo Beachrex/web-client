@@ -325,9 +325,11 @@ const beachProperties: Property[] =
       />
 
       <DynamicTopBar
-        pathname={pathname}
-        navigation={navigationWithUrls}
+  pathname={pathname}
+  navigation={navigationWithUrls}
+  variant="country"
       />
+
 
       <BannerSection
         image={bannerImage}

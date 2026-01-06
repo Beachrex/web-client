@@ -12,7 +12,6 @@ import BeachTitleBlock from './BeachTitleBlock';
 import BottomBadgesBeach from './BottomBadgesBeach';
 import SeaTempWidget from './SeaTempWidget';
 import TopBarBeachRight from './TopBarBeachRight';
-
 import TopBar from '@/components/BannerSection/TopBar';
 import { mapBeachLocationToTopBar } from '@/lib/mappers/mapBeachLocationToTopBar';
 
@@ -25,6 +24,7 @@ interface BeachBannerSectionProps {
 export default function BeachBannerSection({
   beachDetails,
   accommodationCount,
+  activityCount,
 }: BeachBannerSectionProps) {
   const tRoutes = useTranslations('routes');
   const locale = useLocale();
@@ -77,6 +77,7 @@ export default function BeachBannerSection({
 
   const topBarData = mapBeachLocationToTopBar(beachDetails);
 
+
   return (
     <section className="relative mx-auto mb-10 h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-visible pb-40 sm:h-[700px] md:min-h-[400px] md:pb-48 lg:h-[798px]">
       {/* Background with rounded corners */}
@@ -110,8 +111,11 @@ export default function BeachBannerSection({
   islandPillLabel={topBarData.islandPillLabel}
   cityPillLabel={topBarData.cityPillLabel}
   accommodationCount={accommodationCount}
-  beachCount={1}
+  activityCount={activityCount}
+  showLocationPills
+  showFilter={false}
 />
+
 
         </div>
 

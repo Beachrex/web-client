@@ -1,180 +1,249 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { useState } from 'react';
-
-
+import { HiX } from 'react-icons/hi';
+import { type CustomFlowbiteTheme, Sidebar } from 'flowbite-react';
 import { Link } from '@/i18n/routing';
-
+import { useLocale } from 'next-intl';
 import enMenu from 'public/menu_en.json';
 import siMenu from 'public/menu_si.json';
 import QuickMenu from './QuickMenu';
+import Image from 'next/image';
+import { ChevronRight } from 'lucide-react';
 
-/* ------------------------------------------------------------------
- * Types
- * ------------------------------------------------------------------ */
+const sidebarTheme: CustomFlowbiteTheme['sidebar'] = {
+  root: {
+    base: 'fixed inset-y-0 left-0 z-50',
+    inner: 'h-full overflow-y-auto overflow-x-hidden bg-[#F5F5F5] p-0',
+  },
+};
 
 interface MenuItem {
   label: string;
   href: string;
-  icon?: string;
-  subItems?: MenuItem[];
+  icon?: React.ComponentType<{ className?: string }> | string;
   enabled?: boolean;
+  subItems?: MenuItem[];
 }
 
-/* ------------------------------------------------------------------
- * Component
- * ------------------------------------------------------------------ */
+// Recursive component for rendering nested menu
+const NestedMenu = ({
+  items,
+  closeMenu,
+}: {
+  items: MenuItem[];
+  closeMenu: () => void;
+}) => {
+  const enabledItems = items.filter((item) => item.enabled === true);
+
+  return (
+    <ul className="pl-4">
+      {enabledItems.map((item, index) => (
+        <MenuItemComponent key={index} item={item} closeMenu={closeMenu} />
+      ))}
+    </ul>
+  );
+};
+
+// Individual menu item component
+const MenuItemComponent: React.FC<{
+  item: MenuItem;
+  closeMenu: () => void;
+}> = ({ item, closeMenu }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    if (item.subItems && item.subItems.length > 0) {
+      setIsOpen((prev) => !prev);
+    } else {
+      closeMenu();
+    }
+  };
+
+  return (
+    <li className="mb-1">
+      <div
+        onClick={toggleMenu}
+        className="relative ml-[100px] mr-[50px] flex w-[250px] cursor-pointer items-center justify-between border-b border-[#E7E7E7] py-2 pl-6 transition-colors hover:bg-white/60"
+      >
+        {item.subItems?.some((sub) => sub.enabled === true) ? (
+          <span
+            className={`absolute left-0 top-1/2 -translate-y-1/2 text-xs transition-transform ${isOpen ? 'rotate-90' : ''} `}
+          >
+            ➔
+          </span>
+        ) : null}
+
+        {item.subItems?.length ? (
+          <span className="flex flex-1 items-center gap-2">
+            {typeof item.icon === 'string' && item.icon !== '' && (
+              <Image
+                src={item.icon}
+                alt={item.label}
+                width={26}
+                height={26}
+                className="shrink-0"
+              />
+            )}
+            <span className="font-figtree text-[14px] font-bold leading-[100%] text-[#4D4D4D]">
+              {item.label}
+            </span>
+          </span>
+        ) : (
+          <Link
+            href={item.href}
+            className="flex flex-1 items-center gap-2"
+            onClick={closeMenu}
+          >
+            {typeof item.icon === 'string' && item.icon !== '' && (
+              <Image
+                src={item.icon}
+                alt={item.label}
+                width={26}
+                height={26}
+                className="shrink-0"
+              />
+            )}
+            <span className="font-figtree text-[14px] font-bold leading-[100%] text-[#4D4D4D]">
+              {item.label}
+            </span>
+          </Link>
+        )}
+
+        <ChevronRight size={18} className="text-[#B0B0B0]" />
+      </div>
+
+      {isOpen && item.subItems && (
+        <NestedMenu items={item.subItems} closeMenu={closeMenu} />
+      )}
+    </li>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* Burger menu                                                         */
+/* ------------------------------------------------------------------ */
 
 const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const locale = useLocale();
-  const tCommon = useTranslations('Common');
 
-  const menuItems: MenuItem[] =
-    locale === 'si' ? siMenu.MenuItems : enMenu.MenuItems;
+  const rawMenuItems = locale === 'si' ? siMenu.MenuItems : enMenu.MenuItems;
 
-  const toggleMenu = () => setIsOpen(prev => !prev);
+  const menuItems = rawMenuItems.filter((item) => item.enabled);
+
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <div className="relative bg-variable-collection-ultra-light-grey">
-      {/* ================= HEADER ================= */}
-      <QuickMenu isOpen={isOpen} toggleMenu={toggleMenu} />
+    <div className="relative h-[61px] bg-variable-collection-ultra-light-grey">
+      <QuickMenu toggleMenu={() => setIsOpen((prev) => !prev)} />
 
-      {/* ================= BURGER PANEL ================= */}
-      <div
-        className={`
-          absolute left-0 top-full z-50
-          w-full max-w-[400px]
-          bg-variable-collection-ultra-light-grey
-          border-t border-[#E7E7E7]
-          h-auto
-          ${isOpen ? 'menu-enter pointer-events-auto' : 'menu-exit pointer-events-none'}
-        `}
-        style={{ boxShadow: 'var(--drop)' }}
+      {isOpen && (
+        <div className="fixed inset-0 z-40 bg-black/60" onClick={closeMenu} />
+      )}
+
+      <Sidebar
+        id="sidebar"
+        theme={sidebarTheme}
+        className={`w-full max-w-[450px] shadow-[0_0_4px_0_#00000033] transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} `}
       >
-        {/* FULL HEIGHT LAYOUT */}
-        <div className="flex flex-col h-full pl-[100px] pr-[50px]">
-          {/* ================= TOP ================= */}
-          <div className="flex flex-col">
-            {/* MENU LINKS */}
-            <nav className="flex flex-col mt-6">
-             {menuItems
-  .filter(item => item.enabled !== false)
-  .map(item => (
+        <Sidebar.Items className="h-full">
+          <Sidebar.ItemGroup className="flex h-full flex-col">
+            {/* HEADER */}
+            <div className="flex justify-end p-4">
+              <button onClick={closeMenu}>
+                <HiX className="h-6 w-6 text-gray-800" />
+              </button>
+            </div>
+
+            {/* MENU (SCROLL) */}
+            <div className="flex-1 overflow-y-auto">
+              <NestedMenu items={menuItems} closeMenu={closeMenu} />
+
+              {/* CTA (NOT STICKY, PART OF CONTENT) */}
+              <div className="ml-[100px] mr-[50px] mt-10 flex w-[250px] flex-col gap-3">
                 <Link
-                  key={item.href}
-                  href={item.href}
+                  href="/beach-map"
                   onClick={closeMenu}
-                  className={`
-                    flex items-center justify-between
-                    py-2
-                    border-b border-[#E7E7E7]
-                    hover:bg-white/60
-                    transition-colors
-                  `}
+                  className="flex h-[41px] items-center justify-center gap-3 rounded-lg bg-[#1A3C68] text-white transition-all duration-200 hover:bg-[#162f4f] hover:shadow-[0_4px_10px_rgba(26,60,104,0.25)] active:scale-[0.98]"
                 >
-                  <div className="flex items-center gap-6">
-                    {item.icon && (
-                      <Image
-                        src={item.icon}
-                        alt={item.label}
-                        width={26}
-                        height={26}
-                      />
-                    )}
-
-                    <span className="font-figtree text-[14px] font-bold leading-[100%] text-[#4D4D4D]">
-                      {item.label}
-                    </span>
-                  </div>
-
-                  <ChevronRight size={18} className="text-[#B0B0B0]" />
-                </Link>
-              ))}
-            </nav>
-
-            {/* CTA BUTTONS */}
-            <div className="flex flex-col gap-3 mt-12">
-              <Link
-                href="/beach-map"
-                onClick={closeMenu}
-                className={`
-                  flex items-center justify-center gap-3
-                  w-full h-[41px] rounded-lg
-                  bg-[#1A3C68]
-                `}
-              >
-                <Image
+                  <Image
 src="/images/map.png" alt="" width={26}
 height={26}
-                />
-                <span className="text-white font-figtree text-[14px] font-bold leading-[100%]">
-                  {tCommon('mapButtonFilter')}
-                </span>
-              </Link>
-              {/*
-              <Link
-                href="/nastanitev"
-                onClick={closeMenu}
-                className={`
-                  flex items-center justify-center gap-3
-                  w-full h-[41px] rounded-lg
-                  bg-[#008260]
-                `}
-              >
-                <Image
-                  src="/images/accomodation.svg"
-                  alt=""
-                  width={26}
-                  height={26}
-                />
-                <span className="text-white font-figtree text-[14px] font-bold leading-[100%]">
-                  {tCommon('accommodations')}
-                </span>
-              </Link>
-              */}
+                  />
+                  <span className="text-[14px] font-bold">
+                    Beach map with filter
+                  </span>
+                </Link>
+
+                <Link
+                  href="/beach-accommodation"
+                  onClick={closeMenu}
+                  className="flex h-[41px] items-center justify-center gap-3 rounded-lg bg-[#008260] text-white transition-all duration-200 hover:bg-[#006b4f] hover:shadow-[0_4px_10px_rgba(0,130,96,0.25)] active:scale-[0.98]"
+                >
+                  <Image
+                    src="/images/accomodation.svg"
+                    alt=""
+                    width={26}
+                    height={26}
+                  />
+                  <span className="text-[14px] font-bold">Accommodation</span>
+                </Link>
+              </div>
             </div>
-          </div>
 
-          {/* ================= BOTTOM ================= */}
-          <div className="mt-24 flex flex-col items-center gap-10 pb-8">
+            {/* FOOTER (STICKY BOTTOM) - COMMENTED */}
             {/*
-            <Link
-              href="/mobilna-aplikacija"
-              onClick={closeMenu}
-              className={`
-                flex items-center justify-center gap-3
-                w-full h-[41px] rounded-lg
-                bg-white
-              `}
-            >
-              <Image
-                src="/images/menu/app.svg"
-                alt=""
-                width={26}
-                height={26}
-              />
-              <span className="text-[#4D4D4D] font-figtree text-[14px] font-bold leading-[100%]">
-                {tCommon('mobileApp')}
-              </span>
-            </Link>
-            */}
-          {/*
-<div className="flex items-center gap-4">
-  <Image src="/images/menu/FB.svg" alt="Facebook" width={26} height={26} />
-  <Image src="/images/menu/INSTA.svg" alt="Instagram" width={26} height={26} />
-  <Image src="/images/menu/YT.svg" alt="YouTube" width={26} height={26} />
-</div>
-*/}
+            <div className="mt-auto pb-8">
+              <div className="ml-[100px] mr-[50px] w-[250px] mb-6">
+                <Link
+                  href="/mobile-app"
+                  onClick={closeMenu}
+                  className="
+  h-[41px]
+  rounded-lg
+  border border-[#E7E7E7]
+  bg-white
+  flex items-center justify-center gap-3
 
-          </div>
-        </div>
-      </div>
+  transition-all duration-200
+  hover:bg-[#F5F5F5]
+  hover:border-[#DADADA]
+  hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)]
+  active:scale-[0.98]
+"
+
+                >
+                  <Image
+src="/images/menu/app.svg" alt="" width={26}
+height={26}
+                  />
+                  <span className="font-bold text-[14px] text-[#4D4D4D]">
+  {tCommon('mobileApp')}
+</span>
+
+                </Link>
+              </div>
+
+              <div className="flex justify-center gap-4">
+                <Image
+src="/images/menu/FB.svg" alt="Facebook" width={26}
+height={26}
+                />
+                <Image
+src="/images/menu/INSTA.svg" alt="Instagram" width={26}
+height={26}
+                />
+                <Image
+src="/images/menu/YT.svg" alt="YouTube" width={26}
+height={26}
+                />
+              </div>
+            </div>
+*/}
+          </Sidebar.ItemGroup>
+        </Sidebar.Items>
+      </Sidebar>
     </div>
   );
 };
