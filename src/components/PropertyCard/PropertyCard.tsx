@@ -4,19 +4,31 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/prefetch-utils';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { useQueryClient } from '@tanstack/react-query';
-import type { CustomFlowbiteTheme } from 'flowbite-react';
 import { Heart, Star } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { PropertyMediaContext } from '../PropertySection';
-import { PropertyCardCarousel } from './PropertyCardCarousel';
 
 // Performance logging
 const ENABLE_PERF_LOGGING = false;
 let propertyCardRenderCount = 0;
 
 const moduleLoadStart = performance.now();
+
+// Dynamically import EmblaCarousel to reduce initial bundle size
+const EmblaCarousel = dynamic(
+  () => import('./EmblaCarousel'),
+  {
+    loading: () => (
+      <div className="relative h-full w-full flex items-center justify-center bg-gray-100">
+        <div className="animate-pulse text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 // Log when module finishes loading
 if (ENABLE_PERF_LOGGING) {
@@ -60,17 +72,7 @@ export interface PropertyCardProps {
 
 }
 
-const carouselTheme: CustomFlowbiteTheme['carousel'] = {
-  indicators: {
-    wrapper:
-      'absolute left-1/2 -translate-x-1/2 bottom-3 flex gap-2 pointer-events-auto z-50',
-    base: 'h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-white/50 data-[active=true]:bg-white shadow transition cursor-pointer',
-  },
-};
-
-
-const PropertyCard = React.memo(function PropertyCard({
-  beachUrl,
+const PropertyCard = React.memo(function PropertyCard({  beachUrl,
   beachSlug,
   image,
   galleryImages = [],
@@ -326,15 +328,10 @@ const webcamUrl = React.useMemo(
       </div>
     </div>
   )
-
 ) : (
-  <PropertyCardCarousel
-    images={imagesToShow}
-    title={title}
-    carouselTheme={carouselTheme}
-  />
+  /* CAROUSEL - Uses Embla for both mobile and desktop */
+  <EmblaCarousel images={imagesToShow} title={title} />
 )}
-
      {/* BADGES - only show when not sphere/video mode */}
      {mediaMode !== 'sphere' && mediaMode !== 'video' && (
   <>
@@ -482,3 +479,4 @@ const webcamUrl = React.useMemo(
 });
 
 export default PropertyCard;
+
