@@ -3,8 +3,7 @@
 
 import type { Country } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { buildCountryUrl } from '@/lib/utils/beach-urls';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback } from 'react';
@@ -20,10 +19,12 @@ import {
 
 interface DestinationCardProps {
   country: Country;
+  url: string;
   badgeLabel?: string;
   bottomVariant?: 'default' | 'city' | 'island' | 'region';
   showFlag?: boolean;
 }
+
 
 /**
  * Memoized DestinationCard component to prevent unnecessary re-renders in carousels
@@ -31,23 +32,18 @@ interface DestinationCardProps {
  */
 const DestinationCard = React.memo<DestinationCardProps>(function DestinationCard({
   country,
+  url,
   badgeLabel,
   bottomVariant = 'default',
   showFlag = false,
 }) {
   const tHome = useTranslations('HomePage');
   const tDest = useTranslations('Destinations');
-  const locale = useLocale();
   const queryClient = useQueryClient();
 
   const name = country.name ?? '';
   const beachCount = country.beaches_count ?? 0;
 
-  const countrySlug = country.slug ?? country.code?.toLowerCase() ?? '';
-  const continentSlug =
-    country.continent?.slug ?? country.continent_code?.toLowerCase() ?? '';
-
-  const countryUrl = buildCountryUrl(locale, continentSlug, countrySlug);
 
 const countryLike = country as Record<string, unknown>;
 
@@ -130,7 +126,7 @@ const flagUrl =
 
   return (
     <Link
-      href={countryUrl}
+      href={url}
       className="flex h-[310px] flex-col overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

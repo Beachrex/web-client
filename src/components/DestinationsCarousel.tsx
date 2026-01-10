@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import DestinationCard from './DestinationCard';
 
-// Dynamically import Flowbite Carousel to reduce initial bundle size
 const FlowbiteCarousel = dynamic(
   () => import('./DestinationsCarousel/FlowbiteCarousel'),
   {
@@ -19,21 +18,19 @@ const FlowbiteCarousel = dynamic(
   }
 );
 
+type CountryWithUrl = Country & { url: string };
+
 interface DestinationsCarouselProps {
-  items: Country[];
+  items: CountryWithUrl[];
   title: string;
   countLabel?: string;
   badgeLabel?: string;
   cardVariant?: 'default' | 'city' | 'island' | 'region';
-  backgroundClassName?: string; // new
-  titleClassName?: string;      // new
+  backgroundClassName?: string;
+  titleClassName?: string;
   showFlag?: boolean;
 }
 
-/**
- * Memoized DestinationsCarousel component to prevent unnecessary re-renders
- * Uses useMemo for slides calculation and useCallback for event handlers
- */
 const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function DestinationsCarousel(props) {
   const {
     items,
@@ -48,7 +45,6 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
 
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
 
-  // Memoize resize handler to prevent recreation on every render
   const handleResize = useCallback(() => {
     const w = window.innerWidth;
     if (w >= 1280) setItemsPerSlide(5);
@@ -63,9 +59,8 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
     return () => window.removeEventListener('resize', handleResize);
   }, [handleResize]);
 
-  // Memoize slides calculation to prevent recalculation on every render
   const slides = useMemo(() => {
-    const result: Country[][] = [];
+    const result: CountryWithUrl[][] = [];
     for (let i = 0; i < items.length; i += itemsPerSlide) {
       result.push(items.slice(i, i + itemsPerSlide));
     }
@@ -76,14 +71,14 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
     <section className={`${backgroundClassName} py-12`}>
       <div className="container mx-auto">
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-          <h2 className={`font-figtree text-[30px] font-bold leading-[1] tracking-[0] ${titleClassName}`}>
+          <h2 className={`font-figtree text-[30px] font-bold leading-[1] ${titleClassName}`}>
             {title}
           </h2>
 
           {countLabel && (
             <a
               href="#"
-              className="flex items-center gap-1 font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
+              className="flex items-center gap-1 font-figtree text-[14px] font-bold text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
             >
               {countLabel}
               <ChevronRight className="h-4 w-4" />
@@ -109,11 +104,12 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
           >
             {slides.map((chunk, i) => (
               <div key={i} className="h-full px-0">
-                <div className="grid h-full grid-cols-1 content-center gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-5">
+                <div className="grid h-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                   {chunk.map((c) => (
                     <DestinationCard
                       key={c.code}
                       country={c}
+                      url={c.url}
                       badgeLabel={badgeLabel}
                       bottomVariant={cardVariant}
                       showFlag={showFlag}
