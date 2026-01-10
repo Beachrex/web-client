@@ -23,7 +23,8 @@
     "paidFallback": "No information",
     "mobileApp": "Download mobile app",
     "activities":"Activities",
-    "mostBeatifulDestinationsWorld": "The world's most beautiful coastal destinations"
+    "mostBeatifulDestinationsWorld": "The world's most beautiful coastal destinations",
+    "showLess": "Show less"
   },
   "Search": {
     "typeBeach": "Beach",

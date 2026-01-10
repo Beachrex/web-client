@@ -13,6 +13,7 @@ import { PropertyMediaContext } from '@/components/PropertySection';
 import Dropdown from './Dropdown';
 import type { PropertyCardProps } from './PropertyCard/PropertyCard';
 import PropertyCard from './PropertyCard/PropertyCard';
+import Link from 'next/link';
 
 /* -------------------------------------------------------------
    BUILD GALLERY
@@ -178,13 +179,18 @@ alt=""
             </button>
 
             {/* MAP BTN */}
-            <button className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-6 font-bold text-white hover:bg-[#2a4c78]">
-              <Image
-src="/images/map.png" width={20} height={20}
-alt=""
-              />
-              <span>{t('mapButton')}</span>
-            </button>
+            <Link
+  href="/beach-map"
+  className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-6 font-bold text-white hover:bg-[#2a4c78]"
+            >
+  <Image
+    src="/images/map.png"
+    width={20}
+    height={20}
+    alt=""
+  />
+  <span>{t('mapButton')}</span>
+</Link>
 
             {/* DISPLAY MODE */}
             <div className="flex h-[40px] items-center gap-[10px] bg-[#E7E7E7] rounded-[6px] px-[8px] py-[6px]">

@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
+import PropertyCard from './PropertyCard/PropertyCard';
 
 // Dynamically import PropertyCarousel to reduce initial bundle size
 const PropertyCarousel = dynamic(
@@ -53,6 +54,8 @@ interface PropertySectionProps {
   totalCount?: number;
   properties: Property[];
   headerRight?: React.ReactNode;
+  controlsBelowHeader?: React.ReactNode;
+
 }
 
 interface PropertyCarouselProps {
@@ -104,9 +107,11 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
   title,
   totalCount = 124,
   properties,
-  headerRight,
+  controlsBelowHeader,
 }) => {
   const t = useTranslations('PropertySection');
+ const [expanded, setExpanded] = useState(false);
+ const c = useTranslations('Common');
 
  const [mediaMode, setMediaMode] =
   useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
@@ -256,15 +261,28 @@ const hasAnyWebcam = React.useMemo(
               </div>
             </div>
 
-            {headerRight ?? (
-              <a
-                href="#"
-                className="flex items-center gap-1 font-figtree text-[14px] font-bold text-[#8D8D8D] underline hover:text-[#555]"
-              >
-                {t('allBeachesLink', { count: totalCount })}
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            )}
+          {controlsBelowHeader && (
+  <div className="flex justify-end">
+    {controlsBelowHeader}
+  </div>
+)}
+
+            <button
+  type="button"
+  onClick={() => setExpanded((v) => !v)}
+  className="flex items-center gap-1 font-figtree text-[14px] font-bold text-[#8D8D8D] underline hover:text-[#555]"
+            >
+  {expanded
+    ? c('showLess')
+    : t('allBeachesLink', { count: totalCount })}
+
+  <ArrowRight
+    className={`h-4 w-4 transition-transform ${
+      expanded ? 'rotate-90' : ''
+    }`}
+  />
+</button>
+
           </div>
         </div>
 
@@ -277,7 +295,16 @@ const hasAnyWebcam = React.useMemo(
   }}
        >
 
-          <PropertyEmblaCarousel items={properties} />
+          {expanded ? (
+  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    {properties.map((p) => (
+      <PropertyCard key={p.id} {...p} />
+    ))}
+  </div>
+) : (
+  <PropertyEmblaCarousel items={properties} />
+)}
+
         </PropertyMediaContext.Provider>
       </div>
     </section>

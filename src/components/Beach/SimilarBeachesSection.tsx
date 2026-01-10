@@ -28,20 +28,22 @@ const SimilarBeachesSection: React.FC<SimilarBeachesSectionProps> = ({
 
   return (
     <PropertySection
-      title={t('title')}
-      properties={properties}
-      headerRight={
-        <DistanceDropdown
-          value={selectedDistance?.value ?? distanceOptions[1]?.value ?? ''}
-          options={distanceOptions}
-          onChange={(val) => onDistanceChange?.(val)}
-          ariaLabel={t('dropdownAria')}
-          renderOptionLabel={(opt) =>
-            t('dropdownOption', { distance: opt.label })
-          }
-        />
+  title={t('title')}
+  properties={properties}
+  totalCount={properties.length}
+  controlsBelowHeader={
+    <DistanceDropdown
+      value={selectedDistance?.value ?? distanceOptions[1]?.value ?? ''}
+      options={distanceOptions}
+      onChange={(val) => onDistanceChange?.(val)}
+      ariaLabel={t('dropdownAria')}
+      renderOptionLabel={(opt) =>
+        t('dropdownOption', { distance: opt.label })
       }
     />
+  }
+    />
+
   );
 };
 

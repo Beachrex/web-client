@@ -30,18 +30,20 @@ const countriesWithLocation = countries
   return (
     <DestinationsSection
   context="home"
-  sections={[
-    {
-      type: 'country',
-      items: countriesWithLocation,
-      titleKey: 'mostBeatifulDestinationsWorld',
-      titleNamespace: 'Common',
-      badgeKey: 'seaExperiences',
-      showFlag: true,
-      backgroundClassName: 'bg-[#F5F5F5]',
-      titleClassName: 'text-[#1A3C68]',
-    },
-  ]}
+ sections={[
+  {
+    type: 'country',
+    items: countriesWithLocation,
+    titleKey: 'mostBeatifulDestinationsWorld',
+    titleNamespace: 'Common',
+    countKey: 'allCountriesCount', // ← TO
+    badgeKey: 'seaExperiences',
+    showFlag: true,
+    backgroundClassName: 'bg-[#F5F5F5]',
+    titleClassName: 'text-[#1A3C68]',
+  },
+]}
+
     />
 
   );
