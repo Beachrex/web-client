@@ -15,14 +15,14 @@ import type { Metadata } from 'next';
 import BeachCategorySearch from '@/components/Home/BeachCategorySearch';
 import HeroSection from '@/components/Home/HeroSection';
 import HomeAccommodationSection from '@/components/Home/HomeAccommodationSection';
-import TopDestinationsSection from '@/components/Home/TopDestinationSection';
 import WorldMapSection from '@/components/Home/WorldMapSection';
 import BeachMediaSection from '../../components/Home/BeachMediaSection';
 import ExploreSection from '../../components/Home/ExploreSection';
-import { getCountries, getFirstPageContent } from '@/lib/api-client';
-import type { AcceptLanguage, FirstPageContent, Country } from '@/lib/api-client/types.gen';
+import {  getFirstPageContent } from '@/lib/api-client';
+import type { AcceptLanguage, FirstPageContent } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
 
 interface PageProps {
   params: {
@@ -61,15 +61,11 @@ export default async function HomePage({ params }: PageProps) {
   const tRoutes = await getTranslations({ locale, namespace: 'routes' });
 
   // Fetch all data on server
-  let countries: Country[] = [];
+
   let sections: Record<string, FirstPageContent> = {};
 
   try {
     // Fetch countries
-    const countriesResponse = await getCountries({
-      headers: { 'Accept-Language': locale as AcceptLanguage },
-    });
-    countries = countriesResponse.data?.data ?? [];
 
     // Fetch first page content
     const contentResponse = await getFirstPageContent({
@@ -90,7 +86,6 @@ export default async function HomePage({ params }: PageProps) {
   }
 
   // Extract sections
-  const coastalDestinations = sections.coastal_destinations;
   const browseMap = sections.browse_map;
   const findBeach = sections.find_beach;
   const beachViews = sections.beach_views;
@@ -199,15 +194,13 @@ export default async function HomePage({ params }: PageProps) {
         />
       )}
 
-      {/* Top Destinations Section */}
-      {coastalDestinations && (
-        <TopDestinationsSection
-          title={coastalDestinations.title ?? ''}
-          items={countries}
-          countLabel={t('allCountriesCount', { count: countries.length })}
-          badgeLabel={t('seaExperiences')}
-        />
-      )}
+          {/* ★ NEW: IDENTICAL TOPDESTINATIONSSECTION AS ON HOME PAGE ★ */}
+           <ContinentCountriesSection
+  titleKey="mostBeatifulDestinationsWorld"
+  backgroundClassName="bg-[#F5F5F5]"
+  titleClassName="text-[#1A3C68]"
+           />
+
 
       {/* Explore Section */}
       {featuredSections && footerText && featuredItems.length > 0 && (

@@ -78,7 +78,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const countryName = countryDetails.name ?? countryDetails.full_name ?? countrySlug;
     const beachCount = countryDetails.beaches_count ?? 0;
+
     const continentSlug = params.continent;
+
 
     // Build title and description
     const title = t('countryTitle', {
@@ -207,12 +209,22 @@ const beachProperties: Property[] =
   }).filter(Boolean) as Property[];
 
 
+  // Build canonical path for DynamicTopBar
+  const beachesWord = getBeachesWord(locale);
+  const continentSlug = countryDetails?.continent?.slug ?? params.continent;
+  const pathname = `/${beachesWord}/${continentSlug}/${countryParam}`;
+
   /* Regions / Cities / Islands */
   const regionItems =
-    regions?.map((r) => ({
-      ...r,
-      image: buildCdnUrl(r.main_image, 'list'),
-    })) ?? [];
+  regions?.map((r) => ({
+    ...r,
+    image: buildCdnUrl(r.main_image, 'list'),
+    location: {
+      continent_slug: continentSlug,
+      country_slug: countryDetails?.slug ?? params.country,
+      region_slug: r.slug,
+    },
+  })) ?? [];
 
   const cityItems =
     cities?.map((c) => ({
@@ -248,10 +260,6 @@ const beachProperties: Property[] =
     locale,
   );
 
-  // Build canonical path for DynamicTopBar
-  const beachesWord = getBeachesWord(locale);
-  const continentSlug = countryDetails?.continent?.slug ?? params.continent;
-  const pathname = `/${beachesWord}/${continentSlug}/${countryParam}`;
 
   // Pre-compute navigation URLs on the server (can't pass functions to client components)
   const navigationWithUrls = countryDetails?.navigation ? {

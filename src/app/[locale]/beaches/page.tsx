@@ -1,6 +1,6 @@
 'use client';
 
-import TopDestinationsSection from '@/components/Home/TopDestinationSection'; // ← ADDED
+import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import WorldBannerSection from '@/components/WorldPage/WorldBanner/WorldBannerSection';
 import WorldQuickActionsSection from '@/components/WorldPage/WorldQuickActionsSection';
@@ -50,9 +50,8 @@ const Page = () => {
 
   const tWorld = useTranslations('WorldTopBar');
   const tProperty = useTranslations('PropertySection');
-  const tTitle = useTranslations('WorldTopBar');
   const tSEO = useTranslations('WorldSEO');
-  const tHome = useTranslations('HomePage');
+
 
   return (
     <>
@@ -116,12 +115,8 @@ const Page = () => {
       </section>
 
       {/* ★ NEW: IDENTICAL TOPDESTINATIONSSECTION AS ON HOME PAGE ★ */}
-      <TopDestinationsSection
-        title={tTitle('destinationsTitle')} // same translation key as home
-        items={mockCountries} // pass your world data later
-        countLabel={tHome('allCountriesCount', { count: mockCountries.length })}
-        badgeLabel={tHome('seaExperiences')}
-      />
+      <ContinentCountriesSection />
+
 
       {/* World Beach Search */}
       <WorldSearchBeaches countries={mockCountries} />
