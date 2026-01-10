@@ -14,7 +14,6 @@ import { getTranslations } from 'next-intl/server';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
-import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
@@ -43,6 +42,7 @@ import { buildBreadcrumbSchema, buildCountrySchema, renderJsonLd } from '@/lib/u
 import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { CountryDetails } from '@/types/CountryDetails';
+import DestinationsSection from '@/components/DestinationsSection';
 
 interface PageProps {
   params: {
@@ -377,12 +377,37 @@ const beachProperties: Property[] =
         showDropdown={false}
       />
 
-      <CountryDestinationsSection
-        countryName={countryName}
-        regionItems={regionItems}
-        cityItems={cityItems}
-        islandItems={islandItems}
-      />
+     <DestinationsSection
+  context="country"
+  contextName={countryName}
+  sections={[
+    {
+      type: 'region',
+      items: regionItems,
+      titleKey: 'regionsTitle',
+      countKey: 'allRegionsCount',
+      badgeKey: 'regionBadge',
+      cardVariant: 'region',
+    },
+    {
+      type: 'city',
+      items: cityItems,
+      titleKey: 'citiesTitle',
+      countKey: 'allCitiesCount',
+      badgeKey: 'cityBadge',
+      cardVariant: 'city',
+    },
+    {
+      type: 'island',
+      items: islandItems,
+      titleKey: 'islandsTitle',
+      countKey: 'allIslandsCount',
+      badgeKey: 'islandBadge',
+      cardVariant: 'island',
+    },
+  ]}
+     />
+
 
       <DynamicSearchBeaches
         translationNamespace="countryPage"

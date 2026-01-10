@@ -2,40 +2,25 @@
 
 import { usePathname } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
-
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
 import DynamicTopBar from '@/components/DynamicTopBar';
-import IslandDestinationsSection from '@/components/IslandPage/IslandDestinationsSection';
 import PropertySection, { type Property } from '@/components/PropertySection';
-
 import { useCities } from '@/hooks/useCities';
 import { useIslandDetails } from '@/hooks/useIslandDetails';
 import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
 import { useIslandWeather } from '@/hooks/useWeather';
-
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
-import { buildDestinationUrl } from '@/lib/utils/destination-url';
-
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { ChevronRight } from 'lucide-react';
 import { formatRegionPillLabel } from '../BannerSection/topbar-utils';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
+import DestinationsSection from '../DestinationsSection';
 
 interface IslandListingPageProps {
   islandSlug?: string;
-}
-
-interface DestinationItem {
-  slug: string;
-  location: {
-    continent_slug: string;
-    country_slug: string;
-    region_slug?: string;
-    island_slug?: string;
-  };
 }
 
 export default function IslandListingPage({
@@ -108,22 +93,6 @@ export default function IslandListingPage({
         };
       })
       .filter((p): p is Property => p !== null) ?? [];
-
-  const buildUrl = (
-    item: DestinationItem,
-  ) =>
-    buildDestinationUrl({
-      locale,
-      type: 'city',
-      slug: item.slug,
-      location: item.location,
-    });
-
-  const citiesWithUrl =
-    cities?.map((c) => ({
-      ...c,
-      url: buildUrl(c as unknown as DestinationItem),
-    })) ?? [];
 
   const bottomBadges =
     islandDetails?.badges
@@ -199,10 +168,21 @@ export default function IslandListingPage({
         showDropdown
       />
 
-      <IslandDestinationsSection
-        islandName={islandName}
-        cityItems={citiesWithUrl}
+      <DestinationsSection
+  context="island"
+  contextName={islandName}
+  sections={[
+    {
+      type: 'city',
+      items: cities,
+      titleKey: 'citiesTitle',
+      countKey: 'allCitiesCount',
+      badgeKey: 'cityBadge',
+      cardVariant: 'city',
+    },
+  ]}
       />
+
 
       <DynamicSearchBeaches
         translationNamespace="IslandPage"

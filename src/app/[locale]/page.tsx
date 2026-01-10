@@ -22,7 +22,7 @@ import {  getFirstPageContent } from '@/lib/api-client';
 import type { AcceptLanguage, FirstPageContent } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
-import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
+import HomeCountriesSection from '@/components/Home/HomeCountriesSection';
 
 interface PageProps {
   params: {
@@ -61,6 +61,7 @@ export default async function HomePage({ params }: PageProps) {
   const tRoutes = await getTranslations({ locale, namespace: 'routes' });
 
   // Fetch all data on server
+
 
   let sections: Record<string, FirstPageContent> = {};
 
@@ -195,12 +196,7 @@ export default async function HomePage({ params }: PageProps) {
       )}
 
           {/* ★ NEW: IDENTICAL TOPDESTINATIONSSECTION AS ON HOME PAGE ★ */}
-           <ContinentCountriesSection
-  titleKey="mostBeatifulDestinationsWorld"
-  backgroundClassName="bg-[#F5F5F5]"
-  titleClassName="text-[#1A3C68]"
-           />
-
+          <HomeCountriesSection />
 
       {/* Explore Section */}
       {featuredSections && footerText && featuredItems.length > 0 && (

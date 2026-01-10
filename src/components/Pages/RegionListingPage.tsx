@@ -6,7 +6,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
-import DestinationsCarousel from '@/components/DestinationsCarousel';
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import DynamicTopBar from '@/components/DynamicTopBar';
 
@@ -18,24 +17,14 @@ import { useRegionWeather } from '@/hooks/useWeather';
 
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
-import { buildDestinationUrl } from '@/lib/utils/destination-url';
 
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { ChevronRight } from 'lucide-react';
+import DestinationsSection from '../DestinationsSection';
 
 interface RegionListingPageProps {
   regionSlug?: string;
-}
-
-interface DestinationItem {
-  slug: string;
-  location: {
-    continent_slug: string;
-    country_slug: string;
-    region_slug?: string;
-    island_slug?: string;
-  };
 }
 
 export default function RegionListingPage({ regionSlug }: RegionListingPageProps) {
@@ -105,29 +94,6 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
       })
       .filter((p): p is Property => p !== null) ?? [];
 
-  const buildUrl = (
-    type: 'city' | 'island',
-    item: DestinationItem,
-  ) =>
-    buildDestinationUrl({
-      locale,
-      type,
-      slug: item.slug,
-      location: item.location,
-    });
-
-  const islandsWithUrl =
-    islands?.map((i) => ({
-      ...i,
-      url: buildUrl('island', i as unknown as DestinationItem),
-    })) ?? [];
-
-  const citiesWithUrl =
-    cities?.map((c) => ({
-      ...c,
-      url: buildUrl('city', c as unknown as DestinationItem),
-    })) ?? [];
-
   const regionBadges =
     regionDetails?.badges
       ?.filter((b) => b.name && b.icon)
@@ -196,29 +162,29 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
         showDropdown
       />
 
-      {islandsWithUrl.length > 0 && (
-        <DestinationsCarousel
-          items={islandsWithUrl}
-          title={tRegion('islandsTitle', { region: regionName })}
-          countLabel={tRegion('allIslandsCount', {
-            count: islandsWithUrl.length,
-          })}
-          badgeLabel={tRegion('islandBadge')}
-          cardVariant="island"
-        />
-      )}
+<DestinationsSection
+  context="region"
+  contextName={regionName}
+  sections={[
+    {
+      type: 'island',
+      items: islands,
+      titleKey: 'islandsTitle',
+      countKey: 'allIslandsCount',
+      badgeKey: 'islandBadge',
+      cardVariant: 'island',
+    },
+    {
+      type: 'city',
+      items: cities,
+      titleKey: 'citiesTitle',
+      countKey: 'allCitiesCount',
+      badgeKey: 'cityBadge',
+      cardVariant: 'city',
+    },
+  ]}
+/>
 
-      {citiesWithUrl.length > 0 && (
-        <DestinationsCarousel
-          items={citiesWithUrl}
-          title={tRegion('citiesTitle', { region: regionName })}
-          countLabel={tRegion('allCitiesCount', {
-            count: citiesWithUrl.length,
-          })}
-          badgeLabel={tRegion('cityBadge')}
-          cardVariant="city"
-        />
-      )}
 
       <DynamicSearchBeaches
         translationNamespace="RegionPage"
