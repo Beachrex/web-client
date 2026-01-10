@@ -7,6 +7,8 @@ import { ChevronRight } from 'lucide-react';
 import DistanceDropdown, { type DistanceOption } from '../DistanceDropdown';
 import { type AccommodationCardProps } from './AccommodationCard';
 import AccommodationFlowbiteCarousel from './AccommodationCarousel';
+import { Link } from '@/i18n/routing';
+
 
 interface Props {
   title?: string;
@@ -16,7 +18,6 @@ interface Props {
   distanceOptions?: DistanceOption[];
   selectedDistance?: DistanceOption;
   onFilterClick?: () => void;
-  onMapClick?: () => void;
   onDistanceChange?: (value: string | number) => void;
   onAllAccommodationsClick?: () => void;
 }
@@ -34,7 +35,6 @@ export default function AccommodationSection({
   ],
   selectedDistance,
   onFilterClick,
-  onMapClick,
   onDistanceChange,
   onAllAccommodationsClick,
 }: Props) {
@@ -95,19 +95,18 @@ export default function AccommodationSection({
             </button>
 
             {/* Map button */}
-            <button
-              type="button"
-              onClick={() => onMapClick?.()}
-              className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-6 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#2a4c78]"
-            >
-              <Image
-                src="/images/map.png"
-                alt="Map icon"
-                width={20}
-                height={20}
-              />
-              <span>{tAcc('mapButton')}</span>
-            </button>
+           <Link
+  href="/beach-map"
+  className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-6 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#2a4c78]"
+           >
+  <Image
+    src="/images/map.png"
+    alt="Map icon"
+    width={20}
+    height={20}
+  />
+  <span>{tAcc('mapButton')}</span>
+</Link>
 
             {/* Distance dropdown (reusable component) */}
             {showDropdown && (

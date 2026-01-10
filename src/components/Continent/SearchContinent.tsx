@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
 import type { Continent } from '@/lib/api-client/types.gen';
+import Link from 'next/link';
 
 interface SearchContinentProps {
   continent?: Continent;
@@ -36,18 +37,22 @@ const SearchContinent: React.FC<SearchContinentProps> = ({
               : tSearch('title')}
           </h2>
 
-          {/* Buttons */}
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-6 font-figtree text-sm font-bold text-white transition-colors hover:bg-[#2a4c78]">
-              <Image
-                src="/images/map.png"
-                alt="Map icon"
-                width={20}
-                height={20}
-                className="sm:h-5 sm:w-5"
-              />
-              <span>{tSearch('viewBeachMap')}</span>
-            </button>
+        {/* Buttons */}
+<div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+  <Link
+    href="/beach-map"
+    className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-6 font-figtree text-sm font-bold text-white transition-colors hover:bg-[#2a4c78]"
+  >
+    <Image
+      src="/images/map.png"
+      alt="Map icon"
+      width={20}
+      height={20}
+      className="sm:h-5 sm:w-5"
+    />
+    <span>{tSearch('viewBeachMap')}</span>
+  </Link>
+
 
             <button className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#006b4f] px-6 font-figtree text-sm font-bold text-white transition-colors hover:bg-[#008260]">
               <Image

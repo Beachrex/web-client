@@ -220,7 +220,6 @@ const islandPillLabel = cityDetails?.island?.name
         selectedDistance={{ value: 1, label: '1 km' }}
         onDistanceChange={(v) => console.log('distance', v)}
         onFilterClick={() => console.log('filter')}
-        onMapClick={() => console.log('map')}
       />
 
       <CityCategories />

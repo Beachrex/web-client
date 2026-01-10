@@ -5,6 +5,7 @@ import { ChevronRight, ChevronLeft } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import DestinationCard from './DestinationCard';
+import { useTranslations } from 'next-intl';
 
 const FlowbiteCarousel = dynamic(
   () => import('./DestinationsCarousel/FlowbiteCarousel'),
@@ -44,6 +45,9 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
   } = props;
 
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
+  const [expanded, setExpanded] = useState(false);
+  const tCommon = useTranslations('Common');
+
 
   const handleResize = useCallback(() => {
     const w = window.innerWidth;
@@ -75,51 +79,76 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
             {title}
           </h2>
 
-          {countLabel && (
-            <a
-              href="#"
-              className="flex items-center gap-1 font-figtree text-[14px] font-bold text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
-            >
-              {countLabel}
-              <ChevronRight className="h-4 w-4" />
-            </a>
-          )}
+          {countLabel && items.length > itemsPerSlide && (
+<button
+  type="button"
+  aria-expanded={expanded}
+  onClick={() => setExpanded(v => !v)}
+  className="flex items-center gap-1 font-figtree text-[14px] font-bold text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
+>
+
+    {expanded ? tCommon('showLess') : countLabel}
+    <ChevronRight
+      className={`h-4 w-4 transition-transform ${
+        expanded ? 'rotate-90' : ''
+      }`}
+    />
+  </button>
+)}
+
         </div>
 
-        <div className="h-[340px] lg:h-[350px]">
-          <FlowbiteCarousel
-            className="h-full pb-8 [&>div>div>div:last-child]:!bottom-[-30px]"
-            leftControl={
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
-                <ChevronLeft className="h-5 w-5 text-gray-600" />
-              </div>
-            }
-            rightControl={
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
-                <ChevronRight className="h-5 w-5 text-gray-600" />
-              </div>
-            }
-            indicators={false}
-            slide={false}
-          >
-            {slides.map((chunk, i) => (
-              <div key={i} className="h-full px-0">
-                <div className="grid h-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                  {chunk.map((c) => (
-                    <DestinationCard
-                      key={c.code}
-                      country={c}
-                      url={c.url}
-                      badgeLabel={badgeLabel}
-                      bottomVariant={cardVariant}
-                      showFlag={showFlag}
-                    />
-                  ))}
-                </div>
-              </div>
+       {!expanded ? (
+  <div className="h-[340px] lg:h-[350px]">
+    <FlowbiteCarousel
+      className="h-full pb-8 [&>div>div>div:last-child]:!bottom-[-30px]"
+    leftControl={
+  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
+    <ChevronLeft className="h-5 w-5 text-gray-600" />
+  </div>
+}
+rightControl={
+  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
+    <ChevronRight className="h-5 w-5 text-gray-600" />
+  </div>
+}
+
+      indicators={false}
+      slide={false}
+    >
+      {slides.map((chunk, i) => (
+        <div key={i} className="h-full px-0">
+          <div className="grid h-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {chunk.map((c) => (
+              <DestinationCard
+                key={c.code}
+                country={c}
+                url={c.url}
+                badgeLabel={badgeLabel}
+                bottomVariant={cardVariant}
+                showFlag={showFlag}
+              />
             ))}
-          </FlowbiteCarousel>
+          </div>
         </div>
+      ))}
+    </FlowbiteCarousel>
+  </div>
+) : (
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    {items.map((c) => (
+      <DestinationCard
+        key={c.code}
+        country={c}
+        url={c.url}
+        badgeLabel={badgeLabel}
+        bottomVariant={cardVariant}
+        showFlag={showFlag}
+      />
+    ))}
+  </div>
+)}
+
       </div>
     </section>
   );

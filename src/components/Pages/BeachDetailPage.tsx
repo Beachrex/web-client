@@ -11,7 +11,6 @@ import BeachPageView from '@/components/Beach/BeachPageView';
 import GetYourGuideSection from '@/components/Beach/GetYourGuideSection';
 import SimilarBeachesSection from '@/components/Beach/SimilarBeachesSection';
 import DynamicTopBar from '@/components/DynamicTopBar';
-
 import type { Property } from '@/components/PropertySection';
 import { useBeachesRadius } from '@/hooks/useBeaches';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
@@ -116,7 +115,6 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
         selectedDistance={{ value: 1, label: '1 km' }}
         onDistanceChange={(v) => console.log('distance', v)}
         onFilterClick={() => console.log('filter')}
-        onMapClick={() => console.log('map')}
       />
       <GetYourGuideSection />
       <BeachDetailsSection beachDetails={beachDetails} />
