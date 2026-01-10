@@ -327,6 +327,7 @@ return {
         {/* Most visited */}
         <PropertySection
           title={t('popularDestinations', { continent: continent.name })}
+          totalCount={transformedProperties.length}
           properties={transformedProperties}
         />
 

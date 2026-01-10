@@ -14,7 +14,6 @@ import { getTranslations } from 'next-intl/server';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
-import CountryDestinationsSection from '@/components/CountryPage/CountryDestinationsSection';
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
@@ -43,6 +42,7 @@ import { buildBreadcrumbSchema, buildCountrySchema, renderJsonLd } from '@/lib/u
 import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { CountryDetails } from '@/types/CountryDetails';
+import DestinationsSection from '@/components/DestinationsSection';
 
 interface PageProps {
   params: {
@@ -78,7 +78,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const countryName = countryDetails.name ?? countryDetails.full_name ?? countrySlug;
     const beachCount = countryDetails.beaches_count ?? 0;
+
     const continentSlug = params.continent;
+
 
     // Build title and description
     const title = t('countryTitle', {
@@ -207,12 +209,22 @@ const beachProperties: Property[] =
   }).filter(Boolean) as Property[];
 
 
+  // Build canonical path for DynamicTopBar
+  const beachesWord = getBeachesWord(locale);
+  const continentSlug = countryDetails?.continent?.slug ?? params.continent;
+  const pathname = `/${beachesWord}/${continentSlug}/${countryParam}`;
+
   /* Regions / Cities / Islands */
   const regionItems =
-    regions?.map((r) => ({
-      ...r,
-      image: buildCdnUrl(r.main_image, 'list'),
-    })) ?? [];
+  regions?.map((r) => ({
+    ...r,
+    image: buildCdnUrl(r.main_image, 'list'),
+    location: {
+      continent_slug: continentSlug,
+      country_slug: countryDetails?.slug ?? params.country,
+      region_slug: r.slug,
+    },
+  })) ?? [];
 
   const cityItems =
     cities?.map((c) => ({
@@ -248,10 +260,6 @@ const beachProperties: Property[] =
     locale,
   );
 
-  // Build canonical path for DynamicTopBar
-  const beachesWord = getBeachesWord(locale);
-  const continentSlug = countryDetails?.continent?.slug ?? params.continent;
-  const pathname = `/${beachesWord}/${continentSlug}/${countryParam}`;
 
   // Pre-compute navigation URLs on the server (can't pass functions to client components)
   const navigationWithUrls = countryDetails?.navigation ? {
@@ -369,12 +377,37 @@ const beachProperties: Property[] =
         showDropdown={false}
       />
 
-      <CountryDestinationsSection
-        countryName={countryName}
-        regionItems={regionItems}
-        cityItems={cityItems}
-        islandItems={islandItems}
-      />
+     <DestinationsSection
+  context="country"
+  contextName={countryName}
+  sections={[
+    {
+      type: 'region',
+      items: regionItems,
+      titleKey: 'regionsTitle',
+      countKey: 'allRegionsCount',
+      badgeKey: 'regionBadge',
+      cardVariant: 'region',
+    },
+    {
+      type: 'city',
+      items: cityItems,
+      titleKey: 'citiesTitle',
+      countKey: 'allCitiesCount',
+      badgeKey: 'cityBadge',
+      cardVariant: 'city',
+    },
+    {
+      type: 'island',
+      items: islandItems,
+      titleKey: 'islandsTitle',
+      countKey: 'allIslandsCount',
+      badgeKey: 'islandBadge',
+      cardVariant: 'island',
+    },
+  ]}
+     />
+
 
       <DynamicSearchBeaches
         translationNamespace="countryPage"

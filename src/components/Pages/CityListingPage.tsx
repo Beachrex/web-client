@@ -10,9 +10,7 @@ import { useCityWeather } from '@/hooks/useWeather';
 import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import CityCategories from '../CityPage/CityCategories';
-import DestinationsCarousel from '../DestinationsCarousel';
 
-import { type Country } from '@/lib/api-client/types.gen';
 import { ChevronRight } from 'lucide-react';
 
 import { useCityDetails } from '@/hooks/useCityDetails';
@@ -42,7 +40,7 @@ export default function CityListingPage({
 
   const tTown = useTranslations('TownPage');
   const tProperty = useTranslations('PropertySection');
-  const tRegion = useTranslations('RegionPage');
+  // const tRegion = useTranslations('RegionPage');
 
  const { cityDetails, loading: _loading, error: _error } = useCityDetails(
   _citySlug ?? '',
@@ -118,7 +116,7 @@ const beachProperties: Property[] =
     })
     .filter((p): p is Property => p !== null) ?? [];
 
-
+{/*
   // Temporary mock cities data (replace with real API later)
   const baseCity: Country = {
     code: 'BASKA',
@@ -131,7 +129,7 @@ const beachProperties: Property[] =
     code: `CITY-${i + 1}`,
     name: `City ${i + 1}`,
   })) as Country[];
-
+*/}
   const cityWeather = cityWeatherResponse?.data?.weather ?? null;
 
   const cityWeatherLocationName = cityWeather?.location_name ?? cityName;
@@ -239,16 +237,17 @@ const islandPillLabel = cityDetails?.island?.name
      />
 
 
-      {/* Cities carousel */}
+      {/* Cities carousel
       <DestinationsCarousel
-        items={cityItems}
-        title={tTown('categories.citiesTitle')}
-        countLabel={tRegion('allCitiesCount', {
-          count: cityItems.length,
-        })}
-        badgeLabel={tRegion('cityBadge')}
-        cardVariant="city"
+  items={cityItems}
+  title={tTown('categories.citiesTitle')}
+  countLabel={tRegion('allCitiesCount', {
+    count: cityItems.length,
+  })}
+  badgeLabel={tRegion('cityBadge')}
+  cardVariant="city"
       />
+*/}
     </>
   );
 }
