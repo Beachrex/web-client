@@ -184,16 +184,18 @@ export default function IslandListingPage({
       />
 
 
-      <DynamicSearchBeaches
-        translationNamespace="IslandPage"
-        titleKey="browseBeachesTitle"
-        titleParams={{ island: islandName }}
-        filterButtonColor="#FFC422"
-        filters={{
-          island: _islandSlug,
-          limit: 20,
-        }}
-      />
+     <DynamicSearchBeaches
+  translationNamespace="IslandPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ island: islandName }}
+  filterButtonColor="#FFC422"
+  baseFilters={{
+    island: _islandSlug!,
+    limit: 20,
+  }}
+  hiddenFilterKeys={['country', 'region', 'island']}
+     />
+
     </>
   );
 }

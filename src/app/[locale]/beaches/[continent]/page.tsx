@@ -342,14 +342,17 @@ return {
 
         {/* Search beaches */}
         <DynamicSearchBeaches
-          translationNamespace="SearchBeach"
-          titleKey="title"
-          filterButtonColor="#5E1CA5"
-          filters={{
-            continent_code: continent.code,
-            limit: 20,
-          }}
+  translationNamespace="SearchBeach"
+  titleKey="title"
+  filterButtonColor="#5E1CA5"
+  baseFilters={{
+    continent_code: continentCode,
+    limit: 20,
+  }}
+  hiddenFilterKeys={['continent_code']}
         />
+
+
       </>
     );
   } catch (error) {

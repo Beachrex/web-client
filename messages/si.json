@@ -152,16 +152,61 @@
     "viewBeachMap": "Poglej zemljevid plaž"
   },
   "SearchBeach": {
-    "title": "Brskaj po vseh plažah Evrope",
-    "filterButton": "Filtriraj",
-    "mapButton": "Prikaži zemljevid",
-    "displayLabel": "Prikaz plaže:",
-    "sortPopular": "Najbolj popularne",
-    "sortNewest": "Najnovejše",
-    "sortTopRated": "Najbolje ocenjene",
-    "prevPage": "Nazaj",
-    "nextPage": "Naprej"
+   "title": "Brskaj po vseh plažah Evrope",
+  "filterButton": "Filtriraj",
+  "mapButton": "Prikaži zemljevid",
+  "displayLabel": "Prikaz plaže:",
+  "sortPopular": "Najbolj priljubljene",
+  "sortNewest": "Najnovejše",
+  "sortTopRated": "Najbolje ocenjene",
+  "prevPage": "Nazaj",
+  "nextPage": "Naprej",
+  "found": "Najdeno",
+  "filtersTitle": "Filtri",
+  "filterCountry": "Država",
+  "filterRegion": "Regija",
+  "filterIsland": "Otok",
+  "filterCity": "Mesto",
+
+  "filterBeachType": "Tip plaže",
+  "filterUserType": "Vrsta uporabnikov",
+  "filterWaterbody": "Vrsta vode",
+  "filterParking": "Parkirišče",
+
+  "allCountries": "Vse države",
+  "allRegions": "Vse regije",
+  "allIslands": "Vsi otoki",
+  "allCities": "Vsa mesta",
+  "allWaterbodies": "Vse vrste vode",
+
+  "applyFilters": "Uporabi filtre",
+  "resetFilters": "Ponastavi"
   },
+  "Filters": {
+  "filtersTitle": "Filtri",
+  "filterButton": "Filtri",
+  "mapButton": "Prikaži zemljevid",
+
+  "found": "Najdeno",
+  "loadingFilters": "Nalaganje...",
+  "resetFilters": "Ponastavi",
+
+  "filterCountry": "Država",
+  "filterRegion": "Regija",
+  "filterCity": "Mesto",
+  "filterIsland": "Otok",
+
+  "filterBeachType": "Tip plaže",
+  "filterUserType": "Tip uporabnika",
+  "filterWaterbody": "Vrsta vode",
+
+  "allCountries": "Vse države",
+  "allRegions": "Vse regije",
+  "allCities": "Vsa mesta",
+  "allIslands": "Vsi otoki",
+  "allWaterbodies": "Vse vrste vode"
+},
+
   "BannerSection": {
     "categoryLabel": "regija",
     "badgeFestival": "Festival Črna ovca",

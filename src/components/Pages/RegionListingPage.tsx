@@ -187,15 +187,17 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
 
 
       <DynamicSearchBeaches
-        translationNamespace="RegionPage"
-        titleKey="browseBeachesTitle"
-        titleParams={{ region: regionName }}
-        filterButtonColor="#FF2877"
-        filters={{
-          region: regionSlug,
-          limit: 20,
-        }}
+  translationNamespace="RegionPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ region: regionName }}
+  filterButtonColor="#FF2877"
+  baseFilters={{
+    region: regionSlug!,
+    limit: 20,
+  }}
+  hiddenFilterKeys={['country', 'region']}
       />
+
     </>
   );
 }
