@@ -14,11 +14,13 @@ import Dropdown from './Dropdown';
 import type { PropertyCardProps } from './PropertyCard/PropertyCard';
 import PropertyCard from './PropertyCard/PropertyCard';
 import Link from 'next/link';
+import { useBeachFiltersController } from '@/hooks/useBeachFiltersController';
+import StyledSelect from './ui/StyledSelect';
+import FilterCard from './ui/FilterCard';
 
 /* -------------------------------------------------------------
    BUILD GALLERY
 -------------------------------------------------------------- */
-
 
 interface GalleryItem {
   url?: string;
@@ -44,312 +46,472 @@ function buildGallery(beach: BeachMediaInput) {
     .filter((u): u is string => Boolean(u));
 }
 
+/* -------------------------------------------------------------
+   COMPONENT
+-------------------------------------------------------------- */
+
 interface DynamicSearchBeachesProps {
   translationNamespace: string;
+  filterNamespace?: string;
   titleKey: string;
   titleParams?: TranslationValues;
   filterButtonColor: string;
-
-  filters: Record<string, string | number | boolean | undefined>;
+  baseFilters: Record<string, string | number>;
+  hiddenFilterKeys?: string[];
+  optionScopeFilters?: Record<string, string | number>;
 }
 
 export default function DynamicSearchBeaches({
   translationNamespace,
+  filterNamespace = 'Filters',
   titleKey,
   titleParams,
   filterButtonColor,
-  filters,
+  baseFilters,
+  hiddenFilterKeys,
+  optionScopeFilters,
 }: DynamicSearchBeachesProps) {
   const t = useTranslations(translationNamespace);
+  const tf = useTranslations(filterNamespace);
 
-  // Fetch beaches
+  const locale = useLocale();
+
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+
+  const {
+    filters,
+    filterOptions: _filterOptions,
+    setUserFilters: _setUserFilters,
+    resetFilters: _resetFilters,
+  } = useBeachFiltersController({
+    baseFilters,
+    hiddenFilterKeys,
+    optionScopeFilters,
+  });
+
   const { beaches, loading } = useAllBeaches(filters, true);
+
   const [sort, setSort] = useState<'popular' | 'newest' | 'rating'>('popular');
+const [mediaMode] =
+  useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
 
 
-const locale = useLocale();
-  // Pagination
   const itemsPerPage = 16;
   const [currentPage, setCurrentPage] = useState(1);
 
-  /* -------------------------------------------------------------
-     MEDIA MODE (gallery | sphere | video)
--------------------------------------------------------------- */
-const [mediaMode, setMediaMode] = useState<
-  'gallery' | 'sphere' | 'video' | 'webcam'
->('gallery');
-
-
-  // Reset page when switching display mode
   useEffect(() => {
     setCurrentPage(1);
   }, [mediaMode, beaches]);
 
-  /* -------------------------------------------------------------
-     TRANSFORM BEACH → PROPERTY CARD
--------------------------------------------------------------- */
   const properties: PropertyCardProps[] = beaches.map((b) => {
-  const mainImage = buildCdnUrl(b.main_image, 'list');
-  const galleryImages = buildGallery(b);
+    const mainImage = buildCdnUrl(b.main_image, 'list');
+    if (!mainImage) throw new Error(`Missing main_image for beach ${b.id}`);
 
-  if (!mainImage) {
-    throw new Error(`Missing main_image for beach ${b.id}`);
-  }
+    const galleryImages = buildGallery(b);
+    const sphere = b.media?.spheres_360?.[0] ?? null;
+    const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
 
-  const sphere = b.media?.spheres_360?.[0] ?? null;
-  const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
+    const rawVideo = b.media?.embeds?.video_url ?? null;
+    const videoEmbedUrl =
+      rawVideo?.includes('youtu')
+        ? rawVideo
+            .replace('youtu.be/', 'www.youtube.com/embed/')
+            .replace('watch?v=', 'embed/')
+        : undefined;
 
-  const rawVideo = b.media?.embeds?.video_url ?? null;
-  const videoEmbedUrl =
-    rawVideo?.includes('youtu')
-      ? rawVideo
-          .replace('youtu.be/', 'www.youtube.com/embed/')
-          .replace('watch?v=', 'embed/')
-      : undefined;
+    return {
+      beachUrl: buildBeachUrlFromSchema(b, locale) ?? undefined,
+      image: mainImage,
+      galleryImages,
+      sphereThumbnail: sphere ? mainImage : undefined,
+      sphereTourUrl,
+      videoEmbedUrl,
+      webcamEmbed: b.media?.embeds?.webcam ?? null,
+      title: b.name ?? 'Unknown beach',
+      location: b.city_slug ?? '',
+      price: 0,
+      rating: 0,
+      reviews: 0,
+      countryCode: b.country_code,
+    };
+  });
 
-  const webcamEmbed = b.media?.embeds?.webcam ?? null;
+  const filteredProperties = properties.filter((p) => {
+    if (mediaMode === 'sphere') return Boolean(p.sphereTourUrl);
+    if (mediaMode === 'video') return Boolean(p.videoEmbedUrl);
+    if (mediaMode === 'webcam') return Boolean(p.webcamEmbed);
+    return true;
+  });
 
-  const beachUrl =
-    buildBeachUrlFromSchema(b, locale) ?? undefined;
-
-  return {
-    beachUrl,
-    image: mainImage,
-    galleryImages,
-    sphereThumbnail: sphere ? mainImage : undefined,
-    sphereTourUrl,
-    videoEmbedUrl,
-    webcamEmbed,
-    title: b.name ?? 'Unknown beach',
-    location: b.city_slug ?? '',
-    price: 0,
-    rating: 0,
-    reviews: 0,
-    countryCode: b.country_code,
-  };
-});
-
-
-const hasAnyWebcam = properties.some(p => Boolean(p.webcamEmbed));
-
-
-  /* -------------------------------------------------------------
-      FILTER PROPERTIES BASED ON MEDIA MODE
--------------------------------------------------------------- */
-const filteredProperties = properties.filter((p) => {
-  if (mediaMode === 'sphere') return Boolean(p.sphereTourUrl);
-  if (mediaMode === 'video') return Boolean(p.videoEmbedUrl);
-  if (mediaMode === 'webcam') return Boolean(p.webcamEmbed);
-  return true;
-});
-
-
-  /* -------------------------------------------------------------
-     PAGINATE AFTER FILTERING
--------------------------------------------------------------- */
   const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
-
   const paginatedItems = filteredProperties.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   return (
     <section className="relative bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
+
+      {/* ================= FILTER DRAWER ================= */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/40"
+          onClick={() => setIsFilterOpen(false)}
+        >
+          <div
+            className="
+  absolute left-0 top-0 z-[110] h-full
+  w-full
+  bg-[#F5F5F5] p-6 overflow-y-auto shadow-lg
+  sm:max-w-[360px]
+"
+
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-6 flex items-center justify-between">
+              <h3 className="text-lg font-bold">{tf('filtersTitle')}</h3>
+              <button
+                type="button"
+                onClick={() => setIsFilterOpen(false)}
+                className="text-sm font-semibold text-gray-500"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between text-sm text-gray-600">
+                <span>
+                  {loading
+                    ? tf('loadingFilters')
+                    : `${tf('found')} (${filteredProperties.length})`}
+                </span>
+                <button
+                  type="button"
+                  onClick={_resetFilters}
+                  className="text-[#1A3C68] hover:text-blue-800"
+                >
+                  {tf('resetFilters')}
+                </button>
+              </div>
+
+              {!hiddenFilterKeys?.includes('country') &&
+  _filterOptions?.country?.options && (
+                <FilterCard
+                  title={tf('filterCountry')}
+                  isOpen={expandedSections.country ?? false}
+                  onToggle={() =>
+                    setExpandedSections(p => ({ ...p, country: !p.country }))
+                  }
+                >
+                  <StyledSelect
+                    value={filters.country ? String(filters.country) : ''}
+                    onChange={(v) =>
+                      _setUserFilters(p => ({ ...p, country: v || undefined }))
+                    }
+                    placeholder={tf('allCountries')}
+                    options={_filterOptions.country.options.map(opt => ({
+                      value: String(opt.code ?? opt.slug),
+                      label: String(opt.name ?? opt.slug ?? ''),
+                    }))}
+                  />
+                </FilterCard>
+              )}
+
+              {!hiddenFilterKeys?.includes('region') &&
+  _filterOptions?.region?.options && (
+                <FilterCard
+                  title={tf('filterRegion')}
+                  isOpen={expandedSections.region ?? false}
+                  onToggle={() =>
+                    setExpandedSections(p => ({ ...p, region: !p.region }))
+                  }
+                >
+                  <StyledSelect
+                    value={filters.region ? String(filters.region) : ''}
+                    onChange={(v) =>
+                      _setUserFilters(p => ({ ...p, region: v || undefined }))
+                    }
+                    placeholder={tf('allRegions')}
+                    options={_filterOptions.region.options.map(opt => ({
+                      value: String(opt.slug ?? opt.id),
+                      label: String(opt.name ?? opt.slug ?? ''),
+                    }))}
+                  />
+                </FilterCard>
+              )}
+
+          {!hiddenFilterKeys?.includes('city') &&
+  _filterOptions?.city?.options && (
+  <FilterCard
+    title={tf('filterCity')}
+    isOpen={expandedSections.city ?? false}
+    onToggle={() =>
+      setExpandedSections(p => ({ ...p, city: !p.city }))
+    }
+  >
+    <StyledSelect
+      value={filters.city ? String(filters.city) : ''}
+      onChange={(v) =>
+        _setUserFilters(p => ({ ...p, city: v || undefined }))
+      }
+      placeholder={tf('allCities')}
+      options={_filterOptions.city.options.map(opt => ({
+        value: String(opt.slug ?? opt.id),
+        label: String(opt.name ?? opt.slug ?? ''),
+      }))}
+    />
+  </FilterCard>
+)}
+
+
+{!hiddenFilterKeys?.includes('island') &&
+  _filterOptions?.island?.options && (
+  <FilterCard
+    title={tf('filterIsland')}
+    isOpen={expandedSections.island ?? false}
+    onToggle={() =>
+      setExpandedSections(p => ({ ...p, island: !p.island }))
+    }
+  >
+    <StyledSelect
+      value={filters.island ? String(filters.island) : ''}
+      onChange={(v) =>
+        _setUserFilters(p => ({ ...p, island: v || undefined }))
+      }
+      placeholder={tf('allIslands')}
+      options={_filterOptions.island.options.map(opt => ({
+        value: String(opt.slug ?? opt.id),
+        label: String(opt.name ?? opt.slug ?? ''),
+      }))}
+    />
+  </FilterCard>
+)}
+{_filterOptions?.beach_type?.options && (
+ <FilterCard
+  title={
+    <span className="flex items-center gap-2">
+      <Image
+        src="/images/beach-black.png"
+        alt=""
+        width={20}
+        height={20}
+      />
+      {tf('filterBeachType')}
+    </span>
+  }
+  isOpen={expandedSections.beach_type ?? false}
+  onToggle={() =>
+    setExpandedSections(p => ({ ...p, beach_type: !p.beach_type }))
+  }
+ >
+
+    <div className="space-y-2">
+      {_filterOptions.beach_type.options.map(opt => {
+        const value = String(opt.code ?? opt.slug);
+        if (!value) return null;
+
+        const values =
+          typeof filters.beach_type === 'string'
+            ? filters.beach_type.split(',')
+            : [];
+
+        const selected = values.includes(value);
+
+        return (
+          <label
+            key={value}
+            className="flex items-center gap-2 text-sm text-gray-700"
+          >
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={() => {
+                const next = selected
+                  ? values.filter(v => v !== value)
+                  : [...values, value];
+
+                _setUserFilters(p => ({
+                  ...p,
+                  beach_type: next.length ? next.join(',') : undefined,
+                }));
+              }}
+              className="!text-[#1A3C68] focus:ring-[#1A3C68]"
+            />
+            <span>{opt.name ?? value}</span>
+          </label>
+        );
+      })}
+    </div>
+  </FilterCard>
+)}
+
+{_filterOptions?.user_type?.options && (
+  <FilterCard
+  title={
+    <span className="flex items-center gap-2">
+      <Image
+        src="/images/beachicons/people.png"
+        alt=""
+        width={20}
+        height={20}
+      />
+      {tf('filterUserType')}
+    </span>
+  }
+  isOpen={expandedSections.user_type ?? false}
+  onToggle={() =>
+    setExpandedSections(p => ({ ...p, user_type: !p.user_type }))
+  }
+  >
+
+    <div className="space-y-2">
+      {_filterOptions.user_type.options.map(opt => {
+        const value = String(opt.code ?? opt.slug);
+        if (!value) return null;
+
+        const values =
+          typeof filters.user_type === 'string'
+            ? filters.user_type.split(',')
+            : [];
+
+        const selected = values.includes(value);
+
+        return (
+          <label
+            key={value}
+            className="flex items-center gap-2 text-sm text-gray-700"
+          >
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={() => {
+                const nextValues = selected
+                  ? values.filter(v => v !== value)
+                  : [...values, value];
+
+                _setUserFilters(p => ({
+                  ...p,
+                  user_type: nextValues.length
+                    ? nextValues.join(',')
+                    : undefined,
+                }));
+              }}
+              className="!text-[#1A3C68] focus:ring-[#1A3C68]"
+            />
+            <span>{opt.name ?? value}</span>
+          </label>
+        );
+      })}
+    </div>
+  </FilterCard>
+)}
+
+
+{_filterOptions?.waterbody?.options && (
+  <FilterCard
+  title={
+    <span className="flex items-center gap-2">
+      <Image
+        src="/images/beachicons/wave.png"
+        alt=""
+        width={20}
+        height={20}
+      />
+      {tf('filterWaterbody')}
+    </span>
+  }
+  isOpen={expandedSections.waterbody ?? false}
+  onToggle={() =>
+    setExpandedSections(p => ({ ...p, waterbody: !p.waterbody }))
+  }
+  >
+
+    <StyledSelect
+      value={filters.waterbody ? String(filters.waterbody) : ''}
+      onChange={(v) =>
+        _setUserFilters(p => ({ ...p, waterbody: v || undefined }))
+      }
+      placeholder={tf('allWaterbodies')}
+      options={_filterOptions.waterbody.options.map(opt => ({
+        value: String(opt.code ?? opt.slug),
+        label: String(opt.name ?? opt.slug ?? ''),
+      }))}
+    />
+  </FilterCard>
+)}
+
+
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= HEADER ================= */}
       <div className="container mx-auto">
-        {/* Header */}
-        <div className="mb-8 flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">
-          <h2 className="text-left font-figtree text-[26px] font-bold text-[#222] sm:text-[28px] lg:text-[30px]">
+        <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <h2 className="text-[26px] font-bold text-[#222]">
             {t(titleKey, titleParams)}
           </h2>
 
-          {/* Controls */}
-          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:gap-4">
-
-            {/* FILTER BTN */}
+          <div className="flex flex-wrap gap-3 items-center">
             <button
-              className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md px-5 font-bold text-white"
+              type="button"
+              onClick={() => setIsFilterOpen(true)}
+              className="inline-flex h-[40px] items-center gap-2 rounded-md px-5 font-bold text-white"
               style={{ backgroundColor: filterButtonColor }}
             >
               <Image
 src="/images/filters.png" width={20} height={20}
 alt=""
               />
-              <span>{t('filterButton')}</span>
+              <span>{tf('filterButton')}</span>
             </button>
 
-            {/* MAP BTN */}
             <Link
-  href="/beach-map"
-  className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-6 font-bold text-white hover:bg-[#2a4c78]"
+              href="/beach-map"
+              className="inline-flex h-[40px] items-center gap-2 rounded-md bg-[#1A3C68] px-6 font-bold text-white"
             >
-  <Image
-    src="/images/map.png"
-    width={20}
-    height={20}
-    alt=""
-  />
-  <span>{t('mapButton')}</span>
-</Link>
+              <Image
+src="/images/map.png" width={20} height={20}
+alt=""
+              />
+              <span>{t('mapButton')}</span>
+            </Link>
 
-            {/* DISPLAY MODE */}
-            <div className="flex h-[40px] items-center gap-[10px] bg-[#E7E7E7] rounded-[6px] px-[8px] py-[6px]">
-              <span className="font-semibold text-[#4D4D4D]">
-                {t('displayLabel')}
-              </span>
-
-              <div className="flex items-center gap-[10px]">
-
-                {/* GALLERY */}
-               <button
-  onClick={() => setMediaMode('gallery')}
-  className={`relative p-1 rounded-[6px] transition
-    ${mediaMode === 'gallery'
-      ? 'bg-[#D9EBF6]'
-      : 'opacity-60 hover:opacity-100'
-    }`}
-               >
-  <Image
-    src="/images/beachmedia/photo.png"
-    width={24}
-    height={24}
-    alt="gallery"
-  />
-
-  {mediaMode === 'gallery' && (
-    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-  )}
-</button>
-
-
-                <div className="h-[25px] w-[1px] bg-white" />
-
-
-  {/* VIDEO — real video */}
-           <button
-  onClick={() => setMediaMode(m => (m === 'video' ? 'gallery' : 'video'))}
-  className={`relative p-1 rounded-[6px] transition
-    ${mediaMode === 'video'
-      ? 'bg-[#D9EBF6]'
-      : 'opacity-60 hover:opacity-100'
-    }`}
-           >
-  <Image
-    src="/images/beachmedia/play-button-arrowhead-white.png"
-    width={24}
-    height={24}
-    alt="video"
-  />
-
-  {mediaMode === 'video' && (
-    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-  )}
-</button>
-
- <div className="h-[25px] w-[1px] bg-white" />
-                {/* SPHERE */}
-             <button
-  onClick={() => setMediaMode(m => (m === 'sphere' ? 'gallery' : 'sphere'))}
-  className={`relative p-1 rounded-[6px] transition
-    ${mediaMode === 'sphere'
-      ? 'bg-[#D9EBF6]'
-      : 'opacity-60 hover:opacity-100'
-    }`}
-             >
-  <Image
-    src="/images/beachmedia/360-degree-white.png"
-    width={24}
-    height={24}
-    alt="sphere"
-  />
-
-  {mediaMode === 'sphere' && (
-    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-  )}
-</button>
-
-
-                <div className="h-[25px] w-[1px] bg-white" />
-
-
-             {/* WEBCAM */}
-{hasAnyWebcam ? (
-  <button
-    onClick={() =>
-      setMediaMode(m => (m === 'webcam' ? 'gallery' : 'webcam'))
-    }
-    className={`relative p-1 rounded-[6px] transition
-      ${mediaMode === 'webcam'
-        ? 'bg-[#D9EBF6]'
-        : 'opacity-60 hover:opacity-100'
-      }`}
-  >
-    <Image
-      src="/images/beachmedia/video-icon-white.png"
-      width={24}
-      height={24}
-      alt="webcam"
-    />
-    {mediaMode === 'webcam' && (
-      <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-    )}
-  </button>
-) : (
-  <div className="opacity-40 cursor-not-allowed p-1">
-    <Image
-      src="/images/beachmedia/video-icon-white.png"
-      width={24}
-      height={24}
-      alt="webcam"
-    />
-  </div>
-)}
-
-
-              </div>
-            </div>
-
-            {/* Sort dropdown */}
-           <Dropdown
-  value={sort}
-  onChange={(v) => setSort(v as 'popular' | 'newest' | 'rating')}
-  showIcons={false}
-  buttonBg="#FFFFFF"
-  menuBg="#FFFFFF"
-  ariaLabel={t('sortPopular')}
-  options={[
-    { value: 'popular', label: t('sortPopular') },
-    { value: 'newest', label: t('sortNewest') },
-    { value: 'rating', label: t('sortTopRated') },
-  ]}
-           />
-
+            <Dropdown
+              value={sort}
+              onChange={(v) => setSort(v as typeof sort)}
+              showIcons={false}
+              buttonBg="#FFFFFF"
+              menuBg="#FFFFFF"
+              ariaLabel={t('sortPopular')}
+              options={[
+                { value: 'popular', label: t('sortPopular') },
+                { value: 'newest', label: t('sortNewest') },
+                { value: 'rating', label: t('sortTopRated') },
+              ]}
+            />
           </div>
         </div>
 
-        {/* CARDS WRAPPED IN CONTEXT */}
-        <PropertyMediaContext.Provider
-          value={{
-            mediaMode,
-           openSphere: () => undefined,
-openVideo: () => undefined,
-          }}
-        >
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {loading && <p>Loading beaches…</p>}
+     <PropertyMediaContext.Provider
+  value={{
+    mediaMode,
+    openSphere: () => undefined,
+    openVideo: () => undefined,
+  }}
+     >
 
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {!loading &&
               paginatedItems.map((p, i) => (
                 <PropertyCard key={`${p.title}-${i}`} {...p} />
               ))}
-
-            {!loading && paginatedItems.length === 0 && (
-              <p className="text-gray-500">No beaches available for this view.</p>
-            )}
           </div>
         </PropertyMediaContext.Provider>
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-10 flex justify-center">
             <Pagination
@@ -364,3 +526,4 @@ openVideo: () => undefined,
     </section>
   );
 }
+

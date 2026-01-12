@@ -409,16 +409,24 @@ const beachProperties: Property[] =
      />
 
 
-      <DynamicSearchBeaches
-        translationNamespace="countryPage"
-        titleKey="browseBeachesTitle"
-        titleParams={{ country: countryName }}
-        filterButtonColor="#DD0000"
-        filters={{
-          country: countryDetails?.code,
-          limit: 20,
-        }}
-      />
+    <DynamicSearchBeaches
+  translationNamespace="countryPage"
+  titleKey="browseBeachesTitle"
+  titleParams={{ country: countryName }}
+  filterButtonColor="#DD0000"
+  hiddenFilterKeys={['country']}
+  baseFilters={{
+    country: countryDetails!.code!,
+    limit: 20,
+  }}
+  optionScopeFilters={{
+    country: countryDetails!.code!, // filter-options endpoint
+  }}
+
+
+    />
+
+
     </>
   );
 }

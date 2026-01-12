@@ -121,15 +121,16 @@ const LeftSidebarFilters = ({
     }, [isLoading, onFilterOptionsLoadingChange]);
 
     // Initialize expanded sections when filter options data changes
-    useEffect(() => {
-        if (filterOptions) {
-            const initialExpandedState: Record<string, boolean> = {};
-            Object.keys(filterOptions).forEach(key => {
-                initialExpandedState[key] = false;
-            });
-            setExpandedSections(initialExpandedState);
-        }
-    }, [filterOptions]);
+  useEffect(() => {
+  if (filterOptions && Object.keys(expandedSections).length === 0) {
+    const initialExpandedState: Record<string, boolean> = {};
+    Object.keys(filterOptions).forEach(key => {
+      initialExpandedState[key] = false;
+    });
+    setExpandedSections(initialExpandedState);
+  }
+}, [filterOptions, expandedSections]);
+
 
     const toggleSection = (section: string) => {
         setExpandedSections(prev => ({

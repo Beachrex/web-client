@@ -156,16 +156,61 @@
     "viewBeachMap": "View beach map"
   },
   "SearchBeach": {
-    "title": "Browse all beaches in Europe",
-    "filterButton": "Filter",
-    "mapButton": "Show map",
-    "displayLabel": "Beach view:",
-    "sortPopular": "Most popular",
-    "sortNewest": "Newest",
-    "sortTopRated": "Top rated",
-    "prevPage": "Previous",
-    "nextPage": "Next"
+  "title": "Browse all beaches in Europe",
+  "filterButton": "Filter",
+  "mapButton": "Show map",
+  "displayLabel": "Beach view:",
+  "sortPopular": "Most popular",
+  "sortNewest": "Newest",
+  "sortTopRated": "Top rated",
+  "prevPage": "Previous",
+  "nextPage": "Next",
+  "found": "Found",
+  "filtersTitle": "Filters",
+  "filterCountry": "Country",
+  "filterRegion": "Region",
+  "filterIsland": "Island",
+  "filterCity": "City",
+
+  "filterBeachType": "Beach type",
+  "filterUserType": "User type",
+  "filterWaterbody": "Water type",
+  "filterParking": "Parking",
+
+  "allCountries": "All countries",
+  "allRegions": "All regions",
+  "allIslands": "All islands",
+  "allCities": "All cities",
+  "allWaterbodies": "All water types",
+
+  "applyFilters": "Apply filters",
+  "resetFilters": "Reset"
   },
+  "Filters": {
+  "filtersTitle": "Filters",
+  "filterButton": "Filters",
+  "mapButton": "Show map",
+
+  "found": "Found",
+  "loadingFilters": "Loading...",
+  "resetFilters": "Reset",
+
+  "filterCountry": "Country",
+  "filterRegion": "Region",
+  "filterCity": "City",
+  "filterIsland": "Island",
+
+  "filterBeachType": "Beach type",
+  "filterUserType": "User type",
+  "filterWaterbody": "Water type",
+
+  "allCountries": "All countries",
+  "allRegions": "All regions",
+  "allCities": "All cities",
+  "allIslands": "All islands",
+  "allWaterbodies": "All water types"
+},
+
   "BannerSection": {
     "categoryLabel": "region",
     "badgeFestival": "Crna Ovca Festival",
