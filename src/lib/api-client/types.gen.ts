@@ -963,7 +963,7 @@ export type BeachBoundingBoxResponseSchema = {
   /**
    * Array of beaches
    */
-  data?: Array<BeachSchema>;
+  data?: Array<SpatialBeach>;
   /**
    * Metadata about the response
    */
@@ -1508,7 +1508,7 @@ export type BeachNearestResponseSchema = {
   /**
    * Array of beaches ordered by distance from reference point
    */
-  data?: Array<BeachSchema>;
+  data?: Array<SpatialBeach>;
   /**
    * Metadata about the response
    */
@@ -1546,7 +1546,7 @@ export type BeachRadiusResponseSchema = {
   /**
    * Array of beaches
    */
-  data?: Array<BeachSchema>;
+  data?: Array<SpatialBeach>;
   /**
    * Metadata about the response
    */
@@ -1585,6 +1585,39 @@ export type BeachRadiusResponseSchema = {
      * Number of beaches found
      */
     count?: number;
+    /**
+     * Geographic location context for the search center, determined by finding the nearest city with active beaches (within 100km). Useful for displaying contextual headers like 'Beaches near Split, Croatia'.
+     */
+    location?: {
+      /**
+       * Translated name of the nearest city
+       */
+      city_name?: string | null;
+      /**
+       * Localized URL slug of the nearest city
+       */
+      city_slug?: string | null;
+      /**
+       * Localized URL slug of the region
+       */
+      region_slug?: string | null;
+      /**
+       * Translated name of the country
+       */
+      country_name?: string | null;
+      /**
+       * Localized URL slug of the country
+       */
+      country_slug?: string | null;
+      /**
+       * ISO 3166-1 alpha-2 country code
+       */
+      country_code?: string | null;
+      /**
+       * Localized URL slug of the continent
+       */
+      continent_slug?: string | null;
+    };
   };
 };
 
@@ -2498,6 +2531,105 @@ export type NaturalLocationConditionTranslation = {
 };
 
 /**
+ * Nearby Cities Response Schema
+ *
+ * Response schema for nearby cities endpoint
+ */
+export type NearbyCitiesResponseSchema = {
+  /**
+   * Array of cities ordered by distance from reference point
+   */
+  data?: Array<{
+    /**
+     * City ID
+     */
+    id?: number;
+    /**
+     * City name (translated)
+     */
+    name?: string;
+    /**
+     * City slug (translated)
+     */
+    slug?: string;
+    /**
+     * Two-letter country code
+     */
+    country_code?: string;
+    /**
+     * Country name (translated)
+     */
+    country_name?: string;
+    /**
+     * Country slug (translated)
+     */
+    country_slug?: string | null;
+    /**
+     * Continent slug (translated)
+     */
+    continent_slug?: string | null;
+    /**
+     * Region slug (translated)
+     */
+    region_slug?: string | null;
+    /**
+     * Island slug (translated)
+     */
+    island_slug?: string | null;
+    /**
+     * City latitude
+     */
+    latitude?: string;
+    /**
+     * City longitude
+     */
+    longitude?: string;
+    /**
+     * Number of active beaches in this city
+     */
+    beaches_count?: number;
+    /**
+     * Main image path for the city
+     */
+    main_image?: string | null;
+    /**
+     * Distance from reference point in kilometers
+     */
+    distance_km?: number;
+  }>;
+  /**
+   * Metadata about the response
+   */
+  meta?: {
+    /**
+     * The reference point used for distance calculation
+     */
+    reference_point?: {
+      /**
+       * Reference point latitude
+       */
+      latitude?: number;
+      /**
+       * Reference point longitude
+       */
+      longitude?: number;
+    };
+    /**
+     * Search radius in kilometers
+     */
+    radius_km?: number;
+    /**
+     * Maximum number of cities requested
+     */
+    limit?: number;
+    /**
+     * Number of cities returned
+     */
+    count?: number;
+  };
+};
+
+/**
  * Occupancy Rate
  *
  * Occupancy rate model (small, middle, big)
@@ -2988,6 +3120,143 @@ export type RoadToParkingTypeTranslation = {
    * URL-friendly slug
    */
   slug?: string;
+};
+
+/**
+ * Spatial Beach
+ *
+ * Beach with spatial distance information, returned by spatial query endpoints (within-radius, nearest, bounding-box)
+ */
+export type SpatialBeach = {
+  /**
+   * Beach ID
+   */
+  id?: number;
+  /**
+   * Beach name (with English fallback if translation missing)
+   */
+  name?: string;
+  /**
+   * URL-friendly slug (with English fallback if translation missing)
+   */
+  slug?: string;
+  /**
+   * Beach description (translated, nullable)
+   */
+  description?: string | null;
+  /**
+   * Beach latitude
+   */
+  latitude?: string;
+  /**
+   * Beach longitude
+   */
+  longitude?: string;
+  /**
+   * ISO country code
+   */
+  country_code?: string;
+  /**
+   * Country name (translated based on Accept-Language header)
+   */
+  country_name?: string;
+  /**
+   * Country slug (translated based on Accept-Language header)
+   */
+  country_slug?: string | null;
+  /**
+   * Continent code
+   */
+  continent_code?: string;
+  /**
+   * Continent slug (translated based on Accept-Language header)
+   */
+  continent_slug?: string | null;
+  /**
+   * Region slug (translated based on Accept-Language header)
+   */
+  region_slug?: string | null;
+  /**
+   * Island slug (translated based on Accept-Language header)
+   */
+  island_slug?: string | null;
+  /**
+   * City name (translated based on Accept-Language header, with English fallback)
+   */
+  city_name?: string | null;
+  /**
+   * City slug (translated based on Accept-Language header)
+   */
+  city_slug?: string | null;
+  /**
+   * Primary beach image path (relative, without CDN/domain prefix). Frontend constructs Imagor URLs by prepending IMAGOR_ENDPOINT + transformation params.
+   */
+  main_image?: string | null;
+  /**
+   * Media collections for the beach. Only non-empty collections are included (except embeds which is always present).
+   */
+  media?: {
+    /**
+     * Beach gallery images (only present if beach has gallery images)
+     */
+    gallery?: Array<{
+      /**
+       * Relative path to image file
+       */
+      url?: string;
+      /**
+       * Whether this is the primary image
+       */
+      is_primary?: boolean;
+      /**
+       * Display order
+       */
+      order?: number;
+    }>;
+    /**
+     * Beach videos (only present if beach has videos)
+     */
+    videos?: Array<{
+      /**
+       * Relative path to video file
+       */
+      url?: string;
+      /**
+       * Whether this is the primary video
+       */
+      is_primary?: boolean;
+      /**
+       * Display order
+       */
+      order?: number;
+    }>;
+    /**
+     * 360-degree sphere tours (only present if beach has 360 degree spheres)
+     */
+    spheres_360?: Array<{
+      /**
+       * URL to 360 degree virtual tour
+       */
+      tour_url?: string;
+    }>;
+    /**
+     * External embeds for the beach (always present)
+     */
+    embeds?: {
+      /**
+       * YouTube video URL
+       */
+      video_url?: string | null;
+      /**
+       * Webcam embed code
+       */
+      webcam?: string | null;
+    };
+  };
+  /**
+   * Distance from reference point in kilometers (null for bounding-box queries)
+   */
+  distance_km?: number | null;
 };
 
 /**
@@ -7758,6 +8027,70 @@ export type GetBeachesInBoundingBoxResponses = {
 
 export type GetBeachesInBoundingBoxResponse =
   GetBeachesInBoundingBoxResponses[keyof GetBeachesInBoundingBoxResponses];
+
+export type GetNearbyCitiesData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk";
+  };
+  path?: never;
+  query: {
+    /**
+     * Latitude of the reference point (-90 to 90)
+     */
+    latitude: number;
+    /**
+     * Longitude of the reference point (-180 to 180)
+     */
+    longitude: number;
+    /**
+     * Search radius in kilometers (0.1 to 500, default: 50)
+     */
+    radius?: number;
+    /**
+     * Maximum number of cities to return (1 to 50, default: 10)
+     */
+    limit?: number;
+  };
+  url: "/api/v1/spatial/cities/nearby";
+};
+
+export type GetNearbyCitiesErrors = {
+  /**
+   * Validation error - missing or invalid parameters
+   */
+  422: ValidationError;
+};
+
+export type GetNearbyCitiesError =
+  GetNearbyCitiesErrors[keyof GetNearbyCitiesErrors];
+
+export type GetNearbyCitiesResponses = {
+  /**
+   * Nearby cities found, ordered by distance from reference point
+   */
+  200: NearbyCitiesResponseSchema;
+};
+
+export type GetNearbyCitiesResponse =
+  GetNearbyCitiesResponses[keyof GetNearbyCitiesResponses];
 
 export type GetBeachDensityGridData = {
   body?: never;

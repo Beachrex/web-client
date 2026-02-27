@@ -53,6 +53,7 @@ import {
   getMostVisitedBeaches,
   getNaturalLocationConditionById,
   getNaturalLocationConditions,
+  getNearbyCities,
   getNearestBeaches,
   getOccupancyRateById,
   getOccupancyRates,
@@ -215,6 +216,9 @@ import type {
   GetNaturalLocationConditionsData,
   GetNaturalLocationConditionsError,
   GetNaturalLocationConditionsResponse,
+  GetNearbyCitiesData,
+  GetNearbyCitiesError,
+  GetNearbyCitiesResponse,
   GetNearestBeachesData,
   GetNearestBeachesResponse,
   GetOccupancyRateByIdData,
@@ -1967,6 +1971,34 @@ export const getBeachesInBoundingBoxOptions = (
       return data;
     },
     queryKey: getBeachesInBoundingBoxQueryKey(options),
+  });
+
+export const getNearbyCitiesQueryKey = (
+  options: Options<GetNearbyCitiesData>,
+) => createQueryKey("getNearbyCities", options);
+
+/**
+ * Find nearby cities with beaches
+ *
+ * Find cities near a given point that have at least one active beach, ordered by distance. Only returns active cities (status_id=1) with active beaches.
+ */
+export const getNearbyCitiesOptions = (options: Options<GetNearbyCitiesData>) =>
+  queryOptions<
+    GetNearbyCitiesResponse,
+    GetNearbyCitiesError,
+    GetNearbyCitiesResponse,
+    ReturnType<typeof getNearbyCitiesQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getNearbyCities({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getNearbyCitiesQueryKey(options),
   });
 
 export const getBeachDensityGridQueryKey = (

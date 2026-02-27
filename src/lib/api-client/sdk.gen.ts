@@ -171,6 +171,9 @@ import type {
   GetNaturalLocationConditionsData,
   GetNaturalLocationConditionsErrors,
   GetNaturalLocationConditionsResponses,
+  GetNearbyCitiesData,
+  GetNearbyCitiesErrors,
+  GetNearbyCitiesResponses,
   GetNearestBeachesData,
   GetNearestBeachesResponses,
   GetOccupancyRateByIdData,
@@ -1602,6 +1605,24 @@ export const getBeachesInBoundingBox = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/spatial/beaches/bounding-box",
+    ...options,
+  });
+};
+
+/**
+ * Find nearby cities with beaches
+ *
+ * Find cities near a given point that have at least one active beach, ordered by distance. Only returns active cities (status_id=1) with active beaches.
+ */
+export const getNearbyCities = <ThrowOnError extends boolean = false>(
+  options: Options<GetNearbyCitiesData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetNearbyCitiesResponses,
+    GetNearbyCitiesErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/spatial/cities/nearby",
     ...options,
   });
 };
