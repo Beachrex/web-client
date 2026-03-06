@@ -517,7 +517,10 @@
   "BeachSimilarBeaches": {
     "title": "Nearby beaches with similar characteristics",
     "dropdownAria": "Filter similar beaches by distance",
-    "dropdownOption": "Distance {distance} from the beach"
+    "dropdownOption": "Distance {distance} from the beach",
+    "emptyStateTitle": "No similar beaches found",
+    "emptyStateDescription": "There are no beaches with similar characteristics within {distance}.",
+    "emptyStateHint": "Try increasing the distance to find more beaches nearby."
   },
   "BeachDetails": {
     "title": "Detailed information",
@@ -549,7 +552,7 @@
       "parkingSpots": "No. of parking spaces",
       "wayToParking": "Surface to parking",
       "recommendedAccess": "Recommended access",
-      "distance": "Distance (parking—beach)",
+      "distance": "Distance (parking — beach)",
       "elevationDiff": "Elevation difference (parking to beach)"
     },
     "buttons": {

@@ -520,7 +520,10 @@
   "BeachSimilarBeaches": {
     "title": "Bližnje plaže s podobnimi karakteristikami",
     "dropdownAria": "Filtriraj podobne plaže po oddaljenosti",
-    "dropdownOption": "Oddaljenost {distance} od plaže"
+    "dropdownOption": "Oddaljenost {distance} od plaže",
+    "emptyStateTitle": "Ni podobnih plaž",
+    "emptyStateDescription": "V oddaljenosti {distance} ni plaž s podobnimi karakteristikami.",
+    "emptyStateHint": "Poskusite povečati oddaljenost, da najdete več bližnjih plaž."
   },
   "BeachDetails": {
     "title": "Podrobne informacije",
