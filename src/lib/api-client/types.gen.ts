@@ -6107,6 +6107,9 @@ export type GetBeachFiltersResponses = {
    * Filter options retrieved successfully
    */
   200: {
+    /**
+     * Additional filters may be returned based on available data: culinary_offer, location_infrastructure, natural_location_condition, sporting_activities, underwater_characteristic, recommended_transport_type, accessibility, area_description, parking_capacity, beach_inclination, swimming_depth_of_one_m, occupancy_rate, has_swimming_pool. All filters follow the same structure with title, icon, input_type/type, and options array.
+     */
     data?: {
       country?: {
         /**
@@ -6244,6 +6247,47 @@ export type GetBeachFiltersResponses = {
           code?: string;
           name?: string;
           slug?: string;
+        }>;
+      };
+      accommodation_around?: {
+        /**
+         * Localized filter title
+         */
+        title?: string;
+        /**
+         * Icon file path (SVG/PNG)
+         */
+        icon?: string | null;
+        /**
+         * Input type: checkbox, radio, select, single, multiple
+         */
+        input_type?: string;
+        /**
+         * Accommodation types available near the beach
+         */
+        options?: Array<{
+          id?: number;
+          code?: string;
+          name?: string;
+          slug?: string;
+        }>;
+      };
+      parking?: {
+        /**
+         * Localized filter title
+         */
+        title?: string;
+        /**
+         * Filter type
+         */
+        type?: string;
+        /**
+         * Boolean filter options
+         */
+        options?: Array<{
+          value?: string;
+          label?: string;
+          icon?: string | null;
         }>;
       };
     };
