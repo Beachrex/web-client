@@ -191,7 +191,6 @@ export default function IslandListingPage({
   filterButtonColor="#FFC422"
   baseFilters={{
     island: _islandSlug!,
-    limit: 20,
   }}
   hiddenFilterKeys={['country', 'region', 'island']}
      />

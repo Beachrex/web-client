@@ -417,7 +417,6 @@ const beachProperties: Property[] =
   hiddenFilterKeys={['country']}
   baseFilters={{
     country: countryDetails!.code!,
-    limit: 20,
   }}
   optionScopeFilters={{
     country: countryDetails!.code!, // filter-options endpoint

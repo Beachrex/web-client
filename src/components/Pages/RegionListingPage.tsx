@@ -193,7 +193,6 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
   filterButtonColor="#FF2877"
   baseFilters={{
     region: regionSlug!,
-    limit: 20,
   }}
   hiddenFilterKeys={['country', 'region']}
       />

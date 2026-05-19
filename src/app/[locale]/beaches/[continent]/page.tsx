@@ -347,7 +347,6 @@ return {
   filterButtonColor="#5E1CA5"
   baseFilters={{
     continent_code: continentCode,
-    limit: 20,
   }}
   hiddenFilterKeys={['continent_code']}
         />
