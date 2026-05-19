@@ -29,13 +29,15 @@ const SearchBar = () => {
                 <div className="md:hidden flex flex-col items-center">
                     {/* Logo Row */}
                     <div className="flex items-center justify-center px-4 mb-3">
-                        <Image
-                            src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
-                            alt="BeachRex Logo"
-                            width={80}
-                            height={26}
-                            className="flex-shrink-0 mix-blend-luminosity sm:w-[90px] sm:h-[30px]"
-                        />
+                        <Link href="/">
+                            <Image
+                                src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
+                                alt="BeachRex Logo"
+                                width={80}
+                                height={26}
+                                className="flex-shrink-0 mix-blend-luminosity sm:w-[90px] sm:h-[30px] cursor-pointer"
+                            />
+                        </Link>
                     </div>
 
                     {/* Search Bar */}
@@ -77,13 +79,15 @@ const SearchBar = () => {
                 <div className="hidden md:flex lg:hidden flex-col space-y-3">
                     {/* Top Row: Logo and Map Button */}
                     <div className="flex items-center justify-between">
-                        <Image
-                            src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
-                            alt="BeachRex Logo"
-                            width={90}
-                            height={36}
-                            className="mix-blend-luminosity"
-                        />
+                        <Link href="/">
+                            <Image
+                                src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
+                                alt="BeachRex Logo"
+                                width={90}
+                                height={36}
+                                className="mix-blend-luminosity cursor-pointer"
+                            />
+                        </Link>
                         <Link href={tRoutes('beachMap')} className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] hover:bg-variable-collection-morje">
                             <Image
                                 src={buildCdnUrl('img/icon/map.svg', 'icon') ?? ''}
@@ -124,13 +128,15 @@ const SearchBar = () => {
                 <div className="hidden lg:flex items-center justify-between">
                     {/* Left Section (Logo) */}
                     <div className="flex items-center">
-                        <Image
-                            src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
-                            alt="BeachRex Logo"
-                            width={100}
-                            height={40}
-                            className="mix-blend-luminosity"
-                        />
+                        <Link href="/">
+                            <Image
+                                src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
+                                alt="BeachRex Logo"
+                                width={100}
+                                height={40}
+                                className="mix-blend-luminosity cursor-pointer"
+                            />
+                        </Link>
                     </div>
 
                     {/* Middle Section (Search Bar + Icons) */}

@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 
 export default function FooterBrandColumn() {
@@ -12,14 +13,16 @@ export default function FooterBrandColumn() {
     <div className="flex h-full flex-col">
       {/* Logo always on top */}
       <div>
-        <Image
-          src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
-          alt="BeachRex logo"
-          width={119}
-          height={22}
-          className="h-5 w-auto opacity-100 mix-blend-luminosity grayscale sm:h-6 lg:h-7"
-          priority
-        />
+        <Link href="/">
+          <Image
+            src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
+            alt="BeachRex logo"
+            width={119}
+            height={22}
+            className="h-5 w-auto opacity-100 mix-blend-luminosity grayscale sm:h-6 lg:h-7 cursor-pointer"
+            priority
+          />
+        </Link>
       </div>
 
       {/* Centered content */}
@@ -30,13 +33,18 @@ export default function FooterBrandColumn() {
       </div>
 
       {/* Button pinned to bottom */}
-      <button className="inline-flex items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-5 py-2.5 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#2a4c78] focus:outline-none focus:ring-0">
+      <Link
+        href="/beach-map"
+        className="inline-flex items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-5 py-2.5 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#2a4c78] focus:outline-none focus:ring-0"
+      >
         <Image
-src="/images/map.png" alt="Map icon" width={20}
-height={20}
+          src="/images/map.png"
+          alt="Map icon"
+          width={20}
+          height={20}
         />
         <span>{t('cta')}</span>
-      </button>
+      </Link>
     </div>
   );
 }
