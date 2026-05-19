@@ -125,12 +125,34 @@ const LeftSidebarFilters = ({
   if (filterOptions && Object.keys(expandedSections).length === 0) {
     const initialExpandedState: Record<string, boolean> = {};
     Object.keys(filterOptions).forEach(key => {
-      initialExpandedState[key] = false;
+      // Auto-expand section if it has a selected value
+      const hasValue = currentFilters[key] !== undefined &&
+                      currentFilters[key] !== null &&
+                      currentFilters[key] !== '';
+      initialExpandedState[key] = hasValue;
     });
     setExpandedSections(initialExpandedState);
   }
-}, [filterOptions, expandedSections]);
+}, [filterOptions, expandedSections, currentFilters]);
 
+    // Auto-expand/collapse sections when currentFilters change
+    useEffect(() => {
+      if (!filterOptions) return;
+
+      setExpandedSections(prev => {
+        const updated = { ...prev };
+        Object.keys(filterOptions).forEach(key => {
+          const hasValue = currentFilters[key] !== undefined &&
+                          currentFilters[key] !== null &&
+                          currentFilters[key] !== '';
+          // Only auto-expand, don't auto-collapse if user manually expanded
+          if (hasValue && !prev[key]) {
+            updated[key] = true;
+          }
+        });
+        return updated;
+      });
+    }, [currentFilters, filterOptions]);
 
     const toggleSection = (section: string) => {
         setExpandedSections(prev => ({
