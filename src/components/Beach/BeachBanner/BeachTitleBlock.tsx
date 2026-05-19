@@ -11,12 +11,12 @@ const BeachTitleBlock: React.FC<BeachTitleBlockProps> = ({ title = '' }) => {
   const tCommon = useTranslations('Common'); // uses Common.beach
 
   return (
-    <div className="relative select-none pointer-events-none">
+    <div className="relative select-none">
       {/* Large faded background label (e.g. "Plaža" / "Beach") */}
       <span
         aria-hidden
         className="
-          block capitalize font-figtree font-bold leading-[100%] text-white opacity-30
+          block capitalize font-figtree font-bold leading-[100%] text-white opacity-30 pointer-events-none
           text-[80px] sm:text-[120px] md:text-[160px] lg:text-[200px]
         "
       >
@@ -27,7 +27,7 @@ const BeachTitleBlock: React.FC<BeachTitleBlockProps> = ({ title = '' }) => {
       <span
         className="
           absolute bottom-0 left-[20px] sm:left-[40px] md:left-[60px] lg:left-[80px]
-          font-figtree font-bold leading-[100%] text-white
+          font-figtree font-bold leading-[100%] text-white pointer-events-none
           text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px]
         "
       >

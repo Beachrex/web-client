@@ -35,6 +35,24 @@ export default function BeachBannerSection({
 
   const description = beachDetails?.basic_info?.description;
 
+  // Build map URL with beach context
+  const buildMapUrl = () => {
+    const params = new URLSearchParams();
+
+    const continentCode = beachDetails?.location?.continent?.code;
+    const countryCode = beachDetails?.location?.country?.code;
+    const regionSlug = beachDetails?.location?.region?.slug;
+    const islandSlug = beachDetails?.location?.island?.slug;
+
+    if (continentCode) params.append('continent_code', continentCode);
+    if (countryCode) params.append('country', countryCode);
+    if (regionSlug) params.append('region', regionSlug);
+    if (islandSlug) params.append('island', islandSlug);
+
+    const queryString = params.toString();
+    return queryString ? `${tRoutes('beachMap')}?${queryString}` : tRoutes('beachMap');
+  };
+
   const mainImage = getMainBeachImage(
     beachDetails?.media?.gallery,
     beachDetails?.basic_info?.folder_name,
@@ -124,11 +142,11 @@ export default function BeachBannerSection({
       </div>
 
       {/* === Title + widgets anchored near bottom === */}
-      <div className="absolute inset-x-0 bottom-[110px] z-20 sm:bottom-[120px] md:bottom-[130px]">
+      <div className="absolute inset-x-0 bottom-[110px] z-20 sm:bottom-[120px] md:bottom-[130px] pointer-events-none">
         <div className="grid grid-cols-1 gap-6 px-4 pr-16 sm:px-6 sm:pr-20 lg:grid-cols-[1fr_auto] lg:items-end lg:px-8 lg:pr-[96px]">
           <BeachTitleBlock title={beachName} />
 
-          <div className="flex justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
+          <div className="flex justify-center gap-[6px] sm:gap-[10px] lg:justify-end pointer-events-auto">
             <MapWidget />
             <WeatherWidget
               weather={weatherData}
@@ -153,7 +171,7 @@ export default function BeachBannerSection({
       {/* Floating buttons */}
       <div className="absolute right-0 top-1/2 z-40 flex -translate-y-1/2 flex-col">
         <Link
-          href={tRoutes('beachMap')}
+          href={buildMapUrl()}
           className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-[#1A3C68] sm:h-[68.46px] sm:w-[71px]"
         >
           <Image
