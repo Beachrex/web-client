@@ -16,7 +16,7 @@ const BeachTitleBlock: React.FC<BeachTitleBlockProps> = ({ title = '' }) => {
       <span
         aria-hidden
         className="
-          block font-figtree font-bold leading-[100%] text-white opacity-30
+          block capitalize font-figtree font-bold leading-[100%] text-white opacity-30
           text-[80px] sm:text-[120px] md:text-[160px] lg:text-[200px]
         "
       >

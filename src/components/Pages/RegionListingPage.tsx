@@ -139,6 +139,9 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
         isWeatherLoading={isWeatherLoading}
         badges={regionBadges.length ? regionBadges : undefined}
         infoCards={regionInfoCards.length ? regionInfoCards : undefined}
+        continentCode={regionDetails?.country?.continent?.code}
+        countryCode={regionDetails?.country?.code}
+        regionSlug={regionSlug}
       />
 
       <PropertySection

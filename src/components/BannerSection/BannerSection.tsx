@@ -21,11 +21,10 @@ import {
 interface BannerSectionProps {
   image: string | null;
   title: string;
-   continentCode?: string;
-countryCode?: string;
-countryName?: string;
-regionName?: string;
-islandName?: string;
+  continentCode?: string;
+  countryCode?: string;
+  regionSlug?: string;
+  islandSlug?: string;
 
   badges?: {
     label: string;
@@ -72,6 +71,10 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   islandPillLabel,
   topBarVariant = 'continent',
   beachCount,
+  continentCode,
+  countryCode,
+  regionSlug,
+  islandSlug,
 
   badges,
   infoCards,
@@ -90,6 +93,20 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   const categoryLabelKey = VARIANT_CATEGORY_LABEL_KEY[variant];
 
   const floatingButtonColorClass = variantBgClass;
+
+  // Build map URL with context filters
+  const buildMapUrl = () => {
+    const params = new URLSearchParams();
+
+    // Add filters based on current context
+    if (continentCode) params.append('continent_code', continentCode);
+    if (countryCode) params.append('country', countryCode);
+    if (regionSlug) params.append('region', regionSlug);
+    if (islandSlug) params.append('island', islandSlug);
+
+    const queryString = params.toString();
+    return queryString ? `${tRoutes('beachMap')}?${queryString}` : tRoutes('beachMap');
+  };
 
   return (
     <>
@@ -181,7 +198,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
         {/* Floating Icons */}
         <div className="absolute right-0 top-1/2 z-20 flex -translate-y-1/2 flex-col">
           <Link
-            href={tRoutes('beachMap')}
+            href={buildMapUrl()}
             className={[
               'mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px]',
               'sm:h-[68.46px] sm:w-[71px]',

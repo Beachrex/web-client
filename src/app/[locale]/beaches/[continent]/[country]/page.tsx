@@ -349,6 +349,8 @@ const beachProperties: Property[] =
         beachCount={countryBeachesCount}
         badges={bottomBadges.length ? bottomBadges : undefined}
         infoCards={infoCards.length ? infoCards : undefined}
+        continentCode={countryDetails?.continent?.code}
+        countryCode={countryDetails?.code}
       />
 
       {/* --------------------------

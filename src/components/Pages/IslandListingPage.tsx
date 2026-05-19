@@ -145,6 +145,9 @@ export default function IslandListingPage({
         isWeatherLoading={isIslandWeatherLoading}
         badges={bottomBadges.length ? bottomBadges : undefined}
         infoCards={infoCards.length ? infoCards : undefined}
+        continentCode={islandDetails?.country?.continent?.code}
+        countryCode={islandDetails?.country?.code}
+        islandSlug={_islandSlug}
       />
 
       <PropertySection

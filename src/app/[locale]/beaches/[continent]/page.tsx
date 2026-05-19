@@ -322,6 +322,7 @@ return {
           accommodationCount={continent.accommodation_count ?? 0}
           beachCount={continent.beaches_count ?? 0}
           topBarVariant="continent"
+          continentCode={continent.code}
         />
 
         {/* Most visited */}

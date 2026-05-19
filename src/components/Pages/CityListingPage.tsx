@@ -193,6 +193,10 @@ const islandPillLabel = cityDetails?.island?.name
   isWeatherLoading={isCityWeatherLoading}
   badges={bottomBadges.length > 0 ? bottomBadges : undefined}
   infoCards={infoCards.length > 0 ? infoCards : undefined}
+  continentCode={cityDetails?.country?.continent?.code}
+  countryCode={cityDetails?.country?.code}
+  regionSlug={cityDetails?.region?.slug}
+  islandSlug={cityDetails?.island?.slug}
      />
 
 

@@ -146,4 +146,4 @@ export async function GET() {
 }
 
 export const revalidate = 86400; // Revalidate every 24 hours
-export const dynamic = 'force-dynamic'; // Generate on-demand to avoid blocking build
+export const dynamic = 'force-static'; // Generate during build

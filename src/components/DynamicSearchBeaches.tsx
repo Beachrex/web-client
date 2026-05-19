@@ -97,6 +97,21 @@ export default function DynamicSearchBeaches({
 const [mediaMode] =
   useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
 
+  // Build map URL with current filters
+  const buildMapUrl = () => {
+    if (!baseFilters) return '/beach-map';
+
+    const params = new URLSearchParams();
+    Object.entries(baseFilters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params.append(key, String(value));
+      }
+    });
+
+    const queryString = params.toString();
+    return queryString ? `/beach-map?${queryString}` : '/beach-map';
+  };
+
 
   const itemsPerPage = 16;
   const [currentPage, setCurrentPage] = useState(1);
@@ -483,7 +498,7 @@ alt=""
             </button>
 
             <Link
-              href="/beach-map"
+              href={buildMapUrl()}
               className="inline-flex h-[40px] items-center gap-2 rounded-md bg-[#1A3C68] px-6 font-bold text-white"
             >
               <Image
