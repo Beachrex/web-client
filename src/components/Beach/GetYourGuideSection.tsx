@@ -81,6 +81,10 @@ export default function GetYourGuideSection({
                 const filtersSection = document.getElementById('filters-section');
                 if (filtersSection) {
                   filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  // Open filter sidebar after scroll
+                  setTimeout(() => {
+                    window.dispatchEvent(new Event('openFilterSidebar'));
+                  }, 500);
                 }
                 onFilterClick?.();
               }}

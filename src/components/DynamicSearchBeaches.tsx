@@ -104,6 +104,18 @@ const [mediaMode] =
     setCurrentPage(1);
   }, [mediaMode, beaches]);
 
+  // Listen for custom event to open filter sidebar
+  useEffect(() => {
+    const handleOpenFilters = () => {
+      setIsFilterOpen(true);
+    };
+
+    window.addEventListener('openFilterSidebar', handleOpenFilters);
+    return () => {
+      window.removeEventListener('openFilterSidebar', handleOpenFilters);
+    };
+  }, []);
+
   const properties: PropertyCardProps[] = beaches.map((b) => {
     const mainImage = buildCdnUrl(b.main_image, 'list');
     if (!mainImage) throw new Error(`Missing main_image for beach ${b.id}`);

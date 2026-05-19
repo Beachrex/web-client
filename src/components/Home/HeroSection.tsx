@@ -221,6 +221,10 @@ const HeroSection: React.FC = () => {
             const filtersSection = document.getElementById('filters-section');
             if (filtersSection) {
               filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              // Open filter sidebar after scroll
+              setTimeout(() => {
+                window.dispatchEvent(new Event('openFilterSidebar'));
+              }, 500);
             }
           }}
           className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]"

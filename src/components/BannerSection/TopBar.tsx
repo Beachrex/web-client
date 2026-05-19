@@ -337,6 +337,10 @@ const TopBar: React.FC<TopBarProps> = ({
               const filtersSection = document.getElementById('filters-section');
               if (filtersSection) {
                 filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Open filter sidebar after scroll
+                setTimeout(() => {
+                  window.dispatchEvent(new Event('openFilterSidebar'));
+                }, 500);
               }
             }}
             className="flex h-[41px] w-[35px] items-center justify-center rounded-[6px] bg-white sm:w-[41px]"

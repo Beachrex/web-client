@@ -82,6 +82,10 @@ const WorldSearchBeaches: React.FC<WorldSearchBeachesProps> = ({
                 const filtersSection = document.getElementById('filters-section');
                 if (filtersSection) {
                   filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  // Open filter sidebar after scroll
+                  setTimeout(() => {
+                    window.dispatchEvent(new Event('openFilterSidebar'));
+                  }, 500);
                 }
               }}
               className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#FF2877] px-5 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#e02269]"
