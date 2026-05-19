@@ -76,7 +76,16 @@ const WorldSearchBeaches: React.FC<WorldSearchBeachesProps> = ({
           {/* Controls */}
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-start lg:justify-end lg:gap-4">
             {/* Filter button */}
-            <button className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#FF2877] px-5 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#e02269]">
+            <button
+              type="button"
+              onClick={() => {
+                const filtersSection = document.getElementById('filters-section');
+                if (filtersSection) {
+                  filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#FF2877] px-5 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#e02269]"
+            >
               <Image
                 src="/images/filters.png"
                 alt="Filter"

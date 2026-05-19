@@ -450,7 +450,7 @@ const [mediaMode] =
 
       {/* ================= HEADER ================= */}
       <div className="container mx-auto">
-        <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div id="filters-section" className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <h2 className="text-[26px] font-bold text-[#222]">
             {t(titleKey, titleParams)}
           </h2>

@@ -198,7 +198,9 @@ const LeftSidebarFilters = ({
 
     const renderFilterOptions = (
         inputType: string | undefined,
-        options: { id?: number; code?: string; name?: string; slug?: string }[] | undefined,
+        options:
+            | { id?: number; code?: string; name?: string; slug?: string; value?: string; label?: string }[]
+            | undefined,
         filterName: string
     ) => {
         if (!options) return null;
@@ -215,9 +217,9 @@ const LeftSidebarFilters = ({
                         onChange={(e) => handleFilterChange(filterName, e.target.value)}
                     >
                         <option value="">Select an option</option>
-                        {options.map((option) => (
-                            <option key={option.id} value={option.code ?? option.slug}>
-                                {option.name}
+                        {options.map((option, index) => (
+                            <option key={option.id ?? index} value={option.code ?? option.slug ?? option.value}>
+                                {option.name ?? option.label}
                             </option>
                         ))}
                     </select>
@@ -228,10 +230,10 @@ const LeftSidebarFilters = ({
         if (type === 'radio' || type === 'single') {
             return (
                 <div className="px-4 pb-3 space-y-2">
-                    {options.map((option) => {
-                        const optionValue = option.code ?? option.slug;
+                    {options.map((option, index) => {
+                        const optionValue = option.code ?? option.slug ?? option.value;
                         return (
-                            <label key={option.id} className="flex items-center gap-2 cursor-pointer">
+                            <label key={option.id ?? index} className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
                                     name={filterName}
@@ -240,7 +242,7 @@ const LeftSidebarFilters = ({
                                     onChange={(e) => handleFilterChange(filterName, e.target.value)}
                                     className="w-4 h-4 text-blue-600 focus:ring-blue-500"
                                 />
-                                <span className="text-sm">{option.name}</span>
+                                <span className="text-sm">{option.name ?? option.label}</span>
                             </label>
                         );
                     })}
@@ -251,13 +253,13 @@ const LeftSidebarFilters = ({
         // Checkbox (multiple selection) - store as comma-separated string
         return (
             <div className="px-4 pb-3 space-y-2">
-                {options.map((option) => {
-                    const optionValue = option.code ?? option.slug ?? '';
+                {options.map((option, index) => {
+                    const optionValue = option.code ?? option.slug ?? option.value ?? '';
                     const selectedValues = currentValue ? currentValue.split(',') : [];
                     const isChecked = selectedValues.includes(optionValue);
 
                     return (
-                        <label key={option.id} className="flex items-center gap-2 cursor-pointer">
+                        <label key={option.id ?? index} className="flex items-center gap-2 cursor-pointer">
                             <input
                                 type="checkbox"
                                 value={optionValue}
@@ -270,7 +272,7 @@ const LeftSidebarFilters = ({
                                 }}
                                 className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                             />
-                            <span className="text-sm">{option.name}</span>
+                            <span className="text-sm">{option.name ?? option.label}</span>
                         </label>
                     );
                 })}

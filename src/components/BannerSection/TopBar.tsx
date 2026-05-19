@@ -331,7 +331,16 @@ const TopBar: React.FC<TopBarProps> = ({
 
         {/* FILTER */}
         {showFilterResolved && (
-          <button className="flex h-[41px] w-[35px] items-center justify-center rounded-[6px] bg-white sm:w-[41px]">
+          <button
+            type="button"
+            onClick={() => {
+              const filtersSection = document.getElementById('filters-section');
+              if (filtersSection) {
+                filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
+            className="flex h-[41px] w-[35px] items-center justify-center rounded-[6px] bg-white sm:w-[41px]"
+          >
             <Image
 src={filterIcon} alt="filter" width={20}
 height={20} />

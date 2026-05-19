@@ -215,7 +215,16 @@ const HeroSection: React.FC = () => {
         </Link>
 
         {/* Filters button */}
-        <button className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">
+        <button
+          type="button"
+          onClick={() => {
+            const filtersSection = document.getElementById('filters-section');
+            if (filtersSection) {
+              filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }}
+          className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]"
+        >
           <Image
             src="/images/filters.png"
             alt="filters"

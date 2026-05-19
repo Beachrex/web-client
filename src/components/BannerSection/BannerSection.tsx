@@ -199,6 +199,12 @@ const BannerSection: React.FC<BannerSectionProps> = ({
 
           <button
             type="button"
+            onClick={() => {
+              const filtersSection = document.getElementById('filters-section');
+              if (filtersSection) {
+                filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
             className={[
               'flex h-12 w-12 items-center justify-center rounded-l-[10px]',
               'sm:h-[68.46px] sm:w-[71px]',

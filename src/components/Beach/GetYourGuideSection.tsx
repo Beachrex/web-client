@@ -77,7 +77,13 @@ export default function GetYourGuideSection({
             {/* Filter button (dark red) */}
             <button
               type="button"
-              onClick={() => onFilterClick?.()}
+              onClick={() => {
+                const filtersSection = document.getElementById('filters-section');
+                if (filtersSection) {
+                  filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                onFilterClick?.();
+              }}
               className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#8C062B] px-5 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#6E0521]"
             >
               <Image

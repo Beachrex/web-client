@@ -6278,9 +6278,13 @@ export type GetBeachFiltersResponses = {
          */
         title?: string;
         /**
-         * Filter type
+         * Icon file path (SVG/PNG)
          */
-        type?: string;
+        icon?: string | null;
+        /**
+         * Input type: checkbox, radio, select, single, multiple
+         */
+        input_type?: string;
         /**
          * Boolean filter options
          */
