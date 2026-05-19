@@ -303,10 +303,11 @@ const LeftSidebarFilters = ({
     };
 
     return (
-        <div className="p-6">
-            <div className="flex flex-col gap-6">
+        <div className="h-full flex flex-col">
+            {/* Fixed Header Section */}
+            <div className="flex-shrink-0 p-6 pb-0">
                 {/* Header with the toggle button */}
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mb-6">
                     <h2 className="text-lg font-bold">{t('title')}</h2>
                     <div className="flex items-center gap-2">
                         <span className="text-sm">{t('advancedFilters')}</span>
@@ -340,9 +341,11 @@ const LeftSidebarFilters = ({
                         {t('resetFilters')}
                     </button>
                 </div>
+            </div>
 
-                {/* Filter Categories */}
-                {isExpanded && (
+            {/* Scrollable Filter Categories */}
+            {isExpanded && (
+                <div className="flex-1 overflow-y-auto px-6 py-6">
                     <div className="flex flex-col gap-4">
                         {isLoading && (
                             <div className="text-center text-gray-500 py-4">
@@ -400,8 +403,8 @@ const LeftSidebarFilters = ({
                             </>
                         )}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 };

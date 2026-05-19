@@ -538,8 +538,8 @@ const MapWithSidebar = () => {
         <div className="min-h-screen w-full overflow-x-hidden md:h-screen md:overflow-hidden">
             <div className="h-full w-full flex flex-col md:flex-row gap-2">
                 {/* Left Sidebar - Filters (desktop) */}
-                <div className="hidden md:block w-full md:w-80 md:h-screen md:overflow-y-auto md:flex-shrink-0">
-                    <div className="md:h-full shadow-md rounded-lg" style={{ backgroundColor: '#F6F6F5' }}>
+                <div className="hidden md:block w-full md:w-80 md:h-screen md:flex-shrink-0">
+                    <div className="h-full shadow-md rounded-lg overflow-hidden" style={{ backgroundColor: '#F6F6F5' }}>
                         <LeftSidebarFilters
                             beachesCount={beaches.length}
                             beachesLoading={isLoading}
