@@ -73,6 +73,7 @@ export default function DynamicSearchBeaches({
 }: DynamicSearchBeachesProps) {
   const t = useTranslations(translationNamespace);
   const tf = useTranslations(filterNamespace);
+  const tCommon = useTranslations('Common');
 
   const locale = useLocale();
 
@@ -140,7 +141,7 @@ const [mediaMode] =
       sphereTourUrl,
       videoEmbedUrl,
       webcamEmbed: b.media?.embeds?.webcam ?? null,
-      title: b.name ?? 'Unknown beach',
+      title: b.name ?? tCommon('unknownBeach'),
       location: b.city_slug ?? '',
       price: 0,
       rating: 0,

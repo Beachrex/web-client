@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { Search, MapPin, Calendar, Users, Map } from 'lucide-react';
 import { Button } from 'flowbite-react';
 import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 const HeroSearchSection: React.FC = () => {
+    const t = useTranslations('Common');
     const [searchQuery, setSearchQuery] = useState('');
     const [location, setLocation] = useState('');
     const [checkIn, setCheckIn] = useState('');
@@ -30,13 +32,13 @@ className="absolute inset-0" style={{
                 <div className="text-center mb-12">
                     {/* Hero Title */}
                     <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
-                        Odkrijte najlepše plaže
-                        <span className="block text-cyan-200">po vsem svetu</span>
+                        {t('heroTitle')}
+                        <span className="block text-cyan-200">{t('heroTitleWorld')}</span>
                     </h1>
 
                     {/* Hero Subtitle */}
                     <p className="text-xl lg:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
-                        Več kot 1500 plaž v naši bazi podatkov. Poiščite svojo popolno plažo za naslednje počitnice.
+                        {t('heroSubtitle')}
                     </p>
                 </div>
 
@@ -48,13 +50,13 @@ className="absolute inset-0" style={{
                             {/* Destination */}
                             <div className="space-y-2">
                                 <label className="block text-sm font-semibold text-gray-700">
-                                    Destinacija
+                                    {t('destination')}
                                 </label>
                                 <div className="relative">
                                     <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                                     <input
                                         type="text"
-                                        placeholder="Kam greste?"
+                                        placeholder={t('whereAreYouGoing')}
                                         value={location}
                                         onChange={(e) => setLocation(e.target.value)}
                                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
@@ -65,7 +67,7 @@ className="absolute inset-0" style={{
                             {/* Check-in Date */}
                             <div className="space-y-2">
                                 <label className="block text-sm font-semibold text-gray-700">
-                                    Datum prihoda
+                                    {t('checkInDate')}
                                 </label>
                                 <div className="relative">
                                     <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -81,7 +83,7 @@ className="absolute inset-0" style={{
                             {/* Guests */}
                             <div className="space-y-2">
                                 <label className="block text-sm font-semibold text-gray-700">
-                                    Gostje
+                                    {t('guests')}
                                 </label>
                                 <div className="relative">
                                     <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -90,11 +92,11 @@ className="absolute inset-0" style={{
                                         onChange={(e) => setGuests(e.target.value)}
                                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 appearance-none"
                                     >
-                                        <option value="1">1 gost</option>
-                                        <option value="2">2 gosta</option>
-                                        <option value="3">3 gostje</option>
-                                        <option value="4">4 gostje</option>
-                                        <option value="5+">5+ gostov</option>
+                                        <option value="1">{t('guest1')}</option>
+                                        <option value="2">{t('guests2')}</option>
+                                        <option value="3">{t('guests3')}</option>
+                                        <option value="4">{t('guests4')}</option>
+                                        <option value="5+">{t('guests5Plus')}</option>
                                     </select>
                                 </div>
                             </div>
@@ -107,7 +109,7 @@ className="absolute inset-0" style={{
                                     size="lg"
                                 >
                                     <Search className="mr-2" size={20} />
-                                    Poišči plaže
+                                    {t('searchBeaches')}
                                 </Button>
                                 <Link href="/beach-map">
                                     <Button
@@ -127,7 +129,7 @@ className="absolute inset-0" style={{
                                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                                 <input
                                     type="text"
-                                    placeholder="Poiščite plaže, destinacije..."
+                                    placeholder={t('searchBeachesDestinations')}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500 text-lg"
@@ -152,11 +154,11 @@ className="absolute inset-0" style={{
                                         onChange={(e) => setGuests(e.target.value)}
                                         className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 appearance-none"
                                     >
-                                        <option value="1">1 gost</option>
-                                        <option value="2">2 gosta</option>
-                                        <option value="3">3 gostje</option>
-                                        <option value="4">4 gostje</option>
-                                        <option value="5+">5+ gostov</option>
+                                        <option value="1">{t('guest1')}</option>
+                                        <option value="2">{t('guests2')}</option>
+                                        <option value="3">{t('guests3')}</option>
+                                        <option value="4">{t('guests4')}</option>
+                                        <option value="5+">{t('guests5Plus')}</option>
                                     </select>
                                 </div>
                             </div>
@@ -168,21 +170,28 @@ className="absolute inset-0" style={{
                                 size="lg"
                             >
                                 <Search className="mr-2" size={20} />
-                                Poišči plaže
+                                {t('searchBeaches')}
                             </Button>
                         </div>
 
                         {/* Popular Destinations */}
                         <div className="mt-6 pt-6 border-t border-gray-200">
-                            <p className="text-sm text-gray-600 mb-3">Priljubljene destinacije:</p>
+                            <p className="text-sm text-gray-600 mb-3">{t('popularDestinations')}</p>
                             <div className="flex flex-wrap gap-2">
-                                {['Hrvaška', 'Grčija', 'Španija', 'Italija', 'Portugalska', 'Turčija'].map((destination) => (
+                                {[
+                                    { key: 'countryHrvatska' },
+                                    { key: 'countryGrcija' },
+                                    { key: 'countrySpanija' },
+                                    { key: 'countryItalija' },
+                                    { key: 'countryPortugalska' },
+                                    { key: 'countryTurcija' },
+                                ].map((dest) => (
                                     <button
-                                        key={destination}
+                                        key={dest.key}
                                         className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm rounded-full transition-colors duration-200"
-                                        onClick={() => setLocation(destination)}
+                                        onClick={() => setLocation(t(dest.key))}
                                     >
-                                        {destination}
+                                        {t(dest.key)}
                                     </button>
                                 ))}
                             </div>
@@ -194,19 +203,19 @@ className="absolute inset-0" style={{
                 <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
                     <div>
                         <div className="text-3xl lg:text-4xl font-bold text-cyan-200">1500+</div>
-                        <div className="text-blue-100">Plaž</div>
+                        <div className="text-blue-100">{t('statsBeaches')}</div>
                     </div>
                     <div>
                         <div className="text-3xl lg:text-4xl font-bold text-cyan-200">50+</div>
-                        <div className="text-blue-100">Držav</div>
+                        <div className="text-blue-100">{t('statsCountries')}</div>
                     </div>
                     <div>
                         <div className="text-3xl lg:text-4xl font-bold text-cyan-200">6</div>
-                        <div className="text-blue-100">Kontinentov</div>
+                        <div className="text-blue-100">{t('statsContinents')}</div>
                     </div>
                     <div>
                         <div className="text-3xl lg:text-4xl font-bold text-cyan-200">100k+</div>
-                        <div className="text-blue-100">Uporabnikov</div>
+                        <div className="text-blue-100">{t('statsUsers')}</div>
                     </div>
                 </div>
             </div>

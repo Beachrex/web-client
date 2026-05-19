@@ -1,8 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 
+const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
+
 export function TestImageComponent() {
-  const imageUrl = 'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg';
+  const imageUrl = `${CDN_ASSETS}img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg`;
 
   return (
     <div style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>

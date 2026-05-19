@@ -1,15 +1,18 @@
 import React from 'react';
 import Link from 'next/link'; // Import Link from Next.js
 import { Bed, ListTodo } from 'lucide-react'; // Importing the icons
+import { useTranslations } from 'next-intl';
 
 const StairsElement = () => {
+    const t = useTranslations('Common');
+
     const elements = [
         {
-            title: 'Morska plaža',
-            subtitle: 'Plaža Haludovo',
-            statTitle: 'Št. nastanitev:',
+            title: t('beachSeaBeach'),
+            subtitle: t('accommodationDefaultBeach'),
+            statTitle: t('numAccommodationsShort'),
             statValue: '56',
-            activityTitle: 'Št. aktivnosti:',
+            activityTitle: t('numActivities'),
             activityValue: '12',
             bgColor: 'bg-[#0069ab]',
             textColor: 'text-[#0069ab]',
@@ -19,9 +22,9 @@ const StairsElement = () => {
         {
             title: 'Pine Beach',
             subtitle: 'Plaža Zlatni Rat',
-            statTitle: 'Št. nastanitev:',
+            statTitle: t('numAccommodationsShort'),
             statValue: '45',
-            activityTitle: 'Št. aktivnosti:',
+            activityTitle: t('numActivities'),
             activityValue: '8',
             bgColor: 'bg-[#fca311]',
             textColor: 'text-[#fca311]',
@@ -31,9 +34,9 @@ const StairsElement = () => {
         {
             title: 'Sunset Beach',
             subtitle: 'Plaža Laganini',
-            statTitle: 'Št. nastanitev:',
+            statTitle: t('numAccommodationsShort'),
             statValue: '66',
-            activityTitle: 'Št. aktivnosti:',
+            activityTitle: t('numActivities'),
             activityValue: '5',
             bgColor: 'bg-[#ff4b5c]',
             textColor: 'text-[#ff4b5c]',

@@ -2,6 +2,7 @@
 import { Button } from 'flowbite-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface CategoryItem {
   id: string;
@@ -30,98 +31,99 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
   indoorPoolsSpasLabel,
 }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const t = useTranslations('BeachCategories');
 
   // Beach categories with icons (Figma)
   const categories: CategoryItem[] = [
     {
       id: 'pescene',
       icon: '/images/categories/sand-castle.png',
-      label: 'Peščene plaže',
+      label: t('sandyBeaches'),
     },
     {
       id: 'kamene',
       icon: '/images/categories/stones.png',
-      label: 'Kamnite plaže',
+      label: t('rockyBeaches'),
     },
     {
       id: 'travnate',
       icon: '/images/categories/grass-beach.png',
-      label: 'Travnate plaže',
+      label: t('grassyBeaches'),
     },
     {
       id: 'bazen',
       icon: '/images/categories/swimming-pool.png',
-      label: 'Bazen',
+      label: t('pool'),
     },
     {
       id: 'naravna-senca',
       icon: '/images/categories/tree.png',
-      label: 'Naravna senca',
+      label: t('naturalShade'),
     },
     {
       id: 'tobogani',
       icon: '/images/categories/water-slide.png',
-      label: 'Tobogani',
+      label: t('waterSlides'),
     },
     {
       id: 'plaze-z-igrali',
       icon: '/images/categories/slider.png',
-      label: 'Plaže z igrali',
+      label: t('beachesWithPlaygrounds'),
     },
     {
       id: 'plaze-za-zabavo',
       icon: '/images/categories/dance.png',
-      label: 'Plaže za zabavo',
+      label: t('partyBeaches'),
     },
     {
       id: 'plaze-z-barom',
       icon: '/images/categories/stall.png',
-      label: 'Plaže z barom',
+      label: t('beachesWithBar'),
     },
     {
       id: 'z-sportnim',
       icon: '/images/categories/tennis-court.png',
-      label: 'Z športnim igriščem',
+      label: t('sportsField'),
     },
     {
       id: 'plaze-s-parking',
       icon: '/images/categories/parking.png',
-      label: 'Plaže s parkiriščem',
+      label: t('beachesWithParking'),
     },
     {
       id: 'parking-blizu',
       icon: '/images/categories/path.png',
-      label: 'Parkirišče blizu',
+      label: t('parkingNearby'),
     },
     {
       id: 'avtokamp',
       icon: '/images/categories/van.png',
-      label: 'Avtokamp ob plaži',
+      label: t('campsite'),
     },
     {
       id: 'primerne-za-pse',
       icon: '/images/categories/pets.png',
-      label: 'Primerne za pse',
+      label: t('dogFriendly'),
     },
     {
       id: 'primerne-za-invalide',
       icon: '/images/categories/disability.png',
-      label: 'Primerne za invalide',
+      label: t('accessibleBeaches'),
     },
     {
       id: 'naravna-senca2',
       icon: '/images/categories/tree.png',
-      label: 'Naravna senca',
+      label: t('naturalShade'),
     },
     {
       id: 'naravna-senca3',
       icon: '/images/categories/tree.png',
-      label: 'Naravna senca',
+      label: t('naturalShade'),
     },
     {
       id: 'naravna-senca4',
       icon: '/images/categories/tree.png',
-      label: 'Naravna senca',
+      label: t('naturalShade'),
     },
     {
       id: 'naravna-senca5',

@@ -3,6 +3,7 @@
 import { Heart, Star } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export interface AccommodationCardProps {
   // Keeping props minimal; extend later when data becomes dynamic
@@ -18,13 +19,21 @@ export interface AccommodationCardProps {
  * Only re-renders when props change
  */
 const AccommodationCard = React.memo<AccommodationCardProps>(function AccommodationCard({
-  title = 'Apartma Pehta',
-  locationLabel = 'Baška',
-  distanceText = '250 m od plaže',
-  beachName = 'Plaža Haludovo',
-  priceText = 'od 25 €',
+  title,
+  locationLabel,
+  distanceText,
+  beachName,
+  priceText,
 }) {
+  const t = useTranslations('Common');
   const [isFavorite, setIsFavorite] = useState(false);
+
+  // Use translations as defaults
+  const displayTitle = title ?? t('accommodationDefaultTitle');
+  const displayLocation = locationLabel ?? t('accommodationDefaultLocation');
+  const displayDistance = distanceText ?? t('accommodationDefaultDistance');
+  const displayBeach = beachName ?? t('accommodationDefaultBeach');
+  const displayPrice = priceText ?? t('accommodationDefaultPrice');
 
   // Memoize toggle handler to prevent recreation on every render
   const toggleFavorite = React.useCallback(() => {
@@ -93,7 +102,7 @@ const AccommodationCard = React.memo<AccommodationCardProps>(function Accommodat
 
             <div className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#FF8000] px-[12px]">
               <span className="font-figtree text-[12px] font-bold text-white">
-                {locationLabel}
+                {displayLocation}
               </span>
             </div>
           </div>
@@ -108,8 +117,8 @@ const AccommodationCard = React.memo<AccommodationCardProps>(function Accommodat
               className="shrink-0"
             />
             <span className="truncate font-figtree text-[14px] leading-[100%]">
-              <span className="font-medium">{distanceText}&nbsp;</span>
-              <span className="font-bold">{beachName}</span>
+              <span className="font-medium">{displayDistance}&nbsp;</span>
+              <span className="font-bold">{displayBeach}</span>
             </span>
           </div>
         </div>
@@ -120,10 +129,10 @@ const AccommodationCard = React.memo<AccommodationCardProps>(function Accommodat
         {/* Title + price row */}
         <div className="flex items-center justify-between">
           <h3 className="font-figtree text-[20px] font-bold leading-[100%] tracking-tight text-[#222222]">
-            {title}
+            {displayTitle}
           </h3>
           <div className="text-right font-figtree text-[20px] font-bold leading-[100%] tracking-tight text-[#222222]">
-            {priceText}
+            {displayPrice}
           </div>
         </div>
 

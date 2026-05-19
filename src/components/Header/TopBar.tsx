@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { useLocalizedPath } from '@/hooks/useLocalizedPath';
 
+const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
+
 const IconButton = ({
   icon: Icon,
   label,
@@ -67,9 +69,7 @@ const TopBar = () => {
               width="16"
               height="12"
               alt="Language"
-              src={
-                'https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/globeTranslate.svg'
-              }
+              src={`${CDN_ASSETS}img/icon/globeTranslate.svg`}
             />
             {isClient ? (
               <Dropdown
@@ -126,9 +126,7 @@ const TopBar = () => {
               width="20"
               height="16"
               alt="Beachrex Language"
-              src={
-                'https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/globeTranslate.svg'
-              }
+              src={`${CDN_ASSETS}img/icon/globeTranslate.svg`}
             />
             {isClient ? (
               <Dropdown

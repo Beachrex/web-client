@@ -1,6 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { SlBriefcase } from 'react-icons/sl';
+import { useTranslations } from 'next-intl';
+
+const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
 
 const NavIcon = ({
   src,
@@ -39,6 +42,8 @@ height={26}
 };
 
 const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
+  const t = useTranslations('Common');
+
   return (
     <div className="flex min-h-[61px] items-center border-b border-t border-variable-collection-light-grey bg-variable-collection-ultra-light-grey">
       <div className="container mx-auto">
@@ -47,9 +52,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           {/* Left: Hamburger Menu */}
           <div className="flex items-center">
             <NavIcon
-              src={
-                'https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/hamburgerMenu.svg'
-              }
+              src={`${CDN_ASSETS}img/icon/hamburgerMenu.svg`}
               alt="Hamburger Menu"
               label=""
               horizontal={true}
@@ -61,19 +64,19 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           {/* Center: Most important icons only */}
           <div className="flex flex-1 items-center justify-center space-x-3">
             {[
-              { icon: 'globe.svg', label: 'Plaže' },
-              { icon: 'beachType.svg', label: 'Tip' },
-              { icon: 'baseBeachIcon.svg', label: 'Top' },
+              { icon: 'globe.svg', labelKey: 'quickMenuWorldBeaches' },
+              { icon: 'beachType.svg', labelKey: 'quickMenuBeachType' },
+              { icon: 'baseBeachIcon.svg', labelKey: 'quickMenuTopBeaches' },
             ].map((item, index) => (
               <div key={index} className="flex flex-col items-center">
                 <Image
-                  src={`https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/${item.icon}`}
-                  alt={item.label}
+                  src={`${CDN_ASSETS}img/icon/${item.icon}`}
+                  alt={t(item.labelKey)}
                   width={40}
                   height={40}
                 />
                 <span className="xs:block mt-1 hidden text-xs text-variable-collection-semi-dark-grey">
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
               </div>
             ))}
@@ -82,17 +85,13 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           {/* Right: Social icons (minimal) */}
           <div className="flex items-center space-x-2">
             <NavIcon
-              src={
-                'https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/facebook.svg'
-              }
+              src={`${CDN_ASSETS}img/icon/facebook.svg`}
               alt="Facebook"
               label=""
               className="h-5 w-5"
             />
             <NavIcon
-              src={
-                'https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/instagram.svg'
-              }
+              src={`${CDN_ASSETS}img/icon/instagram.svg`}
               alt="Instagram"
               label=""
               className="h-5 w-5"
@@ -105,9 +104,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           {/* Left Section (Menu) */}
           <div className="flex items-center space-x-4 lg:space-x-6">
             <NavIcon
-              src={
-                'https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/hamburgerMenu.svg'
-              }
+              src={`${CDN_ASSETS}img/icon/hamburgerMenu.svg`}
               alt="Hamburger Menu"
               label=""
               horizontal={true}
@@ -119,18 +116,18 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           {/* Middle Section (Icons and Labels) */}
           <div className="flex flex-1 flex-wrap items-center justify-center space-x-3 lg:space-x-6">
             {[
-              { icon: 'globe.svg', label: 'Plaže po svetu' },
-              { icon: 'beachType.svg', label: 'Tip plaže' },
-              { icon: 'userType.svg', label: 'Tip uporabnika' },
-              { icon: 'beachShowType.svg', label: 'Prikaz plaže' },
-              { icon: 'shower.svg', label: 'Storitve ob plaži' },
-              { icon: 'baseBeachIcon.svg', label: 'Top plaže' },
+              { icon: 'globe.svg', labelKey: 'quickMenuWorldBeaches' },
+              { icon: 'beachType.svg', labelKey: 'quickMenuBeachType' },
+              { icon: 'userType.svg', labelKey: 'quickMenuUserType' },
+              { icon: 'beachShowType.svg', labelKey: 'quickMenuBeachDisplay' },
+              { icon: 'shower.svg', labelKey: 'quickMenuBeachServices' },
+              { icon: 'baseBeachIcon.svg', labelKey: 'quickMenuTopBeaches' },
             ].map((item, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <NavIcon
-                  src={`https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/${item.icon}`}
-                  alt={item.label}
-                  label={item.label}
+                  src={`${CDN_ASSETS}img/icon/${item.icon}`}
+                  alt={t(item.labelKey)}
+                  label={t(item.labelKey)}
                   horizontal={true}
                 />
               </div>
@@ -142,29 +139,23 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
             <div className="flex items-center gap-2 pr-6">
               <SlBriefcase className="h-[26px] w-[26px] text-variable-collection-dark-grey" />
               <span className="cursor-pointer text-sm font-bold text-variable-collection-middle-grey">
-                O nas
+                {t('quickMenuAboutUs')}
               </span>
             </div>
 
             <div className="flex items-center space-x-3">
               <NavIcon
-                src={
-                  'https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/facebook.svg'
-                }
+                src={`${CDN_ASSETS}img/icon/facebook.svg`}
                 alt="Facebook"
                 label=""
               />
               <NavIcon
-                src={
-                  'https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/instagram.svg'
-                }
+                src={`${CDN_ASSETS}img/icon/instagram.svg`}
                 alt="Instagram"
                 label=""
               />
               <NavIcon
-                src={
-                  'https://beachrex.fra1.digitaloceanspaces.com/public/img/icon/youtube.svg'
-                }
+                src={`${CDN_ASSETS}img/icon/youtube.svg`}
                 alt="YouTube"
                 label=""
               />

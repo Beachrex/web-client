@@ -10,6 +10,8 @@ import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
+const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
+
 // MOCK DESTINATION COUNTRIES (replace with API later)
 const mockCountries = Array.from({ length: 12 }, (_, i) => ({
   code: `country-${i}`,
@@ -22,8 +24,7 @@ const mockCountries = Array.from({ length: 12 }, (_, i) => ({
 // MOCK BEACH PROPERTIES
 const baseBeach: Property = {
   id: '1',
-  image:
-    'https://beachrex.fra1.digitaloceanspaces.com/public/img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg',
+  image: `${CDN_ASSETS}img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg`,
   title: 'Plaža Ladinka',
   price: 25,
   originalPrice: 40,
