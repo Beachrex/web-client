@@ -120,7 +120,9 @@
     "parkingNearby": "Parking nearby",
     "campsite": "Campsite by the beach",
     "dogFriendly": "Dog-friendly",
-    "accessibleBeaches": "Accessible for disabled"
+    "accessibleBeaches": "Accessible for disabled",
+    "selectedCategories": "Selected categories:",
+    "showAdvancedFilters": "Show advanced filters"
   },
   "Metadata": {
     "title": "BeachRex - Find your perfect beach.",

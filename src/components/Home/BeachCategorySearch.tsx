@@ -125,26 +125,6 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
       icon: '/images/categories/tree.png',
       label: t('naturalShade'),
     },
-    {
-      id: 'naravna-senca5',
-      icon: '/images/categories/tree.png',
-      label: 'Naravna senca',
-    },
-    {
-      id: 'naravna-senca6',
-      icon: '/images/categories/tree.png',
-      label: 'Naravna senca',
-    },
-    {
-      id: 'naravna-senca7',
-      icon: '/images/categories/tree.png',
-      label: 'Naravna senca',
-    },
-    {
-      id: 'naravna-senca8',
-      icon: '/images/categories/tree.png',
-      label: 'Naravna senca',
-    },
   ];
 
   const toggleCategory = (categoryId: string) => {
@@ -205,24 +185,11 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             ))}
           </div>
 
-          {/* Advanced Filters Button */}
-          <div className="flex justify-center">
-            <Button className="flex items-center justify-center gap-3 rounded-md border border-[#E0E0E0] bg-white px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors duration-200 hover:bg-gray-50 sm:gap-4 sm:px-5 sm:py-3 sm:text-base lg:gap-5 lg:px-6">
-              <Image
-                src="/images/filters-blue.png"
-                alt="Filtri"
-                width={20}
-                height={20}
-                className="mr-1 h-4 w-4 object-contain sm:mr-2 sm:h-5 sm:w-5"
-              />
-              Prikaži napredne filtre
-            </Button>
-          </div>
           {/* Selected Categories Display */}
           {selectedCategories.length > 0 && (
             <div className="mt-8 rounded-lg bg-white/10 p-4 backdrop-blur-sm">
               <h3 className="mb-2 font-semibold text-white">
-                Izbrane kategorije:
+                  {t('selectedCategories')}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {selectedCategories.map((categoryId) => {
@@ -253,6 +220,21 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
               </div>
             </div>
           )}
+
+            {/* Advanced Filters Button */}
+            <div className="flex justify-center">
+                <Button className="flex items-center justify-center gap-3 rounded-md border border-[#E0E0E0] bg-white px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors duration-200 hover:bg-gray-50 sm:gap-4 sm:px-5 sm:py-3 sm:text-base lg:gap-5 lg:px-6 mt-10">
+                    <Image
+                        src="/images/filters-blue.png"
+                        alt="Filtri"
+                        width={20}
+                        height={20}
+                        className="mr-1 h-4 w-4 object-contain sm:mr-2 sm:h-5 sm:w-5"
+                    />
+                    {t('showAdvancedFilters')}
+
+                </Button>
+            </div>
         </div>
 
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5 xl:gap-8">

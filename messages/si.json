@@ -140,7 +140,9 @@
     "parkingNearby": "Parkirišče blizu",
     "campsite": "Avtokamp ob plaži",
     "dogFriendly": "Primerne za pse",
-    "accessibleBeaches": "Primerne za invalide"
+    "accessibleBeaches": "Primerne za invalide",
+    "selectedCategories": "Izbrane kategorije:",
+    "showAdvancedFilters": "Prikaži napredne filtre"
   },
   "UserTypePage": {
     "title": "Tipi uporabnikov",
