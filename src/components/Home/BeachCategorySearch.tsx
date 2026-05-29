@@ -2,7 +2,8 @@
 import { Button } from 'flowbite-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/navigation';
 
 interface CategoryItem {
   id: string;
@@ -32,6 +33,53 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const t = useTranslations('BeachCategories');
+  const locale = useLocale();
+  const router = useRouter();
+
+  // Mapping between homepage category IDs and API filter parameters
+  // Based on API filter structure from /api/v1/beaches/filters
+  const categoryToFilterMapping: Record<string, { key: string; value: string }> = {
+    // Beach types (beach_type filter)
+    'pescene': { key: 'beach_type', value: 'sand' },
+    'kamene': { key: 'beach_type', value: 'small_stones' },
+    'travnate': { key: 'beach_type', value: 'grass_beach' },
+
+    // Location infrastructure features
+    'bazen': { key: 'location_infrastructure', value: 'swimming_pool' },
+    'naravna-senca': { key: 'natural_location_condition', value: 'natural_shade' },
+    'tobogani': { key: 'location_infrastructure', value: 'waterslide' },
+    'plaze-z-igrali': { key: 'location_infrastructure', value: 'children_playground' },
+    'plaze-za-zabavo': { key: 'location_infrastructure', value: 'dance_floor' },
+    'plaze-z-barom': { key: 'location_infrastructure', value: 'restaurants' },
+    'z-sportnim': { key: 'location_infrastructure', value: 'sports_fields' },
+    'plaze-s-parking': { key: 'location_infrastructure', value: 'parking' },
+    'parking-blizu': { key: 'location_infrastructure', value: 'parking' }, // Same as above
+    'avtokamp': { key: 'accommodation_around', value: 'autocamping' },
+    'primerne-za-pse': { key: 'location_infrastructure', value: 'dog_friendly' },
+    'primerne-za-invalide': { key: 'location_infrastructure', value: 'access_for_disabled' },
+  };
+
+  // Localized beach-map routes
+  const beachMapRoutes: Record<string, string> = {
+    en: 'beach-map',
+    si: 'zemljevid-plaz',
+    de: 'strand-karte',
+    hr: 'karta-plaza',
+    fr: 'carte-des-plages',
+    es: 'mapa-de-playas',
+    it: 'mappa-spiagge',
+    ua: 'karta-plyazhiv',
+    ru: 'karta-plyazhey',
+    pl: 'mapa-plaz',
+    cs: 'mapa-plazi',
+    hu: 'strand-terkep',
+    bg: 'karta-na-plyazhovete',
+    sk: 'mapa-plazi',
+  };
+
+  const getLocalizedMapRoute = () => {
+    return beachMapRoutes[locale] ?? 'beach-map';
+  };
 
   // Beach categories with icons (Figma)
   const categories: CategoryItem[] = [
@@ -135,6 +183,43 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
     );
   };
 
+  const handleShowAdvancedFilters = () => {
+    // Build query parameters from selected categories
+    const queryParams = new URLSearchParams();
+
+    // Group selected categories by filter key (e.g., beach_type, parking, etc.)
+    const filterGroups: Record<string, string[]> = {};
+
+    selectedCategories.forEach(categoryId => {
+      const mapping = categoryToFilterMapping[categoryId];
+      if (mapping) {
+        filterGroups[mapping.key] ??= [];
+        filterGroups[mapping.key]!.push(mapping.value);
+      }
+    });
+
+    // Convert filter groups to query params
+    // For multiple values of the same filter, join with comma
+    Object.entries(filterGroups).forEach(([key, values]) => {
+      queryParams.set(key, values.join(','));
+    });
+
+    // Build the localized map URL with query parameters
+    const mapRoute = getLocalizedMapRoute();
+    const queryString = queryParams.toString();
+    const mapUrl = `/${locale}/${mapRoute}${queryString ? `?${queryString}` : ''}`;
+
+    console.log('[BeachCategorySearch] Navigating to map with filters:', {
+      selectedCategories,
+      filterGroups,
+      queryString,
+      mapUrl,
+    });
+
+    // Navigate to map page with filters
+    router.push(mapUrl);
+  };
+
   const CategoryButton: React.FC<{ category: CategoryItem }> = ({
     category,
   }) => (
@@ -223,7 +308,10 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
             {/* Advanced Filters Button */}
             <div className="flex justify-center">
-                <Button className="flex items-center justify-center gap-3 rounded-md border border-[#E0E0E0] bg-white px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors duration-200 hover:bg-gray-50 sm:gap-4 sm:px-5 sm:py-3 sm:text-base lg:gap-5 lg:px-6 mt-10">
+                <Button
+                    onClick={handleShowAdvancedFilters}
+                    className="flex items-center justify-center gap-3 rounded-md border border-[#E0E0E0] bg-white px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors duration-200 hover:bg-gray-50 sm:gap-4 sm:px-5 sm:py-3 sm:text-base lg:gap-5 lg:px-6 mt-10"
+                >
                     <Image
                         src="/images/filters-blue.png"
                         alt="Filtri"
@@ -232,7 +320,6 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
                         className="mr-1 h-4 w-4 object-contain sm:mr-2 sm:h-5 sm:w-5"
                     />
                     {t('showAdvancedFilters')}
-
                 </Button>
             </div>
         </div>
