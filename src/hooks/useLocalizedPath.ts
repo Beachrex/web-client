@@ -67,20 +67,23 @@ export const useLocalizedPath = () => {
       return '/';
     }
 
-    // Get the current locale's beaches route word
-    const currentBeachesWord = getBeachesWord(currentLocale);
-    console.log('[useLocalizedPath] Current beaches word:', currentBeachesWord);
-
     // Split path into segments
     const segments = pathWithoutLocale.split('/').filter(Boolean);
     console.log('[useLocalizedPath] Path segments:', segments);
 
-    // Check if this is a beaches route
-    if (segments[0] !== currentBeachesWord) {
+    // Check if this is a beaches route by checking against ALL possible beaches words
+    // This handles cases where URL uses a different locale's beaches word (e.g., /beaches/ when locale is 'si')
+    const allBeachesWords = Object.values(beachesRoutes);
+    const firstSegment = segments[0];
+    const isBeachesRoute = firstSegment && allBeachesWords.includes(firstSegment as typeof allBeachesWords[number]);
+
+    if (!isBeachesRoute) {
       // Not a beaches page, just return the path without locale
       console.log('[useLocalizedPath] Not a beaches page, returning:', pathWithoutLocale);
       return pathWithoutLocale;
     }
+
+    console.log('[useLocalizedPath] Detected beaches route, first segment:', firstSegment);
 
     // Extract continent slug (always at index 1 for beaches routes)
     const currentContinentSlug = segments[1];
