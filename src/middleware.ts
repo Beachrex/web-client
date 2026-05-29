@@ -26,6 +26,9 @@ const beachesRoutes: Record<string, string> = {
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // First, let next-intl process the request for locale detection
+  const intlResponse = intlMiddleware(request);
+
   // Check if pathname contains ANY of the localized beaches words
   // This handles cases where the URL has a beaches word from a different locale
   // (e.g., /en/plaze/... when switching from SI to EN)
@@ -41,12 +44,20 @@ export default function middleware(request: NextRequest) {
       url.pathname = rewrittenPath;
 
       // Rewrite the request to use the English folder structure
-      return NextResponse.rewrite(url);
+      // but keep the intl response headers for locale detection
+      const rewriteResponse = NextResponse.rewrite(url);
+
+      // Copy headers from intl middleware to preserve locale context
+      intlResponse.headers.forEach((value, key) => {
+        rewriteResponse.headers.set(key, value);
+      });
+
+      return rewriteResponse;
     }
   }
 
-  // For all other routes, use the default next-intl middleware
-  return intlMiddleware(request);
+  // For all other routes, return the intl middleware response
+  return intlResponse;
 }
 
 export const config = {

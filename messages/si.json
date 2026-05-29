@@ -485,8 +485,8 @@
   },
 
   "countryPage": {
-    "popularBeachesTitle": "Najbolj obiskane plaže {{country}}",
-    "featuredAccommodationTitle": "Izpostavljene namestitve {{country}}",
+    "popularBeachesTitle": "Najbolj obiskane plaže {country}",
+    "featuredAccommodationTitle": "Izpostavljene namestitve {country}",
     "allBeaches": "Vse plaže",
     "allAccommodations": "Vse nastanitve",
     "filter": "Filtriraj",

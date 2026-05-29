@@ -150,22 +150,40 @@ export const routing = defineRouting({
             sk: `/${globalRoutes.beaches.sk}/[continent]`,
         },
 
-        // Beaches by continent and city (dynamic)
-        '/beaches/[continent]/[city]': {
-            en: `/${globalRoutes.beaches.en}/[continent]/[city]`,
-            si: `/${globalRoutes.beaches.si}/[continent]/[city]`,
-            de: `/${globalRoutes.beaches.de}/[continent]/[city]`,
-            hr: `/${globalRoutes.beaches.hr}/[continent]/[city]`,
-            fr: `/${globalRoutes.beaches.fr}/[continent]/[city]`,
-            es: `/${globalRoutes.beaches.es}/[continent]/[city]`,
-            it: `/${globalRoutes.beaches.it}/[continent]/[city]`,
-            ua: `/${globalRoutes.beaches.ua}/[continent]/[city]`,
-            ru: `/${globalRoutes.beaches.ru}/[continent]/[city]`,
-            pl: `/${globalRoutes.beaches.pl}/[continent]/[city]`,
-            cs: `/${globalRoutes.beaches.cs}/[continent]/[city]`,
-            hu: `/${globalRoutes.beaches.hu}/[continent]/[city]`,
-            bg: `/${globalRoutes.beaches.bg}/[continent]/[city]`,
-            sk: `/${globalRoutes.beaches.sk}/[continent]/[city]`,
+        // Beaches by continent and country (dynamic)
+        '/beaches/[continent]/[country]': {
+            en: `/${globalRoutes.beaches.en}/[continent]/[country]`,
+            si: `/${globalRoutes.beaches.si}/[continent]/[country]`,
+            de: `/${globalRoutes.beaches.de}/[continent]/[country]`,
+            hr: `/${globalRoutes.beaches.hr}/[continent]/[country]`,
+            fr: `/${globalRoutes.beaches.fr}/[continent]/[country]`,
+            es: `/${globalRoutes.beaches.es}/[continent]/[country]`,
+            it: `/${globalRoutes.beaches.it}/[continent]/[country]`,
+            ua: `/${globalRoutes.beaches.ua}/[continent]/[country]`,
+            ru: `/${globalRoutes.beaches.ru}/[continent]/[country]`,
+            pl: `/${globalRoutes.beaches.pl}/[continent]/[country]`,
+            cs: `/${globalRoutes.beaches.cs}/[continent]/[country]`,
+            hu: `/${globalRoutes.beaches.hu}/[continent]/[country]`,
+            bg: `/${globalRoutes.beaches.bg}/[continent]/[country]`,
+            sk: `/${globalRoutes.beaches.sk}/[continent]/[country]`,
+        },
+
+        // Beaches by continent, country and segments (catch-all for region/island/city/beach)
+        '/beaches/[continent]/[country]/[...segments]': {
+            en: `/${globalRoutes.beaches.en}/[continent]/[country]/[...segments]`,
+            si: `/${globalRoutes.beaches.si}/[continent]/[country]/[...segments]`,
+            de: `/${globalRoutes.beaches.de}/[continent]/[country]/[...segments]`,
+            hr: `/${globalRoutes.beaches.hr}/[continent]/[country]/[...segments]`,
+            fr: `/${globalRoutes.beaches.fr}/[continent]/[country]/[...segments]`,
+            es: `/${globalRoutes.beaches.es}/[continent]/[country]/[...segments]`,
+            it: `/${globalRoutes.beaches.it}/[continent]/[country]/[...segments]`,
+            ua: `/${globalRoutes.beaches.ua}/[continent]/[country]/[...segments]`,
+            ru: `/${globalRoutes.beaches.ru}/[continent]/[country]/[...segments]`,
+            pl: `/${globalRoutes.beaches.pl}/[continent]/[country]/[...segments]`,
+            cs: `/${globalRoutes.beaches.cs}/[continent]/[country]/[...segments]`,
+            hu: `/${globalRoutes.beaches.hu}/[continent]/[country]/[...segments]`,
+            bg: `/${globalRoutes.beaches.bg}/[continent]/[country]/[...segments]`,
+            sk: `/${globalRoutes.beaches.sk}/[continent]/[country]/[...segments]`,
         },
 
         // Beach type filter
