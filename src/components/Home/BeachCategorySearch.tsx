@@ -4,9 +4,13 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 
 interface CategoryItem {
-  id: string;
+  filterKey: string;
+  optionCode: string;
   icon: string;
   label: string;
   description?: string;
@@ -31,33 +35,21 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
   outdoorPoolsLabel,
   indoorPoolsSpasLabel,
 }) => {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<
+    Record<string, string[]>
+  >({});
   const t = useTranslations('BeachCategories');
   const locale = useLocale();
   const router = useRouter();
 
-  // Mapping between homepage category IDs and API filter parameters
-  // Based on API filter structure from /api/v1/beaches/filters
-  const categoryToFilterMapping: Record<string, { key: string; value: string }> = {
-    // Beach types (beach_type filter)
-    'pescene': { key: 'beach_type', value: 'sand' },
-    'kamene': { key: 'beach_type', value: 'small_stones' },
-    'travnate': { key: 'beach_type', value: 'grass_beach' },
+  // Fetch filter options from API (same as map page)
+  const { data: filtersData, isLoading: filtersLoading } = useQuery(
+    getBeachFiltersOptions({
+      query: {} as never,
+    })
+  );
 
-    // Location infrastructure features
-    'bazen': { key: 'location_infrastructure', value: 'swimming_pool' },
-    'naravna-senca': { key: 'natural_location_condition', value: 'natural_shade' },
-    'tobogani': { key: 'location_infrastructure', value: 'waterslide' },
-    'plaze-z-igrali': { key: 'location_infrastructure', value: 'children_playground' },
-    'plaze-za-zabavo': { key: 'location_infrastructure', value: 'dance_floor' },
-    'plaze-z-barom': { key: 'location_infrastructure', value: 'restaurants' },
-    'z-sportnim': { key: 'location_infrastructure', value: 'sports_fields' },
-    'plaze-s-parking': { key: 'location_infrastructure', value: 'parking' },
-    'parking-blizu': { key: 'location_infrastructure', value: 'parking' }, // Same as above
-    'avtokamp': { key: 'accommodation_around', value: 'autocamping' },
-    'primerne-za-pse': { key: 'location_infrastructure', value: 'dog_friendly' },
-    'primerne-za-invalide': { key: 'location_infrastructure', value: 'access_for_disabled' },
-  };
+  const filterOptions = (filtersData?.data ?? null) as GetBeachFiltersResponse['data'] | null;
 
   // Localized beach-map routes
   const beachMapRoutes: Record<string, string> = {
@@ -81,127 +73,87 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
     return beachMapRoutes[locale] ?? 'beach-map';
   };
 
-  // Beach categories with icons (Figma)
-  const categories: CategoryItem[] = [
-    {
-      id: 'pescene',
-      icon: '/images/categories/sand-castle.png',
-      label: t('sandyBeaches'),
-    },
-    {
-      id: 'kamene',
-      icon: '/images/categories/stones.png',
-      label: t('rockyBeaches'),
-    },
-    {
-      id: 'travnate',
-      icon: '/images/categories/grass-beach.png',
-      label: t('grassyBeaches'),
-    },
-    {
-      id: 'bazen',
-      icon: '/images/categories/swimming-pool.png',
-      label: t('pool'),
-    },
-    {
-      id: 'naravna-senca',
-      icon: '/images/categories/tree.png',
-      label: t('naturalShade'),
-    },
-    {
-      id: 'tobogani',
-      icon: '/images/categories/water-slide.png',
-      label: t('waterSlides'),
-    },
-    {
-      id: 'plaze-z-igrali',
-      icon: '/images/categories/slider.png',
-      label: t('beachesWithPlaygrounds'),
-    },
-    {
-      id: 'plaze-za-zabavo',
-      icon: '/images/categories/dance.png',
-      label: t('partyBeaches'),
-    },
-    {
-      id: 'plaze-z-barom',
-      icon: '/images/categories/stall.png',
-      label: t('beachesWithBar'),
-    },
-    {
-      id: 'z-sportnim',
-      icon: '/images/categories/tennis-court.png',
-      label: t('sportsField'),
-    },
-    {
-      id: 'plaze-s-parking',
-      icon: '/images/categories/parking.png',
-      label: t('beachesWithParking'),
-    },
-    {
-      id: 'parking-blizu',
-      icon: '/images/categories/path.png',
-      label: t('parkingNearby'),
-    },
-    {
-      id: 'avtokamp',
-      icon: '/images/categories/van.png',
-      label: t('campsite'),
-    },
-    {
-      id: 'primerne-za-pse',
-      icon: '/images/categories/pets.png',
-      label: t('dogFriendly'),
-    },
-    {
-      id: 'primerne-za-invalide',
-      icon: '/images/categories/disability.png',
-      label: t('accessibleBeaches'),
-    },
-    {
-      id: 'naravna-senca2',
-      icon: '/images/categories/tree.png',
-      label: t('naturalShade'),
-    },
-    {
-      id: 'naravna-senca3',
-      icon: '/images/categories/tree.png',
-      label: t('naturalShade'),
-    },
-    {
-      id: 'naravna-senca4',
-      icon: '/images/categories/tree.png',
-      label: t('naturalShade'),
-    },
-  ];
+  // Convert API filter options to flat category list for display
+  // We'll show all filter options from the API dynamically
+  const categories = React.useMemo(() => {
+    if (!filterOptions) return [];
 
-  const toggleCategory = (categoryId: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(categoryId)
-        ? prev.filter((id) => id !== categoryId)
-        : [...prev, categoryId],
-    );
+    const allCategories: {
+      filterKey: string;
+      optionCode: string;
+      label: string;
+      icon: string;
+    }[] = [];
+
+    // Priority filter keys to show on homepage (in order)
+    const priorityFilters = [
+      'beach_type',
+      'location_infrastructure',
+      'natural_location_condition',
+      'accommodation_around',
+      'sporting_activities',
+      'culinary_offer',
+    ];
+
+    priorityFilters.forEach(filterKey => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const filter = filterOptions[filterKey as keyof typeof filterOptions];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (!filter?.options) return;
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      filter.options.forEach((option: { code?: string; name?: string }) => {
+        if (option.code && option.name) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          const iconPath = filter.icon;
+          allCategories.push({
+            filterKey,
+            optionCode: option.code,
+            label: option.name,
+            icon: iconPath ?? '/images/categories/default.png',
+          });
+        }
+      });
+    });
+
+    return allCategories;
+  }, [filterOptions]);
+
+  const toggleCategory = (filterKey: string, optionCode: string) => {
+    setSelectedCategories((prev) => {
+      const currentValues = prev[filterKey] ?? [];
+      const isSelected = currentValues.includes(optionCode);
+
+      if (isSelected) {
+        // Remove this option
+        const newValues = currentValues.filter(code => code !== optionCode);
+        if (newValues.length === 0) {
+          // Remove entire filter key if no options selected
+          const { [filterKey]: _, ...rest } = prev;
+          return rest;
+        }
+        return { ...prev, [filterKey]: newValues };
+      } else {
+        // Add this option
+        return {
+          ...prev,
+          [filterKey]: [...currentValues, optionCode],
+        };
+      }
+    });
   };
 
   const handleShowAdvancedFilters = () => {
     // Build query parameters from selected categories
     const queryParams = new URLSearchParams();
 
-    // Group selected categories by filter key (e.g., beach_type, parking, etc.)
-    const filterGroups: Record<string, string[]> = {};
-
-    selectedCategories.forEach(categoryId => {
-      const mapping = categoryToFilterMapping[categoryId];
-      if (mapping) {
-        filterGroups[mapping.key] ??= [];
-        filterGroups[mapping.key]!.push(mapping.value);
+    // selectedCategories is already grouped by filter key
+    // e.g., { beach_type: ['sand', 'grass_beach'], location_infrastructure: ['parking'] }
+    Object.entries(selectedCategories).forEach(([filterKey, optionCodes]) => {
+      if (optionCodes.length > 0) {
+        // Join multiple values with comma
+        queryParams.set(filterKey, optionCodes.join(','));
       }
-    });
-
-    // Convert filter groups to query params
-    // For multiple values of the same filter, join with comma
-    Object.entries(filterGroups).forEach(([key, values]) => {
-      queryParams.set(key, values.join(','));
     });
 
     // Build the localized map URL with query parameters
@@ -211,7 +163,6 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
     console.log('[BeachCategorySearch] Navigating to map with filters:', {
       selectedCategories,
-      filterGroups,
       queryString,
       mapUrl,
     });
@@ -222,35 +173,38 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
   const CategoryButton: React.FC<{ category: CategoryItem }> = ({
     category,
-  }) => (
-    <button
-      onClick={() => toggleCategory(category.id)}
-      className={`
-  flex aspect-square w-full flex-col items-center justify-center gap-1
-  rounded border border-[#E0E0E0] bg-[#F5F5F5] p-1 transition-all duration-200
-  sm:gap-2 sm:p-2 md:gap-3 md:p-3 lg:gap-[10px] lg:p-[8px_3px]
-  ${
-    selectedCategories.includes(category.id)
-      ? 'border-blue-500 bg-blue-50 text-blue-700'
-      : 'text-[#4D4D4D]'
-  }
-`}
+  }) => {
+    const isSelected = selectedCategories[category.filterKey]?.includes(category.optionCode) ?? false;
 
-    >
-      {/* Ikona (slika) */}
-      <Image
-        src={category.icon}
-        alt={category.label}
-        width={32}
-        height={32}
-        className="h-4 w-4 object-contain sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 xl:h-8 xl:w-8"
-      />
-      {/* Label */}
-      <div className="text-center text-[7px] font-medium leading-tight sm:text-[8px] sm:leading-tight md:text-[9px] lg:text-[10px] lg:leading-[100%] xl:text-[12px]">
-        {category.label}
-      </div>
-    </button>
-  );
+    return (
+      <button
+        onClick={() => toggleCategory(category.filterKey, category.optionCode)}
+        className={`
+    flex aspect-square w-full flex-col items-center justify-center gap-1
+    rounded border border-[#E0E0E0] bg-[#F5F5F5] p-1 transition-all duration-200
+    sm:gap-2 sm:p-2 md:gap-3 md:p-3 lg:gap-[10px] lg:p-[8px_3px]
+    ${
+      isSelected
+        ? 'border-blue-500 bg-blue-50 text-blue-700'
+        : 'text-[#4D4D4D]'
+    }
+  `}
+      >
+        {/* Ikona (slika) */}
+        <Image
+          src={category.icon}
+          alt={category.label}
+          width={32}
+          height={32}
+          className="h-4 w-4 object-contain sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 xl:h-8 xl:w-8"
+        />
+        {/* Label */}
+        <div className="text-center text-[7px] font-medium leading-tight sm:text-[8px] sm:leading-tight md:text-[9px] lg:text-[10px] lg:leading-[100%] xl:text-[12px]">
+          {category.label}
+        </div>
+      </button>
+    );
+  };
 
   return (
     <section className="py-12 sm:py-16 lg:py-20">
@@ -263,45 +217,52 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             {description}
           </p>
           {/* Category Grid */}
-          {/* Top Row */}
-          <div className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3 md:grid-cols-6 md:gap-4 lg:grid-cols-8 lg:gap-5 xl:grid-cols-10 xl:gap-6 2xl:grid-cols-11">
-            {categories.map((category) => (
-              <CategoryButton key={category.id} category={category} />
-            ))}
-          </div>
+          {filtersLoading ? (
+            <div className="py-12 text-center text-white">
+              Loading filters...
+            </div>
+          ) : (
+            <div className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3 md:grid-cols-6 md:gap-4 lg:grid-cols-8 lg:gap-5 xl:grid-cols-10 xl:gap-6 2xl:grid-cols-11">
+              {categories.map((category) => (
+                <CategoryButton key={`${category.filterKey}-${category.optionCode}`} category={category} />
+              ))}
+            </div>
+          )}
 
           {/* Selected Categories Display */}
-          {selectedCategories.length > 0 && (
+          {Object.keys(selectedCategories).length > 0 && (
             <div className="mt-8 rounded-lg bg-white/10 p-4 backdrop-blur-sm">
               <h3 className="mb-2 font-semibold text-white">
-                  {t('selectedCategories')}
+                {t('selectedCategories')} ({Object.values(selectedCategories).flat().length})
               </h3>
               <div className="flex flex-wrap gap-2">
-                {selectedCategories.map((categoryId) => {
-                  const category = [...categories].find(
-                    (c) => c.id === categoryId,
-                  );
-                  return category ? (
-                    <span
-                      key={categoryId}
-                      className="flex items-center gap-1 rounded-full bg-blue-500 px-3 py-1 text-sm text-white"
-                    >
-                      <Image
-                        src={category.icon}
-                        alt={category.label}
-                        width={16}
-                        height={16}
-                      />
-                      {category.label}
-                      <button
-                        onClick={() => toggleCategory(categoryId)}
-                        className="ml-1 flex h-4 w-4 items-center justify-center rounded-full text-xs hover:bg-blue-600"
+                {Object.entries(selectedCategories).flatMap(([filterKey, optionCodes]) =>
+                  optionCodes.map((code) => {
+                    const category = categories.find(
+                      (c) => c.filterKey === filterKey && c.optionCode === code
+                    );
+                    return category ? (
+                      <span
+                        key={`${filterKey}-${code}`}
+                        className="flex items-center gap-1 rounded-full bg-blue-500 px-3 py-1 text-sm text-white"
                       >
-                        ×
-                      </button>
-                    </span>
-                  ) : null;
-                })}
+                        <Image
+                          src={category.icon}
+                          alt={category.label}
+                          width={16}
+                          height={16}
+                        />
+                        {category.label}
+                        <button
+                          onClick={() => toggleCategory(filterKey, code)}
+                          className="ml-1 flex h-4 w-4 items-center justify-center rounded-full text-xs hover:bg-blue-600"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    ) : null;
+                  })
+                )}
               </div>
             </div>
           )}
