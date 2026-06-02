@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
+import { TOP_FILTER_PICKS, getTopPickIcon } from '@/config/topFilterPicks';
+import FilterModal from './FilterModal';
 
 interface CategoryItem {
   filterKey: string;
@@ -38,6 +40,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
   const [selectedCategories, setSelectedCategories] = useState<
     Record<string, string[]>
   >({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const t = useTranslations('BeachCategories');
   const locale = useLocale();
   const router = useRouter();
@@ -73,50 +76,52 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
     return beachMapRoutes[locale] ?? 'beach-map';
   };
 
-  // Convert API filter options to flat category list for display
-  // We'll show all filter options from the API dynamically
+  // Show only TOP 12 PICKS on homepage (curated list)
+  // All other filters available in modal
   const categories = React.useMemo(() => {
     if (!filterOptions) return [];
 
-    const allCategories: {
+    const topCategories: {
       filterKey: string;
       optionCode: string;
       label: string;
       icon: string;
     }[] = [];
 
-    // Priority filter keys to show on homepage (in order)
-    const priorityFilters = [
-      'beach_type',
-      'location_infrastructure',
-      'natural_location_condition',
-      'accommodation_around',
-      'sporting_activities',
-      'culinary_offer',
-    ];
-
-    priorityFilters.forEach(filterKey => {
+    // Build categories from TOP_FILTER_PICKS
+    TOP_FILTER_PICKS.forEach(pick => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const filter = filterOptions[filterKey as keyof typeof filterOptions];
+      const filter = filterOptions[pick.filterKey as keyof typeof filterOptions];
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (!filter?.options) return;
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-      filter.options.forEach((option: { code?: string; name?: string }) => {
-        if (option.code && option.name) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          const iconPath = filter.icon;
-          allCategories.push({
-            filterKey,
-            optionCode: option.code,
-            label: option.name,
-            icon: iconPath ?? '/images/categories/default.png',
-          });
-        }
+      // Find matching option from API filter options
+      // Using 'any' due to complex union type from API response
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const option = filter.options.find((opt: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        return opt.code === pick.optionCode;
       });
+      if (option) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+        const opt = option as any; // API union type too complex
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+        const optionName: string = opt.name ?? pick.optionCode;
+        topCategories.push({
+          filterKey: pick.filterKey,
+          optionCode: pick.optionCode,
+          label: optionName,
+          icon:
+            getTopPickIcon(pick.filterKey, pick.optionCode) ??
+            '/images/categories/default.png',
+        });
+      }
     });
 
-    return allCategories;
+    return topCategories;
   }, [filterOptions]);
 
   const toggleCategory = (filterKey: string, optionCode: string) => {
@@ -143,13 +148,19 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
     });
   };
 
-  const handleShowAdvancedFilters = () => {
+  const handleApplyFiltersFromModal = (filters: Record<string, string[]>) => {
+    // Update local state and navigate to map
+    setSelectedCategories(filters);
+    navigateToMapWithFilters(filters);
+  };
+
+  const navigateToMapWithFilters = (filters: Record<string, string[]>) => {
     // Build query parameters from selected categories
     const queryParams = new URLSearchParams();
 
     // selectedCategories is already grouped by filter key
     // e.g., { beach_type: ['sand', 'grass_beach'], location_infrastructure: ['parking'] }
-    Object.entries(selectedCategories).forEach(([filterKey, optionCodes]) => {
+    Object.entries(filters).forEach(([filterKey, optionCodes]) => {
       if (optionCodes.length > 0) {
         // Join multiple values with comma
         queryParams.set(filterKey, optionCodes.join(','));
@@ -162,7 +173,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
     const mapUrl = `/${locale}/${mapRoute}${queryString ? `?${queryString}` : ''}`;
 
     console.log('[BeachCategorySearch] Navigating to map with filters:', {
-      selectedCategories,
+      filters,
       queryString,
       mapUrl,
     });
@@ -267,18 +278,19 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             </div>
           )}
 
-            {/* Advanced Filters Button */}
-            <div className="flex justify-center">
+            {/* Action Buttons */}
+            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+                {/* Show All Filters Button */}
                 <Button
-                    onClick={handleShowAdvancedFilters}
-                    className="flex items-center justify-center gap-3 rounded-md border border-[#E0E0E0] bg-white px-4 py-2 text-sm font-bold text-[#4D4D4D] transition-colors duration-200 hover:bg-gray-50 sm:gap-4 sm:px-5 sm:py-3 sm:text-base lg:gap-5 lg:px-6 mt-10"
+                    onClick={() => setIsModalOpen(true)}
+                    className="flex items-center justify-center gap-2 rounded-md border bg-white px-5 py-3 text-sm font-bold text-blue-600 transition-colors duration-200 hover:bg-blue-50 sm:px-6 sm:text-base"
                 >
                     <Image
                         src="/images/filters-blue.png"
-                        alt="Filtri"
+                        alt="All Filters"
                         width={20}
                         height={20}
-                        className="mr-1 h-4 w-4 object-contain sm:mr-2 sm:h-5 sm:w-5"
+                        className="h-5 w-5 mr-1 object-contain"
                     />
                     {t('showAdvancedFilters')}
                 </Button>
@@ -402,6 +414,15 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Filter Modal */}
+      <FilterModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        filterOptions={filterOptions}
+        selectedCategories={selectedCategories}
+        onApplyFilters={handleApplyFiltersFromModal}
+      />
     </section>
   );
 };
