@@ -92,10 +92,16 @@ const LeftSidebarFilters = ({
 
         const hasFilters = Object.keys(urlFilters).length > 0;
 
+        // Reset all expanded sections when URL changes
+        setExpandedSections({});
+
         if (hasFilters) {
             console.log('[LeftSidebarFilters] Applying filters from URL:', urlFilters);
             // Expand advanced filters section if there are filters in URL
             setIsExpanded(true);
+        } else {
+            // Collapse advanced filters section if no filters in URL
+            setIsExpanded(false);
         }
 
         // Apply filters from URL

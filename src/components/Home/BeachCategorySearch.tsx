@@ -305,7 +305,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
                     onClick={handleShowAdvancedFilters}
                     className="flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-sm font-bold text-white transition-colors duration-200 hover:bg-blue-700 sm:px-6 sm:text-base"
                 >
-                    {t('beachMapButton')}
+                    {t('mapButton')}
                 </Button>
             </div>
         </div>
