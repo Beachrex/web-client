@@ -113,9 +113,8 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
     {
       icon: 'userType.svg',
       labelKey: 'quickMenuUserType',
-      // User types (families, couples, singles, etc.)
       filters: {
-        user_type: ['for_family', 'for_couples', 'for_singles'],
+        user_type: ['adventurer', 'family', 'youth'],
       },
     },
     {

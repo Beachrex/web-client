@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -37,6 +37,7 @@ const LeftSidebarFilters = ({
     const [isExpanded, setIsExpanded] = useState(false);
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
     const [isInitialized, setIsInitialized] = useState(false);
+    const lastSearchParamsRef = useRef<string>('');
 
     // Initialize filters from URL query params on mount
     useEffect(() => {
@@ -65,6 +66,43 @@ const LeftSidebarFilters = ({
             setIsInitialized(true);
         }
     }, [isInitialized, searchParams, onFiltersChange]);
+
+    // Watch for URL changes after initialization (e.g. from QuickMenu clicks)
+    useEffect(() => {
+        if (!isInitialized || !searchParams) {
+            return;
+        }
+
+        // Convert searchParams to string for comparison
+        const searchParamsString = searchParams.toString();
+
+        // Only update if searchParams actually changed
+        if (searchParamsString === lastSearchParamsRef.current) {
+            return;
+        }
+
+        console.log('[LeftSidebarFilters] URL params changed:', searchParamsString);
+        lastSearchParamsRef.current = searchParamsString;
+
+        const urlFilters: Record<string, FilterValue> = {};
+
+        searchParams.forEach((value, key) => {
+            urlFilters[key] = value;
+        });
+
+        const hasFilters = Object.keys(urlFilters).length > 0;
+
+        if (hasFilters) {
+            console.log('[LeftSidebarFilters] Applying filters from URL:', urlFilters);
+            // Expand advanced filters section if there are filters in URL
+            setIsExpanded(true);
+        }
+
+        // Apply filters from URL
+        if (onFiltersChange) {
+            onFiltersChange(urlFilters);
+        }
+    }, [searchParams, isInitialized, onFiltersChange]);
 
     // Extract all selected filters from currentFilters to pass as query parameters
     // These filters cascade - selecting a filter will update other filter options
