@@ -54,22 +54,26 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
   const locale = useLocale();
   const router = useRouter();
 
-  // Get localized map route
+  // Localized beach-map routes (same as in BeachCategorySearch)
+  const beachMapRoutes: Record<string, string> = {
+    en: 'beach-map',
+    si: 'zemljevid-plaz',
+    de: 'strand-karte',
+    hr: 'karta-plaza',
+    fr: 'carte-des-plages',
+    es: 'mapa-de-playas',
+    it: 'mappa-spiagge',
+    ua: 'karta-plyazhiv',
+    ru: 'karta-plyazhey',
+    pl: 'mapa-plaz',
+    cs: 'mapa-plazi',
+    hu: 'strand-terkep',
+    bg: 'karta-na-plyazhovete',
+    sk: 'mapa-plazi',
+  };
+
   const getLocalizedMapRoute = () => {
-    switch (locale) {
-      case 'sl':
-        return 'zemljevid';
-      case 'en':
-        return 'map';
-      case 'it':
-        return 'mappa';
-      case 'de':
-        return 'karte';
-      case 'hr':
-        return 'karta';
-      default:
-        return 'map';
-    }
+    return beachMapRoutes[locale] ?? 'beach-map';
   };
 
   // Navigate to map with filters

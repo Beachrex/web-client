@@ -148,6 +148,11 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
     });
   };
 
+  const handleShowAdvancedFilters = () => {
+    // Navigate to map with currently selected filters
+    navigateToMapWithFilters(selectedCategories);
+  };
+
   const handleApplyFiltersFromModal = (filters: Record<string, string[]>) => {
     // Update local state and navigate to map
     setSelectedCategories(filters);
@@ -283,7 +288,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
                 {/* Show All Filters Button */}
                 <Button
                     onClick={() => setIsModalOpen(true)}
-                    className="flex items-center justify-center gap-2 rounded-md border bg-white px-5 py-3 text-sm font-bold text-blue-600 transition-colors duration-200 hover:bg-blue-50 sm:px-6 sm:text-base"
+                    className="flex items-center justify-center gap-2 rounded-md border border-blue-500 bg-white px-5 py-3 text-sm font-bold text-blue-600 transition-colors duration-200 hover:bg-blue-50 sm:px-6 sm:text-base"
                 >
                     <Image
                         src="/images/filters-blue.png"
@@ -293,6 +298,14 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
                         className="h-5 w-5 mr-1 object-contain"
                     />
                     {t('showAdvancedFilters')}
+                </Button>
+
+                {/* Advanced Search (Go to Map) Button */}
+                <Button
+                    onClick={handleShowAdvancedFilters}
+                    className="flex items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-3 text-sm font-bold text-white transition-colors duration-200 hover:bg-blue-700 sm:px-6 sm:text-base"
+                >
+                    {t('beachMapButton')}
                 </Button>
             </div>
         </div>
