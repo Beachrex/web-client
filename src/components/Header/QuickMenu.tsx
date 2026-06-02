@@ -1,7 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { SlBriefcase } from 'react-icons/sl';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/navigation';
 
 const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
 
@@ -22,7 +23,7 @@ const NavIcon = ({
 }) => {
   const defaultStyles = `h-6 items-center justify-center flex ${
     horizontal ? 'flex-row space-x-2' : 'flex-col items-center'
-  } text-sm text-variable-collection-dark-grey`;
+  } text-sm text-variable-collection-dark-grey ${onClick ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`;
 
   const appliedClassName = className || defaultStyles;
 
@@ -41,8 +42,106 @@ height={26}
   );
 };
 
+// Quick menu category to filter mapping
+interface QuickMenuCategory {
+  icon: string;
+  labelKey: string;
+  filters?: Record<string, string[]>; // Filter key -> option codes
+}
+
 const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
   const t = useTranslations('Common');
+  const locale = useLocale();
+  const router = useRouter();
+
+  // Get localized map route
+  const getLocalizedMapRoute = () => {
+    switch (locale) {
+      case 'sl':
+        return 'zemljevid';
+      case 'en':
+        return 'map';
+      case 'it':
+        return 'mappa';
+      case 'de':
+        return 'karte';
+      case 'hr':
+        return 'karta';
+      default:
+        return 'map';
+    }
+  };
+
+  // Navigate to map with filters
+  const navigateToMapWithFilters = (filters?: Record<string, string[]>) => {
+    const queryParams = new URLSearchParams();
+
+    if (filters) {
+      Object.entries(filters).forEach(([filterKey, optionCodes]) => {
+        if (optionCodes.length > 0) {
+          queryParams.set(filterKey, optionCodes.join(','));
+        }
+      });
+    }
+
+    const mapRoute = getLocalizedMapRoute();
+    const queryString = queryParams.toString();
+    const mapUrl = `/${locale}/${mapRoute}${queryString ? `?${queryString}` : ''}`;
+
+    router.push(mapUrl);
+  };
+
+  // Define quick menu categories with their filter mappings
+  const quickMenuCategories: QuickMenuCategory[] = [
+    {
+      icon: 'globe.svg',
+      labelKey: 'quickMenuWorldBeaches',
+      // No filters - shows all beaches worldwide
+    },
+    {
+      icon: 'beachType.svg',
+      labelKey: 'quickMenuBeachType',
+      // Show all beach types (sand, stones, grass, etc.)
+      filters: {
+        beach_type: ['sand', 'small_stones', 'grass_beach', 'large_stones'],
+      },
+    },
+    {
+      icon: 'userType.svg',
+      labelKey: 'quickMenuUserType',
+      // User types (families, couples, singles, etc.)
+      filters: {
+        user_type: ['for_family', 'for_couples', 'for_singles'],
+      },
+    },
+    {
+      icon: 'beachShowType.svg',
+      labelKey: 'quickMenuBeachDisplay',
+      // Natural conditions and views
+      filters: {
+        natural_location_condition: ['natural_shade', 'scenic_view'],
+      },
+    },
+    {
+      icon: 'shower.svg',
+      labelKey: 'quickMenuBeachServices',
+      // Beach services and infrastructure
+      filters: {
+        location_infrastructure: [
+          'shower',
+          'changing_cabins',
+          'toilets',
+          'restaurants',
+        ],
+      },
+    },
+    {
+      icon: 'baseBeachIcon.svg',
+      labelKey: 'quickMenuTopBeaches',
+      // Top rated beaches
+      // TODO: Add rating/popularity filter when available
+    },
+  ];
 
   return (
     <div className="flex min-h-[61px] items-center border-b border-t border-variable-collection-light-grey bg-variable-collection-ultra-light-grey">
@@ -63,22 +162,22 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
 
           {/* Center: Most important icons only */}
           <div className="flex flex-1 items-center justify-center space-x-3">
-            {[
-              { icon: 'globe.svg', labelKey: 'quickMenuWorldBeaches' },
-              { icon: 'beachType.svg', labelKey: 'quickMenuBeachType' },
-              { icon: 'baseBeachIcon.svg', labelKey: 'quickMenuTopBeaches' },
-            ].map((item, index) => (
-              <div key={index} className="flex flex-col items-center">
+            {quickMenuCategories.slice(0, 3).map((category, index) => (
+              <button
+                key={index}
+                className="flex flex-col items-center"
+                onClick={() => navigateToMapWithFilters(category.filters)}
+              >
                 <Image
-                  src={`${CDN_ASSETS}img/icon/${item.icon}`}
-                  alt={t(item.labelKey)}
+                  src={`${CDN_ASSETS}img/icon/${category.icon}`}
+                  alt={t(category.labelKey)}
                   width={40}
                   height={40}
                 />
                 <span className="xs:block mt-1 hidden text-xs text-variable-collection-semi-dark-grey">
-                  {t(item.labelKey)}
+                  {t(category.labelKey)}
                 </span>
-              </div>
+              </button>
             ))}
           </div>
 
@@ -115,20 +214,14 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
 
           {/* Middle Section (Icons and Labels) */}
           <div className="flex flex-1 flex-wrap items-center justify-center space-x-3 lg:space-x-6">
-            {[
-              { icon: 'globe.svg', labelKey: 'quickMenuWorldBeaches' },
-              { icon: 'beachType.svg', labelKey: 'quickMenuBeachType' },
-              { icon: 'userType.svg', labelKey: 'quickMenuUserType' },
-              { icon: 'beachShowType.svg', labelKey: 'quickMenuBeachDisplay' },
-              { icon: 'shower.svg', labelKey: 'quickMenuBeachServices' },
-              { icon: 'baseBeachIcon.svg', labelKey: 'quickMenuTopBeaches' },
-            ].map((item, index) => (
+            {quickMenuCategories.map((category, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <NavIcon
-                  src={`${CDN_ASSETS}img/icon/${item.icon}`}
-                  alt={t(item.labelKey)}
-                  label={t(item.labelKey)}
+                  src={`${CDN_ASSETS}img/icon/${category.icon}`}
+                  alt={t(category.labelKey)}
+                  label={t(category.labelKey)}
                   horizontal={true}
+                  onClick={() => navigateToMapWithFilters(category.filters)}
                 />
               </div>
             ))}
