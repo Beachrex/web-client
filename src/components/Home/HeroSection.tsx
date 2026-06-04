@@ -29,7 +29,6 @@ const beachesRoutes: Record<string, string> = {
 const HeroSection: React.FC = () => {
   const t = useTranslations('HomePage');
   const tContinents = useTranslations('Continents');
-  const tRoutes = useTranslations('routes');
   const locale = useLocale();
   const { continents, loading, error } = useContinents();
   const { countries } = useCountries();
@@ -202,9 +201,14 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Right side floating buttons - Keep absolute for floating effect */}
+      {/* Commented out for now
       <div className="absolute right-0 top-1/2 z-20 flex translate-y-[-50%] flex-col">
-        {/* Play / Beach button */}
-        <Link href={tRoutes('beachMap')} className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]">
+        Play / Beach button
+        <Link
+          href={tRoutes('beachMap')}
+          className="mb-2 flex h-12 w-12 items-center justify-center rounded-l-[10px]
+            bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]"
+        >
           <Image
             src="/images/map.png"
             alt="play beach"
@@ -214,20 +218,21 @@ const HeroSection: React.FC = () => {
           />
         </Link>
 
-        {/* Filters button */}
+        Filters button
         <button
           type="button"
           onClick={() => {
             const filtersSection = document.getElementById('filters-section');
             if (filtersSection) {
               filtersSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              // Open filter sidebar after scroll
+              Open filter sidebar after scroll
               setTimeout(() => {
                 window.dispatchEvent(new Event('openFilterSidebar'));
               }, 500);
             }
           }}
-          className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]"
+          className="flex h-12 w-12 items-center justify-center rounded-l-[10px]
+            bg-variable-collection-temno-modro sm:h-[68.46px] sm:w-[71px]"
         >
           <Image
             src="/images/filters.png"
@@ -238,6 +243,7 @@ const HeroSection: React.FC = () => {
           />
         </button>
       </div>
+      */}
     </section>
   );
 };

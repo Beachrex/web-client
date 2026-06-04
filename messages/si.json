@@ -142,7 +142,8 @@
     "dogFriendly": "Primerne za pse",
     "accessibleBeaches": "Primerne za invalide",
     "selectedCategories": "Izbrane kategorije:",
-    "showAdvancedFilters": "Prikaži napredne filtre"
+    "showAdvancedFilters": "Prikaži napredne filtre",
+    "mapButton": "Zemljevid"
   },
   "UserTypePage": {
     "title": "Tipi uporabnikov",

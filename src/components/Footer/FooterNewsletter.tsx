@@ -38,22 +38,25 @@ export default function FooterNewsletter() {
 
       <div className="flex items-center gap-3 pt-1">
         <Link
-          href="#"
+          href="https://www.facebook.com/beachrexproject/"
           aria-label="Facebook"
+          target="_blank"
           className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8D8D8D] text-white"
         >
           <Facebook className="h-4 w-4" />
         </Link>
         <Link
-          href="#"
+          href="https://www.instagram.com/beachrex_project/"
           aria-label="Instagram"
+          target="_blank"
           className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8D8D8D] text-white"
         >
           <Instagram className="h-4 w-4" />
         </Link>
         <Link
-          href="#"
+          href="https://www.youtube.com/@BeachRex"
           aria-label="YouTube"
+          target="_blank"
           className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8D8D8D] text-white"
         >
           <Youtube className="h-4 w-4" />

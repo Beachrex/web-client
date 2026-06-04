@@ -13,6 +13,7 @@ const NavIcon = ({
   horizontal = false,
   className = '',
   onClick,
+  href,
 }: {
   src: string;
   alt: string;
@@ -20,15 +21,16 @@ const NavIcon = ({
   horizontal?: boolean;
   className?: string;
   onClick?: () => void;
+  href?: string;
 }) => {
   const defaultStyles = `h-6 items-center justify-center flex ${
     horizontal ? 'flex-row space-x-2' : 'flex-col items-center'
-  } text-sm text-variable-collection-dark-grey ${onClick ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`;
+  } text-sm text-variable-collection-dark-grey ${onClick || href ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`;
 
   const appliedClassName = className || defaultStyles;
 
-  return (
-    <button className={appliedClassName} onClick={onClick}>
+  const content = (
+    <>
       <Image
 src={src} alt={alt} width={26}
 height={26}
@@ -38,6 +40,25 @@ height={26}
           {label}
         </span>
       </span>
+    </>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={appliedClassName}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <button className={appliedClassName} onClick={onClick}>
+      {content}
     </button>
   );
 };
@@ -191,12 +212,14 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
               alt="Facebook"
               label=""
               className="h-5 w-5"
+              href="https://www.facebook.com/beachrexproject/"
             />
             <NavIcon
               src={`${CDN_ASSETS}img/icon/instagram.svg`}
               alt="Instagram"
               label=""
               className="h-5 w-5"
+              href="https://www.instagram.com/beachrex_project/"
             />
           </div>
         </div>
@@ -244,16 +267,19 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
                 src={`${CDN_ASSETS}img/icon/facebook.svg`}
                 alt="Facebook"
                 label=""
+                href="https://www.facebook.com/beachrexproject/"
               />
               <NavIcon
                 src={`${CDN_ASSETS}img/icon/instagram.svg`}
                 alt="Instagram"
                 label=""
+                href="https://www.instagram.com/beachrex_project/"
               />
               <NavIcon
                 src={`${CDN_ASSETS}img/icon/youtube.svg`}
                 alt="YouTube"
                 label=""
+                href="https://www.youtube.com/@BeachRex"
               />
             </div>
           </div>

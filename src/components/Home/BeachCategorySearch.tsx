@@ -313,6 +313,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5 xl:gap-8">
           {/* Morske plaže */}
           <button
+            onClick={() => navigateToMapWithFilters({ waterbody: ['sea'] })}
             className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
             style={{ backgroundColor: '#0069AB' }}
           >
@@ -336,6 +337,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
           {/* Plaže ob jezeru */}
           <button
+            onClick={() => navigateToMapWithFilters({ waterbody: ['lake'] })}
             className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
             style={{ backgroundColor: '#4CC07E' }}
           >
@@ -359,6 +361,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
           {/* Plaže ob reki */}
           <button
+            onClick={() => navigateToMapWithFilters({ waterbody: ['river'] })}
             className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
             style={{ backgroundColor: '#4CC07E' }}
           >
@@ -382,6 +385,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
           {/* Zunanji bazeni */}
           <button
+            onClick={() => navigateToMapWithFilters({ waterbody: ['pool'] })}
             className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
             style={{ backgroundColor: '#42D4F4' }}
           >
@@ -405,6 +409,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
           {/* Pokriti bazeni, terme */}
           <button
+            onClick={() => navigateToMapWithFilters({ waterbody: ['pool'] })}
             className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
             style={{ backgroundColor: '#42D4F4' }}
           >
