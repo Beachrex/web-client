@@ -183,7 +183,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 const Page = async ({ params }: PageProps) => {
   const resolvedParams = await params;
-  const pathname = `/beaches/${resolvedParams.continent}`;
+  const beachesWord = getBeachesWord(resolvedParams.locale);
+  const pathname = `/${beachesWord}/${resolvedParams.continent}`;
 
   const t = await getTranslations({
     locale: resolvedParams.locale,

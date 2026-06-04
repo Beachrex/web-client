@@ -1,5 +1,27 @@
 // src/lib/utils/destination-url.ts
 
+// Localized "beaches" word mapping
+const beachesRoutes: Record<string, string> = {
+  en: 'beaches',
+  si: 'plaze',
+  de: 'strande',
+  hr: 'plaze',
+  fr: 'plages',
+  es: 'playas',
+  it: 'spiagge',
+  ua: 'plyazhi',
+  ru: 'plyazhi',
+  pl: 'plaze',
+  cs: 'plaze',
+  hu: 'strandok',
+  bg: 'plyazhove',
+  sk: 'plaze',
+};
+
+function getBeachesWord(locale: string): string {
+  return beachesRoutes[locale] ?? 'beaches';
+}
+
 export type DestinationType =
   | 'country'
   | 'region'
@@ -23,6 +45,7 @@ interface BuildDestinationUrlParams {
 /**
  * Centralized destination URL builder
  * This is the single source of truth for destination routing.
+ * Uses localized "beaches" word for each locale.
  */
 export function buildDestinationUrl({
   locale,
@@ -30,7 +53,8 @@ export function buildDestinationUrl({
   slug,
   location,
 }: BuildDestinationUrlParams): string {
-  const base = `/${locale}/beaches/${location.continent_slug}/${location.country_slug}`;
+  const beachesWord = getBeachesWord(locale);
+  const base = `/${locale}/${beachesWord}/${location.continent_slug}/${location.country_slug}`;
 
   switch (type) {
     case 'country':

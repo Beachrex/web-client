@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, MapPin, X, Mountain, Globe } from 'lucide-react';
-import { useTranslations, useLocale } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/routing';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useQuery } from '@tanstack/react-query';
 import { globalSearchOptions } from '@/lib/api-client/@tanstack/react-query.gen';
@@ -41,7 +41,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 }) => {
     const t = useTranslations('Common');
     const tSearch = useTranslations('Search');
-    const locale = useLocale();
     const router = useRouter();
 
     const [query, setQuery] = useState('');
@@ -209,38 +208,17 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         router.push(url);
     };
 
-    // Get localized "beaches" word
-    const getBeachesWord = (loc: string): string => {
-        const beachesRoutes: Record<string, string> = {
-            en: 'beaches',
-            si: 'plaze',
-            de: 'strande',
-            hr: 'plaze',
-            fr: 'plages',
-            es: 'playas',
-            it: 'spiagge',
-            ua: 'plyazhi',
-            ru: 'plyazhi',
-            pl: 'plaze',
-            cs: 'plaze',
-            hu: 'strandok',
-            bg: 'plyazhove',
-            sk: 'plaze',
-        };
-        return beachesRoutes[loc] ?? 'beaches';
-    };
-
     // Build URL based on result type using localized slugs from API
+    // Note: We use canonical "/beaches/..." paths, and next-intl router will handle localization
     const buildResultUrl = (result: UnifiedSearchResult): string => {
-        const beachesWord = getBeachesWord(locale);
-        const segments: string[] = [locale, beachesWord];
+        const segments: string[] = ['beaches'];
 
         switch (result.type) {
             case 'beach': {
-                // Beach URL: /locale/beaches/continent/country/[region]/[island]/[city]/beach
+                // Beach URL: /beaches/continent/country/[region]/[island]/[city]/beach
                 if (!result.continent_slug || !result.country_slug) {
                     console.error('Beach missing required slugs:', result);
-                    return `/${locale}/${beachesWord}`;
+                    return '/beaches';
                 }
                 segments.push(result.continent_slug, result.country_slug);
                 if (result.region_slug) segments.push(result.region_slug);
@@ -250,10 +228,10 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 break;
             }
             case 'city': {
-                // City URL: /locale/beaches/continent/country/[region]/[island]/city
+                // City URL: /beaches/continent/country/[region]/[island]/city
                 if (!result.continent_slug || !result.country_slug) {
                     console.error('City missing required slugs:', result);
-                    return `/${locale}/${beachesWord}`;
+                    return '/beaches';
                 }
                 segments.push(result.continent_slug, result.country_slug);
                 if (result.island_slug) {
@@ -265,10 +243,10 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 break;
             }
             case 'island': {
-                // Island URL: /locale/beaches/continent/country/[region]/island
+                // Island URL: /beaches/continent/country/[region]/island
                 if (!result.continent_slug || !result.country_slug) {
                     console.error('Island missing required slugs:', result);
-                    return `/${locale}/${beachesWord}`;
+                    return '/beaches';
                 }
                 segments.push(result.continent_slug, result.country_slug);
                 if (result.region_slug) segments.push(result.region_slug);
@@ -276,25 +254,25 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 break;
             }
             case 'region': {
-                // Region URL: /locale/beaches/continent/country/region
+                // Region URL: /beaches/continent/country/region
                 if (!result.continent_slug || !result.country_slug) {
                     console.error('Region missing required slugs:', result);
-                    return `/${locale}/${beachesWord}`;
+                    return '/beaches';
                 }
                 segments.push(result.continent_slug, result.country_slug, result.slug);
                 break;
             }
             case 'country': {
-                // Country URL: /locale/beaches/continent/country
+                // Country URL: /beaches/continent/country
                 if (!result.continent_slug) {
                     console.error('Country missing continent slug:', result);
-                    return `/${locale}/${beachesWord}`;
+                    return '/beaches';
                 }
                 segments.push(result.continent_slug, result.slug);
                 break;
             }
             default:
-                return `/${locale}/${beachesWord}`;
+                return '/beaches';
         }
 
         return '/' + segments.join('/');

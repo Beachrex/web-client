@@ -7,24 +7,7 @@ import { useCountries } from '@/hooks/useCountries';
 import { useHeroBanner } from '@/hooks/useFirstPageContent';
 import { Link } from '@/i18n/routing';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-
-// Locale-specific route translations for beaches
-const beachesRoutes: Record<string, string> = {
-  en: 'beaches',
-  si: 'plaze',
-  de: 'strande',
-  hr: 'plaze',
-  fr: 'plages',
-  es: 'playas',
-  it: 'spiagge',
-  ua: 'plyazhi',
-  ru: 'plyazhi',
-  pl: 'plaze',
-  cs: 'plaze',
-  hu: 'strandok',
-  bg: 'plyazhove',
-  sk: 'plaze',
-};
+import { buildContinentUrl } from '@/lib/utils/beach-urls';
 
 const HeroSection: React.FC = () => {
   const t = useTranslations('HomePage');
@@ -33,9 +16,6 @@ const HeroSection: React.FC = () => {
   const { continents, loading, error } = useContinents();
   const { countries } = useCountries();
   const { content: heroBanner, loading: bannerLoading } = useHeroBanner();
-
-  // Get the localized beaches route word for current locale
-  const beachesWord = useMemo(() => beachesRoutes[locale] ?? 'beaches', [locale]);
 
   // Calculate total beaches count from all continents
   const totalBeaches = useMemo(() => {
@@ -98,7 +78,7 @@ const HeroSection: React.FC = () => {
             continents.map((c) => (
               <Link
                 key={c.key}
-                href={`/${beachesWord}/${c.slug}`}
+                href={buildContinentUrl(locale, c.slug)}
                 className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[10px] bg-[#5E1CA5] p-2 transition-all hover:bg-[#7A2BC9] hover:shadow-lg sm:h-[54px] sm:w-auto sm:gap-[16px] sm:px-[12px] sm:py-[9px]"
                 title={`${tContinents(c.key)} - ${tContinents('num_of_beaches')}: ${c.beaches_count}`}
               >

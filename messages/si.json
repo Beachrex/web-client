@@ -199,6 +199,12 @@
     "northAmerica": "Severna Amerika",
     "southAmerica": "Južna Amerika",
     "australia": "Avstralija",
+    "EU": "Evropa",
+    "AF": "Afrika",
+    "AS": "Azija",
+    "NA": "Severna Amerika",
+    "SA": "Južna Amerika",
+    "OC": "Avstralija",
     "num_of_beaches": "Št. plaž"
   },
   "PropertySection": {
@@ -342,7 +348,7 @@
     "popularBeachesTitle": "Najbolj obiskane plaže {region}",
     "featuredAccommodationsTitle": "Izpostavljene namestitve {region}",
 
-    "islandsTitle": "Otóki {region}",
+    "islandsTitle": "Otoki {region}",
     "citiesTitle": "Mesta {region}",
     "allIslandsCount": "Vsi otoki ({count})",
     "allCitiesCount": "Vsa mesta ({count})",
