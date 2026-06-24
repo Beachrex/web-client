@@ -42,6 +42,19 @@
    - Performance optimization
    - Common anti-patterns
 
+### SEO & Technical
+
+6. **[SEO_STATUS_AND_TASKS.md](./SEO_STATUS_AND_TASKS.md)** ⭐ **COMPREHENSIVE**
+   - Complete SEO implementation status (75% complete)
+   - What's done: Metadata, sitemaps, JSON-LD, hreflang
+   - What needs work: Image alt text, page speed
+   - Future task tracker with priorities
+
+7. **[SEO_QUICK_REFERENCE.md](./SEO_QUICK_REFERENCE.md)**
+   - Quick SEO templates & patterns
+   - Copy-paste metadata examples
+   - Testing commands
+
 ---
 
 ## 🚀 Quick Start
@@ -69,6 +82,8 @@ yarn dev
 | `src/i18n/routing.ts` | Localized route definitions |
 | `src/hooks/useLocalizedPath.ts` | Path translation logic |
 | `src/lib/api-client/` | Auto-generated API client |
+| `src/lib/utils/destination-url.ts` | Localized URL builders |
+| `src/lib/utils/json-ld-helpers.ts` | SEO structured data helpers |
 | `messages/{locale}.json` | Translation files |
 
 ### 3. Common Tasks

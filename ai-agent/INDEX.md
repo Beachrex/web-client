@@ -45,6 +45,27 @@
    - Performance optimization
    - Common anti-patterns
 
+### 🔍 SEO & Technical
+
+8. **[SEO_STATUS_AND_TASKS.md](./SEO_STATUS_AND_TASKS.md)** ⭐ **COMPREHENSIVE**
+   - Complete SEO implementation status (75% complete)
+   - What's done: Metadata, sitemaps, JSON-LD, hreflang, robots.txt
+   - What's missing: Image alt text, page speed optimization
+   - Future task tracker with priorities
+   - Pre-launch SEO checklist
+
+9. **[SEO_QUICK_REFERENCE.md](./SEO_QUICK_REFERENCE.md)** - Quick SEO lookup
+   - Copy-paste templates for metadata
+   - URL building patterns
+   - JSON-LD schema examples
+   - Testing commands
+
+10. **[SEO_VISUAL_STATUS.md](./SEO_VISUAL_STATUS.md)** ⭐ - Visual dashboard
+   - Progress charts and status matrix
+   - Page-by-page SEO status
+   - Sitemap coverage overview
+   - Top priority tasks at a glance
+
 ---
 
 ## 🎯 Documentation by Use Case
@@ -72,6 +93,15 @@
 ### "How does language switching work?"
 → [LOCALIZATION_GUIDE.md](./LOCALIZATION_GUIDE.md) - "Path Translation Hook"
 
+### "What SEO is already implemented?"
+→ [SEO_STATUS_AND_TASKS.md](./SEO_STATUS_AND_TASKS.md) - Overall Status
+
+### "How do I add metadata to a new page?"
+→ [SEO_QUICK_REFERENCE.md](./SEO_QUICK_REFERENCE.md) - Page Metadata Template
+
+### "Which pages need SEO work?"
+→ [SEO_STATUS_AND_TASKS.md](./SEO_STATUS_AND_TASKS.md) - Future Tasks
+
 ---
 
 ## 📊 Document Stats
@@ -85,8 +115,11 @@
 | ROUTING_GUIDE.md | ~200 | 6KB | Routing patterns |
 | API_INTEGRATION_GUIDE.md | ~200 | 7KB | API usage |
 | COMPONENT_PATTERNS.md | ~200 | 8KB | Component guide |
+| SEO_STATUS_AND_TASKS.md | ~550 | 19KB | **SEO tracker** |
+| SEO_QUICK_REFERENCE.md | ~150 | 6.8KB | SEO templates |
+| SEO_VISUAL_STATUS.md | ~170 | 6.5KB | SEO dashboard |
 
-**Total**: ~1,500 lines, ~51KB of documentation
+**Total**: ~2,390 lines, ~87KB of documentation
 
 ---
 

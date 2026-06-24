@@ -2,7 +2,7 @@
 
 > **Reference**: How Next.js App Router and dynamic routing work in Beachrex
 
-**Last Updated**: 2026-05-29
+**Last Updated**: 2026-06-04
 
 ---
 
