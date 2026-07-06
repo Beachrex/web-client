@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import { useContinents } from '@/hooks/useContinents';
 import { useCountries } from '@/hooks/useCountries';
 import { useHeroBanner } from '@/hooks/useFirstPageContent';
-import { Link } from '@/i18n/routing';
+import Link from 'next/link';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildContinentUrl } from '@/lib/utils/beach-urls';
 
