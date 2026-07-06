@@ -75,10 +75,10 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
   return radiusBeaches
     .filter((b) => b.id !== beachId)
     .map((b) =>
-      mapBeachToProperty(b)
+      mapBeachToProperty(b, { locale })
     )
     .filter((p): p is Property => p !== null);
-}, [radiusBeaches, beachId]);
+}, [radiusBeaches, beachId, locale]);
 
 
   return (

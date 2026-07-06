@@ -35,6 +35,16 @@ interface FilterOptionGroup {
   }[];
 }
 
+function shallowEqualFilters(
+  a: Record<string, FilterValue>,
+  b: Record<string, FilterValue>,
+): boolean {
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
+  if (aKeys.length !== bKeys.length) return false;
+  return aKeys.every((key) => a[key] === b[key]);
+}
+
 export function useBeachFiltersController({
   baseFilters = {},
   hiddenFilterKeys = [],
@@ -43,6 +53,25 @@ export function useBeachFiltersController({
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+
+  // Callers typically pass inline object/array literals, which create a new
+  // reference on every render. Stabilize them by content so the effects and
+  // memos below don't re-run endlessly (which caused a render loop).
+  const hiddenFilterKeysStable = useMemo(
+    () => hiddenFilterKeys,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(hiddenFilterKeys)],
+  );
+  const baseFiltersStable = useMemo(
+    () => baseFilters,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(baseFilters)],
+  );
+  const optionScopeFiltersStable = useMemo(
+    () => optionScopeFilters,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(optionScopeFilters)],
+  );
 
   const [userFilters, setUserFilters] = useState<Record<string, FilterValue>>(
     {},
@@ -58,13 +87,18 @@ export function useBeachFiltersController({
     const initialFilters: Record<string, FilterValue> = {};
 
     searchParams.forEach((value, key) => {
-      if (!hiddenFilterKeys.includes(key)) {
+      if (!hiddenFilterKeysStable.includes(key)) {
         initialFilters[key] = value;
       }
     });
 
-    setUserFilters(initialFilters);
-  }, [searchParams, hiddenFilterKeys]);
+    // Only update state when the derived filters actually changed, otherwise
+    // we create a new object reference on every run and retrigger downstream
+    // effects (STATE → URL), causing an infinite update loop.
+    setUserFilters((prev) =>
+      shallowEqualFilters(prev, initialFilters) ? prev : initialFilters,
+    );
+  }, [searchParams, hiddenFilterKeysStable]);
 
   /* ---------------- STATE → URL ---------------- */
 
@@ -76,7 +110,7 @@ export function useBeachFiltersController({
       value !== undefined &&
       value !== null &&
       value !== '' &&
-      !hiddenFilterKeys.includes(key)
+      !hiddenFilterKeysStable.includes(key)
     ) {
       params.set(key, String(value));
     }
@@ -84,25 +118,29 @@ export function useBeachFiltersController({
 
   const query = params.toString();
 
+  // Skip navigation when the query string already matches the current URL.
+  // This breaks the URL ↔ STATE cycle that otherwise loops forever.
+  const currentQuery = searchParams?.toString() ?? '';
+  if (query === currentQuery) return;
 
   router.replace(
     query ? `${pathname}?${query}` : pathname,
     { scroll: false }
   );
-}, [userFilters, hiddenFilterKeys, pathname, router]);
+}, [userFilters, hiddenFilterKeysStable, pathname, router, searchParams]);
 
 
   /* ---------------- QUERY PARAMS ---------------- */
 
   const queryParams = useMemo(() => {
-    const params: Record<string, string | number> = { ...baseFilters };
+    const params: Record<string, string | number> = { ...baseFiltersStable };
 
     Object.entries(userFilters).forEach(([key, value]) => {
       if (
         value !== undefined &&
         value !== null &&
         value !== '' &&
-        !hiddenFilterKeys.includes(key)
+        !hiddenFilterKeysStable.includes(key)
       ) {
         params[key] =
           typeof value === 'boolean' ? (value ? 1 : 0) : value;
@@ -110,16 +148,16 @@ export function useBeachFiltersController({
     });
 
     return params;
-  }, [baseFilters, userFilters, hiddenFilterKeys]);
+  }, [baseFiltersStable, userFilters, hiddenFilterKeysStable]);
 
     /* ---------------- FILTER OPTIONS QUERY (HARD SCOPE) ---------------- */
 
   const filterOptionsQuery = useMemo(() => {
     return {
       ...queryParams,
-      ...optionScopeFilters,
+      ...optionScopeFiltersStable,
     };
-  }, [queryParams, optionScopeFilters]);
+  }, [queryParams, optionScopeFiltersStable]);
 
 
   /* ---------------- FETCH FILTER OPTIONS ---------------- */
@@ -178,14 +216,19 @@ export function useBeachFiltersController({
 
     lastValidatedFiltersRef.current = validated;
     return validated;
-  }, [userFilters, filterOptions, hiddenFilterKeys]);
+  }, [userFilters, filterOptions, hiddenFilterKeysStable]);
 
   /* ---------------- FINAL FILTERS ---------------- */
 
-  const filters = {
-    ...baseFilters,
-    ...validatedUserFilters,
-  };
+  // Memoize so consumers (e.g. useAllBeaches) receive a stable reference and
+  // don't refetch / re-render on every parent render.
+  const filters = useMemo(
+    () => ({
+      ...baseFiltersStable,
+      ...validatedUserFilters,
+    }),
+    [baseFiltersStable, validatedUserFilters],
+  );
 
   const resetFilters = () => {
     setUserFilters({});

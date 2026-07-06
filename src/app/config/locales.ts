@@ -16,3 +16,4 @@ export const languageNames: Record<string, string> = {
     bg: 'Български',
     sk: 'Slovenčina',
 };
+
