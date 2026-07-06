@@ -180,7 +180,7 @@ export function useBeachFiltersController({
     const validated: Record<string, FilterValue> = {};
 
     Object.entries(userFilters).forEach(([key, value]) => {
-      if (hiddenFilterKeys.includes(key)) return;
+      if (hiddenFilterKeysStable.includes(key)) return;
       if (!value) return;
 
       const filterData = filterOptions[key] as FilterOptionGroup | undefined;
