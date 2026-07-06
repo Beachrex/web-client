@@ -2,7 +2,7 @@
 
 import { useAllBeaches } from '@/hooks/useBeaches';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import { Pagination } from 'flowbite-react';
 import { useLocale, useTranslations, type TranslationValues } from 'next-intl';
 import Image from 'next/image';
@@ -157,7 +157,8 @@ const [mediaMode] =
       videoEmbedUrl,
       webcamEmbed: b.media?.embeds?.webcam ?? null,
       title: b.name ?? tCommon('unknownBeach'),
-      location: b.city_slug ?? '',
+      location: b.city_name ?? b.country_name ?? '',
+      locationUrl: buildCityUrlFromSchema(b, locale) ?? undefined,
       price: 0,
       rating: 0,
       reviews: 0,

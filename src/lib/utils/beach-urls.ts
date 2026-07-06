@@ -246,6 +246,51 @@ export function buildBeachUrlFromSchema(
 
 
 /**
+ * Build city page URL from BeachSchema (from listing APIs)
+ * Format: /[locale]/beaches/[continent]/[country]/[region|island]/[city]
+ *
+ * @param beach - Beach object from listing API
+ * @param locale - Current locale
+ * @returns City page URL or null if required fields are missing
+ */
+export function buildCityUrlFromSchema(
+  beach: {
+    continent_slug?: string | null;
+    country_slug?: string | null;
+    region_slug?: string | null;
+    island_slug?: string | null;
+    city_slug?: string | null;
+  },
+  locale: string
+): string | null {
+  // Check required fields
+  if (!beach.continent_slug || !beach.country_slug || !beach.city_slug) {
+    return null;
+  }
+
+  const segments: string[] = [locale, getBeachesWord(locale)];
+
+  // Continent (required)
+  segments.push(beach.continent_slug);
+
+  // Country (required)
+  segments.push(beach.country_slug);
+
+  // If island is present, we prefer island branch, otherwise region
+  if (beach.island_slug) {
+    segments.push(beach.island_slug);
+  } else if (beach.region_slug) {
+    segments.push(beach.region_slug);
+  }
+
+  // City (required)
+  segments.push(beach.city_slug);
+
+  return '/' + segments.join('/');
+}
+
+
+/**
  * Build country URL from navigation data (previous/next country)
  * Format: /[locale]/beaches/[continent]/[country]
  */

@@ -38,6 +38,7 @@ export interface Property {
 
   title: string;
   location: string;
+  locationUrl?: string;
   price: number;
   originalPrice?: number;
   rating: number;

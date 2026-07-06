@@ -2,7 +2,7 @@
 
 import type { Property } from '@/components/PropertySection';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 
 /* ------------------------------------------------------------------
  * Minimal input types for mapper (NO any, NO API coupling)
@@ -38,6 +38,9 @@ export interface BeachLike {
   region_slug?: string | null;
   island_slug?: string | null;
   city_slug?: string | null;
+
+  city_name?: string | null;
+  country_name?: string | null;
 
   country_code?: string | null;
   main_image?: string | null;
@@ -124,10 +127,10 @@ export function mapBeachToProperty(
    * LOCATION LABEL
    * --------------------------- */
   const location =
-    typeof beach.city_slug === 'string'
-      ? beach.city_slug
-      : typeof beach.region_slug === 'string'
-      ? beach.region_slug
+    typeof beach.city_name === 'string' && beach.city_name
+      ? beach.city_name
+      : typeof beach.country_name === 'string' && beach.country_name
+      ? beach.country_name
       : options?.locationFallback ?? '';
 
   /* ---------------------------
@@ -159,6 +162,22 @@ export function mapBeachToProperty(
     : null;
 
   /* ---------------------------
+   * CITY PAGE URL (only when locale is known)
+   * --------------------------- */
+  const locationUrl = options?.locale
+    ? buildCityUrlFromSchema(
+        {
+          continent_slug: beach.continent_slug,
+          country_slug: beach.country_slug,
+          region_slug: beach.region_slug,
+          island_slug: beach.island_slug,
+          city_slug: beach.city_slug,
+        },
+        options.locale,
+      )
+    : null;
+
+  /* ---------------------------
    * FINAL PROPERTY OBJECT
    * --------------------------- */
   return {
@@ -175,6 +194,7 @@ export function mapBeachToProperty(
 
     title: beach.name ?? 'Unknown beach',
     location,
+    ...(locationUrl ? { locationUrl } : {}),
 
     price: 0,
     rating: 0,

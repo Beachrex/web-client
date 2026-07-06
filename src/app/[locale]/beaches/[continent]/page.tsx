@@ -19,7 +19,7 @@ import {
 
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema, getBeachesWord } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema, buildCityUrlFromSchema, getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, buildContinentSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
@@ -256,7 +256,9 @@ return {
   webcamEmbed,
 
   title: beach.name ?? '',
-  location: beach.city_slug ?? beach.region_slug ?? '',
+  location: beach.city_name ?? beach.country_name ?? '',
+  locationUrl:
+    buildCityUrlFromSchema(beach, resolvedParams.locale) ?? undefined,
   price: 0,
   rating: 0,
   reviews: 0,

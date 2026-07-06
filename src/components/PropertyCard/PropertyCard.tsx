@@ -63,6 +63,7 @@ export interface PropertyCardProps {
 
   title: string;
   location: string;
+  locationUrl?: string;
   price: number;
   rating: number;
   reviews: number;
@@ -81,6 +82,7 @@ const PropertyCard = React.memo(function PropertyCard({  beachUrl,
   videoEmbedUrl,
   title,
   location,
+  locationUrl,
   price,
   rating,
   isMostVisited,
@@ -379,9 +381,19 @@ const webcamUrl = React.useMemo(
     </div>
 
     <div className="pointer-events-auto flex items-center gap-2">
-      <div className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#FF8000] px-[12px]">
-        <span className="text-[12px] font-bold text-white">{location}</span>
-      </div>
+      {locationUrl ? (
+        <Link
+          href={locationUrl}
+          onClick={(e) => e.stopPropagation()}
+          className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#FF8000] px-[12px] transition-colors hover:bg-[#e67300] focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          <span className="text-[12px] font-bold text-white">{location}</span>
+        </Link>
+      ) : (
+        <div className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#FF8000] px-[12px]">
+          <span className="text-[12px] font-bold text-white">{location}</span>
+        </div>
+      )}
 
       <div className="h-[40px] w-[50px] overflow-hidden rounded-[6px]">
         <Image

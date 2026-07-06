@@ -55,6 +55,11 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
     buildCdnUrl(gallery[0]?.thumbnail_url ?? gallery[0]?.url, 'gallery') ??
     '/images/beachmedia/beach-gallery.jpg';
 
+  // High-resolution version for the fullscreen viewer (uses LARGE CDN endpoint)
+  const primaryGalleryLargeUrl =
+    buildCdnUrl(gallery[0]?.url ?? gallery[0]?.thumbnail_url, 'banner') ??
+    primaryGalleryUrlTmp;
+
   const rawVideoUrl =
     (typeof embeds?.video_url === 'string' ? embeds.video_url : null) ??
     (videos[0]?.url ? buildCdnUrl(videos[0]?.url, 'video') : null) ??
@@ -162,8 +167,8 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
                     {gallery.map((img) => {
                       const rawSrc = img.url ?? img.thumbnail_url;
                       const src =
-                        buildCdnUrl(rawSrc, 'gallery') ??
-                        primaryGalleryUrlTmp;
+                        buildCdnUrl(rawSrc, 'banner') ??
+                        primaryGalleryLargeUrl;
                       const key = String(img.id ?? src);
 
                       return (
@@ -175,7 +180,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
                               'Beach gallery image'
                             }
                             fill
-                            className="rounded-xl object-cover"
+                            className="rounded-xl object-contain"
                           />
                         </div>
                       );
@@ -183,13 +188,13 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
                   </Carousel>
                 ) : (
                   <Image
-                    src={primaryGalleryUrlTmp}
+                    src={primaryGalleryLargeUrl}
                     alt={
                       beachDetails.basic_info?.name ?? 'Beach gallery image'
                     }
                     width={1600}
                     height={900}
-                    className="h-[75vh] w-full rounded-xl object-cover"
+                    className="h-[75vh] w-full rounded-xl object-contain"
                   />
                 )}
               </div>
