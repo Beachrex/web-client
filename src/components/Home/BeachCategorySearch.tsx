@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { TOP_FILTER_PICKS, getTopPickIcon } from '@/config/topFilterPicks';
+import { getBeachMapWord } from '@/lib/utils/beach-urls';
 import FilterModal from './FilterModal';
 
 interface CategoryItem {
@@ -53,28 +54,6 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
   );
 
   const filterOptions = (filtersData?.data ?? null) as GetBeachFiltersResponse['data'] | null;
-
-  // Localized beach-map routes
-  const beachMapRoutes: Record<string, string> = {
-    en: 'beach-map',
-    si: 'zemljevid-plaz',
-    de: 'strand-karte',
-    hr: 'karta-plaza',
-    fr: 'carte-des-plages',
-    es: 'mapa-de-playas',
-    it: 'mappa-spiagge',
-    ua: 'karta-plyazhiv',
-    ru: 'karta-plyazhey',
-    pl: 'mapa-plaz',
-    cs: 'mapa-plazi',
-    hu: 'strand-terkep',
-    bg: 'karta-na-plyazhovete',
-    sk: 'mapa-plazi',
-  };
-
-  const getLocalizedMapRoute = () => {
-    return beachMapRoutes[locale] ?? 'beach-map';
-  };
 
   // Show only TOP 12 PICKS on homepage (curated list)
   // All other filters available in modal
@@ -173,7 +152,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
     });
 
     // Build the localized map URL with query parameters
-    const mapRoute = getLocalizedMapRoute();
+    const mapRoute = getBeachMapWord(locale);
     const queryString = queryParams.toString();
     const mapUrl = `/${locale}/${mapRoute}${queryString ? `?${queryString}` : ''}`;
 

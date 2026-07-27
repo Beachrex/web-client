@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { SlBriefcase } from 'react-icons/sl';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import { getBeachMapWord } from '@/lib/utils/beach-urls';
 
 const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
 
@@ -75,28 +76,6 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
   const locale = useLocale();
   const router = useRouter();
 
-  // Localized beach-map routes (same as in BeachCategorySearch)
-  const beachMapRoutes: Record<string, string> = {
-    en: 'beach-map',
-    si: 'zemljevid-plaz',
-    de: 'strand-karte',
-    hr: 'karta-plaza',
-    fr: 'carte-des-plages',
-    es: 'mapa-de-playas',
-    it: 'mappa-spiagge',
-    ua: 'karta-plyazhiv',
-    ru: 'karta-plyazhey',
-    pl: 'mapa-plaz',
-    cs: 'mapa-plazi',
-    hu: 'strand-terkep',
-    bg: 'karta-na-plyazhovete',
-    sk: 'mapa-plazi',
-  };
-
-  const getLocalizedMapRoute = () => {
-    return beachMapRoutes[locale] ?? 'beach-map';
-  };
-
   // Navigate to map with filters
   const navigateToMapWithFilters = (filters?: Record<string, string[]>) => {
     const queryParams = new URLSearchParams();
@@ -109,7 +88,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
       });
     }
 
-    const mapRoute = getLocalizedMapRoute();
+    const mapRoute = getBeachMapWord(locale);
     const queryString = queryParams.toString();
     const mapUrl = `/${locale}/${mapRoute}${queryString ? `?${queryString}` : ''}`;
 

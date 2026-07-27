@@ -1,10 +1,12 @@
 'use client';
 
 import type { Continent, Country } from '@/lib/api-client/types.gen';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+
+import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 
 import BottomBadges from './BottomBadges';
 import InfoCardsSection from './InfoCardsSection';
@@ -86,7 +88,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   isWeatherLoading,
 }) => {
   const t = useTranslations('BannerSection');
-  const tRoutes = useTranslations('routes');
+  const locale = useLocale();
 
   const variant = topBarVariant;
   const variantBgClass = VARIANT_BG_CLASS[variant];
@@ -105,7 +107,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
     if (islandSlug) params.append('island', islandSlug);
 
     const queryString = params.toString();
-    return queryString ? `${tRoutes('beachMap')}?${queryString}` : tRoutes('beachMap');
+    return buildBeachMapUrl(locale, queryString || undefined);
   };
 
   return (

@@ -28,6 +28,46 @@ export function getBeachesWord(locale: string): string {
 }
 
 /**
+ * Get localized "beach map" word (slug) for URL.
+ *
+ * Single source of truth for the beach-map slug, matching the localized
+ * pathnames declared in `src/i18n/routing.ts`. Keep this map in sync with
+ * `routing.ts` and the sitemap generator.
+ */
+export function getBeachMapWord(locale: string): string {
+  const beachMapRoutes: Record<string, string> = {
+    en: 'beach-map',
+    si: 'zemljevid-plaz',
+    de: 'strand-karte',
+    hr: 'karta-plaza',
+    fr: 'carte-des-plages',
+    es: 'mapa-de-playas',
+    it: 'mappa-spiagge',
+    ua: 'karta-plyazhiv',
+    ru: 'karta-plyazhey',
+    pl: 'mapa-plaz',
+    cs: 'mapa-plazi',
+    hu: 'strand-terkep',
+    bg: 'karta-na-plyazhovete',
+    sk: 'mapa-plazi',
+  };
+  return beachMapRoutes[locale] ?? 'beach-map';
+}
+
+/**
+ * Build the localized beach-map URL for the current locale.
+ * Always locale-prefixed so navigation never relies on the NEXT_LOCALE cookie.
+ * Format: /[locale]/[localized-beach-map-slug][?query]
+ *
+ * @param locale - Current locale (e.g. 'en', 'de')
+ * @param queryString - Optional query string without leading '?'
+ */
+export function buildBeachMapUrl(locale: string, queryString?: string): string {
+  const base = `/${locale}/${getBeachMapWord(locale)}`;
+  return queryString ? `${base}?${queryString}` : base;
+}
+
+/**
  * Build beach URL from beach details object
  * This is the MAIN function to use throughout the project for building beach URLs
  *

@@ -5,7 +5,8 @@ import WeatherWidget from '@/components/BannerSection/WeatherWidget';
 import { useBeachWeather } from '@/hooks/useWeather';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { getMainBeachImage } from '@/lib/utils/beach-images';
-import { useLocale, useTranslations } from 'next-intl';
+import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import BeachTitleBlock from './BeachTitleBlock';
@@ -26,7 +27,6 @@ export default function BeachBannerSection({
   accommodationCount,
   activityCount,
 }: BeachBannerSectionProps) {
-  const tRoutes = useTranslations('routes');
   const locale = useLocale();
 
   const beachName = beachDetails?.basic_info?.name ?? '';
@@ -50,7 +50,7 @@ export default function BeachBannerSection({
     if (islandSlug) params.append('island', islandSlug);
 
     const queryString = params.toString();
-    return queryString ? `${tRoutes('beachMap')}?${queryString}` : tRoutes('beachMap');
+    return buildBeachMapUrl(locale, queryString || undefined);
   };
 
   const mainImage = getMainBeachImage(

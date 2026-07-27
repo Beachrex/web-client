@@ -571,7 +571,7 @@
         { "label": "Pregled vseh destinacij", "href": "/destinations" },
         { "label": "Išči po plažah", "href": "/beaches" },
         { "label": "Išči po nastanitvah", "href": "/accommodations" },
-        { "label": "Zemljevid", "href": "/map" }
+        { "label": "Zemljevid", "href": "/beach-map" }
       ]
     },
     "newsletter": {
