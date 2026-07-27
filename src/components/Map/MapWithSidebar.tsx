@@ -5,6 +5,7 @@ import { PropertyMediaContext } from '@/components/PropertySection';
 import { useBeachesBoundingBox, useBeachesMapBounds, type BoundingBoxSearchFilters } from '@/hooks/useBeaches';
 import type { BeachSchema, GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Dropdown, { MediaToggleInline } from '../Dropdown';
 import LeftSidebarFilters from './LeftSidebarFilters';
@@ -24,6 +25,7 @@ const MapWithSidebar = () => {
     const t = useTranslations('BeachesMap');
     const d = useTranslations('BeachDetails');
     const c = useTranslations('SearchBeach');
+    const searchParams = useSearchParams();
 
     const mediaOptions = [
         {
@@ -163,6 +165,7 @@ const MapWithSidebar = () => {
     const ignoreNextViewportChangeRef = useRef(false);
     const skipNextBoundingBoxUpdateRef = useRef(false); // Skip API call when zooming to beach
     const hasInitialBoundsRef = useRef(false);
+    const initialBeachAppliedRef = useRef(false);
 
     // Fetch map bounds only on initial load (when we don't have initial bounds yet)
     const { data: mapBoundsData, loading: mapBoundsLoading, error: mapBoundsError } =
@@ -212,6 +215,32 @@ const MapWithSidebar = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapBoundsData]);
+
+    // When navigating from a beach page: once the map has initialised (mapCenter is set),
+    // center on the specific beach and select it so its popup auto-opens.
+    // We intentionally do NOT set ignoreNextViewportChangeRef / skipNextBoundingBoxUpdateRef
+    // so the viewport change triggers a bounding-box fetch for the beach's area.
+    useEffect(() => {
+        if (initialBeachAppliedRef.current || !mapCenter) return;
+
+        const beachIdParam = searchParams.get('beach_id');
+        const latParam = searchParams.get('lat');
+        const lngParam = searchParams.get('lng');
+
+        if (!beachIdParam || !latParam || !lngParam) return;
+
+        const lat = parseFloat(latParam);
+        const lng = parseFloat(lngParam);
+        const id = parseInt(beachIdParam, 10);
+
+        if (isNaN(lat) || isNaN(lng) || isNaN(id)) return;
+
+        initialBeachAppliedRef.current = true;
+        setMapCenter([lat, lng]);
+        setMapZoom(BEACH_DETAIL_ZOOM);
+        setSelectedBeachId(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mapCenter]);
 
     // Validate filters against filter options - only include filters that exist in the current options
     // Wait for filter options to load before validating, but keep previous validated filters while loading

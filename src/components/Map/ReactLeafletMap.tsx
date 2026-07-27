@@ -310,6 +310,16 @@ const BeachMarker = memo(({
   const lat = typeof beach.latitude === 'string' ? parseFloat(beach.latitude) : beach.latitude;
   const lng = typeof beach.longitude === 'string' ? parseFloat(beach.longitude) : beach.longitude;
 
+  // Auto-open popup when this marker is pre-selected (e.g. navigating from a beach page).
+  // The small delay ensures Leaflet has fully mounted the marker before openPopup() is called.
+  useEffect(() => {
+    if (!isSelected) return;
+    const timer = setTimeout(() => {
+      markerRef.current?.openPopup();
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [isSelected]);
+
   if (!beach?.latitude || !beach?.longitude || !beach?.id || !lat || !lng || isNaN(lat) || isNaN(lng)) {
     return null;
   }

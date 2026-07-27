@@ -27,6 +27,7 @@ interface BannerSectionProps {
   countryCode?: string;
   regionSlug?: string;
   islandSlug?: string;
+  citySlug?: string;
 
   badges?: {
     label: string;
@@ -77,6 +78,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   countryCode,
   regionSlug,
   islandSlug,
+  citySlug,
 
   badges,
   infoCards,
@@ -105,6 +107,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
     if (countryCode) params.append('country', countryCode);
     if (regionSlug) params.append('region', regionSlug);
     if (islandSlug) params.append('island', islandSlug);
+    if (citySlug) params.append('city', citySlug);
 
     const queryString = params.toString();
     return buildBeachMapUrl(locale, queryString || undefined);

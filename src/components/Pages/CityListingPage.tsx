@@ -197,6 +197,7 @@ const islandPillLabel = cityDetails?.island?.name
   countryCode={cityDetails?.country?.code}
   regionSlug={cityDetails?.region?.slug}
   islandSlug={cityDetails?.island?.slug}
+  citySlug={_citySlug}
      />
 
 

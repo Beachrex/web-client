@@ -27,7 +27,14 @@ Testing setup, E2E tests, and CI/CD configuration.
 ### ✨ [Features](./features/)
 Feature-specific implementation guides and documentation.
 
+- **[BEACH_MAP_LINK_FIX.md](./features/BEACH_MAP_LINK_FIX.md)** - Beach map link fix: locale-prefixed URLs, slug corrections (Issues 16/17/18)
+- **[GLOBAL_SEARCH.md](./features/GLOBAL_SEARCH.md)** - Global search feature implementation
 - **[image-url-encoding-handoff.md](./features/image-url-encoding-handoff.md)** - Image URL encoding implementation
+
+### 🐛 [Bugs](./bugs/)
+Bug reports and post-mortems for non-trivial fixes.
+
+*(No entries yet — add here when a bug fix warrants a dedicated write-up.)*
 
 ---
 
@@ -58,6 +65,7 @@ When adding new documentation:
    - `integrations/` - Third-party services, APIs, external tools
    - `testing/` - Test setup, E2E, CI/CD
    - `features/` - Feature-specific implementation details
+   - `bugs/` - Non-trivial bug reports, root-cause analyses, post-mortems
 
 2. **Use clear naming:**
    - Use UPPERCASE for major documentation files
@@ -91,7 +99,8 @@ Beachrex/Front/
 │   ├── setup/                  # Getting started guides
 │   ├── integrations/           # Third-party integrations
 │   ├── testing/                # Testing documentation
-│   └── features/               # Feature-specific docs
+│   ├── features/               # Feature-specific docs
+│   └── bugs/                   # Bug reports & post-mortems
 │
 ├── src/                         # Source code
 │   ├── app/                    # Next.js app directory

@@ -45,6 +45,11 @@
    - Performance optimization
    - Common anti-patterns
 
+### 🛠️ Contributing
+
+11. **[CONTRIBUTING.md](./CONTRIBUTING.md)** — Documentation process for agents and developers
+    - When to document, changelog format, checklist
+
 ### 🔍 SEO & Technical
 
 8. **[SEO_STATUS_AND_TASKS.md](./SEO_STATUS_AND_TASKS.md)** ⭐ **COMPREHENSIVE**
@@ -104,6 +109,19 @@
 
 ---
 
+### "Beach map link goes to wrong locale or 404s"
+→ [docs/features/BEACH_MAP_LINK_FIX.md](../docs/features/BEACH_MAP_LINK_FIX.md) - Root cause & fix
+→ [LOCALIZATION_GUIDE.md](./LOCALIZATION_GUIDE.md) - Issue #6
+
+### "How do I add a beach map link?"
+→ Use `buildBeachMapUrl(locale)` from `src/lib/utils/beach-urls.ts`
+
+### "Map search returns wrong/historical place names (Zara, Ragusa)"
+→ [LOCALIZATION_GUIDE.md](./LOCALIZATION_GUIDE.md) - Issue #5 (Nominatim accept-language)
+
+### "I made a code change — what docs do I update?"
+→ [CONTRIBUTING.md](./CONTRIBUTING.md) — Documentation checklist
+
 ## 📊 Document Stats
 
 | Document | Lines | Size | Topic |
@@ -155,5 +173,5 @@
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: 2026-05-29
+**Version**: 1.3.0
+**Last Updated**: 2026-07-27

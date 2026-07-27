@@ -2,8 +2,21 @@
 
 > **Purpose**: Comprehensive documentation for AI agents and developers working on Beachrex frontend.
 
-**Last Updated**: 2026-05-29  
-**Version**: 1.0.0
+**Last Updated**: 2026-07-27
+**Version**: 1.3.0
+
+---
+
+## 🆕 Recent Changes (v1.3.0 — 2026-07-27)
+
+- **Banner map button — missing city param** (city & beach pages): `BannerSection` now accepts `citySlug` and appends `city=` to the map URL. `CityListingPage` passes the slug down. See [LOCALIZATION_GUIDE.md](./LOCALIZATION_GUIDE.md) Issue #7.
+- **Beach page map button — deep-link to pin**: Map URL now includes `beach_id`, `lat`, `lng`. `MapWithSidebar` centres on the beach and `BeachMarker` auto-opens the popup on arrival.
+
+### Previous (v1.2.0 — 2026-07-27)
+
+- **Beach Map Link Fix** (Issues 16/17/18): All map links locale-prefixed via `buildBeachMapUrl(locale)`. Fixes `de`/`ru` 404s. See [docs/features/BEACH_MAP_LINK_FIX.md](../docs/features/BEACH_MAP_LINK_FIX.md).
+- **MapSearch Nominatim fix**: Explicit `accept-language`. See [LOCALIZATION_GUIDE.md](./LOCALIZATION_GUIDE.md) Issue #5.
+- **CONTRIBUTING.md** added.
 
 ---
 
@@ -41,6 +54,8 @@
    - Reusable components
    - Performance optimization
    - Common anti-patterns
+
+6. **[CONTRIBUTING.md](./CONTRIBUTING.md)** — Documentation process
 
 ### SEO & Technical
 

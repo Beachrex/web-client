@@ -43,11 +43,19 @@ export default function BeachBannerSection({
     const countryCode = beachDetails?.location?.country?.code;
     const regionSlug = beachDetails?.location?.region?.slug;
     const islandSlug = beachDetails?.location?.island?.slug;
+    const citySlug = beachDetails?.location?.city?.slug;
+    const beachId = beachDetails?.basic_info?.id;
+    const beachLat = beachDetails?.basic_info?.latitude;
+    const beachLng = beachDetails?.basic_info?.longitude;
 
     if (continentCode) params.append('continent_code', continentCode);
     if (countryCode) params.append('country', countryCode);
     if (regionSlug) params.append('region', regionSlug);
     if (islandSlug) params.append('island', islandSlug);
+    if (citySlug) params.append('city', citySlug);
+    if (beachId) params.append('beach_id', String(beachId));
+    if (beachLat) params.append('lat', beachLat);
+    if (beachLng) params.append('lng', beachLng);
 
     const queryString = params.toString();
     return buildBeachMapUrl(locale, queryString || undefined);

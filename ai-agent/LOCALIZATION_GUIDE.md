@@ -2,7 +2,7 @@
 
 > **Critical Reference**: How internationalization (i18n) works in Beachrex
 
-**Last Updated**: 2026-05-29
+**Last Updated**: 2026-07-27
 
 ---
 
@@ -202,6 +202,27 @@ return `/${targetBeachesWord}/${targetContinent.slug}/${targetCountry.slug}`;
 **Cause:** useLocalizedPath doesn't detect route  
 **Solution:** Check ALL locale route words
 
+### Issue 5: Map Search Returns Wrong/Historical Place Names (Zara, Ragusa)
+**Cause:** Nominatim uses the browser's `accept-language` header by default. When an Italian user searches, Nominatim returns historical Italian names (Zara for Zadar, Ragusa for Dubrovnik) instead of modern Croatian names.
+**Fix:** Added `LOCALE_TO_LANGUAGE` map in `MapSearch.tsx`; explicitly passes `accept-language: en` for the `it` locale (and correct language codes for all others) to `OpenStreetMapProvider`.
+**File:** `src/components/Map/MapSearch.tsx`
+**Details:** See `LOCALE_TO_LANGUAGE` constant and the `searchParams` config on the provider.
+
+### Issue 6: Beach Map Links Go to Wrong Locale or 404
+**Cause:** Beach-map slugs were hardcoded as strings (e.g. `/map`, `/beach-map`) in multiple components and `messages/*.json` files. The `de` slug was `strandkarte` (404; correct: `strand-karte`) and `ru` slug was `karta-plyazhej` (404; correct: `karta-plyazhey`). Links also lacked locale prefixes, causing cookie-driven cross-locale redirects (Issues 17, 18).
+**Fix:** Created `src/lib/utils/beach-urls.ts` with `getBeachMapWord(locale)` and `buildBeachMapUrl(locale, qs?)`. All components now call `buildBeachMapUrl(locale)` instead of constructing URLs manually.
+**File:** `src/lib/utils/beach-urls.ts`
+**Details:** [docs/features/BEACH_MAP_LINK_FIX.md](../docs/features/BEACH_MAP_LINK_FIX.md)
+
+### Issue 7: Banner Map Button Missing City / Beach Context Params
+**Cause:** `BannerSection` had no `citySlug` prop, so `buildMapUrl()` never appended `city=`. `BeachBannerSection.buildMapUrl()` similarly omitted `city`, `beach_id`, `lat`, `lng`. Result: clicking the map button on a city or beach page opened the map with no location pre-selected.
+**Fix:**
+- Added `citySlug?: string` to `BannerSection` props + `params.append('city', citySlug)` in `buildMapUrl()`
+- `CityListingPage` now passes `citySlug={_citySlug}` to `BannerSection`
+- `BeachBannerSection.buildMapUrl()` now appends `city`, `beach_id`, `lat`, `lng` from `beachDetails.basic_info` and `beachDetails.location.city`
+- `MapWithSidebar` reads `beach_id`/`lat`/`lng` on init and centers + selects the beach; `BeachMarker` auto-opens its popup when `isSelected` is true
+**Files:** `BannerSection.tsx`, `CityListingPage.tsx`, `BeachBannerSection.tsx`, `MapWithSidebar.tsx`, `ReactLeafletMap.tsx`
+
 ---
 
 ## Quick Debugging Checklist
@@ -211,3 +232,6 @@ return `/${targetBeachesWord}/${targetContinent.slug}/${targetCountry.slug}`;
 3. ✅ Translation vars use single braces {var}?
 4. ✅ useLocalizedPath handles route type?
 5. ✅ Check browser console logs
+6. ✅ Beach map links use `buildBeachMapUrl(locale)` from `src/lib/utils/beach-urls.ts`?
+7. ✅ Geocoding/Nominatim calls include explicit `accept-language` header (not relying on browser default)?
+8. ✅ Banner `buildMapUrl()` appends all available context params (`city`, `beach_id`, `lat`, `lng`) — not just continent/country/region/island?

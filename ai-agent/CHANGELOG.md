@@ -1,5 +1,87 @@
 # Documentation Changelog
 
+## Version 1.3.0 - 2026-07-27
+
+### Fixed
+
+**Banner Map Button — Missing Query Params** (city page + beach page)
+
+#### Files Changed
+
+- **`src/components/BannerSection/BannerSection.tsx`** — added `citySlug?: string` prop; `buildMapUrl()` now appends `city=<slug>`
+- **`src/components/Pages/CityListingPage.tsx`** — passes `citySlug={_citySlug}` to `BannerSection`
+- **`src/components/Beach/BeachBanner/BeachBannerSection.tsx`** — `buildMapUrl()` now appends `city=`, `beach_id=`, `lat=`, `lng=` from `beachDetails`
+
+#### Key Fixes
+
+- City page map button was missing `city=` param → map opened unfiltered
+- Beach page map button was missing `city=` → map opened without city context
+- Beach page map button now also passes `beach_id`, `lat`, `lng` → map auto-centers on the beach and opens its pin popup (as if the user clicked the pin)
+
+### Added
+
+**Beach Map — Deep-link to Beach Pin** (navigating from beach page)
+
+#### Files Changed
+
+- **`src/components/Map/MapWithSidebar.tsx`** — added `useSearchParams`; on mount (after global centre is set), reads `beach_id`/`lat`/`lng` URL params and sets `mapCenter`, `mapZoom=16`, `selectedBeachId` without skipping the bounding-box API call so beaches in the area load
+- **`src/components/Map/ReactLeafletMap.tsx`** — `BeachMarker` now has a `useEffect` that calls `markerRef.current?.openPopup()` 300 ms after `isSelected` becomes true
+
+#### How It Works
+
+```
+User clicks map button on beach page
+  → /[locale]/beach-map?city=zadar&beach_id=123&lat=44.117&lng=15.231
+  → MapWithSidebar initialises (global centre from API)
+  → effect fires → setMapCenter([44.117, 15.231]), zoom 16, selectedBeachId=123
+  → viewport change → bounding-box fetch for beach area
+  → beach 123 loads → BeachMarker isSelected=true → popup opens (300 ms delay)
+```
+
+### Documentation Stats
+
+- New issues in LOCALIZATION_GUIDE: +1 (Issue 7)
+
+---
+
+## Version 1.2.0 - 2026-07-27
+
+### Added
+
+**Beach Map Routing Fix** — Issues 16, 17, 18 (git: 408b526)
+
+#### Files Changed
+
+- **`src/lib/utils/beach-urls.ts`** (new) — `getBeachMapWord(locale)` + `buildBeachMapUrl(locale, qs?)`; single source of truth for beach-map slugs
+- **Updated components** — SearchBar, QuickMenu, BeachCategorySearch, BannerSection, BeachBannerSection, page.tsx, FooterBrowseColumn (switched to next-intl `Link`)
+- **`messages/*.json`** (14 files) — Footer map href `/map` → `/beach-map`
+- **`e2e/beach-urls.unit.spec.ts`** (new) — 24 unit tests × 3 browsers = 72 Playwright runs; covers per-locale slugs, locale-prefix guarantee, routing.ts sync
+- **`src/components/Map/MapSearch.tsx`** — added `LOCALE_TO_LANGUAGE` map + explicit `accept-language` on OpenStreetMapProvider; IT locale uses `en` to avoid historical names (Zara, Ragusa)
+- **`docs/features/BEACH_MAP_LINK_FIX.md`** (new) — full bug report, root cause, fix details, usage guide
+- **`ai-agent/CONTRIBUTING.md`** (new) — documentation process for agents and developers
+
+#### Key Fixes
+
+- `de` slug: `strandkarte` → `strand-karte` (was 404)
+- `ru` slug: `karta-plyazhej` → `karta-plyazhey` (was 404)
+- All links locale-prefixed (fixes cross-locale cookie-driven redirects — Issues 17, 18)
+- Nominatim returns Croatian names even when browser is set to Italian
+
+#### Run Tests
+
+```bash
+export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" && nvm use 20.19.5
+npx playwright test e2e/beach-urls.unit.spec.ts
+```
+
+### Documentation Stats
+
+- Total documents: 12 → 13 (+1 CONTRIBUTING.md)
+- New use cases in INDEX.md: +4
+- New LOCALIZATION_GUIDE issues: 5, 6
+
+---
+
 ## Version 1.1.0 - 2026-01-20
 
 ### Added

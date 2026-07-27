@@ -371,7 +371,7 @@ transition-colors ${buttonClassName}`}
             {isOpen && results.length > 0 && (
                 <div
                     className="absolute top-full left-0 right-0 mt-2 bg-white border \
-border-gray-200 rounded-lg shadow-xl max-h-[500px] overflow-y-auto z-50 \
+border-gray-200 rounded-lg shadow-xl max-h-[500px] overflow-y-auto z-[10000] \
 animate-fadeIn search-results-scroll"
                 >
                     <div className="p-2">
