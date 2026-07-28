@@ -197,14 +197,14 @@ const webcamUrl = React.useMemo(
 
   if (!ready) {
     return (
-      <div className="flex h-[395px] w-full rounded-[10px] bg-gray-200 animate-pulse shadow-md" />
+      <div className="flex h-[295px] w-full rounded-[10px] bg-gray-200 animate-pulse shadow-md" />
     );
   }
 
   return (
     <div
       ref={cardRef}
-      className="flex h-[395px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md hover:-translate-y-[3px] hover:shadow-lg transition-all duration-300"
+      className="flex h-[295px] w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-md hover:-translate-y-[3px] hover:shadow-lg transition-all duration-300"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

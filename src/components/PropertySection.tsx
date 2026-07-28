@@ -16,7 +16,7 @@ const PropertyCarousel = dynamic(
   () => import('./PropertySection/PropertyCarousel'),
   {
     loading: () => (
-      <div className="flex h-[395px] w-full items-center justify-center">
+      <div className="flex h-[295px] w-full items-center justify-center">
         <div className="animate-pulse text-gray-400">Loading...</div>
       </div>
     ),

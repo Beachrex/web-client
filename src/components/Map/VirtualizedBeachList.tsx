@@ -82,7 +82,7 @@ interface ListRef {
   }): void;
 }
 
-const CARD_HEIGHT = 395; // Height of PropertyCard
+const CARD_HEIGHT = 295; // Height of PropertyCard
 const GAP = 16; // gap-4 = 16px
 const MOBILE_BREAKPOINT = 768; // md breakpoint
 
