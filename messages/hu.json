@@ -505,15 +505,7 @@
       "cta": "Térkép böngészése"
     },
     "mostViewed": {
-      "title": "Legtöbbet megtekintett strandok",
-      "links": [
-        "Strand Paradicsom",
-        "Napos part",
-        "Kék öböl",
-        "Arany homok",
-        "Kristály part",
-        "Rejtett lagúna"
-      ]
+      "title": "Legtöbbet megtekintett strandok"
     },
     "info": {
       "title": "Fontos információk"

@@ -505,15 +505,7 @@
       "cta": "Ver o mapa"
     },
     "mostViewed": {
-      "title": "Praias mais vistas",
-      "links": [
-        "Praia Paraíso",
-        "Costa ensolarada",
-        "Baía Azul",
-        "Areias Douradas",
-        "Costa de Cristal",
-        "Laguna Escondida"
-      ]
+      "title": "Praias mais vistas"
     },
     "info": {
       "title": "Informações importantes"

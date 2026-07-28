@@ -505,15 +505,7 @@
       "cta": "Gennemse kortet"
     },
     "mostViewed": {
-      "title": "Mest sete strande",
-      "links": [
-        "Beach Paradise",
-        "Sunny Coast",
-        "Blue Bay",
-        "Golden Sands",
-        "Crystal Shore",
-        "Hidden Lagoon"
-      ]
+      "title": "Mest sete strande"
     },
     "info": {
       "title": "Vigtig information"

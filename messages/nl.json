@@ -505,15 +505,7 @@
       "cta": "Kaart doorbladeren"
     },
     "mostViewed": {
-      "title": "Meest bekeken stranden",
-      "links": [
-        "Beach Paradise",
-        "Sunny Coast",
-        "Blue Bay",
-        "Golden Sands",
-        "Crystal Shore",
-        "Hidden Lagoon"
-      ]
+      "title": "Meest bekeken stranden"
     },
     "info": {
       "title": "Belangrijke informatie"

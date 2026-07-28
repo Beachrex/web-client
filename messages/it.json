@@ -537,15 +537,7 @@
       "cta": "Sfoglia la mappa"
     },
     "mostViewed": {
-      "title": "Spiagge più visualizzate",
-      "links": [
-        "Beach Paradise",
-        "Sunny Coast",
-        "Blue Bay",
-        "Golden Sands",
-        "Crystal Shore",
-        "Hidden Lagoon"
-      ]
+      "title": "Spiagge più visualizzate"
     },
     "info": {
       "title": "Informazioni chiave"

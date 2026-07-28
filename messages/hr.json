@@ -505,15 +505,7 @@
       "cta": "Pregledaj kartu"
     },
     "mostViewed": {
-      "title": "Najgledanije plaže",
-      "links": [
-        "Beach Paradise",
-        "Sunny Coast",
-        "Blue Bay",
-        "Golden Sands",
-        "Crystal Shore",
-        "Hidden Lagoon"
-      ]
+      "title": "Najgledanije plaže"
     },
     "info": {
       "title": "Ključne informacije"

@@ -505,15 +505,7 @@
       "cta": "Procházet mapu"
     },
     "mostViewed": {
-      "title": "Nejsledovanější pláže",
-      "links": [
-        "Pláž Paradise",
-        "Slunečné pobřeží",
-        "Modrá zátoka",
-        "Zlaté písky",
-        "Křišťálové pobřeží",
-        "Skrytá laguna"
-      ]
+      "title": "Nejsledovanější pláže"
     },
     "info": {
       "title": "Klíčové informace"

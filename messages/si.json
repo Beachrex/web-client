@@ -505,15 +505,7 @@
       "cta": "Brskaj po zemljevidu"
     },
     "mostViewed": {
-      "title": "Najbolj obiskane plaže",
-      "links": [
-        "Rajska plaža",
-        "Sončna obala",
-        "Modri zaliv",
-        "Zlati pesek",
-        "Kristalna obala",
-        "Skriti zaliv"
-      ]
+      "title": "Najbolj obiskane plaže"
     },
     "info": {
       "title": "Glavne informacije"

@@ -1314,6 +1314,43 @@ export type MediaItem = {
 };
 
 /**
+ * Beach Footer Item
+ *
+ * Lightweight beach entry for the footer 'Most viewed beaches' column. Localized by Accept-Language with English fallback. Includes only the slugs needed to build the beach detail URL.
+ */
+export type BeachFooter = {
+  id?: number;
+  /**
+   * Localized beach name (with English fallback)
+   */
+  name?: string;
+  /**
+   * Localized beach slug (with English fallback)
+   */
+  slug?: string;
+  /**
+   * Localized continent slug
+   */
+  continent_slug?: string | null;
+  /**
+   * Localized country slug
+   */
+  country_slug?: string | null;
+  /**
+   * Localized region slug
+   */
+  region_slug?: string | null;
+  /**
+   * Localized island slug
+   */
+  island_slug?: string | null;
+  /**
+   * Localized city slug
+   */
+  city_slug?: string | null;
+};
+
+/**
  * Beach Inclination
  *
  * Beach inclination model (small_slope, normal, increase, sudden_drop, different_mixed)
@@ -5045,6 +5082,52 @@ export type GetMostVisitedBeachesResponses = {
 
 export type GetMostVisitedBeachesResponse =
   GetMostVisitedBeachesResponses[keyof GetMostVisitedBeachesResponses];
+
+export type GetBeachesForFooterData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/beaches/footer";
+};
+
+export type GetBeachesForFooterResponses = {
+  /**
+   * Footer beaches retrieved successfully
+   */
+  200: {
+    success?: boolean;
+    data?: Array<BeachFooter>;
+    message?: string;
+  };
+};
+
+export type GetBeachesForFooterResponse =
+  GetBeachesForFooterResponses[keyof GetBeachesForFooterResponses];
 
 export type GetBeachDetailsData = {
   body?: never;

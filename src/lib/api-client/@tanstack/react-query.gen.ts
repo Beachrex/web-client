@@ -19,6 +19,7 @@ import {
   getBeachDensityGrid,
   getBeachDetails,
   getBeaches,
+  getBeachesForFooter,
   getBeachesInBoundingBox,
   getBeachesMapBounds,
   getBeachesWithinRadius,
@@ -125,6 +126,8 @@ import type {
   GetBeachDetailsData,
   GetBeachDetailsResponse,
   GetBeachesData,
+  GetBeachesForFooterData,
+  GetBeachesForFooterResponse,
   GetBeachesInBoundingBoxData,
   GetBeachesInBoundingBoxResponse,
   GetBeachesMapBoundsData,
@@ -783,6 +786,36 @@ export const getMostVisitedBeachesOptions = (
       return data;
     },
     queryKey: getMostVisitedBeachesQueryKey(options),
+  });
+
+export const getBeachesForFooterQueryKey = (
+  options?: Options<GetBeachesForFooterData>,
+) => createQueryKey("getBeachesForFooter", options);
+
+/**
+ * List most visited beaches for the footer
+ *
+ * Returns the 6 most visited beaches (by beach_views counter) with only the fields needed to render footer links: localized name, slug, and location slugs for URL building. Active beaches only. Localized by Accept-Language with English fallback.
+ */
+export const getBeachesForFooterOptions = (
+  options?: Options<GetBeachesForFooterData>,
+) =>
+  queryOptions<
+    GetBeachesForFooterResponse,
+    DefaultError,
+    GetBeachesForFooterResponse,
+    ReturnType<typeof getBeachesForFooterQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getBeachesForFooter({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getBeachesForFooterQueryKey(options),
   });
 
 export const getBeachDetailsQueryKey = (

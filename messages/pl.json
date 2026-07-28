@@ -505,15 +505,7 @@
       "cta": "Przeglądaj mapę"
     },
     "mostViewed": {
-      "title": "Najczęściej oglądane plaże",
-      "links": [
-        "Beach Paradise",
-        "Sunny Coast",
-        "Blue Bay",
-        "Golden Sands",
-        "Crystal Shore",
-        "Hidden Lagoon"
-      ]
+      "title": "Najczęściej oglądane plaże"
     },
     "info": {
       "title": "Kluczowe informacje"

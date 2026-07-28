@@ -505,15 +505,7 @@
       "cta": "Shfletoni hartën"
     },
     "mostViewed": {
-      "title": "Plazhet më të shikuara",
-      "links": [
-        "Plazhi Parajsa",
-        "Bregdeti Diellor",
-        "Gjiri Blu",
-        "Rërat e Artë",
-        "Bregu i Kristaltë",
-        "Laguna e Fshehur"
-      ]
+      "title": "Plazhet më të shikuara"
     },
     "info": {
       "title": "Informacione kryesore"

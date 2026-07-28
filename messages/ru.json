@@ -537,15 +537,7 @@
       "cta": "Просмотреть карту"
     },
     "mostViewed": {
-      "title": "Самые просматриваемые пляжи",
-      "links": [
-        "Beach Paradise",
-        "Sunny Coast",
-        "Blue Bay",
-        "Golden Sands",
-        "Crystal Shore",
-        "Hidden Lagoon"
-      ]
+      "title": "Самые просматриваемые пляжи"
     },
     "info": {
       "title": "Ключевая информация"

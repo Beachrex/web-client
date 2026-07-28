@@ -73,6 +73,8 @@ import type {
   GetBeachDetailsErrors,
   GetBeachDetailsResponses,
   GetBeachesData,
+  GetBeachesForFooterData,
+  GetBeachesForFooterResponses,
   GetBeachesInBoundingBoxData,
   GetBeachesInBoundingBoxResponses,
   GetBeachesMapBoundsData,
@@ -755,6 +757,24 @@ export const getMostVisitedBeaches = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/beaches/most-visited",
+    ...options,
+  });
+};
+
+/**
+ * List most visited beaches for the footer
+ *
+ * Returns the 6 most visited beaches (by beach_views counter) with only the fields needed to render footer links: localized name, slug, and location slugs for URL building. Active beaches only. Localized by Accept-Language with English fallback.
+ */
+export const getBeachesForFooter = <ThrowOnError extends boolean = false>(
+  options?: Options<GetBeachesForFooterData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetBeachesForFooterResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/v1/beaches/footer",
     ...options,
   });
 };

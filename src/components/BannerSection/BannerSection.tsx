@@ -119,7 +119,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
         className={[
           'relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px]',
           'overflow-hidden rounded-b-[10px] rounded-t-[10px]',
-          'bg-cover bg-center sm:h-[700px] lg:h-[798px]',
+          'bg-cover bg-center sm:h-[700px] lg:h-[735px]',
         ].join(' ')}
         style={{
           backgroundImage: image ? `url(${image})` : undefined,

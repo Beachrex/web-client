@@ -505,15 +505,7 @@
       "cta": "Prechádzať mapu"
     },
     "mostViewed": {
-      "title": "Najpozeranejšie pláže",
-      "links": [
-        "Plážový raj",
-        "Slnečné pobrežie",
-        "Modrá zátoka",
-        "Zlaté piesky",
-        "Kryštálové pobrežie",
-        "Skrytá lagúna"
-      ]
+      "title": "Najpozeranejšie pláže"
     },
     "info": {
       "title": "Kľúčové informácie"
