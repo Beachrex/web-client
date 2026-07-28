@@ -32,7 +32,7 @@
 ### Specialized Guides
 
 2. **[LOCALIZATION_GUIDE.md](./LOCALIZATION_GUIDE.md)** ⭐ **CRITICAL**
-   - How i18n works (14 languages)
+   - How i18n works (19 languages)
    - Middleware architecture
    - Common localization issues & solutions
    - Adding new locales
@@ -174,7 +174,7 @@ Result: Both server & client components get locale="si" ✅
 http://localhost:3000/en/beaches/europe/belgium
 http://localhost:3000/si/plaze/evropa/belgija
 http://localhost:3000/de/strande/europa/belgien
-# etc for all 14 locales
+# etc for all 19 locales
 ```
 
 **Check:**

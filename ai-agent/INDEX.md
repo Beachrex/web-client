@@ -22,7 +22,7 @@
    - Development workflow
 
 4. **[LOCALIZATION_GUIDE.md](./LOCALIZATION_GUIDE.md)** ⭐⭐⭐ **CRITICAL**
-   - How i18n works (14 languages)
+   - How i18n works (19 languages)
    - Middleware architecture (must-read!)
    - Common issues & solutions
    - Debugging tips

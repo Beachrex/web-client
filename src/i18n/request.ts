@@ -1,5 +1,6 @@
 import { getRequestConfig } from 'next-intl/server';
 import { routing } from './routing';
+import type { Locale } from '@/app/config/locales';
 
 // Define the type for the messages based on your JSON structure
 type Messages = Record<string, string>;
@@ -9,7 +10,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
     let locale = await requestLocale;
 
     // Ensure that a valid locale is used
-    if (!locale || !routing.locales.includes(locale as 'en' | 'si')) {
+    if (!locale || !routing.locales.includes(locale as Locale)) {
         locale = routing.defaultLocale;
     }
 

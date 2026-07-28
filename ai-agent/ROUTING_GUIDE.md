@@ -148,12 +148,12 @@ pathnames: {
     en: '/beaches',
     si: '/plaze',
     de: '/strande',
-    // ... 14 locales
+    // ... 19 locales
   },
   '/beaches/[continent]/[country]/[...segments]': {
     en: '/beaches/[continent]/[country]/[...segments]',
     si: '/plaze/[continent]/[country]/[...segments]',
-    // ... 14 locales
+    // ... 19 locales
   }
 }
 ```

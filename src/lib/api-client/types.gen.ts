@@ -618,7 +618,7 @@ export type Accessibility = {
  */
 export type AccessibilityTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -670,7 +670,7 @@ export type AccommodationAround = {
  */
 export type AccommodationAroundTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -722,7 +722,7 @@ export type AreaDescription = {
  */
 export type AreaDescriptionTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -941,7 +941,7 @@ export type BayLength = {
  */
 export type BayLengthTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -1352,7 +1352,7 @@ export type BeachInclination = {
  */
 export type BeachInclinationTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -1801,7 +1801,7 @@ export type BeachType = {
  */
 export type BeachTypeTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -2129,7 +2129,7 @@ export type CulinaryOffer = {
  */
 export type CulinaryOfferTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -2357,7 +2357,7 @@ export type LocationInfrastructure = {
  */
 export type LocationInfrastructureTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -2409,7 +2409,7 @@ export type LocationLength = {
  */
 export type LocationLengthTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -2521,7 +2521,7 @@ export type NaturalLocationCondition = {
  */
 export type NaturalLocationConditionTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -2672,7 +2672,7 @@ export type OccupancyRate = {
  */
 export type OccupancyRateTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -2724,7 +2724,7 @@ export type ParkingBeachDistance = {
  */
 export type ParkingBeachDistanceTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -2776,7 +2776,7 @@ export type ParkingBeachHeight = {
  */
 export type ParkingBeachHeightTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -2828,7 +2828,7 @@ export type ParkingCapacity = {
  */
 export type ParkingCapacityTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -2991,7 +2991,7 @@ export type RecommendedTransportType = {
  */
 export type RecommendedTransportTypeTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -3113,7 +3113,7 @@ export type RoadToParkingType = {
  */
 export type RoadToParkingTypeTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -3324,7 +3324,7 @@ export type SportingActivities = {
  */
 export type SportingActivitiesTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -3376,7 +3376,7 @@ export type SwimmingDepthOfOneM = {
  */
 export type SwimmingDepthOfOneMTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -3436,7 +3436,7 @@ export type UnderwaterCharacteristic = {
  */
 export type UnderwaterCharacteristicTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -3497,7 +3497,7 @@ export type UserType = {
  */
 export type UserTypeTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -3557,7 +3557,7 @@ export type Waterbody = {
  */
 export type WaterbodyTranslation = {
   /**
-   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk)
+   * Language code (en, sl, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq)
    */
   locale?: string;
   /**
@@ -3588,6 +3588,11 @@ export const AcceptLanguage = {
   HU: "hu",
   BG: "bg",
   SK: "sk",
+  DA: "da",
+  PT: "pt",
+  NL: "nl",
+  EL: "el",
+  SQ: "sq",
 } as const;
 
 /**
@@ -3619,7 +3624,12 @@ export type AiChatData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -3687,7 +3697,12 @@ export type GenerateItineraryData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -3762,7 +3777,12 @@ export type GetAccessibilitiesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -3821,7 +3841,12 @@ export type GetAccessibilityByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -3892,7 +3917,12 @@ export type GetAccommodationTypesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -3946,7 +3976,12 @@ export type GetAccommodationTypeByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -4012,7 +4047,12 @@ export type GetAreaDescriptionsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -4071,7 +4111,12 @@ export type GetAreaDescriptionByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -4142,7 +4187,12 @@ export type GoogleRedirectData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -4196,7 +4246,12 @@ export type GoogleCallbackData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query: {
@@ -4251,7 +4306,12 @@ export type GoogleExchangeData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -4302,7 +4362,12 @@ export type LogoutData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -4349,7 +4414,12 @@ export type GetMeData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -4401,7 +4471,12 @@ export type RegisterUserData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -4445,7 +4520,12 @@ export type LoginUserData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -4513,7 +4593,12 @@ export type GetBayLengthsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -4566,7 +4651,12 @@ export type GetBayLengthByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -4649,7 +4739,12 @@ export type GetBeachesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -4740,7 +4835,12 @@ export type CreateBeachData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -4784,7 +4884,12 @@ export type GetBeachByIdentifierData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -4835,7 +4940,12 @@ export type GetMostVisitedBeachesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -4904,7 +5014,12 @@ export type GetBeachDetailsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -4955,7 +5070,12 @@ export type GetBeachWeatherData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -5024,7 +5144,12 @@ export type GetBeachInclinationsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -5078,7 +5203,12 @@ export type GetBeachInclinationByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -5144,7 +5274,12 @@ export type GetBeachTypesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -5206,7 +5341,12 @@ export type GetBeachTypeByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -5270,7 +5410,12 @@ export type GetCitiesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -5335,7 +5480,12 @@ export type GetCityData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -5439,7 +5589,12 @@ export type GetCityWeatherData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -5555,7 +5710,12 @@ export type GetContinentsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -5621,7 +5781,12 @@ export type GetContinentData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -5767,7 +5932,12 @@ export type GetCountryData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -5863,7 +6033,12 @@ export type GetCountryWeatherData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -5966,7 +6141,12 @@ export type GetCulinaryOffersData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -6020,7 +6200,12 @@ export type GetCulinaryOfferByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -6086,7 +6271,12 @@ export type GetBeachFiltersData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -6406,7 +6596,12 @@ export type GetIslandsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -6467,7 +6662,12 @@ export type GetIslandData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -6565,7 +6765,12 @@ export type GetIslandWeatherData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -6677,7 +6882,12 @@ export type GetLocationInfrastructureData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -6731,7 +6941,12 @@ export type GetLocationInfrastructureByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -6797,7 +7012,12 @@ export type GetLocationLengthsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -6851,7 +7071,12 @@ export type GetLocationLengthByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -7081,7 +7306,12 @@ export type GetNaturalLocationConditionsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -7135,7 +7365,12 @@ export type GetNaturalLocationConditionByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -7201,7 +7436,12 @@ export type GetOccupancyRatesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -7255,7 +7495,12 @@ export type GetOccupancyRateByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -7321,7 +7566,12 @@ export type GetParkingBeachDistancesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -7380,7 +7630,12 @@ export type GetParkingBeachDistanceByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -7451,7 +7706,12 @@ export type GetParkingBeachHeightsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -7510,7 +7770,12 @@ export type GetParkingBeachHeightByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -7581,7 +7846,12 @@ export type GetParkingCapacitiesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -7640,7 +7910,12 @@ export type GetParkingCapacityByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -7711,7 +7986,12 @@ export type GetBeachesWithinRadiusData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query: {
@@ -7857,7 +8137,12 @@ export type GetNearestBeachesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query: {
@@ -7907,7 +8192,12 @@ export type CalculateDistanceData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query: {
@@ -7958,7 +8248,12 @@ export type GetBeachesInBoundingBoxData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query: {
@@ -8104,7 +8399,12 @@ export type GetNearbyCitiesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query: {
@@ -8168,7 +8468,12 @@ export type GetBeachDensityGridData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -8207,7 +8512,12 @@ export type GetBeachStatisticsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -8241,7 +8551,12 @@ export type GetRecommendedTransportTypesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -8295,7 +8610,12 @@ export type GetRecommendedTransportTypeByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -8361,7 +8681,12 @@ export type GetRegionsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -8418,7 +8743,12 @@ export type GetRegionData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -8510,7 +8840,12 @@ export type GetRegionWeatherData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -8618,7 +8953,12 @@ export type GetRoadToParkingTypesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -8681,7 +9021,12 @@ export type GetRoadToParkingTypeByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -8902,7 +9247,12 @@ export type ResolveSlugData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -8997,7 +9347,12 @@ export type GetSportingActivitiesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -9051,7 +9406,12 @@ export type GetSportingActivityByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -9117,7 +9477,12 @@ export type GetSwimmingDepthsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -9171,7 +9536,12 @@ export type GetSwimmingDepthByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -9237,7 +9607,12 @@ export type GetUnderwaterCharacteristicsData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -9291,7 +9666,12 @@ export type GetUnderwaterCharacteristicByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -9381,7 +9761,12 @@ export type GetUserTypesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: never;
@@ -9434,7 +9819,12 @@ export type GetUserTypeByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**
@@ -9500,7 +9890,12 @@ export type GetWaterbodiesData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path?: never;
   query?: {
@@ -9563,7 +9958,12 @@ export type GetWaterbodyByIdData = {
       | "cs"
       | "hu"
       | "bg"
-      | "sk";
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
   };
   path: {
     /**

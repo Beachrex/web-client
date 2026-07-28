@@ -144,7 +144,7 @@
 **Last Updated:** 2026-01-20
 
 #### What's Implemented:
-- ✅ Localized "beaches" word for all 14 languages in routing (`/plaze`, `/strande`, `/plages`, etc.)
+- ✅ Localized "beaches" word for all 19 languages in routing (`/plaze`, `/strande`, `/plages`, etc.)
 - ✅ `buildDestinationUrl()` utility uses localized paths
 - ✅ `buildContinentUrl()`, `buildCountryUrl()`, `buildBeachUrl()` all localized
 - ✅ GlobalSearch results use canonical paths (next-intl handles localization)
@@ -181,7 +181,7 @@
 
 3. ✅ **Country Pages** (`/[locale]/beaches/[continent]/[country]/page.tsx`)
    - Dynamic metadata with country name
-   - Hreflang for all 14 locales
+   - Hreflang for all 19 locales
    - JSON-LD: Country schema + Breadcrumb schema
 
 4. ✅ **Beach Detail Pages** (`/[locale]/beaches/[continent]/[country]/[...segments]/page.tsx`)
@@ -260,28 +260,28 @@
 2. ✅ **Static Pages Sitemap** (`/sitemap/static.xml`)
    - File: `src/app/sitemap/static.xml/route.ts`
    - Pages: Homepage, Beaches listing, Beach map, Beach type, User type, About
-   - 6 pages × 14 locales = **84 URLs**
+   - 6 pages × 19 locales = **84 URLs**
    - Includes hreflang alternate links
 
 3. ✅ **Countries Sitemap** (`/sitemap/countries.xml`)
    - File: `src/app/sitemap/countries.xml/route.ts`
-   - 13 countries × 14 locales = **182 URLs**
+   - 13 countries × 19 locales = **182 URLs**
 
 4. ✅ **Regions Sitemap** (`/sitemap/regions.xml`)
    - File: `src/app/sitemap/regions.xml/route.ts`
-   - 73 regions × 14 locales = **1,022 URLs**
+   - 73 regions × 19 locales = **1,022 URLs**
 
 5. ✅ **Cities Sitemap** (`/sitemap/cities.xml`)
    - File: `src/app/sitemap/cities.xml/route.ts`
-   - Estimated: 500+ cities × 14 locales = **7,000+ URLs**
+   - Estimated: 500+ cities × 19 locales = **7,000+ URLs**
 
 6. ✅ **Beaches Sitemap** (`/sitemap/beaches.xml`)
    - File: `src/app/sitemap/beaches.xml/route.ts`
-   - All beaches × 14 locales = **Largest sitemap**
+   - All beaches × 19 locales = **Largest sitemap**
    - Priority: Beach pages = 0.7
 
 #### Sitemap Features:
-- ✅ Hreflang alternate links for all 14 locales
+- ✅ Hreflang alternate links for all 19 locales
 - ✅ Proper `lastmod` timestamps
 - ✅ Priority weighting (homepage: 1.0, beaches: 0.7, etc.)
 - ✅ Changefreq settings (daily/weekly)
@@ -316,7 +316,7 @@ User-agent: *
 **Date Completed:** 2025-12-20
 
 #### Implementation:
-- ✅ All 14 languages in `generateMetadata()` functions
+- ✅ All 19 languages in `generateMetadata()` functions
 - ✅ Proper language codes (en-US, de-DE, fr-FR, it-IT, etc.)
 - ✅ `x-default` pointing to English (`en`)
 - ✅ Implemented on ALL pages with `generateMetadata()`
@@ -659,7 +659,7 @@ Use this checklist before launch or after major changes:
 - [x] All pages have meta descriptions
 - [x] All pages have OpenGraph tags
 - [x] All pages have Twitter Card tags
-- [x] Hreflang tags on all pages (14 locales)
+- [x] Hreflang tags on all pages (19 locales)
 - [x] Canonical URLs on all pages
 - [x] Sitemap.xml generated and accessible
 - [x] Robots.txt configured
@@ -700,7 +700,7 @@ Use this checklist before launch or after major changes:
    - Use translation keys for all user-facing text
 
 2. **Always include:**
-   - All 14 locales in hreflang
+   - All 19 locales in hreflang
    - Canonical URL
    - OpenGraph + Twitter Cards
    - JSON-LD structured data

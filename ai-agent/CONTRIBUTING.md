@@ -73,7 +73,7 @@ After every code change, run through this list:
 
 - [ ] Is `buildBeachMapUrl(locale)` or equivalent helper used everywhere?
 - [ ] Is the slug listed in the **Localized Route Words** table in LOCALIZATION_GUIDE.md?
-- [ ] Are all 14 locales covered in `src/i18n/routing.ts`?
+- [ ] Are all 19 locales covered in `src/i18n/routing.ts`?
 
 ### New Utilities / Hooks
 

@@ -22,7 +22,7 @@
     "reviews": "recenzie",
     "paidFallback": "Žiadne informácie",
     "mobileApp": "Stiahnuť mobilnú aplikáciu",
-    "activities":"Aktivity",
+    "activities": "Aktivity",
     "mostBeatifulDestinationsWorld": "Najkrajšie pobrežné destinácie sveta",
     "showLess": "Zobraziť menej",
     "unknownBeach": "Neznáma pláž",
@@ -130,7 +130,11 @@
     "description": "Všetky pláže sveta na jednom mieste. Aby každý turista našiel svoju dokonalú pláž na zaslúženú dovolenku. Toto je vízia BeachRex, ktorej som venoval 4 roky svojho života. Počas cestovania som vytvoril najväčšiu databázu fotografií, videí, panorám, sférických fotografií a údajov o plážach v Španielsku, Francúzsku, Slovinsku, Chorvátsku a Taliansku. V súčasnosti vytváram finálnu webovú stránku a mobilnú aplikáciu s kompletnou prezentáciou všetkých 2.445 pláží, 56.000 fotografií, videí, panorám, sférických fotografií a 200 detailných údajov napr. charakteristík každej pláže. Víziou BeachRex je, že v priebehu niekoľkých rokov získame fotografie a ďalšie údaje pre všetky pláže sveta. Ak milujete pláže a páči sa vám myšlienka BeachRex, prosím podporte nás a zdieľajte našu stránku s priateľmi."
   },
   "NotFoundPage": {
-    "title": "Stránka sa nenašla."
+    "title": "Stránka sa nenašla.",
+    "subtitle": "Nenájdené",
+    "description": "Stránka, ktorú hľadáte, neexistuje alebo bola presunutá.",
+    "browseBeaches": "Prehliadať všetky pláže",
+    "goHome": "Domov"
   },
   "AboutPage": {
     "aboutUs": "O nás",
@@ -217,61 +221,53 @@
     "viewBeachMap": "Zobraziť mapu pláží"
   },
   "SearchBeach": {
-  "title": "Prechádzať všetky pláže v Európe",
-  "filterButton": "Filter",
-  "mapButton": "Zobraziť mapu",
-  "displayLabel": "Zobrazenie pláže:",
-  "sortPopular": "Najpopulárnejšie",
-  "sortNewest": "Najnovšie",
-  "sortTopRated": "Najlepšie hodnotené",
-  "prevPage": "Predchádzajúca",
-  "nextPage": "Ďalšia",
-  "found": "Nájdené",
-  "filtersTitle": "Filtre",
-  "filterCountry": "Krajina",
-  "filterRegion": "Región",
-  "filterIsland": "Ostrov",
-  "filterCity": "Mesto",
-
-  "filterBeachType": "Typ pláže",
-  "filterUserType": "Typ používateľa",
-  "filterWaterbody": "Typ vody",
-  "filterParking": "Parkovanie",
-
-  "allCountries": "Všetky krajiny",
-  "allRegions": "Všetky regióny",
-  "allIslands": "Všetky ostrovy",
-  "allCities": "Všetky mestá",
-  "allWaterbodies": "Všetky typy vôd",
-
-  "applyFilters": "Použiť filtre",
-  "resetFilters": "Obnoviť"
+    "title": "Prechádzať všetky pláže v Európe",
+    "filterButton": "Filter",
+    "mapButton": "Zobraziť mapu",
+    "displayLabel": "Zobrazenie pláže:",
+    "sortPopular": "Najpopulárnejšie",
+    "sortNewest": "Najnovšie",
+    "sortTopRated": "Najlepšie hodnotené",
+    "prevPage": "Predchádzajúca",
+    "nextPage": "Ďalšia",
+    "found": "Nájdené",
+    "filtersTitle": "Filtre",
+    "filterCountry": "Krajina",
+    "filterRegion": "Región",
+    "filterIsland": "Ostrov",
+    "filterCity": "Mesto",
+    "filterBeachType": "Typ pláže",
+    "filterUserType": "Typ používateľa",
+    "filterWaterbody": "Typ vody",
+    "filterParking": "Parkovanie",
+    "allCountries": "Všetky krajiny",
+    "allRegions": "Všetky regióny",
+    "allIslands": "Všetky ostrovy",
+    "allCities": "Všetky mestá",
+    "allWaterbodies": "Všetky typy vôd",
+    "applyFilters": "Použiť filtre",
+    "resetFilters": "Obnoviť"
   },
   "Filters": {
-  "filtersTitle": "Filtre",
-  "filterButton": "Filtre",
-  "mapButton": "Zobraziť mapu",
-
-  "found": "Nájdené",
-  "loadingFilters": "Načítavam...",
-  "resetFilters": "Obnoviť",
-
-  "filterCountry": "Krajina",
-  "filterRegion": "Región",
-  "filterCity": "Mesto",
-  "filterIsland": "Ostrov",
-
-  "filterBeachType": "Typ pláže",
-  "filterUserType": "Typ používateľa",
-  "filterWaterbody": "Typ vody",
-
-  "allCountries": "Všetky krajiny",
-  "allRegions": "Všetky regióny",
-  "allCities": "Všetky mestá",
-  "allIslands": "Všetky ostrovy",
-  "allWaterbodies": "Všetky typy vôd"
-},
-
+    "filtersTitle": "Filtre",
+    "filterButton": "Filtre",
+    "mapButton": "Zobraziť mapu",
+    "found": "Nájdené",
+    "loadingFilters": "Načítavam...",
+    "resetFilters": "Obnoviť",
+    "filterCountry": "Krajina",
+    "filterRegion": "Región",
+    "filterCity": "Mesto",
+    "filterIsland": "Ostrov",
+    "filterBeachType": "Typ pláže",
+    "filterUserType": "Typ používateľa",
+    "filterWaterbody": "Typ vody",
+    "allCountries": "Všetky krajiny",
+    "allRegions": "Všetky regióny",
+    "allCities": "Všetky mestá",
+    "allIslands": "Všetky ostrovy",
+    "allWaterbodies": "Všetky typy vôd"
+  },
   "BannerSection": {
     "categoryLabel": "región",
     "badgeFestival": "Festival Crna Ovca",
@@ -318,7 +314,7 @@
     "countryLabel": "Krajina",
     "beachLabel": "Morská pláž",
     "beachCountLabel": "Počet pláží:",
-  "accommodationCountLabel": "Počet ubytovaní:"
+    "accommodationCountLabel": "Počet ubytovaní:"
   },
   "TopBarBeach": {
     "beachLabel": "Morská pláž",

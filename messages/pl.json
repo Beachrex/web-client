@@ -22,7 +22,7 @@
     "reviews": "recenzje",
     "paidFallback": "Brak informacji",
     "mobileApp": "Pobierz aplikację mobilną",
-    "activities":"Aktywności",
+    "activities": "Aktywności",
     "mostBeatifulDestinationsWorld": "Najpiękniejsze nadmorskie destynacje świata",
     "showLess": "Pokaż mniej",
     "unknownBeach": "Nieznana plaża",
@@ -130,7 +130,11 @@
     "description": "Wszystkie plaże świata w jednym miejscu. Aby każdy turysta mógł znaleźć swoją idealną plażę na zasłużone wakacje. To jest wizja BeachRex, której poświęciłem 4 lata mojego życia. W tym czasie, gdy podróżowałem, stworzyłem największą na świecie bazę zdjęć, filmów, panoram, zdjęć sferycznych i danych o plażach w Hiszpanii, Francji, Słowenii, Chorwacji i Włoszech. Obecnie tworzę finalną stronę internetową i aplikację mobilną z kompletną prezentacją wszystkich 2.445 plaż, 56.000 zdjęć, filmów, panoram, zdjęć sferycznych i 200 szczegółowych danych, np. charakterystyk każdej plaży. Wizją BeachRex jest to, że w ciągu kilku lat uzyskamy zdjęcia i inne dane dla wszystkich plaż świata. Jeśli kochasz plaże i podoba Ci się pomysł BeachRex, wesprzyj nas i podziel się naszą stroną ze znajomymi."
   },
   "NotFoundPage": {
-    "title": "Strona nie znaleziona."
+    "title": "Strona nie znaleziona.",
+    "subtitle": "Nie znaleziono",
+    "description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
+    "browseBeaches": "Przeglądaj wszystkie plaże",
+    "goHome": "Strona główna"
   },
   "AboutPage": {
     "aboutUs": "O nas",
@@ -217,61 +221,53 @@
     "viewBeachMap": "Zobacz mapę plaż"
   },
   "SearchBeach": {
-  "title": "Przeglądaj wszystkie plaże w Europie",
-  "filterButton": "Filtruj",
-  "mapButton": "Pokaż mapę",
-  "displayLabel": "Widok plaży:",
-  "sortPopular": "Najpopularniejsze",
-  "sortNewest": "Najnowsze",
-  "sortTopRated": "Najlepiej oceniane",
-  "prevPage": "Poprzednia",
-  "nextPage": "Następna",
-  "found": "Znaleziono",
-  "filtersTitle": "Filtry",
-  "filterCountry": "Kraj",
-  "filterRegion": "Region",
-  "filterIsland": "Wyspa",
-  "filterCity": "Miasto",
-
-  "filterBeachType": "Typ plaży",
-  "filterUserType": "Typ użytkownika",
-  "filterWaterbody": "Typ wody",
-  "filterParking": "Parking",
-
-  "allCountries": "Wszystkie kraje",
-  "allRegions": "Wszystkie regiony",
-  "allIslands": "Wszystkie wyspy",
-  "allCities": "Wszystkie miasta",
-  "allWaterbodies": "Wszystkie typy wody",
-
-  "applyFilters": "Zastosuj filtry",
-  "resetFilters": "Resetuj"
+    "title": "Przeglądaj wszystkie plaże w Europie",
+    "filterButton": "Filtruj",
+    "mapButton": "Pokaż mapę",
+    "displayLabel": "Widok plaży:",
+    "sortPopular": "Najpopularniejsze",
+    "sortNewest": "Najnowsze",
+    "sortTopRated": "Najlepiej oceniane",
+    "prevPage": "Poprzednia",
+    "nextPage": "Następna",
+    "found": "Znaleziono",
+    "filtersTitle": "Filtry",
+    "filterCountry": "Kraj",
+    "filterRegion": "Region",
+    "filterIsland": "Wyspa",
+    "filterCity": "Miasto",
+    "filterBeachType": "Typ plaży",
+    "filterUserType": "Typ użytkownika",
+    "filterWaterbody": "Typ wody",
+    "filterParking": "Parking",
+    "allCountries": "Wszystkie kraje",
+    "allRegions": "Wszystkie regiony",
+    "allIslands": "Wszystkie wyspy",
+    "allCities": "Wszystkie miasta",
+    "allWaterbodies": "Wszystkie typy wody",
+    "applyFilters": "Zastosuj filtry",
+    "resetFilters": "Resetuj"
   },
   "Filters": {
-  "filtersTitle": "Filtry",
-  "filterButton": "Filtry",
-  "mapButton": "Pokaż mapę",
-
-  "found": "Znaleziono",
-  "loadingFilters": "Ładowanie...",
-  "resetFilters": "Resetuj",
-
-  "filterCountry": "Kraj",
-  "filterRegion": "Region",
-  "filterCity": "Miasto",
-  "filterIsland": "Wyspa",
-
-  "filterBeachType": "Typ plaży",
-  "filterUserType": "Typ użytkownika",
-  "filterWaterbody": "Typ wody",
-
-  "allCountries": "Wszystkie kraje",
-  "allRegions": "Wszystkie regiony",
-  "allCities": "Wszystkie miasta",
-  "allIslands": "Wszystkie wyspy",
-  "allWaterbodies": "Wszystkie typy wody"
-},
-
+    "filtersTitle": "Filtry",
+    "filterButton": "Filtry",
+    "mapButton": "Pokaż mapę",
+    "found": "Znaleziono",
+    "loadingFilters": "Ładowanie...",
+    "resetFilters": "Resetuj",
+    "filterCountry": "Kraj",
+    "filterRegion": "Region",
+    "filterCity": "Miasto",
+    "filterIsland": "Wyspa",
+    "filterBeachType": "Typ plaży",
+    "filterUserType": "Typ użytkownika",
+    "filterWaterbody": "Typ wody",
+    "allCountries": "Wszystkie kraje",
+    "allRegions": "Wszystkie regiony",
+    "allCities": "Wszystkie miasta",
+    "allIslands": "Wszystkie wyspy",
+    "allWaterbodies": "Wszystkie typy wody"
+  },
   "BannerSection": {
     "categoryLabel": "region",
     "badgeFestival": "Festiwal Crna Ovca",
@@ -318,7 +314,7 @@
     "countryLabel": "Kraj",
     "beachLabel": "Plaża morska",
     "beachCountLabel": "Liczba plaż:",
-  "accommodationCountLabel": "Liczba obiektów:"
+    "accommodationCountLabel": "Liczba obiektów:"
   },
   "TopBarBeach": {
     "beachLabel": "Plaża morska",

@@ -130,7 +130,11 @@
     "description": "Alle Strände der Welt an einem Ort. Damit jeder Tourist seinen perfekten Strand für seinen wohlverdienten Urlaub findet. Das ist die Vision von BeachRex, der ich 4 Jahre meines Lebens gewidmet habe. Während dieser Zeit des Reisens habe ich die weltweit größte Datenbank mit Fotos, Videos, Panoramen, sphärischen Fotos und Daten zu Stränden in Spanien, Frankreich, Slowenien, Kroatien und Italien erstellt. Derzeit erstelle ich eine finale Website und mobile Anwendung mit einer vollständigen Präsentation aller 2.445 Strände, 56.000 Fotos, Videos, Panoramen, sphärischen Fotos und 200 detaillierten Daten, z.B. Eigenschaften jedes Strandes. Die Vision von BeachRex ist es, innerhalb weniger Jahre Fotos und andere Daten für alle Strände der Welt zu erhalten. Wenn Sie Strände lieben und Ihnen die Idee von BeachRex gefällt, unterstützen Sie uns bitte und teilen Sie unsere Seite mit Ihren Freunden."
   },
   "NotFoundPage": {
-    "title": "Seite nicht gefunden."
+    "title": "Seite nicht gefunden.",
+    "subtitle": "Nicht gefunden",
+    "description": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    "browseBeaches": "Alle Strände durchsuchen",
+    "goHome": "Zur Startseite"
   },
   "AboutPage": {
     "aboutUs": "Über uns",
@@ -217,61 +221,53 @@
     "viewBeachMap": "Strandkarte anzeigen"
   },
   "SearchBeach": {
-  "title": "Alle Strände in Europa durchsuchen",
-  "filterButton": "Filter",
-  "mapButton": "Karte anzeigen",
-  "displayLabel": "Strandansicht:",
-  "sortPopular": "Beliebteste",
-  "sortNewest": "Neueste",
-  "sortTopRated": "Am besten bewertet",
-  "prevPage": "Zurück",
-  "nextPage": "Weiter",
-  "found": "Gefunden",
-  "filtersTitle": "Filter",
-  "filterCountry": "Land",
-  "filterRegion": "Region",
-  "filterIsland": "Insel",
-  "filterCity": "Stadt",
-
-  "filterBeachType": "Strandtyp",
-  "filterUserType": "Benutzertyp",
-  "filterWaterbody": "Gewässerart",
-  "filterParking": "Parkplatz",
-
-  "allCountries": "Alle Länder",
-  "allRegions": "Alle Regionen",
-  "allIslands": "Alle Inseln",
-  "allCities": "Alle Städte",
-  "allWaterbodies": "Alle Gewässerarten",
-
-  "applyFilters": "Filter anwenden",
-  "resetFilters": "Zurücksetzen"
+    "title": "Alle Strände in Europa durchsuchen",
+    "filterButton": "Filter",
+    "mapButton": "Karte anzeigen",
+    "displayLabel": "Strandansicht:",
+    "sortPopular": "Beliebteste",
+    "sortNewest": "Neueste",
+    "sortTopRated": "Am besten bewertet",
+    "prevPage": "Zurück",
+    "nextPage": "Weiter",
+    "found": "Gefunden",
+    "filtersTitle": "Filter",
+    "filterCountry": "Land",
+    "filterRegion": "Region",
+    "filterIsland": "Insel",
+    "filterCity": "Stadt",
+    "filterBeachType": "Strandtyp",
+    "filterUserType": "Benutzertyp",
+    "filterWaterbody": "Gewässerart",
+    "filterParking": "Parkplatz",
+    "allCountries": "Alle Länder",
+    "allRegions": "Alle Regionen",
+    "allIslands": "Alle Inseln",
+    "allCities": "Alle Städte",
+    "allWaterbodies": "Alle Gewässerarten",
+    "applyFilters": "Filter anwenden",
+    "resetFilters": "Zurücksetzen"
   },
   "Filters": {
-  "filtersTitle": "Filter",
-  "filterButton": "Filter",
-  "mapButton": "Karte anzeigen",
-
-  "found": "Gefunden",
-  "loadingFilters": "Lädt...",
-  "resetFilters": "Zurücksetzen",
-
-  "filterCountry": "Land",
-  "filterRegion": "Region",
-  "filterCity": "Stadt",
-  "filterIsland": "Insel",
-
-  "filterBeachType": "Strandtyp",
-  "filterUserType": "Benutzertyp",
-  "filterWaterbody": "Gewässerart",
-
-  "allCountries": "Alle Länder",
-  "allRegions": "Alle Regionen",
-  "allCities": "Alle Städte",
-  "allIslands": "Alle Inseln",
-  "allWaterbodies": "Alle Gewässerarten"
-},
-
+    "filtersTitle": "Filter",
+    "filterButton": "Filter",
+    "mapButton": "Karte anzeigen",
+    "found": "Gefunden",
+    "loadingFilters": "Lädt...",
+    "resetFilters": "Zurücksetzen",
+    "filterCountry": "Land",
+    "filterRegion": "Region",
+    "filterCity": "Stadt",
+    "filterIsland": "Insel",
+    "filterBeachType": "Strandtyp",
+    "filterUserType": "Benutzertyp",
+    "filterWaterbody": "Gewässerart",
+    "allCountries": "Alle Länder",
+    "allRegions": "Alle Regionen",
+    "allCities": "Alle Städte",
+    "allIslands": "Alle Inseln",
+    "allWaterbodies": "Alle Gewässerarten"
+  },
   "BannerSection": {
     "categoryLabel": "Region",
     "badgeFestival": "Crna Ovca Festival",
@@ -318,7 +314,7 @@
     "countryLabel": "Land",
     "beachLabel": "Meeresstrand",
     "beachCountLabel": "Anzahl Strände:",
-  "accommodationCountLabel": "Anzahl Unterkünfte:"
+    "accommodationCountLabel": "Anzahl Unterkünfte:"
   },
   "TopBarBeach": {
     "beachLabel": "Meeresstrand",

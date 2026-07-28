@@ -464,7 +464,7 @@ images.map((img, i) => (
 }
 ```
 
-**Repeat for all 14 languages** (use translation service or AI for quality translations)
+**Repeat for all 19 languages** (use translation service or AI for quality translations)
 
 ---
 

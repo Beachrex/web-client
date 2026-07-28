@@ -87,7 +87,7 @@
 | **Cities** | ✅ | 7,000+ | 14 |
 | **Beaches** | ✅ | 10,000+ | 14 |
 
-**Total Indexed URLs:** ~18,000+ across 14 languages
+**Total Indexed URLs:** ~18,000+ across 19 languages
 
 ---
 

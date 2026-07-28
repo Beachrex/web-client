@@ -159,7 +159,7 @@ Front/beachrex/
 ## Internationalization (i18n)
 
 ### Overview
-Beachrex uses **next-intl** for comprehensive i18n support across 14 languages.
+Beachrex uses **next-intl** for comprehensive i18n support across 19 languages.
 
 ### Architecture
 
@@ -261,12 +261,12 @@ pathnames: {
     en: '/beaches',
     si: '/plaze',
     de: '/strande',
-    // ... all 14 locales
+    // ... all 19 locales
   },
   '/beaches/[continent]/[country]': {
     en: '/beaches/[continent]/[country]',
     si: '/plaze/[continent]/[country]',
-    // ... all 14 locales
+    // ... all 19 locales
   }
 }
 ```

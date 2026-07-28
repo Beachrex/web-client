@@ -22,7 +22,7 @@
     "reviews": "отзиви",
     "paidFallback": "Няма информация",
     "mobileApp": "Изтегли мобилно приложение",
-    "activities":"Дейности",
+    "activities": "Дейности",
     "mostBeatifulDestinationsWorld": "Най-красивите крайбрежни дестинации в света",
     "showLess": "Покажи по-малко",
     "unknownBeach": "Неизвестен плаж",
@@ -130,7 +130,11 @@
     "description": "Всички плажове на света на едно място. За всеки турист да намери своя перфектен плаж за заслужената ваканция. Това е визията на BeachRex, на която посветих 4 години от живота си. През това време, докато пътувах, създадох най-голямата в света база данни от снимки, видеа, панорами, сферични снимки и данни за плажовете на Испания, Франция, Словения, Хърватия и Италия. В момента създавам финалния уебсайт и мобилно приложение с пълна презентация на всичките 2.445 плажа, 56.000 снимки, видеа, панорами, сферични снимки и 200 подробни данни, например характеристики на всеки плаж. Визията на BeachRex е в рамките на няколко години да получим снимки и други данни за всички плажове по света. Ако обичате плажовете и харесвате идеята на BeachRex, моля подкрепете ни и споделете нашия сайт с приятелите си."
   },
   "NotFoundPage": {
-    "title": "Страницата не е намерена."
+    "title": "Страницата не е намерена.",
+    "subtitle": "Не е намерено",
+    "description": "Страницата, която търсите, не съществува или е преместена.",
+    "browseBeaches": "Разгледайте всички плажове",
+    "goHome": "Начална страница"
   },
   "AboutPage": {
     "aboutUs": "За нас",
@@ -217,61 +221,53 @@
     "viewBeachMap": "Виж картата на плажовете"
   },
   "SearchBeach": {
-  "title": "Разгледайте всички плажове в Европа",
-  "filterButton": "Филтър",
-  "mapButton": "Покажи картата",
-  "displayLabel": "Изглед на плажа:",
-  "sortPopular": "Най-популярни",
-  "sortNewest": "Най-нови",
-  "sortTopRated": "Най-високо оценени",
-  "prevPage": "Предишна",
-  "nextPage": "Следваща",
-  "found": "Намерени",
-  "filtersTitle": "Филтри",
-  "filterCountry": "Държава",
-  "filterRegion": "Регион",
-  "filterIsland": "Остров",
-  "filterCity": "Град",
-
-  "filterBeachType": "Тип плаж",
-  "filterUserType": "Тип потребител",
-  "filterWaterbody": "Тип вода",
-  "filterParking": "Паркинг",
-
-  "allCountries": "Всички държави",
-  "allRegions": "Всички региони",
-  "allIslands": "Всички острови",
-  "allCities": "Всички градове",
-  "allWaterbodies": "Всички типове води",
-
-  "applyFilters": "Приложи филтри",
-  "resetFilters": "Нулирай"
+    "title": "Разгледайте всички плажове в Европа",
+    "filterButton": "Филтър",
+    "mapButton": "Покажи картата",
+    "displayLabel": "Изглед на плажа:",
+    "sortPopular": "Най-популярни",
+    "sortNewest": "Най-нови",
+    "sortTopRated": "Най-високо оценени",
+    "prevPage": "Предишна",
+    "nextPage": "Следваща",
+    "found": "Намерени",
+    "filtersTitle": "Филтри",
+    "filterCountry": "Държава",
+    "filterRegion": "Регион",
+    "filterIsland": "Остров",
+    "filterCity": "Град",
+    "filterBeachType": "Тип плаж",
+    "filterUserType": "Тип потребител",
+    "filterWaterbody": "Тип вода",
+    "filterParking": "Паркинг",
+    "allCountries": "Всички държави",
+    "allRegions": "Всички региони",
+    "allIslands": "Всички острови",
+    "allCities": "Всички градове",
+    "allWaterbodies": "Всички типове води",
+    "applyFilters": "Приложи филтри",
+    "resetFilters": "Нулирай"
   },
   "Filters": {
-  "filtersTitle": "Филтри",
-  "filterButton": "Филтри",
-  "mapButton": "Покажи картата",
-
-  "found": "Намерени",
-  "loadingFilters": "Зареждане...",
-  "resetFilters": "Нулирай",
-
-  "filterCountry": "Държава",
-  "filterRegion": "Регион",
-  "filterCity": "Град",
-  "filterIsland": "Остров",
-
-  "filterBeachType": "Тип плаж",
-  "filterUserType": "Тип потребител",
-  "filterWaterbody": "Тип вода",
-
-  "allCountries": "Всички държави",
-  "allRegions": "Всички региони",
-  "allCities": "Всички градове",
-  "allIslands": "Всички острови",
-  "allWaterbodies": "Всички типове води"
-},
-
+    "filtersTitle": "Филтри",
+    "filterButton": "Филтри",
+    "mapButton": "Покажи картата",
+    "found": "Намерени",
+    "loadingFilters": "Зареждане...",
+    "resetFilters": "Нулирай",
+    "filterCountry": "Държава",
+    "filterRegion": "Регион",
+    "filterCity": "Град",
+    "filterIsland": "Остров",
+    "filterBeachType": "Тип плаж",
+    "filterUserType": "Тип потребител",
+    "filterWaterbody": "Тип вода",
+    "allCountries": "Всички държави",
+    "allRegions": "Всички региони",
+    "allCities": "Всички градове",
+    "allIslands": "Всички острови",
+    "allWaterbodies": "Всички типове води"
+  },
   "BannerSection": {
     "categoryLabel": "регион",
     "badgeFestival": "Фестивал Црна Овца",
@@ -318,7 +314,7 @@
     "countryLabel": "Държава",
     "beachLabel": "Морски плаж",
     "beachCountLabel": "Брой плажове:",
-  "accommodationCountLabel": "Брой настанявания:"
+    "accommodationCountLabel": "Брой настанявания:"
   },
   "TopBarBeach": {
     "beachLabel": "Морски плаж",

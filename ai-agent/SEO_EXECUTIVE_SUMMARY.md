@@ -190,7 +190,7 @@
 
 **A:** Week 1 only (40 hours). Gets you to 85/100 SEO score and fixes critical accessibility issues.
 
-### Q: Will this work for all 14 languages?
+### Q: Will this work for all 19 languages?
 
 **A:** Yes! Translation keys ensure alt text is localized for all languages.
 

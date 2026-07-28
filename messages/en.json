@@ -22,7 +22,7 @@
     "reviews": "reviews",
     "paidFallback": "No information",
     "mobileApp": "Download mobile app",
-    "activities":"Activities",
+    "activities": "Activities",
     "mostBeatifulDestinationsWorld": "The world's most beautiful coastal destinations",
     "showLess": "Show less",
     "unknownBeach": "Unknown beach",
@@ -130,7 +130,11 @@
     "description": "All the beaches of the world in one place. For every tourist to find his or hers perfect beach for their earned vacation. This is the vision of BeachRex that I dedicated 4 years of my life to. During this time that I've travelled, I've created world's largest database of photos, videos, panoramas, sperichal photos and data on beaches of Spain, France, Slovenia, Croatia and Italy. Currently, I am creating a final website and mobile application with a complete presentation of all 2.445 beaches, 56.000 photos, videos, panoramas, spherical photos and 200 detailed data e.g. charasteristics of every beach. BeachRex's vision is that within few years we will obtain photos and other data for all the beaches of the world. If you love beaches and you like BeachRex's idea please support us and share our site with your friends."
   },
   "NotFoundPage": {
-    "title": "Page not found."
+    "title": "Page not found.",
+    "subtitle": "Not Found",
+    "description": "Page you're looking for doesn't exist or may have been moved.",
+    "browseBeaches": "Browse All Beaches",
+    "goHome": "Go Home"
   },
   "AboutPage": {
     "aboutUs": "About us",
@@ -217,61 +221,53 @@
     "viewBeachMap": "View beach map"
   },
   "SearchBeach": {
-  "title": "Browse all beaches in Europe",
-  "filterButton": "Filter",
-  "mapButton": "Show map",
-  "displayLabel": "Beach view:",
-  "sortPopular": "Most popular",
-  "sortNewest": "Newest",
-  "sortTopRated": "Top rated",
-  "prevPage": "Previous",
-  "nextPage": "Next",
-  "found": "Found",
-  "filtersTitle": "Filters",
-  "filterCountry": "Country",
-  "filterRegion": "Region",
-  "filterIsland": "Island",
-  "filterCity": "City",
-
-  "filterBeachType": "Beach type",
-  "filterUserType": "User type",
-  "filterWaterbody": "Water type",
-  "filterParking": "Parking",
-
-  "allCountries": "All countries",
-  "allRegions": "All regions",
-  "allIslands": "All islands",
-  "allCities": "All cities",
-  "allWaterbodies": "All water types",
-
-  "applyFilters": "Apply filters",
-  "resetFilters": "Reset"
+    "title": "Browse all beaches in Europe",
+    "filterButton": "Filter",
+    "mapButton": "Show map",
+    "displayLabel": "Beach view:",
+    "sortPopular": "Most popular",
+    "sortNewest": "Newest",
+    "sortTopRated": "Top rated",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "found": "Found",
+    "filtersTitle": "Filters",
+    "filterCountry": "Country",
+    "filterRegion": "Region",
+    "filterIsland": "Island",
+    "filterCity": "City",
+    "filterBeachType": "Beach type",
+    "filterUserType": "User type",
+    "filterWaterbody": "Water type",
+    "filterParking": "Parking",
+    "allCountries": "All countries",
+    "allRegions": "All regions",
+    "allIslands": "All islands",
+    "allCities": "All cities",
+    "allWaterbodies": "All water types",
+    "applyFilters": "Apply filters",
+    "resetFilters": "Reset"
   },
   "Filters": {
-  "filtersTitle": "Filters",
-  "filterButton": "Filters",
-  "mapButton": "Show map",
-
-  "found": "Found",
-  "loadingFilters": "Loading...",
-  "resetFilters": "Reset",
-
-  "filterCountry": "Country",
-  "filterRegion": "Region",
-  "filterCity": "City",
-  "filterIsland": "Island",
-
-  "filterBeachType": "Beach type",
-  "filterUserType": "User type",
-  "filterWaterbody": "Water type",
-
-  "allCountries": "All countries",
-  "allRegions": "All regions",
-  "allCities": "All cities",
-  "allIslands": "All islands",
-  "allWaterbodies": "All water types"
-},
-
+    "filtersTitle": "Filters",
+    "filterButton": "Filters",
+    "mapButton": "Show map",
+    "found": "Found",
+    "loadingFilters": "Loading...",
+    "resetFilters": "Reset",
+    "filterCountry": "Country",
+    "filterRegion": "Region",
+    "filterCity": "City",
+    "filterIsland": "Island",
+    "filterBeachType": "Beach type",
+    "filterUserType": "User type",
+    "filterWaterbody": "Water type",
+    "allCountries": "All countries",
+    "allRegions": "All regions",
+    "allCities": "All cities",
+    "allIslands": "All islands",
+    "allWaterbodies": "All water types"
+  },
   "BannerSection": {
     "categoryLabel": "region",
     "badgeFestival": "Crna Ovca Festival",
@@ -318,7 +314,7 @@
     "countryLabel": "Country",
     "beachLabel": "Sea beach",
     "beachCountLabel": "Beach count:",
-  "accommodationCountLabel": "Accommodation count:"
+    "accommodationCountLabel": "Accommodation count:"
   },
   "TopBarBeach": {
     "beachLabel": "Sea beach",

@@ -130,7 +130,11 @@
     "description": "Sve plaže svijeta na jednom mjestu. Kako bi svaki turist pronašao svoju savršenu plažu za zasluženi odmor. To je vizija BeachRexa kojoj sam posvetio 4 godine svog života. Tijekom tog vremena dok sam putovao, stvorio sam najveću svjetsku bazu podataka fotografija, videa, panorama, sferičnih fotografija i podataka o plažama Španjolske, Francuske, Slovenije, Hrvatske i Italije. Trenutno stvaram konačnu web stranicu i mobilnu aplikaciju s potpunom prezentacijom svih 2.445 plaža, 56.000 fotografija, videa, panorama, sferičnih fotografija i 200 detaljnih podataka npr. karakteristike svake plaže. Vizija BeachRexa je da ćemo u roku od nekoliko godina dobiti fotografije i druge podatke za sve plaže svijeta. Ako volite plaže i sviđa vam se ideja BeachRexa, molimo podržite nas i podijelite našu stranicu s prijateljima."
   },
   "NotFoundPage": {
-    "title": "Stranica nije pronađena."
+    "title": "Stranica nije pronađena.",
+    "subtitle": "Nije pronađeno",
+    "description": "Stranica koju tražite ne postoji ili je premještena.",
+    "browseBeaches": "Pregledaj sve plaže",
+    "goHome": "Na početnu"
   },
   "AboutPage": {
     "aboutUs": "O nama",
@@ -217,61 +221,53 @@
     "viewBeachMap": "Pogledaj kartu plaža"
   },
   "SearchBeach": {
-  "title": "Pregledaj sve plaže u Europi",
-  "filterButton": "Filter",
-  "mapButton": "Prikaži kartu",
-  "displayLabel": "Prikaz plaže:",
-  "sortPopular": "Najpopularnije",
-  "sortNewest": "Najnovije",
-  "sortTopRated": "Najbolje ocijenjeno",
-  "prevPage": "Prethodno",
-  "nextPage": "Sljedeće",
-  "found": "Pronađeno",
-  "filtersTitle": "Filteri",
-  "filterCountry": "Država",
-  "filterRegion": "Regija",
-  "filterIsland": "Otok",
-  "filterCity": "Grad",
-
-  "filterBeachType": "Tip plaže",
-  "filterUserType": "Tip korisnika",
-  "filterWaterbody": "Tip vode",
-  "filterParking": "Parking",
-
-  "allCountries": "Sve države",
-  "allRegions": "Sve regije",
-  "allIslands": "Svi otoci",
-  "allCities": "Svi gradovi",
-  "allWaterbodies": "Svi tipovi vode",
-
-  "applyFilters": "Primijeni filtere",
-  "resetFilters": "Resetiraj"
+    "title": "Pregledaj sve plaže u Europi",
+    "filterButton": "Filter",
+    "mapButton": "Prikaži kartu",
+    "displayLabel": "Prikaz plaže:",
+    "sortPopular": "Najpopularnije",
+    "sortNewest": "Najnovije",
+    "sortTopRated": "Najbolje ocijenjeno",
+    "prevPage": "Prethodno",
+    "nextPage": "Sljedeće",
+    "found": "Pronađeno",
+    "filtersTitle": "Filteri",
+    "filterCountry": "Država",
+    "filterRegion": "Regija",
+    "filterIsland": "Otok",
+    "filterCity": "Grad",
+    "filterBeachType": "Tip plaže",
+    "filterUserType": "Tip korisnika",
+    "filterWaterbody": "Tip vode",
+    "filterParking": "Parking",
+    "allCountries": "Sve države",
+    "allRegions": "Sve regije",
+    "allIslands": "Svi otoci",
+    "allCities": "Svi gradovi",
+    "allWaterbodies": "Svi tipovi vode",
+    "applyFilters": "Primijeni filtere",
+    "resetFilters": "Resetiraj"
   },
   "Filters": {
-  "filtersTitle": "Filteri",
-  "filterButton": "Filteri",
-  "mapButton": "Prikaži kartu",
-
-  "found": "Pronađeno",
-  "loadingFilters": "Učitavanje...",
-  "resetFilters": "Resetiraj",
-
-  "filterCountry": "Država",
-  "filterRegion": "Regija",
-  "filterCity": "Grad",
-  "filterIsland": "Otok",
-
-  "filterBeachType": "Tip plaže",
-  "filterUserType": "Tip korisnika",
-  "filterWaterbody": "Tip vode",
-
-  "allCountries": "Sve države",
-  "allRegions": "Sve regije",
-  "allCities": "Svi gradovi",
-  "allIslands": "Svi otoci",
-  "allWaterbodies": "Svi tipovi vode"
-},
-
+    "filtersTitle": "Filteri",
+    "filterButton": "Filteri",
+    "mapButton": "Prikaži kartu",
+    "found": "Pronađeno",
+    "loadingFilters": "Učitavanje...",
+    "resetFilters": "Resetiraj",
+    "filterCountry": "Država",
+    "filterRegion": "Regija",
+    "filterCity": "Grad",
+    "filterIsland": "Otok",
+    "filterBeachType": "Tip plaže",
+    "filterUserType": "Tip korisnika",
+    "filterWaterbody": "Tip vode",
+    "allCountries": "Sve države",
+    "allRegions": "Sve regije",
+    "allCities": "Svi gradovi",
+    "allIslands": "Svi otoci",
+    "allWaterbodies": "Svi tipovi vode"
+  },
   "BannerSection": {
     "categoryLabel": "regija",
     "badgeFestival": "Crna Ovca Festival",
@@ -318,7 +314,7 @@
     "countryLabel": "Država",
     "beachLabel": "Morska plaža",
     "beachCountLabel": "Broj plaža:",
-  "accommodationCountLabel": "Broj smještaja:"
+    "accommodationCountLabel": "Broj smještaja:"
   },
   "TopBarBeach": {
     "beachLabel": "Morska plaža",

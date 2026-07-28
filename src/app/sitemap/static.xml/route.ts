@@ -5,7 +5,7 @@ import { env } from '@/env';
 /**
  * Static Pages Sitemap
  *
- * Includes all static pages across all 14 locales with:
+ * Includes all static pages across all 19 locales with:
  * - Proper lastModified dates
  * - Change frequency hints for search engines
  * - Priority values (0.0 to 1.0)
@@ -19,7 +19,7 @@ import { env } from '@/env';
  * - User type (/user-type)
  * - About (/about)
  *
- * Total URLs: 6 pages × 14 locales = 84 URLs
+ * Total URLs: 6 pages × 19 locales = 114 URLs
  */
 
 // Localized route translations
@@ -39,6 +39,11 @@ const routeTranslations = {
     hu: 'strandok',
     bg: 'plyazhove',
     sk: 'plaze',
+    da: 'straande',
+    pt: 'praias',
+    nl: 'stranden',
+    el: 'paralies',
+    sq: 'plazhet',
   },
   beachMap: {
     en: 'beach-map',
@@ -55,6 +60,11 @@ const routeTranslations = {
     hu: 'strand-terkep',
     bg: 'karta-na-plyazhovete',
     sk: 'mapa-plazi',
+    da: 'strandkort',
+    pt: 'mapa-praias',
+    nl: 'strandkaart',
+    el: 'chartis-paralion',
+    sq: 'harta-plazheve',
   },
   beachType: {
     en: 'beach-type',
@@ -71,6 +81,11 @@ const routeTranslations = {
     hu: 'strand-tipus',
     bg: 'tip-na-plyazh',
     sk: 'typ-plaze',
+    da: 'strandtype',
+    pt: 'tipo-praia',
+    nl: 'strandtype',
+    el: 'typos-paralias',
+    sq: 'lloji-plazhit',
   },
   userType: {
     en: 'user-type',
@@ -87,6 +102,11 @@ const routeTranslations = {
     hu: 'felhasznalo-tipus',
     bg: 'tip-potrebitel',
     sk: 'typ-pouzivatela',
+    da: 'brugertype',
+    pt: 'tipo-usuario',
+    nl: 'gebruikerstype',
+    el: 'typos-christi',
+    sq: 'lloji-perdoruesit',
   },
   about: {
     en: 'about',
@@ -103,6 +123,11 @@ const routeTranslations = {
     hu: 'rolunk',
     bg: 'za-nas',
     sk: 'o-nas',
+    da: 'om-os',
+    pt: 'sobre',
+    nl: 'over-ons',
+    el: 'schetika',
+    sq: 'rreth-nesh',
   },
 };
 

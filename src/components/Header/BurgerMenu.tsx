@@ -7,9 +7,24 @@ import { Link } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 import enMenu from 'public/menu_en.json';
 import siMenu from 'public/menu_si.json';
+// Dynamic imports for new languages — using English as fallback until localized menu files are created
+// import daMenu from 'public/menu_da.json';
+// import ptMenu from 'public/menu_pt.json';
+// import nlMenu from 'public/menu_nl.json';
+// import elMenu from 'public/menu_el.json';
+// import sqMenu from 'public/menu_sq.json';
 import QuickMenu from './QuickMenu';
 import Image from 'next/image';
 import { ChevronRight } from 'lucide-react';
+
+// Map locale codes to their menu JSON. Falls back to English menu for locales
+// that don't yet have a dedicated menu file.
+const menuMap: Record<string, typeof enMenu> = {
+  en: enMenu,
+  si: siMenu,
+  // Add new locale menu files here when created:
+  // da: daMenu, pt: ptMenu, nl: nlMenu, el: elMenu, sq: sqMenu,
+};
 
 const sidebarTheme: CustomFlowbiteTheme['sidebar'] = {
   root: {
@@ -128,7 +143,7 @@ const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const locale = useLocale();
 
-  const rawMenuItems = locale === 'si' ? siMenu.MenuItems : enMenu.MenuItems;
+  const rawMenuItems = (menuMap[locale] ?? enMenu).MenuItems;
 
   const menuItems = rawMenuItems.filter((item) => item.enabled);
 

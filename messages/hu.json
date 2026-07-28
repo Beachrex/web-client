@@ -22,7 +22,7 @@
     "reviews": "értékelések",
     "paidFallback": "Nincs információ",
     "mobileApp": "Mobil alkalmazás letöltése",
-    "activities":"Tevékenységek",
+    "activities": "Tevékenységek",
     "mostBeatifulDestinationsWorld": "A világ legszebb tengerparti úticéljai",
     "showLess": "Kevesebb mutatása",
     "unknownBeach": "Ismeretlen strand",
@@ -130,7 +130,11 @@
     "description": "A világ összes strandja egy helyen. Hogy minden turista megtalálja a tökéletes strandját a megérdemelt nyaralásához. Ez a BeachRex víziója, aminek 4 évet szenteltem az életemből. Ez idő alatt, amit utazással töltöttem, létrehoztam a világ legnagyobb adatbázisát fotókból, videókból, panorámákból, gömbfotókból és adatokból Spanyolország, Franciaország, Szlovénia, Horvátország és Olaszország strandjairól. Jelenleg a végső weboldalt és mobilalkalmazást készítem az összes 2 445 strand, 56 000 fotó, videó, panoráma, gömbfotó és 200 részletes adat teljes bemutatásával, pl. minden strand jellemzőivel. A BeachRex víziója, hogy néhány éven belül fotókat és egyéb adatokat szerezzünk a világ összes strandjáról. Ha szereted a strandokat és tetszik a BeachRex ötlete, kérlek támogass minket és oszd meg oldalunkat a barátaiddal."
   },
   "NotFoundPage": {
-    "title": "Az oldal nem található."
+    "title": "Az oldal nem található.",
+    "subtitle": "Nem található",
+    "description": "A keresett oldal nem létezik vagy áthelyezésre került.",
+    "browseBeaches": "Összes strand böngészése",
+    "goHome": "Főoldal"
   },
   "AboutPage": {
     "aboutUs": "Rólunk",
@@ -217,61 +221,53 @@
     "viewBeachMap": "Strand térkép megtekintése"
   },
   "SearchBeach": {
-  "title": "Böngéssz az összes európai strand között",
-  "filterButton": "Szűrő",
-  "mapButton": "Térkép megjelenítése",
-  "displayLabel": "Strand nézet:",
-  "sortPopular": "Legnépszerűbb",
-  "sortNewest": "Legújabb",
-  "sortTopRated": "Legjobban értékelt",
-  "prevPage": "Előző",
-  "nextPage": "Következő",
-  "found": "Találat",
-  "filtersTitle": "Szűrők",
-  "filterCountry": "Ország",
-  "filterRegion": "Régió",
-  "filterIsland": "Sziget",
-  "filterCity": "Város",
-
-  "filterBeachType": "Strand típusa",
-  "filterUserType": "Felhasználó típusa",
-  "filterWaterbody": "Víz típusa",
-  "filterParking": "Parkolás",
-
-  "allCountries": "Összes ország",
-  "allRegions": "Összes régió",
-  "allIslands": "Összes sziget",
-  "allCities": "Összes város",
-  "allWaterbodies": "Összes víz típus",
-
-  "applyFilters": "Szűrők alkalmazása",
-  "resetFilters": "Visszaállítás"
+    "title": "Böngéssz az összes európai strand között",
+    "filterButton": "Szűrő",
+    "mapButton": "Térkép megjelenítése",
+    "displayLabel": "Strand nézet:",
+    "sortPopular": "Legnépszerűbb",
+    "sortNewest": "Legújabb",
+    "sortTopRated": "Legjobban értékelt",
+    "prevPage": "Előző",
+    "nextPage": "Következő",
+    "found": "Találat",
+    "filtersTitle": "Szűrők",
+    "filterCountry": "Ország",
+    "filterRegion": "Régió",
+    "filterIsland": "Sziget",
+    "filterCity": "Város",
+    "filterBeachType": "Strand típusa",
+    "filterUserType": "Felhasználó típusa",
+    "filterWaterbody": "Víz típusa",
+    "filterParking": "Parkolás",
+    "allCountries": "Összes ország",
+    "allRegions": "Összes régió",
+    "allIslands": "Összes sziget",
+    "allCities": "Összes város",
+    "allWaterbodies": "Összes víz típus",
+    "applyFilters": "Szűrők alkalmazása",
+    "resetFilters": "Visszaállítás"
   },
   "Filters": {
-  "filtersTitle": "Szűrők",
-  "filterButton": "Szűrők",
-  "mapButton": "Térkép megjelenítése",
-
-  "found": "Találat",
-  "loadingFilters": "Betöltés...",
-  "resetFilters": "Visszaállítás",
-
-  "filterCountry": "Ország",
-  "filterRegion": "Régió",
-  "filterCity": "Város",
-  "filterIsland": "Sziget",
-
-  "filterBeachType": "Strand típusa",
-  "filterUserType": "Felhasználó típusa",
-  "filterWaterbody": "Víz típusa",
-
-  "allCountries": "Összes ország",
-  "allRegions": "Összes régió",
-  "allCities": "Összes város",
-  "allIslands": "Összes sziget",
-  "allWaterbodies": "Összes víz típus"
-},
-
+    "filtersTitle": "Szűrők",
+    "filterButton": "Szűrők",
+    "mapButton": "Térkép megjelenítése",
+    "found": "Találat",
+    "loadingFilters": "Betöltés...",
+    "resetFilters": "Visszaállítás",
+    "filterCountry": "Ország",
+    "filterRegion": "Régió",
+    "filterCity": "Város",
+    "filterIsland": "Sziget",
+    "filterBeachType": "Strand típusa",
+    "filterUserType": "Felhasználó típusa",
+    "filterWaterbody": "Víz típusa",
+    "allCountries": "Összes ország",
+    "allRegions": "Összes régió",
+    "allCities": "Összes város",
+    "allIslands": "Összes sziget",
+    "allWaterbodies": "Összes víz típus"
+  },
   "BannerSection": {
     "categoryLabel": "régió",
     "badgeFestival": "Crna Ovca Fesztivál",
@@ -318,7 +314,7 @@
     "countryLabel": "Ország",
     "beachLabel": "Tengeri strand",
     "beachCountLabel": "Strandok száma:",
-  "accommodationCountLabel": "Szállások száma:"
+    "accommodationCountLabel": "Szállások száma:"
   },
   "TopBarBeach": {
     "beachLabel": "Tengeri strand",

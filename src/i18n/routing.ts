@@ -19,6 +19,11 @@ const globalRoutes = {
         hu: 'strandok',
         bg: 'plyazhove',
         sk: 'plaze',
+        da: 'straande',
+        pt: 'praias',
+        nl: 'stranden',
+        el: 'paralies',
+        sq: 'plazhet',
     },
     beachMap: {
         en: 'beach-map',
@@ -35,6 +40,11 @@ const globalRoutes = {
         hu: 'strand-terkep',
         bg: 'karta-na-plyazhovete',
         sk: 'mapa-plazi',
+        da: 'strandkort',
+        pt: 'mapa-praias',
+        nl: 'strandkaart',
+        el: 'chartis-paralion',
+        sq: 'harta-plazheve',
     },
     beachType: {
         en: 'beach-type',
@@ -51,6 +61,11 @@ const globalRoutes = {
         hu: 'strand-tipus',
         bg: 'tip-plyazh',
         sk: 'typ-plaze',
+        da: 'strandtype',
+        pt: 'tipo-praia',
+        nl: 'strandtype',
+        el: 'typos-paralias',
+        sq: 'lloji-plazhit',
     },
     userType: {
         en: 'user-type',
@@ -67,6 +82,11 @@ const globalRoutes = {
         hu: 'felhasznalo-tipus',
         bg: 'tip-potrebitel',
         sk: 'typ-pouzivatela',
+        da: 'brugertype',
+        pt: 'tipo-usuario',
+        nl: 'gebruikerstype',
+        el: 'typos-christi',
+        sq: 'lloji-perdoruesit',
     },
     about: {
         en: 'about',
@@ -83,6 +103,11 @@ const globalRoutes = {
         hu: 'rolunk',
         bg: 'za-nas',
         sk: 'o-nas',
+        da: 'om-os',
+        pt: 'sobre',
+        nl: 'over-ons',
+        el: 'schetika',
+        sq: 'rreth-nesh',
     },
 };
 
@@ -112,6 +137,11 @@ export const routing = defineRouting({
             hu: `/${globalRoutes.beachMap.hu}`,
             bg: `/${globalRoutes.beachMap.bg}`,
             sk: `/${globalRoutes.beachMap.sk}`,
+            da: `/${globalRoutes.beachMap.da}`,
+            pt: `/${globalRoutes.beachMap.pt}`,
+            nl: `/${globalRoutes.beachMap.nl}`,
+            el: `/${globalRoutes.beachMap.el}`,
+            sq: `/${globalRoutes.beachMap.sq}`,
         },
 
         // Beaches listing
@@ -130,6 +160,11 @@ export const routing = defineRouting({
             hu: `/${globalRoutes.beaches.hu}`,
             bg: `/${globalRoutes.beaches.bg}`,
             sk: `/${globalRoutes.beaches.sk}`,
+            da: `/${globalRoutes.beaches.da}`,
+            pt: `/${globalRoutes.beaches.pt}`,
+            nl: `/${globalRoutes.beaches.nl}`,
+            el: `/${globalRoutes.beaches.el}`,
+            sq: `/${globalRoutes.beaches.sq}`,
         },
 
         // Beaches by continent (dynamic)
@@ -148,6 +183,11 @@ export const routing = defineRouting({
             hu: `/${globalRoutes.beaches.hu}/[continent]`,
             bg: `/${globalRoutes.beaches.bg}/[continent]`,
             sk: `/${globalRoutes.beaches.sk}/[continent]`,
+            da: `/${globalRoutes.beaches.da}/[continent]`,
+            pt: `/${globalRoutes.beaches.pt}/[continent]`,
+            nl: `/${globalRoutes.beaches.nl}/[continent]`,
+            el: `/${globalRoutes.beaches.el}/[continent]`,
+            sq: `/${globalRoutes.beaches.sq}/[continent]`,
         },
 
         // Beaches by continent and country (dynamic)
@@ -166,6 +206,11 @@ export const routing = defineRouting({
             hu: `/${globalRoutes.beaches.hu}/[continent]/[country]`,
             bg: `/${globalRoutes.beaches.bg}/[continent]/[country]`,
             sk: `/${globalRoutes.beaches.sk}/[continent]/[country]`,
+            da: `/${globalRoutes.beaches.da}/[continent]/[country]`,
+            pt: `/${globalRoutes.beaches.pt}/[continent]/[country]`,
+            nl: `/${globalRoutes.beaches.nl}/[continent]/[country]`,
+            el: `/${globalRoutes.beaches.el}/[continent]/[country]`,
+            sq: `/${globalRoutes.beaches.sq}/[continent]/[country]`,
         },
 
         // Beaches by continent, country and segments (catch-all for region/island/city/beach)
@@ -184,6 +229,11 @@ export const routing = defineRouting({
             hu: `/${globalRoutes.beaches.hu}/[continent]/[country]/[...segments]`,
             bg: `/${globalRoutes.beaches.bg}/[continent]/[country]/[...segments]`,
             sk: `/${globalRoutes.beaches.sk}/[continent]/[country]/[...segments]`,
+            da: `/${globalRoutes.beaches.da}/[continent]/[country]/[...segments]`,
+            pt: `/${globalRoutes.beaches.pt}/[continent]/[country]/[...segments]`,
+            nl: `/${globalRoutes.beaches.nl}/[continent]/[country]/[...segments]`,
+            el: `/${globalRoutes.beaches.el}/[continent]/[country]/[...segments]`,
+            sq: `/${globalRoutes.beaches.sq}/[continent]/[country]/[...segments]`,
         },
 
         // Beach type filter
@@ -202,6 +252,11 @@ export const routing = defineRouting({
             hu: `/${globalRoutes.beachType.hu}/[type]`,
             bg: `/${globalRoutes.beachType.bg}/[type]`,
             sk: `/${globalRoutes.beachType.sk}/[type]`,
+            da: `/${globalRoutes.beachType.da}/[type]`,
+            pt: `/${globalRoutes.beachType.pt}/[type]`,
+            nl: `/${globalRoutes.beachType.nl}/[type]`,
+            el: `/${globalRoutes.beachType.el}/[type]`,
+            sq: `/${globalRoutes.beachType.sq}/[type]`,
         },
 
         // User type filter
@@ -220,6 +275,11 @@ export const routing = defineRouting({
             hu: `/${globalRoutes.userType.hu}/[type]`,
             bg: `/${globalRoutes.userType.bg}/[type]`,
             sk: `/${globalRoutes.userType.sk}/[type]`,
+            da: `/${globalRoutes.userType.da}/[type]`,
+            pt: `/${globalRoutes.userType.pt}/[type]`,
+            nl: `/${globalRoutes.userType.nl}/[type]`,
+            el: `/${globalRoutes.userType.el}/[type]`,
+            sq: `/${globalRoutes.userType.sq}/[type]`,
         },
 
         // About page
@@ -238,6 +298,11 @@ export const routing = defineRouting({
             hu: `/${globalRoutes.about.hu}`,
             bg: `/${globalRoutes.about.bg}`,
             sk: `/${globalRoutes.about.sk}`,
+            da: `/${globalRoutes.about.da}`,
+            pt: `/${globalRoutes.about.pt}`,
+            nl: `/${globalRoutes.about.nl}`,
+            el: `/${globalRoutes.about.el}`,
+            sq: `/${globalRoutes.about.sq}`,
         },
     },
 });

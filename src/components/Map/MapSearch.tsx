@@ -27,6 +27,11 @@ const LOCALE_TO_LANGUAGE: Record<string, string> = {
     hu: 'en,hu',
     bg: 'en,bg',
     sk: 'en,sk',
+    da: 'en,da',
+    pt: 'en,pt',
+    nl: 'en,nl',
+    el: 'en,el',
+    sq: 'en,sq',
 };
 
 const MapSearch: React.FC = () => {

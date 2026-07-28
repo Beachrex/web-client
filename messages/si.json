@@ -1,5 +1,3 @@
-
-
 {
   "Common": {
     "search": "Išči",
@@ -112,7 +110,11 @@
     "description": "Vse plaže sveta na enem mestu. Za vsakega turista, da najde svojo popolno plažo za zaslužene počitnice. To je vizija BeachRexa, kateri sem posvetil 4 leta svojega življenja. V tem času sem ustvaril največjo svetovno bazo fotografij, videov, panoram, sferičnih fotografij in podatkov o plažah v Španiji, Franciji, Sloveniji, na Hrvaškem in v Italiji. Trenutno ustvarjam končno spletno stran in mobilno aplikacijo s popolno predstavitvijo vseh 2.445 plaž, 56.000 fotografij, videov, panoram, sferičnih fotografij in 200 podrobnih podatkov, kot so značilnosti vsake plaže. Vizija BeachRexa je, da bomo v nekaj letih pridobili fotografije in druge podatke za vse plaže na svetu. Če imate radi plaže in vam je všeč ideja BeachRexa, nas prosimo podprite in delite našo stran s prijatelji."
   },
   "NotFoundPage": {
-    "title": "Stran ne obstaja."
+    "title": "Stran ne obstaja.",
+    "subtitle": "Ni najdeno",
+    "description": "Stran, ki jo iščete, ne obstaja ali pa je bila premaknjena.",
+    "browseBeaches": "Brskaj po vseh plažah",
+    "goHome": "Nazaj domov"
   },
   "AboutPage": {
     "aboutUs": "O nas",
@@ -219,61 +221,53 @@
     "viewBeachMap": "Poglej zemljevid plaž"
   },
   "SearchBeach": {
-   "title": "Brskaj po vseh plažah Evrope",
-  "filterButton": "Filtriraj",
-  "mapButton": "Prikaži zemljevid",
-  "displayLabel": "Prikaz plaže:",
-  "sortPopular": "Najbolj priljubljene",
-  "sortNewest": "Najnovejše",
-  "sortTopRated": "Najbolje ocenjene",
-  "prevPage": "Nazaj",
-  "nextPage": "Naprej",
-  "found": "Najdeno",
-  "filtersTitle": "Filtri",
-  "filterCountry": "Država",
-  "filterRegion": "Regija",
-  "filterIsland": "Otok",
-  "filterCity": "Mesto",
-
-  "filterBeachType": "Tip plaže",
-  "filterUserType": "Vrsta uporabnikov",
-  "filterWaterbody": "Vrsta vode",
-  "filterParking": "Parkirišče",
-
-  "allCountries": "Vse države",
-  "allRegions": "Vse regije",
-  "allIslands": "Vsi otoki",
-  "allCities": "Vsa mesta",
-  "allWaterbodies": "Vse vrste vode",
-
-  "applyFilters": "Uporabi filtre",
-  "resetFilters": "Ponastavi"
+    "title": "Brskaj po vseh plažah Evrope",
+    "filterButton": "Filtriraj",
+    "mapButton": "Prikaži zemljevid",
+    "displayLabel": "Prikaz plaže:",
+    "sortPopular": "Najbolj priljubljene",
+    "sortNewest": "Najnovejše",
+    "sortTopRated": "Najbolje ocenjene",
+    "prevPage": "Nazaj",
+    "nextPage": "Naprej",
+    "found": "Najdeno",
+    "filtersTitle": "Filtri",
+    "filterCountry": "Država",
+    "filterRegion": "Regija",
+    "filterIsland": "Otok",
+    "filterCity": "Mesto",
+    "filterBeachType": "Tip plaže",
+    "filterUserType": "Vrsta uporabnikov",
+    "filterWaterbody": "Vrsta vode",
+    "filterParking": "Parkirišče",
+    "allCountries": "Vse države",
+    "allRegions": "Vse regije",
+    "allIslands": "Vsi otoki",
+    "allCities": "Vsa mesta",
+    "allWaterbodies": "Vse vrste vode",
+    "applyFilters": "Uporabi filtre",
+    "resetFilters": "Ponastavi"
   },
   "Filters": {
-  "filtersTitle": "Filtri",
-  "filterButton": "Filtri",
-  "mapButton": "Prikaži zemljevid",
-
-  "found": "Najdeno",
-  "loadingFilters": "Nalaganje...",
-  "resetFilters": "Ponastavi",
-
-  "filterCountry": "Država",
-  "filterRegion": "Regija",
-  "filterCity": "Mesto",
-  "filterIsland": "Otok",
-
-  "filterBeachType": "Tip plaže",
-  "filterUserType": "Tip uporabnika",
-  "filterWaterbody": "Vrsta vode",
-
-  "allCountries": "Vse države",
-  "allRegions": "Vse regije",
-  "allCities": "Vsa mesta",
-  "allIslands": "Vsi otoki",
-  "allWaterbodies": "Vse vrste vode"
-},
-
+    "filtersTitle": "Filtri",
+    "filterButton": "Filtri",
+    "mapButton": "Prikaži zemljevid",
+    "found": "Najdeno",
+    "loadingFilters": "Nalaganje...",
+    "resetFilters": "Ponastavi",
+    "filterCountry": "Država",
+    "filterRegion": "Regija",
+    "filterCity": "Mesto",
+    "filterIsland": "Otok",
+    "filterBeachType": "Tip plaže",
+    "filterUserType": "Tip uporabnika",
+    "filterWaterbody": "Vrsta vode",
+    "allCountries": "Vse države",
+    "allRegions": "Vse regije",
+    "allCities": "Vsa mesta",
+    "allIslands": "Vsi otoki",
+    "allWaterbodies": "Vse vrste vode"
+  },
   "BannerSection": {
     "categoryLabel": "regija",
     "badgeFestival": "Festival Črna ovca",
@@ -320,7 +314,7 @@
     "countryLabel": "Država",
     "beachLabel": "Morska plaža",
     "beachCountLabel": "Število plaž:",
-  "accommodationCountLabel": "Število nastanitev:"
+    "accommodationCountLabel": "Število nastanitev:"
   },
   "TopBarBeach": {
     "beachLabel": "Morska plaža",
@@ -343,18 +337,15 @@
     "beachesMap": "Zemljevid vseh plaž",
     "similarBeaches": "Prikaži podobne plaže"
   },
-
   "RegionPage": {
     "popularBeachesTitle": "Najbolj obiskane plaže {region}",
     "featuredAccommodationsTitle": "Izpostavljene namestitve {region}",
-
     "islandsTitle": "Otoki {region}",
     "citiesTitle": "Mesta {region}",
     "allIslandsCount": "Vsi otoki ({count})",
     "allCitiesCount": "Vsa mesta ({count})",
     "islandBadge": "Slikovit otok",
     "cityBadge": "Slikovito mesto",
-
     "browseBeachesTitle": "Brskaj po vseh plažah regije {region}",
     "filterButton": "Filter",
     "mapButton": "Poglej zemljevid",
@@ -366,11 +357,9 @@
   "IslandPage": {
     "popularBeachesTitle": "Najbolj obiskane plaže otoka {island}",
     "featuredAccommodationsTitle": "Izpostavljene namestitve otoka {island}",
-
     "citiesTitle": "Mesta otoka {island}",
     "allCitiesCount": "Vsa mesta ({count})",
     "cityBadge": "Slikovito mesto",
-
     "browseBeachesTitle": "Brskaj po vseh plažah otoka {island}",
     "filterButton": "Filtri",
     "mapButton": "Zemljevid",
@@ -379,11 +368,9 @@
     "sortNewest": "Najnovejše",
     "sortTopRated": "Najbolje ocenjeno"
   },
-
   "TownPage": {
     "popularBeachesTitle": "Najbolj obiskane plaže {town}",
     "featuredAccommodationsTitle": "Izpostavljene namestitve {town}",
-
     "browseBeachesTitle": "Brskaj po vseh plažah {town}",
     "filterButton": "Filtri",
     "mapButton": "Zemljevid",
@@ -391,7 +378,6 @@
     "sortPopular": "Najbolj popularno",
     "sortNewest": "Najnovejše",
     "sortTopRated": "Najbolje ocenjeno",
-
     "categories": {
       "sandBeaches": "Peščene plaže",
       "rockBeaches": "Kamnite plaže",
@@ -411,7 +397,6 @@
       "citiesTitle": "Bližnja mesta"
     }
   },
-
   "WorldTopBar": {
     "worldLabel": "Svet",
     "countriesWithBeachesLabel": "Držav z plažami",
@@ -422,7 +407,6 @@
     "riverBeachesLabel": "Plaž ob rekah",
     "lakeBeachesLabel": "Plaž ob jezerih",
     "popularBeachesTitle": "Najbolj obiskane plaže na svetu",
-
     "browseBeachesTitle": "Prebrskaj vse plaže na svetu",
     "filterButton": "Filter",
     "mapButton": "Prikaži zemljevid",
@@ -434,40 +418,29 @@
     "worldOverviewSubtitle": "Plaže · Otoki · Bazeni",
     "destinationsTitle": "Najboljše plažne destinacije na svetu"
   },
-
   "SEO": {
     "homeTitle": "BeachRex - Odkrijte najboljše plaže sveta",
     "homeDescription": "Raziščite tisoče plaž po vsem svetu. Najdite podrobne informacije, fotografije, vreme, storitve in nastanitve za vašo popolno plažno destinacijo.",
-
     "continentTitle": "Plaže {continentName} - Odkrijte {beachCount} plažnih destinacij | BeachRex",
     "continentDescription": "Raziščite {beachCount} plaž v {countryCount} državah v {continentName}. Najdite podrobne informacije, fotografije, vreme, storitve in nastanitve za najboljše plažne destinacije v {continentName}.",
-
     "countryTitle": "Plaže {countryName} - Odkrijte {beachCount} plažnih destinacij | BeachRex",
     "countryDescription": "Raziščite {beachCount} plaž v {countryName}. Najdite podrobne informacije, fotografije, vreme, storitve in nastanitve za najboljše plažne destinacije v {countryName}.",
-
     "regionTitle": "Plaže {regionName} - {countryName} | BeachRex",
     "regionDescription": "Odkrijte čudovite plaže v {regionName}, {countryName}. Najdite podrobne informacije, fotografije, vreme in storitve za plažne destinacije v tej regiji.",
-
     "cityTitle": "Plaže {cityName} - {countryName} | BeachRex",
     "cityDescription": "Raziščite plaže v {cityName}, {countryName}. Najdite podrobne informacije, fotografije, vreme in storitve za najboljše plažne destinacije v {cityName}.",
-
     "islandTitle": "Plaže {islandName} - {countryName} | BeachRex",
     "islandDescription": "Odkrijte plaže na {islandName}, {countryName}. Najdite podrobne informacije, fotografije, vreme in storitve za otoške plažne destinacije.",
-
     "beachesPageTitle": "Raziščite plaže sveta | BeachRex",
     "beachesPageDescription": "Brskajte po tisočih plaž po vsem svetu. Uporabite naše napredne filtre za iskanje vaše popolne plažne destinacije s podrobnimi informacijami, fotografijami in storitvami.",
-
     "beachMapTitle": "Interaktivni zemljevid plaž | BeachRex",
     "beachMapDescription": "Raziščite plaže na našem interaktivnem svetovnem zemljevidu. Odkrijte plažne destinacije, oglejte si fotografije in najdite podrobne informacije o plažah po vsem svetu.",
-
     "aboutTitle": "O BeachRex - Vaša platforma za odkrivanje plaž",
     "aboutDescription": "Spoznajte BeachRex, najbolj obsežno platformo za odkrivanje plaž na svetu. Najdite podrobne informacije o tisočih plaž po vsem svetu.",
-
     "beachTitle": "{beachName} - {cityName}, {countryName} | BeachRex",
     "beachTitleNoCity": "{beachName} - {countryName} | BeachRex",
     "beachDescription": "Odkrijte {beachName} v {cityName}, {countryName}. {characteristics}. Najdite fotografije, ocene, storitve in vremenske informacije.",
     "beachDescriptionFallback": "Raziščite {beachName} v {cityName}, {countryName}. Najdite podrobne informacije, fotografije, storitve in trenutne vremenske razmere.",
-
     "beachImageAlt": "Plaža {beachName} v {cityName}, {countryName}",
     "beachImageAltNoCity": "Plaža {beachName} v {countryName}",
     "iconAlt": "Ikona {iconName}",
@@ -478,21 +451,17 @@
     "regionImageAlt": "{regionName}, {countryName} - Plažna regija",
     "cityImageAlt": "{cityName}, {countryName} - Plažno mesto",
     "islandImageAlt": "{islandName}, {countryName} - Plažni otok",
-
     "organizationDescription": "Odkrijte najboljše plaže sveta. Najdite podrobne informacije, fotografije, vreme, storitve in nastanitve za vašo popolno plažno destinacijo.",
     "countrySchemaDescription": "Odkrijte {beachCount} plaž v {countryName}",
     "continentSchemaDescription": "Odkrijte {beachCount} plaž v {continentName}",
-
     "breadcrumbHome": "Domov"
   },
-
   "WorldSEO": {
     "title": "Odkrij plaže sveta",
     "paragraph1": "Svet ponuja izjemno raznolikost plaž – od tropskih bežnih obal do mogočnih vulkanskih pokrajin. Ne glede na to, ali iščete mirne lagune, palmami obdane obale ali najbolj znane počitniške destinacije, vam naša globalna baza plaž pomaga najti popoln kotiček.",
     "paragraph2": "Plaže ob oceanih, jezerih, rekah in otokih omogočajo raziskovanje skritih draguljev in svetovno znanih obal. Vsaka destinacija ponuja svojstveno kulturo, podnebje in doživetja.",
     "paragraph3": "Prebrskajte tisoče plaž po vseh celinah in odkrijte, kam vas bo popeljala vaša naslednja nepozabna obmorska avantura."
   },
-
   "countryPage": {
     "popularBeachesTitle": "Najbolj obiskane plaže {country}",
     "featuredAccommodationTitle": "Izpostavljene namestitve {country}",
@@ -504,19 +473,15 @@
     "list": "Seznam",
     "grid": "Mreža",
     "map": "Zemljevid",
-
     "regionsTitle": "Regije {country}",
     "citiesTitle": "Mesta {country}",
     "islandsTitle": "Otoški {country}",
-
     "allRegionsCount": "Vse regije ({count})",
     "allCitiesCount": "Vsa mesta ({count})",
     "allIslandsCount": "Vsi otoki ({count})",
-
     "regionBadge": "Morska doživetja",
     "cityBadge": "Slikovito mesto",
     "islandBadge": "Slikovit otok",
-
     "browseBeachesTitle": "Brskaj po vseh plažah {country}",
     "filterButton": "Filtri",
     "mapButton": "Zemljevid",
@@ -524,7 +489,6 @@
     "sortNewest": "Najnovejše",
     "sortTopRated": "Najbolje ocenjeno"
   },
-
   "BottomBadgesBeach": {
     "badges": {
       "stony": "Kamnita",
@@ -540,7 +504,6 @@
       "desc": "Poiščite svojo popolno plažo in BeachRex vas bo seznanil z vsako podrobnostjo.",
       "cta": "Brskaj po zemljevidu"
     },
-
     "mostViewed": {
       "title": "Najbolj obiskane plaže",
       "links": [
@@ -555,23 +518,47 @@
     "info": {
       "title": "Glavne informacije",
       "links": [
-        { "label": "O nas", "href": "/about" },
-        { "label": "Pogoji uporabe", "href": "/legal/terms" },
-        { "label": "Politika zasebnosti", "href": "/legal/privacy" },
+        {
+          "label": "O nas",
+          "href": "/about"
+        },
+        {
+          "label": "Pogoji uporabe",
+          "href": "/legal/terms"
+        },
+        {
+          "label": "Politika zasebnosti",
+          "href": "/legal/privacy"
+        },
         {
           "label": "Pravila za prispevanje",
           "href": "/legal/contribution-rules"
         },
-        { "label": "Kontakt", "href": "/contact" }
+        {
+          "label": "Kontakt",
+          "href": "/contact"
+        }
       ]
     },
     "browse": {
       "title": "Brskaj po strani",
       "links": [
-        { "label": "Pregled vseh destinacij", "href": "/destinations" },
-        { "label": "Išči po plažah", "href": "/beaches" },
-        { "label": "Išči po nastanitvah", "href": "/accommodations" },
-        { "label": "Zemljevid", "href": "/beach-map" }
+        {
+          "label": "Pregled vseh destinacij",
+          "href": "/destinations"
+        },
+        {
+          "label": "Išči po plažah",
+          "href": "/beaches"
+        },
+        {
+          "label": "Išči po nastanitvah",
+          "href": "/accommodations"
+        },
+        {
+          "label": "Zemljevid",
+          "href": "/beach-map"
+        }
       ]
     },
     "newsletter": {
@@ -619,11 +606,9 @@
       "slope": "Nagib",
       "swimmingArea": "Mesto za plavanje",
       "seabed": "Morsko dno",
-
       "parkingSpots": "Št. parkirnih mest",
       "wayToParking": "Pot do parkirišča",
       "recommendedAccess": "Priporočljiv dostop",
-
       "distance": "Razdalja (parkirišče—plaža)",
       "elevationDiff": "Višinska razlika (od parkirišča do plaže)"
     },
@@ -665,16 +650,13 @@
       "apartments": "Apartmaji",
       "rooms": "Sobe",
       "campground": "Avtokamp",
-
       "restaurant": "Restavracija",
       "fastFood": "Restavracija s hitro prehrano",
       "bakery": "Pekarna",
       "cafe": "Kavarna",
-
       "swimming": "Plavanje",
       "snorkeling": "Potapljanje z masko",
       "waterSports": "Vodni športi",
-
       "unit": {
         "meters": "m"
       }

@@ -21,6 +21,11 @@ const beachesRoutes: Record<string, string> = {
   hu: 'strandok',
   bg: 'plyazhove',
   sk: 'plaze',
+  da: 'straande',
+  pt: 'praias',
+  nl: 'stranden',
+  el: 'paralies',
+  sq: 'plazhet',
 };
 
 export default function middleware(request: NextRequest) {

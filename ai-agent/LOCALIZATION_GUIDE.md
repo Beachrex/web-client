@@ -2,23 +2,26 @@
 
 > **Critical Reference**: How internationalization (i18n) works in Beachrex
 
-**Last Updated**: 2026-07-27
+**Last Updated**: 2026-07-28
 
 ---
 
 ## Quick Reference
 
-### Supported Locales
+### Supported Locales (19)
 ```typescript
-['en', 'si', 'de', 'hr', 'fr', 'es', 'it', 'ua', 'ru', 'pl', 'cs', 'hu', 'bg', 'sk']
+['en', 'si', 'de', 'hr', 'fr', 'es', 'it', 'ua', 'ru', 'pl', 'cs', 'hu', 'bg', 'sk', 'da', 'pt', 'nl', 'el', 'sq']
 ```
 
 ### Localized Route Words
 
-| Route | EN | SI | DE | FR | ES | IT |
-|-------|----|----|----|----|----|----|
-| Beaches | beaches | plaze | strande | plages | playas | spiagge |
-| Beach Map | beach-map | zemljevid-plaz | strand-karte | carte-des-plages | mapa-de-playas | mappa-spiagge |
+| Route | EN | SI | DE | FR | ES | IT | DA | PT | NL | EL | SQ |
+|-------|----|----|----|----|----|----|----|----|----|----|----|
+| Beaches | beaches | plaze | strande | plages | playas | spiagge | straande | praias | stranden | paralies | plazhet |
+| Beach Map | beach-map | zemljevid-plaz | strand-karte | carte-des-plages | mapa-de-playas | mappa-spiagge | strandkort | mapa-praias | strandkaart | chartis-paralion | harta-plazheve |
+| Beach Type | beach-type | tip-plaze | strand-typ | type-de-plage | tipo-de-playa | tipo-di-spiaggia | strandtype | tipo-praia | strandtype | typos-paralias | lloji-plazhit |
+| User Type | user-type | tip-uporabnika | benutzer-typ | type-utilisateur | tipo-de-usuario | tipo-utente | brugertype | tipo-usuario | gebruikerstype | typos-christi | lloji-perdoruesit |
+| About | about | o-nas | uber-uns | a-propos | acerca-de | chi-siamo | om-os | sobre | over-ons | schetika | rreth-nesh |
 
 ---
 
@@ -117,22 +120,22 @@ export const routing = defineRouting({
       en: '/beaches',
       si: '/plaze',
       de: '/strande',
-      // ... all 14 locales
+      // ... all 19 locales
     },
     '/beaches/[continent]': {
       en: '/beaches/[continent]',
       si: '/plaze/[continent]',
-      // ... all 14 locales
+      // ... all 19 locales
     },
     '/beaches/[continent]/[country]': {
       en: '/beaches/[continent]/[country]',
       si: '/plaze/[continent]/[country]',
-      // ... all 14 locales
+      // ... all 19 locales
     },
     '/beaches/[continent]/[country]/[...segments]': {
       en: '/beaches/[continent]/[country]/[...segments]',
       si: '/plaze/[continent]/[country]/[...segments]',
-      // ... all 14 locales
+      // ... all 19 locales
     }
   }
 });

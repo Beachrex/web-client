@@ -20,6 +20,11 @@ const beachesWord: Record<string, string> = {
   hu: 'strandok',
   bg: 'plyazhove',
   sk: 'plaze',
+  da: 'straande',
+  pt: 'praias',
+  nl: 'stranden',
+  el: 'paralies',
+  sq: 'plazhet',
 };
 
 const locales = Object.keys(beachesWord);

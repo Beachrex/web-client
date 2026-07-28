@@ -201,13 +201,13 @@ export default function Page() {
 
 ```typescript
 // If you add a new route pattern like /beach-type/[type]
-// You MUST add it to src/i18n/routing.ts for ALL 14 locales!
+// You MUST add it to src/i18n/routing.ts for ALL 19 locales!
 
 pathnames: {
   '/beach-type/[type]': {
     en: '/beach-type/[type]',
     si: '/tip-plaze/[type]',
-    // ... all 14 locales
+    // ... all 19 locales
   }
 }
 ```

@@ -70,7 +70,7 @@
 - [ ] Add `PropertyCard` namespace with all alt text keys
 - [ ] Add `Home.accommodation.galleryImageAlt`
 - [ ] Add `filter.iconAlt`
-- [ ] Translate to all 14 languages (or at least EN + SI)
+- [ ] Translate to all 19 languages (or at least EN + SI)
 
 ---
 
