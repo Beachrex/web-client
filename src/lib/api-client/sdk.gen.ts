@@ -284,6 +284,9 @@ import type {
   ResolveSlugData,
   ResolveSlugErrors,
   ResolveSlugResponses,
+  SubscribeToNewsletterData,
+  SubscribeToNewsletterErrors,
+  SubscribeToNewsletterResponses,
 } from "./types.gen";
 
 export type Options<
@@ -1413,6 +1416,28 @@ export const getNaturalLocationConditionById = <
   >({
     url: "/api/v1/natural-location-conditions/{id}",
     ...options,
+  });
+};
+
+/**
+ * Subscribe an email to the newsletter
+ *
+ * Validates and stores a newsletter subscription. Idempotent: re-subscribing an existing active email returns success without creating a duplicate. Re-subscribing an unsubscribed email re-activates it. Requires GDPR consent.
+ */
+export const subscribeToNewsletter = <ThrowOnError extends boolean = false>(
+  options: Options<SubscribeToNewsletterData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    SubscribeToNewsletterResponses,
+    SubscribeToNewsletterErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/newsletter/subscribe",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 

@@ -535,7 +535,8 @@
       "title": "Hold dig opdateret",
       "subtitle": "Tilmeld dig vores nyhedsbrev",
       "placeholder": "Indtast din e-mail",
-      "button": "Tilmeld"
+      "button": "Tilmeld",
+      "gdprConsent": "Jeg accepterer at modtage reklame-e-mails og nyheder, og jeg accepterer <privacy>privatlivspolitikken</privacy>."
     },
     "legal": {
       "rights": "Alle rettigheder forbeholdes BeachRex"

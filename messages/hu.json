@@ -535,7 +535,8 @@
       "title": "Maradj naprakész",
       "subtitle": "Iratkozz fel hírlevelünkre",
       "placeholder": "Add meg az e-mail címed",
-      "button": "Feliratkozás"
+      "button": "Feliratkozás",
+      "gdprConsent": "Egyetértek a promóciós e-mailek és hírek fogadásával, és elfogadom az <privacy>adatvédelmi irányelveket</privacy>."
     },
     "legal": {
       "rights": "Minden jog fenntartva BeachRex"

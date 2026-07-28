@@ -535,7 +535,8 @@
       "title": "Zostaňte v obraze",
       "subtitle": "Prihláste sa na odber noviniek",
       "placeholder": "Zadajte váš e-mail",
-      "button": "Prihlásiť sa"
+      "button": "Prihlásiť sa",
+      "gdprConsent": "Súhlasím s prijímaním propagačných e-mailov a noviniek a prijímam <privacy>zásady ochrany súkromia</privacy>."
     },
     "legal": {
       "rights": "Všetky práva vyhradené BeachRex"

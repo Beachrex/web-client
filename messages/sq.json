@@ -535,7 +535,8 @@
       "title": "Qëndroni të përditësuar",
       "subtitle": "Abonohu në buletinin tonë",
       "placeholder": "Vendosni email-in tuaj",
-      "button": "Abonohu"
+      "button": "Abonohu",
+      "gdprConsent": "Pranoj të marr email-et promovuese dhe lajme, dhe pranoj <privacy>politikën e privatësisë</privacy>."
     },
     "legal": {
       "rights": "Të gjitha të drejtat e rezervuara BeachRex"

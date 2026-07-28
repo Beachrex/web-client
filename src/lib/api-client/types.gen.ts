@@ -7551,6 +7551,62 @@ export type GetNaturalLocationConditionByIdResponses = {
 export type GetNaturalLocationConditionByIdResponse =
   GetNaturalLocationConditionByIdResponses[keyof GetNaturalLocationConditionByIdResponses];
 
+export type SubscribeToNewsletterData = {
+  body: {
+    /**
+     * Subscriber email address
+     */
+    email: string;
+    /**
+     * GDPR consent — user must accept to be subscribed
+     */
+    consent: boolean;
+    /**
+     * Subscription source (footer, popup, etc.)
+     */
+    source?: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/newsletter/subscribe";
+};
+
+export type SubscribeToNewsletterErrors = {
+  /**
+   * Validation error (invalid email or missing consent)
+   */
+  422: {
+    success?: boolean;
+    message?: string;
+    errors?: {
+      [key: string]: unknown;
+    };
+  };
+};
+
+export type SubscribeToNewsletterError =
+  SubscribeToNewsletterErrors[keyof SubscribeToNewsletterErrors];
+
+export type SubscribeToNewsletterResponses = {
+  /**
+   * Already subscribed (idempotent)
+   */
+  200: {
+    success?: boolean;
+    message?: string;
+  };
+  /**
+   * Successfully subscribed
+   */
+  201: {
+    success?: boolean;
+    message?: string;
+  };
+};
+
+export type SubscribeToNewsletterResponse =
+  SubscribeToNewsletterResponses[keyof SubscribeToNewsletterResponses];
+
 export type GetOccupancyRatesData = {
   body?: never;
   headers?: {

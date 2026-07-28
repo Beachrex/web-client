@@ -567,7 +567,8 @@
       "title": "Rimani aggiornato",
       "subtitle": "Iscriviti alla nostra newsletter",
       "placeholder": "Inserisci la tua email",
-      "button": "Iscriviti"
+      "button": "Iscriviti",
+      "gdprConsent": "Acconsento a ricevere e-mail promozionali e notizie, e accetto l'<privacy>informativa sulla privacy</privacy>."
     },
     "legal": {
       "rights": "Tutti i diritti riservati BeachRex"

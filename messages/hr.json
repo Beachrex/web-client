@@ -535,7 +535,8 @@
       "title": "Ostanite u toku",
       "subtitle": "Pretplatite se na naš newsletter",
       "placeholder": "Unesite svoj email",
-      "button": "Pretplati se"
+      "button": "Pretplati se",
+      "gdprConsent": "Slažem se s primanjem promotivnih e-poruka i vijesti te prihvaćam <privacy>politiku privatnosti</privacy>."
     },
     "legal": {
       "rights": "Sva prava pridržana BeachRex"

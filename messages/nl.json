@@ -535,7 +535,8 @@
       "title": "Blijf op de hoogte",
       "subtitle": "Abonneer je op onze nieuwsbrief",
       "placeholder": "Voer je e-mailadres in",
-      "button": "Abonneren"
+      "button": "Abonneren",
+      "gdprConsent": "Ik ga akkoord met het ontvangen van promotionele e-mails en nieuws, en ik accepteer het <privacy>privacybeleid</privacy>."
     },
     "legal": {
       "rights": "Alle rechten voorbehouden BeachRex"

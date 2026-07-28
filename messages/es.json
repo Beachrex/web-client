@@ -535,7 +535,8 @@
       "title": "Mantente informado",
       "subtitle": "Suscríbete a nuestro boletín",
       "placeholder": "Introduce tu email",
-      "button": "Suscribirse"
+      "button": "Suscribirse",
+      "gdprConsent": "Acepto recibir correos promocionales y noticias, y acepto la <privacy>política de privacidad</privacy>."
     },
     "legal": {
       "rights": "Todos los derechos reservados BeachRex"
