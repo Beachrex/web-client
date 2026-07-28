@@ -735,5 +735,15 @@
       "noHistory": "Zatím žádná historie nákupů.",
       "purchase": "Zakoupit více kreditů"
     }
+  },
+  "PropertyCard": {
+    "priceFrom": "od {price} €",
+    "webcamLabel": "Webkamera",
+    "noWebcam": "Webkamera není k dispozici",
+    "no360": "Pohled 360° není k dispozici",
+    "noVideo": "Video není k dispozici",
+    "mostVisited": "Nejnavštěvovanější",
+    "loading": "Načítání...",
+    "showOnMap": "Zobrazit {title} na mapě"
   }
 }

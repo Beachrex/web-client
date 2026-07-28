@@ -735,5 +735,15 @@
       "noHistory": "Još nema povijesti kupnji.",
       "purchase": "Kupi više kredita"
     }
+  },
+  "PropertyCard": {
+    "priceFrom": "od {price} €",
+    "webcamLabel": "Webcam",
+    "noWebcam": "Webcam nije dostupan",
+    "no360": "360° prikaz nije dostupan",
+    "noVideo": "Video nije dostupan",
+    "mostVisited": "Najposjećenije",
+    "loading": "Učitavanje...",
+    "showOnMap": "Prikaži {title} na karti"
   }
 }

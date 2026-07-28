@@ -735,5 +735,15 @@
       "noHistory": "Még nincs vásárlási előzmény.",
       "purchase": "További kreditek vásárlása"
     }
+  },
+  "PropertyCard": {
+    "priceFrom": "{price} €-tól",
+    "webcamLabel": "Webkamera",
+    "noWebcam": "Nincs elérhető webkamera",
+    "no360": "Nincs elérhető 360°-os nézet",
+    "noVideo": "Nincs elérhető videó",
+    "mostVisited": "Leglátogatottabb",
+    "loading": "Betöltés...",
+    "showOnMap": "{title} megjelenítése a térképen"
   }
 }

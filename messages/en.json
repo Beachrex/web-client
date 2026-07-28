@@ -735,5 +735,15 @@
       "noHistory": "No purchase history yet.",
       "purchase": "Purchase More Credits"
     }
+  },
+  "PropertyCard": {
+    "priceFrom": "from {price} €",
+    "webcamLabel": "Webcam",
+    "noWebcam": "No webcam available",
+    "no360": "No 360° view available",
+    "noVideo": "No video available",
+    "mostVisited": "Most visited",
+    "loading": "Loading...",
+    "showOnMap": "Show {title} on map"
   }
 }

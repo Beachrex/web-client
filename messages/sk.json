@@ -735,5 +735,15 @@
       "noHistory": "Zatiaľ žiadna história nákupov.",
       "purchase": "Zakúpiť viac kreditov"
     }
+  },
+  "PropertyCard": {
+    "priceFrom": "od {price} €",
+    "webcamLabel": "Webkamera",
+    "noWebcam": "Webkamera nie je k dispozícii",
+    "no360": "Pohľad 360° nie je k dispozícii",
+    "noVideo": "Video nie je k dispozícii",
+    "mostVisited": "Najnavštevovanejšia",
+    "loading": "Načítavam...",
+    "showOnMap": "Zobraziť {title} na mape"
   }
 }

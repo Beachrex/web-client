@@ -8,6 +8,7 @@ import { Heart, Star } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { PropertyMediaContext } from '../PropertySection';
 
@@ -23,7 +24,7 @@ const EmblaCarousel = dynamic(
   {
     loading: () => (
       <div className="relative h-full w-full flex items-center justify-center bg-gray-100">
-        <div className="animate-pulse text-gray-400">Loading...</div>
+        <div className="animate-pulse text-gray-400" />
       </div>
     ),
     ssr: false,
@@ -106,6 +107,7 @@ const PropertyCard = React.memo(function PropertyCard({  beachUrl,
     }
   }, [title]);
 
+  const t = useTranslations('PropertyCard');
   const queryClient = useQueryClient();
 
   const { ready } = useIsMobile();
@@ -226,7 +228,7 @@ const webcamUrl = React.useMemo(
       >
         <div className="flex items-center gap-3 rounded-full bg-black/60 px-6 py-4 backdrop-blur-sm hover:bg-black/70 transition">
           <span className="text-white text-[18px] font-bold">
-            Webcam
+            {t('webcamLabel')}
           </span>
         </div>
       </button>
@@ -237,13 +239,13 @@ const webcamUrl = React.useMemo(
       <div className="flex flex-col items-center gap-2 text-gray-500">
         <Image
           src="/images/beachmedia/video-icon-white.png"
-          alt="No webcam available"
+          alt={t('noWebcam')}
           width={32}
           height={32}
           className="opacity-40"
         />
         <span className="text-[13px] font-semibold">
-          No webcam available
+          {t('noWebcam')}
         </span>
       </div>
     </div>
@@ -291,13 +293,13 @@ const webcamUrl = React.useMemo(
       <div className="flex flex-col items-center gap-2 text-gray-500">
         <Image
           src="/images/beachmedia/360-degree.svg"
-          alt="No 360 available"
+          alt={t('no360')}
           width={32}
           height={32}
           className="opacity-40"
         />
         <span className="text-[13px] font-semibold">
-          No 360° view available
+          {t('no360')}
         </span>
       </div>
     </div>
@@ -319,13 +321,13 @@ const webcamUrl = React.useMemo(
       <div className="flex flex-col items-center gap-2 text-gray-500">
         <Image
           src="/images/beachmedia/play-button-arrowhead-white.png"
-          alt="No video available"
+          alt={t('noVideo')}
           width={32}
           height={32}
           className="opacity-40"
         />
         <span className="text-[13px] font-semibold">
-          No video available
+          {t('noVideo')}
         </span>
       </div>
     </div>
@@ -342,7 +344,7 @@ const webcamUrl = React.useMemo(
       {isMostVisited && (
         <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
           <span className="text-[10px] text-[#4D4D4D] font-semibold">
-            Most visited
+            {t('mostVisited')}
           </span>
         </div>
       )}
@@ -377,7 +379,7 @@ const webcamUrl = React.useMemo(
         width={16}
         height={16}
       />
-      <span className="text-[12px] font-medium">from {price} €</span>
+      <span className="text-[12px] font-medium">{t('priceFrom', { price })}</span>
     </div>
 
     <div className="pointer-events-auto flex items-center gap-2">
@@ -429,7 +431,7 @@ const webcamUrl = React.useMemo(
   type="button"
   onClick={handleLocationClick}
   className="pr-[2px] hover:scale-105 transition-transform cursor-pointer hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8000] focus-visible:ring-offset-2 rounded"
-  aria-label={`Show ${title} on map`}
+  aria-label={t('showOnMap', { title })}
        >
   <Image
     src="/images/propertycard/location.png"
