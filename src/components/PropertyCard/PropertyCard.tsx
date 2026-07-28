@@ -72,6 +72,8 @@ export interface PropertyCardProps {
   countryCode?: string;
   onLocationClick?: () => void;
 
+  /** Up to 4 descriptive tags from the API (sporting activities, culinary, natural conditions) */
+  tags?: string[];
 }
 
 const PropertyCard = React.memo(function PropertyCard({  beachUrl,
@@ -90,6 +92,7 @@ const PropertyCard = React.memo(function PropertyCard({  beachUrl,
   countryCode,
   webcamEmbed,
   onLocationClick,
+  tags,
 }: PropertyCardProps) {
   const renderStartTime = useRef(performance.now());
   const currentRenderCount = useRef(++propertyCardRenderCount);
@@ -444,10 +447,13 @@ const webcamUrl = React.useMemo(
         </div>
 
         <div className="flex justify-between items-center gap-x-4">
-          <p className="text-[#4D4D4D] text-[12px] leading-[1.2rem] font-medium flex-1">
-            Sup • Diving • Windsurfing • Coffee •{' '}
-            <span className="font-bold">Crowded</span>
-          </p>
+          {tags && tags.length > 0 ? (
+            <p className="text-[#4D4D4D] text-[12px] leading-[1.2rem] font-medium flex-1">
+              {tags.join(' • ')}
+            </p>
+          ) : (
+            <p className="text-[#4D4D4D] text-[12px] leading-[1.2rem] font-medium flex-1" />
+          )}
 
           <div className="flex shrink-0 gap-5 pr-[2px]">
             <Image
@@ -488,7 +494,8 @@ const webcamUrl = React.useMemo(
     prevProps.galleryImages?.length === nextProps.galleryImages?.length &&
     prevProps.sphereTourUrl === nextProps.sphereTourUrl &&
     prevProps.videoEmbedUrl === nextProps.videoEmbedUrl &&
-    prevProps.webcamEmbed === nextProps.webcamEmbed
+    prevProps.webcamEmbed === nextProps.webcamEmbed &&
+    prevProps.tags?.join(',') === nextProps.tags?.join(',')
   );
 });
 

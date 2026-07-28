@@ -1748,6 +1748,10 @@ export type BeachSchema = {
       webcam?: string | null;
     };
   };
+  /**
+   * Up to 4 descriptive tags for the beach (sporting activities, culinary offers, natural conditions, occupancy rate) translated based on Accept-Language header. Empty array if none available.
+   */
+  tags?: Array<string>;
 };
 
 /**
@@ -3253,6 +3257,10 @@ export type SpatialBeach = {
       webcam?: string | null;
     };
   };
+  /**
+   * Up to 4 descriptive tags for the beach (sporting activities, culinary offers, natural conditions, occupancy rate) translated based on Accept-Language header. Empty array if none available.
+   */
+  tags?: Array<string>;
   /**
    * Distance from reference point in kilometers (null for bounding-box queries)
    */

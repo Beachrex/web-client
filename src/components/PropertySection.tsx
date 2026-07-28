@@ -48,6 +48,9 @@ export interface Property {
   isFreeCancellation?: boolean;
   isMostVisited?: boolean;
   countryCode?: string;
+
+  /** Up to 4 descriptive tags from the API (sporting activities, culinary, natural conditions) */
+  tags?: string[];
 }
 
 interface PropertySectionProps {

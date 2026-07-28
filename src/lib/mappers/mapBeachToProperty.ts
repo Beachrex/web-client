@@ -46,6 +46,9 @@ export interface BeachLike {
   main_image?: string | null;
 
   media?: BeachMedia | null;
+
+  /** Up to 4 tag strings returned by the API (sporting, culinary, natural conditions) */
+  tags?: string[] | null;
 }
 
 
@@ -180,6 +183,14 @@ export function mapBeachToProperty(
   /* ---------------------------
    * FINAL PROPERTY OBJECT
    * --------------------------- */
+  /* ---------------------------
+   * TAGS (sporting activities, culinary, natural conditions — max 4, from API)
+   * --------------------------- */
+  const tags =
+    Array.isArray(beach.tags) && beach.tags.length > 0
+      ? beach.tags.filter((t): t is string => typeof t === 'string')
+      : undefined;
+
   return {
     id: String(beach.id),
     ...(beachUrl ? { beachUrl } : {}),
@@ -205,5 +216,7 @@ export function mapBeachToProperty(
       typeof beach.country_code === 'string'
         ? beach.country_code
         : undefined,
+
+    tags,
   };
 }
