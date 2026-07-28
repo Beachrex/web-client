@@ -548,29 +548,7 @@
       ]
     },
     "info": {
-      "title": "Informazioni chiave",
-      "links": [
-        {
-          "label": "Chi siamo",
-          "href": "/about"
-        },
-        {
-          "label": "Termini di utilizzo",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Privacy policy",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Regole di contribuzione",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Contatti",
-          "href": "/contact"
-        }
-      ]
+      "title": "Informazioni chiave"
     },
     "browse": {
       "title": "Sfoglia il sito",

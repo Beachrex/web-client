@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Key information",
-      "links": [
-        {
-          "label": "About us",
-          "href": "/about"
-        },
-        {
-          "label": "Terms of use",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Privacy policy",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Contribution rules",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Contact",
-          "href": "/contact"
-        }
-      ]
+      "title": "Key information"
     },
     "browse": {
       "title": "Browse the site",

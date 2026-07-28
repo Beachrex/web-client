@@ -1,7 +1,13 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { getContinents, getBeachDetails, getCountries } from '@/lib/api-client/sdk.gen';
+import {
+  getContinents,
+  getBeachDetails,
+  getCountries,
+  getStaticPageBySlug,
+  getStaticPagesForFooter,
+} from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildBeachUrl } from '@/lib/utils/beach-urls';
 
@@ -71,10 +77,63 @@ export const useLocalizedPath = () => {
     const segments = pathWithoutLocale.split('/').filter(Boolean);
     console.log('[useLocalizedPath] Path segments:', segments);
 
+    // Static (CMS) pages: '/p/{slug}'. The 'p' prefix is NOT localized, but the
+    // slug is. Translate the slug by resolving it to the page's stable code in
+    // the current locale, then looking up that code in the target locale's
+    // footer list to get the translated slug.
+    const firstSegment = segments[0];
+    const currentSlug = segments[1];
+    if (firstSegment === 'p' && currentSlug) {
+      try {
+        console.log('[useLocalizedPath] Detected static page route, slug:', currentSlug);
+
+        // Resolve the current slug to the page's stable code (in current locale).
+        const { data: currentResponse } = await getStaticPageBySlug({
+          path: { slug: currentSlug },
+          headers: { 'Accept-Language': currentLocale as AcceptLanguage },
+        });
+        const pageCode = currentResponse?.data?.code;
+
+        if (!pageCode) {
+          console.log('[useLocalizedPath] Could not resolve static page code, returning as-is:', pathWithoutLocale);
+          return pathWithoutLocale;
+        }
+
+        // Fetch the target locale's footer list and find the same page by code.
+        const { data: targetResponse } = await getStaticPagesForFooter({
+          headers: { 'Accept-Language': targetLocale as AcceptLanguage },
+        });
+        const targetPage = targetResponse?.data?.find((p) => p.code === pageCode);
+
+        // The footer list only includes pages flagged is_in_footer; if the page
+        // isn't in the footer list, fall back to fetching it directly by slug
+        // (the show endpoint accepts any locale's slug with EN fallback).
+        let targetSlug = targetPage?.slug;
+        if (!targetSlug) {
+          const { data: directResponse } = await getStaticPageBySlug({
+            path: { slug: currentSlug },
+            headers: { 'Accept-Language': targetLocale as AcceptLanguage },
+          });
+          targetSlug = directResponse?.data?.slug;
+        }
+
+        if (!targetSlug) {
+          console.log('[useLocalizedPath] No target slug found for static page, returning as-is:', pathWithoutLocale);
+          return pathWithoutLocale;
+        }
+
+        const result = `/p/${targetSlug}`;
+        console.log('[useLocalizedPath] Translated static page path:', result);
+        return result;
+      } catch (error) {
+        console.error('[useLocalizedPath] Error translating static page slug:', error);
+        return pathWithoutLocale;
+      }
+    }
+
     // Check if this is a beaches route by checking against ALL possible beaches words
     // This handles cases where URL uses a different locale's beaches word (e.g., /beaches/ when locale is 'si')
     const allBeachesWords = Object.values(beachesRoutes);
-    const firstSegment = segments[0];
     const isBeachesRoute = firstSegment && allBeachesWords.includes(firstSegment as typeof allBeachesWords[number]);
 
     if (!isBeachesRoute) {

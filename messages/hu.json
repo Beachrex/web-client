@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Fontos információk",
-      "links": [
-        {
-          "label": "Rólunk",
-          "href": "/about"
-        },
-        {
-          "label": "Használati feltételek",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Adatvédelmi irányelvek",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Hozzájárulási szabályok",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Kapcsolat",
-          "href": "/contact"
-        }
-      ]
+      "title": "Fontos információk"
     },
     "browse": {
       "title": "Oldal böngészése",

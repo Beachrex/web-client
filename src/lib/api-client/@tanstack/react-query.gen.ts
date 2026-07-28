@@ -72,6 +72,8 @@ import {
   getRoadToParkingTypes,
   getSportingActivities,
   getSportingActivityById,
+  getStaticPageBySlug,
+  getStaticPagesForFooter,
   getSwimmingDepthById,
   getSwimmingDepths,
   getUnderwaterCharacteristicById,
@@ -272,6 +274,10 @@ import type {
   GetSportingActivityByIdData,
   GetSportingActivityByIdError,
   GetSportingActivityByIdResponse,
+  GetStaticPageBySlugData,
+  GetStaticPageBySlugResponse,
+  GetStaticPagesForFooterData,
+  GetStaticPagesForFooterResponse,
   GetSwimmingDepthByIdData,
   GetSwimmingDepthByIdError,
   GetSwimmingDepthByIdResponse,
@@ -2375,6 +2381,66 @@ export const getSportingActivityByIdOptions = (
       return data;
     },
     queryKey: getSportingActivityByIdQueryKey(options),
+  });
+
+export const getStaticPagesForFooterQueryKey = (
+  options?: Options<GetStaticPagesForFooterData>,
+) => createQueryKey("getStaticPagesForFooter", options);
+
+/**
+ * List active static pages for footer rendering
+ *
+ * Returns lightweight list (id, code, title, slug, sort_order) of active pages flagged is_in_footer, localized by Accept-Language with English fallback.
+ */
+export const getStaticPagesForFooterOptions = (
+  options?: Options<GetStaticPagesForFooterData>,
+) =>
+  queryOptions<
+    GetStaticPagesForFooterResponse,
+    DefaultError,
+    GetStaticPagesForFooterResponse,
+    ReturnType<typeof getStaticPagesForFooterQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getStaticPagesForFooter({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getStaticPagesForFooterQueryKey(options),
+  });
+
+export const getStaticPageBySlugQueryKey = (
+  options: Options<GetStaticPageBySlugData>,
+) => createQueryKey("getStaticPageBySlug", options);
+
+/**
+ * Get full static page content by slug
+ *
+ * Returns the full page (title, slug, content, meta fields) for the requested locale, with English fallback. Looks up by localized slug, then English slug.
+ */
+export const getStaticPageBySlugOptions = (
+  options: Options<GetStaticPageBySlugData>,
+) =>
+  queryOptions<
+    GetStaticPageBySlugResponse,
+    DefaultError,
+    GetStaticPageBySlugResponse,
+    ReturnType<typeof getStaticPageBySlugQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getStaticPageBySlug({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getStaticPageBySlugQueryKey(options),
   });
 
 export const getSwimmingDepthsQueryKey = (

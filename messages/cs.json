@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Klíčové informace",
-      "links": [
-        {
-          "label": "O nás",
-          "href": "/about"
-        },
-        {
-          "label": "Podmínky použití",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Zásady ochrany osobních údajů",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Pravidla přispívání",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Kontakt",
-          "href": "/contact"
-        }
-      ]
+      "title": "Klíčové informace"
     },
     "browse": {
       "title": "Procházet stránku",

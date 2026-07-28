@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Kluczowe informacje",
-      "links": [
-        {
-          "label": "O nas",
-          "href": "/about"
-        },
-        {
-          "label": "Warunki użytkowania",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Polityka prywatności",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Zasady współpracy",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Kontakt",
-          "href": "/contact"
-        }
-      ]
+      "title": "Kluczowe informacje"
     },
     "browse": {
       "title": "Przeglądaj stronę",

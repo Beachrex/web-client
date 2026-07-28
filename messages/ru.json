@@ -548,29 +548,7 @@
       ]
     },
     "info": {
-      "title": "Ключевая информация",
-      "links": [
-        {
-          "label": "О нас",
-          "href": "/about"
-        },
-        {
-          "label": "Условия использования",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Политика конфиденциальности",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Правила участия",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Контакты",
-          "href": "/contact"
-        }
-      ]
+      "title": "Ключевая информация"
     },
     "browse": {
       "title": "Просмотр сайта",

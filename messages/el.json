@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Βασικές πληροφορίες",
-      "links": [
-        {
-          "label": "Σχετικά με εμάς",
-          "href": "/about"
-        },
-        {
-          "label": "Όροι χρήσης",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Πολιτική απορρήτου",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Κανόνες συνεισφοράς",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Επικοινωνία",
-          "href": "/contact"
-        }
-      ]
+      "title": "Βασικές πληροφορίες"
     },
     "browse": {
       "title": "Περιήγηση στον ιστότοπο",

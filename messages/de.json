@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Wichtige Informationen",
-      "links": [
-        {
-          "label": "Über uns",
-          "href": "/about"
-        },
-        {
-          "label": "Nutzungsbedingungen",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Datenschutzerklärung",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Beitragsregeln",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Kontakt",
-          "href": "/contact"
-        }
-      ]
+      "title": "Wichtige Informationen"
     },
     "browse": {
       "title": "Website durchsuchen",

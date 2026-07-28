@@ -109,6 +109,29 @@ const globalRoutes = {
         el: 'schetika',
         sq: 'rreth-nesh',
     },
+    // Static (CMS) pages. The 'p' prefix is intentionally NOT localized —
+    // it stays 'p' in every language. Only the slug after '/p/' is localized.
+    staticPages: {
+        en: 'p',
+        si: 'p',
+        de: 'p',
+        hr: 'p',
+        fr: 'p',
+        es: 'p',
+        it: 'p',
+        ua: 'p',
+        ru: 'p',
+        pl: 'p',
+        cs: 'p',
+        hu: 'p',
+        bg: 'p',
+        sk: 'p',
+        da: 'p',
+        pt: 'p',
+        nl: 'p',
+        el: 'p',
+        sq: 'p',
+    },
 };
 
 export const routing = defineRouting({
@@ -303,6 +326,29 @@ export const routing = defineRouting({
             nl: `/${globalRoutes.about.nl}`,
             el: `/${globalRoutes.about.el}`,
             sq: `/${globalRoutes.about.sq}`,
+        },
+
+        // Static (CMS) page — '/p' prefix is NOT localized, only the slug is.
+        '/p/[slug]': {
+            en: `/${globalRoutes.staticPages.en}/[slug]`,
+            si: `/${globalRoutes.staticPages.si}/[slug]`,
+            de: `/${globalRoutes.staticPages.de}/[slug]`,
+            hr: `/${globalRoutes.staticPages.hr}/[slug]`,
+            fr: `/${globalRoutes.staticPages.fr}/[slug]`,
+            es: `/${globalRoutes.staticPages.es}/[slug]`,
+            it: `/${globalRoutes.staticPages.it}/[slug]`,
+            ua: `/${globalRoutes.staticPages.ua}/[slug]`,
+            ru: `/${globalRoutes.staticPages.ru}/[slug]`,
+            pl: `/${globalRoutes.staticPages.pl}/[slug]`,
+            cs: `/${globalRoutes.staticPages.cs}/[slug]`,
+            hu: `/${globalRoutes.staticPages.hu}/[slug]`,
+            bg: `/${globalRoutes.staticPages.bg}/[slug]`,
+            sk: `/${globalRoutes.staticPages.sk}/[slug]`,
+            da: `/${globalRoutes.staticPages.da}/[slug]`,
+            pt: `/${globalRoutes.staticPages.pt}/[slug]`,
+            nl: `/${globalRoutes.staticPages.nl}/[slug]`,
+            el: `/${globalRoutes.staticPages.el}/[slug]`,
+            sq: `/${globalRoutes.staticPages.sq}/[slug]`,
         },
     },
 });

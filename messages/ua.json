@@ -548,29 +548,7 @@
       ]
     },
     "info": {
-      "title": "Ключова інформація",
-      "links": [
-        {
-          "label": "Про нас",
-          "href": "/about"
-        },
-        {
-          "label": "Умови використання",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Політика конфіденційності",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Правила внеску",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Контакти",
-          "href": "/contact"
-        }
-      ]
+      "title": "Ключова інформація"
     },
     "browse": {
       "title": "Переглянути сайт",

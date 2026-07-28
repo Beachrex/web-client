@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Belangrijke informatie",
-      "links": [
-        {
-          "label": "Over ons",
-          "href": "/over-ons"
-        },
-        {
-          "label": "Gebruiksvoorwaarden",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Privacybeleid",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Bijdrageregels",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Contact",
-          "href": "/contact"
-        }
-      ]
+      "title": "Belangrijke informatie"
     },
     "browse": {
       "title": "De site doorbladeren",

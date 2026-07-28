@@ -3338,6 +3338,58 @@ export type SportingActivitiesTranslation = {
 };
 
 /**
+ * Static Page Footer Item
+ *
+ * Lightweight static page entry for footer rendering. Localized by Accept-Language with English fallback.
+ */
+export type StaticPageFooter = {
+  id?: number;
+  code?: string;
+  /**
+   * Localized title for footer link
+   */
+  title?: string;
+  /**
+   * Localized slug for link href
+   */
+  slug?: string;
+  sort_order?: number;
+};
+
+/**
+ * Static Page
+ *
+ * Full static page content (CMS-managed). Localized by Accept-Language with English fallback.
+ */
+export type StaticPage = {
+  id?: number;
+  /**
+   * Unique page code
+   */
+  code?: string;
+  /**
+   * Localized title
+   */
+  title?: string;
+  /**
+   * Localized slug
+   */
+  slug?: string;
+  /**
+   * HTML content from RichEditor
+   */
+  content?: string | null;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  /**
+   * Locale actually used (may differ from request if fallback applied)
+   */
+  locale?: string;
+  is_in_footer?: boolean;
+  sort_order?: number;
+};
+
+/**
  * Swimming Depth of 1m
  *
  * Swimming depth model - distance to reach 1m depth (0m, 3m, 5m, etc.)
@@ -9456,6 +9508,110 @@ export type GetSportingActivityByIdResponses = {
 
 export type GetSportingActivityByIdResponse =
   GetSportingActivityByIdResponses[keyof GetSportingActivityByIdResponses];
+
+export type GetStaticPagesForFooterData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/static-pages";
+};
+
+export type GetStaticPagesForFooterResponses = {
+  /**
+   * Footer pages retrieved successfully
+   */
+  200: {
+    success?: boolean;
+    data?: Array<StaticPageFooter>;
+    message?: string;
+  };
+};
+
+export type GetStaticPagesForFooterResponse =
+  GetStaticPagesForFooterResponses[keyof GetStaticPagesForFooterResponses];
+
+export type GetStaticPageBySlugData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
+  };
+  path: {
+    /**
+     * Localized or English slug of the page
+     */
+    slug: string;
+  };
+  query?: never;
+  url: "/api/v1/static-pages/{slug}";
+};
+
+export type GetStaticPageBySlugErrors = {
+  /**
+   * Page not found
+   */
+  404: unknown;
+};
+
+export type GetStaticPageBySlugResponses = {
+  /**
+   * Static page retrieved successfully
+   */
+  200: {
+    success?: boolean;
+    data?: StaticPage;
+    message?: string;
+  };
+};
+
+export type GetStaticPageBySlugResponse =
+  GetStaticPageBySlugResponses[keyof GetStaticPageBySlugResponses];
 
 export type GetSwimmingDepthsData = {
   body?: never;

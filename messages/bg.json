@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Ключова информация",
-      "links": [
-        {
-          "label": "За нас",
-          "href": "/about"
-        },
-        {
-          "label": "Условия за ползване",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Политика за поверителност",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Правила за приноси",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Контакт",
-          "href": "/contact"
-        }
-      ]
+      "title": "Ключова информация"
     },
     "browse": {
       "title": "Разгледайте сайта",

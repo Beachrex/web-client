@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { locales } from '@/app/config/locales';
 import { env } from '@/env';
+import { getStaticPagesForFooter } from '@/lib/api-client/sdk.gen';
+import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 
 /**
  * Static Pages Sitemap
@@ -152,9 +154,37 @@ function generateAlternates(
   return alternates;
 }
 
-export function GET() {
+export async function GET() {
   const baseUrl = env.NEXT_PUBLIC_BASE_URL;
   const staticPages: MetadataRoute.Sitemap = [];
+
+  // Fetch CMS-managed static pages per locale (footer-enabled, active).
+  // The 'p' prefix is constant across all locales; only the slug is localized.
+  // We fetch every locale once so we can build correct hreflang alternates
+  // (pairing the same page code across locales via its localized slug).
+  // Errors/empty results degrade gracefully (that locale simply contributes no URLs).
+  const cmsPagesByLocale: Record<string, Map<string, string>> = {};
+  await Promise.all(
+    locales.map(async (locale) => {
+      let pages: { code?: string; slug?: string }[] = [];
+      try {
+        const { data } = await getStaticPagesForFooter({
+          headers: { 'Accept-Language': locale as AcceptLanguage },
+        });
+        pages = data?.data ?? [];
+      } catch {
+        pages = [];
+      }
+      // Map: page code -> localized slug (for this locale, EN fallback applied by API)
+      const byCode = new Map<string, string>();
+      for (const page of pages) {
+        if (page.code && page.slug) {
+          byCode.set(page.code, page.slug);
+        }
+      }
+      cmsPagesByLocale[locale] = byCode;
+    }),
+  );
 
   // Generate entries for all locales
   for (const locale of locales) {
@@ -223,6 +253,29 @@ export function GET() {
         languages: generateAlternates('about'),
       },
     });
+
+    // CMS-managed static pages — '/p' prefix is constant across locales,
+    // only the slug is localized. Emit one URL per (locale, page) and build
+    // hreflang alternates by pairing the same page code across locales.
+    const cmsPagesForLocale = cmsPagesByLocale[locale];
+    if (cmsPagesForLocale) {
+      for (const [code, slug] of cmsPagesForLocale.entries()) {
+        const alternates: Record<string, string> = {};
+        for (const altLocale of locales) {
+          const altSlug = cmsPagesByLocale[altLocale]?.get(code);
+          if (altSlug) {
+            alternates[altLocale] = `${baseUrl}/${altLocale}/p/${altSlug}`;
+          }
+        }
+        staticPages.push({
+          url: `${baseUrl}/${locale}/p/${slug}`,
+          lastModified: new Date(),
+          changeFrequency: 'monthly',
+          priority: 0.4,
+          alternates: { languages: alternates },
+        });
+      }
+    }
   }
 
   // Generate XML sitemap

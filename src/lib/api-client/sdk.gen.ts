@@ -227,6 +227,11 @@ import type {
   GetSportingActivityByIdData,
   GetSportingActivityByIdErrors,
   GetSportingActivityByIdResponses,
+  GetStaticPageBySlugData,
+  GetStaticPageBySlugErrors,
+  GetStaticPageBySlugResponses,
+  GetStaticPagesForFooterData,
+  GetStaticPagesForFooterResponses,
   GetSwimmingDepthByIdData,
   GetSwimmingDepthByIdErrors,
   GetSwimmingDepthByIdResponses,
@@ -1859,6 +1864,42 @@ export const getSportingActivityById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/sporting-activities/{id}",
+    ...options,
+  });
+};
+
+/**
+ * List active static pages for footer rendering
+ *
+ * Returns lightweight list (id, code, title, slug, sort_order) of active pages flagged is_in_footer, localized by Accept-Language with English fallback.
+ */
+export const getStaticPagesForFooter = <ThrowOnError extends boolean = false>(
+  options?: Options<GetStaticPagesForFooterData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetStaticPagesForFooterResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/v1/static-pages",
+    ...options,
+  });
+};
+
+/**
+ * Get full static page content by slug
+ *
+ * Returns the full page (title, slug, content, meta fields) for the requested locale, with English fallback. Looks up by localized slug, then English slug.
+ */
+export const getStaticPageBySlug = <ThrowOnError extends boolean = false>(
+  options: Options<GetStaticPageBySlugData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    GetStaticPageBySlugResponses,
+    GetStaticPageBySlugErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/static-pages/{slug}",
     ...options,
   });
 };

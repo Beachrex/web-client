@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Vigtig information",
-      "links": [
-        {
-          "label": "Om os",
-          "href": "/om-os"
-        },
-        {
-          "label": "Brugsbetingelser",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Privatlivspolitik",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Bidragsregler",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Kontakt",
-          "href": "/contact"
-        }
-      ]
+      "title": "Vigtig information"
     },
     "browse": {
       "title": "Gennemse siden",

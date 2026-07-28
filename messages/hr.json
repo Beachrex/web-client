@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Ključne informacije",
-      "links": [
-        {
-          "label": "O nama",
-          "href": "/about"
-        },
-        {
-          "label": "Uvjeti korištenja",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Politika privatnosti",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Pravila doprinosa",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Kontakt",
-          "href": "/contact"
-        }
-      ]
+      "title": "Ključne informacije"
     },
     "browse": {
       "title": "Pregledaj stranicu",

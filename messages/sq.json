@@ -516,29 +516,7 @@
       ]
     },
     "info": {
-      "title": "Informacione kryesore",
-      "links": [
-        {
-          "label": "Rreth nesh",
-          "href": "/rreth-nesh"
-        },
-        {
-          "label": "Kushtet e përdorimit",
-          "href": "/legal/terms"
-        },
-        {
-          "label": "Politika e privatësisë",
-          "href": "/legal/privacy"
-        },
-        {
-          "label": "Rregullat e kontributit",
-          "href": "/legal/contribution-rules"
-        },
-        {
-          "label": "Kontakt",
-          "href": "/contact"
-        }
-      ]
+      "title": "Informacione kryesore"
     },
     "browse": {
       "title": "Shfletoni faqen",
