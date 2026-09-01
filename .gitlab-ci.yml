@@ -10,10 +10,11 @@ stages:
 # Required GitLab CI/CD Variables (Settings → CI/CD → Variables):
 #   VPS_HOST             — e.g. 2.28.76.142
 #   VPS_USER             — beachrex
-#   VPS_SSH_PRIVATE_KEY  — private SSH key for the VPS user
-#   ENV_DEV_FRONT        — full contents of .env.front.dev
-#   ENV_UAT_FRONT        — full contents of .env.front.uat
-#   ENV_PROD_FRONT       — full contents of .env.front.prod
+#   VPS_SSH_PRIVATE_KEY  — base64-encoded private SSH key for the VPS user
+#
+# .env.front.{dev,uat,prod} are stored ONLY on the server and are NOT synced
+# from GitLab. The deploy reads NEXT_PUBLIC_* build args from the server's
+# .env.front.* file. Update them directly on the VPS when needed.
 
 .deploy-template: &deploy-template
   stage: deploy
@@ -25,14 +26,13 @@ stages:
     - chmod 600 ~/.ssh/id_ed25519
     - ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
   script:
+    # 1. Sync frontend code to VPS (excluding .env — it stays on the server)
     - rsync -az --delete
         --exclude '.git' --exclude 'node_modules' --exclude '.next'
         --exclude 'test-results' --exclude 'playwright-report'
         --exclude '.env' --exclude '.env.local'
         ./ "$VPS_USER@$VPS_HOST:/opt/beachrex/front/"
-    - echo "$ENV_FILE" | base64 -d > /tmp/.env.front.${ENV_NAME}
-    - scp /tmp/.env.front.${ENV_NAME} "$VPS_USER@$VPS_HOST:/opt/beachrex/envs/.env.front.${ENV_NAME}"
-    - rm -f /tmp/.env.front.${ENV_NAME}
+    # 2. Build and start frontend container (reads .env.front.* from server)
     - ssh "$VPS_USER@$VPS_HOST" "
         set -euo pipefail
         cd /opt/beachrex/deploy
@@ -52,7 +52,6 @@ deploy:dev:
   <<: *deploy-template
   variables:
     ENV_NAME: dev
-    ENV_FILE: $ENV_DEV_FRONT
   rules:
     - if: $CI_COMMIT_BRANCH == "dev"
 
@@ -60,7 +59,6 @@ deploy:uat:
   <<: *deploy-template
   variables:
     ENV_NAME: uat
-    ENV_FILE: $ENV_UAT_FRONT
   rules:
     - if: $CI_COMMIT_BRANCH == "uat"
 
@@ -68,7 +66,6 @@ deploy:prod:
   <<: *deploy-template
   variables:
     ENV_NAME: prod
-    ENV_FILE: $ENV_PROD_FRONT
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
   when: manual
