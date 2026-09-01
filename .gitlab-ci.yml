@@ -1,5 +1,77 @@
 stages:
   - test
+  - deploy
+
+# ───────────────────────── DEPLOY TO VPS ─────────────────────────
+# Auto-deploys the Next.js frontend to the Hetzner VPS on push to dev/uat/main.
+# The VPS docker-compose.vps.yml builds front_dev/front_uat/front_prod from
+# /opt/beachrex/front/ using Dockerfile.prod (standalone build).
+#
+# Required GitLab CI/CD Variables (Settings → CI/CD → Variables):
+#   VPS_HOST             — e.g. 2.28.76.142
+#   VPS_USER             — beachrex
+#   VPS_SSH_PRIVATE_KEY  — private SSH key for the VPS user
+#   ENV_DEV_FRONT        — full contents of .env.front.dev
+#   ENV_UAT_FRONT        — full contents of .env.front.uat
+#   ENV_PROD_FRONT       — full contents of .env.front.prod
+
+.deploy-template: &deploy-template
+  stage: deploy
+  image: alpine:3.20
+  before_script:
+    - apk add --no-cache openssh-client rsync
+    - mkdir -p ~/.ssh
+    - echo "$VPS_SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    - ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+  script:
+    - rsync -az --delete
+        --exclude '.git' --exclude 'node_modules' --exclude '.next'
+        --exclude 'test-results' --exclude 'playwright-report'
+        --exclude '.env' --exclude '.env.local'
+        ./ "$VPS_USER@$VPS_HOST:/opt/beachrex/front/"
+    - echo "$ENV_FILE" > /tmp/.env.front.${ENV_NAME}
+    - scp /tmp/.env.front.${ENV_NAME} "$VPS_USER@$VPS_HOST:/opt/beachrex/envs/.env.front.${ENV_NAME}"
+    - rm -f /tmp/.env.front.${ENV_NAME}
+    - ssh "$VPS_USER@$VPS_HOST" "
+        set -euo pipefail
+        cd /opt/beachrex/deploy
+        export ENV_NAME=${ENV_NAME}
+        export FRONT_SVC=front_${ENV_NAME}
+        docker compose --env-file /opt/beachrex/envs/.env.\${ENV_NAME} build \${FRONT_SVC} \
+          --build-arg NEXT_PUBLIC_API_ENDPOINT=\$(grep NEXT_PUBLIC_API_ENDPOINT /opt/beachrex/envs/.env.front.\${ENV_NAME} | cut -d= -f2) \
+          --build-arg NEXT_PUBLIC_BASE_URL=\$(grep NEXT_PUBLIC_BASE_URL /opt/beachrex/envs/.env.front.\${ENV_NAME} | cut -d= -f2) \
+          --build-arg NEXT_PUBLIC_CDN_TEASER=\$(grep NEXT_PUBLIC_CDN_TEASER /opt/beachrex/envs/.env.front.\${ENV_NAME} | cut -d= -f2) \
+          --build-arg NEXT_PUBLIC_CDN_LARGE=\$(grep NEXT_PUBLIC_CDN_LARGE /opt/beachrex/envs/.env.front.\${ENV_NAME} | cut -d= -f2) \
+          --build-arg NEXT_PUBLIC_CDN_ASSETS=\$(grep NEXT_PUBLIC_CDN_ASSETS /opt/beachrex/envs/.env.front.\${ENV_NAME} | cut -d= -f2)
+        docker compose --env-file /opt/beachrex/envs/.env.\${ENV_NAME} up -d --force-recreate \${FRONT_SVC}
+        echo 'Frontend deploy of '\${ENV_NAME}' complete.'
+      "
+
+deploy:dev:
+  <<: *deploy-template
+  variables:
+    ENV_NAME: dev
+    ENV_FILE: $ENV_DEV_FRONT
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+
+deploy:uat:
+  <<: *deploy-template
+  variables:
+    ENV_NAME: uat
+    ENV_FILE: $ENV_UAT_FRONT
+  rules:
+    - if: $CI_COMMIT_BRANCH == "uat"
+
+deploy:prod:
+  <<: *deploy-template
+  variables:
+    ENV_NAME: prod
+    ENV_FILE: $ENV_PROD_FRONT
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  when: manual
 
 # E2E Tests - API trigger only
 e2e-tests:
