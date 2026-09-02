@@ -8,7 +8,7 @@ import { type MetadataRoute } from 'next';
  * - Local (localhost): Block all crawling
  */
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
   const isProduction = baseUrl.includes('beachrex.com') && !baseUrl.includes('dev.') && !baseUrl.includes('uat.');
 
   // Block crawling on dev and local environments
