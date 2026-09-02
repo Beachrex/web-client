@@ -1,0 +1,74 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [dev, uat, main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        default: "uat"
+        type: choice
+        options: [dev, uat, prod]
+
+concurrency:
+  group: deploy-front-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve environment
+        id: env
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "name=${{ inputs.environment }}" >> $GITHUB_OUTPUT
+          else
+            case "${GITHUB_REF##*/}" in
+              main) echo "name=prod" >> $GITHUB_OUTPUT ;;
+              uat)  echo "name=uat"  >> $GITHUB_OUTPUT ;;
+              dev)  echo "name=dev"  >> $GITHUB_OUTPUT ;;
+              *)    echo "Unsupported branch" >&2; exit 1 ;;
+            esac
+          fi
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Sync frontend code
+        run: |
+          rsync -az --delete \
+            --exclude '.git' --exclude 'node_modules' --exclude '.next' \
+            --exclude 'test-results' --exclude 'playwright-report' \
+            --exclude '.env' --exclude '.env.local' \
+            ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/beachrex/front/
+
+      - name: Build and start frontend on VPS
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+            set -euo pipefail
+            cd /opt/beachrex/deploy
+            ENV_NAME=${{ steps.env.outputs.name }}
+            FRONT_SVC=front_${ENV_NAME}
+            docker compose --env-file /opt/beachrex/envs/.env.${ENV_NAME} build ${FRONT_SVC} \
+              --build-arg NEXT_PUBLIC_API_ENDPOINT=$(grep NEXT_PUBLIC_API_ENDPOINT /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2) \
+              --build-arg NEXT_PUBLIC_BASE_URL=$(grep NEXT_PUBLIC_BASE_URL /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2) \
+              --build-arg NEXT_PUBLIC_CDN_TEASER=$(grep NEXT_PUBLIC_CDN_TEASER /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2) \
+              --build-arg NEXT_PUBLIC_CDN_LARGE=$(grep NEXT_PUBLIC_CDN_LARGE /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2) \
+              --build-arg NEXT_PUBLIC_CDN_ASSETS=$(grep NEXT_PUBLIC_CDN_ASSETS /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2)
+            docker compose --env-file /opt/beachrex/envs/.env.${ENV_NAME} up -d --force-recreate ${FRONT_SVC}
+            echo "Frontend deploy of ${ENV_NAME} complete."
+          EOF
+
+      - name: Reload Nginx
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "sudo systemctl reload nginx"
