@@ -9,6 +9,10 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Emit a self-contained `.next/standalone` build for the production Docker image.
+  // Required by Front/beachrex/Dockerfile.prod (VPS deployment).
+  output: "standalone",
+
   // Transpile flowbite-react to fix module resolution issues
   transpilePackages: ["flowbite-react"],
 
