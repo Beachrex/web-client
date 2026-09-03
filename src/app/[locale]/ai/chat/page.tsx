@@ -84,7 +84,7 @@ export default function AIChatPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com'}/api/v1/ai/chat`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000'}/api/v1/ai/chat`,
         {
           method: 'POST',
           headers: {

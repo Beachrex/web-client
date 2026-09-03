@@ -90,7 +90,7 @@ export default function AIItineraryPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com'}/api/v1/me/entitlements`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000'}/api/v1/me/entitlements`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -151,7 +151,7 @@ export default function AIItineraryPage() {
       const isCountryCode = destinationTrimmed.length === 2;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com'}/api/v1/ai/itineraries`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000'}/api/v1/ai/itineraries`,
         {
           method: 'POST',
           headers,
@@ -210,7 +210,7 @@ export default function AIItineraryPage() {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com'}/api/v1/payments/stripe/checkout`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000'}/api/v1/payments/stripe/checkout`,
         {
           method: 'POST',
           headers: {
