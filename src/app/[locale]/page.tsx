@@ -210,5 +210,7 @@ export default async function HomePage({ params }: PageProps) {
   );
 }
 
-// Enable ISR - Revalidate every hour (3600 seconds)
-export const revalidate = 3600;
+// Render dynamically on every request so admin changes appear immediately.
+// The API (Laravel) caches the DB query in Redis and invalidates it on admin
+// save, so this still stays fast while staying fresh.
+export const dynamic = 'force-dynamic';
