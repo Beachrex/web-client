@@ -19,7 +19,7 @@ const env = createEnv({
     NEXT_PUBLIC_CDN_TEASER: z.string().url(),
     NEXT_PUBLIC_CDN_LARGE: z.string().url(),
     NEXT_PUBLIC_CDN_ASSETS: z.string().url(),
-    NEXT_PUBLIC_API_ENDPOINT: z.string().url().optional().default('https://dev-api.beachrex.com'),
+    NEXT_PUBLIC_API_ENDPOINT: z.string().url().optional().default('http://localhost:8000'),
     NEXT_PUBLIC_BASE_URL: z.string().url().optional().default('http://localhost:3000'),
   },
 
@@ -32,7 +32,7 @@ const env = createEnv({
     NEXT_PUBLIC_CDN_TEASER: process.env.NEXT_PUBLIC_CDN_TEASER,
     NEXT_PUBLIC_CDN_LARGE: process.env.NEXT_PUBLIC_CDN_LARGE,
     NEXT_PUBLIC_CDN_ASSETS: process.env.NEXT_PUBLIC_CDN_ASSETS,
-    NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com',
+    NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000',
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000',
   },
   /**

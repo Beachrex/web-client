@@ -22,6 +22,6 @@ export type CreateClientConfig<T extends ClientOptions = ClientOptions2> = (
 
 export const client = createClient(
   createConfig<ClientOptions2>({
-    baseUrl: "https://dev-api.beachrex.com",
+    baseUrl: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000',
   }),
 );

@@ -39,7 +39,7 @@ export function ApiClientProvider({ children, locale }: ApiClientProviderProps) 
     }
 
     client.setConfig({
-      baseUrl: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'https://dev-api.beachrex.com',
+      baseUrl: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000',
       headers,
     });
 
