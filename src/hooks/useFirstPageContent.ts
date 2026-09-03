@@ -15,6 +15,11 @@ export function useFirstPageContent() {
       const response = await getFirstPageContent();
       return response.data;
     },
+    // Always fetch fresh data so admin edits appear immediately.
+    // The Laravel API caches the DB query in Redis and invalidates on
+    // admin save, so this stays fast while staying fresh.
+    staleTime: 0,
+    refetchOnMount: true,
   });
 
   const sections = useMemo(() => {
