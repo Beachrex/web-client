@@ -53,12 +53,13 @@ jobs:
         env:
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_HOST: ${{ secrets.VPS_HOST }}
+          ENV_NAME: ${{ steps.env.outputs.name }}
         run: |
           rsync -az --delete \
             --exclude '.git' --exclude 'node_modules' --exclude '.next' \
             --exclude 'test-results' --exclude 'playwright-report' \
             --exclude '.env' --exclude '.env.local' \
-            ./ ${VPS_USER}@${VPS_HOST}:/opt/beachrex/front/
+            ./ ${VPS_USER}@${VPS_HOST}:/opt/beachrex/front_${ENV_NAME}/
 
       - name: Build and start frontend on VPS
         env:
@@ -70,14 +71,18 @@ jobs:
             set -euo pipefail
             cd /opt/beachrex/deploy
             ENV_FILE=/opt/beachrex/envs/.env.${ENV_NAME}
+            FRONT_ENV_FILE=/opt/beachrex/envs/.env.front.${ENV_NAME}
             FRONT_SVC=front_${ENV_NAME}
-            docker compose -f docker-compose.vps.yml --env-file \${ENV_FILE} build \${FRONT_SVC} \
-              --build-arg NEXT_PUBLIC_API_ENDPOINT=\$(grep NEXT_PUBLIC_API_ENDPOINT /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2) \
-              --build-arg NEXT_PUBLIC_BASE_URL=\$(grep NEXT_PUBLIC_BASE_URL /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2) \
-              --build-arg NEXT_PUBLIC_CDN_TEASER=\$(grep NEXT_PUBLIC_CDN_TEASER /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2) \
-              --build-arg NEXT_PUBLIC_CDN_LARGE=\$(grep NEXT_PUBLIC_CDN_LARGE /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2) \
-              --build-arg NEXT_PUBLIC_CDN_ASSETS=\$(grep NEXT_PUBLIC_CDN_ASSETS /opt/beachrex/envs/.env.front.${ENV_NAME} | cut -d= -f2)
-            docker compose -f docker-compose.vps.yml --env-file \${ENV_FILE} up -d --force-recreate \${FRONT_SVC}
+            # Load BOTH backend and frontend env files so NEXT_PUBLIC_* vars
+            # are available to compose for build.args substitution.
+            docker compose -f docker-compose.vps.yml \
+              --env-file \${ENV_FILE} \
+              --env-file \${FRONT_ENV_FILE} \
+              build \${FRONT_SVC}
+            docker compose -f docker-compose.vps.yml \
+              --env-file \${ENV_FILE} \
+              --env-file \${FRONT_ENV_FILE} \
+              up -d --force-recreate \${FRONT_SVC}
             echo 'Frontend deploy of ${ENV_NAME} complete.'
           "
 
