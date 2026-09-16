@@ -20,9 +20,11 @@ const seenBeachesCache = new Set<number>();
 const LazyBeachCard = React.memo(function LazyBeachCard({
   beach,
   onLocationClick,
+  onBeachHover,
 }: {
   beach: BeachSchema;
   onLocationClick: (latitude: string, longitude: string, beachId?: number) => void;
+  onBeachHover?: (beachId: number | null) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -55,7 +57,13 @@ const LazyBeachCard = React.memo(function LazyBeachCard({
   if (!beach?.id) return null;
 
   return (
-    <div ref={ref} data-beach-id={beach.id} style={{ minHeight: isInView ? 'auto' : 395 }}>
+    <div
+      ref={ref}
+      data-beach-id={beach.id}
+      style={{ minHeight: isInView ? 'auto' : 395 }}
+      onMouseEnter={() => beach?.id && onBeachHover?.(beach.id)}
+      onMouseLeave={() => onBeachHover?.(null)}
+    >
       {isInView ? (
         <DynamicPropertyCard beach={beach} onLocationClick={onLocationClick} />
       ) : null}
@@ -67,6 +75,7 @@ interface VirtualizedBeachListProps {
   beaches: BeachSchema[];
   columnLayout: 1 | 2;
   onLocationClick: (latitude: string, longitude: string, beachId?: number) => void;
+  onBeachHover?: (beachId: number | null) => void;
   containerHeight: number;
   containerWidth: number;
   scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
@@ -96,6 +105,7 @@ const VirtualizedBeachListInner = ({
   beaches,
   columnLayout,
   onLocationClick,
+  onBeachHover,
   containerHeight,
   containerWidth,
   scrollContainerRef: _scrollContainerRef,
@@ -202,13 +212,14 @@ const VirtualizedBeachListInner = ({
               <LazyBeachCard
                 beach={beach}
                 onLocationClick={onLocationClick}
+                onBeachHover={onBeachHover}
               />
             </div>
           );
         })}
       </div>
     );
-  }, [columns, onLocationClick]); // Only recreate when columns or callback changes
+  }, [columns, onLocationClick, onBeachHover]); // Only recreate when columns or callbacks change
 
   // Reset rendered rows tracking when beaches change
   useEffect(() => {

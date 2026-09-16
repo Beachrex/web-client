@@ -23,6 +23,7 @@ interface ReactLeafletMapProps {
   zoom?: number;
   radius?: number;
   selectedBeachId?: number | null;
+  hoveredBeachId?: number | null;
   boundingBox?: {
     min_latitude?: number;
     min_longitude?: number;
@@ -296,14 +297,16 @@ function MapInteractionController({ isLoading }: { isLoading: boolean }) {
 const BeachMarker = memo(({
   beach,
   isSelected,
+  isHovered,
   beachIcon,
   selectedBeachIcon,
   onMarkerClick,
 }: {
   beach: Beach;
   isSelected: boolean;
-  beachIcon: L.Icon;
-  selectedBeachIcon: L.Icon;
+  isHovered: boolean;
+  beachIcon: L.DivIcon;
+  selectedBeachIcon: L.DivIcon;
   onMarkerClick?: (beachId: number) => void;
 }) => {
   const markerRef = useRef<L.Marker | null>(null);
@@ -319,6 +322,27 @@ const BeachMarker = memo(({
     }, 300);
     return () => clearTimeout(timer);
   }, [isSelected]);
+
+  // Bounce the marker pin when the corresponding beach card is hovered in the list.
+  // We toggle a CSS class directly on the Leaflet marker's icon DOM element so we
+  // don't have to remount/recreate the marker (which would break clustering).
+  useEffect(() => {
+    const marker = markerRef.current;
+    if (!marker) return;
+
+    const iconEl = marker.getElement();
+    if (!iconEl) return;
+
+    if (isHovered) {
+      iconEl.classList.add('beach-marker-bounce');
+      // Raise the hovered marker above its neighbours so the bounce is visible
+      marker.setZIndexOffset(900);
+    } else {
+      iconEl.classList.remove('beach-marker-bounce');
+      // Restore z-index: selected marker stays on top (1000), others go to 0
+      marker.setZIndexOffset(isSelected ? 1000 : 0);
+    }
+  }, [isHovered, isSelected]);
 
   if (!beach?.latitude || !beach?.longitude || !beach?.id || !lat || !lng || isNaN(lat) || isNaN(lng)) {
     return null;
@@ -356,7 +380,8 @@ const BeachMarker = memo(({
   );
 }, (prevProps, nextProps) =>
   prevProps.beach.id === nextProps.beach.id &&
-  prevProps.isSelected === nextProps.isSelected
+  prevProps.isSelected === nextProps.isSelected &&
+  prevProps.isHovered === nextProps.isHovered
 );
 
 BeachMarker.displayName = 'BeachMarker';
@@ -367,6 +392,7 @@ const ReactLeafletMap = ({
   zoom = 6,
   radius: _radius = 100,
   selectedBeachId,
+  hoveredBeachId,
   boundingBox,
   isLoading = false,
   onViewportChange,
@@ -449,20 +475,31 @@ const ReactLeafletMap = ({
     return Array.from(uniqueMap.values());
   }, [beaches]);
 
-  // Memoize icons to prevent recreation on every render
-  const beachIcon = useMemo(() => L.icon({
-    iconUrl: getMarkerIcon('beach'),
+  // Memoize icons to prevent recreation on every render.
+  // We use L.divIcon (a <div> wrapper containing an <img>) instead of L.icon
+  // because Leaflet applies its positioning `transform` to the marker element,
+  // and with a plain L.icon that element IS the <img>. To bounce the pin we
+  // animate the inner <img> via CSS (.beach-marker-bounce img) while leaving
+  // Leaflet's positioning transform on the outer <div> untouched.
+  const markerIconUrl = getMarkerIcon('beach');
+
+  const beachIcon = useMemo(() => L.divIcon({
+    className: 'beach-div-icon',
+    html: `<img src="${markerIconUrl}" style="width:28px;height:30px;display:block;" alt="" />`,
     iconSize: [28, 30],
     iconAnchor: [14, 30],
     popupAnchor: [0, -30],
-  }), []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), [markerIconUrl]);
 
-  const selectedBeachIcon = useMemo(() => L.icon({
-    iconUrl: getMarkerIcon('beach'),
+  const selectedBeachIcon = useMemo(() => L.divIcon({
+    className: 'beach-div-icon',
+    html: `<img src="${markerIconUrl}" style="width:42px;height:45px;display:block;" alt="" />`,
     iconSize: [42, 45],
     iconAnchor: [21, 45],
     popupAnchor: [0, -45],
-  }), []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), [markerIconUrl]);
 
   return (
     <div className="h-full w-full p-0 flex flex-col bg-white shadow-lg">
@@ -502,6 +539,7 @@ const ReactLeafletMap = ({
                 key={beach.id}
                 beach={beach}
                 isSelected={selectedBeachId === beach.id}
+                isHovered={hoveredBeachId === beach.id}
                 beachIcon={beachIcon}
                 selectedBeachIcon={selectedBeachIcon}
                 onMarkerClick={onMarkerClick}

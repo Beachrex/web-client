@@ -70,6 +70,7 @@ const MapWithSidebar = () => {
         max_lon: number;
     } | null>(null);
     const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
+    const [hoveredBeachId, setHoveredBeachId] = useState<number | null>(null);
     const [filters, setFilters] = useState<Record<string, string | number | boolean | undefined>>({});
     const [filterOptions, setFilterOptions] = useState<GetBeachFiltersResponse['data'] | null>(null);
     const [filterOptionsLoading, setFilterOptionsLoading] = useState(false);
@@ -547,7 +548,11 @@ const MapWithSidebar = () => {
         }, DEBOUNCE_MS);
     }, [applyBoundingBoxUpdate]);
 
-       const handleMarkerClick = useCallback((beachId: number) => {
+       const handleBeachHover = useCallback((beachId: number | null) => {
+        setHoveredBeachId(beachId);
+    }, []);
+
+    const handleMarkerClick = useCallback((beachId: number) => {
         // Select the beach for highlighting - popup will open via isSelected effect
         setSelectedBeachId(beachId);
     }, []);
@@ -691,6 +696,7 @@ const MapWithSidebar = () => {
                                             beaches={beaches}
                                             columnLayout={columnLayout}
                                             onLocationClick={handleLocationClick}
+                                            onBeachHover={handleBeachHover}
                                             containerHeight={containerDimensions.height}
                                             containerWidth={containerDimensions.width}
                                             scrollContainerRef={beachCardsContainerRef}
@@ -710,6 +716,7 @@ const MapWithSidebar = () => {
                                         center={mapCenter}
                                         zoom={mapZoom}
                                         selectedBeachId={selectedBeachId}
+                                        hoveredBeachId={hoveredBeachId}
                                         boundingBox={
                                             viewportChangedByUserRef.current
                                                 ? null
@@ -744,6 +751,7 @@ const MapWithSidebar = () => {
                                             center={mapCenter}
                                             zoom={mapZoom}
                                             selectedBeachId={selectedBeachId}
+                                            hoveredBeachId={hoveredBeachId}
                                             boundingBox={
                                                 viewportChangedByUserRef.current
                                                     ? null

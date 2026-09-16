@@ -187,6 +187,22 @@ div[style*="background-image"] {
   background: #E5F2FB;
 }
 
+/* Bounce animation for map pins when hovering the corresponding beach card.
+   We animate the <img> inside the marker icon, NOT the icon container itself,
+   because Leaflet uses `transform` on the container to position the marker on
+   the map — overriding it would make the pin disappear. */
+@keyframes markerBounce {
+  0%, 100% { transform: translateY(0); }
+  20% { transform: translateY(-14px); }
+  40% { transform: translateY(-4px); }
+  60% { transform: translateY(-10px); }
+  80% { transform: translateY(-2px); }
+}
+
+.beach-marker-bounce img {
+  animation: markerBounce 0.6s ease-in-out infinite;
+}
+
 
 
 
