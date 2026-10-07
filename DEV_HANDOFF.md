@@ -18,6 +18,19 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-07 – CI on Pull Requests ✅ COMPLETE
+
+### Overview
+
+Until now the frontend repo had no checks on pull requests; `deploy.yml` only runs on pushes to `dev`/`uat`/`main`. The new `.github/workflows/ci.yml` runs on every PR to `dev`/`uat`/`main`, so PRs are merged only on green.
+
+### Changes / Files
+
+- `.github/workflows/ci.yml` (new): Node 20, `yarn install --frozen-lockfile`, `tsc --noEmit`, `yarn lint`, then the unit specs (`e2e/*.unit.spec.ts`).
+- The unit specs use no `page`/`browser` fixtures, so no browser install is needed. Verified locally with `PLAYWRIGHT_BROWSERS_PATH=/nonexistent`: 24 passed.
+
+---
+
 ## 2026-10-07 – Noindex on UAT: Production Host Allowlist ✅ COMPLETE
 
 ### Overview
