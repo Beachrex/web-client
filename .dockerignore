@@ -1,0 +1,16 @@
+# Build context exclusions for Front/beachrex Dockerfile.prod
+node_modules
+.next
+.git
+test-results
+playwright-report
+e2e
+*.log
+.env
+.env.*
+!.env.example
+README.md
+DEV_HANDOFF.md
+SSR_VERIFICATION_CHECKLIST.md
+ai-agent
+docs

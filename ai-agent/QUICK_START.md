@@ -33,7 +33,7 @@ Result: ✅ Server & client components both get locale="si"
 ## 📁 Project Structure (30 Second Overview)
 
 ```
-Front/beachrex/
+web-client/                        # repo root = the Next.js app
 ├── src/
 │   ├── app/[locale]/              # Pages (Server Components)
 │   │   └── beaches/               # Beach hierarchy routes
@@ -46,7 +46,7 @@ Front/beachrex/
 │   │   ├── routing.ts             # Route definitions (all locales)
 │   │   └── request.ts             # next-intl config
 │   └── middleware.ts              # Locale detection + rewrite (CRITICAL!)
-├── messages/                      # Translation files (en.json, si.json, ...)
+├── messages/                      # Translation files (19 locales: en.json, si.json, ...)
 └── ai-agent/                      # This documentation folder
 ```
 
@@ -56,7 +56,7 @@ Front/beachrex/
 
 ### 1. Add a New Translation
 
-**File**: `messages/si.json` (or your locale)
+**Files**: all 19 `messages/*.json` files (example below is `messages/si.json`). Add the key to every locale, not just `en`/`si`.
 
 ```json
 {

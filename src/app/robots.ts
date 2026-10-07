@@ -1,17 +1,17 @@
 import { type MetadataRoute } from 'next';
+import { isProductionSite } from '@/lib/utils/environment';
 
 /**
  * Dynamic robots.txt generation based on environment
  *
  * - Production (beachrex.com): Allow all crawling
- * - Development (dev.beachrex.com): Block all crawling
- * - Local (localhost): Block all crawling
+ * - Everything else (dev., uat., localhost): Block all crawling
  */
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
-  const isProduction = baseUrl.includes('beachrex.com') && !baseUrl.includes('dev.') && !baseUrl.includes('uat.');
+  const isProduction = isProductionSite(baseUrl);
 
-  // Block crawling on dev and local environments
+  // Block crawling on dev, uat and local environments
   if (!isProduction) {
     return {
       rules: {

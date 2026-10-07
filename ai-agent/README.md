@@ -77,8 +77,8 @@
 ### 1. Setup Development Environment
 
 ```bash
-# Clone repository
-cd Front/beachrex
+# From the repository root (the repo root is the Next.js app)
+cd web-client
 
 # Install dependencies
 yarn install
@@ -189,7 +189,7 @@ http://localhost:3000/de/strande/europa/belgien
 
 | Metric | Value |
 |--------|-------|
-| **Languages** | 14 (en, si, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk) |
+| **Languages** | 19 (en, si, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq) |
 | **Routes** | 6 main types (World, Continent, Country, Region, City, Beach) |
 | **Components** | ~50 reusable components |
 | **API Endpoints** | ~30 endpoints |
