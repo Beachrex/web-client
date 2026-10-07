@@ -18,6 +18,26 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-07 – CI on Pull Requests ✅ COMPLETE
+
+### Overview
+
+Until now the frontend repo had no checks on pull requests; `deploy.yml` only runs on pushes to `dev`/`uat`/`main`. The new `.github/workflows/ci.yml` runs on every PR to `dev`/`uat`/`main`, so PRs are merged only on green.
+
+### Changes / Files
+
+- `.github/workflows/ci.yml` (new): Node 20, `yarn install --frozen-lockfile`, `tsc --noEmit`, `yarn lint`, then the unit specs (`e2e/*.unit.spec.ts`).
+- The unit specs use no `page`/`browser` fixtures, so no browser install is needed.
+
+### Bug found by the new CI: beach and beach-map links in da/pt/nl/el/sq
+
+`e2e/beach-urls.unit.spec.ts` had failed since the 5 new languages were added on 2026-07-28. `src/lib/utils/beach-urls.ts` was never updated, so `getBeachesWord()` and `getBeachMapWord()` returned the English words for da, pt, nl, el and sq. The result was links like `/da/beach-map` and `/da/beaches/...` instead of `/da/strandkort` and `/da/straande/...`.
+
+- `src/lib/utils/beach-urls.ts`: added the 5 locales to both tables (values from `src/i18n/routing.ts`).
+- `e2e/beach-urls.unit.spec.ts`: the expected map-slug table now has all 19 locales. A new test checks `getBeachesWord()` against `globalRoutes.beaches` for every locale (8 failures on the old helper; 33/33 pass now).
+
+---
+
 ## 2026-10-07 – Noindex on UAT: Production Host Allowlist ✅ COMPLETE
 
 ### Overview
