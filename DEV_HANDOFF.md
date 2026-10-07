@@ -18,6 +18,28 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-07 – Search results open in every language (QA #52, #53, #54) ✅ COMPLETE
+
+### Overview
+
+In every non-EN locale, clicking a global search result (country, region, island, city or beach) opened an empty page.
+
+- `GlobalSearch` pushed `/beaches/...` through the next-intl router, which only adds the locale, so `si` went to `/si/beaches/...`.
+- next-intl answers that URL with a redirect to `/si/plaze/...`. `src/middleware.ts` then rewrote the request anyway and copied every intl header, `location` included, onto the 200 rewrite. Next serves a 200 with a `location` header as an empty body.
+- The same empty page appeared for a foreign beaches word, e.g. `/en/plaze/...` after a language switch.
+
+### Changes / Files
+
+- `src/lib/utils/search-result-url.ts` (new): `buildSearchResultUrl(result, locale)` returns the full localized URL (`/si/plaze/evropa/hrvaska`). `GlobalSearch` uses it with the `next/navigation` router.
+- `src/lib/i18n/beaches-middleware.ts` (new): the beaches rewrite moved out of `src/middleware.ts` so it can be unit-tested. It returns next-intl's redirect when there is one, instead of a 200 with a `location` header. Its word list now comes from `globalRoutes.beaches` (exported from `src/i18n/routing.ts`).
+- `e2e/search-urls.unit.spec.ts` (new): 7 tests. They cover the URL builder for all 19 locales and the real next-intl middleware. 2 fail without the redirect fix.
+
+### Testing
+
+Run `npx tsc --noEmit -p .`, `yarn lint` and the unit specs. Retest on dev: search in SI/DE/PL for a country, region, city and beach and open each result.
+
+---
+
 ## 2026-10-07 – Continent and country pages no longer crash (QA #19, #53, #55, #56, #60, #77) ✅ COMPLETE
 
 ### Overview
