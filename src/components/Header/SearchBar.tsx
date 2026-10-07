@@ -30,7 +30,7 @@ const SearchBar = () => {
                 <div className="md:hidden flex flex-col items-center">
                     {/* Logo Row */}
                     <div className="flex items-center justify-center px-4 mb-3">
-                        <Link href="/">
+                        <Link href={`/${locale}`}>
                             <Image
                                 src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
                                 alt="BeachRex Logo"
@@ -80,7 +80,7 @@ const SearchBar = () => {
                 <div className="hidden md:flex lg:hidden flex-col space-y-3">
                     {/* Top Row: Logo and Map Button */}
                     <div className="flex items-center justify-between">
-                        <Link href="/">
+                        <Link href={`/${locale}`}>
                             <Image
                                 src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
                                 alt="BeachRex Logo"
@@ -129,7 +129,7 @@ const SearchBar = () => {
                 <div className="hidden lg:flex items-center justify-between">
                     {/* Left Section (Logo) */}
                     <div className="flex items-center">
-                        <Link href="/">
+                        <Link href={`/${locale}`}>
                             <Image
                                 src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
                                 alt="BeachRex Logo"

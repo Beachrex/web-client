@@ -18,6 +18,25 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-07 – Logo and map links keep the language (QA #24, #25, #74) ✅ COMPLETE
+
+### Overview
+
+Some links used a plain `next/link` with a locale-less href (`/`, `/beach-map`). The next-intl middleware then picks the locale from the `NEXT_LOCALE` cookie. In production it also reuses a prefetched redirect cached under the bare `/`, and that survives a language switch. So the logo went back to EN (QA #74), the footer map button went to another locale (QA #25), and the map button on listing pages jumped e.g. from PL to RU (QA #24).
+
+### Changes / Files
+
+- `Header/SearchBar.tsx`: the 3 logo links go to `/${locale}`.
+- `Footer/FooterBrandColumn.tsx`: the logo goes to `/${locale}`; the map button uses `buildBeachMapUrl(locale)`.
+- `DynamicSearchBeaches.tsx` (map button on continent/country/region/island/city pages) and `Continent/SearchContinent.tsx`: use `buildBeachMapUrl(locale)`.
+- `e2e/locale-links.unit.spec.ts` (new): a guard that fails on locale-less hrefs in files using plain `next/link`. On the old code it lists 9 offenders. Known remaining offenders are allowlisted: the payment success/cancel and auth callback pages, recorded in HANDOFF open items.
+
+### Testing
+
+Run the unit specs (48 passed). Retest on dev: DE → map → logo stays DE; PL listing page → Map stays PL; footer "map" button on a localized map page.
+
+---
+
 ## 2026-10-07 – Search results open in every language (QA #52, #53, #54) ✅ COMPLETE
 
 ### Overview

@@ -3,7 +3,7 @@
 import { useAllBeaches } from '@/hooks/useBeaches';
 import { hasMainImage } from '@/lib/utils/beach-cards';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
+import { buildBeachMapUrl, buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import { Pagination } from 'flowbite-react';
 import { useLocale, useTranslations, type TranslationValues } from 'next-intl';
 import Image from 'next/image';
@@ -99,8 +99,9 @@ const [mediaMode] =
   useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
 
   // Build map URL with current filters
+  // Locale-prefixed: a bare '/beach-map' let the NEXT_LOCALE cookie pick the language (QA #24)
   const buildMapUrl = () => {
-    if (!baseFilters) return '/beach-map';
+    if (!baseFilters) return buildBeachMapUrl(locale);
 
     const params = new URLSearchParams();
     Object.entries(baseFilters).forEach(([key, value]) => {
@@ -110,7 +111,7 @@ const [mediaMode] =
     });
 
     const queryString = params.toString();
-    return queryString ? `/beach-map?${queryString}` : '/beach-map';
+    return buildBeachMapUrl(locale, queryString || undefined);
   };
 
 
