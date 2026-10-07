@@ -2,12 +2,14 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, MapPin, X, Mountain, Globe } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useRouter } from '@/i18n/routing';
+import { useLocale, useTranslations } from 'next-intl';
+// next/navigation, not the next-intl router: buildSearchResultUrl already returns the locale-prefixed path
+import { useRouter } from 'next/navigation';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useQuery } from '@tanstack/react-query';
 import { globalSearchOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildSearchResultUrl } from '@/lib/utils/search-result-url';
 import Image from 'next/image';
 
 // Unified search result type
@@ -42,6 +44,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     const t = useTranslations('Common');
     const tSearch = useTranslations('Search');
     const router = useRouter();
+    const locale = useLocale();
 
     const [query, setQuery] = useState('');
     const [isOpen, setIsOpen] = useState(false);
@@ -208,75 +211,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         router.push(url);
     };
 
-    // Build URL based on result type using localized slugs from API
-    // Note: We use canonical "/beaches/..." paths, and next-intl router will handle localization
-    const buildResultUrl = (result: UnifiedSearchResult): string => {
-        const segments: string[] = ['beaches'];
-
-        switch (result.type) {
-            case 'beach': {
-                // Beach URL: /beaches/continent/country/[region]/[island]/[city]/beach
-                if (!result.continent_slug || !result.country_slug) {
-                    console.error('Beach missing required slugs:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.country_slug);
-                if (result.region_slug) segments.push(result.region_slug);
-                if (result.island_slug) segments.push(result.island_slug);
-                if (result.city_slug) segments.push(result.city_slug);
-                segments.push(result.slug);
-                break;
-            }
-            case 'city': {
-                // City URL: /beaches/continent/country/[region]/[island]/city
-                if (!result.continent_slug || !result.country_slug) {
-                    console.error('City missing required slugs:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.country_slug);
-                if (result.island_slug) {
-                    segments.push(result.island_slug);
-                } else if (result.region_slug) {
-                    segments.push(result.region_slug);
-                }
-                segments.push(result.slug);
-                break;
-            }
-            case 'island': {
-                // Island URL: /beaches/continent/country/[region]/island
-                if (!result.continent_slug || !result.country_slug) {
-                    console.error('Island missing required slugs:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.country_slug);
-                if (result.region_slug) segments.push(result.region_slug);
-                segments.push(result.slug);
-                break;
-            }
-            case 'region': {
-                // Region URL: /beaches/continent/country/region
-                if (!result.continent_slug || !result.country_slug) {
-                    console.error('Region missing required slugs:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.country_slug, result.slug);
-                break;
-            }
-            case 'country': {
-                // Country URL: /beaches/continent/country
-                if (!result.continent_slug) {
-                    console.error('Country missing continent slug:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.slug);
-                break;
-            }
-            default:
-                return '/beaches';
-        }
-
-        return '/' + segments.join('/');
-    };
+    // Full localized URL (/si/plaze/...), see buildSearchResultUrl (QA #52, #53, #54)
+    const buildResultUrl = (result: UnifiedSearchResult): string => buildSearchResultUrl(result, locale);
 
     // Get icon for result type
     const getTypeIcon = (type: string) => {
