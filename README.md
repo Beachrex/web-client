@@ -1,6 +1,6 @@
 # Beachrex Frontend
 
-> Multilingual beach discovery platform (14 languages)
+> Multilingual beach discovery platform (19 languages)
 
 **Tech Stack**: Next.js 14 App Router, TypeScript, TanStack Query, next-intl, Tailwind CSS
 
@@ -30,14 +30,14 @@ Open [http://localhost:3000](http://localhost:3000)
 2. **[ai-agent/LOCALIZATION_GUIDE.md](./ai-agent/LOCALIZATION_GUIDE.md)** ⭐⭐⭐ - How i18n works (CRITICAL)
 3. **[ai-agent/README.md](./ai-agent/README.md)** - Complete documentation index
 
-**10 comprehensive guides** covering:
+**Guides** covering:
 - Architecture & tech stack
 - Localization (middleware, routing, translations)
 - API integration
 - Component patterns
 - Common issues & solutions
 
-**2,590 lines** of documentation with visual diagrams and troubleshooting guides.
+Includes visual diagrams, troubleshooting guides and SEO status tracking. Recent changes are logged in **[DEV_HANDOFF.md](./DEV_HANDOFF.md)** and **[ai-agent/CHANGELOG.md](./ai-agent/CHANGELOG.md)**.
 
 ---
 
@@ -56,7 +56,7 @@ yarn test:e2e         # Run Playwright E2E tests
 
 ## 🌍 Supported Languages
 
-14 locales: en, si, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk
+19 locales (defined in `src/app/config/locales.ts`): en, si, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq
 
 **Example URLs:**
 - English: `/en/beaches/europe/belgium`
@@ -80,9 +80,28 @@ src/
 │   └── request.ts         # next-intl config
 └── middleware.ts          # Locale detection & path rewriting
 
-messages/                  # Translation files (14 locales)
+messages/                  # Translation files (19 locales, one JSON per locale)
 ai-agent/                  # 📚 AI agent documentation
 ```
+
+---
+
+## 🚢 Deployment
+
+Deploys run from GitHub Actions (**[.github/workflows/deploy.yml](./.github/workflows/deploy.yml)**) on push:
+
+| Branch | Environment | URL |
+|--------|-------------|-----|
+| `dev`  | dev  | https://dev.beachrex.com |
+| `uat`  | uat  | https://uat.beachrex.com |
+| `main` | prod | https://beachrex.com |
+
+- The workflow rsyncs the repo to the Hetzner VPS, then builds and restarts the `front_<env>` service with Docker Compose (the compose file and env files live on the server).
+- The image is built from [`Dockerfile.prod`](./Dockerfile.prod) using the Next.js **standalone** output (`output: "standalone"` in `next.config.js`).
+- `NEXT_PUBLIC_*` variables are **baked in at build time** (Docker build args read from the server's `.env.front.<env>`). Changing them needs a redeploy. See [`.env.front.example`](./.env.front.example).
+- A manual run (`workflow_dispatch`) can target `dev`, `uat` or `prod`.
+
+Details: [DEV_HANDOFF.md](./DEV_HANDOFF.md) (2026-09-02 entry).
 
 ---
 
@@ -120,7 +139,8 @@ User visits: /si/plaze/evropa/belgija
 
 - **Backend API**: https://dev-api.beachrex.com/docs
 - **Production**: https://beachrex.com
-- **Staging**: https://dev.beachrex.com
+- **UAT**: https://uat.beachrex.com
+- **Development**: https://dev.beachrex.com
 
 ---
 

@@ -2,6 +2,8 @@
 
 Welcome to the Beachrex frontend documentation! This directory contains all technical documentation for the Next.js frontend application.
 
+**Last updated:** 2026-10-07
+
 ## 📚 Documentation Structure
 
 ### 🔧 [Setup](./setup/)
@@ -31,10 +33,17 @@ Feature-specific implementation guides and documentation.
 - **[GLOBAL_SEARCH.md](./features/GLOBAL_SEARCH.md)** - Global search feature implementation
 - **[image-url-encoding-handoff.md](./features/image-url-encoding-handoff.md)** - Image URL encoding implementation
 
-### 🐛 [Bugs](./bugs/)
+### 🐛 Bugs (`bugs/`)
 Bug reports and post-mortems for non-trivial fixes.
 
-*(No entries yet — add here when a bug fix warrants a dedicated write-up.)*
+*(No entries yet, and the `bugs/` folder does not exist yet. Create it when a bug fix needs a dedicated write-up.)*
+
+### 📄 Top-level docs
+- **[CURRENT_STATUS.md](./CURRENT_STATUS.md)** - ⚠️ Historical status snapshot from 2025-12-20 (see banner inside)
+- **[ENVIRONMENT_BASED_SEO.md](./ENVIRONMENT_BASED_SEO.md)** - Blocking search engines on non-production environments
+- **[PERFORMANCE_BASELINE.md](./PERFORMANCE_BASELINE.md)** - Performance optimization tracking
+- **[OPTIMIZATION_PLAN.md](./OPTIMIZATION_PLAN.md)** - Performance optimization plan (Dec 2025)
+- **[SEO_AUDIT_REPORT.md](./SEO_AUDIT_REPORT.md)** / **[SSR_SEO_IMPLEMENTATION_PLAN.md](./SSR_SEO_IMPLEMENTATION_PLAN.md)** - SEO audit and SSR plan (Dec 2025). Current SEO status: [ai-agent/SEO_STATUS_AND_TASKS.md](../ai-agent/SEO_STATUS_AND_TASKS.md)
 
 ---
 
@@ -46,7 +55,7 @@ Bug reports and post-mortems for non-trivial fixes.
 3. Check integration docs for services you'll be working with
 
 ### For API Integration
-- **Backend API**: See backend documentation at `../Api/docs/`
+- **Backend API**: API docs at https://dev-api.beachrex.com/docs (the backend lives in a separate repository)
 - **OpenWeather Integration**: [OPENWEATHER_FRONTEND_IMPLEMENTATION.md](./integrations/OPENWEATHER_FRONTEND_IMPLEMENTATION.md)
 - **Image Handling**: [image-url-encoding-handoff.md](./features/image-url-encoding-handoff.md)
 
@@ -90,7 +99,7 @@ See **[DEV_HANDOFF.md](../DEV_HANDOFF.md)** in the root directory for the latest
 ## 📂 Project Structure
 
 ```
-Beachrex/Front/
+web-client/                      # repo root = the Next.js app
 ├── README.md                    # Main project README
 ├── DEV_HANDOFF.md              # Developer handoff (recent changes)
 │
@@ -100,7 +109,7 @@ Beachrex/Front/
 │   ├── integrations/           # Third-party integrations
 │   ├── testing/                # Testing documentation
 │   ├── features/               # Feature-specific docs
-│   └── bugs/                   # Bug reports & post-mortems
+│   └── bugs/                   # Bug reports & post-mortems (create when needed)
 │
 ├── src/                         # Source code
 │   ├── app/                    # Next.js app directory
@@ -130,5 +139,5 @@ When making changes:
 - Check the **[DEV_HANDOFF.md](../DEV_HANDOFF.md)** for recent changes
 - Review the **[START_HERE.md](./setup/START_HERE.md)** guide
 - Look for relevant documentation in the appropriate folder
-- Check the backend documentation at `../Api/docs/`
+- Check the backend API docs at https://dev-api.beachrex.com/docs
 

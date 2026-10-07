@@ -8,6 +8,7 @@ import { getMessages, getTranslations } from 'next-intl/server';
 import { Open_Sans } from 'next/font/google';
 import { buildOrganizationSchema, buildWebSiteSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { isProductionSite } from '@/lib/utils/environment';
 
 export async function generateMetadata({
   params,
@@ -17,8 +18,7 @@ export async function generateMetadata({
   const { locale } = params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 
-  const baseUrl = env.NEXT_PUBLIC_BASE_URL;
-  const isProduction = baseUrl.includes('beachrex.com') && !baseUrl.includes('dev.');
+  const isProduction = isProductionSite(env.NEXT_PUBLIC_BASE_URL);
 
   // Block search engines on dev/staging environments
   const robotsMetadata = !isProduction

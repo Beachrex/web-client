@@ -3,6 +3,20 @@ import bundleAnalyzer from "@next/bundle-analyzer";
 
 const withNextIntl = createNextIntlPlugin();
 
+// Keep in sync with PRODUCTION_HOSTS in src/lib/utils/environment.ts
+const PRODUCTION_HOSTS = ["beachrex.com", "www.beachrex.com"];
+
+/** @param {string | undefined} baseUrl */
+function isProductionSite(baseUrl) {
+  if (!baseUrl) return false;
+  try {
+    const url = new URL(/^https?:\/\//.test(baseUrl) ? baseUrl : `https://${baseUrl}`);
+    return PRODUCTION_HOSTS.includes(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
@@ -18,8 +32,7 @@ const nextConfig = {
 
   // Add X-Robots-Tag header to block search engines on dev/staging
   async headers() {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-    const isProduction = baseUrl.includes('beachrex.com') && !baseUrl.includes('dev.');
+    const isProduction = isProductionSite(process.env.NEXT_PUBLIC_BASE_URL);
 
     // Only add noindex header on non-production environments
     if (!isProduction) {
