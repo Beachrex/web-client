@@ -11,9 +11,291 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 - **[docs/features/](./docs/features/)** - Feature-specific implementation guides
 - **[docs/setup/](./docs/setup/)** - Getting started guides
 - **[docs/PERFORMANCE_BASELINE.md](./docs/PERFORMANCE_BASELINE.md)** - Performance optimization tracking
-- **[docs/CURRENT_STATUS.md](./docs/CURRENT_STATUS.md)** - Current project status and progress
+- **[docs/CURRENT_STATUS.md](./docs/CURRENT_STATUS.md)** - Historical status snapshot (2025-12-20); see the dated entries below for current state
+- **[ai-agent/](./ai-agent/README.md)** - AI agent / developer guides ([CHANGELOG](./ai-agent/CHANGELOG.md), [LOCALIZATION_GUIDE](./ai-agent/LOCALIZATION_GUIDE.md), [SEO_STATUS_AND_TASKS](./ai-agent/SEO_STATUS_AND_TASKS.md))
 
 👉 **Start here:** [docs/README.md](./docs/README.md)
+
+---
+
+## 2026-10-07 – Noindex on UAT: Production Host Allowlist ✅ COMPLETE
+
+### Overview
+
+UAT (`uat.beachrex.com`) was served **without** the `X-Robots-Tag: noindex` header and the robots meta tag. `next.config.js` and `src/app/[locale]/layout.tsx` counted every `*beachrex.com` URL except `dev.*` as production. `robots.txt` blocked UAT, but it used a third, different check. Commit `6a06141`.
+
+### Changes / Files
+
+- `src/lib/utils/environment.ts` (new): `isProductionSite(baseUrl)`.
+  - Uses an **allowlist** (`beachrex.com`, `www.beachrex.com`), so any new environment defaults to noindex.
+  - Accepts a bare host without `https://`, so prod can't fall back to noindex because of env formatting.
+- `src/app/robots.ts` and `src/app/[locale]/layout.tsx` use the helper.
+- `next.config.js` has a mirrored copy, because it can't import TS. The spec below checks that the two host lists match.
+- `e2e/environment.unit.spec.ts` (new): covers prod, uat, dev, localhost, lookalike hosts and empty values.
+
+### Testing
+
+```bash
+BASE_URL=http://localhost:9 npx playwright test e2e/environment.unit.spec.ts --project=chromium
+# BASE_URL only stops Playwright from starting `yarn dev`; these specs don't use a server
+```
+
+After the next UAT deploy: `curl -sI https://uat.beachrex.com/en | grep -i x-robots-tag` should show `noindex, nofollow, noarchive, nosnippet`.
+
+---
+
+## 2026-09-16 – Map Marker Bounce on Beach Card Hover ✅ COMPLETE
+
+### Overview
+
+On the beach map, hovering a beach card in the sidebar list now bounces the matching pin on the map (commit `00c6527`).
+
+### Changes / Files
+
+- `src/components/Map/VirtualizedBeachList.tsx` – new `onBeachHover(beachId | null)` prop, fired on card `mouseenter` / `mouseleave`
+- `src/components/Map/MapWithSidebar.tsx` – holds `hoveredBeachId` state and passes it to the map
+- `src/components/Map/ReactLeafletMap.tsx`
+  - `BeachMarker` gets `isHovered`; toggles the `beach-marker-bounce` class on the marker element and raises it with `setZIndexOffset(900)` (selected marker stays at 1000)
+  - Marker icons switched from `L.icon` to `L.divIcon` (a `<div>` wrapping an `<img>`) so the bounce animates the inner `<img>` while Leaflet's positioning `transform` on the outer element is left alone
+  - `React.memo` comparison now includes `isHovered`
+- `src/styles/globals.css` – `@keyframes markerBounce` + `.beach-marker-bounce img`
+
+### Notes
+
+- Do not animate the marker container itself. Leaflet positions it with `transform`, so overriding that makes the pin disappear.
+
+---
+
+## 2026-09-15 – Fix Filter Flickering (URL as Single Source of Truth) ✅ COMPLETE
+
+### Overview
+
+Fixed flickering and a render/API-call loop in beach filters when a page was loaded with a query string (e.g. `?country=HR`). The old hook mirrored URL params into `useState` and synced them back with two effects (URL → state, state → URL). These ran one render apart and kept triggering each other. (Commit `65242bd`.)
+
+### Changes / Files
+
+- `src/hooks/useBeachFiltersController.ts`
+  - `userFilters` is now a `useMemo` derived directly from `searchParams` (no `useState`, no sync effects)
+  - `setUserFilters` is a `useCallback` that writes straight to the URL with `router.replace(..., { scroll: false })`. It accepts both an object and a functional updater, so existing callers keep working.
+  - `resetFilters` wrapped in `useCallback`
+- Same commit also added deploy support files:
+  - `.dockerignore` – build-context exclusions for `Dockerfile.prod` (also excludes `e2e`, `docs`, `ai-agent`, `DEV_HANDOFF.md`)
+  - `.env.front.example` – template for the per-environment `.env.front.{prod,uat,dev}` files on the VPS (API endpoint, base URL, CDN URLs, port 3001/3002/3003)
+
+### Notes
+
+- Builds on the 2026-07-06 render-loop fix below. Treat the URL as the only state for filters, and do not reintroduce a mirrored `useState`.
+
+---
+
+## 2026-09-03 – Cross-Environment Fixes & Fresh Admin Content on Home ✅ COMPLETE
+
+### Overview
+
+Follow-ups after the first UAT/prod deploys: builds for one environment could still talk to the dev API, and admin edits to home-page content did not show up until the cache expired.
+
+### Changes / Files
+
+- **Removed hardcoded `https://dev-api.beachrex.com` fallbacks** (`c2c9f9d`). The fallback is now `http://localhost:8000`, so a missing `NEXT_PUBLIC_API_ENDPOINT` fails visibly instead of silently using dev:
+  - `src/env.ts`, `src/components/ApiClientProvider.tsx`
+  - `src/lib/api-client/client.gen.ts` (now reads `process.env.NEXT_PUBLIC_API_ENDPOINT`), `src/lib/api-client/types.gen.ts`
+  - `src/app/[locale]/ai/chat/page.tsx`, `src/app/[locale]/ai/itinerary/page.tsx`
+- **Home page: `force-dynamic` instead of ISR** (`4d1087f`). `src/app/[locale]/page.tsx` replaced `revalidate = 3600` with `dynamic = 'force-dynamic'`. The API caches the query in Redis and invalidates it when an admin saves, so per-request rendering stays fast.
+- **`useFirstPageContent`: `staleTime: 0` + `refetchOnMount: true`** (`95224d1`) so the client-side query also shows admin edits immediately.
+
+### Notes
+
+- `src/lib/api-client/*.gen.ts` files are generated. If `yarn generate:api` is re-run, check that the `client.gen.ts` base URL change is not overwritten.
+- The other 2026-09-03 commits are deploy-workflow tweaks (see the next entry) and empty "trigger deploy" commits.
+
+---
+
+## 2026-09-02 – VPS Deployment via GitHub Actions (Docker Standalone) ✅ COMPLETE
+
+### Overview
+
+The frontend now auto-deploys to the Hetzner VPS from GitHub Actions on push to `dev`, `uat` or `main`. Commits run from 2026-09-01 to 2026-09-03. A GitLab CI deploy was tried first (2026-09-01, `62db534`…`5ba911d`) and abandoned on 2026-09-02 in favour of GitHub Actions (`189afd9`). Its deploy jobs are still in `.gitlab-ci.yml` but are not used.
+
+### Changes / Files
+
+- `.github/workflows/deploy.yml`
+  - Triggers: push to `dev` / `uat` / `main` (→ `dev` / `uat` / `prod`), or manual `workflow_dispatch` with an environment choice
+  - SSH key from secret `VPS_SSH_KEY` (base64-encoded), plus `VPS_HOST` and `VPS_USER`
+  - `rsync --delete` of the repo to `/opt/beachrex/front_<env>/` (excludes `.git`, `node_modules`, `.next`, `.env*`)
+  - On the VPS, in `/opt/beachrex/deploy`: `docker compose -f docker-compose.vps.yml --env-file /opt/beachrex/envs/.env.<env> --env-file /opt/beachrex/envs/.env.front.<env> build|up -d --force-recreate front_<env>`, then `systemctl reload nginx`
+  - `concurrency: deploy-front` (global, no cancel) so two deploys never rsync at the same time (`b4f2e86`)
+- `Dockerfile.prod` (new, `c4b9dad`) – 3-stage `node:20-alpine` build that runs `.next/standalone` with `node server.js` as non-root `nextjs`. `NEXT_PUBLIC_*` values are **build args**, inlined at build time.
+- `next.config.js` – `output: "standalone"` (`a0c87c6`)
+- `src/app/robots.ts` – reads `process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000'` directly instead of `env` from `@/env`, and also counts `uat.` hosts as non-production (`171111b`, `5116d3d`). Later changed again by `6a06141` (2026-10-07).
+- `cca931d` – compose now loads the frontend env file too, so `NEXT_PUBLIC_*` reach `build.args` (replacing the earlier `grep | cut` build-arg hack)
+
+### Notes
+
+- `NEXT_PUBLIC_*` values come from `/opt/beachrex/envs/.env.front.<env>` on the server and are **baked in at build time**. Changing them needs a rebuild/redeploy, not just a container restart.
+- `docker-compose.vps.yml` and the env files live on the server, not in this repo. See `.env.front.example` (added 2026-09-15) for the variables.
+
+---
+
+## 2026-07-28 – Beach Cards: Tags, Translated Labels & Shorter Card ✅ COMPLETE
+
+### Overview
+
+Beach cards now show API-provided tags instead of placeholder text. Hardcoded English card labels were moved into translations, and the card was made shorter.
+
+### Changes / Files
+
+- **Tags** (`40add5d`): the API returns up to 4 localized `tags` per beach (sporting, culinary, natural conditions, occupancy). `mapBeachToProperty.ts` maps them, and `PropertyCard.tsx` renders them joined with ` • ` in place of the hardcoded "Sup • Diving • Windsurfing…" line. The memo comparison includes `tags`. `types.gen.ts` was regenerated.
+- **Translations** (`884fec1`): new `PropertyCard` namespace (`priceFrom`, `webcamLabel`, `noWebcam`, `no360`, `noVideo`, `mostVisited`, `loading`, `showOnMap`) in all message files that existed then
+- **Card height** (`8f07b8d`, "card image to see logo"): card and skeleton `h-[395px]` → `h-[295px]` in `PropertyCard.tsx` / `PropertySection.tsx`, and `CARD_HEIGHT` 395 → 295 in `Map/VirtualizedBeachList.tsx`
+
+---
+
+## 2026-07-28 – 5 New Languages: da, nl, pt, el, sq (19 Total) ✅ COMPLETE
+
+### Overview
+
+Added Danish, Dutch, Portuguese, Greek and Albanian (commit `a781268`). The site now has **19 locales** (`src/app/config/locales.ts`): en, si, de, hr, fr, es, it, ua, ru, pl, cs, hu, bg, sk, da, pt, nl, el, sq.
+
+### Changes / Files
+
+- `src/app/config/locales.ts` – 5 locales + `languageNames`
+- `messages/{da,nl,pt,el,sq}.json` – new; existing message files received new keys in the same commit
+- `src/i18n/routing.ts`, `src/middleware.ts`, `src/app/sitemap/*.xml/route.ts` – localized route words (beaches: `straande` / `praias` / `stranden` / `paralies` / `plazhet`; beach-map, beach-type, user-type, about)
+- `src/i18n/request.ts` – locale check uses the `Locale` type instead of `'en' | 'si'`
+- `src/components/Map/MapSearch.tsx` – Nominatim `accept-language` for the new locales
+- `src/components/Header/BurgerMenu.tsx` – `menuMap` lookup. **Only `en` and `si` menu files exist; all other locales fall back to the English menu.**
+- `src/app/[locale]/beaches/[continent]/not-found.tsx` – hardcoded strings moved to `NotFoundPage` keys
+- Docs: [ai-agent/LOCALIZATION_GUIDE.md](./ai-agent/LOCALIZATION_GUIDE.md) and other `ai-agent/` docs updated to 19 languages
+
+---
+
+## 2026-07-28 – CMS Static Pages, Most Visited Beaches & Newsletter Footer ✅ COMPLETE
+
+### Overview
+
+Footer content is now driven by the API/admin instead of hardcoded `messages/*.json` arrays.
+
+### Changes / Files
+
+- **Static (CMS) pages** (`994e3c4`)
+  - New route `src/app/[locale]/p/[slug]/page.tsx`: SSR, `generateMetadata`, `revalidate = 3600`. The `p` prefix is **not** localized; only the slug is.
+  - `src/components/StaticPage/StaticPageContent.tsx` renders admin HTML sanitized with `isomorphic-dompurify` (new dependency)
+  - `Footer/FooterInfoColumn.tsx` lists pages from `GET /api/v1/static-pages`. The hardcoded `links` array was removed from all message files.
+  - `useLocalizedPath.ts` translates `/p/{slug}` between locales by resolving the page `code`
+  - `sitemap/static.xml` now includes CMS pages with hreflang alternates
+- **Most visited beaches** (`6c629ff`): `Footer/FooterMostViewedColumn.tsx` loads 6 beaches from `GET /api/v1/beaches/footer` (by view count) and links them via `buildBeachUrlFromSchema`. The placeholder beach names were removed from messages. Banner height `lg:h-[798px]` → `lg:h-[735px]`. The SI title was fixed in `7f08875` (2026-07-27).
+- **Newsletter form** (`c1443dc`): `Footer/FooterNewsletter.tsx` is now a working form (email + required GDPR consent checkbox linking to the localized privacy-policy page, loading/success/error states). It posts through `src/lib/newsletter.ts` to `POST /api/v1/newsletter/subscribe`. New `gdprConsent` key in all 19 message files.
+
+### Notes
+
+- `src/lib/newsletter.ts` is deliberately outside `src/lib/api-client/`, which is regenerated by `yarn generate:api`
+- If the API is unreachable, both footer columns show their heading with no links (no hardcoded fallback)
+
+---
+
+## 2026-07-27 – Beach Map Routing Fix & Bug Fixes 32–35 ✅ COMPLETE
+
+### Overview
+
+Centralized beach-map URL building, fixed broken `de`/`ru` map slugs and cross-locale redirects, and made the banner map buttons carry city/beach context. Full details are in [ai-agent/CHANGELOG.md](./ai-agent/CHANGELOG.md) (v1.2.0 and v1.3.0) and [docs/features/BEACH_MAP_LINK_FIX.md](./docs/features/BEACH_MAP_LINK_FIX.md).
+
+### Changes / Files
+
+- `408b526` "map routings fix": `getBeachMapWord()` / `buildBeachMapUrl()` in `src/lib/utils/beach-urls.ts`, used by SearchBar, QuickMenu, BeachCategorySearch, banners, home page and footer. Footer map href changed in all message files. Adds `e2e/beach-urls.unit.spec.ts`.
+- `f2d48b5` "bug fixes 32-35":
+  - Banner map button now appends `city=`, and on beach pages also `beach_id`, `lat`, `lng`. The map centers on the beach and opens its popup (`MapWithSidebar.tsx`, `ReactLeafletMap.tsx`).
+  - `MapSearch.tsx` sends an explicit Nominatim `accept-language` (IT uses `en` to avoid "Zara"/"Ragusa")
+  - `GlobalSearch.tsx` dropdown `z-50` → `z-[10000]`
+  - Docs: CHANGELOG, new `ai-agent/CONTRIBUTING.md`, LOCALIZATION_GUIDE issues 5–7
+- `7f08875` – SI translation "Najbolj obiskane plaže"
+
+### Testing
+
+```bash
+npx playwright test e2e/beach-urls.unit.spec.ts
+```
+
+### Notes
+
+- The repo does not record which change maps to which of bug numbers 32–35.
+
+---
+
+## 2026-07-06 – Link Fixes, Clickable City Names & Filter Render-Loop Fix ✅ COMPLETE
+
+### Overview
+
+Beach cards link to the correct beach and city pages and show city names instead of slugs. A render loop in the filters hook was also fixed.
+
+### Changes / Files
+
+- `src/hooks/useBeachFiltersController.ts` (`ce03fe1`, `11b1803`) – stabilized inline object/array props by content (`JSON.stringify` memo keys), skip `router.replace` when the query is unchanged, memoized `filters`. (Later replaced by the 2026-09-15 rewrite.)
+- `src/lib/mappers/mapBeachToProperty.ts` – builds `beachUrl` and `locationUrl` when `locale` is passed. `BeachDetailPage.tsx` passes `{ locale }`.
+- `src/lib/utils/beach-urls.ts` – new `buildCityUrlFromSchema()` (prefers the island over the region segment)
+- `PropertyCard.tsx` – the orange location badge is a `Link` to the city page when `locationUrl` exists, and shows `city_name ?? country_name` instead of slugs (also in `DynamicSearchBeaches.tsx`, `DynamicPropertyCard.tsx`, continent page)
+- `Beach/BeachPageView.tsx` – fullscreen gallery uses the large (`banner`) CDN image with `object-contain`
+- `Home/HeroSection.tsx` – Europe button uses `next/link` (`432a661`)
+
+---
+
+## 2026-06-24 – Translations for 12 Locales + SEO Audit Docs ✅ COMPLETE
+
+### Overview
+
+Added full message files for the 12 locales that had routes but no translations: bg, cs, de, es, fr, hr, hu, it, pl, ru, sk, ua (commit `ea16440`). Before this, the repo only had `en.json` and `si.json`.
+
+### Changes / Files
+
+- `messages/{bg,cs,de,es,fr,hr,hu,it,pl,ru,sk,ua}.json` – new
+- `ai-agent/SEO_*.md` – SEO status tracker, deep audit, action plan, checklists and dashboards (CHANGELOG v1.1.0, dated 2026-01-20, i.e. written before this commit). Start with [ai-agent/SEO_STATUS_AND_TASKS.md](./ai-agent/SEO_STATUS_AND_TASKS.md).
+
+---
+
+## 2026-06-04 – URL Localization & Home Page Links ✅ COMPLETE
+
+### Overview
+
+Continent and search URLs now use the localized "beaches" word, and home page/footer links were wired up.
+
+### Changes / Files
+
+- **URL localization** (`29ce70e`)
+  - `src/lib/utils/destination-url.ts` – destination URLs use the localized beaches word (`/si/plaze/...`, `/de/strande/...`)
+  - `Header/GlobalSearch.tsx` – builds canonical `/beaches/...` paths and lets the next-intl router (`@/i18n/routing`) localize them, replacing a per-component locale map
+  - `Home/HeroSection.tsx` – continent links via `buildContinentUrl()`
+  - `beaches/[continent]/page.tsx` – localized pathname
+  - `messages/si.json` – continent names, typo fix
+- **Links** (`df78b52`): real Facebook/Instagram/YouTube URLs in the footer and quick menu. Waterbody tiles on the home page (sea/lake/river/pool) open the map with a `waterbody` filter. New `mapButton` key (en/si). Hero play/filter buttons commented out.
+
+---
+
+## 2026-06-02 – Home Page Filters & Quick Menu Fixes ✅ COMPLETE
+
+### Overview
+
+Quick menu categories and the home page category search open the beach map with filters pre-applied.
+
+### Changes / Files
+
+- `Header/QuickMenu.tsx` (`a03574f`, `73dbd2b`, `f56564a`) – each category navigates to the localized beach map with filter query params (`beach_type`, `user_type`, `natural_location_condition`, `location_infrastructure`). Uses a per-locale beach-map slug table. User-type codes fixed to `adventurer`/`family`/`youth`.
+- `Home/BeachCategorySearch.tsx` – new map button that carries the selected categories (`73dbd2b`, label `mapButton` in `a153b2b`)
+- `Map/LeftSidebarFilters.tsx` (`f56564a`, `a153b2b`) – reacts to URL changes after init (e.g. quick-menu clicks), expands advanced filters when the URL has filters, collapses and resets sections when it does not
+
+### Notes
+
+- The slug table in QuickMenu was later replaced by `buildBeachMapUrl()` (2026-07-27).
+
+---
+
+## 2026-06-02 – Catch-up: Repository Import (History Gap) ℹ️ NOTE
+
+### Overview
+
+The git history of this repository starts on **2026-06-02** with root commit `0506d2a` ("first page filters"). That commit imported the whole existing app (~400 files: `src/`, `messages/en.json` + `si.json`, `ai-agent/`, `docs/`, this file, `.gitlab-ci.yml` with the E2E job).
+
+- Work done between the last entry below (2025-12-22) and 2026-06-02 is **not recorded** in this file and cannot be broken down from git, because it arrived as part of the import.
+- Some of that period is documented elsewhere: [ai-agent/CHANGELOG.md](./ai-agent/CHANGELOG.md) v1.1.0 (SEO docs, 2026-01-20) and [ai-agent/LOCALIZATION_GUIDE.md](./ai-agent/LOCALIZATION_GUIDE.md) (last updated 2026-05-29 at import time).
+- Entries above this one are based on the commit diffs.
 
 ---
 
@@ -5044,7 +5326,7 @@ All 7 tasks successfully completed:
 
 ### Multilingual Site - Translation Keys Required
 
-**RULE:** This is a **14-language multilingual site**. NEVER hardcode user-facing text in English or any other language.
+**RULE:** This is a **19-language multilingual site** (see `src/app/config/locales.ts`). NEVER hardcode user-facing text in English or any other language.
 
 **Supported Languages:**
 - 🇬🇧 English (en)
@@ -5061,6 +5343,11 @@ All 7 tasks successfully completed:
 - 🇭🇺 Hungarian (hu)
 - 🇧🇬 Bulgarian (bg)
 - 🇸🇰 Slovak (sk)
+- 🇩🇰 Danish (da)
+- 🇵🇹 Portuguese (pt)
+- 🇳🇱 Dutch (nl)
+- 🇬🇷 Greek (el)
+- 🇦🇱 Albanian (sq)
 
 **Required Approach:**
 
@@ -5077,9 +5364,9 @@ const t = useTranslations('BeachesMap');
 
 **Translation Files:**
 - Located in `/messages/` directory
-- Main files: `en.json`, `si.json` (others to be added)
+- One file per locale: **19 files** (`en.json`, `si.json`, `de.json`, … `sq.json`)
 - Use `useTranslations()` hook from `next-intl`
-- Add keys to ALL locale files when adding new text
+- **Add every new key to ALL 19 files** in `messages/` (not just `en`/`si`), with a real translation for each language. There is no English fallback (`src/i18n/request.ts` loads only the requested locale's file), so a missing key surfaces as a next-intl missing-message error / raw key in that locale.
 
 **Consequences of Violation:**
 - Breaks user experience for non-English users

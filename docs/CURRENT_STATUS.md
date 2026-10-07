@@ -1,5 +1,22 @@
 # Beachrex Frontend - Current Status
 
+> ⚠️ **HISTORICAL SNAPSHOT, last updated 2025-12-20. Do not use it as the current status.**
+> The phases, percentages, "next steps", locale counts (14) and deployment notes below describe December 2025 and are out of date.
+> For the current state see **[DEV_HANDOFF.md](../DEV_HANDOFF.md)** (dated entries, newest first) and **[ai-agent/SEO_STATUS_AND_TASKS.md](../ai-agent/SEO_STATUS_AND_TASKS.md)** (SEO tracker).
+>
+> **Current state (Oct 2026), short summary:**
+> - **19 locales** (`src/app/config/locales.ts`): the original 14 plus da, pt, nl, el, sq (added 2026-07-28). `messages/` has one file per locale.
+> - **Sitemaps done:** sitemap index (`src/app/sitemap.ts`) plus `static`, `beaches`, `countries`, `regions`, `cities` and `islands` XML route handlers under `src/app/sitemap/`. `static.xml` also lists CMS pages with hreflang alternates.
+> - **Deployment:** GitHub Actions (`.github/workflows/deploy.yml`) deploys `dev` / `uat` / `main` to dev.beachrex.com / uat.beachrex.com / beachrex.com on a Hetzner VPS, using a Docker standalone build (`Dockerfile.prod`). `NEXT_PUBLIC_*` vars are baked in at build time. The GitLab CI deploy was abandoned.
+> - **Non-production noindex:** `robots.ts`, the `X-Robots-Tag` header (`next.config.js`) and the robots meta tag (`[locale]/layout.tsx`) all use a production-host check (`isProductionSite()`), so dev/uat/local are not indexed.
+> - **Home page** renders dynamically (`force-dynamic`, no ISR) and `useFirstPageContent` uses `staleTime: 0`, so admin edits show immediately. No hardcoded `dev-api` fallbacks remain.
+> - **CMS-driven content:** static pages at `/{locale}/p/{slug}` (from the admin), footer "most visited beaches" from the API, and a working newsletter form with GDPR consent.
+> - **Beach map:** centralized localized map URLs (`buildBeachMapUrl()`), deep links to a beach pin, URL-driven filters (flicker/loop fixed 2026-09-15), and marker bounce on card hover.
+> - **Known gap:** the burger menu has only `en`/`si` menu files; other locales fall back to English.
+
+---
+
+
 **Last Updated:** 2025-12-20  
 **Overall Progress:** 28% Complete (7/25 tasks)
 
