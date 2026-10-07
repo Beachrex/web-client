@@ -5,7 +5,8 @@
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 
 /**
- * Get localized "beaches" word for URL
+ * Get localized "beaches" word for URL.
+ * Must match `globalRoutes.beaches` in `src/i18n/routing.ts` (checked by e2e/beach-urls.unit.spec.ts).
  */
 export function getBeachesWord(locale: string): string {
   const beachesRoutes: Record<string, string> = {
@@ -23,6 +24,11 @@ export function getBeachesWord(locale: string): string {
     hu: 'strandok',
     bg: 'plyazhove',
     sk: 'plaze',
+    da: 'straande',
+    pt: 'praias',
+    nl: 'stranden',
+    el: 'paralies',
+    sq: 'plazhet',
   };
   return beachesRoutes[locale] ?? 'beaches';
 }
@@ -50,6 +56,11 @@ export function getBeachMapWord(locale: string): string {
     hu: 'strand-terkep',
     bg: 'karta-na-plyazhovete',
     sk: 'mapa-plazi',
+    da: 'strandkort',
+    pt: 'mapa-praias',
+    nl: 'strandkaart',
+    el: 'chartis-paralion',
+    sq: 'harta-plazheve',
   };
   return beachMapRoutes[locale] ?? 'beach-map';
 }
