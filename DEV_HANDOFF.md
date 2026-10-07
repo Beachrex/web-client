@@ -18,6 +18,30 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-07 – Continent and country pages no longer crash (QA #19, #53, #55, #56, #60, #77) ✅ COMPLETE
+
+### Overview
+
+Testers saw "Application error: a client-side exception" after the continent page (Europe) or most country pages loaded. Root causes found in the code:
+
+1. `DynamicSearchBeaches` (the "browse beaches" list on continent, country, region, island and city pages) threw `Missing main_image for beach …` for any beach without a main image. Europe and most countries have at least one such beach; the countries that worked (SI, DK, BE, AL, NL) apparently have none.
+2. The continent page's "most visited" cards passed a null image to `next/image`, which throws.
+3. `buildDestinationUrl` threw for a city or island without a region (the API sends `region_slug: null`). `DestinationsSection` calls it while rendering, so one such city crashed the country page.
+4. `destination-url.ts` had its own 14-locale "beaches" map, so destination cards in da/pt/nl/el/sq linked to `/da/beaches/...`.
+
+### Changes / Files
+
+- `src/lib/utils/beach-cards.ts` (new): `hasMainImage()` type guard. Beaches without an image are skipped in card lists (same rule as `mapBeachToProperty`).
+- `src/components/DynamicSearchBeaches.tsx`, `src/app/[locale]/beaches/[continent]/page.tsx`: filter with `hasMainImage` instead of throwing / asserting.
+- `src/lib/utils/destination-url.ts`: uses `getBeachesWord` (all 19 locales); the region segment is optional for cities and islands, as in `GlobalSearch` and the `[...segments]` resolver.
+- `e2e/destination-pages.unit.spec.ts` (new): 7 tests; 4 fail on the old `destination-url.ts`.
+
+### Testing
+
+`npx tsc --noEmit -p .`, `yarn lint`, `BASE_URL=http://localhost:9 npx playwright test e2e/*.unit.spec.ts --project=chromium` (40 passed). Retest on dev: Europe, Croatia, France, Italy, and "next country" from a country page.
+
+---
+
 ## 2026-10-07 – CI on Pull Requests ✅ COMPLETE
 
 ### Overview

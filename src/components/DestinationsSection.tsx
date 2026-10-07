@@ -9,8 +9,8 @@ type DestinationType = 'country' | 'region' | 'city' | 'island';
 interface DestinationLocation {
   continent_slug: string;
   country_slug: string;
-  region_slug?: string;
-  island_slug?: string;
+  region_slug?: string | null;
+  island_slug?: string | null;
 }
 
 interface RoutableDestination {
