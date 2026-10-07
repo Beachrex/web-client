@@ -1,26 +1,6 @@
 // src/lib/utils/destination-url.ts
 
-// Localized "beaches" word mapping
-const beachesRoutes: Record<string, string> = {
-  en: 'beaches',
-  si: 'plaze',
-  de: 'strande',
-  hr: 'plaze',
-  fr: 'plages',
-  es: 'playas',
-  it: 'spiagge',
-  ua: 'plyazhi',
-  ru: 'plyazhi',
-  pl: 'plaze',
-  cs: 'plaze',
-  hu: 'strandok',
-  bg: 'plyazhove',
-  sk: 'plaze',
-};
-
-function getBeachesWord(locale: string): string {
-  return beachesRoutes[locale] ?? 'beaches';
-}
+import { getBeachesWord } from '@/lib/utils/beach-urls';
 
 export type DestinationType =
   | 'country'
@@ -31,8 +11,9 @@ export type DestinationType =
 interface DestinationLocation {
   continent_slug: string;
   country_slug: string;
-  region_slug?: string;
-  island_slug?: string;
+  // Cities and islands may have no region (the API sends null); the URL then skips that segment.
+  region_slug?: string | null;
+  island_slug?: string | null;
 }
 
 interface BuildDestinationUrlParams {
@@ -45,7 +26,9 @@ interface BuildDestinationUrlParams {
 /**
  * Centralized destination URL builder
  * This is the single source of truth for destination routing.
- * Uses localized "beaches" word for each locale.
+ * Uses the localized "beaches" word for each locale (all 19, via getBeachesWord).
+ * Never throws for a missing region: a city or island without a region crashed the
+ * country page while rendering (QA #53, #56).
  */
 export function buildDestinationUrl({
   locale,
@@ -56,36 +39,26 @@ export function buildDestinationUrl({
   const beachesWord = getBeachesWord(locale);
   const base = `/${locale}/${beachesWord}/${location.continent_slug}/${location.country_slug}`;
 
+  const regionPart = location.region_slug ? `/${location.region_slug}` : '';
+
   switch (type) {
     case 'country':
       return base;
 
     case 'region':
-      if (!location.region_slug) {
-        throw new Error('Region URL requires region_slug');
-      }
-      return `${base}/${location.region_slug}`;
+      return `${base}/${location.region_slug ?? slug}`;
 
     case 'island':
-      if (!location.region_slug) {
-        throw new Error('Island URL requires region_slug');
-      }
-      return `${base}/${location.region_slug}/${slug}`;
+      return `${base}${regionPart}/${slug}`;
 
     case 'city': {
-      if (!location.region_slug) {
-        throw new Error('City URL requires region_slug');
-      }
-
       // island is optional for city
-      const islandPart = location.island_slug
-        ? `/${location.island_slug}`
-        : '';
+      const islandPart = location.island_slug ? `/${location.island_slug}` : '';
 
-      return `${base}/${location.region_slug}${islandPart}/${slug}`;
+      return `${base}${regionPart}${islandPart}/${slug}`;
     }
 
     default:
-  throw new Error('Unsupported destination type');
+      throw new Error('Unsupported destination type');
   }
 }

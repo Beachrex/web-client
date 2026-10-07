@@ -18,6 +18,7 @@ import {
 } from '@/lib/api-client/sdk.gen';
 
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
+import { hasMainImage } from '@/lib/utils/beach-cards';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema, getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, buildContinentSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
@@ -223,7 +224,8 @@ const Page = async ({ params }: PageProps) => {
     const mostVisited = mostVisitedResponse?.data ?? [];
 
     // 4) Transform into PropertySection items
-    const transformedProperties = mostVisited.map((beach) => {
+    // Beaches without a main image are skipped: next/image throws on a missing src (QA #55).
+    const transformedProperties = mostVisited.filter(hasMainImage).map((beach) => {
       const gallery = buildGallery(beach);
      const mainImage = buildCdnUrl(beach.main_image, 'list')!;
 

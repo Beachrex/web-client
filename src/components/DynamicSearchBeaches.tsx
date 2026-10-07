@@ -1,6 +1,7 @@
 'use client';
 
 import { useAllBeaches } from '@/hooks/useBeaches';
+import { hasMainImage } from '@/lib/utils/beach-cards';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import { Pagination } from 'flowbite-react';
@@ -132,9 +133,9 @@ const [mediaMode] =
     };
   }, []);
 
-  const properties: PropertyCardProps[] = beaches.map((b) => {
-    const mainImage = buildCdnUrl(b.main_image, 'list');
-    if (!mainImage) throw new Error(`Missing main_image for beach ${b.id}`);
+  // Beaches without a main image are skipped: throwing here crashed the whole page (QA #55, #56).
+  const properties: PropertyCardProps[] = beaches.filter(hasMainImage).map((b) => {
+    const mainImage = buildCdnUrl(b.main_image, 'list')!;
 
     const galleryImages = buildGallery(b);
     const sphere = b.media?.spheres_360?.[0] ?? null;
