@@ -708,5 +708,37 @@
     "aiChat": "AI чат за плажове",
     "aiItinerary": "AI планировчик на пътувания",
     "contact": "Контакт"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Изтегляния",
+    "packageTitle": "Пълен пакет на марката",
+    "packageDescription": "Всички лога (SVG, PDF, EPS, PNG), фавикон и икони на приложението, изображения за социалните мрежи и цветовата палитра в един ZIP файл.",
+    "packageButton": "Изтеглете ZIP",
+    "guidelinesTitle": "Насоки за марката",
+    "logosTitle": "Лога",
+    "versions": {
+      "horizontal": "Хоризонтално (основно)",
+      "stacked": "Вертикално",
+      "symbol": "Символ",
+      "wordmark": "Текстово лого"
+    },
+    "colors": {
+      "color": "Цветно",
+      "black": "Черно",
+      "white": "Бяло",
+      "teal": "Тюркоазено",
+      "orange": "Оранжево"
+    },
+    "logoAlt": "Лого на Beachrex – {version}, {color}",
+    "colorsTitle": "Цветове",
+    "paletteDownload": "Изтеглете палитрата",
+    "socialTitle": "Изображения за социалните мрежи",
+    "social": {
+      "profile": "Профилна снимка",
+      "og": "Изображение за преглед на връзката",
+      "facebook": "Корица за Facebook",
+      "linkedin": "Корица за LinkedIn",
+      "x": "Заглавно изображение за X"
+    }
   }
 }

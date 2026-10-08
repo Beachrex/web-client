@@ -708,5 +708,37 @@
     "aiChat": "AI-strandchat",
     "aiItinerary": "AI-reisplanner",
     "contact": "Contact"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Downloads",
+    "packageTitle": "Compleet merkpakket",
+    "packageDescription": "Alle logo’s (SVG, PDF, EPS, PNG), favicon en app-iconen, afbeeldingen voor sociale media en het kleurenpalet in één ZIP-bestand.",
+    "packageButton": "Download ZIP",
+    "guidelinesTitle": "Merkrichtlijnen",
+    "logosTitle": "Logo’s",
+    "versions": {
+      "horizontal": "Horizontaal (primair)",
+      "stacked": "Gestapeld",
+      "symbol": "Symbool",
+      "wordmark": "Woordmerk"
+    },
+    "colors": {
+      "color": "Volledige kleur",
+      "black": "Zwart",
+      "white": "Wit",
+      "teal": "Turquoise",
+      "orange": "Oranje"
+    },
+    "logoAlt": "Beachrex-logo – {version}, {color}",
+    "colorsTitle": "Kleuren",
+    "paletteDownload": "Download het palet",
+    "socialTitle": "Afbeeldingen voor sociale media",
+    "social": {
+      "profile": "Profielfoto",
+      "og": "Afbeelding voor linkvoorbeeld",
+      "facebook": "Facebook-omslagfoto",
+      "linkedin": "LinkedIn-omslagfoto",
+      "x": "X-header"
+    }
   }
 }

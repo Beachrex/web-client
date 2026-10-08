@@ -708,5 +708,37 @@
     "aiChat": "AI συνομιλία για παραλίες",
     "aiItinerary": "AI σχεδιαστής ταξιδιών",
     "contact": "Επικοινωνία"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Λήψεις",
+    "packageTitle": "Πλήρες πακέτο ταυτότητας",
+    "packageDescription": "Όλα τα λογότυπα (SVG, PDF, EPS, PNG), favicon και εικονίδια εφαρμογής, εικόνες για τα μέσα κοινωνικής δικτύωσης και η χρωματική παλέτα σε ένα αρχείο ZIP.",
+    "packageButton": "Λήψη ZIP",
+    "guidelinesTitle": "Οδηγός ταυτότητας",
+    "logosTitle": "Λογότυπα",
+    "versions": {
+      "horizontal": "Οριζόντιο (κύριο)",
+      "stacked": "Κάθετο",
+      "symbol": "Σύμβολο",
+      "wordmark": "Λεκτικό σήμα"
+    },
+    "colors": {
+      "color": "Έγχρωμο",
+      "black": "Μαύρο",
+      "white": "Λευκό",
+      "teal": "Τιρκουάζ",
+      "orange": "Πορτοκαλί"
+    },
+    "logoAlt": "Λογότυπο Beachrex – {version}, {color}",
+    "colorsTitle": "Χρώματα",
+    "paletteDownload": "Λήψη της παλέτας",
+    "socialTitle": "Εικόνες για μέσα κοινωνικής δικτύωσης",
+    "social": {
+      "profile": "Εικόνα προφίλ",
+      "og": "Εικόνα προεπισκόπησης συνδέσμου",
+      "facebook": "Εξώφυλλο Facebook",
+      "linkedin": "Εξώφυλλο LinkedIn",
+      "x": "Κεφαλίδα X"
+    }
   }
 }

@@ -708,5 +708,37 @@
     "aiChat": "Chat IA de praias",
     "aiItinerary": "Planeador de viagens IA",
     "contact": "Contacto"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Transferências",
+    "packageTitle": "Pacote completo da marca",
+    "packageDescription": "Todos os logótipos (SVG, PDF, EPS, PNG), favicon e ícones da aplicação, imagens para redes sociais e a paleta de cores num único ficheiro ZIP.",
+    "packageButton": "Transferir ZIP",
+    "guidelinesTitle": "Diretrizes da marca",
+    "logosTitle": "Logótipos",
+    "versions": {
+      "horizontal": "Horizontal (principal)",
+      "stacked": "Empilhado",
+      "symbol": "Símbolo",
+      "wordmark": "Logótipo de texto"
+    },
+    "colors": {
+      "color": "A cores",
+      "black": "Preto",
+      "white": "Branco",
+      "teal": "Turquesa",
+      "orange": "Laranja"
+    },
+    "logoAlt": "Logótipo Beachrex – {version}, {color}",
+    "colorsTitle": "Cores",
+    "paletteDownload": "Transferir a paleta",
+    "socialTitle": "Imagens para redes sociais",
+    "social": {
+      "profile": "Foto de perfil",
+      "og": "Imagem de pré-visualização da ligação",
+      "facebook": "Capa do Facebook",
+      "linkedin": "Capa do LinkedIn",
+      "x": "Cabeçalho do X"
+    }
   }
 }

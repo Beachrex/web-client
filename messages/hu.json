@@ -708,5 +708,37 @@
     "aiChat": "AI strandcsevegő",
     "aiItinerary": "AI útitervező",
     "contact": "Kapcsolat"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Letöltések",
+    "packageTitle": "Teljes márkacsomag",
+    "packageDescription": "Az összes logó (SVG, PDF, EPS, PNG), favicon és alkalmazásikonok, közösségimédia-képek és a színpaletta egyetlen ZIP-fájlban.",
+    "packageButton": "ZIP letöltése",
+    "guidelinesTitle": "Arculati kézikönyv",
+    "logosTitle": "Logók",
+    "versions": {
+      "horizontal": "Vízszintes (elsődleges)",
+      "stacked": "Egymás alatti",
+      "symbol": "Szimbólum",
+      "wordmark": "Szóvédjegy"
+    },
+    "colors": {
+      "color": "Színes",
+      "black": "Fekete",
+      "white": "Fehér",
+      "teal": "Türkiz",
+      "orange": "Narancssárga"
+    },
+    "logoAlt": "Beachrex logó – {version}, {color}",
+    "colorsTitle": "Színek",
+    "paletteDownload": "Töltsd le a palettát",
+    "socialTitle": "Közösségimédia-képek",
+    "social": {
+      "profile": "Profilkép",
+      "og": "Linkelőnézeti kép",
+      "facebook": "Facebook-borítókép",
+      "linkedin": "LinkedIn-borítókép",
+      "x": "X-fejléc"
+    }
   }
 }

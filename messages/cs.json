@@ -708,5 +708,37 @@
     "aiChat": "AI chat o plážích",
     "aiItinerary": "AI plánovač cest",
     "contact": "Kontakt"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Ke stažení",
+    "packageTitle": "Kompletní balíček značky",
+    "packageDescription": "Všechna loga (SVG, PDF, EPS, PNG), favicon a ikony aplikace, obrázky pro sociální sítě a barevná paleta v jednom souboru ZIP.",
+    "packageButton": "Stáhnout ZIP",
+    "guidelinesTitle": "Pravidla značky",
+    "logosTitle": "Loga",
+    "versions": {
+      "horizontal": "Vodorovné (primární)",
+      "stacked": "Svislé",
+      "symbol": "Symbol",
+      "wordmark": "Slovní ochranná známka"
+    },
+    "colors": {
+      "color": "Barevné",
+      "black": "Černé",
+      "white": "Bílé",
+      "teal": "Tyrkysové",
+      "orange": "Oranžové"
+    },
+    "logoAlt": "Logo Beachrex – {version}, {color}",
+    "colorsTitle": "Barvy",
+    "paletteDownload": "Stáhnout paletu",
+    "socialTitle": "Obrázky pro sociální sítě",
+    "social": {
+      "profile": "Profilový obrázek",
+      "og": "Náhledový obrázek odkazu",
+      "facebook": "Titulní fotka na Facebook",
+      "linkedin": "Titulní obrázek na LinkedIn",
+      "x": "Záhlaví na X"
+    }
   }
 }
