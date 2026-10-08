@@ -10,6 +10,8 @@
 
 import DOMPurify from 'isomorphic-dompurify';
 import type { StaticPage } from '@/lib/api-client/types.gen';
+import { MEDIA_KIT_PAGE_CODE } from '@/config/mediaKit';
+import MediaKitDownloads from './MediaKitDownloads';
 
 interface StaticPageContentProps {
     page: StaticPage;
@@ -64,6 +66,9 @@ export default function StaticPageContent({ page }: StaticPageContentProps) {
                 "
                 dangerouslySetInnerHTML={{ __html: clean }}
             />
+
+            {/* Media kit: logo and guideline downloads under the CMS text */}
+            {page.code === MEDIA_KIT_PAGE_CODE && <MediaKitDownloads />}
         </article>
     );
 }

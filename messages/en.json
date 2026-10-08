@@ -708,5 +708,37 @@
     "aiChat": "AI beach chat",
     "aiItinerary": "AI trip planner",
     "contact": "Contact"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Downloads",
+    "packageTitle": "Complete brand package",
+    "packageDescription": "All logos (SVG, PDF, EPS, PNG), favicon and app icons, social media images and the colour palette in one ZIP file.",
+    "packageButton": "Download ZIP",
+    "guidelinesTitle": "Brand guidelines",
+    "logosTitle": "Logos",
+    "versions": {
+      "horizontal": "Horizontal (primary)",
+      "stacked": "Stacked",
+      "symbol": "Symbol",
+      "wordmark": "Wordmark"
+    },
+    "colors": {
+      "color": "Full colour",
+      "black": "Black",
+      "white": "White",
+      "teal": "Teal",
+      "orange": "Orange"
+    },
+    "logoAlt": "Beachrex logo – {version}, {color}",
+    "colorsTitle": "Colours",
+    "paletteDownload": "Download the palette",
+    "socialTitle": "Social media images",
+    "social": {
+      "profile": "Profile picture",
+      "og": "Link preview image",
+      "facebook": "Facebook cover",
+      "linkedin": "LinkedIn cover",
+      "x": "X header"
+    }
   }
 }
