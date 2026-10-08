@@ -1,11 +1,23 @@
 import createMiddleware from 'next-intl/middleware';
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { routing } from './i18n/routing';
 import { createBeachesMiddleware } from './lib/i18n/beaches-middleware';
+import { legacySlovenianPath } from './lib/utils/legacy-redirect';
 
 const intlMiddleware = createMiddleware(routing);
+const beachesMiddleware = createBeachesMiddleware(intlMiddleware, (url) => NextResponse.rewrite(url));
 
-export default createBeachesMiddleware(intlMiddleware, (url) => NextResponse.rewrite(url));
+export default function middleware(request: NextRequest): NextResponse {
+  // Old beachrex.com Slovenian URLs used `/sl`; the locale is `si` now. One permanent hop,
+  // then `[locale]/[...rest]` maps the rest of the old path (TASK-004 step 5b).
+  const slovenian = legacySlovenianPath(request.nextUrl.pathname);
+  if (slovenian) {
+    const url = request.nextUrl.clone();
+    url.pathname = slovenian;
+    return NextResponse.redirect(url, 308);
+  }
+  return beachesMiddleware(request);
+}
 
 export const config = {
   matcher: [

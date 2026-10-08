@@ -88,6 +88,7 @@ import {
   googleCallback,
   googleRedirect,
   type Options,
+  resolveLegacyUrl,
   resolveSlug,
 } from "../sdk.gen";
 import type {
@@ -315,6 +316,8 @@ import type {
   GoogleRedirectData,
   GoogleRedirectError,
   GoogleRedirectResponse2,
+  ResolveLegacyUrlData,
+  ResolveLegacyUrlResponse,
   ResolveSlugData,
   ResolveSlugError,
   ResolveSlugResponse,
@@ -1472,6 +1475,36 @@ export const getIslandWeatherOptions = (
       return data;
     },
     queryKey: getIslandWeatherQueryKey(options),
+  });
+
+export const resolveLegacyUrlQueryKey = (
+  options: Options<ResolveLegacyUrlData>,
+) => createQueryKey("resolveLegacyUrl", options);
+
+/**
+ * Resolve an old beachrex.com URL to the new page
+ *
+ * Maps a path of the old site (e.g. /hr/hrvatska/dalmacija/tisno-plaze/plaza-tisno) to the new page. The most specific match wins: beach, city, island, region, country. `segments` are the localized slugs after the beaches word: the new URL is /{locale}/{beaches}/{segments...}. Type `map` means the beach map. `language` is the old language prefix of the path (sl, en, hr, de, fr, es, it, ua, ru), if any.
+ */
+export const resolveLegacyUrlOptions = (
+  options: Options<ResolveLegacyUrlData>,
+) =>
+  queryOptions<
+    ResolveLegacyUrlResponse,
+    DefaultError,
+    ResolveLegacyUrlResponse,
+    ReturnType<typeof resolveLegacyUrlQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await resolveLegacyUrl({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: resolveLegacyUrlQueryKey(options),
   });
 
 export const getLocationInfrastructureQueryKey = (

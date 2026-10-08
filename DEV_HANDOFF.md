@@ -18,6 +18,34 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Old beachrex.com URLs redirect to the new pages (TASK-004 step 5b) ✅ COMPLETE
+
+### Overview
+
+The owner put many old beach URLs on Google Maps and other sites; each must lead to the exact new page. The backend resolves an old path (`GET /api/v1/legacy-redirect`, Beachrex/backend#46). Old URLs match no route here, so they reach the `[locale]/[...rest]` catch-all, which now answers with a permanent redirect.
+
+### Changes / Files
+
+- `src/app/[locale]/[...rest]/page.tsx`: asks the resolver with `/{locale}/{rest...}` and the locale's `Accept-Language`; a match → `permanentRedirect` (308) to `/{locale}/{beaches}/{segments...}` or the beach map; no match → the localized 404. `revalidate = 86400`.
+- `src/middleware.ts`: the old Slovenian prefix `/sl/...` → 308 to `/si/...` before next-intl (otherwise next-intl would treat `sl` as a path and pick a locale from the cookie).
+- `src/lib/utils/legacy-redirect.ts` (new): `legacySlovenianPath`, `buildLegacyTargetUrl`.
+- `src/lib/api-client/`: regenerated with `openapi-ts -i <backend storage/api-docs/api-docs.json>` (new `resolveLegacyUrl`). `client.gen.ts` and `index.ts` kept as committed.
+- `e2e/legacy-redirect.unit.spec.ts` (new).
+
+### Testing
+
+- Unit: `e2e/legacy-redirect.unit.spec.ts` (4 tests).
+- End to end, local stack (backend on local PostgreSQL with one seeded beach, `next build` + `next start`):
+  - `/hr/hrvatska/dalmacija/tisno-plaze/plaza-tisno` → 308 `/hr/plaze/europa/hrvatska/dalmacija-sibenik/tisno/plaza-tisno`;
+  - `/sl/hrvaska/dalmacija/tisno-plaze/plaza-tisno?c=x` → 308 `/si/...` → 308 `/si/plaze/evropa/hrvaska/dalmatia-sibenik/tisno/plaza-tisno`;
+  - `/en/beach/beach-tisno` → 308 `/en/beaches/europe/croatia/dalmatia-sibenik/tisno/beach-tisno`;
+  - `/de/kroatien/dalmatien/tisno-strande/strand-kroatien` (translated beach name) → 308 to the city page;
+  - `/en/beach-filter` → 308 `/en/beach-map`;
+  - `/en/no-such/page` → 404 with the localized not-found page.
+- Live check on dev: owner action (the sandbox cannot reach dev).
+
+---
+
 ## 2026-10-08 – Menu and footer from real data, dead buttons hidden, localized 404 (TASK-004 B1–B4, B6, B7, B10, B11, C2, D9–D11) ✅ COMPLETE
 
 ### Overview

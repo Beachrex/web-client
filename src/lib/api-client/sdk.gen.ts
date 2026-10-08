@@ -287,6 +287,9 @@ import type {
   RegisterUserData,
   RegisterUserErrors,
   RegisterUserResponses,
+  ResolveLegacyUrlData,
+  ResolveLegacyUrlErrors,
+  ResolveLegacyUrlResponses,
   ResolveSlugData,
   ResolveSlugErrors,
   ResolveSlugResponses,
@@ -1204,6 +1207,24 @@ export const getIslandWeather = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/islands/{slug}/weather",
+    ...options,
+  });
+};
+
+/**
+ * Resolve an old beachrex.com URL to the new page
+ *
+ * Maps a path of the old site (e.g. /hr/hrvatska/dalmacija/tisno-plaze/plaza-tisno) to the new page. The most specific match wins: beach, city, island, region, country. `segments` are the localized slugs after the beaches word: the new URL is /{locale}/{beaches}/{segments...}. Type `map` means the beach map. `language` is the old language prefix of the path (sl, en, hr, de, fr, es, it, ua, ru), if any.
+ */
+export const resolveLegacyUrl = <ThrowOnError extends boolean = false>(
+  options: Options<ResolveLegacyUrlData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    ResolveLegacyUrlResponses,
+    ResolveLegacyUrlErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/legacy-redirect",
     ...options,
   });
 };

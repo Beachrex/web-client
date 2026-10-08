@@ -7088,6 +7088,71 @@ export type GetIslandWeatherResponses = {
 export type GetIslandWeatherResponse =
   GetIslandWeatherResponses[keyof GetIslandWeatherResponses];
 
+export type ResolveLegacyUrlData = {
+  body?: never;
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
+  };
+  path?: never;
+  query: {
+    /**
+     * Old URL path, with or without the query string
+     */
+    path: string;
+  };
+  url: "/api/v1/legacy-redirect";
+};
+
+export type ResolveLegacyUrlErrors = {
+  /**
+   * No page matches the old URL
+   */
+  404: unknown;
+  /**
+   * Missing or too long path
+   */
+  422: unknown;
+};
+
+export type ResolveLegacyUrlResponses = {
+  /**
+   * Old URL resolved
+   */
+  200: {
+    success?: boolean;
+    data?: {
+      type?: "beach" | "city" | "island" | "region" | "country" | "map";
+      language?: string | null;
+      segments?: Array<string>;
+    };
+  };
+};
+
+export type ResolveLegacyUrlResponse =
+  ResolveLegacyUrlResponses[keyof ResolveLegacyUrlResponses];
+
 export type GetLocationInfrastructureData = {
   body?: never;
   headers?: {
