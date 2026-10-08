@@ -22,6 +22,7 @@ import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { ChevronRight } from 'lucide-react';
 import DestinationsSection from '../DestinationsSection';
+import { FEATURES } from '@/lib/constants/features';
 
 interface RegionListingPageProps {
   regionSlug?: string;
@@ -159,11 +160,14 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
         }
       />
 
-      <AccommodationSection
-        title={tRegion('featuredAccommodationsTitle', { region: regionName })}
-        totalCount={regionAccommodationsCount}
-        showDropdown
-      />
+      {/* Hidden for launch: no accommodation source yet (fake cards) */}
+      {FEATURES.accommodation && (
+        <AccommodationSection
+          title={tRegion('featuredAccommodationsTitle', { region: regionName })}
+          totalCount={regionAccommodationsCount}
+          showDropdown
+        />
+      )}
 
 <DestinationsSection
   context="region"

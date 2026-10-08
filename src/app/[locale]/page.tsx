@@ -24,6 +24,7 @@ import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
 import HomeCountriesSection from '@/components/Home/HomeCountriesSection';
+import { FEATURES } from '@/lib/constants/features';
 
 interface PageProps {
   params: {
@@ -185,8 +186,8 @@ export default async function HomePage({ params }: PageProps) {
         />
       )}
 
-      {/* Accommodation Section */}
-      {accommodation && (
+      {/* Accommodation Section (hidden for launch) */}
+      {FEATURES.accommodation && accommodation && (
         <HomeAccommodationSection
           title={accommodation.title ?? ''}
           description={accommodation.description ?? ''}

@@ -8,6 +8,7 @@ import { useHeroBanner } from '@/hooks/useFirstPageContent';
 import Link from 'next/link';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildContinentUrl } from '@/lib/utils/beach-urls';
+import { FEATURES } from '@/lib/constants/features';
 
 const HeroSection: React.FC = () => {
   const t = useTranslations('HomePage');
@@ -158,24 +159,26 @@ const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* 3. Namestitve */}
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Image
-                src="/images/accomodation.png"
-                alt="accommodation"
-                width={40}
-                height={40}
-                className="sm:h-[60px] sm:w-[60px]"
-              />
-              <div className="flex flex-col">
-                <span className="text-xl font-bold sm:text-[32px]">
-                  {t('accommodationsCount')}
-                </span>
-                <span className="text-sm font-normal sm:text-[16px]">
-                  {t('accommodationsLabel')}
-                </span>
+            {/* 3. Accommodations: hidden for launch (the count was a fixed "+6250") */}
+            {FEATURES.accommodation && (
+              <div className="flex items-center gap-3 sm:gap-4">
+                <Image
+                  src="/images/accomodation.png"
+                  alt="accommodation"
+                  width={40}
+                  height={40}
+                  className="sm:h-[60px] sm:w-[60px]"
+                />
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold sm:text-[32px]">
+                    {t('accommodationsCount')}
+                  </span>
+                  <span className="text-sm font-normal sm:text-[16px]">
+                    {t('accommodationsLabel')}
+                  </span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

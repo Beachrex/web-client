@@ -17,14 +17,12 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
   badges,
   description,
   onReadMore,
-  readMoreHref = '#',
+  readMoreHref = '#beach-details',
 }) => {
   const t = useTranslations('BottomBadgesBeach');
   const tCommon = useTranslations('Common');
 
-  const desc =
-    description ??
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen";
+  const desc = description?.trim();
 
   const renderReadMore = () => {
     const label = tCommon('readMore');
@@ -76,7 +74,9 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
             </div>
           </div>
 
-          {/* Right text card (full width below lg; always 100px tall; read-more pinned) */}
+          {/* Right text card (full width below lg; always 100px tall; read-more pinned).
+              Only when the beach has a description; most beaches have none yet. */}
+          {desc && (
           <div className="flex h-[100px] flex-col overflow-hidden rounded-[10px] bg-[#F5F5F5] p-3 sm:p-4">
             <p
               className="overflow-hidden text-ellipsis font-figtree text-[12px] leading-4 text-[#4D4D4D]"
@@ -101,6 +101,7 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
               )}
             </div>
           </div>
+          )}
         </div>
       </div>
     </div>

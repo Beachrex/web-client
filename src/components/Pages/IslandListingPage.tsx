@@ -18,6 +18,7 @@ import { ChevronRight } from 'lucide-react';
 import { formatRegionPillLabel } from '../BannerSection/topbar-utils';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
 import DestinationsSection from '../DestinationsSection';
+import { FEATURES } from '@/lib/constants/features';
 
 interface IslandListingPageProps {
   islandSlug?: string;
@@ -165,11 +166,14 @@ export default function IslandListingPage({
         }
       />
 
-      <AccommodationSection
-        title={tIsland('featuredAccommodationsTitle', { island: islandName })}
-        totalCount={islandAccommodationsCount}
-        showDropdown
-      />
+      {/* Hidden for launch: no accommodation source yet (fake cards) */}
+      {FEATURES.accommodation && (
+        <AccommodationSection
+          title={tIsland('featuredAccommodationsTitle', { island: islandName })}
+          totalCount={islandAccommodationsCount}
+          showDropdown
+        />
+      )}
 
       <DestinationsSection
   context="island"

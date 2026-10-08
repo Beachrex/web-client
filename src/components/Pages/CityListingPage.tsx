@@ -21,6 +21,7 @@ import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromNavigation } from '@/lib/utils/beach-urls';
 import { formatRegionPillLabel } from '../BannerSection/topbar-utils';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
+import { FEATURES } from '@/lib/constants/features';
 
 interface CityListingPageProps {
   citySlug?: string;
@@ -218,14 +219,17 @@ const islandPillLabel = cityDetails?.island?.name
       />
 
       {/* Featured accommodations in town */}
-      <AccommodationSection
-        title={tTown('featuredAccommodationsTitle', { town: cityName })}
-        totalCount={cityAccommodationsCount}
-        showDropdown
-        selectedDistance={{ value: 1, label: '1 km' }}
-        onDistanceChange={(v) => console.log('distance', v)}
-        onFilterClick={() => console.log('filter')}
-      />
+      {/* Hidden for launch: no accommodation source yet (fake cards) */}
+      {FEATURES.accommodation && (
+        <AccommodationSection
+          title={tTown('featuredAccommodationsTitle', { town: cityName })}
+          totalCount={cityAccommodationsCount}
+          showDropdown
+          selectedDistance={{ value: 1, label: '1 km' }}
+          onDistanceChange={(v) => console.log('distance', v)}
+          onFilterClick={() => console.log('filter')}
+        />
+      )}
 
       <CityCategories />
 

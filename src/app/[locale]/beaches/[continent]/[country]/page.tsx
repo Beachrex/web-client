@@ -43,6 +43,7 @@ import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-h
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { CountryDetails } from '@/types/CountryDetails';
 import DestinationsSection from '@/components/DestinationsSection';
+import { FEATURES } from '@/lib/constants/features';
 
 interface PageProps {
   params: {
@@ -373,11 +374,14 @@ const beachProperties: Property[] =
         }
       />
 
-      <AccommodationSection
-        title={tCountry('featuredAccommodationTitle', { country: countryName })}
-        totalCount={countryAccommodationsCount}
-        showDropdown={false}
-      />
+      {/* Hidden for launch: no accommodation source yet (fake cards) */}
+      {FEATURES.accommodation && (
+        <AccommodationSection
+          title={tCountry('featuredAccommodationTitle', { country: countryName })}
+          totalCount={countryAccommodationsCount}
+          showDropdown={false}
+        />
+      )}
 
      <DestinationsSection
   context="country"
