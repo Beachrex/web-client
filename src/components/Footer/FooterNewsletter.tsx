@@ -1,9 +1,8 @@
 'use client';
 
-import { Facebook, Instagram, Youtube, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import NextLink from 'next/link';
 import { Link } from '@/i18n/routing';
 import { useQuery } from '@tanstack/react-query';
 import { getStaticPagesForFooter } from '@/lib/api-client/sdk.gen';
@@ -88,18 +87,18 @@ export default function FooterNewsletter() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-start lg:gap-10">
       <div>
-        <h2 className="font-figtree text-[14px] font-bold leading-none text-[#4D4D4D]">
+        <h2 className="font-figtree text-[18px] font-bold leading-tight text-[#1A3C68]">
           {t('title')}
         </h2>
-        <p className="mt-2 font-figtree text-[14px] font-medium leading-none text-[#4D4D4D]">
+        <p className="mt-2 font-figtree text-[14px] font-medium leading-5 text-[#4D4D4D]">
           {t('subtitle')}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3">
-        <div className="flex w-full items-center justify-between gap-3 rounded-[10px] border border-[#E7E7E7] px-[16px] py-[8px] 2xl:max-w-[720px]">
+        <div className="flex w-full items-center justify-between gap-3 rounded-[10px] border border-[#E7E7E7] bg-white px-[16px] py-[8px]">
           <input
             type="email"
             value={email}
@@ -119,7 +118,11 @@ export default function FooterNewsletter() {
           <button
             type="submit"
             disabled={status === 'loading' || status === 'success' || !consent}
-            className="flex shrink-0 items-center gap-2 rounded-[6px] bg-[#E7E7E7] px-5 py-[10px] font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] transition-colors hover:bg-[#dcdcdc] disabled:cursor-not-allowed disabled:opacity-50"
+            className={[
+              'flex shrink-0 items-center gap-2 rounded-[6px] bg-[#1A3C68] px-5 py-[10px]',
+              'font-figtree text-[14px] font-bold leading-[100%] text-white transition-colors hover:bg-[#2a4c78]',
+              'disabled:cursor-not-allowed disabled:bg-[#E7E7E7] disabled:text-[#8D8D8D]',
+            ].join(' ')}
           >
             {status === 'loading' && <Loader2 className="h-4 w-4 animate-spin" />}
             {status === 'success' && <CheckCircle2 className="h-4 w-4" />}
@@ -174,33 +177,6 @@ export default function FooterNewsletter() {
           </div>
         )}
       </form>
-
-      <div className="flex items-center gap-3 pt-1">
-        <NextLink
-          href="https://www.facebook.com/beachrexproject/"
-          aria-label="Facebook"
-          target="_blank"
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8D8D8D] text-white"
-        >
-          <Facebook className="h-4 w-4" />
-        </NextLink>
-        <NextLink
-          href="https://www.instagram.com/beachrex_project/"
-          aria-label="Instagram"
-          target="_blank"
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8D8D8D] text-white"
-        >
-          <Instagram className="h-4 w-4" />
-        </NextLink>
-        <NextLink
-          href="https://www.youtube.com/@BeachRex"
-          aria-label="YouTube"
-          target="_blank"
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8D8D8D] text-white"
-        >
-          <Youtube className="h-4 w-4" />
-        </NextLink>
-      </div>
     </div>
   );
 }

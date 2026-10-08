@@ -18,6 +18,26 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Footer layout for 13" laptops ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08 (screenshot on a 13" MacBook): the footer looked scattered — four equal columns, a 10 px description far from the logo, the newsletter squeezed under the link columns.
+
+### Changes
+
+- `Footer.tsx`: 12-column grid on desktop (brand 4, most visited 3, information 3, browse 2), newsletter as its own band below, bottom bar `© {year} · {rights}`.
+- `FooterBrandColumn`: logo from the brand package (`public/brand/…/beachrex_horizontal_color.svg`), 14 px description, map button, social icons.
+- `FooterSocial` (new): the social links moved out of the newsletter, `rel="noopener noreferrer"`.
+- `FooterNewsletter`: text and form side by side on desktop; the submit button is navy when enabled, grey while disabled.
+- Link columns: headings in navy, 14 px links with line height for readable spacing.
+
+### Testing
+
+Local stack screenshots at 1440, 1280 and 390 px; `tsc`, lint, unit tests.
+
+---
+
 ## 2026-10-08 – Media kit: brand package and downloads under the CMS page `media-kit` ✅ COMPLETE
 
 ### Overview

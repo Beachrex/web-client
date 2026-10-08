@@ -13,14 +13,14 @@ export default function FooterBrowseColumn() {
   const hrefs = footerBrowseHrefs(locale);
 
   return (
-    <div className="space-y-3">
+    <div>
       {/* Title */}
-      <h2 className="font-figtree text-[14px] font-bold leading-none text-[#4D4D4D]">
+      <h2 className="mb-4 font-figtree text-[15px] font-bold leading-tight text-[#1A3C68]">
         {t('title')}
       </h2>
 
       {/* Links */}
-      <ul className="space-y-2">
+      <ul className="space-y-3">
         {labels.map((item, idx) => {
           const href = hrefs[idx];
           if (!href) return null;
@@ -28,7 +28,7 @@ export default function FooterBrowseColumn() {
             <li key={idx}>
               <Link
                 href={href}
-                className="font-figtree text-[14px] font-medium leading-none text-[#4D4D4D] transition hover:text-[#1A3C68] hover:underline"
+                className="font-figtree text-[14px] font-medium leading-5 text-[#4D4D4D] transition hover:text-[#1A3C68] hover:underline"
               >
                 {item.label}
               </Link>

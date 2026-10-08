@@ -16,18 +16,18 @@ export default function FooterInfoColumn() {
   );
 
   return (
-    <div className="space-y-3">
-      <h2 className="font-figtree text-[14px] font-bold leading-none text-[#4D4D4D]">
+    <div>
+      <h2 className="mb-4 font-figtree text-[15px] font-bold leading-tight text-[#1A3C68]">
         {t('title')}
       </h2>
 
-      <ul className="space-y-2">
+      <ul className="space-y-3">
         {sortedPages.map((page) => (
           <li key={page.id}>
             {/* `p` prefix is constant across locales; routing Link adds the locale prefix */}
             <Link
               href={`/p/${page.slug}`}
-              className="font-figtree text-[14px] font-medium leading-none text-[#4D4D4D] transition hover:text-[#1A3C68] hover:underline"
+              className="font-figtree text-[14px] font-medium leading-5 text-[#4D4D4D] transition hover:text-[#1A3C68] hover:underline"
             >
               {page.title}
             </Link>
