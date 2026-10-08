@@ -18,6 +18,25 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Beach map: quick filters when advanced filters are off ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08 (map design "basic filters"): with the advanced toggle off, the map sidebar was empty. It now shows a 2-column grid of icon tiles (sand, small stones, grass, pool, natural shade, waterslide, party, beach bar, playground, sports fields, parking, autocamp, dogs, disabled access, family).
+
+### Changes
+
+- `src/config/mapQuickFilters.ts`: which `GET /beaches/filters` options are quick filters, in design order, with local icons from `public/images/categories/`.
+- `src/lib/utils/quick-filters.ts`: tiles from the API response (label = API option name, a missing option is not shown), toggle of comma-separated values.
+- `LeftSidebarFilters`: the grid; a tile writes the same URL param as the advanced checkbox (`?beach_type=sand,small_stones`). A URL with a non-quick value opens the advanced list; selecting in the advanced list no longer closes it.
+- Not shown (no backend filter or no icon), recorded in the backend `docs/features/hidden-for-launch.md`: free beach, parking nearby, wide beach, naturist beach (filter exists, no icon).
+
+### Testing
+
+`e2e/quick-filters.unit.spec.ts` (7). Local stack: 15 tiles with Slovenian API labels on `/si/zemljevid-plaz`; clicking "Pesek" → `?beach_type=sand`, tile pressed, result count updates.
+
+---
+
 ## 2026-10-08 – Adventurer and party beach icons (cards and beach page) ✅ COMPLETE
 
 ### Overview
