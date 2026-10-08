@@ -18,6 +18,26 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Adventurer and party beach icons (cards and beach page) ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: only the family user type had an icon; adventurer and party beaches need theirs too. The API now returns `features.adventurer` and `features.youth` (party) (Beachrex/backend#50).
+
+### Changes / Files
+
+- `src/lib/utils/beach-badges.ts`: `user_type-adventurer.png` and `user_type-youth.png` from the same CDN `categories_icons` set as `user_type-family.png`, on cards (`buildCardFeatureIcons`) and on the beach page badges (`USER_TYPE_ICONS`).
+- `messages/*.json` (19): `BottomBadgesBeach.badges.adventurer` and `partyBeach`.
+- `src/lib/api-client/`: regenerated from the backend spec (`client.gen.ts`, `index.ts` kept).
+- `e2e/beach-badges.unit.spec.ts`: adventurer/party icons on cards and badges.
+
+### Testing
+
+- `npx tsc --noEmit -p .`, `yarn lint`, all unit specs (155 passed).
+- The icon file names follow the family icon; the owner confirms they exist on Spaces (the sandbox cannot reach Spaces).
+
+---
+
 ## 2026-10-08 – SEO part 2: one h1 per page, correct hreflang, sitemap index, beach map metadata (TASK-004) ✅ COMPLETE
 
 ### Overview

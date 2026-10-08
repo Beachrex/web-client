@@ -26,7 +26,7 @@ test.describe('buildBeachBadges', () => {
     expect(buildBeachBadges(undefined)).toEqual([]);
     expect(
       buildBeachBadges({
-        activities: { user_types: [named('youth')] },
+        activities: { user_types: [named('no_such_type')] },
         accessibility: { accessibility: named('difficult'), parking_capacity: named('0') },
       } as BeachDetailsSchema),
     ).toEqual([]);
@@ -104,6 +104,16 @@ test.describe('buildCardFeatureIcons', () => {
 
     expect(buildCardFeatureIcons({ beach_type: null, family: false, parking: false })).toEqual([]);
     expect(buildCardFeatureIcons(undefined)).toEqual([]);
+  });
+
+  test('adventurer and party (youth) beaches get their own icons (owner, 2026-10-08)', () => {
+    expect(buildCardFeatureIcons({ beach_type: null, adventurer: true, youth: true })).toEqual([
+      { key: 'adventurer', icon: 'js/assets/images/categories_icons/user_type-adventurer.png', labelKey: 'adventurer' },
+      { key: 'youth', icon: 'js/assets/images/categories_icons/user_type-youth.png', labelKey: 'partyBeach' },
+    ]);
+    expect(
+      buildBeachBadges({ activities: { user_types: [named('adventurer'), named('youth')] } } as BeachDetailsSchema).map((b) => b.key),
+    ).toEqual(['user_type:adventurer', 'user_type:youth']);
   });
 
   test('each beach type has its own icon from the CDN set; labels come from the API or the badge keys', () => {

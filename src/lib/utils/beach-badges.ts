@@ -10,7 +10,7 @@ export interface BeachBadge {
   key: string;
   icon: string;
   label?: string;
-  labelKey?: 'parking' | 'easyAccess' | 'familyFriendly';
+  labelKey?: 'parking' | 'easyAccess' | 'familyFriendly' | 'adventurer' | 'partyBeach';
 }
 
 export const MAX_BEACH_BADGES = 9;
@@ -36,10 +36,15 @@ const BEACH_TYPE_ICONS: Record<string, string> = {
 };
 
 const FAMILY_ICON = `${CDN_ICONS}/user_type-family.png`;
+// Same CDN set and naming as the family icon (user type codes `adventurer`, `youth` = party beach).
+const ADVENTURER_ICON = `${CDN_ICONS}/user_type-adventurer.png`;
+const YOUTH_ICON = `${CDN_ICONS}/user_type-youth.png`;
 const PARKING_ICON = `${CDN_ICONS}/parking.png`;
 
 const USER_TYPE_ICONS: Record<string, string> = {
   family: FAMILY_ICON,
+  adventurer: ADVENTURER_ICON,
+  youth: YOUTH_ICON,
 };
 
 const INFRASTRUCTURE_ICONS: Record<string, string> = {
@@ -147,6 +152,8 @@ export function buildBeachBadges(beach: BeachDetailsSchema | undefined): BeachBa
 export interface BeachCardFeatures {
   beach_type?: { code?: string | null; name?: string | null } | null;
   family?: boolean | null;
+  adventurer?: boolean | null;
+  youth?: boolean | null;
   parking?: boolean | null;
 }
 
@@ -161,6 +168,12 @@ export function buildCardFeatureIcons(features: BeachCardFeatures | null | undef
   }
   if (features.family) {
     icons.push({ key: 'family', icon: FAMILY_ICON, labelKey: 'familyFriendly' });
+  }
+  if (features.adventurer) {
+    icons.push({ key: 'adventurer', icon: ADVENTURER_ICON, labelKey: 'adventurer' });
+  }
+  if (features.youth) {
+    icons.push({ key: 'youth', icon: YOUTH_ICON, labelKey: 'partyBeach' });
   }
   if (features.parking) {
     icons.push({ key: 'parking', icon: PARKING_ICON, labelKey: 'parking' });

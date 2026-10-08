@@ -319,7 +319,9 @@
       "parking": "Διαθέσιμο πάρκινγκ",
       "easyAccess": "Εύκολη πρόσβαση",
       "windsurfing": "Windsurfing",
-      "SeaTemperature": "Θερμοκρασία θάλασσας"
+      "SeaTemperature": "Θερμοκρασία θάλασσας",
+      "adventurer": "Παραλία για περιπετειώδεις",
+      "partyBeach": "Παραλία για πάρτι"
     }
   },
   "AccommodationSection": {

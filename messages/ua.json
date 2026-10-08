@@ -319,7 +319,9 @@
       "parking": "Парковка доступна",
       "easyAccess": "Легкий доступ",
       "windsurfing": "Віндсерфінг",
-      "SeaTemperature": "Температура моря"
+      "SeaTemperature": "Температура моря",
+      "adventurer": "Пляж для авантюристів",
+      "partyBeach": "Пляж для вечірок"
     }
   },
   "AccommodationSection": {

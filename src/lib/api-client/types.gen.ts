@@ -1799,7 +1799,7 @@ export type BeachSchema = {
     };
   };
   /**
-   * Card icons (QA #45): beach type, family friendly and parking. family = user type `family`; parking = infrastructure `parking` or a parking capacity other than none/private.
+   * Card icons (QA #45): beach type, user types and parking. family / adventurer / youth (party) = the beach has that user type; parking = infrastructure `parking` or a parking capacity other than none/private.
    */
   features?: {
     beach_type?: {
@@ -1810,6 +1810,11 @@ export type BeachSchema = {
       name?: string;
     } | null;
     family?: boolean;
+    adventurer?: boolean;
+    /**
+     * Party / youth beach
+     */
+    youth?: boolean;
     parking?: boolean;
   };
   /**
@@ -3322,7 +3327,7 @@ export type SpatialBeach = {
     };
   };
   /**
-   * Card icons (QA #45): beach type, family friendly and parking. family = user type `family`; parking = infrastructure `parking` or a parking capacity other than none/private.
+   * Card icons (QA #45): beach type, user types and parking. family / adventurer / youth (party) = the beach has that user type; parking = infrastructure `parking` or a parking capacity other than none/private.
    */
   features?: {
     beach_type?: {
@@ -3333,6 +3338,11 @@ export type SpatialBeach = {
       name?: string;
     } | null;
     family?: boolean;
+    adventurer?: boolean;
+    /**
+     * Party / youth beach
+     */
+    youth?: boolean;
     parking?: boolean;
   };
   /**
