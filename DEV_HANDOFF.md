@@ -18,6 +18,26 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Author page: Gregor Balažic (/{locale}/gregor-balazic) ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: a page dedicated to the author — the photos, 360° spheres and details on Beachrex come from Gregor Balažic's journey (2,445 beaches, 30,000+ km, six countries). Designed as a feature story, not a CMS text page. Text from the owner (Slovenian), translated into all 19 locales.
+
+### Changes
+
+- `src/app/[locale]/gregor-balazic/page.tsx`, in the platform's design (owner feedback on the first version): photo banner with the faded word behind the name like the country pages, navy pill, light-blue stat cards, four chapters with a sticky author card (like the beach cards), route chips, navy quote block, map/e-mail buttons. `Person` JSON-LD; OG image = his photo; hreflang for all locales (same path everywhere).
+- Owner: removed the outdated claims (Kickstarter backers, "four years ago", users adding photos / sharing favourites) and "with your help, supporters" from the quote, in all locales.
+- `src/lib/constants/author.ts`, `public/images/author/` (2 photos from the owner).
+- `AuthorPage` namespace in all 19 `messages/*.json`; footer brand column links to the page ("Spoznajte avtorja →").
+- Avoids the `container` class: the global `.container { padding: 0 5px }` in `globals.css` overrides Tailwind padding utilities (site-wide; reported to the owner).
+
+### Testing
+
+`e2e/author-page.unit.spec.ts`. Local stack: 200 at 1440 and 390 px, Person JSON-LD present, footer link present.
+
+---
+
 ## 2026-10-08 – Beach share image: the beach's photo as a 1200×630 JPEG ✅ COMPLETE
 
 Owner, 2026-10-08: a shared beach link should show that beach. The page already used the primary photo, but in the 2800 px "large" size (can exceed X's 5 MB card limit, wrong aspect). `getBeachShareImage()` / `buildShareImageUrl()` in `beach-images.ts` build an Imagor `1200x630/smart` JPEG crop from the large endpoint. Note: dev/uat send `Disallow: /` in robots.txt, and Twitterbot respects it, so X shows no card for dev links by design; production works. Test: `e2e/beach-share-image.unit.spec.ts`.

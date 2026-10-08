@@ -745,5 +745,56 @@
       "linkedin": "Naslovna slika za LinkedIn",
       "x": "Zaglavlje za X"
     }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – autor platforme Beachrex",
+    "metaDescription": "Upoznajte Gregora Balažica, koji je dao otkaz, kupio fotoaparat i kombi te posjetio 2.445 plaža u šest država. Iz njegova puta nastao je Beachrex.",
+    "eyebrow": "O autoru",
+    "bannerWord": "Autor",
+    "role": "Fotograf, putnik i osnivač platforme Beachrex",
+    "lead": "„Plaže su oduvijek bile moja velika strast.“",
+    "heroCta": "Pročitajte priču",
+    "stats": {
+      "beaches": "posjećenih plaža",
+      "km": "prijeđenih kilometara",
+      "countries": "država",
+      "facts": "podataka o svakoj plaži"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Izlazak iz zone komfora",
+        "text": "Plaže su oduvijek bile moja velika strast, kaže Gregor Balažic, koji je dao otkaz. Bio je voditelj odjela, a ipak je izašao iz zone komfora i iza sebe ostavio predvidljivu budućnost. Kupio je fotoaparat i kombi, koji mu je postao novi dom, i otisnuo se u svijet. Točnije – na plaže."
+      },
+      "road": {
+        "title": "2.445 plaža u šest država",
+        "text": "Put ga je vodio uz obale i plaže Slovenije, Hrvatske, Bosne i Hercegovine, Italije i Francuske, sve do Španjolske. Posjetio je čak 2.445 plaža. Iako se ta brojka čini golemom, tek je kap u moru – u svijetu postoji više od 200.000 plaža pogodnih za turizam, objašnjava Balažic."
+      },
+      "database": {
+        "title": "Najveća baza plaža na svijetu",
+        "text": "Posjećene plaže postale su temelj najveće baze plaža na svijetu – Beachrex. Svaka plaža opremljena je fotografijama, panoramskim snimkama, videozapisima, informacijama o mogućnostima parkiranja, GPS lokacijom, podacima o vremenu, smještaju, sportskim aktivnostima, restoranima i barovima te temperaturi mora. Ukupno je to više od 200 podataka o svakoj plaži."
+      },
+      "hardships": {
+        "title": "Put nije uvijek bio lak",
+        "text": "Balažic je prešao više od 30.000 kilometara, a za savršene snimke ponekad se morao i penjati. Put dug tisućama kilometara nije uvijek bio obasjan suncem – doživio je i nekoliko neugodnih trenutaka te je više puta bio opljačkan. No njegovo putovanje (još) nije završilo."
+      }
+    },
+    "routeTitle": "Put uz obale",
+    "countries": {
+      "si": "Slovenija",
+      "hr": "Hrvatska",
+      "ba": "Bosna i Hercegovina",
+      "it": "Italija",
+      "fr": "Francuska",
+      "es": "Španjolska"
+    },
+    "photoAlt": "Gregor Balažic s fotoaparatom na pješčanoj plaži",
+    "beachAlt": "Pješčana plaža s prevrnutim čamcem uz stijene i borove",
+    "beachCaption": "Jedna od 2.445 plaža koje je Gregor posjetio i fotografirao.",
+    "quote": "Imamo viziju – za nekoliko godina na karti će se naći svaka plaža na svijetu.",
+    "ctaTitle": "Otkrijte plaže koje je posjetio Gregor",
+    "ctaText": "Svaka fotografija, sfera i pojedinost na platformi Beachrex nastala je na ovom putovanju.",
+    "ctaMap": "Pregledajte kartu",
+    "ctaContact": "Pišite nam",
+    "footerLink": "Upoznajte autora"
   }
 }

@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import { authorUrl } from '@/lib/constants/author';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import FooterSocial from './FooterSocial';
 
@@ -11,6 +12,7 @@ const FOOTER_LOGO = '/brand/BeachRex_CGP/01_Logo/Horizontal/SVG/beachrex_horizon
 
 export default function FooterBrandColumn() {
   const t = useTranslations('Footer.brand');
+  const tAuthor = useTranslations('AuthorPage');
   // Locale-prefixed hrefs: a bare '/' or '/beach-map' let the NEXT_LOCALE cookie pick the language (QA #25, #74)
   const locale = useLocale();
 
@@ -24,6 +26,14 @@ height={32} className="h-8 w-auto"
       </Link>
 
       <p className="max-w-xs font-figtree text-[14px] leading-6 text-[#4D4D4D]">{t('desc')}</p>
+
+      {/* Author page (owner, 2026-10-08) */}
+      <Link
+        href={authorUrl(locale)}
+        className="-mt-2 font-figtree text-[14px] font-semibold text-[#1A3C68] underline-offset-4 hover:underline"
+      >
+        {tAuthor('footerLink')} →
+      </Link>
 
       <Link
         href={buildBeachMapUrl(locale)}
