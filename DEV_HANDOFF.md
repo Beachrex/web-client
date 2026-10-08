@@ -18,6 +18,24 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – All images through Imagor (TASK-002 §5 cleanup) ✅ COMPLETE
+
+### Overview
+
+TASK-002 renamed every storage key to ASCII, and on 2026-10-08 the old non-ASCII keys were deleted (10 685). The Imagor bypass in `buildCdnUrl`, which linked paths with č/š/ž directly to Spaces in NFD form, can no longer find anything, so it is removed.
+
+### Changes / Files
+
+- `src/lib/utils/beach-images.ts`: `buildCdnUrl` always uses the endpoint for the context (Imagor for images). A stray non-ASCII path is percent-encoded and sent to Imagor. It still returns a string for a non-empty path, because callers use `!` (a `null` would bring back the QA #55/#56 crash). Assets (SVG, video, tour HTML) still use `NEXT_PUBLIC_CDN_ASSETS`, as before.
+- `e2e/beach-images.unit.spec.ts` (new): non-ASCII paths never get a Spaces URL. Fails on the old code.
+- `docs/features/image-url-encoding-handoff.md`: marked historical.
+
+### Testing
+
+Run the unit specs. On dev: beach pages with former šumniki (e.g. Brač, Lošinj) show images from `s3.beachrex.com`.
+
+---
+
 ## 2026-10-08 – Beach page badges come from the beach's data (QA #45, #46) ✅ COMPLETE
 
 ### Overview
