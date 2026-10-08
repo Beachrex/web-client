@@ -18,6 +18,23 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Beach photos in structured data: ImageObject with creator and licence ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: photos are works of MOJA PLAŽA, d.o.o.; Google Images should credit them. `TouristAttraction.image` was one teaser-size URL from `gallery[0]`, always on the web path (wrong for mobile uploads).
+
+### Changes
+
+- `json-ld-helpers.ts` `buildBeachImageObjects()`: up to 5 `ImageObject`s, primary image first, large size, correct path for mobile uploads; `creator`/`copyrightHolder` MOJA PLAŽA, d.o.o., `copyrightNotice`, `creditText` Beachrex, `license` → terms of use, `acquireLicensePage` → media kit (English CMS slugs). Mobile uploads (possibly other authors) carry no copyright claim.
+- `buildBeachSchema()` uses them for `image`.
+
+### Testing
+
+`e2e/beach-image-schema.unit.spec.ts` (2).
+
+---
+
 ## 2026-10-08 – Footer: company and brand in the rights line ✅ COMPLETE
 
 Owner, 2026-10-08: the bottom bar reads `© {year} MOJA PLAŽA, d.o.o. · BeachRex. All rights reserved.` in all 19 locales (`Footer.legal.rights` with `{year}`). Test: `e2e/footer-rights.unit.spec.ts`.

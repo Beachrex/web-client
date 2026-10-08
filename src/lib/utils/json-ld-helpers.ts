@@ -88,6 +88,45 @@ export function buildBreadcrumbSchema(items: { name: string; url: string }[]) {
  * @example
  * buildBeachSchema(beachData, 'en', 'https://beachrex.com/en/beaches/europe/croatia/split/bacvice-beach')
  */
+/** Photos on Beachrex are works of MOJA PLAŽA, d.o.o. (terms of use §6). */
+export const PHOTO_COPYRIGHT_HOLDER = 'MOJA PLAŽA, d.o.o.';
+
+/** Licence and permission pages for image structured data (English CMS slugs, stable in the content files). */
+const PHOTO_LICENSE_PATH = '/en/p/terms-of-use';
+const PHOTO_ACQUIRE_LICENSE_PATH = '/en/p/media-kit';
+
+export function buildBeachImageObjects(beach: BeachDetailsSchema, max = 5): Record<string, unknown>[] {
+  const folderName = beach.basic_info?.folder_name;
+  const mobileUpload = beach.basic_info?.mobile_upload ?? false;
+  const gallery = beach.media?.gallery ?? [];
+  if (!folderName || gallery.length === 0) return [];
+
+  const ordered = [...gallery.filter((m) => m.is_primary), ...gallery.filter((m) => !m.is_primary)];
+  const base = baseUrl;
+  const holder = { '@type': 'Organization', name: PHOTO_COPYRIGHT_HOLDER };
+  const name = beach.basic_info?.name ?? undefined;
+
+  return ordered.slice(0, max).flatMap((item) => {
+    const url = buildBeachImageUrl(folderName, item.file_name, mobileUpload, 'hero');
+    if (!url) return [];
+    return [{
+      '@type': 'ImageObject',
+      contentUrl: url,
+      url,
+      name,
+      // Mobile uploads may be other authors' photos: no claim on those
+      ...(mobileUpload ? {} : {
+        creator: holder,
+        copyrightHolder: holder,
+        copyrightNotice: `© ${PHOTO_COPYRIGHT_HOLDER}`,
+        creditText: 'Beachrex',
+        license: `${base}${PHOTO_LICENSE_PATH}`,
+        acquireLicensePage: `${base}${PHOTO_ACQUIRE_LICENSE_PATH}`,
+      }),
+    }];
+  });
+}
+
 export function buildBeachSchema(beach: BeachDetailsSchema, locale: string, url: string) {
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -119,14 +158,11 @@ export function buildBeachSchema(beach: BeachDetailsSchema, locale: string, url:
     };
   }
 
-  // Add image if available
-  const folderName = beach.basic_info?.folder_name;
-  const firstImage = beach.media?.gallery?.[0];
-  if (folderName && firstImage?.file_name) {
-    const imageUrl = buildBeachImageUrl(folderName, firstImage.file_name, false, 'list');
-    if (imageUrl) {
-      schema.image = imageUrl;
-    }
+  // Photos as ImageObjects with author and licence (owner, 2026-10-08): Google Images shows the
+  // creator, credit and licence details. Primary image first, up to 5, in the large size.
+  const images = buildBeachImageObjects(beach);
+  if (images.length > 0) {
+    schema.image = images;
   }
 
   return schema;
