@@ -18,6 +18,18 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – No hard-coded English UI text (TASK-004 audit A4) ✅ COMPLETE
+
+Verified in code which strings were still English for every locale (`WorldQuickActionsSection` and the `BurgerMenu` items were already gone):
+- AI landing cards and info box, chat "View details →" / "Suggestions:", itinerary "Assumptions:" and the purchase error → new keys in `AI.landing`, `AI.chat`, `AI.itinerary`.
+- Home "All filters" modal (`FilterModal`: title, search, clear all, cancel, apply, show more/less) → new `FilterModal` namespace.
+- Map: "Select an option", "No beaches found in this area", layout/close button labels; beach page iframe titles (video, 360° tour, route map) → new `UI` namespace; `StyledSelect` default placeholder from `UI.selectOption`; "Loading filters…" → existing `Filters.loadingFilters`.
+- Short-lived "Loading…" placeholders (carousels, property section, map, continent `loading.tsx`, weather location) → language-neutral skeleton/spinner.
+All new keys in all 19 `messages/*.json`. Image `alt` texts are A6 (SEO step), not part of this change. Test: `e2e/hardcoded-english.unit.spec.ts` (fails against the old files).
+
+
+---
+
 ## 2026-10-08 – Payment result pages and sign-in error: working links, 19 languages (TASK-004 audit D12, D13) ✅ COMPLETE
 
 Stripe is live at launch, so `/payment/success` and `/payment/cancel` (backend `success_url`/`cancel_url`) matter. They redirected after 10 s to `/internal/ai-entitlements` and `/internal/ai-purchase-itinerary` (no such routes → 404), had locale-less `next/link` hrefs, a "View my credits" button with no page, and English-only text. Both now render `src/components/Payment/PaymentResult.tsx`: next-intl `Link`/`useRouter`, countdown back to the itinerary planner (`/ai/itinerary`, where checkout starts), new `Payment` namespace in all 19 `messages/*.json` (support e-mail `info@beachrex.com`). The sign-in error on `auth/callback` linked to a hard-coded `/en`; it now links to the home page of the current locale. The three files left the `locale-links` allowlist. Test: `e2e/payment-pages.unit.spec.ts` (fails against the old success page).

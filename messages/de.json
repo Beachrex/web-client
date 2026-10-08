@@ -650,7 +650,13 @@
       "subtitle": "Ihr persönlicher Strand-Entdeckungsbegleiter mit KI",
       "description": "Erhalten Sie personalisierte Strandempfehlungen, chatten Sie mit unserem KI-Assistenten und erstellen Sie individuelle Reisepläne für Ihren perfekten Strandurlaub.",
       "chatButton": "Chat starten",
-      "itineraryButton": "Reiseplan erstellen"
+      "itineraryButton": "Reiseplan erstellen",
+      "chatCardText": "Fragen Sie unseren KI-Assistenten alles über Strände, Reiseziele und Reisetipps und erhalten Sie sofort persönliche Empfehlungen.",
+      "chatCta": "Chat starten",
+      "itineraryCardText": "Erstellen Sie persönliche mehrtägige Strandurlaubs-Reiserouten nach Ihren Vorlieben, Ihrem Budget und Ihren Interessen.",
+      "itineraryCta": "Reiseroute erstellen",
+      "infoTitle": "Neu bei Beachrex AI?",
+      "infoText": "Der Chat ist für alle kostenlos. Mehrtägige Reiserouten benötigen Credits – melden Sie sich mit Google an, um loszulegen!"
     },
     "chat": {
       "title": "Mit KI chatten",
@@ -660,7 +666,9 @@
       "sending": "Wird gesendet...",
       "error": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
       "welcome": "Hallo! Ich bin Ihr KI-Strandassistent. Wie kann ich Ihnen heute helfen?",
-      "anonymousNote": "Sie chatten anonym. Melden Sie sich an, um Ihre Unterhaltungen zu speichern und auf Premium-Funktionen zuzugreifen."
+      "anonymousNote": "Sie chatten anonym. Melden Sie sich an, um Ihre Unterhaltungen zu speichern und auf Premium-Funktionen zuzugreifen.",
+      "viewDetails": "Details ansehen →",
+      "suggestions": "Vorschläge:"
     },
     "itinerary": {
       "title": "Strand-Reiseplan erstellen",
@@ -682,7 +690,9 @@
       "error": "Reiseplan konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
       "paymentRequired": "Mehrtägige Reisepläne erfordern Credits. Bitte kaufen Sie Credits, um fortzufahren.",
       "creditsRemaining": "Verbleibende Credits: {count}",
-      "purchaseCredits": "Credits kaufen"
+      "purchaseCredits": "Credits kaufen",
+      "assumptions": "Annahmen:",
+      "purchaseError": "Der Kauf konnte nicht gestartet werden. Bitte versuchen Sie es erneut."
     },
     "entitlements": {
       "title": "Meine Credits",
@@ -809,5 +819,26 @@
     "tryAgain": "Erneut versuchen",
     "goHome": "Zur Startseite",
     "help": "Brauchen Sie Hilfe? Schreiben Sie an {email}."
+  },
+  "UI": {
+    "selectOption": "Option auswählen",
+    "noBeachesInArea": "In diesem Gebiet wurden keine Strände gefunden",
+    "singleColumn": "Einspaltige Ansicht",
+    "doubleColumn": "Zweispaltige Ansicht",
+    "closeMap": "Karte schließen",
+    "closeFilters": "Filter schließen",
+    "videoTitle": "Strandvideo",
+    "virtualTourTitle": "360°-Rundgang",
+    "beachRouteMapTitle": "Karte mit dem Weg zum Strand"
+  },
+  "FilterModal": {
+    "title": "Alle Strandfilter",
+    "searchPlaceholder": "🔍 Filter suchen …",
+    "clearAll": "Alle löschen",
+    "cancel": "Abbrechen",
+    "apply": "Filter anwenden",
+    "applyCount": "Filter anwenden ({count})",
+    "showLess": "Weniger anzeigen",
+    "showMore": "{count} weitere anzeigen …"
   }
 }

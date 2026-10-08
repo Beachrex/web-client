@@ -260,7 +260,7 @@ export default function AIChatPage() {
                                   rel="noopener noreferrer"
                                   className="text-sm text-blue-600 hover:underline mt-2 inline-block"
                                 >
-                                  View details →
+                                  {t('viewDetails')}
                                 </a>
                               )}
                             </div>
@@ -274,7 +274,7 @@ export default function AIChatPage() {
                   {message.suggestions && message.suggestions.length > 0 && (
                     <div className="mt-3 space-y-1">
                       <p className="text-xs font-medium text-gray-600">
-                        Suggestions:
+                        {t('suggestions')}
                       </p>
                       {message.suggestions.map((suggestion, idx) => (
                         <button

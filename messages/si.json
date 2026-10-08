@@ -660,7 +660,13 @@
       "subtitle": "Vaš osebni spremljevalec pri iskanju plaž, ki ga poganja umetna inteligenca",
       "description": "Prejmite priporočila plaž po vaši meri, poklepetajte z našim AI pomočnikom in ustvarite načrt potovanja za popoln dopust ob morju.",
       "chatButton": "Začni klepet",
-      "itineraryButton": "Ustvari načrt potovanja"
+      "itineraryButton": "Ustvari načrt potovanja",
+      "chatCardText": "Vprašajte našega AI pomočnika karkoli o plažah, destinacijah in nasvetih za potovanje ter takoj dobite prilagojena priporočila.",
+      "chatCta": "Začni klepet",
+      "itineraryCardText": "Ustvarite večdnevne načrte počitnic na plaži, prilagojene vašim željam, proračunu in interesom.",
+      "itineraryCta": "Ustvari načrt izleta",
+      "infoTitle": "Ste novi pri Beachrex AI?",
+      "infoText": "Klepet je brezplačen za vse. Za večdnevne načrte potrebujete kredite – za začetek se prijavite z Googlom!"
     },
     "chat": {
       "title": "Klepet z AI",
@@ -670,7 +676,9 @@
       "sending": "Pošiljanje ...",
       "error": "Sporočila ni bilo mogoče poslati. Poskusite znova.",
       "welcome": "Pozdravljeni! Sem vaš AI pomočnik za plaže. Kako vam lahko pomagam?",
-      "anonymousNote": "Klepetate anonimno. Prijavite se, da shranite pogovore in dostopate do naprednih funkcij."
+      "anonymousNote": "Klepetate anonimno. Prijavite se, da shranite pogovore in dostopate do naprednih funkcij.",
+      "viewDetails": "Poglej podrobnosti →",
+      "suggestions": "Predlogi:"
     },
     "itinerary": {
       "title": "Ustvari načrt potovanja",
@@ -692,7 +700,9 @@
       "error": "Načrta potovanja ni bilo mogoče ustvariti. Poskusite znova.",
       "paymentRequired": "Večdnevni načrti potovanja zahtevajo kredite. Za nadaljevanje kupite kredite.",
       "creditsRemaining": "Preostali krediti: {count}",
-      "purchaseCredits": "Kupi kredite"
+      "purchaseCredits": "Kupi kredite",
+      "assumptions": "Predpostavke:",
+      "purchaseError": "Nakupa ni bilo mogoče začeti. Poskusite znova."
     },
     "entitlements": {
       "title": "Moji krediti",
@@ -809,5 +819,26 @@
     "tryAgain": "Poskusi znova",
     "goHome": "Na domačo stran",
     "help": "Potrebujete pomoč? Pišite na {email}."
+  },
+  "UI": {
+    "selectOption": "Izberite možnost",
+    "noBeachesInArea": "Na tem območju ni plaž",
+    "singleColumn": "Prikaz v enem stolpcu",
+    "doubleColumn": "Prikaz v dveh stolpcih",
+    "closeMap": "Zapri zemljevid",
+    "closeFilters": "Zapri filtre",
+    "videoTitle": "Video plaže",
+    "virtualTourTitle": "Virtualni ogled 360°",
+    "beachRouteMapTitle": "Zemljevid s potjo do plaže"
+  },
+  "FilterModal": {
+    "title": "Vsi filtri plaž",
+    "searchPlaceholder": "🔍 Iščite filtre …",
+    "clearAll": "Počisti vse",
+    "cancel": "Prekliči",
+    "apply": "Uporabi filtre",
+    "applyCount": "Uporabi filtre ({count})",
+    "showLess": "Prikaži manj",
+    "showMore": "Prikaži še {count} …"
   }
 }

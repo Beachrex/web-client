@@ -650,7 +650,13 @@
       "subtitle": "Váš osobní průvodce objevování pláží poháněný AI",
       "description": "Získejte personalizovaná doporučení pláží, chatujte s naším AI asistentem a vytvářejte vlastní itineráře pro vaši perfektní plážovou dovolenou.",
       "chatButton": "Začít chatovat",
-      "itineraryButton": "Vytvořit itinerář"
+      "itineraryButton": "Vytvořit itinerář",
+      "chatCardText": "Zeptejte se našeho AI asistenta na cokoli o plážích, destinacích a cestovních tipech a hned získejte doporučení na míru.",
+      "chatCta": "Začít chatovat",
+      "itineraryCardText": "Vytvářejte vícedenní plány dovolené u moře na míru podle svých preferencí, rozpočtu a zájmů.",
+      "itineraryCta": "Vytvořit plán výletu",
+      "infoTitle": "Jste v Beachrex AI noví?",
+      "infoText": "Chat je pro všechny zdarma. Vícedenní plány vyžadují kredity – přihlaste se přes Google a začněte!"
     },
     "chat": {
       "title": "Chat s AI",
@@ -660,7 +666,9 @@
       "sending": "Odesílání...",
       "error": "Odeslání zprávy selhalo. Zkuste to prosím znovu.",
       "welcome": "Ahoj! Jsem váš AI plážový asistent. Jak vám mohu dnes pomoci?",
-      "anonymousNote": "Chatujete anonymně. Přihlaste se pro uložení konverzací a přístup k prémiové funkce."
+      "anonymousNote": "Chatujete anonymně. Přihlaste se pro uložení konverzací a přístup k prémiové funkce.",
+      "viewDetails": "Zobrazit podrobnosti →",
+      "suggestions": "Návrhy:"
     },
     "itinerary": {
       "title": "Vytvořit plážový itinerář",
@@ -682,7 +690,9 @@
       "error": "Generování itineráře selhalo. Zkuste to prosím znovu.",
       "paymentRequired": "Vícedenní itineráře vyžadují kredity. Zakupte prosím kredity pro pokračování.",
       "creditsRemaining": "Zbývající kredity: {count}",
-      "purchaseCredits": "Zakoupit kredity"
+      "purchaseCredits": "Zakoupit kredity",
+      "assumptions": "Předpoklady:",
+      "purchaseError": "Nákup se nepodařilo zahájit. Zkuste to znovu."
     },
     "entitlements": {
       "title": "Moje kredity",
@@ -809,5 +819,26 @@
     "tryAgain": "Zkusit znovu",
     "goHome": "Na úvodní stránku",
     "help": "Potřebujete pomoc? Napište na {email}."
+  },
+  "UI": {
+    "selectOption": "Vyberte možnost",
+    "noBeachesInArea": "V této oblasti nebyly nalezeny žádné pláže",
+    "singleColumn": "Zobrazení v jednom sloupci",
+    "doubleColumn": "Zobrazení ve dvou sloupcích",
+    "closeMap": "Zavřít mapu",
+    "closeFilters": "Zavřít filtry",
+    "videoTitle": "Video pláže",
+    "virtualTourTitle": "Virtuální prohlídka 360°",
+    "beachRouteMapTitle": "Mapa s cestou na pláž"
+  },
+  "FilterModal": {
+    "title": "Všechny filtry pláží",
+    "searchPlaceholder": "🔍 Hledat filtry…",
+    "clearAll": "Vymazat vše",
+    "cancel": "Zrušit",
+    "apply": "Použít filtry",
+    "applyCount": "Použít filtry ({count})",
+    "showLess": "Zobrazit méně",
+    "showMore": "Zobrazit dalších {count}…"
   }
 }

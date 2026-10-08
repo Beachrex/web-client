@@ -43,6 +43,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
   >({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const t = useTranslations('BeachCategories');
+  const tFilters = useTranslations('Filters');
   const locale = useLocale();
   const router = useRouter();
 
@@ -209,7 +210,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
           {/* Category Grid */}
           {filtersLoading ? (
             <div className="py-12 text-center text-white">
-              Loading filters...
+              {tFilters('loadingFilters')}
             </div>
           ) : (
             <div className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3 md:grid-cols-6 md:gap-4 lg:grid-cols-8 lg:gap-5 xl:grid-cols-10 xl:gap-6 2xl:grid-cols-11">

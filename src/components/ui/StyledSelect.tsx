@@ -1,6 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 
 interface Option {
   value: string;
@@ -19,9 +20,11 @@ export default function StyledSelect({
   value,
   onChange,
   options,
-  placeholder = 'Select an option',
+  placeholder,
   className,
 }: StyledSelectProps) {
+  const tUi = useTranslations('UI');
+
   return (
    <select
   value={value ?? ''}
@@ -45,7 +48,7 @@ export default function StyledSelect({
    >
 
 
-      <option value="">{placeholder}</option>
+      <option value="">{placeholder ?? tUi('selectOption')}</option>
 
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>

@@ -64,11 +64,10 @@ export default async function AILandingPage({
               </h2>
             </div>
             <p className="text-gray-600 mb-4">
-              Ask our AI assistant anything about beaches, destinations,
-              travel tips, and get instant personalized recommendations.
+              {t('chatCardText')}
             </p>
             <div className="flex items-center text-blue-600 font-medium">
-              Start chatting
+              {t('chatCta')}
               <svg
                 className="w-5 h-5 ml-2"
                 fill="none"
@@ -99,11 +98,10 @@ export default async function AILandingPage({
               </h2>
             </div>
             <p className="text-gray-600 mb-4">
-              Generate personalized multi-day beach vacation itineraries
-              tailored to your preferences, budget, and interests.
+              {t('itineraryCardText')}
             </p>
             <div className="flex items-center text-green-600 font-medium">
-              Create itinerary
+              {t('itineraryCta')}
               <svg
                 className="w-5 h-5 ml-2"
                 fill="none"
@@ -125,8 +123,7 @@ export default async function AILandingPage({
         <div className="mt-16 text-center">
           <div className="inline-block p-6 bg-blue-50 rounded-lg">
             <p className="text-gray-700">
-              <span className="font-semibold">New to Beachrex AI?</span> Chat is free for everyone.
-              Multi-day itineraries require credits - sign in with Google to get started!
+              <span className="font-semibold">{t('infoTitle')}</span> {t('infoText')}
             </p>
           </div>
         </div>

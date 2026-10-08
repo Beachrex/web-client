@@ -23,6 +23,7 @@ interface Bounds {
 
 const MapWithSidebar = () => {
     const t = useTranslations('BeachesMap');
+    const tUi = useTranslations('UI');
     const d = useTranslations('BeachDetails');
     const c = useTranslations('SearchBeach');
     const searchParams = useSearchParams();
@@ -660,14 +661,14 @@ const MapWithSidebar = () => {
                                     <button
                                         onClick={() => setColumnLayout(1)}
                                         className="py-1.5 pl-1.5 pr-0.5 hover:bg-gray-50 rounded"
-                                        aria-label="Single column layout"
+                                        aria-label={tUi('singleColumn')}
                                     >
                                         <SingleColumnIcon isActive={columnLayout === 1} />
                                     </button>
                                     <button
                                         onClick={() => setColumnLayout(2)}
                                         className="py-1.5 pl-0.5 pr-1.5 hover:bg-gray-50 rounded"
-                                        aria-label="Double column layout"
+                                        aria-label={tUi('doubleColumn')}
                                     >
                                         <DoubleColumnIcon isActive={columnLayout === 2} />
                                     </button>
@@ -774,7 +775,7 @@ const MapWithSidebar = () => {
                                     type="button"
                                     onClick={() => setIsMobileMapOpen(false)}
                                     className="absolute -top-4 right-4 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-white text-xl font-bold text-gray-800 shadow"
-                                    aria-label="Close map"
+                                    aria-label={tUi('closeMap')}
                                 >
                                     X
                                 </button>
@@ -791,7 +792,7 @@ const MapWithSidebar = () => {
                                 type="button"
                                 onClick={() => setIsMobileFiltersOpen(false)}
                                 className="absolute top-3 right-3 z-50 flex h-8 w-8 items-center justify-center rounded-full bg-white text-lg font-bold text-gray-800 shadow"
-                                aria-label="Close filters"
+                                aria-label={tUi('closeFilters')}
                             >
                                 X
                             </button>

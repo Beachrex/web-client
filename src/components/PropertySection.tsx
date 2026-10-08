@@ -18,7 +18,7 @@ const PropertyCarousel = dynamic(
   {
     loading: () => (
       <div className="flex h-[295px] w-full items-center justify-center">
-        <div className="animate-pulse text-gray-400">Loading...</div>
+        <div className="animate-pulse text-gray-400" />
       </div>
     ),
     ssr: false,

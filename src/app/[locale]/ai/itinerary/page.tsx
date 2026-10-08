@@ -232,7 +232,7 @@ export default function AIItineraryPage() {
       window.location.href = data.checkout_url;
     } catch (err) {
       console.error('[AIItineraryPage] Failed to create checkout:', err);
-      setError('Failed to initiate purchase. Please try again.');
+      setError(t('purchaseError'));
     }
   };
 
@@ -400,7 +400,7 @@ export default function AIItineraryPage() {
 
             {itinerary.assumptions.length > 0 && (
               <div className="mt-6 p-4 bg-yellow-50 rounded">
-                <h4 className="font-medium text-gray-900 mb-2">Assumptions:</h4>
+                <h4 className="font-medium text-gray-900 mb-2">{t('assumptions')}</h4>
                 <ul className="list-disc list-inside text-sm text-gray-700">
                   {itinerary.assumptions.map((assumption, idx) => (
                     <li key={idx}>{assumption}</li>

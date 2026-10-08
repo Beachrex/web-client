@@ -650,7 +650,13 @@
       "subtitle": "Tu compañero personal de descubrimiento de playas impulsado por IA",
       "description": "Obtén recomendaciones de playas personalizadas, chatea con nuestro asistente de IA y crea itinerarios personalizados para tus vacaciones perfectas en la playa.",
       "chatButton": "Comenzar a chatear",
-      "itineraryButton": "Crear itinerario"
+      "itineraryButton": "Crear itinerario",
+      "chatCardText": "Pregunta a nuestro asistente de IA lo que quieras sobre playas, destinos y consejos de viaje, y recibe recomendaciones personalizadas al instante.",
+      "chatCta": "Empezar a chatear",
+      "itineraryCardText": "Genera itinerarios personalizados de varios días para tus vacaciones de playa, adaptados a tus preferencias, presupuesto e intereses.",
+      "itineraryCta": "Crear un itinerario",
+      "infoTitle": "¿Nuevo en Beachrex AI?",
+      "infoText": "El chat es gratuito para todos. Los itinerarios de varios días necesitan créditos: ¡inicia sesión con Google para empezar!"
     },
     "chat": {
       "title": "Chatear con IA",
@@ -660,7 +666,9 @@
       "sending": "Enviando...",
       "error": "Error al enviar el mensaje. Por favor inténtalo de nuevo.",
       "welcome": "¡Hola! Soy tu asistente de playa con IA. ¿Cómo puedo ayudarte hoy?",
-      "anonymousNote": "Estás chateando de forma anónima. Inicia sesión para guardar tus conversaciones y acceder a funciones premium."
+      "anonymousNote": "Estás chateando de forma anónima. Inicia sesión para guardar tus conversaciones y acceder a funciones premium.",
+      "viewDetails": "Ver detalles →",
+      "suggestions": "Sugerencias:"
     },
     "itinerary": {
       "title": "Crear itinerario de playa",
@@ -682,7 +690,9 @@
       "error": "Error al generar el itinerario. Por favor inténtalo de nuevo.",
       "paymentRequired": "Los itinerarios de varios días requieren créditos. Por favor compra créditos para continuar.",
       "creditsRemaining": "Créditos restantes: {count}",
-      "purchaseCredits": "Comprar créditos"
+      "purchaseCredits": "Comprar créditos",
+      "assumptions": "Supuestos:",
+      "purchaseError": "No se pudo iniciar la compra. Inténtalo de nuevo."
     },
     "entitlements": {
       "title": "Mis créditos",
@@ -809,5 +819,26 @@
     "tryAgain": "Intentar de nuevo",
     "goHome": "Ir a la página de inicio",
     "help": "¿Necesitas ayuda? Escribe a {email}."
+  },
+  "UI": {
+    "selectOption": "Selecciona una opción",
+    "noBeachesInArea": "No se han encontrado playas en esta zona",
+    "singleColumn": "Vista de una columna",
+    "doubleColumn": "Vista de dos columnas",
+    "closeMap": "Cerrar mapa",
+    "closeFilters": "Cerrar filtros",
+    "videoTitle": "Vídeo de la playa",
+    "virtualTourTitle": "Visita virtual 360°",
+    "beachRouteMapTitle": "Mapa con la ruta a la playa"
+  },
+  "FilterModal": {
+    "title": "Todos los filtros de playa",
+    "searchPlaceholder": "🔍 Buscar filtros…",
+    "clearAll": "Borrar todo",
+    "cancel": "Cancelar",
+    "apply": "Aplicar filtros",
+    "applyCount": "Aplicar filtros ({count})",
+    "showLess": "Mostrar menos",
+    "showMore": "Mostrar {count} más…"
   }
 }

@@ -650,7 +650,13 @@
       "subtitle": "Shoqëruesi juaj personal i zbulimit të plazheve i fuqizuar nga AI",
       "description": "Merrni rekomandime të personalizuara për plazhe, bisedoni me asistentin tonë AI dhe krijoni itinerarë të personalizuara për pushimet tuaja të përsosura në plazh.",
       "chatButton": "Fillo bisedën",
-      "itineraryButton": "Krijo itinerar"
+      "itineraryButton": "Krijo itinerar",
+      "chatCardText": "Pyetni asistentin tonë AI për çdo gjë rreth plazheve, destinacioneve dhe këshillave të udhëtimit dhe merrni menjëherë rekomandime të personalizuara.",
+      "chatCta": "Fillo bisedën",
+      "itineraryCardText": "Krijoni itinerare të personalizuara shumëditore për pushime në plazh, sipas preferencave, buxhetit dhe interesave tuaja.",
+      "itineraryCta": "Krijo një itinerar",
+      "infoTitle": "I ri në Beachrex AI?",
+      "infoText": "Biseda është falas për të gjithë. Itineraret shumëditore kërkojnë kredite – hyni me Google për të filluar!"
     },
     "chat": {
       "title": "Bisedo me AI",
@@ -660,7 +666,9 @@
       "sending": "Duke dërguar...",
       "error": "Dështoi dërgimi i mesazhit. Ju lutemi provoni përsëri.",
       "welcome": "Përshëndetje! Jam asistenti juaj AI i plazheve. Si mund t'ju ndihmoj sot?",
-      "anonymousNote": "Po bisedoni anonimisht. Hyni për të ruajtur bisedat tuaja dhe për të përdorur funksionet premium."
+      "anonymousNote": "Po bisedoni anonimisht. Hyni për të ruajtur bisedat tuaja dhe për të përdorur funksionet premium.",
+      "viewDetails": "Shiko detajet →",
+      "suggestions": "Sugjerime:"
     },
     "itinerary": {
       "title": "Krijo itinerar plazhesh",
@@ -682,7 +690,9 @@
       "error": "Dështoi gjenerimi i itinerarit. Ju lutemi provoni përsëri.",
       "paymentRequired": "Itinerarët me disa ditë kërkojnë kredite. Ju lutemi blini kredite për të vazhduar.",
       "creditsRemaining": "Kreditë e mbetura: {count}",
-      "purchaseCredits": "Bli kredite"
+      "purchaseCredits": "Bli kredite",
+      "assumptions": "Supozime:",
+      "purchaseError": "Blerja nuk mund të fillonte. Provoni përsëri."
     },
     "entitlements": {
       "title": "Kreditë e mia",
@@ -809,5 +819,26 @@
     "tryAgain": "Provo përsëri",
     "goHome": "Te faqja kryesore",
     "help": "Keni nevojë për ndihmë? Shkruani në {email}."
+  },
+  "UI": {
+    "selectOption": "Zgjidhni një opsion",
+    "noBeachesInArea": "Nuk u gjetën plazhe në këtë zonë",
+    "singleColumn": "Pamje me një kolonë",
+    "doubleColumn": "Pamje me dy kolona",
+    "closeMap": "Mbyll hartën",
+    "closeFilters": "Mbyll filtrat",
+    "videoTitle": "Video e plazhit",
+    "virtualTourTitle": "Turi virtual 360°",
+    "beachRouteMapTitle": "Harta me rrugën për në plazh"
+  },
+  "FilterModal": {
+    "title": "Të gjithë filtrat e plazhit",
+    "searchPlaceholder": "🔍 Kërko filtra…",
+    "clearAll": "Pastro të gjitha",
+    "cancel": "Anulo",
+    "apply": "Apliko filtrat",
+    "applyCount": "Apliko filtrat ({count})",
+    "showLess": "Shfaq më pak",
+    "showMore": "Shfaq edhe {count}…"
   }
 }

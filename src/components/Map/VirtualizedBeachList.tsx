@@ -4,6 +4,7 @@ import { DynamicPropertyCard } from '@/components/PropertyCard/DynamicPropertyCa
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { List } from 'react-window';
+import { useTranslations } from 'next-intl';
 
 // Performance logging
 const ENABLE_PERF_LOGGING = false;
@@ -110,6 +111,7 @@ const VirtualizedBeachListInner = ({
   containerWidth,
   scrollContainerRef: _scrollContainerRef,
 }: VirtualizedBeachListProps) => {
+  const tUi = useTranslations('UI');
   const listRef = React.useRef<ListRef | null>(null);
   const renderStartTime = useRef(performance.now());
   const currentRenderCount = useRef(++renderCount);
@@ -235,7 +237,7 @@ const VirtualizedBeachListInner = ({
   if (beaches.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-gray-500">No beaches found in this area</p>
+        <p className="text-gray-500">{tUi('noBeachesInArea')}</p>
       </div>
     );
   }

@@ -13,7 +13,7 @@ const Carousel = dynamic(
   {
     loading: () => (
       <div className="h-96 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">
-        <div className="text-gray-400">Loading carousel...</div>
+        <div className="h-full w-full animate-pulse rounded-lg bg-gray-200" />
       </div>
     ),
     ssr: false,

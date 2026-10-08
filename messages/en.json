@@ -650,7 +650,13 @@
       "subtitle": "Your personal beach discovery companion powered by AI",
       "description": "Get personalized beach recommendations, chat with our AI assistant, and create custom itineraries for your perfect beach vacation.",
       "chatButton": "Start Chatting",
-      "itineraryButton": "Create Itinerary"
+      "itineraryButton": "Create Itinerary",
+      "chatCardText": "Ask our AI assistant anything about beaches, destinations and travel tips, and get instant personalised recommendations.",
+      "chatCta": "Start chatting",
+      "itineraryCardText": "Generate personalised multi-day beach holiday itineraries tailored to your preferences, budget and interests.",
+      "itineraryCta": "Create an itinerary",
+      "infoTitle": "New to Beachrex AI?",
+      "infoText": "The chat is free for everyone. Multi-day itineraries need credits – sign in with Google to get started!"
     },
     "chat": {
       "title": "Chat with AI",
@@ -660,7 +666,9 @@
       "sending": "Sending...",
       "error": "Failed to send message. Please try again.",
       "welcome": "Hello! I'm your AI beach assistant. How can I help you today?",
-      "anonymousNote": "You're chatting anonymously. Sign in to save your conversations and access premium features."
+      "anonymousNote": "You're chatting anonymously. Sign in to save your conversations and access premium features.",
+      "viewDetails": "View details →",
+      "suggestions": "Suggestions:"
     },
     "itinerary": {
       "title": "Create Beach Itinerary",
@@ -682,7 +690,9 @@
       "error": "Failed to generate itinerary. Please try again.",
       "paymentRequired": "Multi-day itineraries require credits. Please purchase credits to continue.",
       "creditsRemaining": "Credits remaining: {count}",
-      "purchaseCredits": "Purchase Credits"
+      "purchaseCredits": "Purchase Credits",
+      "assumptions": "Assumptions:",
+      "purchaseError": "The purchase could not be started. Please try again."
     },
     "entitlements": {
       "title": "My Credits",
@@ -809,5 +819,26 @@
     "tryAgain": "Try again",
     "goHome": "Go to the homepage",
     "help": "Need help? Write to {email}."
+  },
+  "UI": {
+    "selectOption": "Select an option",
+    "noBeachesInArea": "No beaches found in this area",
+    "singleColumn": "Single-column layout",
+    "doubleColumn": "Two-column layout",
+    "closeMap": "Close map",
+    "closeFilters": "Close filters",
+    "videoTitle": "Beach video",
+    "virtualTourTitle": "360° virtual tour",
+    "beachRouteMapTitle": "Map with the route to the beach"
+  },
+  "FilterModal": {
+    "title": "All beach filters",
+    "searchPlaceholder": "🔍 Search filters…",
+    "clearAll": "Clear all",
+    "cancel": "Cancel",
+    "apply": "Apply filters",
+    "applyCount": "Apply filters ({count})",
+    "showLess": "Show less",
+    "showMore": "Show {count} more…"
   }
 }

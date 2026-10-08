@@ -650,7 +650,13 @@
       "subtitle": "Jouw persoonlijke strandontdekkingsgezel, aangedreven door AI",
       "description": "Krijg persoonlijke strandaanbevelingen, chat met onze AI-assistent en maak aangepaste reisplannen voor jouw perfecte strandvakantie.",
       "chatButton": "Start met chatten",
-      "itineraryButton": "Reisplan maken"
+      "itineraryButton": "Reisplan maken",
+      "chatCardText": "Vraag onze AI-assistent alles over stranden, bestemmingen en reistips en krijg meteen persoonlijke aanbevelingen.",
+      "chatCta": "Begin met chatten",
+      "itineraryCardText": "Maak persoonlijke meerdaagse reisroutes voor je strandvakantie, afgestemd op je voorkeuren, budget en interesses.",
+      "itineraryCta": "Reisroute maken",
+      "infoTitle": "Nieuw bij Beachrex AI?",
+      "infoText": "De chat is gratis voor iedereen. Meerdaagse reisroutes vragen credits – log in met Google om te beginnen!"
     },
     "chat": {
       "title": "Chat met AI",
@@ -660,7 +666,9 @@
       "sending": "Versturen...",
       "error": "Bericht versturen mislukt. Probeer het opnieuw.",
       "welcome": "Hallo! Ik ben je AI-strandassistent. Hoe kan ik je vandaag helpen?",
-      "anonymousNote": "Je chat anoniem. Meld je aan om je gesprekken op te slaan en toegang te krijgen tot premium functies."
+      "anonymousNote": "Je chat anoniem. Meld je aan om je gesprekken op te slaan en toegang te krijgen tot premium functies.",
+      "viewDetails": "Details bekijken →",
+      "suggestions": "Suggesties:"
     },
     "itinerary": {
       "title": "Strandreisplan maken",
@@ -682,7 +690,9 @@
       "error": "Reisplan genereren mislukt. Probeer het opnieuw.",
       "paymentRequired": "Meerdaagse reisplannen vereisen credits. Koop credits om door te gaan.",
       "creditsRemaining": "Resterende credits: {count}",
-      "purchaseCredits": "Credits kopen"
+      "purchaseCredits": "Credits kopen",
+      "assumptions": "Aannames:",
+      "purchaseError": "De aankoop kon niet worden gestart. Probeer het opnieuw."
     },
     "entitlements": {
       "title": "Mijn credits",
@@ -809,5 +819,26 @@
     "tryAgain": "Opnieuw proberen",
     "goHome": "Naar de startpagina",
     "help": "Hulp nodig? Schrijf naar {email}."
+  },
+  "UI": {
+    "selectOption": "Kies een optie",
+    "noBeachesInArea": "Geen stranden gevonden in dit gebied",
+    "singleColumn": "Weergave in één kolom",
+    "doubleColumn": "Weergave in twee kolommen",
+    "closeMap": "Kaart sluiten",
+    "closeFilters": "Filters sluiten",
+    "videoTitle": "Strandvideo",
+    "virtualTourTitle": "360°-rondleiding",
+    "beachRouteMapTitle": "Kaart met de route naar het strand"
+  },
+  "FilterModal": {
+    "title": "Alle strandfilters",
+    "searchPlaceholder": "🔍 Filters zoeken…",
+    "clearAll": "Alles wissen",
+    "cancel": "Annuleren",
+    "apply": "Filters toepassen",
+    "applyCount": "Filters toepassen ({count})",
+    "showLess": "Minder tonen",
+    "showMore": "Nog {count} tonen…"
   }
 }
