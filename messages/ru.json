@@ -708,5 +708,37 @@
     "aiChat": "AI-чат о пляжах",
     "aiItinerary": "AI-планировщик поездок",
     "contact": "Контакты"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Загрузки",
+    "packageTitle": "Полный пакет бренда",
+    "packageDescription": "Все логотипы (SVG, PDF, EPS, PNG), фавикон и иконки приложения, изображения для соцсетей и цветовая палитра в одном ZIP-файле.",
+    "packageButton": "Скачать ZIP",
+    "guidelinesTitle": "Брендбук",
+    "logosTitle": "Логотипы",
+    "versions": {
+      "horizontal": "Горизонтальный (основной)",
+      "stacked": "Вертикальный",
+      "symbol": "Символ",
+      "wordmark": "Текстовый логотип"
+    },
+    "colors": {
+      "color": "Цветной",
+      "black": "Чёрный",
+      "white": "Белый",
+      "teal": "Бирюзовый",
+      "orange": "Оранжевый"
+    },
+    "logoAlt": "Логотип Beachrex – {version}, {color}",
+    "colorsTitle": "Цвета",
+    "paletteDownload": "Скачать палитру",
+    "socialTitle": "Изображения для соцсетей",
+    "social": {
+      "profile": "Фото профиля",
+      "og": "Изображение для превью ссылки",
+      "facebook": "Обложка Facebook",
+      "linkedin": "Обложка LinkedIn",
+      "x": "Шапка X"
+    }
   }
 }

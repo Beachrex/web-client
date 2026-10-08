@@ -18,6 +18,26 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Media kit: brand package and downloads under the CMS page `media-kit` ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: add the brand package (CGP v1.0: logos, favicon/app icons, social images, colours, guidelines SL/EN) to git and publish a media kit page in the footer with all guidelines and logos for download.
+
+### Changes
+
+- `public/brand/BeachRex_CGP/` — the package as delivered (without `.DS_Store`/`__MACOSX`), plus `public/brand/BeachRex_CGP.zip` (whole package).
+- `src/config/mediaKit.ts` — file list (4 logo versions × 5 colours × SVG/PNG 1000/PNG 3000/PDF/EPS, guidelines, palette, social images).
+- `src/components/StaticPage/MediaKitDownloads.tsx` — downloads with logo previews (white logo on teal), rendered under the CMS page whose `code` is `media-kit`. Page text, title, slug and footer entry come from the CMS (backend `database/content/static-pages`, `static-pages:sync`).
+- `MediaKit` namespace in all 19 `messages/*.json`.
+- Middleware matcher skips `brand/` so the files are served without a locale prefix.
+
+### Testing
+
+`e2e/media-kit.unit.spec.ts` — every download link points at an existing file in `public/`.
+
+---
+
 ## 2026-10-08 – Beach map: quick filters when advanced filters are off ✅ COMPLETE
 
 ### Overview

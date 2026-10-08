@@ -708,5 +708,37 @@
     "aiChat": "Bisedë AI për plazhet",
     "aiItinerary": "Planifikues udhëtimi AI",
     "contact": "Kontakt"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Shkarkime",
+    "packageTitle": "Paketa e plotë e markës",
+    "packageDescription": "Të gjitha logot (SVG, PDF, EPS, PNG), favicon-i dhe ikonat e aplikacionit, imazhet për rrjetet sociale dhe paleta e ngjyrave në një skedar ZIP.",
+    "packageButton": "Shkarkoni ZIP-in",
+    "guidelinesTitle": "Udhëzimet e markës",
+    "logosTitle": "Logot",
+    "versions": {
+      "horizontal": "Horizontal (kryesor)",
+      "stacked": "Vertikal",
+      "symbol": "Simboli",
+      "wordmark": "Logo me tekst"
+    },
+    "colors": {
+      "color": "Me ngjyra",
+      "black": "E zezë",
+      "white": "E bardhë",
+      "teal": "Bruz",
+      "orange": "Portokalli"
+    },
+    "logoAlt": "Logoja e Beachrex – {version}, {color}",
+    "colorsTitle": "Ngjyrat",
+    "paletteDownload": "Shkarkoni paletën",
+    "socialTitle": "Imazhe për rrjetet sociale",
+    "social": {
+      "profile": "Foto e profilit",
+      "og": "Imazh për parapamjen e lidhjes",
+      "facebook": "Kopertina e Facebook",
+      "linkedin": "Kopertina e LinkedIn",
+      "x": "Koka e X"
+    }
   }
 }

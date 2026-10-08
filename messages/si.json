@@ -708,5 +708,37 @@
     "aiChat": "AI klepet o plažah",
     "aiItinerary": "AI načrtovalec potovanj",
     "contact": "Kontakt"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Prenosi",
+    "packageTitle": "Celoten paket blagovne znamke",
+    "packageDescription": "Vsi logotipi (SVG, PDF, EPS, PNG), favicon in ikone aplikacij, slike za družbena omrežja in barvna paleta v eni datoteki ZIP.",
+    "packageButton": "Prenesite ZIP",
+    "guidelinesTitle": "Smernice blagovne znamke",
+    "logosTitle": "Logotipi",
+    "versions": {
+      "horizontal": "Vodoravni (osnovni)",
+      "stacked": "Navpični",
+      "symbol": "Simbol",
+      "wordmark": "Besedni znak"
+    },
+    "colors": {
+      "color": "Barvni",
+      "black": "Črni",
+      "white": "Beli",
+      "teal": "Turkizni",
+      "orange": "Oranžni"
+    },
+    "logoAlt": "Logotip Beachrex – {version}, {color}",
+    "colorsTitle": "Barve",
+    "paletteDownload": "Prenesite paleto",
+    "socialTitle": "Slike za družbena omrežja",
+    "social": {
+      "profile": "Profilna slika",
+      "og": "Slika za predogled povezave",
+      "facebook": "Naslovnica za Facebook",
+      "linkedin": "Naslovnica za LinkedIn",
+      "x": "Glava za X"
+    }
   }
 }

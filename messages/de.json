@@ -708,5 +708,37 @@
     "aiChat": "KI-Strand-Chat",
     "aiItinerary": "KI-Reiseplaner",
     "contact": "Kontakt"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Downloads",
+    "packageTitle": "Komplettes Markenpaket",
+    "packageDescription": "Alle Logos (SVG, PDF, EPS, PNG), Favicon und App-Icons, Social-Media-Bilder und die Farbpalette in einer ZIP-Datei.",
+    "packageButton": "ZIP herunterladen",
+    "guidelinesTitle": "Markenrichtlinien",
+    "logosTitle": "Logos",
+    "versions": {
+      "horizontal": "Horizontal (primär)",
+      "stacked": "Gestapelt",
+      "symbol": "Symbol",
+      "wordmark": "Wortmarke"
+    },
+    "colors": {
+      "color": "Vollfarbig",
+      "black": "Schwarz",
+      "white": "Weiß",
+      "teal": "Türkis",
+      "orange": "Orange"
+    },
+    "logoAlt": "Beachrex-Logo – {version}, {color}",
+    "colorsTitle": "Farben",
+    "paletteDownload": "Palette herunterladen",
+    "socialTitle": "Social-Media-Bilder",
+    "social": {
+      "profile": "Profilbild",
+      "og": "Link-Vorschaubild",
+      "facebook": "Facebook-Titelbild",
+      "linkedin": "LinkedIn-Titelbild",
+      "x": "X-Header"
+    }
   }
 }

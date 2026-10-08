@@ -27,7 +27,8 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap*.xml, robots.txt, ads.txt, llms.txt (metadata files)
+     * - images, brand/ (public files; brand/ is the media kit package)
      */
-    '/((?!api|_next/static|_next/image|favicon\\.ico|favicon\\.png|sitemap|robots\\.txt|ads\\.txt|llms\\.txt|images).*)',
+    '/((?!api|_next/static|_next/image|favicon\\.ico|favicon\\.png|sitemap|robots\\.txt|ads\\.txt|llms\\.txt|images|brand/).*)',
   ],
 };

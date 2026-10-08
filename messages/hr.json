@@ -708,5 +708,37 @@
     "aiChat": "AI chat o plažama",
     "aiItinerary": "AI planer putovanja",
     "contact": "Kontakt"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Preuzimanja",
+    "packageTitle": "Cjeloviti paket robne marke",
+    "packageDescription": "Svi logotipi (SVG, PDF, EPS, PNG), favicon i ikone aplikacije, slike za društvene mreže i paleta boja u jednoj ZIP datoteci.",
+    "packageButton": "Preuzmite ZIP",
+    "guidelinesTitle": "Smjernice robne marke",
+    "logosTitle": "Logotipi",
+    "versions": {
+      "horizontal": "Vodoravni (primarni)",
+      "stacked": "Okomiti",
+      "symbol": "Simbol",
+      "wordmark": "Slovni znak"
+    },
+    "colors": {
+      "color": "U boji",
+      "black": "Crni",
+      "white": "Bijeli",
+      "teal": "Tirkizni",
+      "orange": "Narančasti"
+    },
+    "logoAlt": "Beachrex logotip – {version}, {color}",
+    "colorsTitle": "Boje",
+    "paletteDownload": "Preuzmite paletu",
+    "socialTitle": "Slike za društvene mreže",
+    "social": {
+      "profile": "Profilna slika",
+      "og": "Slika za pregled poveznice",
+      "facebook": "Naslovna slika za Facebook",
+      "linkedin": "Naslovna slika za LinkedIn",
+      "x": "Zaglavlje za X"
+    }
   }
 }

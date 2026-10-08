@@ -708,5 +708,37 @@
     "aiChat": "AI-strandchat",
     "aiItinerary": "AI-rejseplanlægger",
     "contact": "Kontakt"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Downloads",
+    "packageTitle": "Komplet brandpakke",
+    "packageDescription": "Alle logoer (SVG, PDF, EPS, PNG), favicon og app-ikoner, billeder til sociale medier og farvepaletten i én ZIP-fil.",
+    "packageButton": "Download ZIP",
+    "guidelinesTitle": "Brandretningslinjer",
+    "logosTitle": "Logoer",
+    "versions": {
+      "horizontal": "Vandret (primært)",
+      "stacked": "Stablet",
+      "symbol": "Symbol",
+      "wordmark": "Ordmærke"
+    },
+    "colors": {
+      "color": "Fuld farve",
+      "black": "Sort",
+      "white": "Hvid",
+      "teal": "Turkis",
+      "orange": "Orange"
+    },
+    "logoAlt": "Beachrex-logo – {version}, {color}",
+    "colorsTitle": "Farver",
+    "paletteDownload": "Download paletten",
+    "socialTitle": "Billeder til sociale medier",
+    "social": {
+      "profile": "Profilbillede",
+      "og": "Billede til linkforhåndsvisning",
+      "facebook": "Facebook-coverbillede",
+      "linkedin": "LinkedIn-coverbillede",
+      "x": "X-header"
+    }
   }
 }

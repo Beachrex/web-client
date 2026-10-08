@@ -708,5 +708,37 @@
     "aiChat": "AI-чат про пляжі",
     "aiItinerary": "AI-планувальник подорожей",
     "contact": "Контакти"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Завантаження",
+    "packageTitle": "Повний пакет бренду",
+    "packageDescription": "Усі логотипи (SVG, PDF, EPS, PNG), фавікон та іконки застосунку, зображення для соцмереж і палітра кольорів в одному ZIP-файлі.",
+    "packageButton": "Завантажити ZIP",
+    "guidelinesTitle": "Брендбук",
+    "logosTitle": "Логотипи",
+    "versions": {
+      "horizontal": "Горизонтальний (основний)",
+      "stacked": "Вертикальний",
+      "symbol": "Символ",
+      "wordmark": "Текстовий логотип"
+    },
+    "colors": {
+      "color": "Кольоровий",
+      "black": "Чорний",
+      "white": "Білий",
+      "teal": "Бірюзовий",
+      "orange": "Помаранчевий"
+    },
+    "logoAlt": "Логотип Beachrex – {version}, {color}",
+    "colorsTitle": "Кольори",
+    "paletteDownload": "Завантажити палітру",
+    "socialTitle": "Зображення для соцмереж",
+    "social": {
+      "profile": "Фото профілю",
+      "og": "Зображення для попереднього перегляду посилання",
+      "facebook": "Обкладинка Facebook",
+      "linkedin": "Обкладинка LinkedIn",
+      "x": "Шапка X"
+    }
   }
 }

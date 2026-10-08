@@ -708,5 +708,37 @@
     "aiChat": "Chat IA plages",
     "aiItinerary": "Planificateur de voyage IA",
     "contact": "Contact"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Téléchargements",
+    "packageTitle": "Kit de marque complet",
+    "packageDescription": "Tous les logos (SVG, PDF, EPS, PNG), le favicon et les icônes d’application, les images pour les réseaux sociaux et la palette de couleurs dans un seul fichier ZIP.",
+    "packageButton": "Télécharger le ZIP",
+    "guidelinesTitle": "Charte graphique",
+    "logosTitle": "Logos",
+    "versions": {
+      "horizontal": "Horizontal (principal)",
+      "stacked": "Empilé",
+      "symbol": "Symbole",
+      "wordmark": "Logotype"
+    },
+    "colors": {
+      "color": "Couleur",
+      "black": "Noir",
+      "white": "Blanc",
+      "teal": "Turquoise",
+      "orange": "Orange"
+    },
+    "logoAlt": "Logo Beachrex – {version}, {color}",
+    "colorsTitle": "Couleurs",
+    "paletteDownload": "Télécharger la palette",
+    "socialTitle": "Images pour les réseaux sociaux",
+    "social": {
+      "profile": "Photo de profil",
+      "og": "Image d’aperçu du lien",
+      "facebook": "Couverture Facebook",
+      "linkedin": "Couverture LinkedIn",
+      "x": "Bannière X"
+    }
   }
 }
