@@ -18,6 +18,16 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Cleanup: unused files, one API URL source (TASK-004 audit F2, F3, F4) ✅ COMPLETE
+
+- **F2:** removed 19 files nothing imported (checked across `src/`, configs and tests): `TestImageComponent`, `Home/HeroSearchSection`, `Map/LeafletMapComponent`, `Map/MapRadiusControl` (+ its commented-out use), `StairsElement`, `Beach/BeachPromoBanner`, `BeachDetails/{DetailRow,PillList,TickList,TickValueList}`, `ui/image-with-fallback`, hooks `useBeachDetails`/`useCountryDetails`/`useRegions`, `mapBeachToPropertyWithUrl`, `lib/query-keys`, `lib/tailwind`, `lib/utils/transformers`, `lib/utils/__tests__/manual-test-seo`. The `no-console-log` allowlist now only lists flag-gated perf logging.
+- **F3:** `ApiClientProvider` and the AI chat/itinerary pages read `env.NEXT_PUBLIC_API_ENDPOINT` (`src/env.ts`) instead of repeating `?? 'http://localhost:8000'`.
+- **F4:** verified: no `routes.*` namespace is left in any `messages/*.json` (already removed earlier), nothing to do.
+Test: `e2e/unused-code.unit.spec.ts` (fails against the old tree).
+
+
+---
+
 ## 2026-10-08 – No hard-coded English UI text (TASK-004 audit A4) ✅ COMPLETE
 
 Verified in code which strings were still English for every locale (`WorldQuickActionsSection` and the `BurgerMenu` items were already gone):
