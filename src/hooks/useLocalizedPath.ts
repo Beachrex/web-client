@@ -9,34 +9,8 @@ import {
   getStaticPagesForFooter,
 } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
-import { buildBeachUrl } from '@/lib/utils/beach-urls';
-
-// Locale-specific route translations
-const beachesRoutes = {
-  en: 'beaches',
-  si: 'plaze',
-  de: 'strande',
-  hr: 'plaze',
-  fr: 'plages',
-  es: 'playas',
-  it: 'spiagge',
-  ua: 'plyazhi',
-  ru: 'plyazhi',
-  pl: 'plaze',
-  cs: 'plaze',
-  hu: 'strandok',
-  bg: 'plyazhove',
-  sk: 'plaze',
-} as const;
-
-type BeachesRoutesKey = keyof typeof beachesRoutes;
-
-const getBeachesWord = (locale: string): string => {
-  if (locale in beachesRoutes) {
-    return beachesRoutes[locale as BeachesRoutesKey];
-  }
-  return 'beaches';
-};
+import { buildBeachUrl, getBeachesWord } from '@/lib/utils/beach-urls';
+import { isBeachesWord, translateFixedPath } from '@/lib/utils/locale-path-words';
 
 /**
  * Hook to get a localized path for language switching
@@ -56,7 +30,6 @@ export const useLocalizedPath = () => {
     const localeMatch = localeRegex.exec(pathname);
     const currentLocale: string = localeMatch ? localeMatch[1]! : 'en';
 
-    console.log('[useLocalizedPath] Starting translation:', { pathname, currentLocale, targetLocale });
 
     // Remove the locale prefix from pathname
     // Handles both /en and /en/something patterns
@@ -65,17 +38,14 @@ export const useLocalizedPath = () => {
     // Normalize double slashes to single slash (e.g., // -> /)
     pathWithoutLocale = pathWithoutLocale.replace(/\/+/g, '/');
 
-    console.log('[useLocalizedPath] Path without locale:', pathWithoutLocale);
 
     // If we're on the homepage, just return /
     if (pathWithoutLocale === '/' || pathWithoutLocale === '') {
-      console.log('[useLocalizedPath] Homepage detected, returning /');
       return '/';
     }
 
     // Split path into segments
     const segments = pathWithoutLocale.split('/').filter(Boolean);
-    console.log('[useLocalizedPath] Path segments:', segments);
 
     // Static (CMS) pages: '/p/{slug}'. The 'p' prefix is NOT localized, but the
     // slug is. Translate the slug by resolving it to the page's stable code in
@@ -85,7 +55,6 @@ export const useLocalizedPath = () => {
     const currentSlug = segments[1];
     if (firstSegment === 'p' && currentSlug) {
       try {
-        console.log('[useLocalizedPath] Detected static page route, slug:', currentSlug);
 
         // Resolve the current slug to the page's stable code (in current locale).
         const { data: currentResponse } = await getStaticPageBySlug({
@@ -95,7 +64,6 @@ export const useLocalizedPath = () => {
         const pageCode = currentResponse?.data?.code;
 
         if (!pageCode) {
-          console.log('[useLocalizedPath] Could not resolve static page code, returning as-is:', pathWithoutLocale);
           return pathWithoutLocale;
         }
 
@@ -118,12 +86,10 @@ export const useLocalizedPath = () => {
         }
 
         if (!targetSlug) {
-          console.log('[useLocalizedPath] No target slug found for static page, returning as-is:', pathWithoutLocale);
           return pathWithoutLocale;
         }
 
         const result = `/p/${targetSlug}`;
-        console.log('[useLocalizedPath] Translated static page path:', result);
         return result;
       } catch (error) {
         console.error('[useLocalizedPath] Error translating static page slug:', error);
@@ -131,28 +97,26 @@ export const useLocalizedPath = () => {
       }
     }
 
-    // Check if this is a beaches route by checking against ALL possible beaches words
-    // This handles cases where URL uses a different locale's beaches word (e.g., /beaches/ when locale is 'si')
-    const allBeachesWords = Object.values(beachesRoutes);
-    const isBeachesRoute = firstSegment && allBeachesWords.includes(firstSegment as typeof allBeachesWords[number]);
+    // World beaches page and beach map: the word itself is localized (B9: da/pt/nl/el/sq were missing)
+    const fixedPath = translateFixedPath(segments, targetLocale);
+    if (fixedPath) {
+      return fixedPath;
+    }
 
-    if (!isBeachesRoute) {
+    // Beaches route in any locale's word (e.g. /beaches/ when the locale is 'si')
+    if (!isBeachesWord(firstSegment)) {
       // Not a beaches page, just return the path without locale
-      console.log('[useLocalizedPath] Not a beaches page, returning:', pathWithoutLocale);
       return pathWithoutLocale;
     }
 
-    console.log('[useLocalizedPath] Detected beaches route, first segment:', firstSegment);
 
     // Extract continent slug (always at index 1 for beaches routes)
     const currentContinentSlug = segments[1];
-    console.log('[useLocalizedPath] Extracted continent slug:', currentContinentSlug);
 
     if (!currentContinentSlug) {
       // No continent slug found, just translate the beaches word
       const targetBeachesWord = getBeachesWord(targetLocale);
       const result = `/${targetBeachesWord}`;
-      console.log('[useLocalizedPath] No continent slug, returning:', result);
       return result;
     }
 
@@ -166,11 +130,9 @@ export const useLocalizedPath = () => {
         c => c.slug?.toLowerCase() === currentContinentSlug.toLowerCase()
       ) ?? null;
 
-      console.log('[useLocalizedPath] Found current continent:', currentContinent);
 
       if (!currentContinent?.code) {
         // Couldn't find continent, return pathname as-is
-        console.log('[useLocalizedPath] No continent code found, returning:', pathWithoutLocale);
         return pathWithoutLocale;
       }
 
@@ -184,11 +146,9 @@ export const useLocalizedPath = () => {
         c => c.code === currentContinent.code
       );
 
-      console.log('[useLocalizedPath] Found target continent:', targetContinent);
 
       if (!targetContinent?.slug) {
         // Couldn't find translated slug, return pathname as-is
-        console.log('[useLocalizedPath] No target slug found, returning:', pathWithoutLocale);
         return pathWithoutLocale;
       }
 
@@ -201,7 +161,6 @@ export const useLocalizedPath = () => {
       const isLikelyBeachDetailPage = segments.length >= 4 && lastSegment;
 
       if (isLikelyBeachDetailPage) {
-        console.log('[useLocalizedPath] Detected beach detail page, fetching beach details for:', lastSegment, 'in locale:', targetLocale);
 
         try {
           // Fetch beach details in target locale to get all translated slugs
@@ -210,22 +169,13 @@ export const useLocalizedPath = () => {
             headers: { 'Accept-Language': targetLocale as AcceptLanguage },
           });
 
-          console.log('[useLocalizedPath] Beach API response:', beachResponse);
 
           const beachDetails = beachResponse.data?.data;
 
           if (beachDetails) {
-            console.log('[useLocalizedPath] Beach details received:', {
-              beach_slug: beachDetails.basic_info?.slug,
-              country_slug: beachDetails.location?.country?.slug,
-              region_slug: beachDetails.location?.region?.slug,
-              island_slug: beachDetails.location?.island?.slug,
-              city_slug: beachDetails.location?.city?.slug,
-            });
 
             // Use buildBeachUrl to construct the fully translated URL
             const translatedUrl = buildBeachUrl(beachDetails, targetLocale);
-            console.log('[useLocalizedPath] Built translated beach URL:', translatedUrl);
 
             // Remove the locale prefix since TopBar will add it
             const urlWithoutLocale = translatedUrl.replace(/^\/[a-z]{2}\//, '/');
@@ -284,7 +234,6 @@ export const useLocalizedPath = () => {
       const translatedSegments = [targetBeachesWord, targetContinent.slug, translatedCountrySlug, ...remainingSegments];
 
       const result = '/' + translatedSegments.join('/');
-      console.log('[useLocalizedPath] Returning translated path:', result);
       return result;
     } catch (error) {
       console.error('[useLocalizedPath] Error getting localized path:', error);
