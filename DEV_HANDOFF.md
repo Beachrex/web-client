@@ -18,6 +18,24 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Cards show uploaded videos like the beach page (QA #67) ✅ COMPLETE
+
+### Overview
+
+Map and list cards took the video only from `media.embeds.video_url` (YouTube). The beach page also used the first uploaded video (`media.videos`), which the search/map API already returns. So a beach could show a video on its page, while its card said "No video" and was hidden by the "video" filter.
+
+### Changes / Files
+
+- `src/lib/utils/beach-video.ts` (new): `buildBeachVideoUrl(embedUrl, videos)`. It uses the embed URL first (YouTube URLs become embed URLs), otherwise the primary or first uploaded video through `buildCdnUrl(…, 'video')`.
+- Used by `mapBeachToProperty.ts`, `DynamicSearchBeaches.tsx`, the continent page and `Beach/BeachPageView.tsx`. The 3 copies of the YouTube conversion are removed.
+- `e2e/beach-video.unit.spec.ts` (new). Without the `media.videos` fallback, "uploaded video is used when there is no embed" fails.
+
+### Testing
+
+Run the unit specs. On dev, for a beach with an uploaded video and no YouTube link, the card's video mode plays the same video as the beach page.
+
+---
+
 ## 2026-10-08 – Webcam: one rule for "has webcam", and the beach page shows it (QA #36, #65, #68) ✅ COMPLETE
 
 ### Overview
