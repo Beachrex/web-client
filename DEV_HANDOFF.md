@@ -18,6 +18,25 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Indoor and outdoor pool tiles filter separately (QA #70) ✅ COMPLETE
+
+### Overview
+
+On the home page, "Outdoor pools" and "Indoor pools & spas" both sent `waterbody=pool`, so the map could not tell them apart. The backend now has a `pool_type` filter (`indoor` / `outdoor`, based on the admin's `indoor_pools_count` / `outdoor_pools_count`). It is offered by `/beaches/filters` with translated labels, so the map sidebar shows it automatically.
+
+### Changes / Files
+
+- `Home/BeachCategorySearch.tsx`: the tiles send `pool_type=outdoor` and `pool_type=indoor`.
+- `e2e/pool-type-tiles.unit.spec.ts` (new). It fails on the old tiles.
+- Needs the backend `pool_type` filter (Beachrex/backend, QA #70) on the same environment. Without it the map drops the unknown filter.
+- `yarn generate:api`: NOT RUN (the sandbox cannot reach the API). No generated types are used for this filter.
+
+### Testing
+
+Run the unit specs. On dev, the outdoor and indoor pool tiles open the map with "Pool type" checked. Results appear once pool data is entered in the admin (QA #69).
+
+---
+
 ## 2026-10-08 – Cards show uploaded videos like the beach page (QA #67) ✅ COMPLETE
 
 ### Overview

@@ -364,7 +364,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
           {/* Zunanji bazeni */}
           <button
-            onClick={() => navigateToMapWithFilters({ waterbody: ['pool'] })}
+            onClick={() => navigateToMapWithFilters({ pool_type: ['outdoor'] })}
             className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
             style={{ backgroundColor: '#42D4F4' }}
           >
@@ -388,7 +388,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
           {/* Pokriti bazeni, terme */}
           <button
-            onClick={() => navigateToMapWithFilters({ waterbody: ['pool'] })}
+            onClick={() => navigateToMapWithFilters({ pool_type: ['indoor'] })}
             className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
             style={{ backgroundColor: '#42D4F4' }}
           >
