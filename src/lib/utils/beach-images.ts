@@ -186,3 +186,31 @@ export function getMainBeachImage(
 
   return buildBeachImageUrl(folderName, selectedImage.file_name, mobileUpload, context);
 }
+
+/** Share image size for Open Graph / X cards (owner, 2026-10-08: shared beach links show the beach). */
+export const SHARE_IMAGE_SIZE = { width: 1200, height: 630 } as const;
+
+/**
+ * Imagor URL for a 1200×630 JPEG crop of an image (smart crop), for link previews. Derived from the
+ * large endpoint (`…/unsafe/fit-in/2800x2800/`); a 2800 px original can exceed the 5 MB limit of X.
+ * Falls back to the large URL when the endpoint has another shape.
+ */
+export function buildShareImageUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  const large = getCdnEndpoint('large');
+  const { width, height } = SHARE_IMAGE_SIZE;
+  const share = large.replace(/\/fit-in\/\d+x\d+\/$/, `/${width}x${height}/smart/filters:format(jpeg):quality(85)/`);
+  return `${share}${encodePath(path)}`;
+}
+
+/** Share image of a beach: the primary gallery image (else the first) as a 1200×630 JPEG. */
+export function getBeachShareImage(
+  gallery: MediaItem[] | undefined,
+  folderName: string | null | undefined,
+  mobileUpload = false,
+): string | null {
+  const image = gallery?.find((img) => img.is_primary === true) ?? gallery?.[0];
+  if (!folderName || !image?.file_name) return null;
+  const basePath = mobileUpload ? 'img/beaches_mobile' : 'img/beaches';
+  return buildShareImageUrl(`${basePath}/${folderName}/${image.file_name}`);
+}

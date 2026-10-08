@@ -27,7 +27,7 @@ import {
   truncateDescription,
   sanitizeMetaText,
 } from '@/lib/utils/seo-helpers';
-import { getMainBeachImage } from '@/lib/utils/beach-images';
+import { getBeachShareImage } from '@/lib/utils/beach-images';
 import { buildBeachSchema, buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 
 // Import page components
@@ -244,12 +244,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const title = truncateTitle(titleParts.join(' - '));
 
-    // Get main image from gallery
-    const mainImage = getMainBeachImage(
+    // Share image: the beach's main photo as a 1200×630 JPEG (link previews on X, Facebook, WhatsApp)
+    const mainImage = getBeachShareImage(
       beach.media?.gallery,
       beach.basic_info?.folder_name,
       beach.basic_info?.mobile_upload ?? false,
-      'banner' // Use banner context for social sharing (larger image)
     );
 
     // Build canonical URL path with localized "beaches" word
