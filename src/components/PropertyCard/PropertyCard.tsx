@@ -3,6 +3,7 @@
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/prefetch-utils';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { parseWebcamUrl } from '@/lib/utils/webcam';
 import { useQueryClient } from '@tanstack/react-query';
 import { Heart, Star } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -34,19 +35,6 @@ const EmblaCarousel = dynamic(
 // Log when module finishes loading
 if (ENABLE_PERF_LOGGING) {
   console.log(`✅ [PropertyCard Module] Loaded in ${(performance.now() - moduleLoadStart).toFixed(2)}ms`);
-}
-
-
-function extractLookrUrl(html: string | null | undefined): string | null {
-  if (!html) return null;
-
-  // 1. Unescape \" → "
-  const unescaped = html.replace(/\\"/g, '"');
-
-  // 2. Extract href
-  const match = /href\s*=\s*"([^"]+)"/i.exec(unescaped);
-
-  return match?.[1] ?? null;
 }
 
 
@@ -130,7 +118,7 @@ React.useEffect(() => {
 
 
 const webcamUrl = React.useMemo(
-  () => extractLookrUrl(webcamEmbed),
+  () => parseWebcamUrl(webcamEmbed),
   [webcamEmbed]
 );
 

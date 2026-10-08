@@ -21,6 +21,7 @@ import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { hasMainImage } from '@/lib/utils/beach-cards';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema, getBeachesWord } from '@/lib/utils/beach-urls';
+import { parseWebcamUrl } from '@/lib/utils/webcam';
 import { buildBreadcrumbSchema, buildContinentSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
@@ -239,7 +240,7 @@ const rawVideo = beach.media?.embeds?.video_url ?? null;
 const videoEmbedUrl = toYouTubeEmbed(rawVideo);
 
 /* Webcam */
-const webcamEmbed = beach.media?.embeds?.webcam ?? null;
+const webcamEmbed = parseWebcamUrl(beach.media?.embeds?.webcam);
 
 const beachUrl =
   buildBeachUrlFromSchema(beach, resolvedParams.locale) ?? undefined;

@@ -3,6 +3,7 @@
 import type { Property } from '@/components/PropertySection';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
+import { parseWebcamUrl } from '@/lib/utils/webcam';
 
 /* ------------------------------------------------------------------
  * Minimal input types for mapper (NO any, NO API coupling)
@@ -121,10 +122,8 @@ export function mapBeachToProperty(
   /* ---------------------------
    * WEBCAM
    * --------------------------- */
-  const webcamEmbed =
-    typeof beach.media?.embeds?.webcam === 'string'
-      ? beach.media.embeds.webcam
-      : undefined;
+  // Only a parsable webcam URL counts, so "has webcam" matches what the card can open.
+  const webcamEmbed = parseWebcamUrl(beach.media?.embeds?.webcam) ?? undefined;
 
   /* ---------------------------
    * LOCATION LABEL
