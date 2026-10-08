@@ -642,5 +642,75 @@
     "mostVisited": "Najbolj obiskana",
     "loading": "Nalaganje...",
     "showOnMap": "Prikaži {title} na zemljevidu"
+  },
+  "Auth": {
+    "continueWithGoogle": "Nadaljuj z Googlom",
+    "signOut": "Odjava",
+    "signingIn": "Prijavljanje ...",
+    "signingOut": "Odjavljanje ...",
+    "completingSignIn": "Zaključujemo prijavo",
+    "pleaseWait": "Počakajte, da zaključimo prijavo ...",
+    "authenticationError": "Napaka pri prijavi",
+    "authenticationFailed": "Prijava ni uspela. Poskusite znova.",
+    "googleAuthError": "Napaka pri prijavi z Googlom: {error}",
+    "missingParameters": "Manjkajo podatki, potrebni za prijavo.",
+    "returnHome": "Nazaj na začetno stran",
+    "loginRequired": "Potrebna je prijava",
+    "loginRequiredMessage": "Za uporabo te funkcije se morate prijaviti.",
+    "creditsRequired": "Potrebni so krediti",
+    "creditsRequiredMessage": "Za ustvarjanje načrtov potovanja potrebujete kredite. Za nadaljevanje kupite kredite."
+  },
+  "AI": {
+    "landing": {
+      "title": "AI pomočnik za plaže",
+      "subtitle": "Vaš osebni spremljevalec pri iskanju plaž, ki ga poganja umetna inteligenca",
+      "description": "Prejmite priporočila plaž po vaši meri, poklepetajte z našim AI pomočnikom in ustvarite načrt potovanja za popoln dopust ob morju.",
+      "chatButton": "Začni klepet",
+      "itineraryButton": "Ustvari načrt potovanja"
+    },
+    "chat": {
+      "title": "Klepet z AI",
+      "subtitle": "Vprašajte me karkoli o plažah, nasvetih za potovanje ali priporočilih",
+      "placeholder": "Vprašajte o plažah, destinacijah ali nasvetih za potovanje ...",
+      "send": "Pošlji",
+      "sending": "Pošiljanje ...",
+      "error": "Sporočila ni bilo mogoče poslati. Poskusite znova.",
+      "welcome": "Pozdravljeni! Sem vaš AI pomočnik za plaže. Kako vam lahko pomagam?",
+      "anonymousNote": "Klepetate anonimno. Prijavite se, da shranite pogovore in dostopate do naprednih funkcij."
+    },
+    "itinerary": {
+      "title": "Ustvari načrt potovanja",
+      "subtitle": "Ustvarite osebni večdnevni načrt dopusta ob morju",
+      "form": {
+        "destination": "Destinacija",
+        "destinationPlaceholder": "npr. Hrvaška, Bali, Karibi",
+        "days": "Število dni",
+        "daysPlaceholder": "npr. 7",
+        "interests": "Interesi",
+        "interestsPlaceholder": "npr. potapljanje z masko, sprostitev, nočno življenje",
+        "budget": "Proračun",
+        "budgetLow": "Varčen",
+        "budgetMedium": "Zmeren",
+        "budgetHigh": "Luksuzen",
+        "generate": "Ustvari načrt",
+        "generating": "Ustvarjamo vaš načrt potovanja ..."
+      },
+      "error": "Načrta potovanja ni bilo mogoče ustvariti. Poskusite znova.",
+      "paymentRequired": "Večdnevni načrti potovanja zahtevajo kredite. Za nadaljevanje kupite kredite.",
+      "creditsRemaining": "Preostali krediti: {count}",
+      "purchaseCredits": "Kupi kredite"
+    },
+    "entitlements": {
+      "title": "Moji krediti",
+      "subtitle": "Upravljajte kredite za AI načrte potovanja",
+      "balance": "Trenutno stanje",
+      "credits": "kreditov",
+      "history": "Zgodovina nakupov",
+      "date": "Datum",
+      "amount": "Znesek",
+      "status": "Stanje",
+      "noHistory": "Nakupov še ni.",
+      "purchase": "Kupi več kreditov"
+    }
   }
 }

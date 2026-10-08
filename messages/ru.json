@@ -78,38 +78,6 @@
     "searching": "Поиск...",
     "clearSearch": "Очистить поиск"
   },
-  "Navigation": {
-    "beaches": "Пляжи",
-    "destinations": "Направления",
-    "accommodations": "Жильё",
-    "beachMap": "Карта пляжей",
-    "aiAssistant": "AI ассистент",
-    "login": "Войти",
-    "signup": "Регистрация",
-    "profile": "Профиль",
-    "favorites": "Избранное",
-    "settings": "Настройки",
-    "logout": "Выйти",
-    "blog": "Блог",
-    "about": "О нас",
-    "contact": "Контакты",
-    "help": "Помощь",
-    "privacyPolicy": "Политика конфиденциальности",
-    "termsOfService": "Условия использования",
-    "cookiePolicy": "Политика cookie"
-  },
-  "Header": {
-    "exploreBeaches": "Исследовать пляжи",
-    "searchPlaceholder": "Искать пляжи...",
-    "languageSelector": "Выбор языка",
-    "login": "Войти"
-  },
-  "CountrySelector": {
-    "allCountries": "Все страны",
-    "selectCountry": "Выберите страну",
-    "noCountriesFound": "Страны не найдены",
-    "searchCountry": "Искать страну..."
-  },
   "HomePage": {
     "allBeaches": "Все пляжи",
     "beachCountries": "Страны с пляжами",

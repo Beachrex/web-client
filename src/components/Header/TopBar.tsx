@@ -102,10 +102,8 @@ const TopBar = () => {
             )}
           </div>
 
-          {/* Center: Shortened Message */}
-          <div className="flex-1 truncate px-2 text-center text-[11px] font-bold text-white">
-            Sporočilo...
-          </div>
+          {/* Center: spacer (the hardcoded Slovenian placeholder message was removed) */}
+          <div className="flex-1" />
 
           {/* Right: Icons Only */}
           <div className="flex items-center space-x-2">
@@ -157,10 +155,8 @@ const TopBar = () => {
             )}
           </div>
 
-          {/* Center Section */}
-          <div className="text-[13px] font-bold text-white lg:text-[14px]">
-            Izpostavljeno sporočilo...
-          </div>
+          {/* Center Section: spacer (the hardcoded Slovenian placeholder message was removed) */}
+          <div className="flex-1" />
 
           {/* Right Section */}
           <div className="flex items-center space-x-4">
