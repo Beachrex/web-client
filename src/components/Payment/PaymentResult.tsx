@@ -17,7 +17,7 @@ interface PaymentResultProps {
 
 /**
  * Stripe Checkout result (`/payment/success`, `/payment/cancel`). Translated, locale-aware links;
- * after a countdown it returns to the itinerary planner (the old `/internal/...` targets were 404).
+ * after a countdown it returns to the itinerary planner (the old targets were routes that do not exist).
  */
 export default function PaymentResult({ variant, sessionId }: PaymentResultProps) {
   const t = useTranslations('Payment');
