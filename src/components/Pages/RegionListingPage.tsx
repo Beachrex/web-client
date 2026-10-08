@@ -17,9 +17,9 @@ import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
-import { ChevronRight } from 'lucide-react';
 import DestinationsSection from '../DestinationsSection';
 import { FEATURES } from '@/lib/constants/features';
+import AllBeachesLink from '@/components/AllBeachesLink';
 
 interface RegionListingPageProps {
   regionSlug: string;
@@ -125,13 +125,7 @@ export default function RegionListingPage({ regionSlug, initialData }: RegionLis
         totalCount={beachProperties.length}
         properties={beachProperties}
         headerRight={
-          <a
-            href="#"
-            className="flex items-center font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px]"
-          >
-            {tProperty('allBeachesLink', { count: beachProperties.length })}
-            <ChevronRight className="h-4 w-4" />
-          </a>
+          <AllBeachesLink label={tProperty('allBeachesLink', { count: regionBeachesCount })} />
         }
       />
 

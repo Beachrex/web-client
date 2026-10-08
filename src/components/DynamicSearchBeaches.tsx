@@ -20,6 +20,7 @@ import Link from 'next/link';
 import { useBeachFiltersController } from '@/hooks/useBeachFiltersController';
 import StyledSelect from './ui/StyledSelect';
 import FilterCard from './ui/FilterCard';
+import { ALL_BEACHES_SECTION_ID } from './AllBeachesLink';
 
 /* -------------------------------------------------------------
    BUILD GALLERY
@@ -181,7 +182,10 @@ const [mediaMode] =
   );
 
   return (
-    <section className="relative bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
+    <section
+      id={ALL_BEACHES_SECTION_ID}
+      className="relative scroll-mt-4 bg-[#F5F5F5] py-12 sm:py-16 lg:py-20"
+    >
 
       {/* ================= FILTER DRAWER ================= */}
       {isFilterOpen && (
