@@ -45,9 +45,9 @@ test('beach cards: real URLs and media, beaches without a main image are skipped
 
   const cards = beachesToProperties(beaches, 'hr');
   expect(cards).toHaveLength(1);
-  expect(cards[0].beachUrl).toBe(`/hr/${getBeachesWord('hr')}/europe/croatia/dalmatia/bol/zlatni-rat`);
-  expect(cards[0].title).toBe('Zlatni rat');
-  expect(cards[0].location).toBe('Bol');
-  expect(cards[0].galleryImages).toHaveLength(2);
-  expect(cards[0].galleryImages[0]).toContain('1.jpg');
+  expect(cards[0]!.beachUrl).toBe(`/hr/${getBeachesWord('hr')}/europe/croatia/dalmatia/bol/zlatni-rat`);
+  expect(cards[0]!.title).toBe('Zlatni rat');
+  expect(cards[0]!.location).toBe('Bol');
+  expect(cards[0]!.galleryImages).toHaveLength(2);
+  expect(cards[0]!.galleryImages[0]).toContain('1.jpg');
 });
