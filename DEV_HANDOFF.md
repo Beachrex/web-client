@@ -18,6 +18,28 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – No placeholder content for visitors: accommodation hidden, no Lorem Ipsum (TASK-004 D2, D3, D9) ✅ COMPLETE
+
+### Overview
+
+TASK-004 audit (backend `docs/tasks/TASK-004-audit.md`): beach, city, region, island and country pages rendered fake accommodation cards ("Apartma Pehta", "569 accommodations" on every beach), destination cards showed a default "20" accommodations and a fixed price, home showed "+6250 accommodations", and a beach without a description showed Lorem Ipsum in the banner. Owner decision 2026-10-08: hide unfinished features for launch and record them (backend `docs/features/hidden-for-launch.md`, ADR "TASK-004: What Visitors See at Launch").
+
+### Changes / Files
+
+- `src/lib/constants/features.ts` (new): `FEATURES.accommodation` and `FEATURES.getYourGuide`, both `false`.
+- Behind `FEATURES.accommodation`: `AccommodationSection` on the beach, city, region, island and country pages; `HomeAccommodationSection` and the hero accommodation stat on home; the accommodation counters in the banner `TopBar`; the accommodation/price box on `DestinationCard`.
+- Behind `FEATURES.getYourGuide`: `GetYourGuideSection` on the beach page (empty shell).
+- `BottomBadgesBeach`: no Lorem Ipsum fallback; the text card shows only when the beach has a description. "Read more" links to `#beach-details`.
+- `beachDetailsSection`: `id="beach-details"` and the full description under the heading.
+- `e2e/placeholder-content.unit.spec.ts` (new): no Lorem Ipsum/dummy text in `src/` and `messages/`; hidden sections are rendered only behind their flag; no hardcoded `totalCount={n}`.
+
+### Testing
+
+- Deliberate break: the new spec on the old components → 5 of 6 failed; after: 6 passed.
+- `npx tsc --noEmit -p .`, `yarn lint`, all `e2e/*.unit.spec.ts`.
+
+---
+
 ## 2026-10-08 – Slovenian sign-in/AI strings, locale key parity in CI (TASK-004 A1, A2, A5, A7) ✅ COMPLETE
 
 ### Overview

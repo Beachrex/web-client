@@ -13,6 +13,7 @@ import {
   VARIANT_PILL_LABEL_KEY,
   VARIANT_TEXT_CLASS,
 } from '../ui/pageVariants';
+import { FEATURES } from '@/lib/constants/features';
 
 type CountryWithFlag = Country & { flag_icon?: string | null };
 
@@ -226,7 +227,8 @@ const TopBar: React.FC<TopBarProps> = ({
         {/* COUNTERS */}
       {isBeach ? (
   <>
-    {/* ACCOMMODATIONS */}
+    {/* ACCOMMODATIONS (hidden for launch) */}
+    {FEATURES.accommodation && (
     <div className="flex h-[41px] items-center gap-[6px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
       <Image
         src="/images/common/accommodation-black.svg"
@@ -249,6 +251,7 @@ const TopBar: React.FC<TopBarProps> = ({
         {accommodationCount}
       </span>
     </div>
+    )}
 
     {/* ACTIVITIES */}
     <div className="flex h-[41px] items-center gap-[6px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
@@ -301,7 +304,8 @@ const TopBar: React.FC<TopBarProps> = ({
   </span>
 </div>
 
-{/* ACCOMMODATIONS COUNT */}
+{/* ACCOMMODATIONS COUNT (hidden for launch) */}
+{FEATURES.accommodation && (
 <div className="flex h-[41px] items-center gap-[6px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
   <Image
     src="/images/common/accommodation-black.svg"
@@ -325,6 +329,7 @@ const TopBar: React.FC<TopBarProps> = ({
     {accommodationCount}
   </span>
 </div>
+  )}
 
           </>
         )}

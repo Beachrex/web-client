@@ -16,6 +16,7 @@ import {
   debouncedPrefetch,
   cancelPrefetch,
 } from '@/lib/prefetch-utils';
+import { FEATURES } from '@/lib/constants/features';
 
 interface DestinationCardProps {
   country: Country;
@@ -145,22 +146,25 @@ className="object-cover" priority
 
         {/* desktop info row */}
         <div className="absolute bottom-2 left-2 right-2 hidden gap-2 sm:flex">
-          <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#008260] px-3 text-white">
-            <Image
-              src="/images/accomodation.png"
-              alt="Accommodation"
-              width={26}
-              height={26}
-            />
-            <span className="text-[13px] font-semibold">
-              {accommodationCount}
-            </span>
-            <span
-              aria-hidden
-              className="block h-[18px] w-[1px] shrink-0 bg-white/90"
-            />
-            <span className="text-[13px] font-semibold">{priceText}</span>
-          </div>
+          {/* Accommodation count and price: hidden for launch (placeholder values) */}
+          {FEATURES.accommodation && (
+            <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#008260] px-3 text-white">
+              <Image
+                src="/images/accomodation.png"
+                alt="Accommodation"
+                width={26}
+                height={26}
+              />
+              <span className="text-[13px] font-semibold">
+                {accommodationCount}
+              </span>
+              <span
+                aria-hidden
+                className="block h-[18px] w-[1px] shrink-0 bg-white/90"
+              />
+              <span className="text-[13px] font-semibold">{priceText}</span>
+            </div>
+          )}
 
           <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#0069AB] px-3 text-white">
             <Image
@@ -207,22 +211,25 @@ className="object-cover" priority
 
       {/* mobile info row */}
       <div className="flex gap-2 bg-gray-50 p-3 sm:hidden">
-        <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#008260] px-3 text-white">
-          <Image
-            src="/images/accomodation.png"
-            alt="Accommodation"
-            width={26}
-            height={26}
-          />
-          <span className="text-[13px] font-semibold">
-            {accommodationCount}
-          </span>
-          <span
-            aria-hidden
-            className="block h-[18px] w-[1px] shrink-0 bg-white/90"
-          />
-          <span className="text-[13px] font-semibold">{priceText}</span>
-        </div>
+        {/* Accommodation count and price: hidden for launch (placeholder values) */}
+        {FEATURES.accommodation && (
+          <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#008260] px-3 text-white">
+            <Image
+              src="/images/accomodation.png"
+              alt="Accommodation"
+              width={26}
+              height={26}
+            />
+            <span className="text-[13px] font-semibold">
+              {accommodationCount}
+            </span>
+            <span
+              aria-hidden
+              className="block h-[18px] w-[1px] shrink-0 bg-white/90"
+            />
+            <span className="text-[13px] font-semibold">{priceText}</span>
+          </div>
+        )}
         <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#0069AB] px-3 text-white">
           <Image
 src="/images/beach.png" alt="Beaches" width={26}

@@ -16,6 +16,7 @@ import { useBeachesRadius } from '@/hooks/useBeaches';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildBeachUrlFromNavigation } from '@/lib/utils/beach-urls';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
+import { FEATURES } from '@/lib/constants/features';
 
 interface BeachDetailPageProps {
   beachDetails: BeachDetailsSchema;
@@ -108,15 +109,14 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
 
       <BeachPageView beachDetails={beachDetails} />
 
-      <AccommodationSection
-        totalCount={569}
-        showDropdown
-        items={Array.from({ length: 12 }, () => ({}))}
-        selectedDistance={{ value: 1, label: '1 km' }}
-        onDistanceChange={(v) => console.log('distance', v)}
-        onFilterClick={() => console.log('filter')}
-      />
-      <GetYourGuideSection />
+      {/* Hidden for launch: fake accommodation cards ("569 accommodations") and an empty GetYourGuide shell */}
+      {FEATURES.accommodation && (
+        <AccommodationSection
+          showDropdown
+          selectedDistance={{ value: 1, label: '1 km' }}
+        />
+      )}
+      {FEATURES.getYourGuide && <GetYourGuideSection />}
       <BeachDetailsSection beachDetails={beachDetails} />
 
       {/* SIMILAR BEACHES WITH GALLERY */}

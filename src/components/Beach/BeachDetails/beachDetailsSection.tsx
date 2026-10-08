@@ -85,6 +85,7 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({ beachDetails 
 
   const accessibility = beachDetails.accessibility;
   const characteristics = beachDetails.characteristics;
+  const description = beachDetails.basic_info?.description?.trim();
   const dimensions = beachDetails.dimensions;
   const facilities = beachDetails.facilities;
   const natural = beachDetails.natural_conditions;
@@ -196,11 +197,18 @@ height={20}
    * RENDER
    * ------------------------------------------- */
   return (
-    <section className="w-full bg-[#F5F5F5] py-8">
+    <section id="beach-details" className="w-full scroll-mt-24 bg-[#F5F5F5] py-8">
       <div className="container mx-auto px-4">
         <h1 className="mb-8 font-figtree text-[30px] font-bold text-[#222222]">
           {tMain('title')}
         </h1>
+
+        {/* Full description: the banner card shows only two lines and links here ("read more") */}
+        {description && (
+          <p className="mb-8 max-w-4xl whitespace-pre-line font-figtree text-[16px] leading-6 text-[#4D4D4D]">
+            {description}
+          </p>
+        )}
 
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {/* -------------------------------------------
