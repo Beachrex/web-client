@@ -9,7 +9,7 @@ import FooterNewsletter from './FooterNewsletter';
 /**
  * Owner, 2026-10-08: the footer looked scattered on 13" laptops (four equal columns, the
  * newsletter squeezed under them). Brand + three link columns on a 12-column grid, the
- * newsletter as its own band, a bottom bar with the year.
+ * newsletter as its own band, a bottom bar with the year, the company and the brand (owner, 2026-10-08).
  */
 const Footer: React.FC = () => {
   const t = useTranslations('Footer.legal');
@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
 
         <div className="mt-10 border-t border-[#E7E7E7] pt-6">
           <p className="text-center font-figtree text-[12px] leading-5 text-[#8D8D8D] md:text-left">
-            © {year} · {t('rights')}
+            {t('rights', { year })}
           </p>
         </div>
       </div>

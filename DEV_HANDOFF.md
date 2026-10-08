@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Footer: company and brand in the rights line ✅ COMPLETE
+
+Owner, 2026-10-08: the bottom bar reads `© {year} MOJA PLAŽA, d.o.o. · BeachRex. All rights reserved.` in all 19 locales (`Footer.legal.rights` with `{year}`). Test: `e2e/footer-rights.unit.spec.ts`.
+
+---
+
 ## 2026-10-08 – Beach banner: share menu; ratings and save hidden ✅ COMPLETE
 
 ### Overview
