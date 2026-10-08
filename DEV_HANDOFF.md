@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Organization JSON-LD logo from the brand package ✅ COMPLETE
+
+`buildOrganizationSchema()` (root layout) set `logo` to `/logo.png`, which does not exist, so Google got a 404 for the site's logo. It now points to the colour horizontal PNG from the brand package (`ORGANIZATION_LOGO_PATH` = `/brand/BeachRex_CGP/01_Logo/Horizontal/PNG/beachrex_horizontal_color_1000px.png`). Test: `e2e/organization-logo.unit.spec.ts` (checks that the file exists).
+
+---
+
 ## 2026-10-08 – "All beaches" links work (TASK-004 audit D7) ✅ COMPLETE
 
 Country, region, island and city pages: "All beaches (n)" next to the popular beaches carousel was `href="#"` and counted only the carousel's cards (max 20). It now jumps to the filterable beach list on the same page (`#all-beaches`, the `DynamicSearchBeaches` section) and shows the place's total `beaches_count`. Shared component `src/components/AllBeachesLink.tsx`. Test: `e2e/all-beaches-link.unit.spec.ts` (fails against the old pages).

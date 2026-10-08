@@ -5,6 +5,12 @@ import { env } from '@/env';
 const baseUrl = env.NEXT_PUBLIC_BASE_URL;
 
 /**
+ * Organization logo for Google (raster, at least 112×112, readable on white): the colour
+ * horizontal logo from the brand package (CGP v1.0, `public/brand/`). `/logo.png` never existed.
+ */
+export const ORGANIZATION_LOGO_PATH = '/brand/BeachRex_CGP/01_Logo/Horizontal/PNG/beachrex_horizontal_color_1000px.png';
+
+/**
  * Build Organization JSON-LD structured data
  * Used in the root layout for the entire site
  *
@@ -17,7 +23,7 @@ export function buildOrganizationSchema(description: string) {
     '@type': 'Organization',
     name: 'BeachRex',
     url: baseUrl,
-    logo: `${baseUrl}/logo.png`,
+    logo: `${baseUrl}${ORGANIZATION_LOGO_PATH}`,
     description,
     sameAs: [
       // Add social media profiles when available
