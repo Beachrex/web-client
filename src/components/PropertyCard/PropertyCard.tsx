@@ -2,6 +2,7 @@
 
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/prefetch-utils';
+import { buildCardFeatureIcons, type BeachCardFeatures } from '@/lib/utils/beach-badges';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { parseWebcamUrl } from '@/lib/utils/webcam';
 import { useQueryClient } from '@tanstack/react-query';
@@ -62,6 +63,9 @@ export interface PropertyCardProps {
 
   /** Up to 4 descriptive tags from the API (sporting activities, culinary, natural conditions) */
   tags?: string[];
+
+  /** Beach type, family and parking from the API (QA #45) */
+  features?: BeachCardFeatures | null;
 }
 
 const PropertyCard = React.memo(function PropertyCard({  beachUrl,
@@ -81,6 +85,7 @@ const PropertyCard = React.memo(function PropertyCard({  beachUrl,
   webcamEmbed,
   onLocationClick,
   tags,
+  features,
 }: PropertyCardProps) {
   const renderStartTime = useRef(performance.now());
   const currentRenderCount = useRef(++propertyCardRenderCount);
@@ -99,6 +104,8 @@ const PropertyCard = React.memo(function PropertyCard({  beachUrl,
   }, [title]);
 
   const t = useTranslations('PropertyCard');
+  const tBadges = useTranslations('BottomBadgesBeach');
+  const featureIcons = React.useMemo(() => buildCardFeatureIcons(features), [features]);
   const queryClient = useQueryClient();
 
   const { ready } = useIsMobile();
@@ -444,24 +451,19 @@ const webcamUrl = React.useMemo(
           )}
 
           <div className="flex shrink-0 gap-5 pr-[2px]">
-            <Image
-              src="/images/propertycard/stones.png"
-              width={26}
-              height={26}
-              alt="stones"
-            />
-            <Image
-              src="/images/propertycard/family.png"
-              width={26}
-              height={26}
-              alt="family"
-            />
-            <Image
-              src="/images/propertycard/parking.png"
-              width={26}
-              height={26}
-              alt="parking"
-            />
+            {featureIcons.map((f) => {
+              const label = f.labelKey ? tBadges(`badges.${f.labelKey}`) : (f.label ?? '');
+              return (
+                <Image
+                  key={f.key}
+                  src={f.icon}
+                  width={26}
+                  height={26}
+                  alt={label}
+                  title={label}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
@@ -483,7 +485,8 @@ const webcamUrl = React.useMemo(
     prevProps.sphereTourUrl === nextProps.sphereTourUrl &&
     prevProps.videoEmbedUrl === nextProps.videoEmbedUrl &&
     prevProps.webcamEmbed === nextProps.webcamEmbed &&
-    prevProps.tags?.join(',') === nextProps.tags?.join(',')
+    prevProps.tags?.join(',') === nextProps.tags?.join(',') &&
+    JSON.stringify(prevProps.features ?? null) === JSON.stringify(nextProps.features ?? null)
   );
 });
 

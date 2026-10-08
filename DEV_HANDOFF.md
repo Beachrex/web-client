@@ -18,6 +18,29 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Card icons follow the beach's data (QA #45, cards) ✅ COMPLETE
+
+### Overview
+
+List and map cards (`PropertyCard`) always showed the same three icons (stones, family, parking). The API now returns `features` on every beach item (Beachrex/backend, QA #45: beach type, family, parking). The card shows only the icons the beach has.
+
+### Changes / Files
+
+- `src/lib/utils/beach-badges.ts`: `buildCardFeatureIcons(features)`.
+  - The beach type icon uses `stones.png` for stony types and the category icons for sand, grass and concrete.
+  - Family and parking appear only when true.
+  - Labels (alt/title) come from the API name or the existing `BottomBadgesBeach.badges` keys. No new strings.
+- `PropertyCard.tsx`: renders those icons. The memo comparator includes `features`.
+- `features` is passed through `mapBeachToProperty.ts`, `DynamicSearchBeaches.tsx` and the continent page.
+- `src/lib/api-client/`: regenerated with `openapi-ts -i <backend storage/api-docs/api-docs.json>`, because the sandbox cannot reach the dev API. `client.gen.ts` and `index.ts` were kept as committed: the generator would hard-code `baseUrl`.
+- `e2e/beach-badges.unit.spec.ts`: 2 new tests. With the old static icons, both fail.
+
+### Testing
+
+Run the unit specs. On dev, a sand beach card shows a sand icon, and a beach without parking has no parking icon.
+
+---
+
 ## 2026-10-08 – Indoor and outdoor pool tiles filter separately (QA #70) ✅ COMPLETE
 
 ### Overview

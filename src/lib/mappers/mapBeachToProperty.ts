@@ -3,6 +3,7 @@
 import type { Property } from '@/components/PropertySection';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
+import type { BeachCardFeatures } from '@/lib/utils/beach-badges';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import { parseWebcamUrl } from '@/lib/utils/webcam';
 
@@ -52,6 +53,7 @@ export interface BeachLike {
 
   /** Up to 4 tag strings returned by the API (sporting, culinary, natural conditions) */
   tags?: string[] | null;
+  features?: BeachCardFeatures | null;
 }
 
 
@@ -213,5 +215,6 @@ export function mapBeachToProperty(
         : undefined,
 
     tags,
+    features: beach.features ?? null,
   };
 }

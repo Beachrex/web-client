@@ -2,6 +2,7 @@
 
 'use client';
 
+import type { BeachCardFeatures } from '@/lib/utils/beach-badges';
 import {
   ChevronRight as ArrowRight,
 } from 'lucide-react';
@@ -51,6 +52,7 @@ export interface Property {
 
   /** Up to 4 descriptive tags from the API (sporting activities, culinary, natural conditions) */
   tags?: string[];
+  features?: BeachCardFeatures | null;
 }
 
 interface PropertySectionProps {

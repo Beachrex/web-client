@@ -43,6 +43,7 @@ import {
   getCurrentUser,
   getFirstPageContent,
   getFirstPageContentByCode,
+  getHealth,
   getIsland,
   getIslands,
   getIslandWeather,
@@ -189,6 +190,8 @@ import type {
   GetFirstPageContentByCodeResponse,
   GetFirstPageContentData,
   GetFirstPageContentResponse,
+  GetHealthData,
+  GetHealthResponse,
   GetIslandData,
   GetIslandError,
   GetIslandResponse,
@@ -1277,7 +1280,7 @@ export const getBeachFiltersQueryKey = (
 /**
  * Get beach filter options with optional cascading filters
  *
- * Returns available filter options for beaches. When geographic filters (continent_code, country, region, island) are provided, returns only options that have active beaches in those locations. All data is translated based on Accept-Language header with English fallback. Additional filters may include: accommodation_around, culinary_offer, location_infrastructure, natural_location_condition, sporting_activities, underwater_characteristic, recommended_transport_type, accessibility, area_description, parking_capacity, beach_inclination, swimming_depth_of_one_m, occupancy_rate, parking (boolean), has_swimming_pool (boolean).
+ * Returns available filter options for beaches. When geographic filters (continent_code, country, region, island) are provided, returns only options that have active beaches in those locations. All data is translated based on Accept-Language header with English fallback. Additional filters may include: accommodation_around, culinary_offer, location_infrastructure, natural_location_condition, sporting_activities, underwater_characteristic, recommended_transport_type, accessibility, area_description, parking_capacity, beach_inclination, swimming_depth_of_one_m, occupancy_rate, parking (boolean), has_swimming_pool (boolean), pool_type (indoor/outdoor).
  */
 export const getBeachFiltersOptions = (
   options?: Options<GetBeachFiltersData>,
@@ -1358,6 +1361,33 @@ export const getFirstPageContentByCodeOptions = (
       return data;
     },
     queryKey: getFirstPageContentByCodeQueryKey(options),
+  });
+
+export const getHealthQueryKey = (options?: Options<GetHealthData>) =>
+  createQueryKey("getHealth", options);
+
+/**
+ * Health check for uptime monitoring and deploy verification
+ *
+ * Checks database and Redis. Returns the deployed git revision (written by CI) and the time of the last successful database backup. 503 when a dependency is down.
+ */
+export const getHealthOptions = (options?: Options<GetHealthData>) =>
+  queryOptions<
+    GetHealthResponse,
+    DefaultError,
+    GetHealthResponse,
+    ReturnType<typeof getHealthQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getHealth({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getHealthQueryKey(options),
   });
 
 export const getIslandsQueryKey = (options?: Options<GetIslandsData>) =>

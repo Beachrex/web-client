@@ -156,6 +156,7 @@ const [mediaMode] =
       sphereTourUrl,
       videoEmbedUrl,
       webcamEmbed: parseWebcamUrl(b.media?.embeds?.webcam),
+      features: b.features ?? null,
       title: b.name ?? tCommon('unknownBeach'),
       location: b.city_name ?? b.country_name ?? '',
       locationUrl: buildCityUrlFromSchema(b, locale) ?? undefined,

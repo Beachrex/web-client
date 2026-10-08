@@ -242,6 +242,7 @@ return {
   sphereTourUrl,
   videoEmbedUrl,
   webcamEmbed,
+  features: beach.features ?? null,
 
   title: beach.name ?? '',
   location: beach.city_name ?? beach.country_name ?? '',

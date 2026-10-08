@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
-import { buildBeachBadges, MAX_BEACH_BADGES } from '@/lib/utils/beach-badges';
+import { buildBeachBadges, buildCardFeatureIcons, MAX_BEACH_BADGES } from '@/lib/utils/beach-badges';
 
 /**
  * QA #45 / #46: the beach page showed the same hardcoded badges (stony, family,
@@ -89,5 +89,28 @@ test.describe('buildBeachBadges', () => {
     const keys = badges.map((b) => b.key);
     expect(new Set(keys).size).toBe(keys.length);
     expect(badges.length).toBe(MAX_BEACH_BADGES);
+  });
+});
+
+/**
+ * QA #45 (cards): every list/map card showed the same stones / family / parking
+ * icons. The icons now follow the API's `features`.
+ */
+test.describe('buildCardFeatureIcons', () => {
+  test('only the features the beach has', () => {
+    expect(
+      buildCardFeatureIcons({ beach_type: { code: 'sand', name: 'Pesek' }, family: false, parking: true }).map((i) => i.key),
+    ).toEqual(['beach_type:sand', 'parking']);
+
+    expect(buildCardFeatureIcons({ beach_type: null, family: false, parking: false })).toEqual([]);
+    expect(buildCardFeatureIcons(undefined)).toEqual([]);
+  });
+
+  test('stony types use the card stones icon; labels come from the API or the badge keys', () => {
+    const icons = buildCardFeatureIcons({ beach_type: { code: 'rock_beach', name: 'Skalnata' }, family: true, parking: false });
+    expect(icons).toEqual([
+      { key: 'beach_type:rock_beach', icon: '/images/propertycard/stones.png', label: 'Skalnata' },
+      { key: 'family', icon: '/images/propertycard/family.png', labelKey: 'familyFriendly' },
+    ]);
   });
 });
