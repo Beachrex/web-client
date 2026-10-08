@@ -213,54 +213,6 @@ height={26}
               </div>
             </div>
 
-            {/*
-            <div className="mt-auto pb-8">
-              <div className="ml-[100px] mr-[50px] w-[250px] mb-6">
-                <Link
-                  href="/mobile-app"
-                  onClick={closeMenu}
-                  className="
-  h-[41px]
-  rounded-lg
-  border border-[#E7E7E7]
-  bg-white
-  flex items-center justify-center gap-3
-
-  transition-all duration-200
-  hover:bg-[#F5F5F5]
-  hover:border-[#DADADA]
-  hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)]
-  active:scale-[0.98]
-"
-
-                >
-                  <Image
-src="/images/menu/app.svg" alt="" width={26}
-height={26}
-                  />
-                  <span className="font-bold text-[14px] text-[#4D4D4D]">
-  {tCommon('mobileApp')}
-</span>
-
-                </Link>
-              </div>
-
-              <div className="flex justify-center gap-4">
-                <Image
-src="/images/menu/FB.svg" alt="Facebook" width={26}
-height={26}
-                />
-                <Image
-src="/images/menu/INSTA.svg" alt="Instagram" width={26}
-height={26}
-                />
-                <Image
-src="/images/menu/YT.svg" alt="YouTube" width={26}
-height={26}
-                />
-              </div>
-            </div>
-*/}
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
