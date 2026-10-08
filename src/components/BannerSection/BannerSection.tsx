@@ -152,7 +152,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
                 {t(categoryLabelKey)}
               </span>
 
-              <span
+              <h1
                 className={[
                   'absolute bottom-0 left-[30px] font-figtree font-bold leading-[100%] text-white',
                   'text-[40px] sm:left-[50px] sm:text-[60px]',
@@ -161,7 +161,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
                 ].join(' ')}
               >
                 {title}
-              </span>
+              </h1>
             </div>
 
             <div

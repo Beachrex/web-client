@@ -10,7 +10,12 @@ import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildContinentUrl } from '@/lib/utils/beach-urls';
 import { FEATURES } from '@/lib/constants/features';
 
-const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  /** Hero title rendered on the server, so the page's h1 is in the initial HTML (SEO). */
+  initialTitle?: string;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({ initialTitle = '' }) => {
   const t = useTranslations('HomePage');
   const tContinents = useTranslations('Continents');
   const locale = useLocale();
@@ -45,7 +50,7 @@ const HeroSection: React.FC = () => {
   }, [heroBanner]);
 
   // Get hero title from API
-  const heroTitle = heroBanner?.title ?? '';
+  const heroTitle = heroBanner?.title ?? initialTitle;
   return (
     <section
       className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] bg-cover bg-center sm:h-[700px] lg:h-[798px]"
@@ -107,13 +112,13 @@ const HeroSection: React.FC = () => {
         <div className="container ml-0 mr-auto pl-[4%]">
           {/* Center section - Main heading */}
           <div className="flex flex-1 items-center">
-            {bannerLoading ? (
+            {bannerLoading && !heroTitle ? (
               <div className="h-32 w-full max-w-2xl animate-pulse rounded bg-white/20" />
             ) : (
               <div className="font-damion text-white">
-                <span className="block text-[40px] font-normal leading-tight sm:text-[80px] sm:leading-tight lg:text-[120px] lg:leading-[110px]">
+                <h1 className="block text-[40px] font-normal leading-tight sm:text-[80px] sm:leading-tight lg:text-[120px] lg:leading-[110px]">
                   {heroTitle}
-                </span>
+                </h1>
               </div>
             )}
           </div>

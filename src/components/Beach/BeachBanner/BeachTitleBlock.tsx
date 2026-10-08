@@ -24,7 +24,7 @@ const BeachTitleBlock: React.FC<BeachTitleBlockProps> = ({ title = '' }) => {
       </span>
 
       {/* Main title positioned above the background label */}
-      <span
+      <h1
         className="
           absolute bottom-0 left-[20px] sm:left-[40px] md:left-[60px] lg:left-[80px]
           font-figtree font-bold leading-[100%] text-white pointer-events-none
@@ -32,7 +32,7 @@ const BeachTitleBlock: React.FC<BeachTitleBlockProps> = ({ title = '' }) => {
         "
       >
         {title}
-      </span>
+      </h1>
     </div>
   );
 };

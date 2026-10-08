@@ -16,7 +16,7 @@ import { beachesToProperties } from '@/lib/utils/beach-properties';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
-import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { buildCanonicalUrl, buildCompleteMetadata, buildLocalizedAlternates } from '@/lib/utils/metadata-helpers';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     locale,
     path: `/${getBeachesWord(locale)}`,
     type: 'website',
+    alternateLanguages: buildLocalizedAlternates((l) => `/${getBeachesWord(l)}`),
   });
 }
 

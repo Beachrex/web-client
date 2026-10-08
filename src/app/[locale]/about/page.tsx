@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { getStaticPagesForFooter } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 
@@ -18,5 +18,5 @@ export default async function AboutPage({ params }: { params: { locale: string }
     slug = undefined;
   }
   if (!slug) notFound();
-  redirect(`/${locale}/p/${slug}`);
+  permanentRedirect(`/${locale}/p/${slug}`);
 }

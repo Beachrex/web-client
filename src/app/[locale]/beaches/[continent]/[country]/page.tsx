@@ -39,7 +39,7 @@ import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, buildCountrySchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
-import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { buildCanonicalUrl, buildCompleteMetadata, buildSelfAlternate } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { CountryDetails } from '@/types/CountryDetails';
 import DestinationsSection from '@/components/DestinationsSection';
@@ -108,6 +108,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       locale,
+      // Localized slugs: other locales' URLs are unknown here, so no cross-locale hreflang
+      alternateLanguages: buildSelfAlternate(locale, canonicalPath),
       path: canonicalPath,
       images: imageUrl ? [imageUrl] : undefined,
       type: 'website',

@@ -199,9 +199,10 @@ height={20}
   return (
     <section id="beach-details" className="w-full scroll-mt-24 bg-[#F5F5F5] py-8">
       <div className="container mx-auto px-4">
-        <h1 className="mb-8 font-figtree text-[30px] font-bold text-[#222222]">
+        {/* h2: the beach name in the banner is the page's h1 */}
+        <h2 className="mb-8 font-figtree text-[30px] font-bold text-[#222222]">
           {tMain('title')}
-        </h1>
+        </h2>
 
         {/* Full description: the banner card shows only two lines and links here ("read more") */}
         {description && (

@@ -63,6 +63,30 @@ export function buildAlternateLanguages(path: string): Record<string, string> {
 }
 
 /**
+ * hreflang alternates for a page whose path differs per locale (e.g. the localized beaches word):
+ * `pathFor(locale)` returns the path without the locale prefix.
+ */
+export function buildLocalizedAlternates(pathFor: (locale: string) => string): Record<string, string> {
+  const baseUrl = getBaseUrlInternal();
+  const alternates: Record<string, string> = {};
+  for (const locale of locales) {
+    alternates[locale] = `${baseUrl}/${locale}${pathFor(locale)}`;
+  }
+  alternates['x-default'] = alternates.en ?? `${baseUrl}/en${pathFor('en')}`;
+  return alternates;
+}
+
+/**
+ * Only the page itself as its language version. For pages with localized slugs (continent,
+ * country, region, beach, CMS page) the other locales' slugs are unknown here, and
+ * `buildAlternateLanguages(path)` would pair the slugs of one locale with every other locale,
+ * producing wrong hreflang URLs (TASK-004 SEO). A missing hreflang is better than a wrong one.
+ */
+export function buildSelfAlternate(locale: string, path: string): Record<string, string> {
+  return { [locale]: buildCanonicalUrl(locale, path) };
+}
+
+/**
  * Build canonical URL for a page
  *
  * @param locale - Current locale (e.g., 'en', 'si')
