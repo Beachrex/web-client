@@ -18,6 +18,30 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Region, island and city pages render on the server (TASK-004 SEO) ✅ COMPLETE
+
+### Overview
+
+Follow-up to "SEO part 2": region, island and city pages fetched everything in the browser (react-query hooks), so the server HTML had no name, no `<h1>`, no beach cards, and the `<title>` was the capitalised URL slug with no description. Crawlers (Google, AI search bots) saw an empty page.
+
+### Changes / Files
+
+- `src/lib/server/destination-page-data.ts` (new): fetches details, cities, islands and the 20 most visited beaches on the server, with the same queries the client hooks used.
+- `[...segments]/page.tsx`: region, island and city go through `renderDestinationPage()` (data as props, `Place` + `BreadcrumbList` JSON-LD) and `buildDestinationMetadata()` (`SEO.regionTitle/islandTitle/cityTitle` + descriptions in 19 locales, canonical, self hreflang, banner image for share cards). Unknown slug or missing details → 404 page.
+- `RegionListingPage`, `IslandListingPage`, `CityListingPage`: take `initialData` (required); only the weather still loads in the browser. Removed the English "Loading region…" / "Failed to load …" placeholders and the `'Malinska'` city name fallback (audit D6).
+- `json-ld-helpers.ts`: `buildDestinationSchema()` (Place with `geo` and `containedInPlace` country).
+- `src/lib/utils/destination-seo.ts` (new): title/description and canonical path helpers.
+- Removed the hooks that no longer have callers: `useRegionDetails`, `useIslandDetails`, `useCityDetails`, `useCities`, `useIslands`, `useMostVisitedBeaches`.
+
+### Testing
+
+- `e2e/destination-ssr.unit.spec.ts` (6 tests). Deliberate break: the two source tests fail against the old route and page components.
+- `npx tsc --noEmit -p .`, `yarn lint`, all unit specs (181 passed).
+- `next build` + `next start` against a local mock API: `/hr/plaze/europa/hrvatska/dalmacija`, `…/dalmacija/brac` and `…/brac/bol` return 200 with `<title>Dalmacija plaže - Hrvatska | BeachRex</title>` (etc.), a Croatian meta description, canonical, `<h1>` with the name, the beach cards and Place/BreadcrumbList JSON-LD in the server HTML. Chromium at 1440 and 390 px: no page or hydration errors.
+- Live check on dev: owner (the sandbox cannot reach dev). View source of a region page should contain the region name in `<h1>`.
+
+---
+
 ## 2026-10-08 – Author page: role "Founder of Beachrex" ✅ COMPLETE
 
 Owner, 2026-10-08: "photographer, traveller" is not Gregor's profession and could mislead; `AuthorPage.role` is now "Ustanovitelj Beachrex" / "Founder of Beachrex" in all 19 locales (also the Person `jobTitle`). The page text lives in `messages/*.json` (not in the CMS).

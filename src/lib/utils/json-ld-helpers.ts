@@ -245,6 +245,50 @@ export function buildContinentSchema(
 }
 
 /**
+ * Build Place JSON-LD for a region, island or city page.
+ * `containedInPlace` names the country, so search engines know where the place is.
+ */
+export function buildDestinationSchema(options: {
+  name: string;
+  url: string;
+  description?: string;
+  mainImage?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  countryName?: string | null;
+}) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Place',
+    name: options.name,
+    url: options.url,
+  };
+
+  if (options.description) {
+    schema.description = options.description;
+  }
+
+  const imageUrl = options.mainImage ? buildCdnUrl(options.mainImage, 'list') : null;
+  if (imageUrl) {
+    schema.image = imageUrl;
+  }
+
+  if (typeof options.latitude === 'number' && typeof options.longitude === 'number') {
+    schema.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: options.latitude,
+      longitude: options.longitude,
+    };
+  }
+
+  if (options.countryName) {
+    schema.containedInPlace = { '@type': 'Country', name: options.countryName };
+  }
+
+  return schema;
+}
+
+/**
  * Build ItemList JSON-LD structured data for a list of beaches
  *
  * @param beaches - Array of beach data
