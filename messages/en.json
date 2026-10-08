@@ -796,5 +796,18 @@
     "ctaMap": "Browse the map",
     "ctaContact": "Write to us",
     "footerLink": "Meet the author"
+  },
+  "Payment": {
+    "successTitle": "Payment successful",
+    "successMessage": "Thank you for your purchase! Your credits have been added to your account.",
+    "sessionId": "Session ID:",
+    "cancelTitle": "Payment cancelled",
+    "cancelMessage": "Your payment was cancelled. No charges were made.",
+    "redirecting": "Returning to the itinerary planner in <strong>{seconds}</strong> seconds…",
+    "planItinerary": "Plan an itinerary",
+    "tryChat": "Try the AI chat",
+    "tryAgain": "Try again",
+    "goHome": "Go to the homepage",
+    "help": "Need help? Write to {email}."
   }
 }

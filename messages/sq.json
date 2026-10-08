@@ -796,5 +796,18 @@
     "ctaMap": "Shfletoni hartën",
     "ctaContact": "Na shkruani",
     "footerLink": "Njihuni me autorin"
+  },
+  "Payment": {
+    "successTitle": "Pagesa u krye",
+    "successMessage": "Faleminderit për blerjen! Kreditet u shtuan në llogarinë tuaj.",
+    "sessionId": "ID e seancës:",
+    "cancelTitle": "Pagesa u anulua",
+    "cancelMessage": "Pagesa juaj u anulua. Nuk u tarifua asgjë.",
+    "redirecting": "Kthim te planifikuesi i itinerarit pas <strong>{seconds}</strong> sekondash…",
+    "planItinerary": "Planifiko një itinerar",
+    "tryChat": "Provo bisedën me AI",
+    "tryAgain": "Provo përsëri",
+    "goHome": "Te faqja kryesore",
+    "help": "Keni nevojë për ndihmë? Shkruani në {email}."
   }
 }

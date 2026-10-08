@@ -18,6 +18,20 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Payment result pages and sign-in error: working links, 19 languages (TASK-004 audit D12, D13) ✅ COMPLETE
+
+Stripe is live at launch, so `/payment/success` and `/payment/cancel` (backend `success_url`/`cancel_url`) matter. They redirected after 10 s to `/internal/ai-entitlements` and `/internal/ai-purchase-itinerary` (no such routes → 404), had locale-less `next/link` hrefs, a "View my credits" button with no page, and English-only text. Both now render `src/components/Payment/PaymentResult.tsx`: next-intl `Link`/`useRouter`, countdown back to the itinerary planner (`/ai/itinerary`, where checkout starts), new `Payment` namespace in all 19 `messages/*.json` (support e-mail `info@beachrex.com`). The sign-in error on `auth/callback` linked to a hard-coded `/en`; it now links to the home page of the current locale. The three files left the `locale-links` allowlist. Test: `e2e/payment-pages.unit.spec.ts` (fails against the old success page).
+
+
+---
+
+## 2026-10-08 – Language switch: all 19 locales, beach map, no debug output (TASK-004 audit B9) ✅ COMPLETE
+
+`src/hooks/useLocalizedPath.ts` had its own "beaches" word map without da/pt/nl/el/sq, so switching language from `/da/straande/...` was not recognised as a beaches page, and the beach map word (e.g. `/hr/karta-plaza` → `/de/karta-plaza`) was never translated. It now uses `getBeachesWord`/`getBeachMapWord` for all locales (`translateFixedPath`, `isBeachesWord` in `src/lib/utils/locale-path-words.ts`), and its ~25 `console.log` calls per switch are gone. Test: `e2e/language-switch-path.unit.spec.ts` (19×19 locale pairs; fails against the old hook).
+
+
+---
+
 ## 2026-10-08 – No debug output in visitors' consoles (TASK-004 audit D5, F1) ✅ COMPLETE
 
 Removed `console.log` from the language switch in `TopBar`, `BeachCategorySearch`, `LeftSidebarFilters` (map filters), the sitemap routes and `generateStaticParams`; the city page's hidden accommodation section no longer passes console-only distance/filter handlers. Verified: the beach page's similar-beaches distance dropdown already works (it changes the radius query), so D5 was only the city page. `console.error`/`console.warn` stay. Guard: `e2e/no-console-log.unit.spec.ts` fails on any `console.log` in `src/` outside a short allowlist (flag-gated perf logging; `useLocalizedPath` → B9; unused files → F2).
@@ -33,12 +47,6 @@ Removed `console.log` from the language switch in `TopBar`, `BeachCategorySearch
 ## 2026-10-08 – "All beaches" links work (TASK-004 audit D7) ✅ COMPLETE
 
 Country, region, island and city pages: "All beaches (n)" next to the popular beaches carousel was `href="#"` and counted only the carousel's cards (max 20). It now jumps to the filterable beach list on the same page (`#all-beaches`, the `DynamicSearchBeaches` section) and shows the place's total `beaches_count`. Shared component `src/components/AllBeachesLink.tsx`. Test: `e2e/all-beaches-link.unit.spec.ts` (fails against the old pages).
-
----
-
-## 2026-10-08 – Language switch: all 19 locales, beach map, no debug output (TASK-004 audit B9) ✅ COMPLETE
-
-`src/hooks/useLocalizedPath.ts` had its own "beaches" word map without da/pt/nl/el/sq, so switching language from `/da/straande/...` was not recognised as a beaches page, and the beach map word (e.g. `/hr/karta-plaza` → `/de/karta-plaza`) was never translated. It now uses `getBeachesWord`/`getBeachMapWord` for all locales (`translateFixedPath`, `isBeachesWord` in `src/lib/utils/locale-path-words.ts`), and its ~25 `console.log` calls per switch are gone. Test: `e2e/language-switch-path.unit.spec.ts` (19×19 locale pairs; fails against the old hook).
 
 ---
 

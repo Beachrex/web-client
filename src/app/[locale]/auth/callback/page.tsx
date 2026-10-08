@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslations } from 'next-intl';
 import { Spinner } from 'flowbite-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { googleExchange } from '@/lib/api-client';
 
 /**
@@ -122,7 +122,7 @@ export default function AuthCallbackPage() {
             </h1>
             <p className="text-gray-600 mb-6">{error}</p>
             <Link
-              href="/en"
+              href="/"
               className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               {t('returnHome')}

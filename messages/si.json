@@ -796,5 +796,18 @@
     "ctaMap": "Brskaj po zemljevidu",
     "ctaContact": "Pišite nam",
     "footerLink": "Spoznajte avtorja"
+  },
+  "Payment": {
+    "successTitle": "Plačilo je uspelo",
+    "successMessage": "Hvala za nakup! Krediti so dodani na vaš račun.",
+    "sessionId": "ID seje:",
+    "cancelTitle": "Plačilo je preklicano",
+    "cancelMessage": "Plačilo je bilo preklicano. Ničesar vam nismo zaračunali.",
+    "redirecting": "Vrnitev v načrtovalnik izletov čez <strong>{seconds}</strong> s …",
+    "planItinerary": "Načrtuj izlet",
+    "tryChat": "Preizkusi AI klepet",
+    "tryAgain": "Poskusi znova",
+    "goHome": "Na domačo stran",
+    "help": "Potrebujete pomoč? Pišite na {email}."
   }
 }

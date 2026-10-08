@@ -796,5 +796,18 @@
     "ctaMap": "Karte durchsuchen",
     "ctaContact": "Schreiben Sie uns",
     "footerLink": "Lernen Sie den Autor kennen"
+  },
+  "Payment": {
+    "successTitle": "Zahlung erfolgreich",
+    "successMessage": "Vielen Dank für Ihren Kauf! Ihre Credits wurden Ihrem Konto gutgeschrieben.",
+    "sessionId": "Sitzungs-ID:",
+    "cancelTitle": "Zahlung abgebrochen",
+    "cancelMessage": "Ihre Zahlung wurde abgebrochen. Es wurde nichts belastet.",
+    "redirecting": "Zurück zum Reiseplaner in <strong>{seconds}</strong> Sekunden …",
+    "planItinerary": "Reiseroute planen",
+    "tryChat": "KI-Chat ausprobieren",
+    "tryAgain": "Erneut versuchen",
+    "goHome": "Zur Startseite",
+    "help": "Brauchen Sie Hilfe? Schreiben Sie an {email}."
   }
 }

@@ -15,9 +15,6 @@ const SRC = join(process.cwd(), 'src');
 
 // Known remaining offenders outside QA #24/#25/#74, listed in docs/HANDOFF.md (backend repo) open items.
 const ALLOWED = new Set([
-  'app/[locale]/auth/callback/page.tsx',
-  'app/[locale]/payment/cancel/page.tsx',
-  'app/[locale]/payment/success/page.tsx',
   // Imports both; its `/p/...` href is on the next-intl Link, which adds the locale.
   'components/Footer/FooterNewsletter.tsx',
 ]);
