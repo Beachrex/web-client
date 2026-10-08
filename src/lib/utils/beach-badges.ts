@@ -60,19 +60,21 @@ export function buildBeachBadges(beach: BeachDetailsSchema | undefined): BeachBa
   };
 
   const beachType = beach.characteristics?.beach_type;
-  if (beachType?.code && BEACH_TYPE_ICONS[beachType.code]) {
+  const beachTypeIcon = beachType?.code ? BEACH_TYPE_ICONS[beachType.code] : undefined;
+  if (beachType?.code && beachTypeIcon) {
     add({
       key: `beach_type:${beachType.code}`,
-      icon: BEACH_TYPE_ICONS[beachType.code],
+      icon: beachTypeIcon,
       label: beachType.name ?? beachType.code,
     });
   }
 
   for (const userType of beach.activities?.user_types ?? []) {
-    if (userType.code && USER_TYPE_ICONS[userType.code]) {
+    const icon = userType.code ? USER_TYPE_ICONS[userType.code] : undefined;
+    if (userType.code && icon) {
       add({
         key: `user_type:${userType.code}`,
-        icon: USER_TYPE_ICONS[userType.code],
+        icon,
         label: userType.name ?? userType.code,
       });
     }
@@ -101,20 +103,22 @@ export function buildBeachBadges(beach: BeachDetailsSchema | undefined): BeachBa
   }
 
   for (const item of infrastructure) {
-    if (item.code && INFRASTRUCTURE_ICONS[item.code]) {
+    const icon = item.code ? INFRASTRUCTURE_ICONS[item.code] : undefined;
+    if (item.code && icon) {
       add({
         key: `infrastructure:${item.code}`,
-        icon: INFRASTRUCTURE_ICONS[item.code],
+        icon,
         label: item.name ?? item.code,
       });
     }
   }
 
   for (const sport of beach.activities?.sporting_activities ?? []) {
-    if (sport.code && SPORT_ICONS[sport.code]) {
+    const icon = sport.code ? SPORT_ICONS[sport.code] : undefined;
+    if (sport.code && icon) {
       add({
         key: `sport:${sport.code}`,
-        icon: SPORT_ICONS[sport.code],
+        icon,
         label: sport.name ?? sport.code,
       });
     }

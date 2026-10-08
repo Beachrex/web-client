@@ -57,7 +57,7 @@ test.describe('buildBeachBadges', () => {
       facilities: { location_infrastructure: [named('parking')] },
     } as BeachDetailsSchema);
     expect(fromInfra.map((b) => b.key)).toEqual(['parking']);
-    expect(fromInfra[0].labelKey).toBe('parking');
+    expect(fromInfra[0]?.labelKey).toBe('parking');
 
     const privateOnly = buildBeachBadges({
       accessibility: { parking_capacity: named('private_parking_only') },
