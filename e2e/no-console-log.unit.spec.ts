@@ -12,8 +12,7 @@ const ALLOWED: Record<string, string> = {
   'src/components/PropertyCard/PropertyCard.tsx': 'ENABLE_PERF_LOGGING = false',
   'src/components/Map/VirtualizedBeachList.tsx': 'ENABLE_PERF_LOGGING = false',
   'src/components/Map/ReactLeafletMap.tsx': 'ENABLE_MAP_PERF_LOGGING',
-  // Follow-ups: B9 (language switch) and F2 (unused files)
-  'src/hooks/useLocalizedPath.ts': 'B9',
+  // Follow-up: F2 (unused files)
   'src/components/Map/LeafletMapComponent.tsx': 'F2',
   'src/components/Home/HeroSearchSection.tsx': 'F2',
   'src/lib/utils/__tests__/manual-test-seo.ts': 'F2',
