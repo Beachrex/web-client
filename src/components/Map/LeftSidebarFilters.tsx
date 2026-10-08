@@ -9,6 +9,8 @@ import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { MAP_QUICK_FILTERS } from '@/config/mapQuickFilters';
+import { isQuickFilterSelected, onlyQuickFilters, resolveQuickFilters, toggleFilterValue } from '@/lib/utils/quick-filters';
 
 type FilterValue = string | number | boolean | undefined;
 type FilterOptions = GetBeachFiltersResponse['data'];
@@ -54,8 +56,8 @@ const LeftSidebarFilters = ({
             if (hasFilters) {
                 console.log('[LeftSidebarFilters] Initializing from URL params:', urlFilters);
 
-                // Expand advanced filters section if there are filters in URL
-                setIsExpanded(true);
+                // Open advanced filters unless the quick filters show the whole selection
+                setIsExpanded(!onlyQuickFilters(urlFilters, MAP_QUICK_FILTERS));
 
                 // Apply filters from URL
                 if (onFiltersChange) {
@@ -95,13 +97,10 @@ const LeftSidebarFilters = ({
         // Reset all expanded sections when URL changes
         setExpandedSections({});
 
-        if (hasFilters) {
-            console.log('[LeftSidebarFilters] Applying filters from URL:', urlFilters);
-            // Expand advanced filters section if there are filters in URL
+        // Open advanced filters when the quick filters cannot show the whole selection;
+        // never close them here (the user may be choosing in the advanced list).
+        if (hasFilters && !onlyQuickFilters(urlFilters, MAP_QUICK_FILTERS)) {
             setIsExpanded(true);
-        } else {
-            // Collapse advanced filters section if no filters in URL
-            setIsExpanded(false);
         }
 
         // Apply filters from URL
@@ -149,6 +148,7 @@ const LeftSidebarFilters = ({
     );
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const filterOptions = data?.data ?? null;
+    const quickFilters = useMemo(() => resolveQuickFilters(MAP_QUICK_FILTERS, filterOptions), [filterOptions]);
 
     // Notify parent component when filter options change
     useEffect(() => {
@@ -386,6 +386,42 @@ const LeftSidebarFilters = ({
                     </button>
                 </div>
             </div>
+
+            {/* Quick filters (advanced off): options from the filters API, icons from the local set */}
+            {!isExpanded && quickFilters.length > 0 && (
+                <div className="flex-1 overflow-y-auto px-6 py-6">
+                    <div className="grid grid-cols-2 gap-3">
+                        {quickFilters.map((tile) => {
+                            const selected = isQuickFilterSelected(currentFilters, tile.filterKey, tile.code);
+                            return (
+                                <button
+                                    key={`${tile.filterKey}:${tile.code}`}
+                                    type="button"
+                                    aria-pressed={selected}
+                                    onClick={() => handleFilterChange(
+                                        tile.filterKey,
+                                        toggleFilterValue(currentFilters[tile.filterKey], tile.code),
+                                    )}
+                                    className={[
+                                        'flex min-h-[88px] flex-col items-center justify-center gap-1.5',
+                                        'rounded-lg border bg-white p-2 text-center transition-colors hover:border-gray-400',
+                                        selected ? 'border-[#222] shadow-sm' : 'border-gray-200',
+                                    ].join(' ')}
+                                >
+                                    <Image
+                                        src={tile.icon}
+                                        alt=""
+                                        width={36}
+                                        height={36}
+                                        className="h-9 w-9 object-contain"
+                                    />
+                                    <span className="text-xs leading-tight text-[#222]">{tile.label}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
 
             {/* Scrollable Filter Categories */}
             {isExpanded && (
