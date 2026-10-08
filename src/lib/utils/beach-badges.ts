@@ -10,7 +10,7 @@ export interface BeachBadge {
   key: string;
   icon: string;
   label?: string;
-  labelKey?: 'parking' | 'easyAccess';
+  labelKey?: 'parking' | 'easyAccess' | 'familyFriendly';
 }
 
 export const MAX_BEACH_BADGES = 9;
@@ -125,4 +125,40 @@ export function buildBeachBadges(beach: BeachDetailsSchema | undefined): BeachBa
   }
 
   return badges.slice(0, MAX_BEACH_BADGES);
+}
+
+/**
+ * List/map card icons (QA #45, cards). The API returns `features` on every
+ * beach item (same rules as the badges above); before, every card showed the
+ * same stones / family / parking icons.
+ */
+export interface BeachCardFeatures {
+  beach_type?: { code?: string | null; name?: string | null } | null;
+  family?: boolean | null;
+  parking?: boolean | null;
+}
+
+const CARD_BEACH_TYPE_ICONS: Record<string, string> = {
+  ...BEACH_TYPE_ICONS,
+  small_stones: '/images/propertycard/stones.png',
+  big_stones: '/images/propertycard/stones.png',
+  rock_beach: '/images/propertycard/stones.png',
+};
+
+export function buildCardFeatureIcons(features: BeachCardFeatures | null | undefined): BeachBadge[] {
+  if (!features) return [];
+
+  const icons: BeachBadge[] = [];
+  const type = features.beach_type;
+  const typeIcon = type?.code ? CARD_BEACH_TYPE_ICONS[type.code] : undefined;
+  if (type?.code && typeIcon) {
+    icons.push({ key: `beach_type:${type.code}`, icon: typeIcon, label: type.name ?? type.code });
+  }
+  if (features.family) {
+    icons.push({ key: 'family', icon: '/images/propertycard/family.png', labelKey: 'familyFriendly' });
+  }
+  if (features.parking) {
+    icons.push({ key: 'parking', icon: '/images/propertycard/parking.png', labelKey: 'parking' });
+  }
+  return icons;
 }

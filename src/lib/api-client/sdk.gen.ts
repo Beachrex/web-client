@@ -12,6 +12,7 @@ import type {
   A5F92F332537A406934C0832A0A08A7fErrors,
   A5F92F332537A406934C0832A0A08A7fResponses,
   A772Fcf0B465F9Cbba29F104D89A465Data,
+  A772Fcf0B465F9Cbba29F104D89A465Errors,
   A772Fcf0B465F9Cbba29F104D89A465Responses,
   A957Abdc0A1F026Bb8B6F4D5Ec975B8eData,
   A957Abdc0A1F026Bb8B6F4D5Ec975B8eErrors,
@@ -23,6 +24,7 @@ import type {
   AiChatErrors,
   AiChatResponses,
   B0722F9026Fe14D1F2Be5Ffa1A33E9aData,
+  B0722F9026Fe14D1F2Be5Ffa1A33E9aErrors,
   B0722F9026Fe14D1F2Be5Ffa1A33E9aResponses,
   CalculateDistanceData,
   CalculateDistanceResponses,
@@ -30,6 +32,7 @@ import type {
   CreateBeachErrors,
   CreateBeachResponses,
   D5F3076785B02F519F50Dbec06cData,
+  D5F3076785B02F519F50Dbec06cErrors,
   D5F3076785B02F519F50Dbec06cResponses,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Data,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Errors,
@@ -140,6 +143,9 @@ import type {
   GetFirstPageContentData,
   GetFirstPageContentErrors,
   GetFirstPageContentResponses,
+  GetHealthData,
+  GetHealthErrors,
+  GetHealthResponses,
   GetIslandData,
   GetIslandErrors,
   GetIslandResponses,
@@ -711,7 +717,7 @@ export const getBeaches = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Create a new beach
+ * Create a new beach (admin only)
  */
 export const createBeach = <ThrowOnError extends boolean = false>(
   options: Options<CreateBeachData, ThrowOnError>,
@@ -721,6 +727,12 @@ export const createBeach = <ThrowOnError extends boolean = false>(
     CreateBeachErrors,
     ThrowOnError
   >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
     url: "/api/v1/beaches",
     ...options,
     headers: {
@@ -1073,7 +1085,7 @@ export const getCulinaryOfferById = <ThrowOnError extends boolean = false>(
 /**
  * Get beach filter options with optional cascading filters
  *
- * Returns available filter options for beaches. When geographic filters (continent_code, country, region, island) are provided, returns only options that have active beaches in those locations. All data is translated based on Accept-Language header with English fallback. Additional filters may include: accommodation_around, culinary_offer, location_infrastructure, natural_location_condition, sporting_activities, underwater_characteristic, recommended_transport_type, accessibility, area_description, parking_capacity, beach_inclination, swimming_depth_of_one_m, occupancy_rate, parking (boolean), has_swimming_pool (boolean).
+ * Returns available filter options for beaches. When geographic filters (continent_code, country, region, island) are provided, returns only options that have active beaches in those locations. All data is translated based on Accept-Language header with English fallback. Additional filters may include: accommodation_around, culinary_offer, location_infrastructure, natural_location_condition, sporting_activities, underwater_characteristic, recommended_transport_type, accessibility, area_description, parking_capacity, beach_inclination, swimming_depth_of_one_m, occupancy_rate, parking (boolean), has_swimming_pool (boolean), pool_type (indoor/outdoor).
  */
 export const getBeachFilters = <ThrowOnError extends boolean = false>(
   options?: Options<GetBeachFiltersData, ThrowOnError>,
@@ -1120,6 +1132,24 @@ export const getFirstPageContentByCode = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/first-page-content/{code}",
+    ...options,
+  });
+};
+
+/**
+ * Health check for uptime monitoring and deploy verification
+ *
+ * Checks database and Redis. Returns the deployed git revision (written by CI) and the time of the last successful database backup. 503 when a dependency is down.
+ */
+export const getHealth = <ThrowOnError extends boolean = false>(
+  options?: Options<GetHealthData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetHealthResponses,
+    GetHealthErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/health",
     ...options,
   });
 };
@@ -1291,7 +1321,7 @@ export const a772Fcf0B465F9Cbba29F104D89A465 = <
 ) => {
   return (options.client ?? client).delete<
     A772Fcf0B465F9Cbba29F104D89A465Responses,
-    unknown,
+    A772Fcf0B465F9Cbba29F104D89A465Errors,
     ThrowOnError
   >({
     security: [
@@ -1333,7 +1363,7 @@ export const d5F3076785B02F519F50Dbec06C = <
 ) => {
   return (options.client ?? client).put<
     D5F3076785B02F519F50Dbec06cResponses,
-    unknown,
+    D5F3076785B02F519F50Dbec06cErrors,
     ThrowOnError
   >({
     security: [
@@ -1361,7 +1391,7 @@ export const b0722F9026Fe14D1F2Be5Ffa1A33E9A = <
 ) => {
   return (options?.client ?? client).post<
     B0722F9026Fe14D1F2Be5Ffa1A33E9aResponses,
-    unknown,
+    B0722F9026Fe14D1F2Be5Ffa1A33E9aErrors,
     ThrowOnError
   >({
     security: [
