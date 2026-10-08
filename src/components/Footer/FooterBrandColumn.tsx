@@ -3,8 +3,11 @@
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import FooterSocial from './FooterSocial';
+
+/** Logo from the brand package (CGP v1.0, `public/brand/`). */
+const FOOTER_LOGO = '/brand/BeachRex_CGP/01_Logo/Horizontal/SVG/beachrex_horizontal_color.svg';
 
 export default function FooterBrandColumn() {
   const t = useTranslations('Footer.brand');
@@ -12,42 +15,31 @@ export default function FooterBrandColumn() {
   const locale = useLocale();
 
   return (
-    // full-height column layout
-    <div className="flex h-full flex-col">
-      {/* Logo always on top */}
-      <div>
-        <Link href={`/${locale}`}>
-          <Image
-            src={buildCdnUrl('js/assets/img/logo_dark.png', 'icon') ?? '/images/logo_dark.png'}
-            alt="BeachRex logo"
-            width={119}
-            height={22}
-            className="h-5 w-auto opacity-100 mix-blend-luminosity grayscale sm:h-6 lg:h-7 cursor-pointer"
-            priority
-          />
-        </Link>
-      </div>
+    <div className="flex flex-col items-start gap-5">
+      <Link href={`/${locale}`} aria-label="BeachRex">
+        <Image
+src={FOOTER_LOGO} alt="BeachRex" width={166}
+height={32} className="h-8 w-auto"
+        />
+      </Link>
 
-      {/* Centered content */}
-      <div className="flex flex-1 items-center">
-        <p className="max-w-sm text-[10px] leading-[14px] text-[#8D8D8D]">
-          {t('desc')}
-        </p>
-      </div>
+      <p className="max-w-xs font-figtree text-[14px] leading-6 text-[#4D4D4D]">{t('desc')}</p>
 
-      {/* Button pinned to bottom */}
       <Link
         href={buildBeachMapUrl(locale)}
-        className="inline-flex items-center justify-center gap-2 rounded-md bg-[#1A3C68] px-5 py-2.5 font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#2a4c78] focus:outline-none focus:ring-0"
+        className={[
+          'inline-flex items-center gap-2 rounded-md bg-[#1A3C68] px-5 py-2.5',
+          'font-figtree text-[14px] font-bold text-white transition-colors hover:bg-[#2a4c78]',
+        ].join(' ')}
       >
         <Image
-          src="/images/map.png"
-          alt="Map icon"
-          width={20}
-          height={20}
+src="/images/map.png" alt="" width={20}
+height={20}
         />
         <span>{t('cta')}</span>
       </Link>
+
+      <FooterSocial />
     </div>
   );
 }
