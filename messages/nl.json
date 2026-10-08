@@ -796,5 +796,18 @@
     "ctaMap": "Verken de kaart",
     "ctaContact": "Schrijf ons",
     "footerLink": "Maak kennis met de auteur"
+  },
+  "Payment": {
+    "successTitle": "Betaling geslaagd",
+    "successMessage": "Bedankt voor je aankoop! Je credits zijn aan je account toegevoegd.",
+    "sessionId": "Sessie-ID:",
+    "cancelTitle": "Betaling geannuleerd",
+    "cancelMessage": "Je betaling is geannuleerd. Er is niets afgeschreven.",
+    "redirecting": "Terug naar de reisplanner over <strong>{seconds}</strong> seconden…",
+    "planItinerary": "Plan een reisroute",
+    "tryChat": "Probeer de AI-chat",
+    "tryAgain": "Opnieuw proberen",
+    "goHome": "Naar de startpagina",
+    "help": "Hulp nodig? Schrijf naar {email}."
   }
 }

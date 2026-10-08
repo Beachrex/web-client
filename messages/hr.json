@@ -796,5 +796,18 @@
     "ctaMap": "Pregledajte kartu",
     "ctaContact": "Pišite nam",
     "footerLink": "Upoznajte autora"
+  },
+  "Payment": {
+    "successTitle": "Plaćanje je uspjelo",
+    "successMessage": "Hvala na kupnji! Krediti su dodani na vaš račun.",
+    "sessionId": "ID sesije:",
+    "cancelTitle": "Plaćanje je otkazano",
+    "cancelMessage": "Vaše plaćanje je otkazano. Ništa vam nije naplaćeno.",
+    "redirecting": "Povratak u planer putovanja za <strong>{seconds}</strong> s …",
+    "planItinerary": "Isplaniraj putovanje",
+    "tryChat": "Isprobaj AI chat",
+    "tryAgain": "Pokušaj ponovno",
+    "goHome": "Na početnu stranicu",
+    "help": "Trebate pomoć? Pišite na {email}."
   }
 }

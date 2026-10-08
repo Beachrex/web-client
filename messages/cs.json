@@ -796,5 +796,18 @@
     "ctaMap": "Procházet mapu",
     "ctaContact": "Napište nám",
     "footerLink": "Seznamte se s autorem"
+  },
+  "Payment": {
+    "successTitle": "Platba proběhla",
+    "successMessage": "Děkujeme za nákup! Kredity byly připsány na váš účet.",
+    "sessionId": "ID relace:",
+    "cancelTitle": "Platba zrušena",
+    "cancelMessage": "Vaše platba byla zrušena. Nic vám nebylo účtováno.",
+    "redirecting": "Návrat do plánovače výletů za <strong>{seconds}</strong> s…",
+    "planItinerary": "Naplánovat výlet",
+    "tryChat": "Vyzkoušet AI chat",
+    "tryAgain": "Zkusit znovu",
+    "goHome": "Na úvodní stránku",
+    "help": "Potřebujete pomoc? Napište na {email}."
   }
 }

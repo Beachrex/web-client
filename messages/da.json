@@ -796,5 +796,18 @@
     "ctaMap": "Udforsk kortet",
     "ctaContact": "Skriv til os",
     "footerLink": "Mød forfatteren"
+  },
+  "Payment": {
+    "successTitle": "Betaling gennemført",
+    "successMessage": "Tak for dit køb! Dine kreditter er tilføjet din konto.",
+    "sessionId": "Sessions-ID:",
+    "cancelTitle": "Betaling annulleret",
+    "cancelMessage": "Din betaling blev annulleret. Der er ikke trukket noget.",
+    "redirecting": "Tilbage til rejseplanlæggeren om <strong>{seconds}</strong> sekunder …",
+    "planItinerary": "Planlæg en rejserute",
+    "tryChat": "Prøv AI-chatten",
+    "tryAgain": "Prøv igen",
+    "goHome": "Gå til forsiden",
+    "help": "Brug for hjælp? Skriv til {email}."
   }
 }

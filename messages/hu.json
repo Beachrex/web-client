@@ -796,5 +796,18 @@
     "ctaMap": "Böngészd a térképet",
     "ctaContact": "Írj nekünk",
     "footerLink": "Ismerd meg a szerzőt"
+  },
+  "Payment": {
+    "successTitle": "Sikeres fizetés",
+    "successMessage": "Köszönjük a vásárlást! A krediteket jóváírtuk a fiókodban.",
+    "sessionId": "Munkamenet-azonosító:",
+    "cancelTitle": "Fizetés megszakítva",
+    "cancelMessage": "A fizetés megszakadt. Semmilyen terhelés nem történt.",
+    "redirecting": "Visszatérés az útitervezőhöz <strong>{seconds}</strong> másodperc múlva…",
+    "planItinerary": "Útiterv készítése",
+    "tryChat": "AI csevegés kipróbálása",
+    "tryAgain": "Újrapróbálás",
+    "goHome": "Kezdőlap",
+    "help": "Segítség kell? Írj a(z) {email} címre."
   }
 }

@@ -796,5 +796,18 @@
     "ctaMap": "Parcourir la carte",
     "ctaContact": "Écrivez-nous",
     "footerLink": "Découvrez l’auteur"
+  },
+  "Payment": {
+    "successTitle": "Paiement réussi",
+    "successMessage": "Merci pour votre achat ! Vos crédits ont été ajoutés à votre compte.",
+    "sessionId": "ID de session :",
+    "cancelTitle": "Paiement annulé",
+    "cancelMessage": "Votre paiement a été annulé. Aucun montant n’a été débité.",
+    "redirecting": "Retour au planificateur d’itinéraire dans <strong>{seconds}</strong> secondes…",
+    "planItinerary": "Planifier un itinéraire",
+    "tryChat": "Essayer le chat IA",
+    "tryAgain": "Réessayer",
+    "goHome": "Aller à l’accueil",
+    "help": "Besoin d’aide ? Écrivez à {email}."
   }
 }
