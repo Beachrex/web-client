@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Beach share image: the beach's photo as a 1200×630 JPEG ✅ COMPLETE
+
+Owner, 2026-10-08: a shared beach link should show that beach. The page already used the primary photo, but in the 2800 px "large" size (can exceed X's 5 MB card limit, wrong aspect). `getBeachShareImage()` / `buildShareImageUrl()` in `beach-images.ts` build an Imagor `1200x630/smart` JPEG crop from the large endpoint. Note: dev/uat send `Disallow: /` in robots.txt, and Twitterbot respects it, so X shows no card for dev links by design; production works. Test: `e2e/beach-share-image.unit.spec.ts`.
+
+---
+
 ## 2026-10-08 – Beach photos in structured data: ImageObject with creator and licence ✅ COMPLETE
 
 ### Overview
