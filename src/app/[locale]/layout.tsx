@@ -9,6 +9,7 @@ import { Open_Sans } from 'next/font/google';
 import { buildOrganizationSchema, buildWebSiteSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { isProductionSite } from '@/lib/utils/environment';
+import ThirdPartyScripts from '@/components/Analytics/ThirdPartyScripts';
 
 export async function generateMetadata({
   params,
@@ -60,6 +61,8 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={openSans.className}>
       <head>
+        {/* Consent, analytics and ads: production only */}
+        {isProductionSite(env.NEXT_PUBLIC_BASE_URL) && <ThirdPartyScripts />}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: renderJsonLd(organizationSchema) }}
