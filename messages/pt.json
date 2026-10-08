@@ -319,7 +319,9 @@
       "parking": "Estacionamento disponível",
       "easyAccess": "Acesso fácil",
       "windsurfing": "Windsurf",
-      "SeaTemperature": "Temperatura do mar"
+      "SeaTemperature": "Temperatura do mar",
+      "adventurer": "Praia para aventureiros",
+      "partyBeach": "Praia de festa"
     }
   },
   "AccommodationSection": {

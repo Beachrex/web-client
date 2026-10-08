@@ -319,7 +319,9 @@
       "parking": "Parkolás elérhető",
       "easyAccess": "Könnyű hozzáférés",
       "windsurfing": "Szörfözés",
-      "SeaTemperature": "Vízhőmérséklet"
+      "SeaTemperature": "Vízhőmérséklet",
+      "adventurer": "Kalandoroknak való strand",
+      "partyBeach": "Bulis strand"
     }
   },
   "AccommodationSection": {

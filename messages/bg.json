@@ -319,7 +319,9 @@
       "parking": "Наличен паркинг",
       "easyAccess": "Лесен достъп",
       "windsurfing": "Уиндсърфинг",
-      "SeaTemperature": "Температура на морето"
+      "SeaTemperature": "Температура на морето",
+      "adventurer": "Плаж за авантюристи",
+      "partyBeach": "Плаж за купони"
     }
   },
   "AccommodationSection": {
