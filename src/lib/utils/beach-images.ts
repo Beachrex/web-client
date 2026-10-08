@@ -7,26 +7,15 @@ import type { MediaItem } from '@/lib/api-client/types.gen';
 export type CdnEndpointType = 'teaser' | 'large' | 'assets';
 
 /**
- * Check if path contains non-ASCII characters (special characters like č, š, ž)
+ * Percent-encode non-ASCII path segments. Since TASK-002 every storage key is
+ * ASCII, so this only keeps a stray non-ASCII path a valid URL (it will 404).
  */
-function hasNonAsciiCharacters(path: string): boolean {
-  return !/^[\x00-\x7F]*$/.test(path);
-}
-
-/**
- * Encode path segment with NFD normalization for DigitalOcean Spaces compatibility
- */
-function encodePathSegment(segment: string): string {
-  if (!segment) return segment;
-
-  // Fast path: already pure ASCII, nothing to encode
-  if (/^[\u0000-\u007F]*$/.test(segment)) {
-    return segment;
-  }
-
-  // Use NFD normalization (decomposed form) to match how files are stored on DigitalOcean Spaces
-  // This ensures 'č' becomes 'c' + combining caron (U+0063 + U+030C)
-  return encodeURIComponent(segment.normalize('NFD'));
+function encodePath(path: string): string {
+  if (/^[\x00-\x7F]*$/.test(path)) return path;
+  return path
+    .split('/')
+    .map((segment) => (/^[\x00-\x7F]*$/.test(segment) ? segment : encodeURIComponent(segment)))
+    .join('/');
 }
 
 /**
@@ -104,8 +93,8 @@ export function determineCdnEndpointType(
 /**
  * Build full CDN URL with automatic endpoint selection
  *
- * For images with special characters (č, š, ž, etc.), uses direct DigitalOcean Spaces URL
- * to bypass Imagor (which doesn't handle UTF-8 paths correctly).
+ * Every image goes through Imagor. Storage keys are ASCII since TASK-002 (the old
+ * non-ASCII keys were deleted), so there is no direct Spaces bypass any more.
  *
  * @param path - Relative image path from API
  * @param context - Optional context hint for endpoint selection
@@ -117,34 +106,21 @@ export function buildCdnUrl(
 ): string | null {
   if (!path) return null;
 
-  // If path contains special characters, use direct DigitalOcean Spaces URL
-  // Imagor doesn't handle UTF-8 paths correctly, so we bypass it
-  if (hasNonAsciiCharacters(path)) {
-    const segments = path.split('/');
-    const encodedSegments = segments.map(encodePathSegment);
-    const encodedPath = encodedSegments.join('/');
-
-    return `${env.NEXT_PUBLIC_CDN_ASSETS}${encodedPath}`;
-  }
-
-  // For ASCII-only paths, use Imagor optimization
   const endpointType = determineCdnEndpointType(path, context);
   const endpoint = getCdnEndpoint(endpointType);
 
-  return `${endpoint}${path}`;
+  return `${endpoint}${encodePath(path)}`;
 }
 
 /**
  * Build full CDN URL for 360° sphere tour HTML files
- * Handles special characters in paths (č, š, ž, etc.) by using NFD encoding
  *
- * @param tourUrl - Relative tour URL from API (e.g., 'img/beaches/hr-4-o-čiovo/vtour/tour.html')
- * @returns Full CDN URL with proper encoding for special characters
+ * @param tourUrl - Relative tour URL from API (e.g., 'img/beaches/hr-4-o-ciovo/vtour/tour.html')
+ * @returns Full CDN URL
  */
 export function buildSphereTourUrl(tourUrl: string | null | undefined): string | null {
   if (!tourUrl) return null;
 
-  // Use buildCdnUrl which handles special character encoding
   // Always use 'assets' endpoint for tour HTML files
   return buildCdnUrl(tourUrl, 'icon');
 }
