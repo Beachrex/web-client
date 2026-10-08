@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { client } from '@/lib/api-client/client.gen';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { env } from '@/env';
 
 interface ApiClientProviderProps {
   children: React.ReactNode;
@@ -39,7 +40,7 @@ export function ApiClientProvider({ children, locale }: ApiClientProviderProps) 
     }
 
     client.setConfig({
-      baseUrl: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000',
+      baseUrl: env.NEXT_PUBLIC_API_ENDPOINT,
       headers,
     });
 

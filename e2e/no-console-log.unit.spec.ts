@@ -5,17 +5,13 @@ import { test, expect } from '@playwright/test';
 /**
  * TASK-004 audit D5/F1: visitors' consoles filled with debug output (~25 lines per language
  * switch, map filters, category search) and the city page's distance/filter handlers only
- * logged. No `console.log` in `src/` except the files listed here, which follow-up PRs clean up.
+ * logged. No `console.log` in `src/` except the flag-gated debug logging listed here.
  */
 const ALLOWED: Record<string, string> = {
   // Debug logging behind a `false` constant (never runs)
   'src/components/PropertyCard/PropertyCard.tsx': 'ENABLE_PERF_LOGGING = false',
   'src/components/Map/VirtualizedBeachList.tsx': 'ENABLE_PERF_LOGGING = false',
   'src/components/Map/ReactLeafletMap.tsx': 'ENABLE_MAP_PERF_LOGGING',
-  // Follow-up: F2 (unused files)
-  'src/components/Map/LeafletMapComponent.tsx': 'F2',
-  'src/components/Home/HeroSearchSection.tsx': 'F2',
-  'src/lib/utils/__tests__/manual-test-seo.ts': 'F2',
 };
 
 function files(dir: string): string[] {

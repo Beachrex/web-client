@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Button, Label, TextInput, Select, Textarea, Alert, Card } from 'flowbite-react';
 import { GoogleLoginButton, UserProfile, LogoutButton } from '@/components/Auth';
 import { MapPin, CreditCard } from 'lucide-react';
+import { env } from '@/env';
 
 /**
  * AI Itinerary Generator Page
@@ -90,7 +91,7 @@ export default function AIItineraryPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000'}/api/v1/me/entitlements`,
+        `${env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/me/entitlements`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -151,7 +152,7 @@ export default function AIItineraryPage() {
       const isCountryCode = destinationTrimmed.length === 2;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000'}/api/v1/ai/itineraries`,
+        `${env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/ai/itineraries`,
         {
           method: 'POST',
           headers,
@@ -210,7 +211,7 @@ export default function AIItineraryPage() {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000'}/api/v1/payments/stripe/checkout`,
+        `${env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/payments/stripe/checkout`,
         {
           method: 'POST',
           headers: {
