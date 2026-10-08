@@ -745,5 +745,55 @@
       "linkedin": "LinkedIn-borítókép",
       "x": "X-fejléc"
     }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – a Beachrex szerzője",
+    "metaDescription": "Ismerd meg Gregor Balažicot, aki felmondott, vett egy fényképezőgépet és egy kisbuszt, majd hat országban 2 445 strandot járt be. Így született a Beachrex.",
+    "eyebrow": "A szerzőről",
+    "role": "Fotós, utazó és a Beachrex alapítója",
+    "lead": "„A strandok mindig is a nagy szenvedélyem voltak.”",
+    "heroCta": "Olvasd el a történetet",
+    "stats": {
+      "beaches": "meglátogatott strand",
+      "km": "megtett kilométer",
+      "countries": "ország",
+      "facts": "adat minden strandról"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Ki a komfortzónából",
+        "text": "A strandok mindig is a nagy szenvedélyem voltak – mondja Gregor Balažic, aki négy évvel ezelőtt felmondott a munkahelyén. Osztályvezető volt, mégis kilépett a komfortzónájából, és maga mögött hagyta a kiszámítható jövőt. Vett egy fényképezőgépet és egy kisbuszt, amely az új otthona lett, és nekivágott a világnak. Pontosabban a strandoknak."
+      },
+      "road": {
+        "title": "2 445 strand hat országban",
+        "text": "Bejárta Szlovénia, Horvátország, Bosznia-Hercegovina, Olaszország és Franciaország partjait és strandjait, végül Spanyolországban kötött ki. Nem kevesebb mint 2 445 strandot látogatott meg. Bár a szám óriásinak tűnik, csupán csepp a tengerben – a világon több mint 200 000 turizmusra alkalmas strand van – magyarázza Balažic."
+      },
+      "database": {
+        "title": "A világ legnagyobb strandadatbázisa",
+        "text": "A meglátogatott strandokból született meg a világ legnagyobb strandadatbázisa, a Beachrex. Minden strandhoz fotók, panorámaképek, videók, parkolási információk, GPS-koordináták, időjárási adatok, valamint a szállásokra, sportolási lehetőségekre, éttermekre és bárokra, továbbá a tenger hőmérsékletére vonatkozó információk tartoznak. Ez összesen több mint 200 adat minden strandról. A felhasználók maguk is feltölthetik saját fotóikat és videóikat, és megoszthatják kedvenc strandjaikat a barátaikkal. Az asztali és a mobilos változaton éppen most gőzerővel dolgozik, és mivel ez komoly anyagi terhet jelent, úgy döntött, hogy a Kickstarter platformon keres támogatókat."
+      },
+      "hardships": {
+        "title": "Az út nem mindig volt könnyű",
+        "text": "Balažic több mint 30 000 kilométert tett meg, és a lenyűgöző felvételekért néha még másznia is kellett. A több ezer kilométeres utat nem mindig ragyogta be a napfény – kellemetlen élmények is érték, és többször kirabolták. Az útja azonban (még) nem ért véget."
+      }
+    },
+    "routeTitle": "A partok mentén",
+    "countries": {
+      "si": "Szlovénia",
+      "hr": "Horvátország",
+      "ba": "Bosznia-Hercegovina",
+      "it": "Olaszország",
+      "fr": "Franciaország",
+      "es": "Spanyolország"
+    },
+    "photoAlt": "Gregor Balažic fényképezőgéppel egy homokos strandon",
+    "beachAlt": "Homokos strand felfordított csónakkal a sziklák és fenyők mellett",
+    "beachCaption": "Egy a 2 445 strand közül, amelyet Gregor meglátogatott és lefényképezett.",
+    "quote": "Van egy víziónk: néhány éven belül a ti segítségetekkel, kedves támogatók, a világ minden egyes strandja felkerül a térképre.",
+    "ctaTitle": "Fedezd fel a strandokat, amelyeket Gregor meglátogatott",
+    "ctaText": "A Beachrex minden fotója, 360°-os panorámája és részlete ezen az úton született.",
+    "ctaMap": "Böngészd a térképet",
+    "ctaContact": "Írj nekünk",
+    "footerLink": "Ismerd meg a szerzőt"
   }
 }

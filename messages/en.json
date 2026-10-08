@@ -745,5 +745,55 @@
       "linkedin": "LinkedIn cover",
       "x": "X header"
     }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – the author of Beachrex",
+    "metaDescription": "Meet Gregor Balažic, who quit his job, bought a camera and a van and visited 2,445 beaches in six countries. Beachrex grew out of his journey.",
+    "eyebrow": "About the author",
+    "role": "Photographer, traveller and founder of Beachrex",
+    "lead": "“Beaches have always been my great passion.”",
+    "heroCta": "Read the story",
+    "stats": {
+      "beaches": "beaches visited",
+      "km": "kilometres driven",
+      "countries": "countries",
+      "facts": "details about every beach"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Leaving the comfort zone",
+        "text": "Beaches have always been my great passion, says Gregor Balažic, who quit his job four years ago. He was a head of department; he stepped out of his comfort zone and left a predictable future behind. He bought a camera and a van, which became his new home, and set off into the world. To the beaches, to be precise."
+      },
+      "road": {
+        "title": "2,445 beaches in six countries",
+        "text": "He travelled along the coasts and beaches of Slovenia, Croatia, Bosnia and Herzegovina, Italy and France, and ended up in Spain. He visited no fewer than 2,445 beaches. The number may seem huge, but it is only a drop in the ocean – there are more than 200,000 beaches in the world suitable for tourism, Balažic explains."
+      },
+      "database": {
+        "title": "The world’s largest beach database",
+        "text": "The beaches he visited became the foundation of the world’s largest beach database – Beachrex. Every beach comes with photos, panoramic shots, videos, information about parking, GPS location, weather data, accommodation, sports activities, restaurants and bars, and sea temperature. Altogether that is more than 200 details about every beach. Users can also add their own photos and videos and share their favourite beaches with friends. He is currently working hard on the desktop and mobile versions, and because of the large financial undertaking he decided to look for backers on Kickstarter."
+      },
+      "hardships": {
+        "title": "The road was not always easy",
+        "text": "Balažic has travelled more than 30,000 kilometres, and sometimes he even had to climb to get the perfect shot. The journey of thousands of kilometres was not always bathed in sunshine – there were unpleasant moments along the way, and he was robbed several times. But his journey is not over (yet)."
+      }
+    },
+    "routeTitle": "Along the coasts",
+    "countries": {
+      "si": "Slovenia",
+      "hr": "Croatia",
+      "ba": "Bosnia and Herzegovina",
+      "it": "Italy",
+      "fr": "France",
+      "es": "Spain"
+    },
+    "photoAlt": "Gregor Balažic with his camera on a sandy beach",
+    "beachAlt": "Sandy beach with an upturned boat by the rocks and pine trees",
+    "beachCaption": "One of the 2,445 beaches Gregor visited and photographed.",
+    "quote": "We have a vision – in a few years, with your help, every single beach in the world will be on the map.",
+    "ctaTitle": "Discover the beaches Gregor visited",
+    "ctaText": "Every photo, sphere and detail on Beachrex was created on this journey.",
+    "ctaMap": "Browse the map",
+    "ctaContact": "Write to us",
+    "footerLink": "Meet the author"
   }
 }

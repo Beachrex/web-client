@@ -745,5 +745,55 @@
       "linkedin": "Naslovnica za LinkedIn",
       "x": "Glava za X"
     }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – avtor Beachrex",
+    "metaDescription": "Spoznajte Gregorja Balažica, ki je pustil službo, kupil fotoaparat in kombi ter obiskal 2.445 plaž v šestih državah. Iz njegove poti je nastal Beachrex.",
+    "eyebrow": "O avtorju",
+    "role": "Fotograf, popotnik in ustanovitelj Beachrex",
+    "lead": "»Plaže so bile vedno moja velika strast.«",
+    "heroCta": "Preberi zgodbo",
+    "stats": {
+      "beaches": "obiskanih plaž",
+      "km": "prevoženih kilometrov",
+      "countries": "držav",
+      "facts": "podatkov o vsaki plaži"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Izstop iz cone udobja",
+        "text": "Plaže so bile vedno moja velika strast, pravi Gregor Balažic, ki je pred štirimi leti pustil službo. Bil je vodja oddelka, izstopil iz cone udobja in zapustil predvidljivo prihodnost. Kupil je fotoaparat in kombi, ki se je prelevil v njegov nov dom, ter se podal v svet. Pravzaprav na plaže."
+      },
+      "road": {
+        "title": "2.445 plaž v šestih državah",
+        "text": "Podal se je po obalah in plažah Slovenije, Hrvaške, Bosne in Hercegovine, Italije, Francije in pristal v Španiji. Obiskal je kar 2.445 plaž. Čeprav se zdi številka ogromna, je zgolj kapljica v morje – na svetu je prek 200 tisoč plaž, ki so primerne za turizem, pojasnjuje Balažic."
+      },
+      "database": {
+        "title": "Največja baza plaž na svetu",
+        "text": "Obiskane plaže so postale podlaga za največjo bazo plaž na svetu – Beachrex. Vsaka plaža je opremljena s fotografijami, panoramskimi posnetki, videi, informacijami o možnostih parkiranja, GPS lokaciji, podatki o vremenu, nastanitvah, športnih aktivnostih, restavracijah in barih ter temperaturi morja. Skupaj je to več kot 200 informacij o vsaki plaži. Uporabnik lahko tudi sam dodaja svoje fotografije in video vsebine ter deli priljubljene plaže s prijatelji. Namizno in mobilno različico ravno v tem času intenzivno razvija, zaradi velikega finančnega zalogaja pa se je odločil poiskati pomoč podpornikov na Kickstarterju."
+      },
+      "hardships": {
+        "title": "Pot ni bila vedno lahka",
+        "text": "Balažic je prepotoval več kot 30 tisoč kilometrov, za čudovite posnetke je moral včasih tudi plezati. Več tisoč kilometrov dolga pot ni bila vedno obsijana s pozitivnimi žarki – na njej je doživel tudi nekaj neprijetnih dogodkov in bil je večkrat oropan. A njegova pot se (še) ni končala."
+      }
+    },
+    "routeTitle": "Pot ob obalah",
+    "countries": {
+      "si": "Slovenija",
+      "hr": "Hrvaška",
+      "ba": "Bosna in Hercegovina",
+      "it": "Italija",
+      "fr": "Francija",
+      "es": "Španija"
+    },
+    "photoAlt": "Gregor Balažic s fotoaparatom na peščeni plaži",
+    "beachAlt": "Peščena plaža s prevrnjenim čolnom ob skalah in borovcih",
+    "beachCaption": "Ena od 2.445 plaž, ki jih je Gregor obiskal in fotografiral.",
+    "quote": "Imamo vizijo – v nekaj letih, s pomočjo vas, podpornikov, bo na zemljevidu sleherna plaža na svetu.",
+    "ctaTitle": "Odkrijte plaže, ki jih je obiskal Gregor",
+    "ctaText": "Vsaka fotografija, sfera in podrobnost na Beachrex je nastala na tej poti.",
+    "ctaMap": "Brskaj po zemljevidu",
+    "ctaContact": "Pišite nam",
+    "footerLink": "Spoznajte avtorja"
   }
 }

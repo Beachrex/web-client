@@ -745,5 +745,55 @@
       "linkedin": "Okładka na LinkedIn",
       "x": "Nagłówek na X"
     }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – autor Beachrex",
+    "metaDescription": "Poznaj Gregora Balažica, który rzucił pracę, kupił aparat i furgon, a potem odwiedził 2 445 plaż w sześciu krajach. Tak powstał Beachrex.",
+    "eyebrow": "O autorze",
+    "role": "Fotograf, podróżnik i założyciel Beachrex",
+    "lead": "„Plaże zawsze były moją wielką pasją.”",
+    "heroCta": "Przeczytaj historię",
+    "stats": {
+      "beaches": "odwiedzonych plaż",
+      "km": "przejechanych kilometrów",
+      "countries": "krajów",
+      "facts": "informacji o każdej plaży"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Poza strefą komfortu",
+        "text": "Plaże zawsze były moją wielką pasją – mówi Gregor Balažic, który cztery lata temu rzucił pracę. Był kierownikiem działu, ale wyszedł ze strefy komfortu i porzucił przewidywalną przyszłość. Kupił aparat fotograficzny i furgon, który stał się jego nowym domem, i ruszył w świat. A dokładniej – na plaże."
+      },
+      "road": {
+        "title": "2 445 plaż w sześciu krajach",
+        "text": "Przemierzał wybrzeża i plaże Słowenii, Chorwacji, Bośni i Hercegowiny, Włoch i Francji, aż dotarł do Hiszpanii. Odwiedził aż 2 445 plaż. Choć liczba ta wydaje się ogromna, to zaledwie kropla w morzu – na świecie jest ponad 200 000 plaż nadających się dla turystów, wyjaśnia Balažic."
+      },
+      "database": {
+        "title": "Największa baza plaż na świecie",
+        "text": "Odwiedzone plaże stały się podstawą największej bazy plaż na świecie – Beachrex. Każda plaża ma zdjęcia, ujęcia panoramiczne, filmy, informacje o parkingach, lokalizację GPS, dane pogodowe oraz informacje o noclegach, aktywnościach sportowych, restauracjach i barach, a także o temperaturze wody. W sumie to ponad 200 informacji o każdej plaży. Użytkownicy mogą też sami dodawać swoje zdjęcia i filmy oraz udostępniać ulubione plaże znajomym. Właśnie intensywnie pracuje nad wersją na komputery i urządzenia mobilne, a ponieważ to ogromne wyzwanie finansowe, postanowił poszukać wsparcia na platformie Kickstarter."
+      },
+      "hardships": {
+        "title": "Droga nie zawsze była łatwa",
+        "text": "Balažic przejechał ponad 30 000 kilometrów, a dla pięknych ujęć czasem musiał się nawet wspinać. Trasa licząca tysiące kilometrów nie zawsze była usłana różami – przytrafiły mu się także nieprzyjemne zdarzenia, a kilka razy został okradziony. Ale jego podróż (jeszcze) się nie skończyła."
+      }
+    },
+    "routeTitle": "Wzdłuż wybrzeży",
+    "countries": {
+      "si": "Słowenia",
+      "hr": "Chorwacja",
+      "ba": "Bośnia i Hercegowina",
+      "it": "Włochy",
+      "fr": "Francja",
+      "es": "Hiszpania"
+    },
+    "photoAlt": "Gregor Balažic z aparatem na piaszczystej plaży",
+    "beachAlt": "Piaszczysta plaża z odwróconą łodzią przy skałach i sosnach",
+    "beachCaption": "Jedna z 2 445 plaż, które Gregor odwiedził i sfotografował.",
+    "quote": "Mamy wizję – za kilka lat, z waszą pomocą, drodzy wspierający, na mapie znajdzie się każda plaża na świecie.",
+    "ctaTitle": "Odkryj plaże, które odwiedził Gregor",
+    "ctaText": "Każde zdjęcie, każda panorama 360° i każdy szczegół w Beachrex powstały podczas tej podróży.",
+    "ctaMap": "Przeglądaj mapę",
+    "ctaContact": "Napisz do nas",
+    "footerLink": "Poznaj autora"
   }
 }

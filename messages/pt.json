@@ -745,5 +745,55 @@
       "linkedin": "Capa do LinkedIn",
       "x": "Cabeçalho do X"
     }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – o autor do Beachrex",
+    "metaDescription": "Conheça Gregor Balažic, que deixou o emprego, comprou uma máquina fotográfica e uma carrinha e visitou 2 445 praias em seis países. Assim nasceu o Beachrex.",
+    "eyebrow": "Sobre o autor",
+    "role": "Fotógrafo, viajante e fundador do Beachrex",
+    "lead": "«As praias sempre foram a minha grande paixão.»",
+    "heroCta": "Ler a história",
+    "stats": {
+      "beaches": "praias visitadas",
+      "km": "quilómetros percorridos",
+      "countries": "países",
+      "facts": "informações sobre cada praia"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Sair da zona de conforto",
+        "text": "As praias sempre foram a minha grande paixão, conta Gregor Balažic, que deixou o emprego há quatro anos. Era chefe de departamento, mas saiu da zona de conforto e deixou para trás um futuro previsível. Comprou uma máquina fotográfica e uma carrinha, que se tornou a sua nova casa, e partiu à descoberta do mundo. Ou melhor, das praias."
+      },
+      "road": {
+        "title": "2 445 praias em seis países",
+        "text": "Percorreu as costas e as praias da Eslovénia, da Croácia, da Bósnia e Herzegovina, de Itália e de França, até chegar a Espanha. Visitou nada menos do que 2 445 praias. Embora o número pareça enorme, é apenas uma gota no oceano: há mais de 200 000 praias no mundo adequadas ao turismo, explica Balažic."
+      },
+      "database": {
+        "title": "A maior base de dados de praias do mundo",
+        "text": "As praias visitadas deram origem à maior base de dados de praias do mundo: o Beachrex. Cada praia conta com fotografias, imagens panorâmicas, vídeos, informações sobre estacionamento, localização GPS, dados meteorológicos, alojamento, atividades desportivas, restaurantes e bares, e a temperatura da água do mar. No total, são mais de 200 informações sobre cada praia. Os utilizadores podem também adicionar as suas próprias fotografias e vídeos e partilhar as praias favoritas com os amigos. Neste momento, está a trabalhar intensamente nas versões para computador e para dispositivos móveis e, dado o grande esforço financeiro, decidiu procurar o apoio de patrocinadores no Kickstarter."
+      },
+      "hardships": {
+        "title": "O caminho nem sempre foi fácil",
+        "text": "Balažic percorreu mais de 30 000 quilómetros e, para conseguir imagens deslumbrantes, por vezes teve até de escalar. A viagem de milhares de quilómetros nem sempre foi banhada pelo sol: viveu também alguns episódios desagradáveis e foi assaltado várias vezes. Mas a sua viagem (ainda) não terminou."
+      }
+    },
+    "routeTitle": "Ao longo da costa",
+    "countries": {
+      "si": "Eslovénia",
+      "hr": "Croácia",
+      "ba": "Bósnia e Herzegovina",
+      "it": "Itália",
+      "fr": "França",
+      "es": "Espanha"
+    },
+    "photoAlt": "Gregor Balažic com a máquina fotográfica numa praia de areia",
+    "beachAlt": "Praia de areia com um barco virado junto às rochas e aos pinheiros",
+    "beachCaption": "Uma das 2 445 praias que Gregor visitou e fotografou.",
+    "quote": "Temos uma visão: dentro de alguns anos, com a vossa ajuda, caros apoiantes, todas as praias do mundo estarão no mapa.",
+    "ctaTitle": "Descubra as praias que Gregor visitou",
+    "ctaText": "Cada fotografia, cada panorama 360° e cada pormenor do Beachrex nasceram nesta viagem.",
+    "ctaMap": "Explorar o mapa",
+    "ctaContact": "Escreva-nos",
+    "footerLink": "Conheça o autor"
   }
 }

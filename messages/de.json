@@ -745,5 +745,55 @@
       "linkedin": "LinkedIn-Titelbild",
       "x": "X-Header"
     }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – der Autor von Beachrex",
+    "metaDescription": "Lernen Sie Gregor Balažic kennen: Er kündigte, kaufte Kamera und Van und besuchte 2.445 Strände in sechs Ländern. Aus dieser Reise entstand Beachrex.",
+    "eyebrow": "Über den Autor",
+    "role": "Fotograf, Reisender und Gründer von Beachrex",
+    "lead": "„Strände waren schon immer meine große Leidenschaft.“",
+    "heroCta": "Geschichte lesen",
+    "stats": {
+      "beaches": "besuchte Strände",
+      "km": "gefahrene Kilometer",
+      "countries": "Länder",
+      "facts": "Angaben zu jedem Strand"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Raus aus der Komfortzone",
+        "text": "Strände waren schon immer meine große Leidenschaft, sagt Gregor Balažic, der vor vier Jahren seinen Job kündigte. Er war Abteilungsleiter, verließ seine Komfortzone und ließ eine vorhersehbare Zukunft hinter sich. Er kaufte eine Kamera und einen Van, der zu seinem neuen Zuhause wurde, und zog hinaus in die Welt. Genauer gesagt: an die Strände."
+      },
+      "road": {
+        "title": "2.445 Strände in sechs Ländern",
+        "text": "Seine Reise führte ihn entlang der Küsten und Strände Sloweniens, Kroatiens, Bosnien und Herzegowinas, Italiens und Frankreichs bis nach Spanien. Ganze 2.445 Strände hat er besucht. So gewaltig die Zahl auch wirkt, sie ist nur ein Tropfen im Meer – weltweit gibt es mehr als 200.000 Strände, die sich für den Tourismus eignen, erklärt Balažic."
+      },
+      "database": {
+        "title": "Die größte Stranddatenbank der Welt",
+        "text": "Die besuchten Strände wurden zur Grundlage der größten Stranddatenbank der Welt – Beachrex. Zu jedem Strand gibt es Fotos, Panoramaaufnahmen, Videos, Informationen zu Parkmöglichkeiten, GPS-Standort, Wetterdaten, Unterkünften, Sportangeboten, Restaurants und Bars sowie zur Wassertemperatur. Insgesamt sind das mehr als 200 Angaben zu jedem Strand. Nutzer können außerdem eigene Fotos und Videos hinzufügen und ihre Lieblingsstrände mit Freunden teilen. Derzeit arbeitet er mit Hochdruck an der Desktop- und der mobilen Version, und weil das ein großer finanzieller Kraftakt ist, hat er beschlossen, auf Kickstarter Unterstützer zu suchen."
+      },
+      "hardships": {
+        "title": "Der Weg war nicht immer leicht",
+        "text": "Balažic hat mehr als 30.000 Kilometer zurückgelegt, und für die schönsten Aufnahmen musste er manchmal sogar klettern. Die Tausende Kilometer lange Reise stand nicht immer unter einem guten Stern – unterwegs erlebte er auch unangenehme Momente und wurde mehrmals ausgeraubt. Doch seine Reise ist (noch) nicht zu Ende."
+      }
+    },
+    "routeTitle": "Entlang der Küsten",
+    "countries": {
+      "si": "Slowenien",
+      "hr": "Kroatien",
+      "ba": "Bosnien und Herzegowina",
+      "it": "Italien",
+      "fr": "Frankreich",
+      "es": "Spanien"
+    },
+    "photoAlt": "Gregor Balažic mit seiner Kamera an einem Sandstrand",
+    "beachAlt": "Sandstrand mit einem umgedrehten Boot zwischen Felsen und Kiefern",
+    "beachCaption": "Einer der 2.445 Strände, die Gregor besucht und fotografiert hat.",
+    "quote": "Wir haben eine Vision – in ein paar Jahren wird mit Ihrer Hilfe, liebe Unterstützer, jeder einzelne Strand der Welt auf der Karte sein.",
+    "ctaTitle": "Entdecken Sie die Strände, die Gregor besucht hat",
+    "ctaText": "Jedes Foto, jede 360°-Aufnahme und jedes Detail auf Beachrex ist auf dieser Reise entstanden.",
+    "ctaMap": "Karte durchsuchen",
+    "ctaContact": "Schreiben Sie uns",
+    "footerLink": "Lernen Sie den Autor kennen"
   }
 }

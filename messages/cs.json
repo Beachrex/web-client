@@ -745,5 +745,55 @@
       "linkedin": "Titulní obrázek na LinkedIn",
       "x": "Záhlaví na X"
     }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – autor Beachrex",
+    "metaDescription": "Seznamte se s Gregorem Balažicem, který dal výpověď, koupil fotoaparát a dodávku a navštívil 2 445 pláží v šesti zemích. Tak vznikl Beachrex.",
+    "eyebrow": "O autorovi",
+    "role": "Fotograf, cestovatel a zakladatel Beachrex",
+    "lead": "„Pláže byly vždycky mou velkou vášní.“",
+    "heroCta": "Přečtěte si příběh",
+    "stats": {
+      "beaches": "navštívených pláží",
+      "km": "ujetých kilometrů",
+      "countries": "zemí",
+      "facts": "údajů o každé pláži"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Ven z komfortní zóny",
+        "text": "Pláže byly vždycky mou velkou vášní, říká Gregor Balažic, který před čtyřmi lety dal výpověď. Byl vedoucím oddělení, přesto vystoupil z komfortní zóny a opustil předvídatelnou budoucnost. Koupil si fotoaparát a dodávku, která se stala jeho novým domovem, a vydal se do světa. Přesněji řečeno na pláže."
+      },
+      "road": {
+        "title": "2 445 pláží v šesti zemích",
+        "text": "Jeho cesta vedla po pobřežích a plážích Slovinska, Chorvatska, Bosny a Hercegoviny, Itálie a Francie až do Španělska. Navštívil celkem 2 445 pláží. I když se to číslo zdá obrovské, je jen kapkou v moři – na světě je přes 200 000 pláží vhodných pro turismus, vysvětluje Balažic."
+      },
+      "database": {
+        "title": "Největší databáze pláží na světě",
+        "text": "Navštívené pláže se staly základem největší databáze pláží na světě – Beachrex. Ke každé pláži patří fotografie, panoramatické snímky, videa, informace o možnostech parkování, GPS poloha, údaje o počasí, ubytování, sportovních aktivitách, restauracích a barech a také o teplotě moře. Dohromady jde o více než 200 údajů o každé pláži. Uživatelé mohou také sami přidávat své fotografie a videa a sdílet oblíbené pláže s přáteli. Právě teď intenzivně pracuje na verzi pro počítače i mobilní zařízení, a protože jde o velké finanční sousto, rozhodl se požádat o pomoc podporovatele na platformě Kickstarter."
+      },
+      "hardships": {
+        "title": "Cesta nebyla vždy snadná",
+        "text": "Balažic urazil více než 30 000 kilometrů a kvůli úchvatným záběrům musel někdy i šplhat. Tisíce kilometrů dlouhá cesta nebyla vždy prozářená sluncem – zažil i několik nepříjemných chvil a několikrát byl okraden. Jeho cesta však (ještě) neskončila."
+      }
+    },
+    "routeTitle": "Podél pobřeží",
+    "countries": {
+      "si": "Slovinsko",
+      "hr": "Chorvatsko",
+      "ba": "Bosna a Hercegovina",
+      "it": "Itálie",
+      "fr": "Francie",
+      "es": "Španělsko"
+    },
+    "photoAlt": "Gregor Balažic s fotoaparátem na písečné pláži",
+    "beachAlt": "Písečná pláž s převrácenou lodí u skal a borovic",
+    "beachCaption": "Jedna z 2 445 pláží, které Gregor navštívil a vyfotografoval.",
+    "quote": "Máme vizi – za pár let bude s vaší pomocí, milí podporovatelé, na mapě každá pláž na světě.",
+    "ctaTitle": "Objevte pláže, které Gregor navštívil",
+    "ctaText": "Každá fotografie, každé panorama 360° i každý detail na Beachrex vznikly během této cesty.",
+    "ctaMap": "Procházet mapu",
+    "ctaContact": "Napište nám",
+    "footerLink": "Seznamte se s autorem"
   }
 }

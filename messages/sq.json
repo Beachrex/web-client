@@ -745,5 +745,55 @@
       "linkedin": "Kopertina e LinkedIn",
       "x": "Koka e X"
     }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – autori i Beachrex",
+    "metaDescription": "Njihuni me Gregor Balažicin, që la punën, bleu një aparat fotografik dhe një furgon dhe vizitoi 2 445 plazhe në gjashtë vende. Kështu lindi Beachrex.",
+    "eyebrow": "Rreth autorit",
+    "role": "Fotograf, udhëtar dhe themelues i Beachrex",
+    "lead": "«Plazhet kanë qenë gjithmonë pasioni im i madh.»",
+    "heroCta": "Lexoni historinë",
+    "stats": {
+      "beaches": "plazhe të vizituara",
+      "km": "kilometra të përshkuara",
+      "countries": "vende",
+      "facts": "të dhëna për çdo plazh"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Jashtë zonës së rehatisë",
+        "text": "Plazhet kanë qenë gjithmonë pasioni im i madh, thotë Gregor Balažic, i cili katër vjet më parë la punën. Ishte drejtues departamenti, por doli nga zona e rehatisë dhe la pas një të ardhme të parashikueshme. Bleu një aparat fotografik dhe një furgon, që u bë shtëpia e tij e re, dhe u nis nëpër botë. Më saktë, drejt plazheve."
+      },
+      "road": {
+        "title": "2 445 plazhe në gjashtë vende",
+        "text": "Përshkoi brigjet dhe plazhet e Sllovenisë, Kroacisë, Bosnjë e Hercegovinës, Italisë dhe Francës, derisa përfundoi në Spanjë. Vizitoi plot 2 445 plazhe. Edhe pse numri duket i madh, është vetëm një pikë në oqean – në botë ka mbi 200 000 plazhe të përshtatshme për turizëm, shpjegon Balažic."
+      },
+      "database": {
+        "title": "Baza më e madhe e të dhënave për plazhet në botë",
+        "text": "Plazhet e vizituara u bënë themeli i bazës më të madhe të të dhënave për plazhet në botë – Beachrex. Çdo plazh shoqërohet me fotografi, pamje panoramike, video, informacion për mundësitë e parkimit, vendndodhjen GPS, të dhëna për motin, akomodimin, aktivitetet sportive, restorantet dhe baret, si edhe temperaturën e detit. Gjithsej, mbi 200 të dhëna për çdo plazh. Përdoruesit mund të shtojnë edhe vetë fotografitë dhe videot e tyre dhe të ndajnë plazhet e preferuara me miqtë. Pikërisht tani po punon intensivisht për versionin për kompjuter dhe celular, dhe për shkak të barrës së madhe financiare vendosi të kërkojë mbështetës në Kickstarter."
+      },
+      "hardships": {
+        "title": "Rruga nuk ishte gjithmonë e lehtë",
+        "text": "Balažic ka përshkuar mbi 30 000 kilometra dhe, për pamje mahnitëse, ndonjëherë i është dashur edhe të ngjitet nëpër shkëmbinj. Rruga e gjatë mijëra kilometra nuk ka qenë gjithmonë e ndriçuar nga dielli – ka përjetuar edhe ngjarje të pakëndshme dhe është grabitur disa herë. Por rrugëtimi i tij nuk ka përfunduar (ende)."
+      }
+    },
+    "routeTitle": "Përgjatë brigjeve",
+    "countries": {
+      "si": "Sllovenia",
+      "hr": "Kroacia",
+      "ba": "Bosnjë e Hercegovina",
+      "it": "Italia",
+      "fr": "Franca",
+      "es": "Spanja"
+    },
+    "photoAlt": "Gregor Balažic me aparatin fotografik në një plazh me rërë",
+    "beachAlt": "Plazh me rërë me një varkë të përmbysur pranë shkëmbinjve dhe pishave",
+    "beachCaption": "Një nga 2 445 plazhet që Gregor vizitoi dhe fotografoi.",
+    "quote": "Kemi një vizion – pas disa vitesh, me ndihmën tuaj, të dashur mbështetës, çdo plazh në botë do të jetë në hartë.",
+    "ctaTitle": "Zbuloni plazhet që vizitoi Gregor",
+    "ctaText": "Çdo fotografi, çdo panoramë 360° dhe çdo detaj në Beachrex lindi gjatë këtij udhëtimi.",
+    "ctaMap": "Shfletoni hartën",
+    "ctaContact": "Na shkruani",
+    "footerLink": "Njihuni me autorin"
   }
 }
