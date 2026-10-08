@@ -9,6 +9,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { useLocalizedPath } from '@/hooks/useLocalizedPath';
+import { FEATURES } from '@/lib/constants/features';
 
 const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
 
@@ -105,14 +106,18 @@ const TopBar = () => {
           {/* Center: spacer (the hardcoded Slovenian placeholder message was removed) */}
           <div className="flex-1" />
 
-          {/* Right: Icons Only */}
+          {/* Right: Icons Only (favorites and account are hidden for launch) */}
           <div className="flex items-center space-x-2">
-            <button className="flex items-center">
-              <Heart className="h-[18px] w-[18px]" />
-            </button>
-            <button className="flex items-center">
-              <UserCircle className="h-[18px] w-[18px]" />
-            </button>
+            {FEATURES.favorites && (
+              <button className="flex items-center">
+                <Heart className="h-[18px] w-[18px]" />
+              </button>
+            )}
+            {FEATURES.account && (
+              <button className="flex items-center">
+                <UserCircle className="h-[18px] w-[18px]" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -160,8 +165,9 @@ const TopBar = () => {
 
           {/* Right Section */}
           <div className="flex items-center space-x-4">
-            <IconButton icon={Heart} label={t('favorite_beaches')} />
-            <IconButton icon={UserCircle} label={t('my_account')} />
+            {/* Favorites and account: hidden for launch */}
+            {FEATURES.favorites && <IconButton icon={Heart} label={t('favorite_beaches')} />}
+            {FEATURES.account && <IconButton icon={UserCircle} label={t('my_account')} />}
           </div>
         </div>
       </div>

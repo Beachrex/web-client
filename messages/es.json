@@ -136,10 +136,6 @@
     "browseBeaches": "Explorar todas las playas",
     "goHome": "Ir al inicio"
   },
-  "AboutPage": {
-    "aboutUs": "Acerca de nosotros",
-    "description": "Descripción de la página acerca de nosotros"
-  },
   "BeachTypePage": {
     "title": "Tipos de playas",
     "pageTitle": "Página de tipos de playas",
@@ -167,11 +163,6 @@
     "beachMapButton": "Mapa de playas",
     "browseBlogButton": "Explorar blog",
     "browseAccommodationsButton": "Explorar alojamientos"
-  },
-  "routes": {
-    "beachMap": "/mapa-de-playas",
-    "blog": "/blog",
-    "accommodations": "/alojamientos"
   },
   "Destinations": {
     "croatia": "Croacia",
@@ -514,20 +505,16 @@
       "title": "Explorar el sitio",
       "links": [
         {
-          "label": "Resumen de todos los destinos",
-          "href": "/destinations"
+          "label": "Resumen de todos los destinos"
         },
         {
-          "label": "Buscar por playas",
-          "href": "/beaches"
+          "label": "Buscar por playas"
         },
         {
-          "label": "Buscar por alojamientos",
-          "href": "/accommodations"
+          "label": "Buscar por alojamientos"
         },
         {
-          "label": "Vista de mapa",
-          "href": "/beach-map"
+          "label": "Vista de mapa"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Más visitada",
     "loading": "Cargando...",
     "showOnMap": "Mostrar {title} en el mapa"
+  },
+  "Menu": {
+    "browseBeaches": "Explorar playas",
+    "topCountries": "Países de playa populares",
+    "aiChat": "Chat IA de playas",
+    "aiItinerary": "Planificador de viajes IA",
+    "contact": "Contacto"
   }
 }

@@ -18,6 +18,32 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Menu and footer from real data, dead buttons hidden, localized 404 (TASK-004 B1–B4, B6, B7, B10, B11, C2, D9–D11) ✅ COMPLETE
+
+### Overview
+
+TASK-004 audit (backend `docs/tasks/TASK-004-audit.md`) and the owner's decisions of 2026-10-08 (ADR "TASK-004: What Visitors See at Launch"; hidden items in backend `docs/features/hidden-for-launch.md`).
+
+### Changes / Files
+
+- **Burger menu** (`Header/BurgerMenu.tsx`, new `src/lib/utils/menu-items.ts`): built from the API instead of `public/menu_en.json`/`menu_si.json` (removed; 17 locales got English continent slugs → 404). Groups: browse beaches (continents with beaches, localized slugs), top 10 beach countries, AI assistant (chat, trip planner), About us and Contact (CMS pages by code, shown only when published). Map CTA label translated and localized URL. The accommodation CTA (`/beach-accommodation`, 404) and the commented-out mobile-app block are gone/hidden.
+- **Feature flags** (`src/lib/constants/features.ts`): `favorites`, `account`, `shop`, `blog` (all `false`). Hidden: top bar favorites and account buttons, search bar accommodation and shop icons, home blog and accommodation buttons (the tile stays, without a button).
+- **Quick menu "About us"**: link to the CMS page `about-us` (was a `<span>`).
+- **`/about`** (`/si/o-nas`, …): redirects to the CMS page `about-us`; 404 if it is not published. `AboutPage` messages removed.
+- **Footer browse column**: hrefs built in `src/lib/utils/footer-links.ts` (overview → `/beaches`, search → home, map → beach map; accommodation hidden). The `href` values are removed from `Footer.browse.links` in all 19 files (they pointed to 404 routes and differed per locale).
+- **CMS pages hook** (`src/hooks/useStaticPages.ts`): one cached footer-pages query shared by the footer, menu and quick menu.
+- **404**: `[locale]/[...rest]` catch-all calls `notFound()`, so unknown URLs get the localized 404 with header and footer; `not-found.tsx` now has links home, to beaches and to the map.
+- **`/beach-type`, `/user-type`**: `noindex`, removed from `sitemap/static.xml` (with `/about`).
+- **Messages**: new `Menu` namespace in all 19 files; unused `routes` and `AboutPage` namespaces removed.
+- `e2e/navigation-links.unit.spec.ts` (new): menu hrefs localized and locale-prefixed, empty continents/countries skipped, About/Contact only when published, footer hrefs per locale without 404 routes.
+
+### Testing
+
+- Deliberate break: the menu guard on the old `BurgerMenu.tsx` fails.
+- `npx tsc --noEmit -p .`, `yarn lint`, all `e2e/*.unit.spec.ts`.
+
+---
+
 ## 2026-10-08 – No placeholder content for visitors: accommodation hidden, no Lorem Ipsum (TASK-004 D2, D3, D9) ✅ COMPLETE
 
 ### Overview

@@ -136,10 +136,6 @@
     "browseBeaches": "Összes strand böngészése",
     "goHome": "Főoldal"
   },
-  "AboutPage": {
-    "aboutUs": "Rólunk",
-    "description": "Leírás a rólunk oldalról"
-  },
   "BeachTypePage": {
     "title": "Strand típusok",
     "pageTitle": "Strand típusok oldal",
@@ -167,11 +163,6 @@
     "beachMapButton": "Strand térkép",
     "browseBlogButton": "Blog böngészése",
     "browseAccommodationsButton": "Szállások böngészése"
-  },
-  "routes": {
-    "beachMap": "/beach-map",
-    "blog": "/blog",
-    "accommodations": "/accommodations"
   },
   "Destinations": {
     "croatia": "Horvátország",
@@ -514,20 +505,16 @@
       "title": "Oldal böngészése",
       "links": [
         {
-          "label": "Összes úticél áttekintése",
-          "href": "/destinations"
+          "label": "Összes úticél áttekintése"
         },
         {
-          "label": "Keresés strandok szerint",
-          "href": "/beaches"
+          "label": "Keresés strandok szerint"
         },
         {
-          "label": "Keresés szállások szerint",
-          "href": "/accommodations"
+          "label": "Keresés szállások szerint"
         },
         {
-          "label": "Térkép nézet",
-          "href": "/beach-map"
+          "label": "Térkép nézet"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Leglátogatottabb",
     "loading": "Betöltés...",
     "showOnMap": "{title} megjelenítése a térképen"
+  },
+  "Menu": {
+    "browseBeaches": "Strandok böngészése",
+    "topCountries": "Legnépszerűbb strandországok",
+    "aiChat": "AI strandcsevegő",
+    "aiItinerary": "AI útitervező",
+    "contact": "Kapcsolat"
   }
 }

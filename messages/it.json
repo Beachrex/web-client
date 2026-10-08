@@ -136,10 +136,6 @@
     "browseBeaches": "Sfoglia tutte le spiagge",
     "goHome": "Vai alla home"
   },
-  "AboutPage": {
-    "aboutUs": "Chi siamo",
-    "description": "Descrizione della pagina chi siamo"
-  },
   "BeachTypePage": {
     "title": "Tipi di spiagge",
     "pageTitle": "Pagina tipi di spiagge",
@@ -167,11 +163,6 @@
     "beachMapButton": "Mappa delle spiagge",
     "browseBlogButton": "Sfoglia blog",
     "browseAccommodationsButton": "Sfoglia alloggi"
-  },
-  "routes": {
-    "beachMap": "/mappa-spiagge",
-    "blog": "/blog",
-    "accommodations": "/alloggi"
   },
   "Destinations": {
     "croatia": "Croazia",
@@ -514,20 +505,16 @@
       "title": "Sfoglia il sito",
       "links": [
         {
-          "label": "Panoramica di tutte le destinazioni",
-          "href": "/destinations"
+          "label": "Panoramica di tutte le destinazioni"
         },
         {
-          "label": "Cerca per spiagge",
-          "href": "/beaches"
+          "label": "Cerca per spiagge"
         },
         {
-          "label": "Cerca per alloggi",
-          "href": "/accommodations"
+          "label": "Cerca per alloggi"
         },
         {
-          "label": "Vista mappa",
-          "href": "/beach-map"
+          "label": "Vista mappa"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Più visitata",
     "loading": "Caricamento...",
     "showOnMap": "Mostra {title} sulla mappa"
+  },
+  "Menu": {
+    "browseBeaches": "Esplora le spiagge",
+    "topCountries": "Paesi balneari più popolari",
+    "aiChat": "Chat IA sulle spiagge",
+    "aiItinerary": "Pianificatore di viaggi IA",
+    "contact": "Contatti"
   }
 }

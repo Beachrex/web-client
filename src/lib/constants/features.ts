@@ -10,4 +10,12 @@ export const FEATURES = {
   accommodation: false,
   /** GetYourGuide activities section on the beach page. */
   getYourGuide: false,
+  /** Favorites (top bar heart button). */
+  favorites: false,
+  /** My account (top bar user button). */
+  account: false,
+  /** Shop (header search bar icon). */
+  shop: false,
+  /** Blog (home "Browse blog" button). */
+  blog: false,
 } as const;

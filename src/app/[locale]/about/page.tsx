@@ -1,14 +1,22 @@
-import { useTranslations } from 'next-intl';
+import { notFound, redirect } from 'next/navigation';
+import { getStaticPagesForFooter } from '@/lib/api-client/sdk.gen';
+import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 
-export default function AboutPage() {
-    const t = useTranslations('AboutPage'); // For translations, if needed
-
-    return (
-        <>
-            <div className="container mx-auto px-4 py-16">
-                <h1 className="text-4xl font-bold">{t('aboutUs')}</h1>
-                <p className="mt-4">{t('description')}</p>
-            </div>
-        </>
-    );
+/**
+ * `/about` (localized: `/si/o-nas`, …) had only placeholder text. "About us" is the CMS page with
+ * code `about-us` (owner decision 2026-10-08, TASK-004), so this route redirects to it.
+ */
+export default async function AboutPage({ params }: { params: { locale: string } }) {
+  const { locale } = params;
+  let slug: string | undefined;
+  try {
+    const { data } = await getStaticPagesForFooter({
+      headers: { 'Accept-Language': locale as AcceptLanguage },
+    });
+    slug = data?.data?.find((p) => p.code === 'about-us')?.slug;
+  } catch {
+    slug = undefined;
+  }
+  if (!slug) notFound();
+  redirect(`/${locale}/p/${slug}`);
 }

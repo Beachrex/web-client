@@ -136,10 +136,6 @@
     "browseBeaches": "Gennemse alle strande",
     "goHome": "Til forsiden"
   },
-  "AboutPage": {
-    "aboutUs": "Om os",
-    "description": "Beskrivelse af om-os-siden"
-  },
   "BeachTypePage": {
     "title": "Strandtyper",
     "pageTitle": "Strandtype-side",
@@ -167,11 +163,6 @@
     "beachMapButton": "Strandkort",
     "browseBlogButton": "Gennemse blog",
     "browseAccommodationsButton": "Gennemse overnatninger"
-  },
-  "routes": {
-    "beachMap": "/strandkort",
-    "blog": "/blog",
-    "accommodations": "/overnatninger"
   },
   "Destinations": {
     "croatia": "Kroatien",
@@ -514,20 +505,16 @@
       "title": "Gennemse siden",
       "links": [
         {
-          "label": "Oversigt over alle destinationer",
-          "href": "/destinations"
+          "label": "Oversigt over alle destinationer"
         },
         {
-          "label": "Søg efter strande",
-          "href": "/straande"
+          "label": "Søg efter strande"
         },
         {
-          "label": "Søg efter overnatninger",
-          "href": "/overnatninger"
+          "label": "Søg efter overnatninger"
         },
         {
-          "label": "Kortvisning",
-          "href": "/strandkort"
+          "label": "Kortvisning"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Mest besøgte",
     "loading": "Indlæser...",
     "showOnMap": "Vis {title} på kort"
+  },
+  "Menu": {
+    "browseBeaches": "Udforsk strande",
+    "topCountries": "Populære strandlande",
+    "aiChat": "AI-strandchat",
+    "aiItinerary": "AI-rejseplanlægger",
+    "contact": "Kontakt"
   }
 }

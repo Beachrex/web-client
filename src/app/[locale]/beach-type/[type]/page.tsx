@@ -7,7 +7,9 @@ export async function generateMetadata({ params }: BeachTypePageProps) {
     const resolvedParams = await params;
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'BeachTypePage' });
 
+    // Placeholder page, hidden for launch (backend docs/features/hidden-for-launch.md): not indexed.
     return {
+        robots: { index: false, follow: true },
         title: `${resolvedParams.type} - ${t('title')}`,
         description: t('description', { type: resolvedParams.type }),
     };

@@ -136,10 +136,6 @@
     "browseBeaches": "Shfleto të gjitha plazhet",
     "goHome": "Shko në fillim"
   },
-  "AboutPage": {
-    "aboutUs": "Rreth nesh",
-    "description": "Përshkrimi i faqes rreth nesh"
-  },
   "BeachTypePage": {
     "title": "Llojet e plazheve",
     "pageTitle": "Faqja e llojeve të plazheve",
@@ -167,11 +163,6 @@
     "beachMapButton": "Harta e plazheve",
     "browseBlogButton": "Shfleto blogun",
     "browseAccommodationsButton": "Shfleto akomodimet"
-  },
-  "routes": {
-    "beachMap": "/harta-plazheve",
-    "blog": "/blog",
-    "accommodations": "/akomodimet"
   },
   "Destinations": {
     "croatia": "Kroacia",
@@ -514,20 +505,16 @@
       "title": "Shfletoni faqen",
       "links": [
         {
-          "label": "Përmbledhja e të gjitha destinacioneve",
-          "href": "/destinacionet"
+          "label": "Përmbledhja e të gjitha destinacioneve"
         },
         {
-          "label": "Kërko sipas plazheve",
-          "href": "/plazhet"
+          "label": "Kërko sipas plazheve"
         },
         {
-          "label": "Kërko sipas akomodimeve",
-          "href": "/akomodimet"
+          "label": "Kërko sipas akomodimeve"
         },
         {
-          "label": "Pamja e hartës",
-          "href": "/harta-plazheve"
+          "label": "Pamja e hartës"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Më të vizituarit",
     "loading": "Duke ngarkuar...",
     "showOnMap": "Shfaq {title} në hartë"
+  },
+  "Menu": {
+    "browseBeaches": "Shfleto plazhet",
+    "topCountries": "Vendet më të njohura me plazhe",
+    "aiChat": "Bisedë AI për plazhet",
+    "aiItinerary": "Planifikues udhëtimi AI",
+    "contact": "Kontakt"
   }
 }

@@ -136,10 +136,6 @@
     "browseBeaches": "Περιήγηση σε όλες τις παραλίες",
     "goHome": "Αρχική σελίδα"
   },
-  "AboutPage": {
-    "aboutUs": "Σχετικά με εμάς",
-    "description": "Περιγραφή σελίδας σχετικά με εμάς"
-  },
   "BeachTypePage": {
     "title": "Τύποι παραλιών",
     "pageTitle": "Σελίδα τύπων παραλιών",
@@ -167,11 +163,6 @@
     "beachMapButton": "Χάρτης παραλιών",
     "browseBlogButton": "Περιήγηση ιστολογίου",
     "browseAccommodationsButton": "Περιήγηση καταλυμάτων"
-  },
-  "routes": {
-    "beachMap": "/chartis-paralion",
-    "blog": "/blog",
-    "accommodations": "/accommodations"
   },
   "Destinations": {
     "croatia": "Κροατία",
@@ -514,20 +505,16 @@
       "title": "Περιήγηση στον ιστότοπο",
       "links": [
         {
-          "label": "Επισκόπηση όλων των προορισμών",
-          "href": "/destinations"
+          "label": "Επισκόπηση όλων των προορισμών"
         },
         {
-          "label": "Αναζήτηση ανά παραλίες",
-          "href": "/beaches"
+          "label": "Αναζήτηση ανά παραλίες"
         },
         {
-          "label": "Αναζήτηση ανά καταλύματα",
-          "href": "/accommodations"
+          "label": "Αναζήτηση ανά καταλύματα"
         },
         {
-          "label": "Προβολή χάρτη",
-          "href": "/beach-map"
+          "label": "Προβολή χάρτη"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Πιο επισκέψιμες",
     "loading": "Φόρτωση...",
     "showOnMap": "Εμφάνιση {title} στον χάρτη"
+  },
+  "Menu": {
+    "browseBeaches": "Εξερευνήστε παραλίες",
+    "topCountries": "Δημοφιλείς χώρες με παραλίες",
+    "aiChat": "AI συνομιλία για παραλίες",
+    "aiItinerary": "AI σχεδιαστής ταξιδιών",
+    "contact": "Επικοινωνία"
   }
 }
