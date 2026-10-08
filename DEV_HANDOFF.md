@@ -37,7 +37,7 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 ### Testing
 
 - Deliberate break: the guard on the old page fails; the card helper test checks URLs, gallery order and skipping beaches without an image.
-- `npx tsc --noEmit -p .`, `yarn lint`, unit specs (142 passed).
+- `npx tsc --noEmit -p .` (it also type-checks `e2e/`; the first CI run failed on a possibly-undefined card in the new spec, fixed), `yarn lint`, unit specs (142 passed).
 - Local stack (`next build` + `next start` against a local API): `/hr/plaze` → 200, `<title>Istražite plaže svijeta | BeachRex</title>`, one `<h1>`, `BreadcrumbList` JSON-LD, no mock names.
 
 ---
