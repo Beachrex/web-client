@@ -2,22 +2,11 @@
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import type { BeachBadge } from '@/lib/utils/beach-badges';
 import React from 'react';
 
-type BadgeId =
-  | 'stony'
-  | 'familyFriendly'
-  | 'parking'
-  | 'easyAccess'
-  | 'windsurfing';
-
-interface Badge {
-  id: BadgeId;
-  icon: string;
-}
-
 interface BottomBadgesBeachProps {
-  badges: Badge[];
+  badges: BeachBadge[];
   description?: string;
   onReadMore?: () => void;
   readMoreHref?: string;
@@ -48,17 +37,6 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
     );
   };
 
-  // Build up to 9 badges (repeat if fewer)
-  const MAX_BADGES = 9;
-  const src = badges.slice(0, MAX_BADGES);
-  const filledBadges =
-    src.length === 0
-      ? []
-      : (Array.from(
-          { length: MAX_BADGES },
-          (_, i) => src[i % src.length],
-        ).filter(Boolean) as Badge[]);
-
   return (
     <div className="w-full">
       <div className="container mx-auto px-4">
@@ -67,13 +45,13 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
           {/* Badges (hidden below lg). On lg show first 6; on xl show up to 9. */}
           <div className="hidden h-full w-full overflow-hidden lg:flex">
             <div className="flex h-full flex-nowrap items-stretch gap-2 sm:gap-3">
-              {filledBadges.map((b, i) => {
-                const label = t(`badges.${b.id}`);
+              {badges.map((b, i) => {
+                const label = b.labelKey ? t(`badges.${b.labelKey}`) : (b.label ?? '');
                 const visibility = i < 6 ? 'flex' : 'hidden xl:flex'; // Show only first 6 on lg, all 9 on xl
 
                 return (
     <div
-      key={`${b.id}-${i}`}
+      key={b.key}
       className={`
         ${visibility}
         flex flex-col items-center justify-center
