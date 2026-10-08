@@ -18,6 +18,43 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – robots.txt fixed for production, AI crawler policy, consent + Analytics + AdSense, ads.txt, llms.txt (TASK-004 SEO) ✅ COMPLETE
+
+### Overview
+
+- **Critical:** a static `public/robots.txt` (`Disallow: /`) shadowed `src/app/robots.ts`; verified on a local `next start` (`/robots.txt` served the static file). On beachrex.com every search engine would have been blocked.
+- Owner decisions 2026-10-08: AI search bots yes, AI training bots no; Google Analytics, AdSense and the CookieYes banner (IDs from the owner); dev and uat must stay invisible to search engines and AI. Only the production domain may be indexed.
+
+### Changes / Files
+
+- `public/robots.txt` removed. `src/app/robots.ts`:
+  - production: `*` allowed except `/api/` (`/_next/` is crawlable again; Google needs JS/CSS to render);
+  - AI search bots (`src/lib/constants/crawlers.ts`: OAI-SearchBot, ChatGPT-User, PerplexityBot, Perplexity-User, Claude-SearchBot, Claude-User) allowed;
+  - AI training bots (GPTBot, ClaudeBot, anthropic-ai, Google-Extended, Applebot-Extended, CCBot, Meta-ExternalAgent, Bytespider) disallowed;
+  - plus the sitemap;
+  - dev/uat/local: `Disallow: /` for everyone (unchanged, together with the existing `X-Robots-Tag` and meta `noindex`).
+- `src/components/Analytics/ThirdPartyScripts.tsx` (new), rendered in `<head>` **on the production site only**, in this order:
+  1. Google Consent Mode v2 defaults (all denied);
+  2. the CookieYes banner;
+  3. Google Analytics `G-WK9LGF32VW`;
+  4. AdSense `ca-pub-5133469552990533`.
+
+  GA and AdSense are injected by an inline loader after the first two: React hoists async script tags to the top of `<head>`, ahead of the consent defaults (seen in a production build).
+
+  The IDs are public client IDs in `src/lib/constants/third-party.ts`. In the CookieYes dashboard, "Google Consent Mode" must be enabled (owner).
+- `public/ads.txt` (new): the AdSense publisher line.
+- `src/app/llms.txt/route.ts` (new): a plain guide for AI assistants (llmstxt.org); production only, 404 elsewhere.
+- `src/middleware.ts`: `ads.txt` and `llms.txt` bypass the locale middleware.
+- `e2e/seo-crawlers.unit.spec.ts` (new).
+
+### Testing
+
+- Deliberate break: with the static `public/robots.txt` back, the guard fails.
+- `npx tsc --noEmit -p .`, `yarn lint`, all unit specs (149 passed).
+- Production-like build (`NEXT_PUBLIC_BASE_URL=https://beachrex.com`, `next start`): `/robots.txt` lists the three rule groups and the sitemap; `/ads.txt` and `/llms.txt` served; `/en` has `consent-defaults` → `cookieyes` → `tag-loader` in this order; no `X-Robots-Tag`.
+
+---
+
 ## 2026-10-08 – World beaches page on real data, same cards as the other pages (QA #48, TASK-004 step 4) ✅ COMPLETE
 
 ### Overview
