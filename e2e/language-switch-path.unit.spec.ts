@@ -9,7 +9,7 @@ import { getBeachMapWord, getBeachesWord } from '@/lib/utils/beach-urls';
  */
 
 test('every locale\'s beaches word is recognised and translated to every other locale', async () => {
-  const { isBeachesWord, translateFixedPath } = await import('@/hooks/useLocalizedPath');
+  const { isBeachesWord, translateFixedPath } = await import('@/lib/utils/locale-path-words');
   for (const from of locales) {
     expect(isBeachesWord(getBeachesWord(from)), from).toBe(true);
     for (const to of locales) {
@@ -20,7 +20,7 @@ test('every locale\'s beaches word is recognised and translated to every other l
 });
 
 test('only fixed paths are translated here; deeper beaches paths go through the API lookup', async () => {
-  const { isBeachesWord, translateFixedPath } = await import('@/hooks/useLocalizedPath');
+  const { isBeachesWord, translateFixedPath } = await import('@/lib/utils/locale-path-words');
   expect(translateFixedPath(['straande', 'europa'], 'en')).toBeNull();
   expect(translateFixedPath(['p', 'about-us'], 'de')).toBeNull();
   expect(translateFixedPath([], 'de')).toBeNull();

@@ -38,7 +38,7 @@ Country, region, island and city pages: "All beaches (n)" next to the popular be
 
 ## 2026-10-08 – Language switch: all 19 locales, beach map, no debug output (TASK-004 audit B9) ✅ COMPLETE
 
-`src/hooks/useLocalizedPath.ts` had its own "beaches" word map without da/pt/nl/el/sq, so switching language from `/da/straande/...` was not recognised as a beaches page, and the beach map word (e.g. `/hr/karta-plaza` → `/de/karta-plaza`) was never translated. It now uses `getBeachesWord`/`getBeachMapWord` for all locales (`translateFixedPath`, `isBeachesWord`), and its ~25 `console.log` calls per switch are gone. Test: `e2e/language-switch-path.unit.spec.ts` (19×19 locale pairs; fails against the old hook).
+`src/hooks/useLocalizedPath.ts` had its own "beaches" word map without da/pt/nl/el/sq, so switching language from `/da/straande/...` was not recognised as a beaches page, and the beach map word (e.g. `/hr/karta-plaza` → `/de/karta-plaza`) was never translated. It now uses `getBeachesWord`/`getBeachMapWord` for all locales (`translateFixedPath`, `isBeachesWord` in `src/lib/utils/locale-path-words.ts`), and its ~25 `console.log` calls per switch are gone. Test: `e2e/language-switch-path.unit.spec.ts` (19×19 locale pairs; fails against the old hook).
 
 ---
 
