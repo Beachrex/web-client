@@ -3,6 +3,7 @@
 import type { Property } from '@/components/PropertySection';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
+import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import { parseWebcamUrl } from '@/lib/utils/webcam';
 
 /* ------------------------------------------------------------------
@@ -26,6 +27,7 @@ interface BeachMediaEmbeds {
 interface BeachMedia {
   gallery?: BeachMediaGalleryItem[] | null;
   spheres_360?: BeachMediaSphere[] | null;
+  videos?: { url?: string | null; is_primary?: boolean | null }[] | null;
   embeds?: BeachMediaEmbeds | null;
 }
 
@@ -110,14 +112,8 @@ export function mapBeachToProperty(
   /* ---------------------------
    * VIDEO (YouTube embed)
    * --------------------------- */
-  const rawVideo = beach.media?.embeds?.video_url;
-
   const videoEmbedUrl =
-    typeof rawVideo === 'string'
-      ? rawVideo
-          .replace('youtu.be/', 'www.youtube.com/embed/')
-          .replace('watch?v=', 'embed/')
-      : undefined;
+    buildBeachVideoUrl(beach.media?.embeds?.video_url, beach.media?.videos) ?? undefined;
 
   /* ---------------------------
    * WEBCAM

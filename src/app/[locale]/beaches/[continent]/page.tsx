@@ -21,6 +21,7 @@ import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { hasMainImage } from '@/lib/utils/beach-cards';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema, getBeachesWord } from '@/lib/utils/beach-urls';
+import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import { parseWebcamUrl } from '@/lib/utils/webcam';
 import { buildBreadcrumbSchema, buildContinentSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
@@ -28,23 +29,6 @@ import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-
-
-function toYouTubeEmbed(raw?: string | null) {
-  if (!raw) return undefined;
-
-  if (raw.includes('youtu.be/')) {
-    return raw.replace('youtu.be/', 'www.youtube.com/embed/');
-  }
-
-  if (raw.includes('watch?v=')) {
-    const u = new URL(raw);
-    const v = u.searchParams.get('v');
-    if (v) return `https://www.youtube.com/embed/${v}`;
-  }
-
-  return undefined;
-}
 
 
 interface PageProps {
@@ -66,6 +50,7 @@ interface BeachMediaInput {
   media?: {
     gallery?: GalleryItem[];
     spheres_360?: { tour_url?: string }[];
+    videos?: { url?: string; is_primary?: boolean }[];
     embeds?: {
       video_url?: string | null;
       webcam?: string | null;
@@ -237,7 +222,7 @@ const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
 
 /* Video */
 const rawVideo = beach.media?.embeds?.video_url ?? null;
-const videoEmbedUrl = toYouTubeEmbed(rawVideo);
+const videoEmbedUrl = buildBeachVideoUrl(rawVideo, beach.media?.videos) ?? undefined;
 
 /* Webcam */
 const webcamEmbed = parseWebcamUrl(beach.media?.embeds?.webcam);

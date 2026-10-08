@@ -3,6 +3,7 @@
 import { useAllBeaches } from '@/hooks/useBeaches';
 import { hasMainImage } from '@/lib/utils/beach-cards';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
+import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import { parseWebcamUrl } from '@/lib/utils/webcam';
 import { buildBeachMapUrl, buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import { Pagination } from 'flowbite-react';
@@ -33,6 +34,7 @@ interface BeachMediaInput {
   media?: {
     gallery?: { url?: string; order?: number | null }[];
     spheres_360?: { tour_url?: string }[];
+    videos?: { url?: string; is_primary?: boolean }[];
     embeds?: { video_url?: string | null } | null;
   };
 }
@@ -143,13 +145,8 @@ const [mediaMode] =
     const sphere = b.media?.spheres_360?.[0] ?? null;
     const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
 
-    const rawVideo = b.media?.embeds?.video_url ?? null;
     const videoEmbedUrl =
-      rawVideo?.includes('youtu')
-        ? rawVideo
-            .replace('youtu.be/', 'www.youtube.com/embed/')
-            .replace('watch?v=', 'embed/')
-        : undefined;
+      buildBeachVideoUrl(b.media?.embeds?.video_url, b.media?.videos) ?? undefined;
 
     return {
       beachUrl: buildBeachUrlFromSchema(b, locale) ?? undefined,

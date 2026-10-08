@@ -7,6 +7,7 @@ import React from 'react';
 
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
+import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import { parseWebcamUrl } from '@/lib/utils/webcam';
 
 interface BeachPageViewProps {
@@ -22,22 +23,6 @@ interface MediaCard {
   icon: string;
   label: string;
 }
-
-const buildYoutubeEmbedUrl = (rawUrl: string): string => {
-  if (!rawUrl) return '';
-
-  if (rawUrl.includes('youtu.be/')) {
-    return rawUrl.replace('youtu.be/', 'www.youtube.com/embed/');
-  }
-
-  if (rawUrl.includes('youtube.com/watch')) {
-    const url = new URL(rawUrl);
-    const v = url.searchParams.get('v');
-    if (v) return `https://www.youtube.com/embed/${v}`;
-  }
-
-  return rawUrl;
-};
 
 const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const t = useTranslations('BeachDetails');
@@ -62,12 +47,8 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
     buildCdnUrl(gallery[0]?.url ?? gallery[0]?.thumbnail_url, 'banner') ??
     primaryGalleryUrlTmp;
 
-  const rawVideoUrl =
-    (typeof embeds?.video_url === 'string' ? embeds.video_url : null) ??
-    (videos[0]?.url ? buildCdnUrl(videos[0]?.url, 'video') : null) ??
-    null;
-
-  const videoEmbedUrl = rawVideoUrl ? buildYoutubeEmbedUrl(rawVideoUrl) : null;
+  // Same rule as the map/list cards (QA #67).
+  const videoEmbedUrl = buildBeachVideoUrl(embeds?.video_url, videos);
 
   const sphereImageUrl =
     buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url, 'gallery') ??
