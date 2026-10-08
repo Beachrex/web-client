@@ -132,7 +132,6 @@ export async function generateStaticParams() {
         };
       });
 
-    console.log(`[generateStaticParams] Generated ${params.length} beach pages for static generation`);
 
     return params;
   } catch (error) {

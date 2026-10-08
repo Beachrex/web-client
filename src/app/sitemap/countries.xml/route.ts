@@ -86,8 +86,6 @@ export async function GET() {
   const countryEntries: MetadataRoute.Sitemap = [];
 
   try {
-    console.log('[sitemap/countries] Fetching countries from API...');
-    console.log('[sitemap/countries] API Endpoint:', apiEndpoint);
 
     const response = await fetch(`${apiEndpoint}/api/v1/countries`, {
       headers: {
@@ -103,7 +101,6 @@ export async function GET() {
 
     const data = (await response.json()) as { data?: Country[] };
     const countries = data.data ?? [];
-    console.log(`[sitemap/countries] Fetched ${countries.length} countries`);
 
     // For each country, create entries for all locales
     for (const country of countries) {
@@ -135,7 +132,6 @@ export async function GET() {
       }
     }
 
-    console.log(`[sitemap/countries] Generated ${countryEntries.length} country URLs`);
   } catch (error) {
     console.error('[sitemap/countries] Error generating country sitemap:', error);
   }

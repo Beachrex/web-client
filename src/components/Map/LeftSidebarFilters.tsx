@@ -54,7 +54,6 @@ const LeftSidebarFilters = ({
             const hasFilters = Object.keys(urlFilters).length > 0;
 
             if (hasFilters) {
-                console.log('[LeftSidebarFilters] Initializing from URL params:', urlFilters);
 
                 // Open advanced filters unless the quick filters show the whole selection
                 setIsExpanded(!onlyQuickFilters(urlFilters, MAP_QUICK_FILTERS));
@@ -83,7 +82,6 @@ const LeftSidebarFilters = ({
             return;
         }
 
-        console.log('[LeftSidebarFilters] URL params changed:', searchParamsString);
         lastSearchParamsRef.current = searchParamsString;
 
         const urlFilters: Record<string, FilterValue> = {};
@@ -131,7 +129,6 @@ const LeftSidebarFilters = ({
         });
 
         if (Object.keys(params).length > 0) {
-            console.log('[LeftSidebarFilters] Computing query params:', params);
         }
 
         // Type assertion: API accepts geographic filters, but we pass all selected filters
@@ -227,11 +224,6 @@ const LeftSidebarFilters = ({
         const queryString = params.toString();
         const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
 
-        console.log('[LeftSidebarFilters] Updating URL with filters:', {
-            filters,
-            queryString,
-            newUrl,
-        });
 
         // Update URL without page reload
         router.replace(newUrl, { scroll: false });

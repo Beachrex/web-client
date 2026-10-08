@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – No debug output in visitors' consoles (TASK-004 audit D5, F1) ✅ COMPLETE
+
+Removed `console.log` from the language switch in `TopBar`, `BeachCategorySearch`, `LeftSidebarFilters` (map filters), the sitemap routes and `generateStaticParams`; the city page's hidden accommodation section no longer passes console-only distance/filter handlers. Verified: the beach page's similar-beaches distance dropdown already works (it changes the radius query), so D5 was only the city page. `console.error`/`console.warn` stay. Guard: `e2e/no-console-log.unit.spec.ts` fails on any `console.log` in `src/` outside a short allowlist (flag-gated perf logging; `useLocalizedPath` → B9; unused files → F2).
+
+---
+
 ## 2026-10-08 – Organization JSON-LD logo from the brand package ✅ COMPLETE
 
 `buildOrganizationSchema()` (root layout) set `logo` to `/logo.png`, which does not exist, so Google got a 404 for the site's logo. It now points to the colour horizontal PNG from the brand package (`ORGANIZATION_LOGO_PATH` = `/brand/BeachRex_CGP/01_Logo/Horizontal/PNG/beachrex_horizontal_color_1000px.png`). Test: `e2e/organization-logo.unit.spec.ts` (checks that the file exists).

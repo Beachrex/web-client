@@ -108,7 +108,6 @@ export async function GET() {
       islandSlug: city.island_id ? islandMap.get(city.island_id) : null,
     }));
 
-    console.log(`Generating sitemap for ${cities.length} cities`);
 
     // Build sitemap XML
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
