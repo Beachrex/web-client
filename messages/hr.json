@@ -650,7 +650,13 @@
       "subtitle": "Vaš osobni suputnik za otkrivanje plaža uz AI",
       "description": "Dobijte personalizirane preporuke plaža, razgovarajte s našim AI asistentom i kreirajte prilagođene planove putovanja za vaš savršeni odmor na plaži.",
       "chatButton": "Započni razgovor",
-      "itineraryButton": "Kreiraj plan putovanja"
+      "itineraryButton": "Kreiraj plan putovanja",
+      "chatCardText": "Pitajte našeg AI asistenta bilo što o plažama, destinacijama i savjetima za putovanje i odmah dobijte personalizirane preporuke.",
+      "chatCta": "Započni razgovor",
+      "itineraryCardText": "Izradite personalizirane višednevne planove odmora na plaži prema svojim željama, budžetu i interesima.",
+      "itineraryCta": "Izradi plan putovanja",
+      "infoTitle": "Novi ste u Beachrex AI?",
+      "infoText": "Chat je besplatan za sve. Za višednevne planove potrebni su krediti – prijavite se s Googleom i započnite!"
     },
     "chat": {
       "title": "Razgovaraj s AI",
@@ -660,7 +666,9 @@
       "sending": "Slanje...",
       "error": "Neuspjelo slanje poruke. Molimo pokušajte ponovno.",
       "welcome": "Pozdrav! Ja sam vaš AI asistent za plaže. Kako vam mogu pomoći danas?",
-      "anonymousNote": "Razgovarate anonimno. Prijavite se kako biste spremili razgovore i pristupili premium funkcijama."
+      "anonymousNote": "Razgovarate anonimno. Prijavite se kako biste spremili razgovore i pristupili premium funkcijama.",
+      "viewDetails": "Pogledaj detalje →",
+      "suggestions": "Prijedlozi:"
     },
     "itinerary": {
       "title": "Kreiraj plan putovanja na plažu",
@@ -682,7 +690,9 @@
       "error": "Neuspjelo generiranje plana putovanja. Molimo pokušajte ponovno.",
       "paymentRequired": "Višednevni planovi putovanja zahtijevaju kredite. Molimo kupite kredite za nastavak.",
       "creditsRemaining": "Preostalo kredita: {count}",
-      "purchaseCredits": "Kupi kredite"
+      "purchaseCredits": "Kupi kredite",
+      "assumptions": "Pretpostavke:",
+      "purchaseError": "Kupnju nije bilo moguće pokrenuti. Pokušajte ponovno."
     },
     "entitlements": {
       "title": "Moji krediti",
@@ -809,5 +819,26 @@
     "tryAgain": "Pokušaj ponovno",
     "goHome": "Na početnu stranicu",
     "help": "Trebate pomoć? Pišite na {email}."
+  },
+  "UI": {
+    "selectOption": "Odaberite opciju",
+    "noBeachesInArea": "Na ovom području nema plaža",
+    "singleColumn": "Prikaz u jednom stupcu",
+    "doubleColumn": "Prikaz u dva stupca",
+    "closeMap": "Zatvori kartu",
+    "closeFilters": "Zatvori filtre",
+    "videoTitle": "Video plaže",
+    "virtualTourTitle": "Virtualna tura 360°",
+    "beachRouteMapTitle": "Karta s putem do plaže"
+  },
+  "FilterModal": {
+    "title": "Svi filtri plaža",
+    "searchPlaceholder": "🔍 Pretraži filtre…",
+    "clearAll": "Očisti sve",
+    "cancel": "Odustani",
+    "apply": "Primijeni filtre",
+    "applyCount": "Primijeni filtre ({count})",
+    "showLess": "Prikaži manje",
+    "showMore": "Prikaži još {count}…"
   }
 }

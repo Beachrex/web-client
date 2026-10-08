@@ -33,7 +33,6 @@ export default function Loading() {
         {/* Loading Spinner */}
         <div className="flex justify-center items-center py-12">
           <Spinner size="xl" />
-          <span className="ml-3 text-lg text-gray-600">Loading continent data...</span>
         </div>
       </div>
     </div>

@@ -22,7 +22,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({
 }) => {
   // Use weather data if available, otherwise show placeholder
   const temperature = weather?.temperature ?? null;
-  const location = locationName ?? weather?.location_name ?? 'Loading...';
+  const location = locationName ?? weather?.location_name ?? '';
   const weatherIcon = weather?.icon_url;
 
   // Show loading state

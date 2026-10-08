@@ -650,7 +650,13 @@
       "subtitle": "Személyes strand felfedező társad AI által működtetve",
       "description": "Kapj személyre szabott strand ajánlásokat, csevegj AI asszisztensünkkel, és készíts egyedi útvonalterveket a tökéletes strand nyaralásodhoz.",
       "chatButton": "Csevegés indítása",
-      "itineraryButton": "Útvonalterv készítése"
+      "itineraryButton": "Útvonalterv készítése",
+      "chatCardText": "Kérdezd AI-asszisztensünket bármiről a strandokkal, úti célokkal és utazási tippekkel kapcsolatban, és azonnal személyre szabott ajánlásokat kapsz.",
+      "chatCta": "Csevegés indítása",
+      "itineraryCardText": "Készíts személyre szabott, többnapos strandos útiterveket a preferenciáid, a költségkereted és az érdeklődési köröd alapján.",
+      "itineraryCta": "Útiterv készítése",
+      "infoTitle": "Új vagy a Beachrex AI-ban?",
+      "infoText": "A csevegés mindenkinek ingyenes. A többnapos útitervekhez kredit kell – a kezdéshez jelentkezz be Google-fiókkal!"
     },
     "chat": {
       "title": "Csevegés az AI-val",
@@ -660,7 +666,9 @@
       "sending": "Küldés...",
       "error": "Az üzenet küldése sikertelen. Kérjük, próbáld újra.",
       "welcome": "Helló! A strand AI asszisztensed vagyok. Hogyan segíthetek ma?",
-      "anonymousNote": "Névtelenül cseveg. Jelentkezz be a beszélgetések mentéséhez és a prémium funkciók eléréséhez."
+      "anonymousNote": "Névtelenül cseveg. Jelentkezz be a beszélgetések mentéséhez és a prémium funkciók eléréséhez.",
+      "viewDetails": "Részletek →",
+      "suggestions": "Javaslatok:"
     },
     "itinerary": {
       "title": "Strand útvonalterv készítése",
@@ -682,7 +690,9 @@
       "error": "Az útvonalterv generálása sikertelen. Kérjük, próbáld újra.",
       "paymentRequired": "A többnapos útvonaltervek krediteket igényelnek. Kérjük, vásárolj krediteket a folytatáshoz.",
       "creditsRemaining": "Fennmaradó kreditek: {count}",
-      "purchaseCredits": "Kreditek vásárlása"
+      "purchaseCredits": "Kreditek vásárlása",
+      "assumptions": "Feltételezések:",
+      "purchaseError": "A vásárlást nem sikerült elindítani. Próbáld újra."
     },
     "entitlements": {
       "title": "Kreditjeim",
@@ -809,5 +819,26 @@
     "tryAgain": "Újrapróbálás",
     "goHome": "Kezdőlap",
     "help": "Segítség kell? Írj a(z) {email} címre."
+  },
+  "UI": {
+    "selectOption": "Válassz egy lehetőséget",
+    "noBeachesInArea": "Ezen a területen nem található strand",
+    "singleColumn": "Egyoszlopos nézet",
+    "doubleColumn": "Kétoszlopos nézet",
+    "closeMap": "Térkép bezárása",
+    "closeFilters": "Szűrők bezárása",
+    "videoTitle": "Strandvideó",
+    "virtualTourTitle": "360°-os virtuális túra",
+    "beachRouteMapTitle": "Térkép a strandhoz vezető úttal"
+  },
+  "FilterModal": {
+    "title": "Összes strandszűrő",
+    "searchPlaceholder": "🔍 Szűrők keresése…",
+    "clearAll": "Összes törlése",
+    "cancel": "Mégse",
+    "apply": "Szűrők alkalmazása",
+    "applyCount": "Szűrők alkalmazása ({count})",
+    "showLess": "Kevesebb mutatása",
+    "showMore": "Még {count} mutatása…"
   }
 }

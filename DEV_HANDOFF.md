@@ -50,6 +50,17 @@ Country, region, island and city pages: "All beaches (n)" next to the popular be
 
 ---
 
+## 2026-10-08 – No hard-coded English UI text (TASK-004 audit A4) ✅ COMPLETE
+
+Verified in code which strings were still English for every locale (`WorldQuickActionsSection` and the `BurgerMenu` items were already gone):
+- AI landing cards and info box, chat "View details →" / "Suggestions:", itinerary "Assumptions:" and the purchase error → new keys in `AI.landing`, `AI.chat`, `AI.itinerary`.
+- Home "All filters" modal (`FilterModal`: title, search, clear all, cancel, apply, show more/less) → new `FilterModal` namespace.
+- Map: "Select an option", "No beaches found in this area", layout/close button labels; beach page iframe titles (video, 360° tour, route map) → new `UI` namespace; `StyledSelect` default placeholder from `UI.selectOption`; "Loading filters…" → existing `Filters.loadingFilters`.
+- Short-lived "Loading…" placeholders (carousels, property section, map, continent `loading.tsx`, weather location) → language-neutral skeleton/spinner.
+All new keys in all 19 `messages/*.json`. Image `alt` texts are A6 (SEO step), not part of this change. Test: `e2e/hardcoded-english.unit.spec.ts` (fails against the old files).
+
+---
+
 ## 2026-10-08 – Region, island and city pages render on the server (TASK-004 SEO) ✅ COMPLETE
 
 ### Overview

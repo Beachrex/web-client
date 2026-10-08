@@ -33,6 +33,7 @@ const LeftSidebarFilters = ({
     onFilterOptionsLoadingChange,
 }: LeftSidebarFiltersProps) => {
     const t = useTranslations('BeachesMap');
+    const tUi = useTranslations('UI');
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -274,7 +275,7 @@ const LeftSidebarFilters = ({
                         value={currentValue ?? ''}
                         onChange={(e) => handleFilterChange(filterName, e.target.value)}
                     >
-                        <option value="">Select an option</option>
+                        <option value="">{tUi('selectOption')}</option>
                         {options.map((option, index) => (
                             <option key={option.id ?? index} value={option.code ?? option.slug ?? option.value}>
                                 {option.name ?? option.label}

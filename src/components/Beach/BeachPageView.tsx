@@ -26,6 +26,7 @@ interface MediaCard {
 
 const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const t = useTranslations('BeachDetails');
+  const tUi = useTranslations('UI');
 
   // ✅ Hook vedno pokličemo, brez pogojev
   const [activeMedia, setActiveMedia] =
@@ -205,7 +206,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
                 <div className="relative w-full pt-[56.25%]">
                   <iframe
                     src={videoEmbedUrl}
-                    title="Video"
+                    title={tUi('videoTitle')}
                     className="absolute inset-0 h-full w-full border-0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -219,7 +220,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
               <div className="relative h-[75vh] w-full overflow-hidden rounded-xl bg-black">
                 <iframe
                   src={sphereTourUrl}
-                  title="360° Virtual Tour"
+                  title={tUi('virtualTourTitle')}
                   className="h-full w-full border-0"
                   allowFullScreen
                   loading="lazy"

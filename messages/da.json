@@ -650,7 +650,13 @@
       "subtitle": "Din personlige strandopdagelses-assistent drevet af AI",
       "description": "Få personlige strandanbefalinger, chat med vores AI-assistent, og opret tilpassede rejseplaner til din perfekte strandferie.",
       "chatButton": "Start chat",
-      "itineraryButton": "Opret rejseplan"
+      "itineraryButton": "Opret rejseplan",
+      "chatCardText": "Spørg vores AI-assistent om alt om strande, destinationer og rejsetips, og få personlige anbefalinger med det samme.",
+      "chatCta": "Start chatten",
+      "itineraryCardText": "Lav personlige rejseplaner for strandferie over flere dage, tilpasset dine ønsker, dit budget og dine interesser.",
+      "itineraryCta": "Lav en rejseplan",
+      "infoTitle": "Ny i Beachrex AI?",
+      "infoText": "Chatten er gratis for alle. Rejseplaner over flere dage kræver kreditter – log ind med Google for at komme i gang!"
     },
     "chat": {
       "title": "Chat med AI",
@@ -660,7 +666,9 @@
       "sending": "Sender...",
       "error": "Kunne ikke sende besked. Prøv venligst igen.",
       "welcome": "Hej! Jeg er din AI-strandassistent. Hvordan kan jeg hjælpe dig i dag?",
-      "anonymousNote": "Du chatter anonymt. Log ind for at gemme dine samtaler og få adgang til premium-funktioner."
+      "anonymousNote": "Du chatter anonymt. Log ind for at gemme dine samtaler og få adgang til premium-funktioner.",
+      "viewDetails": "Se detaljer →",
+      "suggestions": "Forslag:"
     },
     "itinerary": {
       "title": "Opret strandrejseplan",
@@ -682,7 +690,9 @@
       "error": "Kunne ikke generere rejseplan. Prøv venligst igen.",
       "paymentRequired": "Fler-dages rejseplaner kræver kredit. Køb venligst kredit for at fortsætte.",
       "creditsRemaining": "Tilbageværende kredit: {count}",
-      "purchaseCredits": "Køb kredit"
+      "purchaseCredits": "Køb kredit",
+      "assumptions": "Antagelser:",
+      "purchaseError": "Købet kunne ikke startes. Prøv igen."
     },
     "entitlements": {
       "title": "Min kredit",
@@ -809,5 +819,26 @@
     "tryAgain": "Prøv igen",
     "goHome": "Gå til forsiden",
     "help": "Brug for hjælp? Skriv til {email}."
+  },
+  "UI": {
+    "selectOption": "Vælg en mulighed",
+    "noBeachesInArea": "Der blev ikke fundet nogen strande i dette område",
+    "singleColumn": "Visning i én kolonne",
+    "doubleColumn": "Visning i to kolonner",
+    "closeMap": "Luk kortet",
+    "closeFilters": "Luk filtre",
+    "videoTitle": "Strandvideo",
+    "virtualTourTitle": "360° virtuel rundvisning",
+    "beachRouteMapTitle": "Kort med vejen til stranden"
+  },
+  "FilterModal": {
+    "title": "Alle strandfiltre",
+    "searchPlaceholder": "🔍 Søg i filtre …",
+    "clearAll": "Ryd alle",
+    "cancel": "Annuller",
+    "apply": "Anvend filtre",
+    "applyCount": "Anvend filtre ({count})",
+    "showLess": "Vis mindre",
+    "showMore": "Vis {count} mere …"
   }
 }

@@ -2,6 +2,7 @@
 
 import { Button, Modal } from 'flowbite-react';
 import React, { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 
 interface FilterModalProps {
@@ -29,6 +30,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
   selectedCategories,
   onApplyFilters,
 }) => {
+  const t = useTranslations('FilterModal');
   const [localSelectedCategories, setLocalSelectedCategories] = useState<Record<string, string[]>>(
     selectedCategories
   );
@@ -157,7 +159,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     >
       <Modal.Header>
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold">All Beach Filters</span>
+          <span className="text-xl font-bold">{t('title')}</span>
           {totalSelected > 0 && (
             <span className="ml-4 text-sm text-gray-500">
               {totalSelected} filter{totalSelected !== 1 ? 's' : ''} selected
@@ -171,7 +173,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
         <div className="mb-6">
           <input
             type="text"
-            placeholder="🔍 Search filters..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
@@ -251,8 +253,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
                           className="mt-3 text-sm text-blue-600 hover:underline"
                         >
                           {showMore
-                            ? 'Show less'
-                            : `Show ${hiddenCount} more...`}
+                            ? t('showLess')
+                            : t('showMore', { count: hiddenCount })}
                         </button>
                       )}
                     </div>
@@ -274,7 +276,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                 onClick={handleClearAll}
                 className="text-sm text-blue-600 hover:underline"
               >
-                Clear all
+                {t('clearAll')}
               </button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -307,10 +309,10 @@ const FilterModal: React.FC<FilterModalProps> = ({
       <Modal.Footer>
         <div className="flex w-full items-center justify-between">
           <Button color="gray" onClick={onClose}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button color="blue" onClick={handleApply}>
-            Apply Filters {totalSelected > 0 && `(${totalSelected})`}
+            {totalSelected > 0 ? t('applyCount', { count: totalSelected }) : t('apply')}
           </Button>
         </div>
       </Modal.Footer>

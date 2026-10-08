@@ -80,6 +80,7 @@ className="object-cover"
 
 const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({ beachDetails }) => {
   const tMain = useTranslations('BeachDetails');
+  const tUi = useTranslations('UI');
   const tGroups = useTranslations('BeachDetails.groups');
   const tButtons = useTranslations('BeachDetails.buttons');
 
@@ -474,7 +475,7 @@ height={20}
                   <div className="mt-4 h-[300px] w-full overflow-hidden rounded-lg shadow-md">
                     <iframe
                       src={mapUrl}
-                      title="Path to the beach map"
+                      title={tUi('beachRouteMapTitle')}
                       className="h-full w-full border-0"
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
