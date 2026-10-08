@@ -156,11 +156,6 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
     const queryString = queryParams.toString();
     const mapUrl = `/${locale}/${mapRoute}${queryString ? `?${queryString}` : ''}`;
 
-    console.log('[BeachCategorySearch] Navigating to map with filters:', {
-      filters,
-      queryString,
-      mapUrl,
-    });
 
     // Navigate to map page with filters
     router.push(mapUrl);

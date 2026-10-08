@@ -73,14 +73,6 @@ export async function GET() {
   const beachEntries: MetadataRoute.Sitemap = [];
 
   try {
-    console.log('[sitemap/beaches] Fetching beaches from API...');
-    console.log('[sitemap/beaches] API ' +
-        '' +
-        '' +
-        '' +
-        '' +
-        '' +
-        'Endpoint:', apiEndpoint);
 
     // Fetch beaches with pagination to avoid memory exhaustion
     // The API has memory limits, so we fetch in smaller batches
@@ -92,7 +84,6 @@ export async function GET() {
     let consecutiveErrors = 0;
 
     while (hasMore) {
-      console.log(`[sitemap/beaches] Fetching page ${page} (limit: ${limit})...`);
 
       const response = await fetch(`${apiEndpoint}/api/v1/beaches?limit=${limit}&page=${page}`, {
         headers: {
@@ -102,22 +93,15 @@ export async function GET() {
         next: { revalidate: 86400 }, // Cache for 24 hours
       });
 
-      console.log('[sitemap/beaches] API Response:', {
-        status: response.status,
-        statusText: response.statusText,
-        ok: response.ok,
-      });
 
       if (!response.ok) {
         console.error(`[sitemap/beaches] API returned ${response.status}: ${response.statusText}`);
         consecutiveErrors++;
 
         if (consecutiveErrors >= maxRetries) {
-          console.log(`[sitemap/beaches] Stopping pagination after ${consecutiveErrors} consecutive errors`);
           break;
         }
 
-        console.log(`[sitemap/beaches] Retrying... (attempt ${consecutiveErrors}/${maxRetries})`);
         // Wait a bit before retrying
         await new Promise(resolve => setTimeout(resolve, 1000 * consecutiveErrors));
         continue; // Retry same page
@@ -133,25 +117,19 @@ export async function GET() {
       const beaches = data.data ?? [];
       const meta = data.meta;
 
-      console.log(`[sitemap/beaches] Fetched ${beaches.length} beaches from page ${page}`);
-      console.log('[sitemap/beaches] Pagination meta:', JSON.stringify(meta));
 
       allBeaches = [...allBeaches, ...beaches];
 
       // Check if there are more pages
       if (meta?.current_page && meta?.last_page) {
         hasMore = meta.current_page < meta.last_page;
-        console.log(`[sitemap/beaches] Page ${meta.current_page} of ${meta.last_page}, hasMore: ${hasMore}`);
         page++;
       } else if (beaches.length === limit) {
         // No pagination metadata, but we got a full page - try next page
-        console.log(`[sitemap/beaches] No pagination metadata, but got full page 
-        (${beaches.length}), trying next page`);
         page++;
         hasMore = true;
       } else {
         // No pagination metadata and partial page - assume we're done
-        console.log(`[sitemap/beaches] No pagination metadata and partial page (${beaches.length}), stopping`);
         hasMore = false;
       }
 
@@ -162,7 +140,6 @@ export async function GET() {
       }
     }
 
-    console.log(`[sitemap/beaches] Total beaches fetched: ${allBeaches.length}`);
 
     // For each beach, create entries for all locales
     for (const beach of allBeaches) {
@@ -197,7 +174,6 @@ export async function GET() {
       }
     }
 
-    console.log(`[sitemap/beaches] Generated ${beachEntries.length} beach URLs`);
   } catch (error) {
     console.error('[sitemap/beaches] Error generating beach sitemap:', error);
   }
