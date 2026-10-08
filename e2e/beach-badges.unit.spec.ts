@@ -17,7 +17,7 @@ test.describe('buildBeachBadges', () => {
     } as BeachDetailsSchema);
 
     expect(badges).toEqual([
-      { key: 'beach_type:sand', icon: '/images/categories/sand-castle.png', label: 'Pesek' },
+      { key: 'beach_type:sand', icon: 'js/assets/images/categories_icons/beach_type-sand.png', label: 'Pesek' },
     ]);
   });
 
@@ -106,11 +106,28 @@ test.describe('buildCardFeatureIcons', () => {
     expect(buildCardFeatureIcons(undefined)).toEqual([]);
   });
 
-  test('stony types use the card stones icon; labels come from the API or the badge keys', () => {
+  test('each beach type has its own icon from the CDN set; labels come from the API or the badge keys', () => {
     const icons = buildCardFeatureIcons({ beach_type: { code: 'rock_beach', name: 'Skalnata' }, family: true, parking: false });
     expect(icons).toEqual([
-      { key: 'beach_type:rock_beach', icon: '/images/propertycard/stones.png', label: 'Skalnata' },
+      { key: 'beach_type:rock_beach', icon: 'js/assets/images/categories_icons/beach_type-rocks.png', label: 'Skalnata' },
       { key: 'family', icon: '/images/propertycard/family.png', labelKey: 'familyFriendly' },
     ]);
   });
+});
+
+test('every beach type code in the DB maps to a beach_type-*.png icon (QA #45)', () => {
+  const expected: Record<string, string> = {
+    sand: 'beach_type-sand.png',
+    brown_sand: 'beach_type-sand.png',
+    black_sand: 'beach_type-sand.png',
+    small_stones: 'beach_type-fine_gravel.png',
+    big_stones: 'beach_type-gravel.png',
+    rock_beach: 'beach_type-rocks.png',
+    grass_beach: 'beach_type-grass.png',
+    concrete: 'beach_type-concrete.png',
+  };
+  for (const [code, file] of Object.entries(expected)) {
+    const [icon] = buildCardFeatureIcons({ beach_type: { code, name: code } });
+    expect(icon?.icon).toBe(`js/assets/images/categories_icons/${file}`);
+  }
 });

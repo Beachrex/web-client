@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
 import type { BeachBadge } from '@/lib/utils/beach-badges';
 import React from 'react';
 
@@ -60,7 +61,7 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
       `}
     >
       <Image
-        src={b.icon}
+        src={resolveBadgeIcon(b.icon)}
         alt={label}
         width={35}
         height={35}

@@ -2,6 +2,7 @@
 
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/prefetch-utils';
+import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
 import { buildCardFeatureIcons, type BeachCardFeatures } from '@/lib/utils/beach-badges';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { parseWebcamUrl } from '@/lib/utils/webcam';
@@ -456,9 +457,10 @@ const webcamUrl = React.useMemo(
               return (
                 <Image
                   key={f.key}
-                  src={f.icon}
+                  src={resolveBadgeIcon(f.icon)}
                   width={26}
                   height={26}
+                  className="h-[26px] w-[26px] object-contain"
                   alt={label}
                   title={label}
                 />

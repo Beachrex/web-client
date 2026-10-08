@@ -49,3 +49,13 @@ test.describe('buildCdnUrl', () => {
     expect(buildCdnUrl('')).toBeNull();
   });
 });
+
+test.describe('resolveBadgeIcon', () => {
+  test('CDN-relative badge icons resolve to the categories_icons folder on Spaces (QA #45)', async () => {
+    const { resolveBadgeIcon } = await import('@/lib/utils/beach-badge-icons');
+    expect(resolveBadgeIcon('js/assets/images/categories_icons/beach_type-shadow.png')).toBe(
+      'https://beachrex.fra1.digitaloceanspaces.com/public/js/assets/images/categories_icons/beach_type-shadow.png',
+    );
+    expect(resolveBadgeIcon('/images/propertycard/parking.png')).toBe('/images/propertycard/parking.png');
+  });
+});
