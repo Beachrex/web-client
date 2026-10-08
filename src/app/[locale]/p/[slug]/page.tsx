@@ -8,7 +8,7 @@
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { buildCompleteMetadata, buildSelfAlternate } from '@/lib/utils/metadata-helpers';
 import { getStaticPageBySlug } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage, StaticPage } from '@/lib/api-client/types.gen';
 import StaticPageContent from '@/components/StaticPage/StaticPageContent';
@@ -45,6 +45,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             title: page.meta_title ?? page.title ?? slug,
             description: page.meta_description ?? page.title ?? slug,
             locale,
+            // Localized slugs: other locales' URLs are unknown here, so no cross-locale hreflang
+            alternateLanguages: buildSelfAlternate(locale, `/p/${slug}`),
             // `p` prefix is constant across locales; only the slug is localized.
             path: `/p/${slug}`,
             type: 'website',

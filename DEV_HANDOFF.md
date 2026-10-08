@@ -18,6 +18,37 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – SEO part 2: one h1 per page, correct hreflang, sitemap index, beach map metadata (TASK-004) ✅ COMPLETE
+
+### Overview
+
+Verified in code: home, continent, country, region, island and city pages had no `<h1>` (titles were `<span>`); the beach page's only `<h1>` was "Detailed information"; the beach map had no metadata and no `<h1>`; `sitemap.xml` was a `<urlset>` listing other sitemaps; hreflang alternates paired one locale's localized slugs with every other locale (e.g. `/en/plaze/evropa/...`), so most alternates pointed to wrong URLs.
+
+### Changes / Files
+
+- **h1**:
+  - the banner title (`BannerSection`) is the `<h1>` on continent, country, region, island and city pages;
+  - the beach name (`BeachTitleBlock`) is the `<h1>` on beach pages, and "Detailed information" is now `<h2>`;
+  - the home hero title is the `<h1>` and is rendered on the server (`HeroSection initialTitle`).
+- **hreflang** (`metadata-helpers.ts`):
+  - new `buildLocalizedAlternates(pathFor)` for pages whose path only differs by the localized word (`/beaches`, the beach map);
+  - new `buildSelfAlternate(locale, path)` for continent, country, region/island/city/beach and CMS pages: the other locales' slugs are unknown there, and a missing hreflang is better than a wrong one.
+- **Sitemap**: `src/app/sitemap.xml/route.ts` returns a `<sitemapindex>` (replaces `src/app/sitemap.ts`).
+- **Beach map**: server wrapper with `generateMetadata` (`SEO.beachMapTitle/Description`, canonical, hreflang) and an `sr-only` `<h1>`. The client map moved to `src/components/Map/BeachMapClient.tsx`.
+- **`/about`**: a permanent redirect (308) to the CMS page.
+- `e2e/seo-metadata.unit.spec.ts` (new).
+
+### Known gap (follow-up)
+
+Region, island and city pages render their content on the client (`RegionListingPage`, … use react-query hooks), so the server HTML has the metadata but not the content and `<h1>`. A follow-up can prefetch on the server and hydrate the query cache.
+
+### Testing
+
+- `npx tsc --noEmit -p .`, `yarn lint`, all unit specs (154 passed).
+- Production-like build + `next start`: `/sitemap.xml` is a `<sitemapindex>`; `/hr/karta-plaza` has `<title>Interaktivna karta plaža | BeachRex</title>`, an `sr-only` h1 and `hrefLang="de"` → `/de/strand-karte`; `/hr/plaze` → `hrefLang="si"` `/si/plaze`.
+
+---
+
 ## 2026-10-08 – robots.txt fixed for production, AI crawler policy, consent + Analytics + AdSense, ads.txt, llms.txt (TASK-004 SEO) ✅ COMPLETE
 
 ### Overview

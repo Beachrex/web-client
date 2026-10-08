@@ -152,7 +152,7 @@ export default async function HomePage({ params }: PageProps) {
   return (
     <>
       {/* Hero Section */}
-      <HeroSection />
+      <HeroSection initialTitle={sections.hero_banner?.title ?? ''} />
 
       {/* World Map Section */}
       {browseMap && (

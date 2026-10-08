@@ -19,7 +19,7 @@ import type { AcceptLanguage, BeachDetailsSchema, Country } from '@/lib/api-clie
 import { buildBeachUrl, getBeachesWord } from '@/lib/utils/beach-urls';
 import {
   buildCompleteMetadata,
-  buildBeachAlternateLanguages,
+  buildSelfAlternate,
   buildCanonicalUrl,
 } from '@/lib/utils/metadata-helpers';
 import {
@@ -270,15 +270,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const canonicalPath = `/${beachesWord}/${continent}/${country}/${pathSegments.join('/')}`;
 
-    // Build alternate language links
-    const alternateLanguages = buildBeachAlternateLanguages(
-      beach.basic_info?.slug ?? lastSegment,
-      continent,
-      country,
-      beach.location?.region?.slug,
-      beach.location?.island?.slug,
-      beach.location?.city?.slug
-    );
+    // Slugs are localized; other locales' slugs are unknown here, so no cross-locale hreflang
+    // (the old helper paired this locale's slugs with every other locale's URL).
+    const alternateLanguages = buildSelfAlternate(locale, canonicalPath);
 
     // Build complete metadata
     return buildCompleteMetadata({
