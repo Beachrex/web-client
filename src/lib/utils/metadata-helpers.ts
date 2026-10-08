@@ -28,6 +28,14 @@ export function getBaseUrl(): string {
   return getBaseUrlInternal();
 }
 
+/** Share image for pages without their own (brand package OG image, 1200×630). */
+export const DEFAULT_OG_IMAGE_PATH = '/og-image.png';
+
+/** The page's images, or the default share image when it has none (absolute URL for crawlers). */
+export function withDefaultShareImage(images?: string[]): string[] {
+  return images && images.length > 0 ? images : [`${getBaseUrl()}${DEFAULT_OG_IMAGE_PATH}`];
+}
+
 /**
  * Build alternate language links for hreflang tags
  * Generates links for all 14 supported locales
@@ -138,7 +146,7 @@ export function buildOpenGraphMetadata(options: {
     siteName: options.siteName ?? 'BeachRex',
     locale: options.locale ?? 'en',
     type: options.type ?? 'website',
-    images: options.images ?? [],
+    images: withDefaultShareImage(options.images),
   };
 }
 
@@ -168,7 +176,7 @@ export function buildTwitterCardMetadata(options: {
     card: options.card ?? 'summary_large_image',
     title: options.title,
     description: options.description,
-    images: options.images ?? [],
+    images: withDefaultShareImage(options.images),
     creator: options.creator,
     site: options.site ?? '@BeachRex',
   };

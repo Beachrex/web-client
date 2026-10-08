@@ -9,6 +9,7 @@ import { Open_Sans } from 'next/font/google';
 import { buildOrganizationSchema, buildWebSiteSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { isProductionSite } from '@/lib/utils/environment';
+import { withDefaultShareImage } from '@/lib/utils/metadata-helpers';
 import ThirdPartyScripts from '@/components/Analytics/ThirdPartyScripts';
 
 export async function generateMetadata({
@@ -29,7 +30,18 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('description'),
-    icons: [{ rel: 'icon', url: '/favicon.png' }],
+    // Brand package icons (CGP v1.0, public/brand/…/02_Favicon_App)
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: '48x48' },
+        { url: '/favicon.svg', type: 'image/svg+xml' },
+      ],
+      apple: '/apple-touch-icon.png',
+    },
+    manifest: '/site.webmanifest',
+    // Pages without their own metadata still get a share image
+    openGraph: { siteName: 'BeachRex', images: withDefaultShareImage() },
+    twitter: { card: 'summary_large_image', images: withDefaultShareImage() },
     authors: [{ name: 'David Tacer' }],
     ...robotsMetadata,
   };

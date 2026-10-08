@@ -18,6 +18,25 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Site icons and default share image ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: only a 32 px `favicon.png` existed — no `favicon.ico` (404), no phone home-screen icons, and pages without their own image (home, map, CMS pages) had no share image on Facebook/WhatsApp/LinkedIn.
+
+### Changes
+
+- `public/`: `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `android-chrome-192x192.png`, `android-chrome-512x512.png`, `site.webmanifest`, `og-image.png` (1200×630) — copied from the brand package (`public/brand/BeachRex_CGP/02_Favicon_App`, `03_Social`).
+- `[locale]/layout.tsx`: `icons` (ico + svg + apple), `manifest`, default `openGraph`/`twitter` image.
+- `metadata-helpers.ts`: `withDefaultShareImage()` — `buildCompleteMetadata` uses the default image when a page passes none.
+- Middleware matcher skips the icon, manifest and share image paths.
+
+### Testing
+
+`e2e/site-icons.unit.spec.ts` (files exist, default image, middleware matcher).
+
+---
+
 ## 2026-10-08 – Footer layout for 13" laptops ✅ COMPLETE
 
 ### Overview
