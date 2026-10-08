@@ -18,6 +18,27 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Beach page badges come from the beach's data (QA #45, #46) ✅ COMPLETE
+
+### Overview
+
+The badge strip under the beach banner was a hardcoded placeholder list (stony, family friendly, parking, easy access, windsurfing), and `BottomBadgesBeach` repeated it to fill 9 slots. So every beach showed the same icons (QA #45), sand beaches showed "stony" and icons appeared twice (QA #46).
+
+### Changes / Files
+
+- `src/lib/utils/beach-badges.ts` (new): `buildBeachBadges(beachDetails)` builds badges from `characteristics.beach_type`, `activities.user_types` (family), parking (`location_infrastructure` `parking` or a public `parking_capacity`), `accessibility` `easy`, selected infrastructure (disabled access, dog friendly, pool, waterslide, dance floor) and windsurfing. Labels are the API names (already translated); parking and easy access use the existing `BottomBadgesBeach.badges` keys. No duplicates, max 9.
+- `BeachBannerSection.tsx`: uses `buildBeachBadges` instead of the placeholder list.
+- `BottomBadgesBeach.tsx`: renders only the real badges (no repeat filling).
+- `e2e/beach-badges.unit.spec.ts` (new): fails on the old hardcoded list (5 of 5).
+
+Not in this change: the three static icons on listing/map cards (`PropertyCard`) need beach type, user type and parking in the search/map API. That is a separate backend + frontend PR.
+
+### Testing
+
+Run the unit specs. Retest on dev: a sand beach shows a sand badge, a beach without data shows no badges, no icon appears twice.
+
+---
+
 ## 2026-10-07 – Logo and map links keep the language (QA #24, #25, #74) ✅ COMPLETE
 
 ### Overview

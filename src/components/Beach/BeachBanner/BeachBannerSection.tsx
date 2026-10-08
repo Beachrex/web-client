@@ -5,6 +5,7 @@ import WeatherWidget from '@/components/BannerSection/WeatherWidget';
 import { useBeachWeather } from '@/hooks/useWeather';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { getMainBeachImage } from '@/lib/utils/beach-images';
+import { buildBeachBadges } from '@/lib/utils/beach-badges';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
@@ -88,18 +89,7 @@ export default function BeachBannerSection({
     beachDetails?.location?.region?.name ??
     beachDetails?.location?.country?.name;
 
-  // TODO: Map beach characteristics to badges dynamically
-  // For now, using placeholder badges
-  const badges: {
-    id: 'stony' | 'familyFriendly' | 'parking' | 'easyAccess' | 'windsurfing';
-    icon: string;
-  }[] = [
-    { id: 'stony', icon: '/images/categories/stones-blue.png' },
-    { id: 'familyFriendly', icon: '/images/categories/parents.png' },
-    { id: 'parking', icon: '/images/categories/parking-blue-full.png' },
-    { id: 'easyAccess', icon: '/images/categories/arrow-path.svg' },
-    { id: 'windsurfing', icon: '/images/categories/windsurfing.png' },
-  ];
+  const badges = buildBeachBadges(beachDetails);
 
   const topBarData = mapBeachLocationToTopBar(beachDetails);
 
