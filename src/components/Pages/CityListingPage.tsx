@@ -11,7 +11,6 @@ import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import CityCategories from '../CityPage/CityCategories';
 
-import { ChevronRight } from 'lucide-react';
 
 import type { CityPageData } from '@/lib/server/destination-page-data';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
@@ -21,6 +20,7 @@ import { buildBeachUrlFromSchema, buildCityUrlFromNavigation } from '@/lib/utils
 import { formatRegionPillLabel } from '../BannerSection/topbar-utils';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
 import { FEATURES } from '@/lib/constants/features';
+import AllBeachesLink from '@/components/AllBeachesLink';
 
 interface CityListingPageProps {
   citySlug: string;
@@ -187,13 +187,7 @@ const islandPillLabel = cityDetails?.island?.name
         totalCount={beachProperties.length}
         properties={beachProperties}
         headerRight={
-          <a
-            href="#"
-            className="flex items-center font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
-          >
-            {tProperty('allBeachesLink', { count: beachProperties.length })}
-            <ChevronRight className="h-4 w-4" />
-          </a>
+          <AllBeachesLink label={tProperty('allBeachesLink', { count: cityBeachesCount })} />
         }
       />
 

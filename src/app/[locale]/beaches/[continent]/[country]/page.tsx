@@ -19,7 +19,6 @@ import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCountryUrlFromNavigation } from '@/lib/utils/beach-urls';
-import { ChevronRight } from 'lucide-react';
 
 import {
   getCities,
@@ -44,6 +43,7 @@ import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { CountryDetails } from '@/types/CountryDetails';
 import DestinationsSection from '@/components/DestinationsSection';
 import { FEATURES } from '@/lib/constants/features';
+import AllBeachesLink from '@/components/AllBeachesLink';
 
 interface PageProps {
   params: {
@@ -364,15 +364,7 @@ const beachProperties: Property[] =
         totalCount={beachProperties.length}
         properties={beachProperties}
         headerRight={
-          <a
-            href="#"
-            className="flex items-center font-figtree text-[14px] font-bold text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
-          >
-            {tProperty('allBeachesLink', {
-              count: beachProperties.length,
-            })}
-            <ChevronRight className="h-4 w-4" />
-          </a>
+          <AllBeachesLink label={tProperty('allBeachesLink', { count: countryBeachesCount })} />
         }
       />
 

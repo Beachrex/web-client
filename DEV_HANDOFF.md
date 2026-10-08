@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – "All beaches" links work (TASK-004 audit D7) ✅ COMPLETE
+
+Country, region, island and city pages: "All beaches (n)" next to the popular beaches carousel was `href="#"` and counted only the carousel's cards (max 20). It now jumps to the filterable beach list on the same page (`#all-beaches`, the `DynamicSearchBeaches` section) and shows the place's total `beaches_count`. Shared component `src/components/AllBeachesLink.tsx`. Test: `e2e/all-beaches-link.unit.spec.ts` (fails against the old pages).
+
+---
+
 ## 2026-10-08 – Region, island and city pages render on the server (TASK-004 SEO) ✅ COMPLETE
 
 ### Overview
