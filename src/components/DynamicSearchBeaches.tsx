@@ -3,6 +3,7 @@
 import { useAllBeaches } from '@/hooks/useBeaches';
 import { hasMainImage } from '@/lib/utils/beach-cards';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
+import { parseWebcamUrl } from '@/lib/utils/webcam';
 import { buildBeachMapUrl, buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import { Pagination } from 'flowbite-react';
 import { useLocale, useTranslations, type TranslationValues } from 'next-intl';
@@ -157,7 +158,7 @@ const [mediaMode] =
       sphereThumbnail: sphere ? mainImage : undefined,
       sphereTourUrl,
       videoEmbedUrl,
-      webcamEmbed: b.media?.embeds?.webcam ?? null,
+      webcamEmbed: parseWebcamUrl(b.media?.embeds?.webcam),
       title: b.name ?? tCommon('unknownBeach'),
       location: b.city_name ?? b.country_name ?? '',
       locationUrl: buildCityUrlFromSchema(b, locale) ?? undefined,

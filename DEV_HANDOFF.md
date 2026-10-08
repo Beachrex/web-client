@@ -18,6 +18,25 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Webcam: one rule for "has webcam", and the beach page shows it (QA #36, #65, #68) ✅ COMPLETE
+
+### Overview
+
+The `beach.webcam` column holds pasted embed code. On dev (2026-10-08) 252 rows are Lookr embeds with an `href`, 2 are bare whatsupcams URLs, 2 are junk (`bret`, `bre`), and 3 518 are empty. Lists and the map counted any string as a webcam, but the card could only open an `href`. So a beach could be offered as having a webcam that showed nothing. The bare URLs were never opened. The beach page never showed a webcam at all.
+
+### Changes / Files
+
+- `src/lib/utils/webcam.ts` (new): `parseWebcamUrl()` takes the `href`, an iframe `src` or a bare URL, and accepts only http(s).
+- `mapBeachToProperty.ts`, `DynamicSearchBeaches.tsx` and the continent page set `webcamEmbed` only to a parsed URL, so the webcam toggle (`hasAnyWebcam`) and the "Live cam" filter count only real webcams. `PropertyCard` opens the same URL.
+- `Beach/BeachPageView.tsx`: a "Live cam" card (existing `BeachDetails.beachMediaLiveCam` string, all 19 locales) opens the webcam in a new tab, like the cards do.
+- `e2e/webcam.unit.spec.ts` (new). With the old rule ("any string"), 5 of 5 tests fail.
+
+### Testing
+
+Run the unit specs. On dev, open a beach with a Lookr webcam: the beach page shows "Live cam" and it opens the webcam. Piran / Portorož (whatsupcams URLs) now open too.
+
+---
+
 ## 2026-10-08 – All images through Imagor (TASK-002 §5 cleanup) ✅ COMPLETE
 
 ### Overview

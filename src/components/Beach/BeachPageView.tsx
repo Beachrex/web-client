@@ -7,6 +7,7 @@ import React from 'react';
 
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
+import { parseWebcamUrl } from '@/lib/utils/webcam';
 
 interface BeachPageViewProps {
   beachDetails: BeachDetailsSchema;
@@ -15,7 +16,8 @@ interface BeachPageViewProps {
 type ActiveMediaType = 'gallery' | 'video' | 'sphere';
 
 interface MediaCard {
-  key: ActiveMediaType;
+  // 'webcam' opens the webcam page in a new tab instead of the modal.
+  key: ActiveMediaType | 'webcam';
   src: string;
   icon: string;
   label: string;
@@ -79,6 +81,9 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const hasVideo = Boolean(videoEmbedUrl);
   const hasSphere = spheres.length > 0 && Boolean(sphereTourUrl);
 
+  // QA #36: the beach page never showed the webcam that the map and cards offer.
+  const webcamUrl = parseWebcamUrl(embeds?.webcam);
+
   const rawItems: (MediaCard & { enabled: boolean })[] = [
     {
       key: 'gallery',
@@ -100,6 +105,13 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
       icon: '/images/beachmedia/360-degree.svg',
       label: t('beachMedia360'),
       enabled: hasSphere,
+    },
+    {
+      key: 'webcam',
+      src: '/images/beachmedia/live-cam.jpg',
+      icon: '/images/beachmedia/play-button-arrowhead.svg',
+      label: t('beachMediaLiveCam'),
+      enabled: Boolean(webcamUrl),
     },
   ];
 
@@ -130,7 +142,13 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
 
               <button
                 type="button"
-                onClick={() => setActiveMedia(item.key)}
+                onClick={() => {
+                  if (item.key === 'webcam') {
+                    if (webcamUrl) window.open(webcamUrl, '_blank', 'noopener,noreferrer');
+                    return;
+                  }
+                  setActiveMedia(item.key);
+                }}
                 className="relative z-10 flex h-[45px] items-center gap-[10px] rounded-[8px] bg-white px-[16px] py-[9px] text-center font-figtree text-[14px] font-bold leading-none text-gray-700 shadow"
               >
                 <Image
