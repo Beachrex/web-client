@@ -1,128 +1,126 @@
-'use client';
+/**
+ * World beaches page — /[locale]/beaches (/si/plaze, /de/strande, …). Server component (SSR).
+ *
+ * QA #48 / TASK-004: the page rendered placeholder beaches and countries, invented world totals and
+ * buttons without a function. It now shows real data from the API with the same cards and search as
+ * the continent and country pages.
+ */
 
 import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
-import PropertySection, { type Property } from '@/components/PropertySection';
+import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
+import { PropertySection } from '@/components/PropertySection';
 import WorldBannerSection from '@/components/WorldPage/WorldBanner/WorldBannerSection';
-import WorldQuickActionsSection from '@/components/WorldPage/WorldQuickActionsSection';
-import WorldSearchBeaches from '@/components/WorldPage/WorldSearchBeaches';
-import { usePathname } from '@/i18n/routing';
-import { ChevronRight } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { getContinents, getCountries, getFirstPageContent, getMostVisitedBeaches } from '@/lib/api-client/sdk.gen';
+import type { AcceptLanguage } from '@/lib/api-client/types.gen';
+import { beachesToProperties } from '@/lib/utils/beach-properties';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { getBeachesWord } from '@/lib/utils/beach-urls';
+import { buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
+import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 
-const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
+interface PageProps {
+  params: { locale: string };
+}
 
-// MOCK DESTINATION COUNTRIES (replace with API later)
-const mockCountries = Array.from({ length: 12 }, (_, i) => ({
-  code: `country-${i}`,
-  name: `Country ${i + 1}`,
-  full_name: `Country ${i + 1}`,
-  beaches_count: Math.floor(Math.random() * 200) + 20,
-  image_path: null,
-}));
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = params;
+  const t = await getTranslations({ locale, namespace: 'SEO' });
+  return buildCompleteMetadata({
+    title: t('beachesPageTitle'),
+    description: t('beachesPageDescription'),
+    locale,
+    path: `/${getBeachesWord(locale)}`,
+    type: 'website',
+  });
+}
 
-// MOCK BEACH PROPERTIES
-const baseBeach: Property = {
-  id: '1',
-  image: `${CDN_ASSETS}img/beaches/hr-102-o-pag/hr-102-o-pag-sl4.jpg`,
-  title: 'Plaža Ladinka',
-  price: 25,
-  originalPrice: 40,
-  galleryImages: [],
-  rating: 7.2,
-  reviews: 120,
-  discount: '15',
-  isFreeBreakfast: false,
-  isFreeCancellation: true,
-  location: '',
-};
+/** World totals from the API; a failed request leaves the stat empty (hidden) instead of breaking the page. */
+async function loadWorldData(locale: string) {
+  const headers = { 'Accept-Language': locale as AcceptLanguage };
+  const [continents, countries, mostVisited, sections] = await Promise.all([
+    getContinents({ headers }).then((r) => r.data?.data ?? []).catch(() => []),
+    getCountries({ headers }).then((r) => r.data?.data ?? []).catch(() => []),
+    getMostVisitedBeaches({ query: { limit: 20 }, headers }).then((r) => r.data?.data ?? []).catch(() => []),
+    getFirstPageContent({ headers }).then((r) => r.data?.data ?? []).catch(() => []),
+  ]);
 
-const beachProperties: Property[] = Array.from({ length: 4 }, (_, i) => ({
-  ...baseBeach,
-  id: String(i + 1),
-}));
+  // Banner image: the home hero background from the admin (the previous static image file did not exist)
+  const hero = sections.find((s) => s.code === 'hero_banner');
+  const heroMedia = hero?.media?.find((m) => m.collection === 'background_image') ?? hero?.media?.find((m) => m.is_primary) ?? hero?.media?.[0];
+  const bannerImage = heroMedia?.url ? buildCdnUrl(heroMedia.url, 'hero') : null;
 
-const Page = () => {
-  const pathname = usePathname();
+  const totalBeaches = continents.reduce((sum, c) => sum + (c.beaches_count ?? 0), 0);
+  const countriesWithBeaches = countries.filter((c) => (c.beaches_count ?? 0) > 0).length;
 
-  useEffect(() => {
-    if (!pathname) return;
-  }, [pathname]);
+  return {
+    totalBeaches: totalBeaches > 0 ? totalBeaches : undefined,
+    countriesWithBeaches: countriesWithBeaches > 0 ? countriesWithBeaches : undefined,
+    mostVisited,
+    bannerImage,
+  };
+}
 
-  const tWorld = useTranslations('WorldTopBar');
-  const tProperty = useTranslations('PropertySection');
-  const tSEO = useTranslations('WorldSEO');
+export default async function WorldBeachesPage({ params }: PageProps) {
+  const { locale } = params;
+  const tWorld = await getTranslations({ locale, namespace: 'WorldTopBar' });
+  const tSEO = await getTranslations({ locale, namespace: 'WorldSEO' });
+  const tSchema = await getTranslations({ locale, namespace: 'SEO' });
 
+  const { totalBeaches, countriesWithBeaches, mostVisited, bannerImage } = await loadWorldData(locale);
+  const properties = beachesToProperties(mostVisited, locale);
+
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: tSchema('breadcrumbHome'), url: buildCanonicalUrl(locale, '/') },
+    { name: tWorld('worldLabel'), url: buildCanonicalUrl(locale, `/${getBeachesWord(locale)}`) },
+  ]);
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumbSchema) }} />
 
-      {/* Banner */}
+      {/* Banner with real world totals; stats without data are hidden */}
       <WorldBannerSection
-        image="/images/banner/world-banner.png"
-        totalCountriesWithBeaches={120}
-        totalBeaches={1000}
-        totalOpenPools={4300}
-        totalIndoorPools={3100}
-        totalIslandsWithBeaches={980}
-        totalRiverBeaches={22000}
-        totalLakeBeaches={15000}
+        image={bannerImage}
+        totalCountriesWithBeaches={countriesWithBeaches}
+        totalBeaches={totalBeaches}
       />
 
+      {/* Most visited beaches worldwide: same cards and media switch as the continent pages */}
+      {properties.length > 0 && (
+        <PropertySection
+          title={tWorld('popularBeachesTitle')}
+          totalCount={properties.length}
+          properties={properties}
+        />
+      )}
 
-        {/* NEW: quick access buttons row */}
-      <WorldQuickActionsSection
-        onAccommodationsClick={() => console.log('open world accommodations')}
-        onWeatherClick={() => console.log('open world weather')}
-        onTopBeachesClick={() => console.log('open top beaches')}
-      />
+      {/* Countries with beaches */}
+      <ContinentCountriesSection title={tWorld('destinationsTitle')} />
 
-
-      {/* Popular Beaches (mock) */}
-      <PropertySection
-        title={tWorld('popularBeachesTitle')}
-        totalCount={beachProperties.length}
-        properties={beachProperties}
-        headerRight={
-          <a
-            href="#"
-            className="flex items-center font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
-          >
-            {tProperty('allBeachesLink', { count: beachProperties.length })}
-            <ChevronRight className="h-4 w-4" />
-          </a>
-        }
+      {/* Search all beaches (filters, list, map) */}
+      <DynamicSearchBeaches
+        translationNamespace="WorldTopBar"
+        titleKey="browseBeachesTitle"
+        filterButtonColor="#0B99C2"
+        baseFilters={{}}
       />
 
       {/* SEO text */}
       <section className="bg-white py-12 sm:py-16 lg:py-20">
-        <div className="container mx-auto max-w-4xl">
+        <div className="container mx-auto max-w-4xl px-4">
           <h2 className="mb-4 font-figtree text-[28px] font-bold leading-[120%] text-[#222] sm:text-[32px]">
             {tSEO('title')}
           </h2>
-
-          <p className="mb-6 font-figtree text-[16px] leading-[26px] text-[#4D4D4D]">
-            {tSEO('paragraph1')}
-          </p>
-
-          <p className="mb-6 font-figtree text-[16px] leading-[26px] text-[#4D4D4D]">
-            {tSEO('paragraph2')}
-          </p>
-
-          <p className="font-figtree text-[16px] leading-[26px] text-[#4D4D4D]">
-            {tSEO('paragraph3')}
-          </p>
+          <p className="mb-6 font-figtree text-[16px] leading-[26px] text-[#4D4D4D]">{tSEO('paragraph1')}</p>
+          <p className="mb-6 font-figtree text-[16px] leading-[26px] text-[#4D4D4D]">{tSEO('paragraph2')}</p>
+          <p className="font-figtree text-[16px] leading-[26px] text-[#4D4D4D]">{tSEO('paragraph3')}</p>
         </div>
       </section>
-
-      {/* ★ NEW: IDENTICAL TOPDESTINATIONSSECTION AS ON HOME PAGE ★ */}
-      <ContinentCountriesSection />
-
-
-      {/* World Beach Search */}
-      <WorldSearchBeaches countries={mockCountries} />
     </>
   );
-};
+}
 
-export default Page;
+/** ISR: refresh hourly, like the continent pages. */
+export const revalidate = 3600;

@@ -18,11 +18,9 @@ import {
 } from '@/lib/api-client/sdk.gen';
 
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
-import { hasMainImage } from '@/lib/utils/beach-cards';
-import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema, buildCityUrlFromSchema, getBeachesWord } from '@/lib/utils/beach-urls';
-import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
-import { parseWebcamUrl } from '@/lib/utils/webcam';
+import { beachesToProperties } from '@/lib/utils/beach-properties';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, buildContinentSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
@@ -36,37 +34,6 @@ interface PageProps {
     locale: string;
     continent: string;
   }>;
-}
-
-/**
- * Build gallery (max 5 images)
- */
-interface GalleryItem {
-  url?: string;
-  order?: number | null;
-}
-
-interface BeachMediaInput {
-  media?: {
-    gallery?: GalleryItem[];
-    spheres_360?: { tour_url?: string }[];
-    videos?: { url?: string; is_primary?: boolean }[];
-    embeds?: {
-      video_url?: string | null;
-      webcam?: string | null;
-    };
-  };
-}
-
-function buildGallery(beach: BeachMediaInput) {
-  const gallery = beach.media?.gallery ?? [];
-
-  return gallery
-    .filter((img): img is GalleryItem & { url: string } => typeof img.url === 'string')
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    .slice(0, 5)
-    .map((img) => buildCdnUrl(img.url, 'list'))
-    .filter((url): url is string => Boolean(url));
 }
 
 // ---------------- VALIDATION -----------------
@@ -209,52 +176,8 @@ const Page = async ({ params }: PageProps) => {
 
     const mostVisited = mostVisitedResponse?.data ?? [];
 
-    // 4) Transform into PropertySection items
-    // Beaches without a main image are skipped: next/image throws on a missing src (QA #55).
-    const transformedProperties = mostVisited.filter(hasMainImage).map((beach) => {
-      const gallery = buildGallery(beach);
-     const mainImage = buildCdnUrl(beach.main_image, 'list')!;
-
-/* Sphere - use buildSphereTourUrl to handle special characters (č, š, ž, etc.) */
-const sphere = beach.media?.spheres_360?.[0] ?? null;
-const sphereThumbnail = sphere ? mainImage : undefined;
-const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
-
-/* Video */
-const rawVideo = beach.media?.embeds?.video_url ?? null;
-const videoEmbedUrl = buildBeachVideoUrl(rawVideo, beach.media?.videos) ?? undefined;
-
-/* Webcam */
-const webcamEmbed = parseWebcamUrl(beach.media?.embeds?.webcam);
-
-const beachUrl =
-  buildBeachUrlFromSchema(beach, resolvedParams.locale) ?? undefined;
-
-return {
-  id: String(beach.id),
-
-  beachUrl,
-
-  image: mainImage,
-  galleryImages: gallery,
-
-  sphereThumbnail,
-  sphereTourUrl,
-  videoEmbedUrl,
-  webcamEmbed,
-  features: beach.features ?? null,
-
-  title: beach.name ?? '',
-  location: beach.city_name ?? beach.country_name ?? '',
-  locationUrl:
-    buildCityUrlFromSchema(beach, resolvedParams.locale) ?? undefined,
-  price: 0,
-  rating: 0,
-  reviews: 0,
-  countryCode: beach.country_code,
-};
-
-    });
+    // 4) Cards with the same media rules as the beach page
+    const transformedProperties = beachesToProperties(mostVisited, resolvedParams.locale);
 
     const bannerImage = continent.main_image
       ? buildCdnUrl(continent.main_image, 'banner')
@@ -330,8 +253,11 @@ return {
           continentSlug={resolvedParams.continent}
         />
 
-        {/* Countries list */}
-        <ContinentCountriesSection />
+        {/* Countries of this continent */}
+        <ContinentCountriesSection
+          title={t('countriesContinent', { continent: continent.name ?? '' })}
+          continentCode={continentCode}
+        />
 
         {/* Search beaches */}
         <DynamicSearchBeaches

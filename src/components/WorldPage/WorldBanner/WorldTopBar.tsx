@@ -30,6 +30,8 @@ const formatNumber = (value?: number) => {
 };
 
 const StatBadge: React.FC<StatBadgeProps> = ({ label, value, iconSrc }) => {
+  // Stats without data (e.g. lake/river/pool counts until that data exists) are hidden, not shown as 0 or "–".
+  if (value == null || value <= 0) return null;
   const displayValue = formatNumber(value);
 
   return (

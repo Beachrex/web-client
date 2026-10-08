@@ -18,6 +18,30 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – World beaches page on real data, same cards as the other pages (QA #48, TASK-004 step 4) ✅ COMPLETE
+
+### Overview
+
+`/[locale]/beaches` (`/si/plaze`, …) was a client page with mock data: "Plaža Ladinka" ×4 with a price and rating, "Country 1..12" with `Math.random()` counts and prices (hydration mismatch), invented world totals (120 countries, 22 000 river beaches, …), quick-action buttons that only logged, "All beaches" → `#`, and a banner image (`/images/banner/world-banner.png`) that does not exist. Verified in code before the fix.
+
+### Changes / Files
+
+- `src/app/[locale]/beaches/page.tsx`: server component (SSR, `revalidate = 3600`) with `generateMetadata` (`SEO.beachesPageTitle/Description`, canonical, hreflang) and breadcrumb JSON-LD. Data from the API: world totals (beaches = sum of continents, countries with beaches), most visited beaches worldwide, the home hero image as the banner. Sections: banner, most visited (same cards and media switch as the continent pages), countries, beach search with filters (`DynamicSearchBeaches`), SEO text.
+- `src/lib/utils/beach-properties.ts` (new): `beachesToProperties()` — one card transform (gallery, sphere, video, webcam, features, URLs) for the world and continent pages; the continent page uses it instead of its inline copy.
+- `WorldBannerSection`: the title is the page `<h1>`; the map widget links to the beach map; the weather widget (no world weather) is removed; missing image → gradient.
+- `WorldTopBar`: stats without data (pools, rivers, lakes, islands) are hidden instead of showing invented numbers.
+- `ContinentCountriesSection`: takes the title and `continentCode` from the page. Continent pages showed "Countries in Europe" and all countries on every continent (audit D8).
+- Removed `WorldQuickActionsSection` and `WorldSearchBeaches` (mock-only).
+- `e2e/world-beaches-page.unit.spec.ts` (new).
+
+### Testing
+
+- Deliberate break: the guard on the old page fails; the card helper test checks URLs, gallery order and skipping beaches without an image.
+- `npx tsc --noEmit -p .`, `yarn lint`, unit specs (142 passed).
+- Local stack (`next build` + `next start` against a local API): `/hr/plaze` → 200, `<title>Istražite plaže svijeta | BeachRex</title>`, one `<h1>`, `BreadcrumbList` JSON-LD, no mock names.
+
+---
+
 ## 2026-10-08 – Old beachrex.com URLs redirect to the new pages (TASK-004 step 5b) ✅ COMPLETE
 
 ### Overview
