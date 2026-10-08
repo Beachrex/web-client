@@ -15,19 +15,31 @@ export interface BeachBadge {
 
 export const MAX_BEACH_BADGES = 9;
 
+/**
+ * Beach type icons from the CDN set the old site used (owner, 2026-10-08):
+ * `public/js/assets/images/categories_icons/beach_type-<kind>.png` on Spaces.
+ * Paths without a leading slash are CDN-relative; resolve them with
+ * `resolveBadgeIcon()` (beach-badge-icons.ts). Paths with a leading slash are
+ * local `/public` files.
+ */
+const CDN_ICONS = 'js/assets/images/categories_icons';
+
 const BEACH_TYPE_ICONS: Record<string, string> = {
-  sand: '/images/categories/sand-castle.png',
-  brown_sand: '/images/categories/sand-castle.png',
-  black_sand: '/images/categories/sand-castle.png',
-  small_stones: '/images/categories/stones-blue.png',
-  big_stones: '/images/categories/stones-blue.png',
-  rock_beach: '/images/categories/stones-blue.png',
-  grass_beach: '/images/categories/grass-beach.png',
-  concrete: '/images/categories/path.png',
+  sand: `${CDN_ICONS}/beach_type-sand.png`,
+  brown_sand: `${CDN_ICONS}/beach_type-sand.png`,
+  black_sand: `${CDN_ICONS}/beach_type-sand.png`,
+  small_stones: `${CDN_ICONS}/beach_type-fine_gravel.png`,
+  big_stones: `${CDN_ICONS}/beach_type-gravel.png`,
+  rock_beach: `${CDN_ICONS}/beach_type-rocks.png`,
+  grass_beach: `${CDN_ICONS}/beach_type-grass.png`,
+  concrete: `${CDN_ICONS}/beach_type-concrete.png`,
 };
 
+const FAMILY_ICON = `${CDN_ICONS}/user_type-family.png`;
+const PARKING_ICON = `${CDN_ICONS}/parking.png`;
+
 const USER_TYPE_ICONS: Record<string, string> = {
-  family: '/images/categories/parents.png',
+  family: FAMILY_ICON,
 };
 
 const INFRASTRUCTURE_ICONS: Record<string, string> = {
@@ -89,7 +101,7 @@ export function buildBeachBadges(beach: BeachDetailsSchema | undefined): BeachBa
   if (hasParking) {
     add({
       key: 'parking',
-      icon: '/images/categories/parking-blue-full.png',
+      icon: PARKING_ICON,
       labelKey: 'parking',
     });
   }
@@ -138,27 +150,20 @@ export interface BeachCardFeatures {
   parking?: boolean | null;
 }
 
-const CARD_BEACH_TYPE_ICONS: Record<string, string> = {
-  ...BEACH_TYPE_ICONS,
-  small_stones: '/images/propertycard/stones.png',
-  big_stones: '/images/propertycard/stones.png',
-  rock_beach: '/images/propertycard/stones.png',
-};
-
 export function buildCardFeatureIcons(features: BeachCardFeatures | null | undefined): BeachBadge[] {
   if (!features) return [];
 
   const icons: BeachBadge[] = [];
   const type = features.beach_type;
-  const typeIcon = type?.code ? CARD_BEACH_TYPE_ICONS[type.code] : undefined;
+  const typeIcon = type?.code ? BEACH_TYPE_ICONS[type.code] : undefined;
   if (type?.code && typeIcon) {
     icons.push({ key: `beach_type:${type.code}`, icon: typeIcon, label: type.name ?? type.code });
   }
   if (features.family) {
-    icons.push({ key: 'family', icon: '/images/propertycard/family.png', labelKey: 'familyFriendly' });
+    icons.push({ key: 'family', icon: FAMILY_ICON, labelKey: 'familyFriendly' });
   }
   if (features.parking) {
-    icons.push({ key: 'parking', icon: '/images/propertycard/parking.png', labelKey: 'parking' });
+    icons.push({ key: 'parking', icon: PARKING_ICON, labelKey: 'parking' });
   }
   return icons;
 }

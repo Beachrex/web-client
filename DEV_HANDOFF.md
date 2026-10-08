@@ -18,6 +18,36 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Real beach type icons from the CDN (QA #45 follow-up) ✅ COMPLETE
+
+### Overview
+
+The owner checked the new card icons on dev. The beach type icon used generic images (a sand castle for sand, grey pebbles for stones, a route icon for concrete), which do not read as beach types. The old site's beach type icons are on Spaces under `public/js/assets/images/categories_icons/` (listed by the owner on 2026-10-08).
+
+### Changes / Files
+
+- `src/lib/utils/beach-badges.ts`: each beach type code maps to its CDN icon:
+
+  | Code | Icon |
+  |---|---|
+  | `sand`, `brown_sand`, `black_sand` | `beach_type-sand.png` |
+  | `small_stones` | `beach_type-fine_gravel.png` |
+  | `big_stones` | `beach_type-gravel.png` |
+  | `rock_beach` | `beach_type-rocks.png` |
+  | `grass_beach` | `beach_type-grass.png` |
+  | `concrete` | `beach_type-concrete.png` |
+
+  The same map is used for the beach page badges and the list/map cards.
+- `src/lib/utils/beach-badge-icons.ts` (new): `resolveBadgeIcon()` builds the URL with `buildCdnUrl(…, 'icon')` (`NEXT_PUBLIC_CDN_ASSETS`), so the URL is `https://beachrex.fra1.digitaloceanspaces.com/public/js/assets/images/categories_icons/…`. Family and parking also use the same CDN set (`user_type-family.png`, `parking.png`; owner, 2026-10-08), so all card and badge icons share one style.
+- `PropertyCard.tsx` and `BottomBadgesBeach.tsx` use it.
+- Tests: every DB code maps to an icon file; the resolver builds the Spaces URL.
+
+### Testing
+
+Run the unit specs. On dev, cards show a sand dune, pebbles, rocks, grass or concrete slabs, matching the beach's type.
+
+---
+
 ## 2026-10-08 – Card icons follow the beach's data (QA #45, cards) ✅ COMPLETE
 
 ### Overview
