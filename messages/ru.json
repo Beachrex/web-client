@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 м от пляжа",
     "accommodationDefaultBeach": "Haludovo Beach",
     "accommodationDefaultPrice": "от 25 €",
-    "beachSeaBeach": "Морской пляж"
+    "beachSeaBeach": "Морской пляж",
+    "copyLink": "Копировать",
+    "linkCopied": "Скопировано",
+    "shareOn": "Поделиться в {network}",
+    "shareByEmail": "Поделиться по электронной почте",
+    "moreShareOptions": "Другие варианты"
   },
   "Search": {
     "typeBeach": "Пляж",

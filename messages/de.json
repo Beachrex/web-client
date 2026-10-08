@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 m vom Strand",
     "accommodationDefaultBeach": "Haludovo Strand",
     "accommodationDefaultPrice": "ab 25 €",
-    "beachSeaBeach": "Meeresstrand"
+    "beachSeaBeach": "Meeresstrand",
+    "copyLink": "Kopieren",
+    "linkCopied": "Kopiert",
+    "shareOn": "Auf {network} teilen",
+    "shareByEmail": "Per E-Mail teilen",
+    "moreShareOptions": "Weitere Optionen"
   },
   "Search": {
     "typeBeach": "Strand",

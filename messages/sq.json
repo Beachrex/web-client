@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 m nga plazhi",
     "accommodationDefaultBeach": "Plazhi Haludovo",
     "accommodationDefaultPrice": "nga 25 €",
-    "beachSeaBeach": "Plazh deti"
+    "beachSeaBeach": "Plazh deti",
+    "copyLink": "Kopjo",
+    "linkCopied": "U kopjua",
+    "shareOn": "Ndaj në {network}",
+    "shareByEmail": "Ndaj me email",
+    "moreShareOptions": "Më shumë opsione"
   },
   "Search": {
     "typeBeach": "Plazh",

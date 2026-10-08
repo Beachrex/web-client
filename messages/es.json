@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 m de la playa",
     "accommodationDefaultBeach": "Playa Haludovo",
     "accommodationDefaultPrice": "desde 25 €",
-    "beachSeaBeach": "Playa de mar"
+    "beachSeaBeach": "Playa de mar",
+    "copyLink": "Copiar",
+    "linkCopied": "Copiado",
+    "shareOn": "Compartir en {network}",
+    "shareByEmail": "Compartir por correo",
+    "moreShareOptions": "Más opciones"
   },
   "Search": {
     "typeBeach": "Playa",

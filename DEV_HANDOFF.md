@@ -18,6 +18,25 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Beach banner: share menu; ratings and save hidden ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: hide the Google ratings (a hardcoded 7.2) and save (favorites) buttons in the beach banner for now; the share button opens a share menu.
+
+### Changes
+
+- `ShareMenu` (new): link field with copy button, X, Facebook, LinkedIn, WhatsApp, Telegram, e-mail, and "…" for the system share sheet (Web Share API, only where the browser has it). Closes on outside click and Escape. Brand marks from Simple Icons (CC0) as inline SVG, no third-party scripts.
+- `src/lib/utils/share-links.ts`: share URLs per network.
+- `TopBarBeachRight`: only the share menu. Ratings and save recorded as hidden in the backend `docs/features/hidden-for-launch.md`.
+- `Common.copyLink`, `linkCopied`, `shareOn`, `shareByEmail`, `moreShareOptions` in all 19 `messages/*.json`.
+
+### Testing
+
+`e2e/share-links.unit.spec.ts`. Local stack: beach page shows only "deli"; the panel lists the 6 networks with localized labels and the page URL; Escape closes it.
+
+---
+
 ## 2026-10-08 – Site icons and default share image ✅ COMPLETE
 
 ### Overview

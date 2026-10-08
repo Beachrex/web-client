@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 μ. από την παραλία",
     "accommodationDefaultBeach": "Παραλία Haludovo",
     "accommodationDefaultPrice": "από 25 €",
-    "beachSeaBeach": "Θαλάσσια παραλία"
+    "beachSeaBeach": "Θαλάσσια παραλία",
+    "copyLink": "Αντιγραφή",
+    "linkCopied": "Αντιγράφηκε",
+    "shareOn": "Κοινοποίηση στο {network}",
+    "shareByEmail": "Κοινοποίηση με email",
+    "moreShareOptions": "Περισσότερες επιλογές"
   },
   "Search": {
     "typeBeach": "Παραλία",

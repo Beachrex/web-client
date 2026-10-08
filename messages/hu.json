@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 m a strandtól",
     "accommodationDefaultBeach": "Haludovo Strand",
     "accommodationDefaultPrice": "25 €-tól",
-    "beachSeaBeach": "Tengeri strand"
+    "beachSeaBeach": "Tengeri strand",
+    "copyLink": "Másolás",
+    "linkCopied": "Másolva",
+    "shareOn": "Megosztás: {network}",
+    "shareByEmail": "Megosztás e-mailben",
+    "moreShareOptions": "További lehetőségek"
   },
   "Search": {
     "typeBeach": "Strand",

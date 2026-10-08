@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 m van het strand",
     "accommodationDefaultBeach": "Haludovo Beach",
     "accommodationDefaultPrice": "vanaf 25 €",
-    "beachSeaBeach": "Zeestrand"
+    "beachSeaBeach": "Zeestrand",
+    "copyLink": "Kopiëren",
+    "linkCopied": "Gekopieerd",
+    "shareOn": "Delen op {network}",
+    "shareByEmail": "Delen via e-mail",
+    "moreShareOptions": "Meer opties"
   },
   "Search": {
     "typeBeach": "Strand",

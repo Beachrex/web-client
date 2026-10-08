@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 м від пляжу",
     "accommodationDefaultBeach": "Пляж Haludovo",
     "accommodationDefaultPrice": "від 25 €",
-    "beachSeaBeach": "Морський пляж"
+    "beachSeaBeach": "Морський пляж",
+    "copyLink": "Копіювати",
+    "linkCopied": "Скопійовано",
+    "shareOn": "Поділитися в {network}",
+    "shareByEmail": "Поділитися електронною поштою",
+    "moreShareOptions": "Більше варіантів"
   },
   "Search": {
     "typeBeach": "Пляж",

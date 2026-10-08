@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 м от плажа",
     "accommodationDefaultBeach": "Плаж Халудово",
     "accommodationDefaultPrice": "от 25 €",
-    "beachSeaBeach": "Морски плаж"
+    "beachSeaBeach": "Морски плаж",
+    "copyLink": "Копирай",
+    "linkCopied": "Копирано",
+    "shareOn": "Сподели в {network}",
+    "shareByEmail": "Сподели по имейл",
+    "moreShareOptions": "Още опции"
   },
   "Search": {
     "typeBeach": "Плаж",
