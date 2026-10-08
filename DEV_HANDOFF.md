@@ -38,7 +38,7 @@ The owner checked the new card icons on dev. The beach type icon used generic im
   | `concrete` | `beach_type-concrete.png` |
 
   The same map is used for the beach page badges and the list/map cards.
-- `src/lib/utils/beach-badge-icons.ts` (new): `resolveBadgeIcon()` builds the URL with `buildCdnUrl(…, 'icon')` (`NEXT_PUBLIC_CDN_ASSETS`), so the URL is `https://beachrex.fra1.digitaloceanspaces.com/public/js/assets/images/categories_icons/…`. Local `/images/...` icons (family, parking) stay as they are.
+- `src/lib/utils/beach-badge-icons.ts` (new): `resolveBadgeIcon()` builds the URL with `buildCdnUrl(…, 'icon')` (`NEXT_PUBLIC_CDN_ASSETS`), so the URL is `https://beachrex.fra1.digitaloceanspaces.com/public/js/assets/images/categories_icons/…`. Family and parking also use the same CDN set (`user_type-family.png`, `parking.png`; owner, 2026-10-08), so all card and badge icons share one style.
 - `PropertyCard.tsx` and `BottomBadgesBeach.tsx` use it.
 - Tests: every DB code maps to an icon file; the resolver builds the Spaces URL.
 

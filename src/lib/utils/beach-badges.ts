@@ -35,8 +35,11 @@ const BEACH_TYPE_ICONS: Record<string, string> = {
   concrete: `${CDN_ICONS}/beach_type-concrete.png`,
 };
 
+const FAMILY_ICON = `${CDN_ICONS}/user_type-family.png`;
+const PARKING_ICON = `${CDN_ICONS}/parking.png`;
+
 const USER_TYPE_ICONS: Record<string, string> = {
-  family: '/images/categories/parents.png',
+  family: FAMILY_ICON,
 };
 
 const INFRASTRUCTURE_ICONS: Record<string, string> = {
@@ -98,7 +101,7 @@ export function buildBeachBadges(beach: BeachDetailsSchema | undefined): BeachBa
   if (hasParking) {
     add({
       key: 'parking',
-      icon: '/images/categories/parking-blue-full.png',
+      icon: PARKING_ICON,
       labelKey: 'parking',
     });
   }
@@ -157,10 +160,10 @@ export function buildCardFeatureIcons(features: BeachCardFeatures | null | undef
     icons.push({ key: `beach_type:${type.code}`, icon: typeIcon, label: type.name ?? type.code });
   }
   if (features.family) {
-    icons.push({ key: 'family', icon: '/images/propertycard/family.png', labelKey: 'familyFriendly' });
+    icons.push({ key: 'family', icon: FAMILY_ICON, labelKey: 'familyFriendly' });
   }
   if (features.parking) {
-    icons.push({ key: 'parking', icon: '/images/propertycard/parking.png', labelKey: 'parking' });
+    icons.push({ key: 'parking', icon: PARKING_ICON, labelKey: 'parking' });
   }
   return icons;
 }

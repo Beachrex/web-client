@@ -110,7 +110,7 @@ test.describe('buildCardFeatureIcons', () => {
     const icons = buildCardFeatureIcons({ beach_type: { code: 'rock_beach', name: 'Skalnata' }, family: true, parking: false });
     expect(icons).toEqual([
       { key: 'beach_type:rock_beach', icon: 'js/assets/images/categories_icons/beach_type-rocks.png', label: 'Skalnata' },
-      { key: 'family', icon: '/images/propertycard/family.png', labelKey: 'familyFriendly' },
+      { key: 'family', icon: 'js/assets/images/categories_icons/user_type-family.png', labelKey: 'familyFriendly' },
     ]);
   });
 });
