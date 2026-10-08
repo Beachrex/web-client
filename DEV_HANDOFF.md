@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Author page: role "Founder of Beachrex" ✅ COMPLETE
+
+Owner, 2026-10-08: "photographer, traveller" is not Gregor's profession and could mislead; `AuthorPage.role` is now "Ustanovitelj Beachrex" / "Founder of Beachrex" in all 19 locales (also the Person `jobTitle`). The page text lives in `messages/*.json` (not in the CMS).
+
+---
+
 ## 2026-10-08 – Author page: Gregor Balažic (/{locale}/gregor-balazic) ✅ COMPLETE
 
 ### Overview
