@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 m da praia",
     "accommodationDefaultBeach": "Praia de Haludovo",
     "accommodationDefaultPrice": "desde 25 €",
-    "beachSeaBeach": "Praia marítima"
+    "beachSeaBeach": "Praia marítima",
+    "copyLink": "Copiar",
+    "linkCopied": "Copiado",
+    "shareOn": "Partilhar no {network}",
+    "shareByEmail": "Partilhar por e-mail",
+    "moreShareOptions": "Mais opções"
   },
   "Search": {
     "typeBeach": "Praia",

@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 m fra stranden",
     "accommodationDefaultBeach": "Haludovo Beach",
     "accommodationDefaultPrice": "fra 25 €",
-    "beachSeaBeach": "Havstrand"
+    "beachSeaBeach": "Havstrand",
+    "copyLink": "Kopiér",
+    "linkCopied": "Kopieret",
+    "shareOn": "Del på {network}",
+    "shareByEmail": "Del via e-mail",
+    "moreShareOptions": "Flere muligheder"
   },
   "Search": {
     "typeBeach": "Strand",

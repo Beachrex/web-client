@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 m od pláže",
     "accommodationDefaultBeach": "Pláž Haludovo",
     "accommodationDefaultPrice": "od 25 €",
-    "beachSeaBeach": "Morská pláž"
+    "beachSeaBeach": "Morská pláž",
+    "copyLink": "Kopírovať",
+    "linkCopied": "Skopírované",
+    "shareOn": "Zdieľať na {network}",
+    "shareByEmail": "Zdieľať e-mailom",
+    "moreShareOptions": "Ďalšie možnosti"
   },
   "Search": {
     "typeBeach": "Pláž",

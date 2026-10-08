@@ -65,7 +65,12 @@
     "accommodationDefaultDistance": "250 m from beach",
     "accommodationDefaultBeach": "Haludovo Beach",
     "accommodationDefaultPrice": "from 25 €",
-    "beachSeaBeach": "Sea beach"
+    "beachSeaBeach": "Sea beach",
+    "copyLink": "Copy",
+    "linkCopied": "Copied",
+    "shareOn": "Share on {network}",
+    "shareByEmail": "Share by e-mail",
+    "moreShareOptions": "More options"
   },
   "Search": {
     "typeBeach": "Beach",
