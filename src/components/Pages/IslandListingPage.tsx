@@ -6,10 +6,8 @@ import AccommodationSection from '@/components/AccommodationCard/AccommodationsS
 import BannerSection from '@/components/BannerSection/BannerSection';
 import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
-import { useCities } from '@/hooks/useCities';
-import { useIslandDetails } from '@/hooks/useIslandDetails';
-import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
 import { useIslandWeather } from '@/hooks/useWeather';
+import type { IslandPageData } from '@/lib/server/destination-page-data';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
@@ -21,11 +19,14 @@ import DestinationsSection from '../DestinationsSection';
 import { FEATURES } from '@/lib/constants/features';
 
 interface IslandListingPageProps {
-  islandSlug?: string;
+  islandSlug: string;
+  /** Fetched on the server by the page route (SSR); only the weather loads in the browser. */
+  initialData: IslandPageData;
 }
 
 export default function IslandListingPage({
   islandSlug: _islandSlug,
+  initialData,
 }: IslandListingPageProps) {
   const pathname = usePathname();
   const locale = useLocale();
@@ -33,17 +34,9 @@ export default function IslandListingPage({
   const tIsland = useTranslations('IslandPage');
   const tProperty = useTranslations('PropertySection');
 
-  const { islandDetails, loading, error } = useIslandDetails(
-    _islandSlug ?? '',
-    undefined,
-    undefined,
-    Boolean(_islandSlug),
-  );
+  const { details: islandDetails, cities, mostVisited: mostVisitedBeachesData } = initialData;
 
-  const { cities } = useCities(undefined, undefined, _islandSlug);
-
-  const islandName =
-    islandDetails?.name ?? _islandSlug ?? 'Island';
+  const islandName = islandDetails.name ?? _islandSlug;
 
   const bannerImage = buildCdnUrl(islandDetails?.main_image, 'banner');
 
@@ -52,19 +45,14 @@ export default function IslandListingPage({
 
   const { data: islandWeatherResponse, isLoading: isIslandWeatherLoading } =
     useIslandWeather({
-      slug: _islandSlug ?? '',
+      slug: _islandSlug,
       locale,
-      enabled: !!_islandSlug,
+      enabled: true,
     });
 
   const islandWeather = islandWeatherResponse?.data?.weather ?? null;
   const islandWeatherLocationName =
     islandWeather?.location_name ?? islandName;
-
-  const { data: mostVisitedBeachesData } = useMostVisitedBeaches({
-    island_code: _islandSlug,
-    limit: 20,
-  });
 
   const mostVisitedSet = new Set(
     (mostVisitedBeachesData ?? [])
@@ -74,7 +62,7 @@ export default function IslandListingPage({
 
   const beachProperties: Property[] =
     mostVisitedBeachesData
-      ?.map((beach) => {
+      .map((beach) => {
         const p = mapBeachToProperty(
           beach,
           {
@@ -93,7 +81,7 @@ export default function IslandListingPage({
           ...(url ? { beachUrl: url } : {}),
         };
       })
-      .filter((p): p is Property => p !== null) ?? [];
+      .filter((p): p is Property => p !== null);
 
   const bottomBadges =
     islandDetails?.badges
@@ -107,18 +95,6 @@ export default function IslandListingPage({
     islandDetails?.articles,
     locale,
   );
-
-  if (loading && !islandDetails) {
-    return <div className="container mx-auto py-8">Loading island…</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="container mx-auto py-8 text-red-600">
-        Failed to load island: {error}
-      </div>
-    );
-  }
 
   const regionPillLabel = islandDetails?.region?.name
     ? formatRegionPillLabel(islandDetails.region.name)
@@ -197,7 +173,7 @@ export default function IslandListingPage({
   titleParams={{ island: islandName }}
   filterButtonColor="#FFC422"
   baseFilters={{
-    island: _islandSlug!,
+    island: _islandSlug,
   }}
   hiddenFilterKeys={['country', 'region', 'island']}
      />

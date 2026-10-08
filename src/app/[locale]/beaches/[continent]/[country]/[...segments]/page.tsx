@@ -1,9 +1,9 @@
 /**
  * Flexible Geography Page - Server Component (SSR)
  *
- * This page handles multiple entity types: beach, region, island, city
- * For Task 0.2, we're converting ONLY the beach detail part to SSR.
- * Other entity types (region, island, city) will be converted in later tasks.
+ * This page handles multiple entity types: beach, region, island, city.
+ * All four render on the server: the data is fetched here and passed to the page components,
+ * so the HTML has the name (h1), the beach cards and the metadata (TASK-004 SEO).
  *
  * Task 0.2: Convert Beach Detail Page to SSR
  * Task 0.6: Add generateStaticParams for Top Beaches
@@ -27,11 +27,35 @@ import {
   truncateDescription,
   sanitizeMetaText,
 } from '@/lib/utils/seo-helpers';
-import { getBeachShareImage } from '@/lib/utils/beach-images';
-import { buildBeachSchema, buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
+import { buildCdnUrl, getBeachShareImage } from '@/lib/utils/beach-images';
+import {
+  buildBeachSchema,
+  buildBreadcrumbSchema,
+  buildDestinationSchema,
+  renderJsonLd,
+} from '@/lib/utils/json-ld-helpers';
+import {
+  buildDestinationPath,
+  buildDestinationSeoText,
+  type DestinationKind,
+} from '@/lib/utils/destination-seo';
+import {
+  fetchCityDetails,
+  fetchCityPageData,
+  fetchIslandDetails,
+  fetchIslandPageData,
+  fetchRegionDetails,
+  fetchRegionPageData,
+  type CityDetails,
+  type IslandDetails,
+  type RegionDetails,
+} from '@/lib/server/destination-page-data';
 
 // Import page components
 import BeachDetailPage from '@/components/Pages/BeachDetailPage';
+import RegionListingPage from '@/components/Pages/RegionListingPage';
+import IslandListingPage from '@/components/Pages/IslandListingPage';
+import CityListingPage from '@/components/Pages/CityListingPage';
 
 interface PageProps {
   params: {
@@ -177,8 +201,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const entityType = resolveResponse.data?.data?.type;
 
-    // Step 3: Only generate metadata for beach pages
-    // Other entity types (region, island, city) will be handled in later tasks
+    // Step 3: Region, island and city pages
+    if (entityType === 'region' || entityType === 'island' || entityType === 'city') {
+      return await buildDestinationMetadata(entityType, params, t);
+    }
+
     if (entityType !== 'beach') {
       return {
         title: lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1),
@@ -427,24 +454,9 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
       );
     }
 
-    // Step 4: Handle other entity types (region, island, city) - Client-side for now
-    // These will be converted to SSR in later tasks
-    if (entityType === 'region') {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-member-access
-      const RegionListingPage = require('@/components/Pages/RegionListingPage').default as React.ComponentType<{ regionSlug: string }>;
-      return <RegionListingPage regionSlug={lastSegment} />;
-    }
-
-    if (entityType === 'island') {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-member-access
-      const IslandListingPage = require('@/components/Pages/IslandListingPage').default as React.ComponentType<{ islandSlug: string }>;
-      return <IslandListingPage islandSlug={lastSegment} />;
-    }
-
-    if (entityType === 'city') {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-member-access
-      const CityListingPage = require('@/components/Pages/CityListingPage').default as React.ComponentType<{ citySlug: string }>;
-      return <CityListingPage citySlug={lastSegment} />;
+    // Step 4: Region, island and city pages (SSR: data fetched here, passed as props)
+    if (entityType === 'region' || entityType === 'island' || entityType === 'city') {
+      return await renderDestinationPage(entityType, params, lastSegment);
     }
 
     // Unknown entity type
@@ -459,6 +471,124 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
     console.error('Error fetching page data:', error);
     notFound();
   }
+}
+
+type Translate = Awaited<ReturnType<typeof getTranslations>>;
+
+const DETAILS_FETCHERS = {
+  region: fetchRegionDetails,
+  island: fetchIslandDetails,
+  city: fetchCityDetails,
+} as const;
+
+/**
+ * Metadata for a region, island or city page: localized title and description, canonical,
+ * self hreflang (slugs are localized, other locales' URLs are unknown) and the banner image.
+ */
+async function buildDestinationMetadata(
+  kind: DestinationKind,
+  params: PageProps['params'],
+  t: Translate,
+): Promise<Metadata> {
+  const { locale, continent, country, segments } = params;
+  const slug = segments[segments.length - 1]!;
+  const details = await DETAILS_FETCHERS[kind](slug, locale);
+
+  if (!details) {
+    return { title: slug.charAt(0).toUpperCase() + slug.slice(1) };
+  }
+
+  const name = details.name ?? slug;
+  const countryName = details.country?.name ?? country;
+  const { title, description } = buildDestinationSeoText(kind, name, countryName, (key, values) =>
+    t(key, values),
+  );
+  const path = buildDestinationPath(locale, continent, country, segments);
+  const image = buildCdnUrl(details.main_image, 'banner');
+
+  return buildCompleteMetadata({
+    title,
+    description,
+    locale,
+    path,
+    images: image ? [image] : undefined,
+    type: 'website',
+    alternateLanguages: buildSelfAlternate(locale, path),
+  });
+}
+
+/**
+ * Region, island and city pages, rendered on the server with Place + breadcrumb JSON-LD.
+ */
+async function renderDestinationPage(
+  kind: DestinationKind,
+  params: PageProps['params'],
+  slug: string,
+) {
+  const { locale, continent, country, segments } = params;
+
+  let details: RegionDetails | IslandDetails | CityDetails;
+  let content: React.ReactNode;
+
+  if (kind === 'region') {
+    const data = await fetchRegionPageData(slug, locale);
+    if (!data) notFound();
+    details = data.details;
+    content = <RegionListingPage regionSlug={slug} initialData={data} />;
+  } else if (kind === 'island') {
+    const data = await fetchIslandPageData(slug, locale);
+    if (!data) notFound();
+    details = data.details;
+    content = <IslandListingPage islandSlug={slug} initialData={data} />;
+  } else {
+    const data = await fetchCityPageData(slug, locale);
+    if (!data) notFound();
+    details = data.details;
+    content = <CityListingPage citySlug={slug} initialData={data} />;
+  }
+
+  const name = details.name ?? slug;
+  const countryName = details.country?.name ?? country;
+  const beachesWord = getBeachesWord(locale);
+  const url = buildCanonicalUrl(locale, buildDestinationPath(locale, continent, country, segments));
+
+  const tSeo = await getTranslations({ locale, namespace: 'SEO' });
+  const { description } = buildDestinationSeoText(kind, name, countryName, (key, values) =>
+    tSeo(key, values),
+  );
+
+  const breadcrumbSchema = buildBreadcrumbSchema([
+    { name: tSeo('breadcrumbHome'), url: buildCanonicalUrl(locale, '/') },
+    {
+      name: details.country?.continent?.name ?? continent,
+      url: buildCanonicalUrl(locale, `/${beachesWord}/${continent}`),
+    },
+    { name: countryName, url: buildCanonicalUrl(locale, `/${beachesWord}/${continent}/${country}`) },
+    { name, url },
+  ]);
+  const placeSchema = buildDestinationSchema({
+    name,
+    url,
+    description,
+    mainImage: details.main_image,
+    latitude: details.latitude,
+    longitude: details.longitude,
+    countryName: details.country?.name,
+  });
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd(placeSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumbSchema) }}
+      />
+      {content}
+    </>
+  );
 }
 
 /**
