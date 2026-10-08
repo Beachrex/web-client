@@ -78,38 +78,6 @@
     "searching": "Пошук...",
     "clearSearch": "Очистити пошук"
   },
-  "Navigation": {
-    "beaches": "Пляжі",
-    "destinations": "Напрямки",
-    "accommodations": "Житло",
-    "beachMap": "Карта пляжів",
-    "aiAssistant": "AI Асистент",
-    "login": "Увійти",
-    "signup": "Реєстрація",
-    "profile": "Профіль",
-    "favorites": "Обране",
-    "settings": "Налаштування",
-    "logout": "Вийти",
-    "blog": "Блог",
-    "about": "Про нас",
-    "contact": "Контакти",
-    "help": "Допомога",
-    "privacyPolicy": "Політика конфіденційності",
-    "termsOfService": "Умови використання",
-    "cookiePolicy": "Політика cookies"
-  },
-  "Header": {
-    "exploreBeaches": "Дослідити пляжі",
-    "searchPlaceholder": "Шукати пляжі...",
-    "languageSelector": "Вибір мови",
-    "login": "Увійти"
-  },
-  "CountrySelector": {
-    "allCountries": "Усі країни",
-    "selectCountry": "Оберіть країну",
-    "noCountriesFound": "Країн не знайдено",
-    "searchCountry": "Шукати країну..."
-  },
   "HomePage": {
     "allBeaches": "Усі пляжі",
     "beachCountries": "Країни з пляжами",

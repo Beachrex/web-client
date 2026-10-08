@@ -18,6 +18,26 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-08 – Slovenian sign-in/AI strings, locale key parity in CI (TASK-004 A1, A2, A5, A7) ✅ COMPLETE
+
+### Overview
+
+The TASK-004 pre-launch audit (backend `docs/tasks/TASK-004-audit.md`) found that `messages/si.json` had no `Auth` and no `AI` namespace (56 keys). next-intl has no fallback locale here (`src/i18n/request.ts`), so Slovenian sign-in and AI pages had no strings. The top bar also showed a hardcoded Slovenian placeholder ("Sporočilo...", "Izpostavljeno sporočilo...") in every locale.
+
+### Changes / Files
+
+- `messages/si.json`: `Auth` and `AI` in Slovenian.
+- `messages/it.json`, `ru.json`, `ua.json`: removed unused namespaces that are not in `en.json` (`Navigation`, `Header`, `CountrySelector`; no code uses them).
+- `src/components/Header/TopBar.tsx`: the placeholder message is gone (empty spacer keeps the layout).
+- `e2e/messages-parity.unit.spec.ts` (new): every `messages/<locale>.json` has exactly the keys of `en.json`, no empty values, no `{{double}}` braces. Runs in PR CI with the other unit specs.
+
+### Testing
+
+- `BASE_URL=http://localhost:9 npx playwright test e2e/messages-parity.unit.spec.ts --project=chromium`: before the fix 4 failed (si missing, it/ru/ua extra), after: 37 passed.
+- `npx tsc --noEmit -p .`, `yarn lint`, all `e2e/*.unit.spec.ts` (106 passed).
+
+---
+
 ## 2026-10-08 – Real beach type icons from the CDN (QA #45 follow-up) ✅ COMPLETE
 
 ### Overview

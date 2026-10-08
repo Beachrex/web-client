@@ -78,38 +78,6 @@
     "searching": "Ricerca in corso...",
     "clearSearch": "Cancella ricerca"
   },
-  "Navigation": {
-    "beaches": "Spiagge",
-    "destinations": "Destinazioni",
-    "accommodations": "Alloggi",
-    "beachMap": "Mappa delle spiagge",
-    "aiAssistant": "Assistente AI",
-    "login": "Accedi",
-    "signup": "Registrati",
-    "profile": "Profilo",
-    "favorites": "Preferiti",
-    "settings": "Impostazioni",
-    "logout": "Esci",
-    "blog": "Blog",
-    "about": "Chi siamo",
-    "contact": "Contatti",
-    "help": "Aiuto",
-    "privacyPolicy": "Privacy policy",
-    "termsOfService": "Termini di servizio",
-    "cookiePolicy": "Politica sui cookie"
-  },
-  "Header": {
-    "exploreBeaches": "Esplora spiagge",
-    "searchPlaceholder": "Cerca spiagge...",
-    "languageSelector": "Selezione lingua",
-    "login": "Accedi"
-  },
-  "CountrySelector": {
-    "allCountries": "Tutti i paesi",
-    "selectCountry": "Seleziona un paese",
-    "noCountriesFound": "Nessun paese trovato",
-    "searchCountry": "Cerca paese..."
-  },
   "HomePage": {
     "allBeaches": "Tutte le spiagge",
     "beachCountries": "Paesi con spiagge",
