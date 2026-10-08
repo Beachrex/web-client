@@ -136,10 +136,6 @@
     "browseBeaches": "Prehliadať všetky pláže",
     "goHome": "Domov"
   },
-  "AboutPage": {
-    "aboutUs": "O nás",
-    "description": "Popis stránky o nás"
-  },
   "BeachTypePage": {
     "title": "Typy pláží",
     "pageTitle": "Stránka typov pláží",
@@ -167,11 +163,6 @@
     "beachMapButton": "Mapa pláží",
     "browseBlogButton": "Prechádzať blog",
     "browseAccommodationsButton": "Prechádzať ubytovania"
-  },
-  "routes": {
-    "beachMap": "/beach-map",
-    "blog": "/blog",
-    "accommodations": "/accommodations"
   },
   "Destinations": {
     "croatia": "Chorvátsko",
@@ -514,20 +505,16 @@
       "title": "Prechádzať stránku",
       "links": [
         {
-          "label": "Prehľad všetkých destinácií",
-          "href": "/destinations"
+          "label": "Prehľad všetkých destinácií"
         },
         {
-          "label": "Hľadať podľa pláží",
-          "href": "/beaches"
+          "label": "Hľadať podľa pláží"
         },
         {
-          "label": "Hľadať podľa ubytovaní",
-          "href": "/accommodations"
+          "label": "Hľadať podľa ubytovaní"
         },
         {
-          "label": "Zobrazenie mapy",
-          "href": "/beach-map"
+          "label": "Zobrazenie mapy"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Najnavštevovanejšia",
     "loading": "Načítavam...",
     "showOnMap": "Zobraziť {title} na mape"
+  },
+  "Menu": {
+    "browseBeaches": "Prehliadať pláže",
+    "topCountries": "Najobľúbenejšie krajiny",
+    "aiChat": "AI chat o plážach",
+    "aiItinerary": "AI plánovač ciest",
+    "contact": "Kontakt"
   }
 }

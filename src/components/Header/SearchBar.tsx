@@ -6,6 +6,7 @@ import { Map } from 'lucide-react';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import GlobalSearch from './GlobalSearch';
+import { FEATURES } from '@/lib/constants/features';
 
 const NavIcon = ({ src, alt, label }: { src: string; alt: string; label: string }) => (
     <button className="flex flex-col items-center text-sm text-gray-600 hover:text-gray-900">
@@ -109,18 +110,22 @@ const SearchBar = () => {
                             buttonClassName="w-[80px] h-[36px] px-3 py-2"
                         />
 
-                        {/* Compact Navigation Icons */}
+                        {/* Compact Navigation Icons (accommodation and shop are hidden for launch) */}
                         <div className="flex items-center space-x-2">
-                            <NavIcon
-                                src={buildCdnUrl('img/icon/accomodation.svg', 'icon') ?? ''}
-                                alt={`${t('accommodations')} ${t('icon')}`}
-                                label=""
-                            />
-                            <NavIcon
-                                src={buildCdnUrl('img/icon/store.svg', 'icon') ?? ''}
-                                alt={`${t('shop')} ${t('icon')}`}
-                                label=""
-                            />
+                            {FEATURES.accommodation && (
+                                <NavIcon
+                                    src={buildCdnUrl('img/icon/accomodation.svg', 'icon') ?? ''}
+                                    alt={`${t('accommodations')} ${t('icon')}`}
+                                    label=""
+                                />
+                            )}
+                            {FEATURES.shop && (
+                                <NavIcon
+                                    src={buildCdnUrl('img/icon/store.svg', 'icon') ?? ''}
+                                    alt={`${t('shop')} ${t('icon')}`}
+                                    label=""
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
@@ -149,17 +154,21 @@ const SearchBar = () => {
                             buttonClassName="w-[113px] h-[41px] px-[34px] py-[11px]"
                         />
 
-                        {/* Navigation Icons */}
-                        <NavIcon
-                            src={buildCdnUrl('img/icon/accomodation.svg', 'icon') ?? ''}
-                            alt={`${t('accommodations')} ${t('icon')}`}
-                            label={t('accommodations')}
-                        />
-                        <NavIcon
-                            src={buildCdnUrl('img/icon/store.svg', 'icon') ?? ''}
-                            alt={`${t('shop')} ${t('icon')}`}
-                            label={t('shop')}
-                        />
+                        {/* Navigation Icons (accommodation and shop are hidden for launch) */}
+                        {FEATURES.accommodation && (
+                            <NavIcon
+                                src={buildCdnUrl('img/icon/accomodation.svg', 'icon') ?? ''}
+                                alt={`${t('accommodations')} ${t('icon')}`}
+                                label={t('accommodations')}
+                            />
+                        )}
+                        {FEATURES.shop && (
+                            <NavIcon
+                                src={buildCdnUrl('img/icon/store.svg', 'icon') ?? ''}
+                                alt={`${t('shop')} ${t('icon')}`}
+                                label={t('shop')}
+                            />
+                        )}
                     </div>
 
                     {/* Right Section (Map Button) */}

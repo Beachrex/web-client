@@ -116,10 +116,6 @@
     "browseBeaches": "Brskaj po vseh plažah",
     "goHome": "Nazaj domov"
   },
-  "AboutPage": {
-    "aboutUs": "O nas",
-    "description": "Opis o nas strani"
-  },
   "BeachTypePage": {
     "title": "Tipi plaž",
     "pageTitle": "Stran tipov plaž",
@@ -167,11 +163,6 @@
     "beachMapButton": "Zemljevid plaž",
     "browseBlogButton": "Brskaj po blogu",
     "browseAccommodationsButton": "Brskaj po nastanitvah"
-  },
-  "routes": {
-    "beachMap": "/zemljevid-plaz",
-    "blog": "/blog",
-    "accommodations": "/nastanitve"
   },
   "Destinations": {
     "croatia": "Hrvaška",
@@ -514,20 +505,16 @@
       "title": "Brskaj po strani",
       "links": [
         {
-          "label": "Pregled vseh destinacij",
-          "href": "/destinations"
+          "label": "Pregled vseh destinacij"
         },
         {
-          "label": "Išči po plažah",
-          "href": "/beaches"
+          "label": "Išči po plažah"
         },
         {
-          "label": "Išči po nastanitvah",
-          "href": "/accommodations"
+          "label": "Išči po nastanitvah"
         },
         {
-          "label": "Zemljevid",
-          "href": "/beach-map"
+          "label": "Zemljevid"
         }
       ]
     },
@@ -712,5 +699,12 @@
       "noHistory": "Nakupov še ni.",
       "purchase": "Kupi več kreditov"
     }
+  },
+  "Menu": {
+    "browseBeaches": "Brskaj po plažah",
+    "topCountries": "Najbolj priljubljene države",
+    "aiChat": "AI klepet o plažah",
+    "aiItinerary": "AI načrtovalec potovanj",
+    "contact": "Kontakt"
   }
 }

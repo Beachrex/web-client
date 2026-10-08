@@ -136,10 +136,6 @@
     "browseBeaches": "Разгледайте всички плажове",
     "goHome": "Начална страница"
   },
-  "AboutPage": {
-    "aboutUs": "За нас",
-    "description": "Описание на страницата за нас"
-  },
   "BeachTypePage": {
     "title": "Типове плажове",
     "pageTitle": "Страница с типове плажове",
@@ -167,11 +163,6 @@
     "beachMapButton": "Карта на плажовете",
     "browseBlogButton": "Разгледай блога",
     "browseAccommodationsButton": "Разгледай настаняванията"
-  },
-  "routes": {
-    "beachMap": "/beach-map",
-    "blog": "/blog",
-    "accommodations": "/accommodations"
   },
   "Destinations": {
     "croatia": "Хърватия",
@@ -514,20 +505,16 @@
       "title": "Разгледайте сайта",
       "links": [
         {
-          "label": "Преглед на всички дестинации",
-          "href": "/destinations"
+          "label": "Преглед на всички дестинации"
         },
         {
-          "label": "Търсене по плажове",
-          "href": "/beaches"
+          "label": "Търсене по плажове"
         },
         {
-          "label": "Търсене по настанявания",
-          "href": "/accommodations"
+          "label": "Търсене по настанявания"
         },
         {
-          "label": "Изглед на картата",
-          "href": "/beach-map"
+          "label": "Изглед на картата"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Най-посещавана",
     "loading": "Зареждане...",
     "showOnMap": "Покажи {title} на картата"
+  },
+  "Menu": {
+    "browseBeaches": "Разгледай плажовете",
+    "topCountries": "Най-популярни плажни държави",
+    "aiChat": "AI чат за плажове",
+    "aiItinerary": "AI планировчик на пътувания",
+    "contact": "Контакт"
   }
 }

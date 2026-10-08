@@ -136,10 +136,6 @@
     "browseBeaches": "Browse All Beaches",
     "goHome": "Go Home"
   },
-  "AboutPage": {
-    "aboutUs": "About us",
-    "description": "Description about us page"
-  },
   "BeachTypePage": {
     "title": "Beach Types",
     "pageTitle": "Beach Types Page",
@@ -167,11 +163,6 @@
     "beachMapButton": "Beach Map",
     "browseBlogButton": "Browse Blog",
     "browseAccommodationsButton": "Browse Accommodations"
-  },
-  "routes": {
-    "beachMap": "/beach-map",
-    "blog": "/blog",
-    "accommodations": "/accommodations"
   },
   "Destinations": {
     "croatia": "Croatia",
@@ -514,20 +505,16 @@
       "title": "Browse the site",
       "links": [
         {
-          "label": "All destinations overview",
-          "href": "/destinations"
+          "label": "All destinations overview"
         },
         {
-          "label": "Search by beaches",
-          "href": "/beaches"
+          "label": "Search by beaches"
         },
         {
-          "label": "Search by accommodations",
-          "href": "/accommodations"
+          "label": "Search by accommodations"
         },
         {
-          "label": "Map view",
-          "href": "/beach-map"
+          "label": "Map view"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Most visited",
     "loading": "Loading...",
     "showOnMap": "Show {title} on map"
+  },
+  "Menu": {
+    "browseBeaches": "Browse beaches",
+    "topCountries": "Top beach countries",
+    "aiChat": "AI beach chat",
+    "aiItinerary": "AI trip planner",
+    "contact": "Contact"
   }
 }

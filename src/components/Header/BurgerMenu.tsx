@@ -1,30 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { HiX } from 'react-icons/hi';
 import { type CustomFlowbiteTheme, Sidebar } from 'flowbite-react';
-import { Link } from '@/i18n/routing';
-import { useLocale } from 'next-intl';
-import enMenu from 'public/menu_en.json';
-import siMenu from 'public/menu_si.json';
-// Dynamic imports for new languages — using English as fallback until localized menu files are created
-// import daMenu from 'public/menu_da.json';
-// import ptMenu from 'public/menu_pt.json';
-// import nlMenu from 'public/menu_nl.json';
-// import elMenu from 'public/menu_el.json';
-// import sqMenu from 'public/menu_sq.json';
+import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 import QuickMenu from './QuickMenu';
 import Image from 'next/image';
 import { ChevronRight } from 'lucide-react';
-
-// Map locale codes to their menu JSON. Falls back to English menu for locales
-// that don't yet have a dedicated menu file.
-const menuMap: Record<string, typeof enMenu> = {
-  en: enMenu,
-  si: siMenu,
-  // Add new locale menu files here when created:
-  // da: daMenu, pt: ptMenu, nl: nlMenu, el: elMenu, sq: sqMenu,
-};
+import { useContinents } from '@/hooks/useContinents';
+import { useCountries } from '@/hooks/useCountries';
+import { staticPageUrl, useFooterStaticPages } from '@/hooks/useStaticPages';
+import { FEATURES } from '@/lib/constants/features';
+import { buildMenuItems, type MenuItem } from '@/lib/utils/menu-items';
+import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 
 const sidebarTheme: CustomFlowbiteTheme['sidebar'] = {
   root: {
@@ -32,14 +21,6 @@ const sidebarTheme: CustomFlowbiteTheme['sidebar'] = {
     inner: 'h-full overflow-y-auto overflow-x-hidden bg-[#F5F5F5] p-0',
   },
 };
-
-interface MenuItem {
-  label: string;
-  href: string;
-  icon?: React.ComponentType<{ className?: string }> | string;
-  enabled?: boolean;
-  subItems?: MenuItem[];
-}
 
 // Recursive component for rendering nested menu
 const NestedMenu = ({
@@ -49,11 +30,9 @@ const NestedMenu = ({
   items: MenuItem[];
   closeMenu: () => void;
 }) => {
-  const enabledItems = items.filter((item) => item.enabled === true);
-
   return (
     <ul className="pl-4">
-      {enabledItems.map((item, index) => (
+      {items.map((item, index) => (
         <MenuItemComponent key={index} item={item} closeMenu={closeMenu} />
       ))}
     </ul>
@@ -81,7 +60,7 @@ const MenuItemComponent: React.FC<{
         onClick={toggleMenu}
         className="relative ml-[100px] mr-[50px] flex w-[250px] cursor-pointer items-center justify-between border-b border-[#E7E7E7] py-2 pl-6 transition-colors hover:bg-white/60"
       >
-        {item.subItems?.some((sub) => sub.enabled === true) ? (
+        {item.subItems?.length ? (
           <span
             className={`absolute left-0 top-1/2 -translate-y-1/2 text-xs transition-transform ${isOpen ? 'rotate-90' : ''} `}
           >
@@ -142,10 +121,34 @@ const MenuItemComponent: React.FC<{
 const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const locale = useLocale();
+  const t = useTranslations('Menu');
+  const tCommon = useTranslations('Common');
+  const tAI = useTranslations('AI.landing');
+  const { continents } = useContinents();
+  const { countries } = useCountries();
+  const staticPages = useFooterStaticPages();
 
-  const rawMenuItems = (menuMap[locale] ?? enMenu).MenuItems;
-
-  const menuItems = rawMenuItems.filter((item) => item.enabled);
+  // Built from API data: continents and countries with beaches, CMS pages by code.
+  const menuItems = useMemo(
+    () =>
+      buildMenuItems({
+        locale,
+        continents,
+        countries,
+        aboutUrl: staticPageUrl(staticPages, 'about-us', locale),
+        contactUrl: staticPageUrl(staticPages, 'contact', locale),
+        labels: {
+          browseBeaches: t('browseBeaches'),
+          topCountries: t('topCountries'),
+          aiAssistant: tAI('title'),
+          aiChat: t('aiChat'),
+          aiItinerary: t('aiItinerary'),
+          about: tCommon('quickMenuAboutUs'),
+          contact: t('contact'),
+        },
+      }),
+    [locale, continents, countries, staticPages, t, tCommon, tAI],
+  );
 
   const closeMenu = () => setIsOpen(false);
 
@@ -178,7 +181,7 @@ const BurgerMenu = () => {
               {/* CTA (NOT STICKY, PART OF CONTENT) */}
               <div className="ml-[100px] mr-[50px] mt-10 flex w-[250px] flex-col gap-3">
                 <Link
-                  href="/beach-map"
+                  href={buildBeachMapUrl(locale)}
                   onClick={closeMenu}
                   className="flex h-[41px] items-center justify-center gap-3 rounded-lg bg-[#1A3C68] text-white transition-all duration-200 hover:bg-[#162f4f] hover:shadow-[0_4px_10px_rgba(26,60,104,0.25)] active:scale-[0.98]"
                 >
@@ -187,12 +190,14 @@ src="/images/map.png" alt="" width={26}
 height={26}
                   />
                   <span className="text-[14px] font-bold">
-                    Beach map with filter
+                    {tCommon('mapButtonFilter')}
                   </span>
                 </Link>
 
+                {/* Accommodation: hidden for launch (no route yet) */}
+                {FEATURES.accommodation && (
                 <Link
-                  href="/beach-accommodation"
+                  href={`/${locale}/accommodations`}
                   onClick={closeMenu}
                   className="flex h-[41px] items-center justify-center gap-3 rounded-lg bg-[#008260] text-white transition-all duration-200 hover:bg-[#006b4f] hover:shadow-[0_4px_10px_rgba(0,130,96,0.25)] active:scale-[0.98]"
                 >
@@ -202,12 +207,12 @@ height={26}
                     width={26}
                     height={26}
                   />
-                  <span className="text-[14px] font-bold">Accommodation</span>
+                  <span className="text-[14px] font-bold">{tCommon('accommodations')}</span>
                 </Link>
+                )}
               </div>
             </div>
 
-            {/* FOOTER (STICKY BOTTOM) - COMMENTED */}
             {/*
             <div className="mt-auto pb-8">
               <div className="ml-[100px] mr-[50px] w-[250px] mb-6">

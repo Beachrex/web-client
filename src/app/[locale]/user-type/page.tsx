@@ -5,7 +5,9 @@ export async function generateMetadata({ params }: PageProps) {
     const resolvedParams = await params;
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'UserTypePage' });
 
+    // Placeholder page, hidden for launch (backend docs/features/hidden-for-launch.md): not indexed.
     return {
+        robots: { index: false, follow: true },
         title: t('title'),
         description: t('description'),
     };

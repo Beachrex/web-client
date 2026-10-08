@@ -136,10 +136,6 @@
     "browseBeaches": "Alle Strände durchsuchen",
     "goHome": "Zur Startseite"
   },
-  "AboutPage": {
-    "aboutUs": "Über uns",
-    "description": "Beschreibung der Über-uns-Seite"
-  },
   "BeachTypePage": {
     "title": "Strandtypen",
     "pageTitle": "Strandtypen-Seite",
@@ -167,11 +163,6 @@
     "beachMapButton": "Strandkarte",
     "browseBlogButton": "Blog durchsuchen",
     "browseAccommodationsButton": "Unterkünfte durchsuchen"
-  },
-  "routes": {
-    "beachMap": "/strandkarte",
-    "blog": "/blog",
-    "accommodations": "/unterkuenfte"
   },
   "Destinations": {
     "croatia": "Kroatien",
@@ -514,20 +505,16 @@
       "title": "Website durchsuchen",
       "links": [
         {
-          "label": "Alle Reiseziele im Überblick",
-          "href": "/destinations"
+          "label": "Alle Reiseziele im Überblick"
         },
         {
-          "label": "Nach Stränden suchen",
-          "href": "/beaches"
+          "label": "Nach Stränden suchen"
         },
         {
-          "label": "Nach Unterkünften suchen",
-          "href": "/accommodations"
+          "label": "Nach Unterkünften suchen"
         },
         {
-          "label": "Kartenansicht",
-          "href": "/beach-map"
+          "label": "Kartenansicht"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Meist besucht",
     "loading": "Lädt...",
     "showOnMap": "{title} auf der Karte anzeigen"
+  },
+  "Menu": {
+    "browseBeaches": "Strände entdecken",
+    "topCountries": "Beliebteste Strandländer",
+    "aiChat": "KI-Strand-Chat",
+    "aiItinerary": "KI-Reiseplaner",
+    "contact": "Kontakt"
   }
 }

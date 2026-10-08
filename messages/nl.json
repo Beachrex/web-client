@@ -136,10 +136,6 @@
     "browseBeaches": "Alle stranden doorbladeren",
     "goHome": "Naar home"
   },
-  "AboutPage": {
-    "aboutUs": "Over ons",
-    "description": "Beschrijving over ons-pagina"
-  },
   "BeachTypePage": {
     "title": "Strandtypes",
     "pageTitle": "Strandtypes-pagina",
@@ -167,11 +163,6 @@
     "beachMapButton": "Strandkaart",
     "browseBlogButton": "Blog bekijken",
     "browseAccommodationsButton": "Accommodaties bekijken"
-  },
-  "routes": {
-    "beachMap": "/strandkaart",
-    "blog": "/blog",
-    "accommodations": "/accommodaties"
   },
   "Destinations": {
     "croatia": "Kroatië",
@@ -514,20 +505,16 @@
       "title": "De site doorbladeren",
       "links": [
         {
-          "label": "Overzicht van alle bestemmingen",
-          "href": "/destinations"
+          "label": "Overzicht van alle bestemmingen"
         },
         {
-          "label": "Zoeken op stranden",
-          "href": "/stranden"
+          "label": "Zoeken op stranden"
         },
         {
-          "label": "Zoeken op accommodaties",
-          "href": "/accommodaties"
+          "label": "Zoeken op accommodaties"
         },
         {
-          "label": "Kaartweergave",
-          "href": "/strandkaart"
+          "label": "Kaartweergave"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Meest bezocht",
     "loading": "Laden...",
     "showOnMap": "{title} op kaart weergeven"
+  },
+  "Menu": {
+    "browseBeaches": "Stranden bekijken",
+    "topCountries": "Populaire strandlanden",
+    "aiChat": "AI-strandchat",
+    "aiItinerary": "AI-reisplanner",
+    "contact": "Contact"
   }
 }

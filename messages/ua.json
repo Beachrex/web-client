@@ -136,10 +136,6 @@
     "browseBeaches": "Переглянути всі пляжі",
     "goHome": "На головну"
   },
-  "AboutPage": {
-    "aboutUs": "Про нас",
-    "description": "Опис сторінки про нас"
-  },
   "BeachTypePage": {
     "title": "Типи пляжів",
     "pageTitle": "Сторінка типів пляжів",
@@ -167,11 +163,6 @@
     "beachMapButton": "Карта пляжів",
     "browseBlogButton": "Переглянути блог",
     "browseAccommodationsButton": "Переглянути житло"
-  },
-  "routes": {
-    "beachMap": "/karta-plyazhiv",
-    "blog": "/blog",
-    "accommodations": "/zhytlo"
   },
   "Destinations": {
     "croatia": "Хорватія",
@@ -514,20 +505,16 @@
       "title": "Переглянути сайт",
       "links": [
         {
-          "label": "Огляд усіх напрямків",
-          "href": "/destinations"
+          "label": "Огляд усіх напрямків"
         },
         {
-          "label": "Пошук за пляжами",
-          "href": "/beaches"
+          "label": "Пошук за пляжами"
         },
         {
-          "label": "Пошук за житлом",
-          "href": "/accommodations"
+          "label": "Пошук за житлом"
         },
         {
-          "label": "Вигляд карти",
-          "href": "/beach-map"
+          "label": "Вигляд карти"
         }
       ]
     },
@@ -712,5 +699,12 @@
     "mostVisited": "Найбільш відвідувана",
     "loading": "Завантаження...",
     "showOnMap": "Показати {title} на карті"
+  },
+  "Menu": {
+    "browseBeaches": "Переглянути пляжі",
+    "topCountries": "Найпопулярніші країни",
+    "aiChat": "AI-чат про пляжі",
+    "aiItinerary": "AI-планувальник подорожей",
+    "contact": "Контакти"
   }
 }

@@ -60,7 +60,6 @@ export default async function HomePage({ params }: PageProps) {
   const { locale } = params;
   const t = await getTranslations({ locale, namespace: 'HomePage' });
   const tFeature = await getTranslations({ locale, namespace: 'FeatureCards' });
-  const tRoutes = await getTranslations({ locale, namespace: 'routes' });
 
   // Fetch all data on server
 
@@ -119,11 +118,12 @@ export default async function HomePage({ params }: PageProps) {
   const accommodationImages = accommodation?.media?.map(m => buildCdnUrl(m.url, 'carousel')).filter((url): url is string => url !== null) ?? [];
 
   // Process featured sections data
-  // Button configurations (hardcoded for now - can be moved to API config later)
+  // Button configurations (hardcoded for now - can be moved to API config later).
+  // Blog and accommodation are hidden for launch: an empty url renders the tile without a button.
   const buttonConfigs = [
     { label: tFeature('beachMapButton'), icon: '/images/map.png', bgColor: '#1A3C68', textColor: '#FFFFFF', url: buildBeachMapUrl(locale) },
-    { label: tFeature('browseBlogButton'), icon: '/images/blog.png', bgColor: '#F5F5F5', textColor: '#4D4D4D', url: tRoutes('blog') },
-    { label: tFeature('browseAccommodationsButton'), icon: '/images/accomodation.png', bgColor: '#006b4f', textColor: '#FFFFFF', url: tRoutes('accommodations') },
+    { label: tFeature('browseBlogButton'), icon: '/images/blog.png', bgColor: '#F5F5F5', textColor: '#4D4D4D', url: FEATURES.blog ? `/${locale}/blog` : '' },
+    { label: tFeature('browseAccommodationsButton'), icon: '/images/accomodation.png', bgColor: '#006b4f', textColor: '#FFFFFF', url: FEATURES.accommodation ? `/${locale}/accommodations` : '' },
     { label: tFeature('beachMapButton'), icon: '/images/map.png', bgColor: '#1A3C68', textColor: '#FFFFFF', url: buildBeachMapUrl(locale) },
   ];
 
