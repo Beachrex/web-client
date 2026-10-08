@@ -750,6 +750,7 @@
     "metaTitle": "Gregor Balažic – autori i Beachrex",
     "metaDescription": "Njihuni me Gregor Balažicin, që la punën, bleu një aparat fotografik dhe një furgon dhe vizitoi 2 445 plazhe në gjashtë vende. Kështu lindi Beachrex.",
     "eyebrow": "Rreth autorit",
+    "bannerWord": "Autori",
     "role": "Fotograf, udhëtar dhe themelues i Beachrex",
     "lead": "«Plazhet kanë qenë gjithmonë pasioni im i madh.»",
     "heroCta": "Lexoni historinë",
@@ -762,7 +763,7 @@
     "chapters": {
       "leap": {
         "title": "Jashtë zonës së rehatisë",
-        "text": "Plazhet kanë qenë gjithmonë pasioni im i madh, thotë Gregor Balažic, i cili katër vjet më parë la punën. Ishte drejtues departamenti, por doli nga zona e rehatisë dhe la pas një të ardhme të parashikueshme. Bleu një aparat fotografik dhe një furgon, që u bë shtëpia e tij e re, dhe u nis nëpër botë. Më saktë, drejt plazheve."
+        "text": "Plazhet kanë qenë gjithmonë pasioni im i madh, thotë Gregor Balažic, i cili la punën. Ishte drejtues departamenti, por doli nga zona e rehatisë dhe la pas një të ardhme të parashikueshme. Bleu një aparat fotografik dhe një furgon, që u bë shtëpia e tij e re, dhe u nis nëpër botë. Më saktë, drejt plazheve."
       },
       "road": {
         "title": "2 445 plazhe në gjashtë vende",
@@ -770,7 +771,7 @@
       },
       "database": {
         "title": "Baza më e madhe e të dhënave për plazhet në botë",
-        "text": "Plazhet e vizituara u bënë themeli i bazës më të madhe të të dhënave për plazhet në botë – Beachrex. Çdo plazh shoqërohet me fotografi, pamje panoramike, video, informacion për mundësitë e parkimit, vendndodhjen GPS, të dhëna për motin, akomodimin, aktivitetet sportive, restorantet dhe baret, si edhe temperaturën e detit. Gjithsej, mbi 200 të dhëna për çdo plazh. Përdoruesit mund të shtojnë edhe vetë fotografitë dhe videot e tyre dhe të ndajnë plazhet e preferuara me miqtë. Pikërisht tani po punon intensivisht për versionin për kompjuter dhe celular, dhe për shkak të barrës së madhe financiare vendosi të kërkojë mbështetës në Kickstarter."
+        "text": "Plazhet e vizituara u bënë themeli i bazës më të madhe të të dhënave për plazhet në botë – Beachrex. Çdo plazh shoqërohet me fotografi, pamje panoramike, video, informacion për mundësitë e parkimit, vendndodhjen GPS, të dhëna për motin, akomodimin, aktivitetet sportive, restorantet dhe baret, si edhe temperaturën e detit. Gjithsej, mbi 200 të dhëna për çdo plazh."
       },
       "hardships": {
         "title": "Rruga nuk ishte gjithmonë e lehtë",
@@ -789,7 +790,7 @@
     "photoAlt": "Gregor Balažic me aparatin fotografik në një plazh me rërë",
     "beachAlt": "Plazh me rërë me një varkë të përmbysur pranë shkëmbinjve dhe pishave",
     "beachCaption": "Një nga 2 445 plazhet që Gregor vizitoi dhe fotografoi.",
-    "quote": "Kemi një vizion – pas disa vitesh, me ndihmën tuaj, të dashur mbështetës, çdo plazh në botë do të jetë në hartë.",
+    "quote": "Kemi një vizion – pas disa vitesh çdo plazh në botë do të jetë në hartë.",
     "ctaTitle": "Zbuloni plazhet që vizitoi Gregor",
     "ctaText": "Çdo fotografi, çdo panoramë 360° dhe çdo detaj në Beachrex lindi gjatë këtij udhëtimi.",
     "ctaMap": "Shfletoni hartën",

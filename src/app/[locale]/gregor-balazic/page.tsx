@@ -2,9 +2,10 @@
  * Author page — /{locale}/gregor-balazic (owner, 2026-10-08).
  *
  * A dedication to Gregor Balažic, who left his job and visited 2,445 beaches with a camera and a
- * van; the photos, spheres and details on Beachrex come from that journey. Designed as a feature
- * story, not a CMS text page: hero with his photo, stats band, chapters, the route along the coasts,
- * a pull quote and a call to action. Text in all 19 locales (`AuthorPage`); Person structured data.
+ * van; the photos, spheres and details on Beachrex come from that journey. Follows the platform's
+ * design (owner: "closer to the platform"): a photo banner with the faded category word behind the
+ * title like the country pages, navy pill, light-blue cards, 10 px radii, Figtree headings in #222.
+ * Text in all 19 locales (`AuthorPage`); Person structured data.
  */
 
 import type { Metadata } from 'next';
@@ -20,14 +21,22 @@ import {
   numberLocale,
 } from '@/lib/constants/author';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
-import { buildCanonicalUrl, buildCompleteMetadata, buildLocalizedAlternates, getBaseUrl } from '@/lib/utils/metadata-helpers';
+import {
+  buildCanonicalUrl,
+  buildCompleteMetadata,
+  buildLocalizedAlternates,
+  getBaseUrl,
+} from '@/lib/utils/metadata-helpers';
 import { renderJsonLd } from '@/lib/utils/json-ld-helpers';
 
 interface PageProps {
   params: { locale: string };
 }
 
-const CHAPTERS = ['leap', 'road', 'database', 'hardships'] as const;
+type ChapterKey = 'leap' | 'road' | 'database' | 'hardships';
+
+// Page width like the listing pages; not `container` (globals.css overrides its padding)
+const WRAP = 'mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8';
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = params;
@@ -41,37 +50,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     images: [`${getBaseUrl()}${AUTHOR_PHOTO}`],
     alternateLanguages: buildLocalizedAlternates(() => AUTHOR_PATH),
   });
-}
-
-/** Decorative sun from the logo: rays fanning up from the horizon. */
-function SunRays({ className }: { className?: string }) {
-  const angles = Array.from({ length: 13 }, (_, i) => 12 + i * 13);
-  return (
-    <svg
-viewBox="0 0 400 210" className={className} aria-hidden
-fill="none"
-    >
-      {angles.map((deg) => {
-        const rad = (deg * Math.PI) / 180;
-        return (
-          <line
-            key={deg}
-            x1={200 + 80 * Math.cos(rad)}
-            y1={200 - 80 * Math.sin(rad)}
-            x2={200 + 190 * Math.cos(rad)}
-            y2={200 - 190 * Math.sin(rad)}
-            stroke="currentColor"
-            strokeWidth="14"
-            strokeLinecap="round"
-          />
-        );
-      })}
-      <rect
-x="0" y="198" width="400"
-height="12" rx="6" fill="currentColor"
-      />
-    </svg>
-  );
 }
 
 export default async function AuthorPage({ params }: PageProps) {
@@ -91,175 +69,164 @@ export default async function AuthorPage({ params }: PageProps) {
     worksFor: { '@type': 'Organization', name: 'BeachRex', url: getBaseUrl() },
   };
 
+  const chapter = (key: ChapterKey, n: number) => (
+    <section key={key} aria-labelledby={`chapter-${key}`}>
+      <p className="font-figtree text-[14px] font-bold text-[#FF8000]">{String(n).padStart(2, '0')}</p>
+      <h2 id={`chapter-${key}`} className="mt-1 font-figtree text-[26px] font-bold leading-tight text-[#222222] sm:text-[30px]">
+        {t(`chapters.${key}.title`)}
+      </h2>
+      <p className="mt-4 font-figtree text-[17px] leading-[1.75] text-[#4D4D4D]">{t(`chapters.${key}.text`)}</p>
+    </section>
+  );
+
   return (
-    <article className="font-figtree text-[#0F3B45]">
+    <article className="pb-16 font-figtree">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: renderJsonLd(personSchema) }} />
 
-      {/* Hero */}
-      <header className="relative overflow-hidden bg-[#0F3B45] text-white">
-        <SunRays className="pointer-events-none absolute -right-24 -top-10 w-[520px] text-[#EB8751] opacity-[0.12] lg:w-[720px]" />
-        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-4 pb-24 pt-16 sm:px-6 lg:grid-cols-12 lg:px-8 lg:pb-32 lg:pt-24">
-          <div className="lg:col-span-6">
-            <p className="inline-flex rounded-full bg-[#00B2C9]/15 px-4 py-1.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[#5FD6E6]">
-              {t('eyebrow')}
+      {/* Banner like the country pages: photo, pill, faded word behind the name */}
+      <header
+        className={[
+          'relative mx-auto h-[460px] w-full max-w-[1928px] overflow-hidden rounded-[10px]',
+          'bg-cover bg-center sm:h-[560px] lg:h-[620px]',
+        ].join(' ')}
+        style={{ backgroundImage: `url(${AUTHOR_BEACH_PHOTO})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-black/10" />
+        <div className="relative z-10 flex h-full flex-col p-4 sm:p-6 lg:p-8">
+          <span className="inline-flex w-fit items-center rounded-full bg-[#1A3C68] px-4 py-1.5 text-[14px] font-bold text-white shadow">
+            {t('eyebrow')}
+          </span>
+
+          <div className="flex flex-1 flex-col justify-center">
+            <div className="relative">
+              <span
+                aria-hidden
+                className={[
+                  'block font-bold leading-[100%] text-white opacity-30',
+                  'text-[72px] sm:text-[120px] md:text-[160px] lg:text-[200px]',
+                ].join(' ')}
+              >
+                {t('bannerWord')}
+              </span>
+              <h1
+                className={[
+                  'absolute bottom-0 left-[20px] font-bold leading-[100%] text-white',
+                  'text-[38px] sm:left-[50px] sm:text-[60px] md:left-[80px] md:text-[80px] lg:left-[100px] lg:text-[96px]',
+                ].join(' ')}
+              >
+                {AUTHOR_NAME}
+              </h1>
+            </div>
+            <p className="ml-[20px] mt-6 max-w-2xl text-[18px] font-semibold text-white sm:ml-[50px] sm:text-[22px] md:ml-[80px] lg:ml-[100px]">
+              {t('role')}
             </p>
-            <h1 className="mt-6 text-[44px] font-bold leading-[1.05] sm:text-[56px] lg:text-[72px]">{AUTHOR_NAME}</h1>
-            <p className="mt-4 text-lg text-white/80 sm:text-xl">{t('role')}</p>
-            <p className="mt-8 max-w-xl text-2xl font-semibold leading-snug text-[#F6B48F] sm:text-[28px]">{t('lead')}</p>
-            <a
-              href="#zgodba"
-              className="mt-10 inline-flex items-center gap-2 rounded-full bg-[#EB8751] px-6 py-3 text-[15px] font-bold text-white transition hover:bg-[#d9773f]"
-            >
-              {t('heroCta')}
-              <span aria-hidden>↓</span>
-            </a>
+          </div>
+        </div>
+      </header>
+
+      {/* Stats: platform cards */}
+      <div className={`${WRAP} mt-10`}>
+        <dl className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {AUTHOR_STATS.map((s) => (
+            <div key={s.key} className="rounded-[10px] bg-[#E5F2FB] px-5 py-6 text-center shadow-sm">
+              <dt className="sr-only">{t(`stats.${s.key}`)}</dt>
+              <dd>
+                <span className="block text-[32px] font-bold leading-none text-[#1A3C68] sm:text-[40px]">
+                  {fmt.format(s.value)}
+                  {s.plus && '+'}
+                </span>
+                <span className="mt-2 block text-[14px] font-medium text-[#4D4D4D] sm:text-[15px]">
+                  {t(`stats.${s.key}`)}
+                </span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      {/* Story with the author card */}
+      <div className={`${WRAP} mt-16 grid gap-12 lg:grid-cols-12`}>
+        <div className="space-y-12 lg:col-span-7">
+          <p className="text-[24px] font-semibold leading-snug text-[#1A3C68] sm:text-[28px]">{t('lead')}</p>
+          {chapter('leap', 1)}
+          {chapter('road', 2)}
+
+          {/* Route along the coasts */}
+          <div className="rounded-[10px] bg-[#F5F5F5] p-5 sm:p-6">
+            <h3 className="text-[16px] font-bold text-[#222222]">{t('routeTitle')}</h3>
+            <ol className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-3">
+              {AUTHOR_ROUTE.map((c, i) => (
+                <li key={c} className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-white py-1 pl-1 pr-3.5 shadow-sm">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#1A3C68] text-[12px] font-bold text-white">
+                      {i + 1}
+                    </span>
+                    <span className="text-[14px] font-semibold text-[#222222]">{t(`countries.${c}`)}</span>
+                  </span>
+                  {i < AUTHOR_ROUTE.length - 1 && <span className="text-[#8D8D8D]" aria-hidden>›</span>}
+                </li>
+              ))}
+            </ol>
           </div>
 
-          <div className="relative mx-auto w-full max-w-xl lg:col-span-6">
-            <div className="absolute -bottom-4 -right-4 h-full w-full rounded-[28px] bg-[#EB8751]" aria-hidden />
+          {chapter('database', 3)}
+          {chapter('hardships', 4)}
+        </div>
+
+        {/* Author card, like the platform's beach cards */}
+        <aside className="lg:col-span-5">
+          <figure className="overflow-hidden rounded-[10px] shadow-md lg:sticky lg:top-28">
             <Image
               src={AUTHOR_PHOTO}
               alt={t('photoAlt')}
               width={750}
               height={499}
               priority
-              sizes="(min-width: 1024px) 560px, 92vw"
-              className="relative w-full rounded-[28px] object-cover shadow-2xl"
+              sizes="(min-width: 1024px) 520px, 92vw"
+              className="w-full object-cover"
             />
-          </div>
-        </div>
-      </header>
+            <figcaption className="bg-[#E5F2FB] px-5 py-4">
+              <span className="block text-[20px] font-bold text-[#1A3C68]">{AUTHOR_NAME}</span>
+              <span className="mt-1 block text-[14px] text-[#4D4D4D]">{t('role')}</span>
+            </figcaption>
+          </figure>
+        </aside>
+      </div>
 
-      {/* Stats band, overlapping the hero */}
-      <section aria-label={t('eyebrow')} className="relative z-10 mx-auto -mt-14 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-[#E5EEF0] shadow-xl lg:grid-cols-4">
-          {AUTHOR_STATS.map((s) => (
-            <div key={s.key} className="bg-white px-6 py-7 text-center sm:py-9">
-              <dt className="sr-only">{t(`stats.${s.key}`)}</dt>
-              <dd>
-                <span className="block text-[34px] font-bold leading-none text-[#00B2C9] sm:text-[44px]">
-                  {fmt.format(s.value)}
-                  {s.plus && <span className="text-[#EB8751]">+</span>}
-                </span>
-                <span className="mt-2 block text-[14px] font-medium text-[#4D5F64] sm:text-[15px]">{t(`stats.${s.key}`)}</span>
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      {/* Story */}
-      <section id="zgodba" className="mx-auto w-full max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="mx-auto max-w-3xl space-y-16">
-          {CHAPTERS.slice(0, 2).map((key, i) => (
-            <Chapter
-              key={key}
-              n={i + 1}
-              title={t(`chapters.${key}.title`)}
-              text={t(`chapters.${key}.text`)}
-              dropCap={i === 0}
-            />
-          ))}
-
-          {/* Route along the coasts */}
-          <div className="rounded-3xl bg-[#FFF4E8] px-6 py-8 sm:px-10">
-            <h3 className="text-[13px] font-bold uppercase tracking-[0.14em] text-[#EB8751]">{t('routeTitle')}</h3>
-            <ol className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-3">
-              {AUTHOR_ROUTE.map((c, i) => (
-                <li key={c} className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-4 shadow-sm">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#00B2C9] text-[12px] font-bold text-white">
-                      {i + 1}
-                    </span>
-                    <span className="text-[15px] font-semibold text-[#0F3B45]">{t(`countries.${c}`)}</span>
-                  </span>
-                  {i < AUTHOR_ROUTE.length - 1 && <span className="text-[#EB8751]" aria-hidden>→</span>}
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-
-        {/* Wide photo */}
-        <figure className="mx-auto mt-16 max-w-5xl">
-          <Image
-            src={AUTHOR_BEACH_PHOTO}
-            alt={t('beachAlt')}
-            width={750}
-            height={498}
-            sizes="(min-width: 1024px) 1000px, 92vw"
-            className="w-full rounded-[28px] object-cover shadow-xl"
-          />
-          <figcaption className="mt-4 text-center text-[14px] italic text-[#4D5F64]">{t('beachCaption')}</figcaption>
-        </figure>
-
-        <div className="mx-auto mt-16 max-w-3xl space-y-16">
-          {CHAPTERS.slice(2).map((key, i) => (
-            <Chapter
-              key={key}
-              n={i + 3}
-              title={t(`chapters.${key}.title`)}
-              text={t(`chapters.${key}.text`)}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Pull quote */}
-      <section className="relative overflow-hidden bg-[#00B2C9] text-white">
-        <SunRays className="pointer-events-none absolute -bottom-24 left-1/2 w-[640px] -translate-x-1/2 text-white opacity-10" />
-        <figure className="mx-auto w-full max-w-7xl relative mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:py-28">
-          <span className="block text-[96px] font-bold leading-none text-[#0F3B45]/30" aria-hidden>“</span>
-          <blockquote className="-mt-6 text-[26px] font-semibold leading-snug sm:text-[34px]">
+      {/* Quote */}
+      <div className={`${WRAP} mt-16`}>
+        <figure className="rounded-[10px] bg-[#1A3C68] px-6 py-12 text-center text-white sm:px-12 sm:py-16">
+          <span className="block text-[64px] font-bold leading-none text-[#FF8000]" aria-hidden>“</span>
+          <blockquote className="mx-auto -mt-2 max-w-3xl text-[22px] font-semibold leading-snug sm:text-[30px]">
             <p>{t('quote')}</p>
           </blockquote>
-          <figcaption className="mt-8 text-[15px] font-bold uppercase tracking-[0.14em] text-[#0F3B45]">
-            — {AUTHOR_NAME}
-          </figcaption>
+          <figcaption className="mt-6 text-[15px] font-bold text-white/80">— {AUTHOR_NAME}</figcaption>
         </figure>
-      </section>
+      </div>
 
       {/* Call to action */}
-      <section className="bg-[#FFF4E8]">
-        <div className="mx-auto w-full max-w-7xl mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 lg:py-24">
-          <h2 className="text-[30px] font-bold leading-tight sm:text-[38px]">{t('ctaTitle')}</h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-[#4D5F64]">{t('ctaText')}</p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href={buildBeachMapUrl(locale)}
-              className="inline-flex items-center rounded-full bg-[#0F3B45] px-7 py-3.5 text-[15px] font-bold text-white transition hover:bg-[#164f5c]"
-            >
-              {t('ctaMap')}
-            </a>
-            <a
-              href="mailto:info@beachrex.com"
-              className="inline-flex items-center rounded-full border-2 border-[#0F3B45] px-7 py-3 text-[15px] font-bold text-[#0F3B45] transition hover:bg-[#0F3B45] hover:text-white"
-            >
-              {t('ctaContact')}
-            </a>
-          </div>
+      <div className={`${WRAP} mt-16 text-center`}>
+        <h2 className="text-[26px] font-bold text-[#222222] sm:text-[30px]">{t('ctaTitle')}</h2>
+        <p className="mx-auto mt-3 max-w-xl text-[16px] text-[#4D4D4D]">{t('ctaText')}</p>
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href={buildBeachMapUrl(locale)}
+            className="inline-flex items-center gap-2 rounded-md bg-[#1A3C68] px-5 py-2.5 text-[14px] font-bold text-white transition-colors hover:bg-[#2a4c78]"
+          >
+            <Image
+src="/images/map.png" alt="" width={20}
+height={20} />
+            {t('ctaMap')}
+          </a>
+          <a
+            href="mailto:info@beachrex.com"
+            className="inline-flex items-center rounded-md border border-[#1A3C68] px-5 py-2.5 text-[14px] font-bold text-[#1A3C68] transition-colors hover:bg-[#1A3C68] hover:text-white"
+          >
+            {t('ctaContact')}
+          </a>
         </div>
-      </section>
+      </div>
     </article>
-  );
-}
-
-function Chapter({ n, title, text, dropCap = false }: { n: number; title: string; text: string; dropCap?: boolean }) {
-  return (
-    <div>
-      <p className="text-[14px] font-bold tracking-[0.2em] text-[#EB8751]">{String(n).padStart(2, '0')}</p>
-      <h2 className="mt-2 text-[28px] font-bold leading-tight sm:text-[34px]">{title}</h2>
-      <p
-        className={[
-          'mt-5 text-[18px] leading-[1.75] text-[#3B4D52]',
-          dropCap
-            ? 'first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-[64px] first-letter:font-bold first-letter:leading-[0.85] first-letter:text-[#00B2C9]'
-            : '',
-        ].join(' ')}
-      >
-        {text}
-      </p>
-    </div>
   );
 }
 

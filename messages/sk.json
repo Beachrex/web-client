@@ -750,6 +750,7 @@
     "metaTitle": "Gregor Balažic – autor Beachrex",
     "metaDescription": "Spoznajte Gregora Balažica, ktorý dal výpoveď, kúpil fotoaparát a dodávku a navštívil 2 445 pláží v šiestich krajinách. Tak vznikol Beachrex.",
     "eyebrow": "O autorovi",
+    "bannerWord": "Autor",
     "role": "Fotograf, cestovateľ a zakladateľ Beachrex",
     "lead": "„Pláže boli vždy mojou veľkou vášňou.“",
     "heroCta": "Prečítajte si príbeh",
@@ -762,7 +763,7 @@
     "chapters": {
       "leap": {
         "title": "Von z komfortnej zóny",
-        "text": "Pláže boli vždy mojou veľkou vášňou, hovorí Gregor Balažic, ktorý pred štyrmi rokmi dal výpoveď. Bol vedúcim oddelenia, no vystúpil z komfortnej zóny a opustil predvídateľnú budúcnosť. Kúpil si fotoaparát a dodávku, ktorá sa stala jeho novým domovom, a vydal sa do sveta. Presnejšie na pláže."
+        "text": "Pláže boli vždy mojou veľkou vášňou, hovorí Gregor Balažic, ktorý dal výpoveď. Bol vedúcim oddelenia, no vystúpil z komfortnej zóny a opustil predvídateľnú budúcnosť. Kúpil si fotoaparát a dodávku, ktorá sa stala jeho novým domovom, a vydal sa do sveta. Presnejšie na pláže."
       },
       "road": {
         "title": "2 445 pláží v šiestich krajinách",
@@ -770,7 +771,7 @@
       },
       "database": {
         "title": "Najväčšia databáza pláží na svete",
-        "text": "Navštívené pláže sa stali základom najväčšej databázy pláží na svete – Beachrex. Ku každej pláži patria fotografie, panoramatické zábery, videá, informácie o možnostiach parkovania, GPS poloha, údaje o počasí, ubytovaní, športových aktivitách, reštauráciách a baroch, ako aj o teplote mora. Spolu je to viac ako 200 údajov o každej pláži. Používatelia môžu aj sami pridávať svoje fotografie a videá a zdieľať obľúbené pláže s priateľmi. Práve teraz intenzívne pracuje na verzii pre počítače aj mobilné zariadenia, a keďže ide o veľké finančné sústo, rozhodol sa požiadať o pomoc podporovateľov na platforme Kickstarter."
+        "text": "Navštívené pláže sa stali základom najväčšej databázy pláží na svete – Beachrex. Ku každej pláži patria fotografie, panoramatické zábery, videá, informácie o možnostiach parkovania, GPS poloha, údaje o počasí, ubytovaní, športových aktivitách, reštauráciách a baroch, ako aj o teplote mora. Spolu je to viac ako 200 údajov o každej pláži."
       },
       "hardships": {
         "title": "Cesta nebola vždy ľahká",
@@ -789,7 +790,7 @@
     "photoAlt": "Gregor Balažic s fotoaparátom na piesočnatej pláži",
     "beachAlt": "Piesočnatá pláž s prevrátenou loďkou pri skalách a borovicách",
     "beachCaption": "Jedna z 2 445 pláží, ktoré Gregor navštívil a odfotografoval.",
-    "quote": "Máme víziu – o pár rokov bude s vašou pomocou, milí podporovatelia, na mape každá pláž na svete.",
+    "quote": "Máme víziu – o pár rokov bude na mape každá pláž na svete.",
     "ctaTitle": "Objavte pláže, ktoré navštívil Gregor",
     "ctaText": "Každá fotografia, každá panoráma 360° aj každý detail na Beachrex vznikli počas tejto cesty.",
     "ctaMap": "Prehliadať mapu",

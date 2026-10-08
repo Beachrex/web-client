@@ -26,7 +26,8 @@ Owner, 2026-10-08: a page dedicated to the author — the photos, 360° spheres 
 
 ### Changes
 
-- `src/app/[locale]/gregor-balazic/page.tsx`: hero (Deep Sea, his photo, logo sun motif), stats band, four chapters, route along the coasts, wide beach photo, pull quote (teal), call to action (map, e-mail). Brand colours from the CGP. `Person` JSON-LD; OG image = his photo; hreflang for all locales (same path everywhere).
+- `src/app/[locale]/gregor-balazic/page.tsx`, in the platform's design (owner feedback on the first version): photo banner with the faded word behind the name like the country pages, navy pill, light-blue stat cards, four chapters with a sticky author card (like the beach cards), route chips, navy quote block, map/e-mail buttons. `Person` JSON-LD; OG image = his photo; hreflang for all locales (same path everywhere).
+- Owner: removed the outdated claims (Kickstarter backers, "four years ago", users adding photos / sharing favourites) and "with your help, supporters" from the quote, in all locales.
 - `src/lib/constants/author.ts`, `public/images/author/` (2 photos from the owner).
 - `AuthorPage` namespace in all 19 `messages/*.json`; footer brand column links to the page ("Spoznajte avtorja →").
 - Avoids the `container` class: the global `.container { padding: 0 5px }` in `globals.css` overrides Tailwind padding utilities (site-wide; reported to the owner).

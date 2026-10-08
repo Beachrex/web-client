@@ -750,6 +750,7 @@
     "metaTitle": "Gregor Balažic – l’auteur de Beachrex",
     "metaDescription": "Découvrez Gregor Balažic, qui a quitté son emploi, acheté un appareil photo et un van, et visité 2 445 plages dans six pays. Beachrex est né de ce voyage.",
     "eyebrow": "À propos de l’auteur",
+    "bannerWord": "Auteur",
     "role": "Photographe, voyageur et fondateur de Beachrex",
     "lead": "« Les plages ont toujours été ma grande passion. »",
     "heroCta": "Lire l’histoire",
@@ -762,7 +763,7 @@
     "chapters": {
       "leap": {
         "title": "Sortir de sa zone de confort",
-        "text": "Les plages ont toujours été ma grande passion, confie Gregor Balažic, qui a quitté son emploi il y a quatre ans. Chef de service, il est sorti de sa zone de confort et a renoncé à un avenir tout tracé. Il a acheté un appareil photo et un van, devenu sa nouvelle maison, puis il est parti à la découverte du monde. Ou plutôt, des plages."
+        "text": "Les plages ont toujours été ma grande passion, confie Gregor Balažic, qui a quitté son emploi. Chef de service, il est sorti de sa zone de confort et a renoncé à un avenir tout tracé. Il a acheté un appareil photo et un van, devenu sa nouvelle maison, puis il est parti à la découverte du monde. Ou plutôt, des plages."
       },
       "road": {
         "title": "2 445 plages dans six pays",
@@ -770,7 +771,7 @@
       },
       "database": {
         "title": "La plus grande base de données de plages au monde",
-        "text": "Les plages visitées sont devenues le socle de la plus grande base de données de plages au monde : Beachrex. Chaque plage est accompagnée de photos, de vues panoramiques, de vidéos, d’informations sur le stationnement, de sa localisation GPS, de données météo, d’hébergements, d’activités sportives, de restaurants et de bars, ainsi que de la température de l’eau. Au total, plus de 200 informations sur chaque plage. Les utilisateurs peuvent aussi ajouter leurs propres photos et vidéos et partager leurs plages préférées avec leurs amis. Il travaille actuellement d’arrache-pied sur les versions ordinateur et mobile et, face à l’ampleur de l’investissement, il a décidé de chercher des soutiens sur Kickstarter."
+        "text": "Les plages visitées sont devenues le socle de la plus grande base de données de plages au monde : Beachrex. Chaque plage est accompagnée de photos, de vues panoramiques, de vidéos, d’informations sur le stationnement, de sa localisation GPS, de données météo, d’hébergements, d’activités sportives, de restaurants et de bars, ainsi que de la température de l’eau. Au total, plus de 200 informations sur chaque plage."
       },
       "hardships": {
         "title": "Un chemin pas toujours facile",
@@ -789,7 +790,7 @@
     "photoAlt": "Gregor Balažic avec son appareil photo sur une plage de sable",
     "beachAlt": "Plage de sable avec une barque retournée près des rochers et des pins",
     "beachCaption": "L’une des 2 445 plages que Gregor a visitées et photographiées.",
-    "quote": "Nous avons une vision : d’ici quelques années, grâce à vous, nos soutiens, chaque plage du monde figurera sur la carte.",
+    "quote": "Nous avons une vision : d’ici quelques années, chaque plage du monde figurera sur la carte.",
     "ctaTitle": "Découvrez les plages visitées par Gregor",
     "ctaText": "Chaque photo, chaque vue à 360° et chaque détail sur Beachrex sont nés de ce voyage.",
     "ctaMap": "Parcourir la carte",

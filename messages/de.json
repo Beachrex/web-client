@@ -750,6 +750,7 @@
     "metaTitle": "Gregor Balažic – der Autor von Beachrex",
     "metaDescription": "Lernen Sie Gregor Balažic kennen: Er kündigte, kaufte Kamera und Van und besuchte 2.445 Strände in sechs Ländern. Aus dieser Reise entstand Beachrex.",
     "eyebrow": "Über den Autor",
+    "bannerWord": "Autor",
     "role": "Fotograf, Reisender und Gründer von Beachrex",
     "lead": "„Strände waren schon immer meine große Leidenschaft.“",
     "heroCta": "Geschichte lesen",
@@ -762,7 +763,7 @@
     "chapters": {
       "leap": {
         "title": "Raus aus der Komfortzone",
-        "text": "Strände waren schon immer meine große Leidenschaft, sagt Gregor Balažic, der vor vier Jahren seinen Job kündigte. Er war Abteilungsleiter, verließ seine Komfortzone und ließ eine vorhersehbare Zukunft hinter sich. Er kaufte eine Kamera und einen Van, der zu seinem neuen Zuhause wurde, und zog hinaus in die Welt. Genauer gesagt: an die Strände."
+        "text": "Strände waren schon immer meine große Leidenschaft, sagt Gregor Balažic, der seinen Job kündigte. Er war Abteilungsleiter, verließ seine Komfortzone und ließ eine vorhersehbare Zukunft hinter sich. Er kaufte eine Kamera und einen Van, der zu seinem neuen Zuhause wurde, und zog hinaus in die Welt. Genauer gesagt: an die Strände."
       },
       "road": {
         "title": "2.445 Strände in sechs Ländern",
@@ -770,7 +771,7 @@
       },
       "database": {
         "title": "Die größte Stranddatenbank der Welt",
-        "text": "Die besuchten Strände wurden zur Grundlage der größten Stranddatenbank der Welt – Beachrex. Zu jedem Strand gibt es Fotos, Panoramaaufnahmen, Videos, Informationen zu Parkmöglichkeiten, GPS-Standort, Wetterdaten, Unterkünften, Sportangeboten, Restaurants und Bars sowie zur Wassertemperatur. Insgesamt sind das mehr als 200 Angaben zu jedem Strand. Nutzer können außerdem eigene Fotos und Videos hinzufügen und ihre Lieblingsstrände mit Freunden teilen. Derzeit arbeitet er mit Hochdruck an der Desktop- und der mobilen Version, und weil das ein großer finanzieller Kraftakt ist, hat er beschlossen, auf Kickstarter Unterstützer zu suchen."
+        "text": "Die besuchten Strände wurden zur Grundlage der größten Stranddatenbank der Welt – Beachrex. Zu jedem Strand gibt es Fotos, Panoramaaufnahmen, Videos, Informationen zu Parkmöglichkeiten, GPS-Standort, Wetterdaten, Unterkünften, Sportangeboten, Restaurants und Bars sowie zur Wassertemperatur. Insgesamt sind das mehr als 200 Angaben zu jedem Strand."
       },
       "hardships": {
         "title": "Der Weg war nicht immer leicht",
@@ -789,7 +790,7 @@
     "photoAlt": "Gregor Balažic mit seiner Kamera an einem Sandstrand",
     "beachAlt": "Sandstrand mit einem umgedrehten Boot zwischen Felsen und Kiefern",
     "beachCaption": "Einer der 2.445 Strände, die Gregor besucht und fotografiert hat.",
-    "quote": "Wir haben eine Vision – in ein paar Jahren wird mit Ihrer Hilfe, liebe Unterstützer, jeder einzelne Strand der Welt auf der Karte sein.",
+    "quote": "Wir haben eine Vision – in ein paar Jahren wird jeder einzelne Strand der Welt auf der Karte sein.",
     "ctaTitle": "Entdecken Sie die Strände, die Gregor besucht hat",
     "ctaText": "Jedes Foto, jede 360°-Aufnahme und jedes Detail auf Beachrex ist auf dieser Reise entstanden.",
     "ctaMap": "Karte durchsuchen",

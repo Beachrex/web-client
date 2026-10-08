@@ -750,6 +750,7 @@
     "metaTitle": "Gregor Balažic – el autor de Beachrex",
     "metaDescription": "Conoce a Gregor Balažic, que dejó su trabajo, compró una cámara y una furgoneta y visitó 2.445 playas en seis países. Así nació Beachrex.",
     "eyebrow": "Sobre el autor",
+    "bannerWord": "Autor",
     "role": "Fotógrafo, viajero y fundador de Beachrex",
     "lead": "«Las playas siempre han sido mi gran pasión.»",
     "heroCta": "Lee la historia",
@@ -762,7 +763,7 @@
     "chapters": {
       "leap": {
         "title": "Salir de la zona de confort",
-        "text": "Las playas siempre han sido mi gran pasión, dice Gregor Balažic, que hace cuatro años dejó su trabajo. Era jefe de departamento, pero salió de su zona de confort y dejó atrás un futuro previsible. Compró una cámara y una furgoneta, que se convirtió en su nuevo hogar, y se lanzó a recorrer el mundo. Mejor dicho, sus playas."
+        "text": "Las playas siempre han sido mi gran pasión, dice Gregor Balažic, que dejó su trabajo. Era jefe de departamento, pero salió de su zona de confort y dejó atrás un futuro previsible. Compró una cámara y una furgoneta, que se convirtió en su nuevo hogar, y se lanzó a recorrer el mundo. Mejor dicho, sus playas."
       },
       "road": {
         "title": "2.445 playas en seis países",
@@ -770,7 +771,7 @@
       },
       "database": {
         "title": "La mayor base de datos de playas del mundo",
-        "text": "Las playas que visitó se convirtieron en el punto de partida de la mayor base de datos de playas del mundo: Beachrex. Cada playa cuenta con fotografías, imágenes panorámicas, vídeos, información sobre aparcamiento, ubicación GPS, datos meteorológicos, alojamientos, actividades deportivas, restaurantes y bares, y la temperatura del agua. En total, más de 200 datos sobre cada playa. Los usuarios también pueden añadir sus propias fotos y vídeos y compartir sus playas favoritas con sus amigos. Ahora mismo trabaja a fondo en las versiones de escritorio y móvil y, dado el enorme esfuerzo económico que supone, decidió buscar el apoyo de mecenas en Kickstarter."
+        "text": "Las playas que visitó se convirtieron en el punto de partida de la mayor base de datos de playas del mundo: Beachrex. Cada playa cuenta con fotografías, imágenes panorámicas, vídeos, información sobre aparcamiento, ubicación GPS, datos meteorológicos, alojamientos, actividades deportivas, restaurantes y bares, y la temperatura del agua. En total, más de 200 datos sobre cada playa."
       },
       "hardships": {
         "title": "El camino no siempre fue fácil",
@@ -789,7 +790,7 @@
     "photoAlt": "Gregor Balažic con su cámara en una playa de arena",
     "beachAlt": "Playa de arena con una barca volcada junto a las rocas y los pinos",
     "beachCaption": "Una de las 2.445 playas que Gregor visitó y fotografió.",
-    "quote": "Tenemos una visión: en unos años, con vuestra ayuda, queridos mecenas, cada playa del mundo estará en el mapa.",
+    "quote": "Tenemos una visión: en unos años, cada playa del mundo estará en el mapa.",
     "ctaTitle": "Descubre las playas que visitó Gregor",
     "ctaText": "Cada foto, cada imagen 360° y cada detalle de Beachrex nacieron en este viaje.",
     "ctaMap": "Explora el mapa",

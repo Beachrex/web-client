@@ -750,6 +750,7 @@
     "metaTitle": "Gregor Balažic – l’autore di Beachrex",
     "metaDescription": "Scopri Gregor Balažic, che ha lasciato il lavoro, comprato una fotocamera e un furgone e visitato 2.445 spiagge in sei paesi. Così è nato Beachrex.",
     "eyebrow": "L’autore",
+    "bannerWord": "Autore",
     "role": "Fotografo, viaggiatore e fondatore di Beachrex",
     "lead": "«Le spiagge sono sempre state la mia grande passione.»",
     "heroCta": "Leggi la storia",
@@ -762,7 +763,7 @@
     "chapters": {
       "leap": {
         "title": "Fuori dalla zona di comfort",
-        "text": "Le spiagge sono sempre state la mia grande passione, racconta Gregor Balažic, che quattro anni fa ha lasciato il lavoro. Era capo reparto: è uscito dalla sua zona di comfort e si è lasciato alle spalle un futuro prevedibile. Ha comprato una fotocamera e un furgone, diventato la sua nuova casa, ed è partito alla scoperta del mondo. Anzi, delle spiagge."
+        "text": "Le spiagge sono sempre state la mia grande passione, racconta Gregor Balažic, che ha lasciato il lavoro. Era capo reparto: è uscito dalla sua zona di comfort e si è lasciato alle spalle un futuro prevedibile. Ha comprato una fotocamera e un furgone, diventato la sua nuova casa, ed è partito alla scoperta del mondo. Anzi, delle spiagge."
       },
       "road": {
         "title": "2.445 spiagge in sei paesi",
@@ -770,7 +771,7 @@
       },
       "database": {
         "title": "Il più grande database di spiagge al mondo",
-        "text": "Le spiagge visitate sono diventate la base del più grande database di spiagge al mondo: Beachrex. Ogni spiaggia è corredata di foto, immagini panoramiche, video, informazioni sui parcheggi, posizione GPS, dati meteo, alloggi, attività sportive, ristoranti e bar e temperatura del mare. In tutto, oltre 200 informazioni per ogni spiaggia. Gli utenti possono anche aggiungere le proprie foto e i propri video e condividere le spiagge preferite con gli amici. Proprio in questo periodo sta lavorando intensamente alle versioni desktop e mobile e, visto il grande impegno economico, ha deciso di chiedere aiuto ai sostenitori su Kickstarter."
+        "text": "Le spiagge visitate sono diventate la base del più grande database di spiagge al mondo: Beachrex. Ogni spiaggia è corredata di foto, immagini panoramiche, video, informazioni sui parcheggi, posizione GPS, dati meteo, alloggi, attività sportive, ristoranti e bar e temperatura del mare. In tutto, oltre 200 informazioni per ogni spiaggia."
       },
       "hardships": {
         "title": "Una strada non sempre facile",
@@ -789,7 +790,7 @@
     "photoAlt": "Gregor Balažic con la sua fotocamera su una spiaggia sabbiosa",
     "beachAlt": "Spiaggia sabbiosa con una barca capovolta vicino agli scogli e ai pini",
     "beachCaption": "Una delle 2.445 spiagge che Gregor ha visitato e fotografato.",
-    "quote": "Abbiamo una visione: tra qualche anno, con il vostro aiuto, cari sostenitori, ogni singola spiaggia del mondo sarà sulla mappa.",
+    "quote": "Abbiamo una visione: tra qualche anno ogni singola spiaggia del mondo sarà sulla mappa.",
     "ctaTitle": "Scopri le spiagge visitate da Gregor",
     "ctaText": "Ogni foto, ogni immagine a 360° e ogni dettaglio su Beachrex sono nati durante questo viaggio.",
     "ctaMap": "Esplora la mappa",
