@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – AI itinerary (AI-3d): trip map and Save as PDF ✅ COMPLETE
+
+- **Map:** `src/components/Itinerary/ItineraryMap.tsx` (react-leaflet, loaded with `dynamic`, `ssr: false`) is shown on every finished plan. Each day has its own colour; stops are numbered `day.order` in visiting order and the day's route is drawn as a line. Popups link to the beach page, and a legend lists the days. Stops come from `planStops()`, which uses the beaches' `latitude`/`longitude` that the backend already returns.
+- **PDF:** a "Save as PDF" button runs `window.print()`. `Layout.tsx` hides the top bar, search, menu and footer in print (`print:hidden`), as well as the plan page's controls; day cards use `break-inside-avoid`.
+- **Texts:** `AI.itinerary.savePdf` and `AI.itinerary.mapTitle` in 19 languages.
+- **Tests:** `e2e/itinerary-planner.unit.spec.ts` (+2): stops are numbered per day and beaches without coordinates are skipped; the print setup is in place.
+- **Checked in a 390 px browser** with a mocked API: 4 markers and 2 day lines, no overflow; in print media the header and the PDF button are hidden.
+
 ## 2026-10-09 – AI itinerary (AI-3c): plans generated in the background, "My plans" ✅ COMPLETE
 
 **Needs backend #78** (`POST /ai/itinerary-plans`, `GET /me/itinerary-plans(/{id})`, worker container).

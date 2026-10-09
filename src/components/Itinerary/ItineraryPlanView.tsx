@@ -1,12 +1,17 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import { Alert, Card } from 'flowbite-react';
+import { Alert, Button, Card } from 'flowbite-react';
+import { Printer } from 'lucide-react';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import type { Plan } from '@/lib/utils/itinerary';
+import { planStops, type Plan } from '@/lib/utils/itinerary';
+
+// Leaflet needs the browser.
+const ItineraryMap = dynamic(() => import('./ItineraryMap'), { ssr: false });
 
 const TIME_BLOCKS = ['morning', 'afternoon', 'evening'];
 
@@ -14,6 +19,7 @@ const TIME_BLOCKS = ['morning', 'afternoon', 'evening'];
 export default function ItineraryPlanView({ plan }: { plan: Plan }) {
   const t = useTranslations('AI.itinerary');
   const locale = useLocale();
+  const stops = planStops(plan, (b) => buildBeachUrlFromSchema(b, locale));
 
   return (
     <div className="space-y-6">
@@ -21,10 +27,23 @@ export default function ItineraryPlanView({ plan }: { plan: Plan }) {
         <h2 className="text-2xl font-bold text-gray-900">{plan.title}</h2>
         <p className="text-gray-700">{plan.summary}</p>
         {plan.metadata.narrative === 'fallback' && <Alert color="warning">{t('fallbackNote')}</Alert>}
+        <div className="print:hidden">
+          <Button color="light" size="sm" onClick={() => window.print()}>
+            <Printer className="mr-2 h-4 w-4" />
+            {t('savePdf')}
+          </Button>
+        </div>
       </Card>
 
+      {stops.length > 0 && (
+        <Card className="break-inside-avoid">
+          <h3 className="text-xl font-semibold text-gray-900">{t('mapTitle')}</h3>
+          <ItineraryMap stops={stops} dayLabel={(day) => t('day', { number: day })} />
+        </Card>
+      )}
+
       {plan.days.map((day) => (
-        <Card key={day.day_number}>
+        <Card key={day.day_number} className="break-inside-avoid">
           <h3 className="text-xl font-semibold text-gray-900">
             {t('day', { number: day.day_number })}: {day.theme}
           </h3>

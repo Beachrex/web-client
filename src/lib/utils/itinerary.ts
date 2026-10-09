@@ -177,6 +177,8 @@ export interface PlanBeach {
   region_slug?: string | null;
   island_slug?: string | null;
   city_slug?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 export interface PlanItem {
@@ -239,4 +241,32 @@ export function planFailureKey(error: PlanSummary['error']): 'notEnoughBeaches' 
 /** Poll every 3 s for the first minute, then every 10 s (a 14-day plan can take two minutes). */
 export function pollDelayMs(elapsedMs: number): number {
   return elapsedMs < 60_000 ? 3_000 : 10_000;
+}
+
+/** Day colours for the plan map (repeat after 7 days). */
+export const DAY_COLORS = ['#2563eb', '#16a34a', '#dc2626', '#9333ea', '#ea580c', '#0891b2', '#ca8a04'];
+
+export interface MapStop {
+  day: number;
+  order: number;
+  name: string;
+  lat: number;
+  lng: number;
+  href: string | null;
+}
+
+/** Beaches of a plan with coordinates, in visiting order, numbered within each day. */
+export function planStops(plan: Plan, hrefFor: (b: PlanBeach) => string | null): MapStop[] {
+  const stops: MapStop[] = [];
+  for (const day of plan.days) {
+    let order = 0;
+    for (const item of day.items) {
+      const b = item.beach;
+      if (!b || typeof b.latitude !== 'number' || typeof b.longitude !== 'number') continue;
+      order += 1;
+      stops.push({ day: day.day_number, order, name: b.name, lat: b.latitude, lng: b.longitude, href: hrefFor(b) });
+    }
+  }
+
+  return stops;
 }

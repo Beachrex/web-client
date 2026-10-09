@@ -791,7 +791,9 @@
           "timeout": "A terv elkészítése túl sokáig tartott. A terv nem lett felhasználva, próbálja újra.",
           "error": "Hiba történt. A terv nem lett felhasználva, próbálja újra."
         }
-      }
+      },
+      "savePdf": "Mentés PDF-ként",
+      "mapTitle": "Az út térképe"
     },
     "entitlements": {
       "title": "Kreditjeim",

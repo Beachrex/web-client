@@ -791,7 +791,9 @@
           "timeout": "Het maken duurde te lang. Het plan is niet gebruikt, probeer het opnieuw.",
           "error": "Er ging iets mis. Het plan is niet gebruikt, probeer het opnieuw."
         }
-      }
+      },
+      "savePdf": "Opslaan als pdf",
+      "mapTitle": "Kaart van de reis"
     },
     "entitlements": {
       "title": "Mijn credits",

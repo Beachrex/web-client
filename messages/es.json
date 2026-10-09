@@ -791,7 +791,9 @@
           "timeout": "La creación tardó demasiado. El plan no se ha usado, inténtalo de nuevo.",
           "error": "Algo ha fallado. El plan no se ha usado, inténtalo de nuevo."
         }
-      }
+      },
+      "savePdf": "Guardar como PDF",
+      "mapTitle": "Mapa del viaje"
     },
     "entitlements": {
       "title": "Mis créditos",

@@ -791,7 +791,9 @@
           "timeout": "Det tog for lang tid at lave planen. Planen blev ikke brugt, prøv igen.",
           "error": "Noget gik galt. Planen blev ikke brugt, prøv igen."
         }
-      }
+      },
+      "savePdf": "Gem som PDF",
+      "mapTitle": "Kort over rejsen"
     },
     "entitlements": {
       "title": "Min kredit",
