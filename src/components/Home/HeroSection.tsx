@@ -5,17 +5,19 @@ import React, { useMemo } from 'react';
 import { useContinents } from '@/hooks/useContinents';
 import { useCountries } from '@/hooks/useCountries';
 import { useHeroBanner } from '@/hooks/useFirstPageContent';
+import { heroBackgroundUrl } from '@/lib/utils/hero-image';
 import Link from 'next/link';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildContinentUrl } from '@/lib/utils/beach-urls';
 import { FEATURES } from '@/lib/constants/features';
 
 interface HeroSectionProps {
   /** Hero title rendered on the server, so the page's h1 is in the initial HTML (SEO). */
   initialTitle?: string;
+  /** Hero background URL computed on the server, so the browser can preload the LCP image. */
+  initialBackground?: string;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ initialTitle = '' }) => {
+const HeroSection: React.FC<HeroSectionProps> = ({ initialTitle = '', initialBackground = '' }) => {
   const t = useTranslations('HomePage');
   const tContinents = useTranslations('Continents');
   const locale = useLocale();
@@ -33,29 +35,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({ initialTitle = '' }) => {
     return countries.length;
   }, [countries]);
 
-  // Get background image from API (now returns relative path, need to prepend CDN)
-  const backgroundImage = useMemo(() => {
-    if (heroBanner?.media && heroBanner.media.length > 0) {
-      // Try to find by collection first, then by is_primary, then just take first
-      const bgMedia = heroBanner.media.find(m => m.collection === 'background_image')
-        ?? heroBanner.media.find(m => m.is_primary)
-        ?? heroBanner.media[0];
-      const url = bgMedia?.url;
-      if (url) {
-        return buildCdnUrl(url, 'hero') ?? '';
-      }
-      return '';
-    }
-    return '';
-  }, [heroBanner]);
+  // Server-rendered URL first (LCP image in the initial HTML), then the client query
+  const backgroundImage = useMemo(
+    () => initialBackground || heroBackgroundUrl(heroBanner?.media),
+    [initialBackground, heroBanner],
+  );
 
   // Get hero title from API
   const heroTitle = heroBanner?.title ?? initialTitle;
   return (
-    <section
-      className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] bg-cover bg-center sm:h-[700px] lg:h-[798px]"
-      style={{ backgroundImage: `url('${backgroundImage}')` }}
-    >
+    <section className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-hidden sm:h-[700px] lg:h-[798px]">
+      {/* LCP image: a real <img> with priority (preloaded), not a CSS background found only after JS */}
+      {backgroundImage && (
+        <Image
+src={backgroundImage} alt="" fill
+priority sizes="100vw" className="object-cover object-center"
+        />
+      )}
       {/* Overlay */}
       <div className="absolute inset-0 bg-white/10" />
 

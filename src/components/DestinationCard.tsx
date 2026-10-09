@@ -133,9 +133,13 @@ const flagUrl =
       onMouseLeave={handleMouseLeave}
     >
       <div className="relative w-full flex-1">
+        {/* No priority: these cards sit in carousels below the fold; only the banner image is preloaded */}
         <Image
-src={src} alt={name} fill
-className="object-cover" priority
+          src={src}
+          alt={name}
+          fill
+          sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 25vw"
+          className="object-cover"
         />
 
         {badgeLabel && (
