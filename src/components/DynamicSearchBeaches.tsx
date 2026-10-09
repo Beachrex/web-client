@@ -3,6 +3,7 @@
 import { useBeachPage, type BeachSort } from '@/hooks/useBeaches';
 import type { BeachListResponseSchema, BeachSchema } from '@/lib/api-client/types.gen';
 import { hasMainImage } from '@/lib/utils/beach-cards';
+import { cardTags } from '@/lib/utils/beach-properties';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import { parseWebcamUrl } from '@/lib/utils/webcam';
@@ -78,6 +79,7 @@ function useBeachCards(beaches: BeachSchema[]): PropertyCardProps[] {
       rating: 0,
       reviews: 0,
       countryCode: b.country_code,
+      tags: cardTags(b),
     };
   });
 }

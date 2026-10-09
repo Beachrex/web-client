@@ -57,3 +57,9 @@ test('every favorites text exists in all 19 languages', () => {
     for (const v of Object.values(other)) expect(v.trim(), f).not.toBe('');
   }
 });
+
+test('cards show the star only with a real rating (no "0.0" badge, owner 2026-10-09)', () => {
+  const card = read('src/components/PropertyCard/PropertyCard.tsx');
+  expect(card).toContain('{Number(rating) > 0 && (');
+  expect(card).not.toContain('Number(rating ?? 0).toFixed(1)');
+});

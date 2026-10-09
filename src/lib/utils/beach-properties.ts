@@ -16,6 +16,12 @@ function buildGallery(beach: BeachSchema): string[] {
     .filter((url): url is string => Boolean(url));
 }
 
+/** Up to 4 descriptive tags from the API ("Swimming • Snorkeling • …"); none → no tag line. */
+export function cardTags(beach: Pick<BeachSchema, 'tags'>): string[] | undefined {
+  const tags = (beach.tags ?? []).filter((t): t is string => typeof t === 'string' && t.trim() !== '');
+  return tags.length ? tags : undefined;
+}
+
 /**
  * Beach list item (most-visited API) → card for `PropertySection`, with the same media rules as
  * the beach page: gallery, 360° sphere, video (embed or uploaded) and webcam.
@@ -43,6 +49,7 @@ export function beachesToProperties(beaches: BeachSchema[], locale: string): Pro
       rating: 0,
       reviews: 0,
       countryCode: beach.country_code,
+      tags: cardTags(beach),
     };
   });
 }
