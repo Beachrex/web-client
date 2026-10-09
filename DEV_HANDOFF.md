@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – City page: category tiles hidden ✅ COMPLETE
+
+Owner (screenshot of a city page): the tiles "Peščene plaže, Kamnite plaže, Bazen, Primerne za pse, …" had no function. `CityCategories` has no click handlers at all, so it is hidden behind `FEATURES.cityCategoryTiles = false` (listed in backend `docs/features/hidden-for-launch.md`). To bring it back, each tile must set the matching filter of the "Browse all beaches" list. Test: `e2e/placeholder-content.unit.spec.ts`.
+
 ## 2026-10-09 – AI chat (AI-1, web): conversation memory, linked beach names, photos, clear errors ✅ COMPLETE
 
 Owner: "AI chat ful slabo dela … niti linkov ne da do plaž". Together with backend AI-1 (real slugs/photos in the page language, sliding session).

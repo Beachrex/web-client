@@ -202,7 +202,8 @@ const islandPillLabel = cityDetails?.island?.name
         />
       )}
 
-      <CityCategories />
+      {/* Hidden for launch: the tiles had no click action (owner 2026-10-09) */}
+      {FEATURES.cityCategoryTiles && <CityCategories />}
 
      <DynamicSearchBeaches
   translationNamespace="TownPage"

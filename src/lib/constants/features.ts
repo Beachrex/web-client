@@ -18,4 +18,6 @@ export const FEATURES = {
   shop: false,
   /** Blog (home "Browse blog" button). */
   blog: false,
+  /** City page category tiles (sandy, pebble, pool, dogs, ...): no click action yet (owner 2026-10-09). */
+  cityCategoryTiles: false,
 } as const;
