@@ -12,6 +12,7 @@ import Dropdown, { MediaToggleInline } from '../Dropdown';
 import LeftSidebarFilters from './LeftSidebarFilters';
 import ReactLeafletMap from './ReactLeafletMap';
 import { VirtualizedBeachList } from './VirtualizedBeachList';
+import { optionMatches, type FilterOptionLike } from '@/lib/utils/filter-options';
 
 type ColumnLayout = 1 | 2;
 
@@ -299,20 +300,14 @@ const MapWithSidebar = () => {
             if (typeof filterValue === 'string' && filterValue.includes(',')) {
                 const selectedValues = filterValue.split(',');
                 const validValues = selectedValues.filter(val => {
-                    return options.some((opt: { id?: number; code?: string; slug?: string }) =>
-                        opt.code === val || opt.slug === val || String(opt.id) === String(val)
-                    );
+                    return options.some((opt: FilterOptionLike) => optionMatches(opt, val));
                 });
                 if (validValues.length > 0) {
                     validated[filterKey] = validValues.join(',');
                 }
             } else {
                 // Single value - check if it exists in options
-                const isValid = options.some((opt: { id?: number; code?: string; slug?: string }) =>
-                    opt.code === filterValue ||
-                    opt.slug === filterValue ||
-                    String(opt.id) === String(filterValue)
-                );
+                const isValid = options.some((opt: FilterOptionLike) => optionMatches(opt, filterValue));
                 if (isValid) {
                     validated[filterKey] = filterValue;
                 }

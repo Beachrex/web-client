@@ -18,6 +18,15 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Parking and swimming-pool filters no longer dropped ✅ COMPLETE
+
+Mobile report (relayed by the owner): the website dropped the `parking` and `has_swimming_pool` filters from `/beaches/filters`. Their options carried only `value: "1"`, and the filter validators (`useBeachFiltersController`, `MapWithSidebar`) matched the selected value against `code`, `slug` or `id` only.
+- New `src/lib/utils/filter-options.ts` `optionMatches()`: code, slug, id or value (an option without an id no longer matches the text "undefined"). Both validators use it.
+- The backend now also sends `code: "1"` and translated titles/labels (Beachrex/backend#93).
+- Spec: `e2e/filter-options.unit.spec.ts`.
+
+---
+
 ## 2026-10-09 – Card tags on continent pages, no "0.0" rating badge ✅ COMPLETE
 
 Owner feedback on dev after favorites:
