@@ -949,5 +949,19 @@
     "applyCount": "Filter anwenden ({count})",
     "showLess": "Weniger anzeigen",
     "showMore": "{count} weitere anzeigen …"
+  },
+  "Favorites": {
+    "title": "Meine Lieblingsstrände",
+    "add": "Zu Favoriten hinzufügen",
+    "remove": "Aus Favoriten entfernen",
+    "save": "Merken",
+    "saved": "Gemerkt",
+    "signInTitle": "Melden Sie sich an, um Strände zu speichern",
+    "signInText": "Ihre Lieblingsstrände werden in Ihrem Konto gespeichert, sodass Sie sie auf jedem Gerät finden.",
+    "empty": "Sie haben noch keine Strände gespeichert. Tippen Sie auf das Herz bei einem Strand, um ihn zu speichern.",
+    "browse": "Strände entdecken",
+    "limit": "Ihre Favoritenliste ist voll. Entfernen Sie einen Strand, um einen neuen zu speichern.",
+    "error": "Der Strand konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+    "loadError": "Ihre Lieblingsstrände konnten nicht geladen werden. Bitte versuchen Sie es erneut."
   }
 }

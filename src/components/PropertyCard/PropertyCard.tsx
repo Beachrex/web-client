@@ -7,12 +7,14 @@ import { buildCardFeatureIcons, type BeachCardFeatures } from '@/lib/utils/beach
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { parseWebcamUrl } from '@/lib/utils/webcam';
 import { useQueryClient } from '@tanstack/react-query';
-import { Heart, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useCallback, useEffect, useRef } from 'react';
+import { FEATURES } from '@/lib/constants/features';
+import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { PropertyMediaContext } from '../PropertySection';
 
 // Performance logging
@@ -41,6 +43,8 @@ if (ENABLE_PERF_LOGGING) {
 
 
 export interface PropertyCardProps {
+  /** Beach id (string, as in `Property`); enables the favorites heart. */
+  id?: string;
   webcamEmbed?: string | null;
   beachUrl?: string;
   beachSlug?: string; // Add beach slug for prefetching
@@ -69,7 +73,9 @@ export interface PropertyCardProps {
   features?: BeachCardFeatures | null;
 }
 
-const PropertyCard = React.memo(function PropertyCard({  beachUrl,
+const PropertyCard = React.memo(function PropertyCard({
+  id,
+  beachUrl,
   beachSlug,
   image,
   galleryImages = [],
@@ -356,13 +362,12 @@ const webcamUrl = React.useMemo(
       </div>
     </div>
 
-    {/* HEART ICON */}
-    <div className="absolute right-2 top-2 z-20">
-      <Heart
-        size={22}
-        className="text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.5)]"
-      />
-    </div>
+    {/* FAVORITES HEART */}
+    {FEATURES.favorites && Number(id) > 0 && (
+      <div className="absolute right-1 top-1 z-20">
+        <FavoriteButton beachId={Number(id)} />
+      </div>
+    )}
   </>
 )}
 

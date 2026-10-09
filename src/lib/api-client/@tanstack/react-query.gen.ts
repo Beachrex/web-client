@@ -10,12 +10,16 @@ import {
 import { client } from "../client.gen";
 import {
   aa759989C685509Bf36Ff8153A83F,
+  bdaa500E411Fd41304F9C5C828905F,
   calculateDistance,
+  e10Da97131375Fbf16Ec38396Ecf9Bf4,
   e3A9C3C756B5255539Aa1Ab9F3A2A6A8,
+  fc737A971C05555A5Aa9478Cd76E77,
   getAccessibilities,
   getAccessibilityById,
   getAccommodationTypeById,
   getAccommodationTypes,
+  getAppConfig,
   getAreaDescriptionById,
   getAreaDescriptions,
   getBayLengthById,
@@ -58,6 +62,8 @@ import {
   getLocationLengths,
   getMe,
   getMostVisitedBeaches,
+  getMyFavoriteIds,
+  getMyFavorites,
   getNaturalLocationConditionById,
   getNaturalLocationConditions,
   getNearbyCities,
@@ -99,10 +105,16 @@ import {
 import type {
   Aa759989C685509Bf36Ff8153A83fData,
   Aa759989C685509Bf36Ff8153A83fResponse,
+  Bdaa500E411Fd41304F9C5C828905fData,
+  Bdaa500E411Fd41304F9C5C828905fResponse,
   CalculateDistanceData,
+  E10Da97131375Fbf16Ec38396Ecf9Bf4Data,
+  E10Da97131375Fbf16Ec38396Ecf9Bf4Response,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Data,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Error,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Response,
+  Fc737A971C05555A5Aa9478Cd76E77Data,
+  Fc737A971C05555A5Aa9478Cd76E77Response,
   GetAccessibilitiesData,
   GetAccessibilitiesError,
   GetAccessibilitiesResponse,
@@ -115,6 +127,8 @@ import type {
   GetAccommodationTypesData,
   GetAccommodationTypesError,
   GetAccommodationTypesResponse,
+  GetAppConfigData,
+  GetAppConfigResponse,
   GetAreaDescriptionByIdData,
   GetAreaDescriptionByIdError,
   GetAreaDescriptionByIdResponse,
@@ -224,6 +238,10 @@ import type {
   GetMeResponse,
   GetMostVisitedBeachesData,
   GetMostVisitedBeachesResponse,
+  GetMyFavoriteIdsData,
+  GetMyFavoriteIdsResponse,
+  GetMyFavoritesData,
+  GetMyFavoritesResponse,
   GetNaturalLocationConditionByIdData,
   GetNaturalLocationConditionByIdError,
   GetNaturalLocationConditionByIdResponse,
@@ -368,6 +386,62 @@ const createQueryKey = <TOptions extends Options>(
   return [params];
 };
 
+export const e10Da97131375Fbf16Ec38396Ecf9Bf4QueryKey = (
+  options?: Options<E10Da97131375Fbf16Ec38396Ecf9Bf4Data>,
+) => createQueryKey("e10Da97131375Fbf16Ec38396Ecf9Bf4", options);
+
+/**
+ * My itinerary plans (newest first, max 50)
+ */
+export const e10Da97131375Fbf16Ec38396Ecf9Bf4Options = (
+  options?: Options<E10Da97131375Fbf16Ec38396Ecf9Bf4Data>,
+) =>
+  queryOptions<
+    E10Da97131375Fbf16Ec38396Ecf9Bf4Response,
+    DefaultError,
+    E10Da97131375Fbf16Ec38396Ecf9Bf4Response,
+    ReturnType<typeof e10Da97131375Fbf16Ec38396Ecf9Bf4QueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await e10Da97131375Fbf16Ec38396Ecf9Bf4({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: e10Da97131375Fbf16Ec38396Ecf9Bf4QueryKey(options),
+  });
+
+export const fc737A971C05555A5Aa9478Cd76E77QueryKey = (
+  options: Options<Fc737A971C05555A5Aa9478Cd76E77Data>,
+) => createQueryKey("fc737A971C05555A5Aa9478Cd76E77", options);
+
+/**
+ * One of my itinerary plans, with the full plan when done
+ */
+export const fc737A971C05555A5Aa9478Cd76E77Options = (
+  options: Options<Fc737A971C05555A5Aa9478Cd76E77Data>,
+) =>
+  queryOptions<
+    Fc737A971C05555A5Aa9478Cd76E77Response,
+    DefaultError,
+    Fc737A971C05555A5Aa9478Cd76E77Response,
+    ReturnType<typeof fc737A971C05555A5Aa9478Cd76E77QueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await fc737A971C05555A5Aa9478Cd76E77({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: fc737A971C05555A5Aa9478Cd76E77QueryKey(options),
+  });
+
 export const getAccessibilitiesQueryKey = (
   options?: Options<GetAccessibilitiesData>,
 ) => createQueryKey("getAccessibilities", options);
@@ -486,6 +560,33 @@ export const getAccommodationTypeByIdOptions = (
       return data;
     },
     queryKey: getAccommodationTypeByIdQueryKey(options),
+  });
+
+export const getAppConfigQueryKey = (options?: Options<GetAppConfigData>) =>
+  createQueryKey("getAppConfig", options);
+
+/**
+ * Mobile app configuration
+ *
+ * Per platform: the lowest app version still supported (below it the app asks the user to update), the latest version and the store link; plus feature flags. Public, cacheable for 5 minutes.
+ */
+export const getAppConfigOptions = (options?: Options<GetAppConfigData>) =>
+  queryOptions<
+    GetAppConfigResponse,
+    DefaultError,
+    GetAppConfigResponse,
+    ReturnType<typeof getAppConfigQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getAppConfig({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getAppConfigQueryKey(options),
   });
 
 export const getAreaDescriptionsQueryKey = (
@@ -1366,6 +1467,59 @@ export const getCulinaryOfferByIdOptions = (
       return data;
     },
     queryKey: getCulinaryOfferByIdQueryKey(options),
+  });
+
+export const getMyFavoritesQueryKey = (options?: Options<GetMyFavoritesData>) =>
+  createQueryKey("getMyFavorites", options);
+
+/**
+ * My saved beaches (newest first), as beach cards
+ */
+export const getMyFavoritesOptions = (options?: Options<GetMyFavoritesData>) =>
+  queryOptions<
+    GetMyFavoritesResponse,
+    DefaultError,
+    GetMyFavoritesResponse,
+    ReturnType<typeof getMyFavoritesQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getMyFavorites({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getMyFavoritesQueryKey(options),
+  });
+
+export const getMyFavoriteIdsQueryKey = (
+  options?: Options<GetMyFavoriteIdsData>,
+) => createQueryKey("getMyFavoriteIds", options);
+
+/**
+ * Ids of my saved beaches (to show the heart state on any list)
+ */
+export const getMyFavoriteIdsOptions = (
+  options?: Options<GetMyFavoriteIdsData>,
+) =>
+  queryOptions<
+    GetMyFavoriteIdsResponse,
+    DefaultError,
+    GetMyFavoriteIdsResponse,
+    ReturnType<typeof getMyFavoriteIdsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getMyFavoriteIds({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getMyFavoriteIdsQueryKey(options),
   });
 
 export const getBeachFiltersQueryKey = (
@@ -2888,6 +3042,36 @@ export const getWaterbodyByIdOptions = (
       return data;
     },
     queryKey: getWaterbodyByIdQueryKey(options),
+  });
+
+export const bdaa500E411Fd41304F9C5C828905fQueryKey = (
+  options?: Options<Bdaa500E411Fd41304F9C5C828905fData>,
+) => createQueryKey("bdaa500E411Fd41304F9C5C828905F", options);
+
+/**
+ * Itinerary packages and prices
+ *
+ * AI-3: the itinerary packages with their prices, so the website shows the price the checkout will charge.
+ */
+export const bdaa500E411Fd41304F9C5C828905fOptions = (
+  options?: Options<Bdaa500E411Fd41304F9C5C828905fData>,
+) =>
+  queryOptions<
+    Bdaa500E411Fd41304F9C5C828905fResponse,
+    DefaultError,
+    Bdaa500E411Fd41304F9C5C828905fResponse,
+    ReturnType<typeof bdaa500E411Fd41304F9C5C828905fQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await bdaa500E411Fd41304F9C5C828905F({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: bdaa500E411Fd41304F9C5C828905fQueryKey(options),
   });
 
 export const e3A9C3C756B5255539Aa1Ab9F3A2A6A8QueryKey = (

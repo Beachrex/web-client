@@ -949,5 +949,19 @@
     "applyCount": "Applica filtri ({count})",
     "showLess": "Mostra meno",
     "showMore": "Mostra altri {count}…"
+  },
+  "Favorites": {
+    "title": "Le mie spiagge preferite",
+    "add": "Salva nei preferiti",
+    "remove": "Rimuovi dai preferiti",
+    "save": "Salva",
+    "saved": "Salvata",
+    "signInTitle": "Accedi per salvare le spiagge",
+    "signInText": "Le tue spiagge preferite vengono salvate nel tuo account, così le trovi su ogni dispositivo.",
+    "empty": "Non hai ancora salvato nessuna spiaggia. Tocca il cuore di una spiaggia per salvarla.",
+    "browse": "Esplora le spiagge",
+    "limit": "La tua lista dei preferiti è piena. Rimuovi una spiaggia per salvarne un'altra.",
+    "error": "Non è stato possibile salvare la spiaggia. Riprova.",
+    "loadError": "Non è stato possibile caricare le tue spiagge preferite. Riprova."
   }
 }

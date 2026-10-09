@@ -949,5 +949,19 @@
     "applyCount": "Použiť filtre ({count})",
     "showLess": "Zobraziť menej",
     "showMore": "Zobraziť ďalších {count}…"
+  },
+  "Favorites": {
+    "title": "Moje obľúbené pláže",
+    "add": "Uložiť do obľúbených",
+    "remove": "Odstrániť z obľúbených",
+    "save": "Uložiť",
+    "saved": "Uložené",
+    "signInTitle": "Prihláste sa a ukladajte pláže",
+    "signInText": "Obľúbené pláže sa ukladajú do vášho účtu, takže ich nájdete na každom zariadení.",
+    "empty": "Zatiaľ nemáte uložené žiadne pláže. Pláž uložíte ťuknutím na srdiečko.",
+    "browse": "Prehliadať pláže",
+    "limit": "Zoznam obľúbených je plný. Odstráňte pláž, aby ste mohli uložiť inú.",
+    "error": "Pláž sa nepodarilo uložiť. Skúste to znova.",
+    "loadError": "Obľúbené pláže sa nepodarilo načítať. Skúste to znova."
   }
 }

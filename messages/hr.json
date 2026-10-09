@@ -949,5 +949,19 @@
     "applyCount": "Primijeni filtre ({count})",
     "showLess": "Prikaži manje",
     "showMore": "Prikaži još {count}…"
+  },
+  "Favorites": {
+    "title": "Moje omiljene plaže",
+    "add": "Spremi u omiljene",
+    "remove": "Ukloni iz omiljenih",
+    "save": "Spremi",
+    "saved": "Spremljeno",
+    "signInTitle": "Prijavite se kako biste spremili plaže",
+    "signInText": "Omiljene plaže spremaju se na vaš račun pa ih možete pronaći na svakom uređaju.",
+    "empty": "Još niste spremili nijednu plažu. Dodirnite srce na plaži da biste je spremili.",
+    "browse": "Pregledaj plaže",
+    "limit": "Popis omiljenih je pun. Uklonite plažu da biste spremili novu.",
+    "error": "Plažu nije bilo moguće spremiti. Pokušajte ponovno.",
+    "loadError": "Omiljene plaže nije bilo moguće učitati. Pokušajte ponovno."
   }
 }

@@ -949,5 +949,19 @@
     "applyCount": "Filters toepassen ({count})",
     "showLess": "Minder tonen",
     "showMore": "Nog {count} tonen…"
+  },
+  "Favorites": {
+    "title": "Mijn favoriete stranden",
+    "add": "Opslaan als favoriet",
+    "remove": "Verwijderen uit favorieten",
+    "save": "Opslaan",
+    "saved": "Opgeslagen",
+    "signInTitle": "Log in om stranden op te slaan",
+    "signInText": "Je favoriete stranden worden in je account opgeslagen, zodat je ze op elk apparaat terugvindt.",
+    "empty": "Je hebt nog geen stranden opgeslagen. Tik op het hartje bij een strand om het op te slaan.",
+    "browse": "Stranden bekijken",
+    "limit": "Je favorietenlijst is vol. Verwijder een strand om een ander op te slaan.",
+    "error": "Het strand kon niet worden opgeslagen. Probeer het opnieuw.",
+    "loadError": "Je favoriete stranden konden niet worden geladen. Probeer het opnieuw."
   }
 }

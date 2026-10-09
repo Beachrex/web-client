@@ -949,5 +949,19 @@
     "applyCount": "Appliquer les filtres ({count})",
     "showLess": "Afficher moins",
     "showMore": "Afficher {count} de plus…"
+  },
+  "Favorites": {
+    "title": "Mes plages favorites",
+    "add": "Ajouter aux favoris",
+    "remove": "Retirer des favoris",
+    "save": "Enregistrer",
+    "saved": "Enregistrée",
+    "signInTitle": "Connectez-vous pour enregistrer des plages",
+    "signInText": "Vos plages favorites sont enregistrées dans votre compte, vous les retrouvez donc sur tous vos appareils.",
+    "empty": "Vous n'avez encore enregistré aucune plage. Touchez le cœur d'une plage pour l'enregistrer.",
+    "browse": "Parcourir les plages",
+    "limit": "Votre liste de favoris est pleine. Retirez une plage pour en enregistrer une autre.",
+    "error": "La plage n'a pas pu être enregistrée. Veuillez réessayer.",
+    "loadError": "Vos plages favorites n'ont pas pu être chargées. Veuillez réessayer."
   }
 }

@@ -20,12 +20,20 @@ import type {
   Aa759989C685509Bf36Ff8153A83fData,
   Aa759989C685509Bf36Ff8153A83fErrors,
   Aa759989C685509Bf36Ff8153A83fResponses,
+  AddFavoriteData,
+  AddFavoriteErrors,
+  AddFavoriteResponses,
   AiChatData,
   AiChatErrors,
   AiChatResponses,
   B0722F9026Fe14D1F2Be5Ffa1A33E9aData,
   B0722F9026Fe14D1F2Be5Ffa1A33E9aErrors,
   B0722F9026Fe14D1F2Be5Ffa1A33E9aResponses,
+  Bdaa500E411Fd41304F9C5C828905fData,
+  Bdaa500E411Fd41304F9C5C828905fResponses,
+  C6Daa719A01185279387Ae7245D8F72Data,
+  C6Daa719A01185279387Ae7245D8F72Errors,
+  C6Daa719A01185279387Ae7245D8F72Responses,
   CalculateDistanceData,
   CalculateDistanceResponses,
   CountBeachViewData,
@@ -37,9 +45,18 @@ import type {
   D5F3076785B02F519F50Dbec06cData,
   D5F3076785B02F519F50Dbec06cErrors,
   D5F3076785B02F519F50Dbec06cResponses,
+  DeleteMyAccountData,
+  DeleteMyAccountErrors,
+  DeleteMyAccountResponses,
+  E10Da97131375Fbf16Ec38396Ecf9Bf4Data,
+  E10Da97131375Fbf16Ec38396Ecf9Bf4Errors,
+  E10Da97131375Fbf16Ec38396Ecf9Bf4Responses,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Data,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Errors,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Responses,
+  Fc737A971C05555A5Aa9478Cd76E77Data,
+  Fc737A971C05555A5Aa9478Cd76E77Errors,
+  Fc737A971C05555A5Aa9478Cd76E77Responses,
   Ff50Fb7Baeca2626Aeb337957Ff2001Data,
   Ff50Fb7Baeca2626Aeb337957Ff2001Errors,
   Ff50Fb7Baeca2626Aeb337957Ff2001Responses,
@@ -61,6 +78,8 @@ import type {
   GetAccommodationTypesData,
   GetAccommodationTypesErrors,
   GetAccommodationTypesResponses,
+  GetAppConfigData,
+  GetAppConfigResponses,
   GetAreaDescriptionByIdData,
   GetAreaDescriptionByIdErrors,
   GetAreaDescriptionByIdResponses,
@@ -179,6 +198,12 @@ import type {
   GetMostVisitedBeachesData,
   GetMostVisitedBeachesErrors,
   GetMostVisitedBeachesResponses,
+  GetMyFavoriteIdsData,
+  GetMyFavoriteIdsErrors,
+  GetMyFavoriteIdsResponses,
+  GetMyFavoritesData,
+  GetMyFavoritesErrors,
+  GetMyFavoritesResponses,
   GetNaturalLocationConditionByIdData,
   GetNaturalLocationConditionByIdErrors,
   GetNaturalLocationConditionByIdResponses,
@@ -293,6 +318,9 @@ import type {
   RegisterUserData,
   RegisterUserErrors,
   RegisterUserResponses,
+  RemoveFavoriteData,
+  RemoveFavoriteErrors,
+  RemoveFavoriteResponses,
   ResetPasswordData,
   ResetPasswordErrors,
   ResetPasswordResponses,
@@ -381,6 +409,84 @@ export const generateItinerary = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Start a paid itinerary in the background
+ *
+ * Reserves one credit for the trip length and queues the plan. Poll GET /api/v1/me/itinerary-plans/{id} until status is done or failed. Failed plans and plans without the AI narrative give the credit back.
+ */
+export const c6Daa719A01185279387Ae7245D8F72 = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<C6Daa719A01185279387Ae7245D8F72Data, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    C6Daa719A01185279387Ae7245D8F72Responses,
+    C6Daa719A01185279387Ae7245D8F72Errors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/ai/itinerary-plans",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * My itinerary plans (newest first, max 50)
+ */
+export const e10Da97131375Fbf16Ec38396Ecf9Bf4 = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<E10Da97131375Fbf16Ec38396Ecf9Bf4Data, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    E10Da97131375Fbf16Ec38396Ecf9Bf4Responses,
+    E10Da97131375Fbf16Ec38396Ecf9Bf4Errors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/itinerary-plans",
+    ...options,
+  });
+};
+
+/**
+ * One of my itinerary plans, with the full plan when done
+ */
+export const fc737A971C05555A5Aa9478Cd76E77 = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<Fc737A971C05555A5Aa9478Cd76E77Data, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    Fc737A971C05555A5Aa9478Cd76E77Responses,
+    Fc737A971C05555A5Aa9478Cd76E77Errors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/itinerary-plans/{id}",
+    ...options,
+  });
+};
+
+/**
  * Get all accessibility options
  *
  * Retrieve a list of all accessibility options with their translations
@@ -448,6 +554,24 @@ export const getAccommodationTypeById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/accommodation-around/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Mobile app configuration
+ *
+ * Per platform: the lowest app version still supported (below it the app asks the user to update), the latest version and the store link; plus feature flags. Public, cacheable for 5 minutes.
+ */
+export const getAppConfig = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAppConfigData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetAppConfigResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/v1/app-config",
     ...options,
   });
 };
@@ -567,6 +691,34 @@ export const logout = <ThrowOnError extends boolean = false>(
     ],
     url: "/api/v1/auth/logout",
     ...options,
+  });
+};
+
+/**
+ * Delete my account
+ *
+ * Removes personal data (profile, sign-in, tokens, saved beaches, itineraries, AI chat history, credits). Purchases are kept anonymised because accounting law requires it. Confirm with `password`; accounts linked to Google may send `confirm: DELETE` instead. Admin accounts cannot be deleted here.
+ */
+export const deleteMyAccount = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteMyAccountData, ThrowOnError>,
+) => {
+  return (options.client ?? client).delete<
+    DeleteMyAccountResponses,
+    DeleteMyAccountErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 
@@ -1108,6 +1260,98 @@ export const getCulinaryOfferById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/culinary-offers/{id}",
+    ...options,
+  });
+};
+
+/**
+ * My saved beaches (newest first), as beach cards
+ */
+export const getMyFavorites = <ThrowOnError extends boolean = false>(
+  options?: Options<GetMyFavoritesData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetMyFavoritesResponses,
+    GetMyFavoritesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/favorites",
+    ...options,
+  });
+};
+
+/**
+ * Save a beach (idempotent)
+ */
+export const addFavorite = <ThrowOnError extends boolean = false>(
+  options: Options<AddFavoriteData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    AddFavoriteResponses,
+    AddFavoriteErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/favorites",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Ids of my saved beaches (to show the heart state on any list)
+ */
+export const getMyFavoriteIds = <ThrowOnError extends boolean = false>(
+  options?: Options<GetMyFavoriteIdsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetMyFavoriteIdsResponses,
+    GetMyFavoriteIdsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/favorites/ids",
+    ...options,
+  });
+};
+
+/**
+ * Remove a saved beach (idempotent)
+ */
+export const removeFavorite = <ThrowOnError extends boolean = false>(
+  options: Options<RemoveFavoriteData, ThrowOnError>,
+) => {
+  return (options.client ?? client).delete<
+    RemoveFavoriteResponses,
+    RemoveFavoriteErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/favorites/{beachId}",
     ...options,
   });
 };
@@ -2239,6 +2483,26 @@ export const getWaterbodyById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/waterbodies/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Itinerary packages and prices
+ *
+ * AI-3: the itinerary packages with their prices, so the website shows the price the checkout will charge.
+ */
+export const bdaa500E411Fd41304F9C5C828905F = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<Bdaa500E411Fd41304F9C5C828905fData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    Bdaa500E411Fd41304F9C5C828905fResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/v1/payments/products",
     ...options,
   });
 };

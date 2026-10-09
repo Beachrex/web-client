@@ -949,5 +949,19 @@
     "applyCount": "Apliko filtrat ({count})",
     "showLess": "Shfaq më pak",
     "showMore": "Shfaq edhe {count}…"
+  },
+  "Favorites": {
+    "title": "Plazhet e mia të preferuara",
+    "add": "Ruaj te të preferuarat",
+    "remove": "Hiq nga të preferuarat",
+    "save": "Ruaj",
+    "saved": "U ruajt",
+    "signInTitle": "Hyni për të ruajtur plazhe",
+    "signInText": "Plazhet tuaja të preferuara ruhen në llogarinë tuaj, kështu që i gjeni në çdo pajisje.",
+    "empty": "Ende nuk keni ruajtur asnjë plazh. Prekni zemrën te një plazh për ta ruajtur.",
+    "browse": "Shfletoni plazhet",
+    "limit": "Lista e të preferuarave është plot. Hiqni një plazh për të ruajtur një tjetër.",
+    "error": "Plazhi nuk u ruajt dot. Ju lutemi provoni përsëri.",
+    "loadError": "Plazhet e preferuara nuk u ngarkuan dot. Ju lutemi provoni përsëri."
   }
 }

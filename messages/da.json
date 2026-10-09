@@ -949,5 +949,19 @@
     "applyCount": "Anvend filtre ({count})",
     "showLess": "Vis mindre",
     "showMore": "Vis {count} mere …"
+  },
+  "Favorites": {
+    "title": "Mine favoritstrande",
+    "add": "Gem som favorit",
+    "remove": "Fjern fra favoritter",
+    "save": "Gem",
+    "saved": "Gemt",
+    "signInTitle": "Log ind for at gemme strande",
+    "signInText": "Dine favoritstrande gemmes på din konto, så du kan finde dem på alle enheder.",
+    "empty": "Du har ikke gemt nogen strande endnu. Tryk på hjertet ved en strand for at gemme den.",
+    "browse": "Se strande",
+    "limit": "Din favoritliste er fuld. Fjern en strand for at gemme en ny.",
+    "error": "Stranden kunne ikke gemmes. Prøv igen.",
+    "loadError": "Dine favoritstrande kunne ikke indlæses. Prøv igen."
   }
 }
