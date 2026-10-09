@@ -58,3 +58,24 @@ test('new chat texts exist in all 19 locales', () => {
     expect(chat.match, file).toContain('{percent}');
   }
 });
+
+test('agent markdown: own links become relative, foreign links stay text, bold and list lines', async () => {
+  const { parseAgentMarkdown } = await import('@/lib/utils/ai-chat');
+  const lines = parseAgentMarkdown(
+    'Priporočam [Plaža Bačvice](https://dev.beachrex.com/si/plaze/evropa/hrvaska/split/plaza-bacvice) — **pesek**.\n'
+    + '- [Zlatni rat](https://beachrex.com/si/plaze/evropa/hrvaska/bol/zlatni-rat)\n'
+    + '- [Zlo](https://evil.example/phish) <script>x</script>',
+    'https://dev.beachrex.com',
+  );
+
+  expect(lines[0]).toEqual([
+    { text: 'Priporočam ' },
+    { text: 'Plaža Bačvice', href: '/si/plaze/evropa/hrvaska/split/plaza-bacvice' },
+    { text: ' — ' },
+    { text: 'pesek', bold: true },
+    { text: '.' },
+  ]);
+  expect(lines[1]).toEqual([{ text: '• ' }, { text: 'Zlatni rat', href: '/si/plaze/evropa/hrvaska/bol/zlatni-rat' }]);
+  expect(lines[2].find((p) => p.text === 'Zlo')?.href).toBeUndefined();
+  expect(lines[2].map((p) => p.text).join('')).toContain('<script>x</script>'); // rendered as text by React, never as HTML
+});

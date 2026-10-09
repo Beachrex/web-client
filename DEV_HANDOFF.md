@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – AI chat (AI-2, web): agent answers with links ✅ COMPLETE
+
+When the backend chat runs as the tool-calling agent (`AI_CHAT_ENGINE=agent`, backend AI-2), answers come with `format: "markdown"` and links `[Beach](https://…/si/plaze/…)`. `parseAgentMarkdown()` (`src/lib/utils/ai-chat.ts`) renders them safely: links only to our own site (made relative, so they work on dev/uat/prod), `**bold**`, `- ` list lines; foreign links stay plain text; no HTML is ever injected. Plain answers (pipeline engine) keep the beach-name linking. Test: `e2e/ai-chat.unit.spec.ts`.
+
 ## 2026-10-09 – "Browse all beaches": right beaches, one server page at a time, first page in the HTML ✅ COMPLETE
 
 Owner (Risskov DK, Murter HR): the list showed beaches of every country and took seconds to load. Causes: the place **slug** was sent as `city=`/`region=`/`island=` (the API filters by code and ignored it), the hook downloaded **every** beach (API default 5000) and the browser sliced 16 per page; the sort dropdown was not wired; "Top rated" had no ratings behind it. Backend: Beachrex/backend#73 (`page`, `per_page`, `sort`, pagination meta, place aliases).

@@ -22,6 +22,8 @@ export interface ChatBeach {
 export interface ChatReply {
   session_id: string;
   message: string;
+  /** 'markdown' when the tool-calling agent answered (links as [name](url)); plain text otherwise. */
+  format?: 'markdown' | 'text';
   beaches?: ChatBeach[];
   suggestions?: string[];
 }
@@ -98,4 +100,44 @@ export function linkBeachNames(text: string, beaches: ChatBeach[] | undefined): 
       const beach = byName.get(part.toLocaleLowerCase());
       return beach ? { text: part, beach } : { text: part };
     });
+}
+
+export interface RichPart {
+  text: string;
+  href?: string;
+  bold?: boolean;
+}
+
+/**
+ * Minimal, safe rendering of the agent's markdown: [text](url) links to our own site only (made relative so
+ * they work on every environment), **bold**, and "- " list lines. Anything else stays plain text; no HTML.
+ */
+export function parseAgentMarkdown(text: string, siteOrigin: string): RichPart[][] {
+  const origin = siteOrigin.replace(/\/+$/, '');
+  const ownPath = (url: string): string | null => {
+    if (url.startsWith('/') && !url.startsWith('//')) return url;
+    if (origin && url.startsWith(`${origin}/`)) return url.slice(origin.length);
+    const match = /^https:\/\/(?:[a-z0-9-]+\.)?beachrex\.com(\/[^\s]*)$/i.exec(url);
+    return match?.[1] ?? null;
+  };
+
+  return text.split(/\r?\n/).map((rawLine) => {
+    const line = rawLine.replace(/^\s*[-*]\s+/, '• ');
+    const parts: RichPart[] = [];
+    const pattern = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*/g;
+    let last = 0;
+    let m: RegExpExecArray | null;
+    while ((m = pattern.exec(line)) !== null) {
+      if (m.index > last) parts.push({ text: line.slice(last, m.index) });
+      if (m[1] !== undefined && m[2] !== undefined) {
+        const href = ownPath(m[2]);
+        parts.push(href ? { text: m[1], href } : { text: m[1] });
+      } else if (m[3] !== undefined) {
+        parts.push({ text: m[3], bold: true });
+      }
+      last = m.index + m[0].length;
+    }
+    if (last < line.length) parts.push({ text: line.slice(last) });
+    return parts;
+  });
 }
