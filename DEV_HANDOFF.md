@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Phones: no zoom or sideways scroll when typing ✅ COMPLETE
+
+On the owner's iPhone the AI chat page scrolled sideways after tapping the message field. The cause: iOS Safari zooms in when a field with a font size below 16 px gets focus. Measured at 390 px: header search 12 px, chat textarea 14 px, e-mail field 14 px. Without focus there was no overflow (`scrollWidth` = 390).
+
+`src/styles/globals.css`: under 768 px, text fields, textareas and selects use 16 px (`!important`, so it overrides `text-sm`/`text-xs`). After the fix all three measure 16 px and there is no overflow on the chat page or the home page.
+
 ## 2026-10-09 – Beach map page on phones: smooth, map closes, real filters button ✅ COMPLETE
 
 `src/components/Map/MapWithSidebar.tsx` (owner report from an iPhone):
