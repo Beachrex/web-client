@@ -69,3 +69,9 @@ test('header search bar: accommodation and shop are gated in every layout (mobil
   expect(source).not.toContain('logo_dark.png');
   expect(source).toContain('/brand/BeachRex_CGP/01_Logo/Horizontal/SVG/beachrex_horizontal_color.svg');
 });
+
+test('city page category tiles (no click action) are hidden for launch', () => {
+  const page = readFileSync(join(process.cwd(), 'src/components/Pages/CityListingPage.tsx'), 'utf8');
+  expect(page).toContain('{FEATURES.cityCategoryTiles && <CityCategories />}');
+  expect(readFileSync(join(process.cwd(), 'src/lib/constants/features.ts'), 'utf8')).toContain('cityCategoryTiles: false');
+});
