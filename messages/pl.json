@@ -751,7 +751,6 @@
       "progressBeaches": "Szukamy plaż pasujących do Twoich życzeń…",
       "progressRoute": "Planujemy trasę dzień po dniu…",
       "progressTips": "Piszemy wskazówki do każdej plaży…",
-      "progressNote": "Zwykle trwa to 20–60 sekund. Nie zamykaj tej strony.",
       "signInToStart": "Zaloguj się, aby kupić i utworzyć plan.",
       "generate": "Utwórz mój plan",
       "usesOnePlan": "Wykorzystuje jeden z Twoich planów na {days} dni.",
@@ -775,7 +774,24 @@
       "tip": "Wskazówka",
       "travelKm": "Tego dnia około {km} km jazdy.",
       "assumptions": "Warto wiedzieć",
-      "newPlan": "Zaplanuj kolejną podróż"
+      "newPlan": "Zaplanuj kolejną podróż",
+      "plans": {
+        "title": "Moje plany",
+        "empty": "Nie masz jeszcze planów. Utwórz pierwszy.",
+        "untitled": "Podróż na {days} dni ({country})",
+        "notFound": "Ten plan nie istnieje lub należy do innego konta.",
+        "waitNote": "Możesz zamknąć tę stronę: plan zostanie zapisany w Moich planach, gdy będzie gotowy.",
+        "status": {
+          "running": "W przygotowaniu",
+          "done": "Gotowy",
+          "failed": "Nie utworzono"
+        },
+        "failed": {
+          "notEnoughBeaches": "Do tej podróży pasuje za mało plaż. Plan nie został wykorzystany: wybierz cały kraj, mniej życzeń lub krótszą podróż.",
+          "timeout": "Tworzenie planu trwało zbyt długo. Plan nie został wykorzystany, spróbuj ponownie.",
+          "error": "Coś poszło nie tak. Plan nie został wykorzystany, spróbuj ponownie."
+        }
+      }
     },
     "entitlements": {
       "title": "Moje kredyty",

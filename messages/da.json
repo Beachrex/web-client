@@ -751,7 +751,6 @@
       "progressBeaches": "Vi finder strande, der passer til dine ønsker …",
       "progressRoute": "Vi planlægger ruten dag for dag …",
       "progressTips": "Vi skriver tips til hver strand …",
-      "progressNote": "Det tager normalt 20–60 sekunder. Hold siden åben.",
       "signInToStart": "Log ind for at købe og lave din plan.",
       "generate": "Lav min plan",
       "usesOnePlan": "Bruger en af dine {days}-dages planer.",
@@ -775,7 +774,24 @@
       "tip": "Tip",
       "travelKm": "Cirka {km} km kørsel denne dag.",
       "assumptions": "Godt at vide",
-      "newPlan": "Planlæg en ny rejse"
+      "newPlan": "Planlæg en ny rejse",
+      "plans": {
+        "title": "Mine planer",
+        "empty": "Du har ingen planer endnu. Lav din første.",
+        "untitled": "Rejse på {days} dage ({country})",
+        "notFound": "Denne plan findes ikke eller tilhører en anden konto.",
+        "waitNote": "Du kan lukke siden: planen gemmes under Mine planer, når den er klar.",
+        "status": {
+          "running": "Under udarbejdelse",
+          "done": "Klar",
+          "failed": "Ikke lavet"
+        },
+        "failed": {
+          "notEnoughBeaches": "For få strande passer til denne rejse. Planen blev ikke brugt: prøv hele landet, færre ønsker eller en kortere rejse.",
+          "timeout": "Det tog for lang tid at lave planen. Planen blev ikke brugt, prøv igen.",
+          "error": "Noget gik galt. Planen blev ikke brugt, prøv igen."
+        }
+      }
     },
     "entitlements": {
       "title": "Min kredit",

@@ -107,3 +107,21 @@ test('every planner text exists in all 19 languages with the same placeholders',
     for (const k of Object.keys(en)) expect(vars(other[k]!), `${f} ${k}`).toBe(vars(en[k]!));
   }
 });
+
+test('background plans: finished states, failure messages and polling pace', async () => {
+  const { isFinished, planFailureKey, pollDelayMs } = await import('@/lib/utils/itinerary');
+
+  expect(['queued', 'running', 'done', 'failed'].map((s) => isFinished(s as 'queued'))).toEqual([false, false, true, true]);
+  expect(planFailureKey('not_enough_beaches')).toBe('notEnoughBeaches');
+  expect(planFailureKey('timeout')).toBe('timeout');
+  expect(planFailureKey(null)).toBe('error');
+  expect(pollDelayMs(5_000)).toBe(3_000);
+  expect(pollDelayMs(90_000)).toBe(10_000);
+});
+
+test('the planner starts a background plan and opens its page; the plan page polls the owner-only endpoint', () => {
+  const page = readFileSync(join(root, 'src/app/[locale]/ai/itinerary/page.tsx'), 'utf8');
+  expect(page).toContain('/api/v1/ai/itinerary-plans');
+  expect(page).toContain('router.push(`/ai/itinerary/plans/${data.id}`)');
+  expect(readFileSync(join(root, 'src/components/Itinerary/ItineraryPlanPage.tsx'), 'utf8')).toContain('/api/v1/me/itinerary-plans/');
+});

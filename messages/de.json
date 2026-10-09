@@ -751,7 +751,6 @@
       "progressBeaches": "Wir suchen Strände, die zu Ihren Wünschen passen …",
       "progressRoute": "Wir planen die Route Tag für Tag …",
       "progressTips": "Wir schreiben Tipps für jeden Strand …",
-      "progressNote": "Das dauert meist 20–60 Sekunden. Bitte lassen Sie diese Seite geöffnet.",
       "signInToStart": "Melden Sie sich an, um Ihren Plan zu kaufen und zu erstellen.",
       "generate": "Meinen Plan erstellen",
       "usesOnePlan": "Verbraucht einen Ihrer {days}-Tage-Pläne.",
@@ -775,7 +774,24 @@
       "tip": "Tipp",
       "travelKm": "An diesem Tag etwa {km} km Fahrt.",
       "assumptions": "Gut zu wissen",
-      "newPlan": "Neue Reise planen"
+      "newPlan": "Neue Reise planen",
+      "plans": {
+        "title": "Meine Pläne",
+        "empty": "Sie haben noch keine Pläne. Erstellen Sie Ihren ersten.",
+        "untitled": "{days}-Tage-Reise ({country})",
+        "notFound": "Dieser Plan existiert nicht oder gehört zu einem anderen Konto.",
+        "waitNote": "Sie können diese Seite schließen: Der Plan wird unter Meine Pläne gespeichert, sobald er fertig ist.",
+        "status": {
+          "running": "Wird erstellt",
+          "done": "Fertig",
+          "failed": "Nicht erstellt"
+        },
+        "failed": {
+          "notEnoughBeaches": "Zu wenige Strände passen zu dieser Reise. Der Plan wurde nicht verbraucht: Versuchen Sie das ganze Land, weniger Wünsche oder eine kürzere Reise.",
+          "timeout": "Die Erstellung hat zu lange gedauert. Der Plan wurde nicht verbraucht, bitte versuchen Sie es erneut.",
+          "error": "Etwas ist schiefgelaufen. Der Plan wurde nicht verbraucht, bitte versuchen Sie es erneut."
+        }
+      }
     },
     "entitlements": {
       "title": "Meine Credits",

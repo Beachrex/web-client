@@ -162,3 +162,81 @@ export function clearSavedForm(): void {
     // ignore
   }
 }
+
+/** One beach of a generated plan (POST /ai/itineraries, GET /me/itinerary-plans/{id}). */
+export interface PlanBeach {
+  id: number;
+  name: string;
+  slug?: string;
+  city?: string | null;
+  surface?: string | null;
+  facilities?: string[];
+  main_image?: string | null;
+  continent_slug?: string | null;
+  country_slug?: string | null;
+  region_slug?: string | null;
+  island_slug?: string | null;
+  city_slug?: string | null;
+}
+
+export interface PlanItem {
+  type: string;
+  time_block: string;
+  beach?: PlanBeach;
+  notes: string;
+  why: string | null;
+}
+
+export interface Plan {
+  title: string;
+  summary: string;
+  duration_days: number;
+  days: {
+    day_number: number;
+    theme: string;
+    base_area: string | null;
+    items: PlanItem[];
+    logistics: {
+      estimated_travel_km: number;
+      parking_notes: string | null;
+      accessibility_notes: string | null;
+      notes?: string | null;
+    };
+  }[];
+  assumptions: string[];
+  metadata: { narrative?: 'llm' | 'fallback'; credit_used?: boolean };
+}
+
+/** A background plan (AI-3): POST /ai/itinerary-plans, GET /me/itinerary-plans(/{id}). */
+export type PlanStatus = 'queued' | 'running' | 'done' | 'failed';
+
+export interface PlanSummary {
+  id: string;
+  status: PlanStatus;
+  country_code: string;
+  region_slug: string | null;
+  duration_days: number;
+  title: string | null;
+  error: 'not_enough_beaches' | 'error' | 'timeout' | null;
+  credit_used: boolean;
+  created_at: string;
+  finished_at: string | null;
+  itinerary?: Plan | null;
+}
+
+export function isFinished(status: PlanStatus): boolean {
+  return status === 'done' || status === 'failed';
+}
+
+/** Message key under AI.itinerary.plans.failed for a failed plan. */
+export function planFailureKey(error: PlanSummary['error']): 'notEnoughBeaches' | 'timeout' | 'error' {
+  if (error === 'not_enough_beaches') return 'notEnoughBeaches';
+  if (error === 'timeout') return 'timeout';
+
+  return 'error';
+}
+
+/** Poll every 3 s for the first minute, then every 10 s (a 14-day plan can take two minutes). */
+export function pollDelayMs(elapsedMs: number): number {
+  return elapsedMs < 60_000 ? 3_000 : 10_000;
+}

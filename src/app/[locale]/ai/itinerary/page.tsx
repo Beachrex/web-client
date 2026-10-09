@@ -1,15 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { Alert, Button, Card, Label, Select } from 'flowbite-react';
 import { Check, MapPin } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { SignInOptions, UserProfile, LogoutButton } from '@/components/Auth';
-import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
-import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { Link, useRouter } from '@/i18n/routing';
 import {
   DEFAULT_FORM,
   INTERESTS,
@@ -30,6 +27,7 @@ import {
   type ItineraryErrorKey,
   type ItineraryForm,
   type ItineraryProduct,
+  type PlanSummary,
 } from '@/lib/utils/itinerary';
 import { env } from '@/env';
 
@@ -38,56 +36,11 @@ import { env } from '@/env';
  * package with its real price, and a few wishes. Every beach in the plan links to its Beachrex page.
  */
 
-interface PlanBeach {
-  id: number;
-  name: string;
-  slug?: string;
-  city?: string | null;
-  surface?: string | null;
-  facilities?: string[];
-  main_image?: string | null;
-  continent_slug?: string | null;
-  country_slug?: string | null;
-  region_slug?: string | null;
-  island_slug?: string | null;
-  city_slug?: string | null;
-}
-
-interface PlanItem {
-  type: string;
-  time_block: string;
-  beach?: PlanBeach;
-  notes: string;
-  why: string | null;
-}
-
-interface Plan {
-  title: string;
-  summary: string;
-  duration_days: number;
-  days: {
-    day_number: number;
-    theme: string;
-    base_area: string | null;
-    items: PlanItem[];
-    logistics: {
-      estimated_travel_km: number;
-      parking_notes: string | null;
-      accessibility_notes: string | null;
-      notes?: string | null;
-    };
-  }[];
-  assumptions: string[];
-  metadata: { narrative?: 'llm' | 'fallback'; credit_used?: boolean };
-}
-
 interface Place {
   code: string;
   name: string;
   slug: string;
 }
-
-const PROGRESS_STEPS = ['progressBeaches', 'progressRoute', 'progressTips'] as const;
 
 export default function AIItineraryPage() {
   const { isAuthenticated, user, token } = useAuth();
@@ -100,9 +53,8 @@ export default function AIItineraryPage() {
   const [products, setProducts] = useState<ItineraryProduct[]>([]);
   const [credits, setCredits] = useState<Credits | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<ItineraryErrorKey | 'purchaseError' | null>(null);
-  const [plan, setPlan] = useState<Plan | null>(null);
+  const router = useRouter();
 
   const api = env.NEXT_PUBLIC_API_ENDPOINT;
   const headers = useCallback(
@@ -172,37 +124,30 @@ export default function AIItineraryPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, fetchCredits]);
 
-  useEffect(() => {
-    if (!isLoading) return;
-    setProgress(0);
-    const timer = setInterval(() => setProgress((p) => Math.min(p + 1, PROGRESS_STEPS.length - 1)), 8000);
-    return () => clearInterval(timer);
-  }, [isLoading]);
-
   const product = productFor(products, form.days);
   const available = credits?.[form.days] ?? 0;
 
+  // AI-3: the plan is generated in the background (a 14-day plan can take two minutes); its page shows progress.
   const handleGenerate = async () => {
     if (!form.countryCode || isLoading) return;
     setIsLoading(true);
     setError(null);
-    setPlan(null);
     try {
-      const r = await fetch(`${api}/api/v1/ai/itineraries`, {
+      const r = await fetch(`${api}/api/v1/ai/itinerary-plans`, {
         method: 'POST',
         headers: headers(true),
         body: JSON.stringify(buildItineraryRequest(form)),
       });
       if (!r.ok) {
         setError(itineraryErrorKey(r.status, (await r.json().catch(() => ({}))) as { error?: string }));
+        setIsLoading(false);
         return;
       }
-      setPlan((await r.json()) as Plan);
+      const { data } = (await r.json()) as { data: PlanSummary };
       clearSavedForm();
-      void fetchCredits();
+      router.push(`/ai/itinerary/plans/${data.id}`);
     } catch {
       setError('error');
-    } finally {
       setIsLoading(false);
     }
   };
@@ -239,6 +184,9 @@ export default function AIItineraryPage() {
           <div>
             {isAuthenticated && user ? (
               <div className="flex items-center space-x-4">
+                <Link href="/ai/itinerary/plans" className="text-sm font-medium text-blue-700 hover:underline">
+                  {t('plans.title')}
+                </Link>
                 <UserProfile showEmail={false} />
                 <LogoutButton variant="link" />
               </div>
@@ -248,8 +196,7 @@ export default function AIItineraryPage() {
           </div>
         </div>
 
-        {!plan && (
-          <Card className="mb-6">
+        <Card className="mb-6">
             <div className="space-y-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
@@ -415,8 +362,7 @@ export default function AIItineraryPage() {
               {isLoading ? (
                 <div className="rounded-lg bg-blue-50 p-4 text-center" role="status">
                   <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
-                  <p className="font-medium text-blue-900">{t(PROGRESS_STEPS[progress])}</p>
-                  <p className="mt-1 text-sm text-blue-800">{t('progressNote')}</p>
+                  <p className="font-medium text-blue-900">{t('progressBeaches')}</p>
                 </div>
               ) : !isAuthenticated ? (
                 <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
@@ -449,87 +395,7 @@ onClick={() => void handleBuy()} disabled={!form.countryCode || !product}
               )}
             </div>
           </Card>
-        )}
 
-        {plan && (
-          <div className="space-y-6">
-            <Card>
-              <h2 className="text-2xl font-bold text-gray-900">{plan.title}</h2>
-              <p className="text-gray-700">{plan.summary}</p>
-              {plan.metadata.narrative === 'fallback' && (
-                <Alert color="warning">{t('fallbackNote')}</Alert>
-              )}
-            </Card>
-
-            {plan.days.map((day) => (
-              <Card key={day.day_number}>
-                <h3 className="text-xl font-semibold text-gray-900">
-                  {t('day', { number: day.day_number })}: {day.theme}
-                </h3>
-                <div className="space-y-4">
-                  {day.items.map((item, idx) => {
-                    const href = item.beach ? buildBeachUrlFromSchema(item.beach, locale) : null;
-                    const image = item.beach?.main_image ? buildCdnUrl(item.beach.main_image, 'list') : null;
-                    return (
-                      <div key={idx} className="flex flex-col gap-3 border-l-4 border-blue-500 pl-4 sm:flex-row">
-                        {image && (
-                          <div className="relative h-32 w-full flex-shrink-0 overflow-hidden rounded-md sm:w-44">
-                            <Image
-src={image} alt={item.beach?.name ?? ''} fill
-className="object-cover" sizes="(max-width: 640px) 100vw, 176px"
-                            />
-                          </div>
-                        )}
-                        <div className="min-w-0">
-                          <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                            {t(`timeBlock.${['morning', 'afternoon', 'evening'].includes(item.time_block) ? item.time_block : 'afternoon'}`)}
-                          </p>
-                          {item.beach ? (
-                            <h4 className="text-lg font-semibold">
-                              {href ? (
-                                <Link href={href} target="_blank" className="text-blue-700 hover:underline">
-                                  {item.beach.name}
-                                </Link>
-                              ) : (
-                                item.beach.name
-                              )}
-                              {item.beach.city && <span className="ml-2 text-sm font-normal text-gray-500">{item.beach.city}</span>}
-                            </h4>
-                          ) : (
-                            <h4 className="text-lg font-semibold text-gray-900">{t('tip')}</h4>
-                          )}
-                          <p className="text-gray-700">{item.notes}</p>
-                          {item.why && <p className="mt-1 text-sm text-gray-600">{item.why}</p>}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="space-y-1 rounded-md bg-gray-50 p-3 text-sm text-gray-700">
-                  {day.logistics.estimated_travel_km > 0 && <p>{t('travelKm', { km: Math.round(day.logistics.estimated_travel_km) })}</p>}
-                  {day.logistics.parking_notes && <p>{day.logistics.parking_notes}</p>}
-                  {day.logistics.accessibility_notes && <p>{day.logistics.accessibility_notes}</p>}
-                  {day.logistics.notes && <p>{day.logistics.notes}</p>}
-                </div>
-              </Card>
-            ))}
-
-            {plan.assumptions.length > 0 && (
-              <Card>
-                <h4 className="font-medium text-gray-900">{t('assumptions')}</h4>
-                <ul className="list-inside list-disc text-sm text-gray-600">
-                  {plan.assumptions.map((a, i) => (
-                    <li key={i}>{a}</li>
-                  ))}
-                </ul>
-              </Card>
-            )}
-
-            <Button color="light" onClick={() => setPlan(null)}>
-              {t('newPlan')}
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );

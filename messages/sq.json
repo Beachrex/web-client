@@ -751,7 +751,6 @@
       "progressBeaches": "Po kërkojmë plazhe sipas dëshirave tuaja…",
       "progressRoute": "Po planifikojmë itinerarin ditë pas dite…",
       "progressTips": "Po shkruajmë këshilla për çdo plazh…",
-      "progressNote": "Zakonisht zgjat 20–60 sekonda. Mbajeni këtë faqe të hapur.",
       "signInToStart": "Hyni për të blerë dhe krijuar planin tuaj.",
       "generate": "Krijo planin tim",
       "usesOnePlan": "Përdor një nga planet tuaja {days}-ditore.",
@@ -775,7 +774,24 @@
       "tip": "Këshillë",
       "travelKm": "Rreth {km} km udhëtim me makinë këtë ditë.",
       "assumptions": "Mirë të dini",
-      "newPlan": "Planifikoni një udhëtim tjetër"
+      "newPlan": "Planifikoni një udhëtim tjetër",
+      "plans": {
+        "title": "Planet e mia",
+        "empty": "Ende nuk keni plane. Krijoni të parin.",
+        "untitled": "Udhëtim {days}-ditor ({country})",
+        "notFound": "Ky plan nuk ekziston ose i përket një llogarie tjetër.",
+        "waitNote": "Mund ta mbyllni këtë faqe: plani ruhet te Planet e mia kur të jetë gati.",
+        "status": {
+          "running": "Po krijohet",
+          "done": "Gati",
+          "failed": "Nuk u krijua"
+        },
+        "failed": {
+          "notEnoughBeaches": "Shumë pak plazhe përputhen me këtë udhëtim. Plani nuk u përdor: provoni të gjithë shtetin, më pak dëshira ose një udhëtim më të shkurtër.",
+          "timeout": "Krijimi i planit zgjati shumë. Plani nuk u përdor, provoni përsëri.",
+          "error": "Diçka shkoi keq. Plani nuk u përdor, provoni përsëri."
+        }
+      }
     },
     "entitlements": {
       "title": "Kreditë e mia",

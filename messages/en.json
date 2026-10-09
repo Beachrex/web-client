@@ -751,7 +751,6 @@
       "progressBeaches": "Finding beaches that match your wishes…",
       "progressRoute": "Planning the route day by day…",
       "progressTips": "Writing tips for each beach…",
-      "progressNote": "This usually takes 20–60 seconds. Please keep this page open.",
       "signInToStart": "Sign in to buy and create your plan.",
       "generate": "Create my plan",
       "usesOnePlan": "Uses one of your {days}-day plans.",
@@ -775,7 +774,24 @@
       "tip": "Tip",
       "travelKm": "About {km} km of driving this day.",
       "assumptions": "Good to know",
-      "newPlan": "Plan another trip"
+      "newPlan": "Plan another trip",
+      "plans": {
+        "title": "My plans",
+        "empty": "You have no plans yet. Create your first one.",
+        "untitled": "{days}-day trip ({country})",
+        "notFound": "This plan does not exist or belongs to another account.",
+        "waitNote": "You can close this page: the plan is saved under My plans when it is ready.",
+        "status": {
+          "running": "Being created",
+          "done": "Ready",
+          "failed": "Not created"
+        },
+        "failed": {
+          "notEnoughBeaches": "Not enough beaches matched this trip. The plan was not used: try the whole country, fewer wishes or a shorter trip.",
+          "timeout": "Creating the plan took too long. The plan was not used, please try again.",
+          "error": "Something went wrong. The plan was not used, please try again."
+        }
+      }
     },
     "entitlements": {
       "title": "My Credits",

@@ -761,7 +761,6 @@
       "progressBeaches": "Iščemo plaže, ki ustrezajo vašim željam …",
       "progressRoute": "Načrtujemo pot za vsak dan …",
       "progressTips": "Pišemo nasvete za vsako plažo …",
-      "progressNote": "Običajno traja 20–60 sekund. Pustite to stran odprto.",
       "signInToStart": "Prijavite se, da kupite in ustvarite načrt.",
       "generate": "Ustvari moj načrt",
       "usesOnePlan": "Porabi enega od vaših {days}-dnevnih načrtov.",
@@ -785,7 +784,24 @@
       "tip": "Nasvet",
       "travelKm": "Ta dan približno {km} km vožnje.",
       "assumptions": "Dobro je vedeti",
-      "newPlan": "Načrtuj novo potovanje"
+      "newPlan": "Načrtuj novo potovanje",
+      "plans": {
+        "title": "Moji načrti",
+        "empty": "Še nimate načrtov. Ustvarite prvega.",
+        "untitled": "{days}-dnevno potovanje ({country})",
+        "notFound": "Ta načrt ne obstaja ali pripada drugemu računu.",
+        "waitNote": "To stran lahko zaprete: načrt bo shranjen med Mojimi načrti, ko bo pripravljen.",
+        "status": {
+          "running": "V pripravi",
+          "done": "Pripravljen",
+          "failed": "Ni ustvarjen"
+        },
+        "failed": {
+          "notEnoughBeaches": "Za to potovanje se ujema premalo plaž. Načrt ni bil porabljen: poskusite s celo državo, manj željami ali krajšim potovanjem.",
+          "timeout": "Priprava načrta je trajala predolgo. Načrt ni bil porabljen, poskusite znova.",
+          "error": "Prišlo je do napake. Načrt ni bil porabljen, poskusite znova."
+        }
+      }
     },
     "entitlements": {
       "title": "Moji krediti",

@@ -751,7 +751,6 @@
       "progressBeaches": "Az Ön kívánságainak megfelelő strandokat keresünk…",
       "progressRoute": "Napról napra megtervezzük az útvonalat…",
       "progressTips": "Minden strandhoz tippeket írunk…",
-      "progressNote": "Ez általában 20–60 másodpercig tart. Kérjük, hagyja nyitva ezt az oldalt.",
       "signInToStart": "Jelentkezzen be a terv megvásárlásához és elkészítéséhez.",
       "generate": "Tervem elkészítése",
       "usesOnePlan": "Felhasználja egyik {days} napos tervét.",
@@ -775,7 +774,24 @@
       "tip": "Tipp",
       "travelKm": "Ezen a napon kb. {km} km vezetés.",
       "assumptions": "Jó tudni",
-      "newPlan": "Új út tervezése"
+      "newPlan": "Új út tervezése",
+      "plans": {
+        "title": "Terveim",
+        "empty": "Még nincs terve. Készítse el az elsőt.",
+        "untitled": "{days} napos út ({country})",
+        "notFound": "Ez a terv nem létezik, vagy egy másik fiókhoz tartozik.",
+        "waitNote": "Bezárhatja ezt az oldalt: a terv a Terveim között lesz, amint elkészül.",
+        "status": {
+          "running": "Készül",
+          "done": "Kész",
+          "failed": "Nem készült el"
+        },
+        "failed": {
+          "notEnoughBeaches": "Túl kevés strand illik ehhez az úthoz. A terv nem lett felhasználva: próbálja az egész országot, kevesebb kívánságot vagy rövidebb utat.",
+          "timeout": "A terv elkészítése túl sokáig tartott. A terv nem lett felhasználva, próbálja újra.",
+          "error": "Hiba történt. A terv nem lett felhasználva, próbálja újra."
+        }
+      }
     },
     "entitlements": {
       "title": "Kreditjeim",
