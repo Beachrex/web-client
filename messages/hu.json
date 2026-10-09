@@ -710,28 +710,72 @@
       "errorTooLong": "Az üzenet túl hosszú. Rövidítsd le."
     },
     "itinerary": {
-      "title": "Strand útvonalterv készítése",
-      "subtitle": "Generálj személyre szabott többnapos strand nyaralási tervet",
+      "title": "Tervezze meg tengerparti útját",
+      "subtitle": "Válasszon országot és utazási hosszt. A Beachrex adatbázisából minden napra strandokat tervezünk, mindegyikhez linkkel.",
       "form": {
-        "destination": "Úticél",
-        "destinationPlaceholder": "pl. Horvátország, Bali, Karib-tenger",
-        "days": "Napok száma",
-        "daysPlaceholder": "pl. 7",
-        "interests": "Érdeklődési körök",
-        "interestsPlaceholder": "pl. búvárkodás, kikapcsolódás, éjszakai élet",
-        "budget": "Költségvetési szint",
-        "budgetLow": "Költségvetés",
-        "budgetMedium": "Közepes",
-        "budgetHigh": "Luxus",
-        "generate": "Útvonalterv generálása",
-        "generating": "Útvonalterv generálása..."
+        "country": "Ország",
+        "countryPlaceholder": "Válasszon országot",
+        "region": "Régió (nem kötelező)",
+        "wholeCountry": "Az egész ország",
+        "duration": "Utazás hossza",
+        "daysOption": "{days} nap",
+        "plansAvailable": "Elérhető: {count}",
+        "interests": "Mit szeret?",
+        "surface": "Strand talaja",
+        "pace": "Tempó",
+        "adults": "Felnőttek",
+        "children": "Gyerekek"
       },
-      "error": "Az útvonalterv generálása sikertelen. Kérjük, próbáld újra.",
-      "paymentRequired": "A többnapos útvonaltervek krediteket igényelnek. Kérjük, vásárolj krediteket a folytatáshoz.",
-      "creditsRemaining": "Fennmaradó kreditek: {count}",
-      "purchaseCredits": "Kreditek vásárlása",
-      "assumptions": "Feltételezések:",
-      "purchaseError": "A vásárlást nem sikerült elindítani. Próbáld újra."
+      "interest": {
+        "swimming": "Úszás",
+        "snorkeling": "Sznorkelezés",
+        "family": "Családbarát",
+        "quiet": "Nyugalom",
+        "nightlife": "Éjszakai élet",
+        "nature": "Természet",
+        "diving": "Búvárkodás",
+        "surfing": "Szörfözés",
+        "kayaking": "Kajak",
+        "hiking": "Túrázás"
+      },
+      "surface": {
+        "sand": "Homok",
+        "pebble": "Kavics",
+        "rock": "Sziklák"
+      },
+      "pace": {
+        "relaxed": "Nyugodt",
+        "balanced": "Kiegyensúlyozott",
+        "packed": "Sűrű"
+      },
+      "progressBeaches": "Az Ön kívánságainak megfelelő strandokat keresünk…",
+      "progressRoute": "Napról napra megtervezzük az útvonalat…",
+      "progressTips": "Minden strandhoz tippeket írunk…",
+      "progressNote": "Ez általában 20–60 másodpercig tart. Kérjük, hagyja nyitva ezt az oldalt.",
+      "signInToStart": "Jelentkezzen be a terv megvásárlásához és elkészítéséhez.",
+      "generate": "Tervem elkészítése",
+      "usesOnePlan": "Felhasználja egyik {days} napos tervét.",
+      "buy": "{days} napos terv vásárlása · {price}",
+      "buyNote": "Egyszeri fizetés, előfizetés nélkül. Fizetés után visszatér ide, és elkészíti a tervét.",
+      "errors": {
+        "signInRequired": "Kérjük, előbb jelentkezzen be.",
+        "buyRequired": "Nincs több ilyen hosszúságú terve. A folytatáshoz vásároljon egyet.",
+        "notEnoughBeaches": "Túl kevés strand felel meg. Próbálja az egész országot, kevesebb kívánságot vagy rövidebb utat. A terv nem lett felhasználva.",
+        "busy": "A tervező most foglalt. Próbálja újra egy perc múlva. A terv nem lett felhasználva.",
+        "error": "Hiba történt, a terv nem lett felhasználva. Kérjük, próbálja újra.",
+        "purchaseError": "A fizetést nem sikerült elindítani. Kérjük, próbálja újra."
+      },
+      "fallbackNote": "Ezúttal nem sikerült megírni az MI-tippeket, ezért a terv rövid tényeket tartalmaz. A terv nem lett felhasználva, újra elkészítheti.",
+      "day": "{number}. nap",
+      "timeBlock": {
+        "morning": "Délelőtt",
+        "afternoon": "Délután",
+        "evening": "Este"
+      },
+      "tip": "Tipp",
+      "travelKm": "Ezen a napon kb. {km} km vezetés.",
+      "assumptions": "Jó tudni",
+      "newPlan": "Új út tervezése"
     },
     "entitlements": {
       "title": "Kreditjeim",

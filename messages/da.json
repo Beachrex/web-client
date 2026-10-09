@@ -710,28 +710,72 @@
       "errorTooLong": "Beskeden er for lang. Gør den kortere."
     },
     "itinerary": {
-      "title": "Opret strandrejseplan",
-      "subtitle": "Generer en personlig fler-dages strandferieplan",
+      "title": "Planlæg din strandferie",
+      "subtitle": "Vælg et land og rejsens længde. Vi planlægger strandene for hver dag ud fra Beachrex-databasen, med et link til hver strand.",
       "form": {
-        "destination": "Destination",
-        "destinationPlaceholder": "f.eks. Kroatien, Bali, Caribien",
-        "days": "Antal dage",
-        "daysPlaceholder": "f.eks. 7",
-        "interests": "Interesser",
-        "interestsPlaceholder": "f.eks. snorkling, afslapning, natteliv",
-        "budget": "Budgetniveau",
-        "budgetLow": "Budget",
-        "budgetMedium": "Moderat",
-        "budgetHigh": "Luksus",
-        "generate": "Generér rejseplan",
-        "generating": "Genererer din rejseplan..."
+        "country": "Land",
+        "countryPlaceholder": "Vælg et land",
+        "region": "Region (valgfri)",
+        "wholeCountry": "Hele landet",
+        "duration": "Rejsens længde",
+        "daysOption": "{days} dage",
+        "plansAvailable": "{count} klar til brug",
+        "interests": "Hvad kan du lide?",
+        "surface": "Strandunderlag",
+        "pace": "Tempo",
+        "adults": "Voksne",
+        "children": "Børn"
       },
-      "error": "Kunne ikke generere rejseplan. Prøv venligst igen.",
-      "paymentRequired": "Fler-dages rejseplaner kræver kredit. Køb venligst kredit for at fortsætte.",
-      "creditsRemaining": "Tilbageværende kredit: {count}",
-      "purchaseCredits": "Køb kredit",
-      "assumptions": "Antagelser:",
-      "purchaseError": "Købet kunne ikke startes. Prøv igen."
+      "interest": {
+        "swimming": "Svømning",
+        "snorkeling": "Snorkling",
+        "family": "Børnevenlig",
+        "quiet": "Ro",
+        "nightlife": "Natteliv",
+        "nature": "Natur",
+        "diving": "Dykning",
+        "surfing": "Surfing",
+        "kayaking": "Kajak",
+        "hiking": "Vandring"
+      },
+      "surface": {
+        "sand": "Sand",
+        "pebble": "Småsten",
+        "rock": "Klipper"
+      },
+      "pace": {
+        "relaxed": "Afslappet",
+        "balanced": "Afbalanceret",
+        "packed": "Tætpakket"
+      },
+      "progressBeaches": "Vi finder strande, der passer til dine ønsker …",
+      "progressRoute": "Vi planlægger ruten dag for dag …",
+      "progressTips": "Vi skriver tips til hver strand …",
+      "progressNote": "Det tager normalt 20–60 sekunder. Hold siden åben.",
+      "signInToStart": "Log ind for at købe og lave din plan.",
+      "generate": "Lav min plan",
+      "usesOnePlan": "Bruger en af dine {days}-dages planer.",
+      "buy": "Køb {days}-dages plan · {price}",
+      "buyNote": "Engangsbetaling, intet abonnement. Efter betalingen kommer du tilbage hertil og laver din plan.",
+      "errors": {
+        "signInRequired": "Log ind først.",
+        "buyRequired": "Du har ikke flere planer af denne længde. Køb en for at fortsætte.",
+        "notEnoughBeaches": "For få strande passer. Prøv hele landet, færre ønsker eller en kortere rejse. Din plan blev ikke brugt.",
+        "busy": "Planlæggeren har travlt lige nu. Prøv igen om et minut. Din plan blev ikke brugt.",
+        "error": "Noget gik galt, og din plan blev ikke brugt. Prøv igen.",
+        "purchaseError": "Betalingen kunne ikke startes. Prøv igen."
+      },
+      "fallbackNote": "Denne gang kunne AI-tipsene ikke skrives, så planen indeholder korte fakta. Din plan blev ikke brugt, og du kan lave den igen.",
+      "day": "Dag {number}",
+      "timeBlock": {
+        "morning": "Formiddag",
+        "afternoon": "Eftermiddag",
+        "evening": "Aften"
+      },
+      "tip": "Tip",
+      "travelKm": "Cirka {km} km kørsel denne dag.",
+      "assumptions": "Godt at vide",
+      "newPlan": "Planlæg en ny rejse"
     },
     "entitlements": {
       "title": "Min kredit",

@@ -710,28 +710,72 @@
       "errorTooLong": "Wiadomość jest za długa. Skróć ją."
     },
     "itinerary": {
-      "title": "Utwórz itinerarium plażowe",
-      "subtitle": "Wygeneruj spersonalizowany wielodniowy plan wakacji na plaży",
+      "title": "Zaplanuj wyjazd na plażę",
+      "subtitle": "Wybierz kraj i długość podróży. Z bazy Beachrex planujemy plaże na każdy dzień, z linkiem do każdej plaży.",
       "form": {
-        "destination": "Destynacja",
-        "destinationPlaceholder": "np. Chorwacja, Bali, Karaiby",
-        "days": "Liczba dni",
-        "daysPlaceholder": "np. 7",
-        "interests": "Zainteresowania",
-        "interestsPlaceholder": "np. snorkeling, relaks, życie nocne",
-        "budget": "Poziom budżetu",
-        "budgetLow": "Budżetowy",
-        "budgetMedium": "Umiarkowany",
-        "budgetHigh": "Luksusowy",
-        "generate": "Wygeneruj itinerarium",
-        "generating": "Generowanie Twojego itinerarium..."
+        "country": "Kraj",
+        "countryPlaceholder": "Wybierz kraj",
+        "region": "Region (opcjonalnie)",
+        "wholeCountry": "Cały kraj",
+        "duration": "Długość podróży",
+        "daysOption": "{days} dni",
+        "plansAvailable": "Dostępne: {count}",
+        "interests": "Co lubisz?",
+        "surface": "Rodzaj plaży",
+        "pace": "Tempo",
+        "adults": "Dorośli",
+        "children": "Dzieci"
       },
-      "error": "Nie udało się wygenerować itinerarium. Spróbuj ponownie.",
-      "paymentRequired": "Wielodniowe itineraria wymagają kredytów. Kup kredyty, aby kontynuować.",
-      "creditsRemaining": "Pozostałe kredyty: {count}",
-      "purchaseCredits": "Kup kredyty",
-      "assumptions": "Założenia:",
-      "purchaseError": "Nie udało się rozpocząć zakupu. Spróbuj ponownie."
+      "interest": {
+        "swimming": "Pływanie",
+        "snorkeling": "Snorkeling",
+        "family": "Dla rodzin",
+        "quiet": "Spokój",
+        "nightlife": "Życie nocne",
+        "nature": "Przyroda",
+        "diving": "Nurkowanie",
+        "surfing": "Surfing",
+        "kayaking": "Kajak",
+        "hiking": "Wędrówki"
+      },
+      "surface": {
+        "sand": "Piasek",
+        "pebble": "Kamyki",
+        "rock": "Skały"
+      },
+      "pace": {
+        "relaxed": "Spokojne",
+        "balanced": "Zrównoważone",
+        "packed": "Intensywne"
+      },
+      "progressBeaches": "Szukamy plaż pasujących do Twoich życzeń…",
+      "progressRoute": "Planujemy trasę dzień po dniu…",
+      "progressTips": "Piszemy wskazówki do każdej plaży…",
+      "progressNote": "Zwykle trwa to 20–60 sekund. Nie zamykaj tej strony.",
+      "signInToStart": "Zaloguj się, aby kupić i utworzyć plan.",
+      "generate": "Utwórz mój plan",
+      "usesOnePlan": "Wykorzystuje jeden z Twoich planów na {days} dni.",
+      "buy": "Kup plan na {days} dni · {price}",
+      "buyNote": "Jednorazowa płatność, bez subskrypcji. Po płatności wracasz tutaj i tworzysz plan.",
+      "errors": {
+        "signInRequired": "Najpierw się zaloguj.",
+        "buyRequired": "Nie masz już planu o tej długości. Kup go, aby kontynuować.",
+        "notEnoughBeaches": "Pasuje za mało plaż. Wybierz cały kraj, mniej życzeń lub krótszą podróż. Plan nie został wykorzystany.",
+        "busy": "Planer jest teraz zajęty. Spróbuj ponownie za minutę. Plan nie został wykorzystany.",
+        "error": "Coś poszło nie tak, plan nie został wykorzystany. Spróbuj ponownie.",
+        "purchaseError": "Nie udało się rozpocząć płatności. Spróbuj ponownie."
+      },
+      "fallbackNote": "Tym razem nie udało się napisać wskazówek AI, więc plan zawiera krótkie fakty. Plan nie został wykorzystany i możesz utworzyć go ponownie.",
+      "day": "Dzień {number}",
+      "timeBlock": {
+        "morning": "Rano",
+        "afternoon": "Po południu",
+        "evening": "Wieczorem"
+      },
+      "tip": "Wskazówka",
+      "travelKm": "Tego dnia około {km} km jazdy.",
+      "assumptions": "Warto wiedzieć",
+      "newPlan": "Zaplanuj kolejną podróż"
     },
     "entitlements": {
       "title": "Moje kredyty",

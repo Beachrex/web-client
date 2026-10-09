@@ -710,28 +710,72 @@
       "errorTooLong": "Le message est trop long. Raccourcissez-le."
     },
     "itinerary": {
-      "title": "Créer un itinéraire de plage",
-      "subtitle": "Générez un plan de vacances à la plage personnalisé sur plusieurs jours",
+      "title": "Planifiez votre voyage à la plage",
+      "subtitle": "Choisissez un pays et la durée du voyage. Nous planifions les plages de chaque jour à partir de la base Beachrex, avec un lien vers chaque plage.",
       "form": {
-        "destination": "Destination",
-        "destinationPlaceholder": "par ex., Croatie, Bali, Caraïbes",
-        "days": "Nombre de jours",
-        "daysPlaceholder": "par ex., 7",
-        "interests": "Intérêts",
-        "interestsPlaceholder": "par ex., plongée avec tuba, détente, vie nocturne",
-        "budget": "Niveau de budget",
-        "budgetLow": "Économique",
-        "budgetMedium": "Modéré",
-        "budgetHigh": "Luxe",
-        "generate": "Générer l'itinéraire",
-        "generating": "Génération de votre itinéraire..."
+        "country": "Pays",
+        "countryPlaceholder": "Choisissez un pays",
+        "region": "Région (facultatif)",
+        "wholeCountry": "Tout le pays",
+        "duration": "Durée du voyage",
+        "daysOption": "{days} jours",
+        "plansAvailable": "{count} disponible(s)",
+        "interests": "Qu'aimez-vous ?",
+        "surface": "Type de plage",
+        "pace": "Rythme",
+        "adults": "Adultes",
+        "children": "Enfants"
       },
-      "error": "Échec de la génération de l'itinéraire. Veuillez réessayer.",
-      "paymentRequired": "Les itinéraires de plusieurs jours nécessitent des crédits. Veuillez acheter des crédits pour continuer.",
-      "creditsRemaining": "Crédits restants : {count}",
-      "purchaseCredits": "Acheter des crédits",
-      "assumptions": "Hypothèses :",
-      "purchaseError": "Impossible de lancer l’achat. Veuillez réessayer."
+      "interest": {
+        "swimming": "Baignade",
+        "snorkeling": "Snorkeling",
+        "family": "En famille",
+        "quiet": "Calme",
+        "nightlife": "Vie nocturne",
+        "nature": "Nature",
+        "diving": "Plongée",
+        "surfing": "Surf",
+        "kayaking": "Kayak",
+        "hiking": "Randonnée"
+      },
+      "surface": {
+        "sand": "Sable",
+        "pebble": "Galets",
+        "rock": "Rochers"
+      },
+      "pace": {
+        "relaxed": "Détendu",
+        "balanced": "Équilibré",
+        "packed": "Chargé"
+      },
+      "progressBeaches": "Nous cherchons les plages qui correspondent à vos envies…",
+      "progressRoute": "Nous planifions l'itinéraire jour par jour…",
+      "progressTips": "Nous écrivons des conseils pour chaque plage…",
+      "progressNote": "Cela prend généralement 20 à 60 secondes. Gardez cette page ouverte.",
+      "signInToStart": "Connectez-vous pour acheter et créer votre plan.",
+      "generate": "Créer mon plan",
+      "usesOnePlan": "Utilise l'un de vos plans de {days} jours.",
+      "buy": "Acheter le plan de {days} jours · {price}",
+      "buyNote": "Paiement unique, sans abonnement. Après le paiement, vous revenez ici et créez votre plan.",
+      "errors": {
+        "signInRequired": "Veuillez d'abord vous connecter.",
+        "buyRequired": "Vous n'avez plus de plan de cette durée. Achetez-en un pour continuer.",
+        "notEnoughBeaches": "Trop peu de plages correspondent. Essayez tout le pays, moins d'envies ou un voyage plus court. Votre plan n'a pas été utilisé.",
+        "busy": "Le planificateur est occupé. Réessayez dans une minute. Votre plan n'a pas été utilisé.",
+        "error": "Une erreur s'est produite, votre plan n'a pas été utilisé. Veuillez réessayer.",
+        "purchaseError": "Le paiement n'a pas pu être lancé. Veuillez réessayer."
+      },
+      "fallbackNote": "Cette fois, les conseils de l'IA n'ont pas pu être rédigés, le plan contient donc de courtes informations. Votre plan n'a pas été utilisé et vous pouvez le recréer.",
+      "day": "Jour {number}",
+      "timeBlock": {
+        "morning": "Matin",
+        "afternoon": "Après-midi",
+        "evening": "Soir"
+      },
+      "tip": "Conseil",
+      "travelKm": "Environ {km} km de route ce jour-là.",
+      "assumptions": "Bon à savoir",
+      "newPlan": "Planifier un autre voyage"
     },
     "entitlements": {
       "title": "Mes crédits",

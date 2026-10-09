@@ -710,28 +710,72 @@
       "errorTooLong": "Zpráva je příliš dlouhá. Zkraťte ji."
     },
     "itinerary": {
-      "title": "Vytvořit plážový itinerář",
-      "subtitle": "Vygenerujte personalizovaný vícedenní plán plážové dovolené",
+      "title": "Naplánujte si dovolenou u moře",
+      "subtitle": "Vyberte zemi a délku cesty. Z databáze Beachrex naplánujeme pláže na každý den, s odkazem na každou pláž.",
       "form": {
-        "destination": "Destinace",
-        "destinationPlaceholder": "např. Chorvatsko, Bali, Karibik",
-        "days": "Počet dní",
-        "daysPlaceholder": "např. 7",
-        "interests": "Zájmy",
-        "interestsPlaceholder": "např. šnorchlování, relaxace, noční život",
-        "budget": "Úroveň rozpočtu",
-        "budgetLow": "Rozpočtový",
-        "budgetMedium": "Střední",
-        "budgetHigh": "Luxusní",
-        "generate": "Generovat itinerář",
-        "generating": "Generování vašeho itineráře..."
+        "country": "Země",
+        "countryPlaceholder": "Vyberte zemi",
+        "region": "Region (nepovinné)",
+        "wholeCountry": "Celá země",
+        "duration": "Délka cesty",
+        "daysOption": "{days} dní",
+        "plansAvailable": "K dispozici: {count}",
+        "interests": "Co máte rádi?",
+        "surface": "Povrch pláže",
+        "pace": "Tempo",
+        "adults": "Dospělí",
+        "children": "Děti"
       },
-      "error": "Generování itineráře selhalo. Zkuste to prosím znovu.",
-      "paymentRequired": "Vícedenní itineráře vyžadují kredity. Zakupte prosím kredity pro pokračování.",
-      "creditsRemaining": "Zbývající kredity: {count}",
-      "purchaseCredits": "Zakoupit kredity",
-      "assumptions": "Předpoklady:",
-      "purchaseError": "Nákup se nepodařilo zahájit. Zkuste to znovu."
+      "interest": {
+        "swimming": "Plavání",
+        "snorkeling": "Šnorchlování",
+        "family": "Pro rodiny",
+        "quiet": "Klid",
+        "nightlife": "Noční život",
+        "nature": "Příroda",
+        "diving": "Potápění",
+        "surfing": "Surfování",
+        "kayaking": "Kajak",
+        "hiking": "Turistika"
+      },
+      "surface": {
+        "sand": "Písek",
+        "pebble": "Oblázky",
+        "rock": "Skály"
+      },
+      "pace": {
+        "relaxed": "Pohodové",
+        "balanced": "Vyvážené",
+        "packed": "Nabité"
+      },
+      "progressBeaches": "Hledáme pláže podle vašich přání…",
+      "progressRoute": "Plánujeme trasu den po dni…",
+      "progressTips": "Píšeme tipy ke každé pláži…",
+      "progressNote": "Obvykle to trvá 20–60 sekund. Nechte tuto stránku otevřenou.",
+      "signInToStart": "Přihlaste se, abyste mohli plán koupit a vytvořit.",
+      "generate": "Vytvořit můj plán",
+      "usesOnePlan": "Použije jeden z vašich {days}denních plánů.",
+      "buy": "Koupit {days}denní plán · {price}",
+      "buyNote": "Jednorázová platba, žádné předplatné. Po zaplacení se vrátíte sem a vytvoříte plán.",
+      "errors": {
+        "signInRequired": "Nejprve se přihlaste.",
+        "buyRequired": "Plán této délky už nemáte. Pro pokračování si ho kupte.",
+        "notEnoughBeaches": "Odpovídá příliš málo pláží. Zkuste celou zemi, méně přání nebo kratší cestu. Plán nebyl použit.",
+        "busy": "Plánovač je teď vytížený. Zkuste to za minutu znovu. Plán nebyl použit.",
+        "error": "Něco se pokazilo a plán nebyl použit. Zkuste to znovu.",
+        "purchaseError": "Platbu se nepodařilo spustit. Zkuste to znovu."
+      },
+      "fallbackNote": "Tentokrát se nepodařilo napsat tipy AI, a tak plán obsahuje krátká fakta. Plán nebyl použit a můžete ho vytvořit znovu.",
+      "day": "{number}. den",
+      "timeBlock": {
+        "morning": "Dopoledne",
+        "afternoon": "Odpoledne",
+        "evening": "Večer"
+      },
+      "tip": "Tip",
+      "travelKm": "Tento den asi {km} km jízdy.",
+      "assumptions": "Dobré vědět",
+      "newPlan": "Naplánovat další cestu"
     },
     "entitlements": {
       "title": "Moje kredity",

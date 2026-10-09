@@ -720,28 +720,72 @@
       "errorTooLong": "Sporočilo je predolgo. Skrajšajte ga."
     },
     "itinerary": {
-      "title": "Ustvari načrt potovanja",
-      "subtitle": "Ustvarite osebni večdnevni načrt dopusta ob morju",
+      "title": "Načrtujte počitnice na plaži",
+      "subtitle": "Izberite državo in dolžino potovanja. Iz baze Beachrex vam za vsak dan izberemo plaže, s povezavo do vsake plaže.",
       "form": {
-        "destination": "Destinacija",
-        "destinationPlaceholder": "npr. Hrvaška, Bali, Karibi",
-        "days": "Število dni",
-        "daysPlaceholder": "npr. 7",
-        "interests": "Interesi",
-        "interestsPlaceholder": "npr. potapljanje z masko, sprostitev, nočno življenje",
-        "budget": "Proračun",
-        "budgetLow": "Varčen",
-        "budgetMedium": "Zmeren",
-        "budgetHigh": "Luksuzen",
-        "generate": "Ustvari načrt",
-        "generating": "Ustvarjamo vaš načrt potovanja ..."
+        "country": "Država",
+        "countryPlaceholder": "Izberite državo",
+        "region": "Regija (neobvezno)",
+        "wholeCountry": "Cela država",
+        "duration": "Dolžina potovanja",
+        "daysOption": "{days} dni",
+        "plansAvailable": "Na voljo: {count}",
+        "interests": "Kaj imate radi?",
+        "surface": "Podlaga plaže",
+        "pace": "Tempo",
+        "adults": "Odrasli",
+        "children": "Otroci"
       },
-      "error": "Načrta potovanja ni bilo mogoče ustvariti. Poskusite znova.",
-      "paymentRequired": "Večdnevni načrti potovanja zahtevajo kredite. Za nadaljevanje kupite kredite.",
-      "creditsRemaining": "Preostali krediti: {count}",
-      "purchaseCredits": "Kupi kredite",
-      "assumptions": "Predpostavke:",
-      "purchaseError": "Nakupa ni bilo mogoče začeti. Poskusite znova."
+      "interest": {
+        "swimming": "Plavanje",
+        "snorkeling": "Potapljanje z masko",
+        "family": "Za družine",
+        "quiet": "Mir",
+        "nightlife": "Nočno življenje",
+        "nature": "Narava",
+        "diving": "Potapljanje",
+        "surfing": "Deskanje",
+        "kayaking": "Kajak",
+        "hiking": "Pohodništvo"
+      },
+      "surface": {
+        "sand": "Pesek",
+        "pebble": "Prodniki",
+        "rock": "Skale"
+      },
+      "pace": {
+        "relaxed": "Sproščen",
+        "balanced": "Uravnotežen",
+        "packed": "Natrpan"
+      },
+      "progressBeaches": "Iščemo plaže, ki ustrezajo vašim željam …",
+      "progressRoute": "Načrtujemo pot za vsak dan …",
+      "progressTips": "Pišemo nasvete za vsako plažo …",
+      "progressNote": "Običajno traja 20–60 sekund. Pustite to stran odprto.",
+      "signInToStart": "Prijavite se, da kupite in ustvarite načrt.",
+      "generate": "Ustvari moj načrt",
+      "usesOnePlan": "Porabi enega od vaših {days}-dnevnih načrtov.",
+      "buy": "Kupi {days}-dnevni načrt · {price}",
+      "buyNote": "Enkratno plačilo, brez naročnine. Po plačilu se vrnete sem in ustvarite načrt.",
+      "errors": {
+        "signInRequired": "Najprej se prijavite.",
+        "buyRequired": "Načrta te dolžine nimate več. Za nadaljevanje ga kupite.",
+        "notEnoughBeaches": "Premalo plaž ustreza. Izberite celo državo, manj želja ali krajše potovanje. Načrt ni bil porabljen.",
+        "busy": "Načrtovalec je trenutno zaseden. Poskusite znova čez minuto. Načrt ni bil porabljen.",
+        "error": "Prišlo je do napake, načrt ni bil porabljen. Poskusite znova.",
+        "purchaseError": "Plačila ni bilo mogoče začeti. Poskusite znova."
+      },
+      "fallbackNote": "Tokrat AI nasvetov ni bilo mogoče napisati, zato načrt vsebuje kratka dejstva. Načrt ni bil porabljen, zato ga lahko ustvarite znova.",
+      "day": "{number}. dan",
+      "timeBlock": {
+        "morning": "Dopoldne",
+        "afternoon": "Popoldne",
+        "evening": "Zvečer"
+      },
+      "tip": "Nasvet",
+      "travelKm": "Ta dan približno {km} km vožnje.",
+      "assumptions": "Dobro je vedeti",
+      "newPlan": "Načrtuj novo potovanje"
     },
     "entitlements": {
       "title": "Moji krediti",
