@@ -698,7 +698,14 @@
       "welcome": "Helló! A strand AI asszisztensed vagyok. Hogyan segíthetek ma?",
       "anonymousNote": "Névtelenül cseveg. Jelentkezz be a beszélgetések mentéséhez és a prémium funkciók eléréséhez.",
       "viewDetails": "Részletek →",
-      "suggestions": "Javaslatok:"
+      "suggestions": "Javaslatok:",
+      "match": "{percent}% egyezés",
+      "useLocation": "Saját helyzetem használata (közeli strandok)",
+      "locationOn": "A helyzeted a közeli strandokhoz használjuk",
+      "locationDenied": "A helyzet nem érhető el. Engedélyezd a helymeghatározást a böngészőben, vagy adj meg egy helyet.",
+      "errorBusy": "Az AI-asszisztens most foglalt. Próbáld újra egy perc múlva.",
+      "errorTooMany": "Túl sok üzenet. Várj egy kicsit, és próbáld újra.",
+      "errorTooLong": "Az üzenet túl hosszú. Rövidítsd le."
     },
     "itinerary": {
       "title": "Strand útvonalterv készítése",

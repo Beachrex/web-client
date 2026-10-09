@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – AI chat (AI-1, web): conversation memory, linked beach names, photos, clear errors ✅ COMPLETE
+
+Owner: "AI chat ful slabo dela … niti linkov ne da do plaž". Together with backend AI-1 (real slugs/photos in the page language, sliding session).
+- `src/lib/utils/ai-chat.ts`: `sendChatMessage()` sends `session_id` (the conversation continues; before, every message was a new session without history), `Accept-Language` = page locale (beach names/URL slugs match the website's URLs), the sign-in token and the location if shared. `linkBeachNames()` turns recommended beach names in the answer into links (longest name first, case-insensitive). `chatErrorKey()`: 503 busy / 429 too many / 413 too long.
+- `ai/chat/page.tsx`: beach names in the text and card titles link to the beach page (new tab, chat stays); cards show the photo (`main_image` now sent by the API), the localized beach type instead of the English "Surface:", "{percent}% ujemanje"; clicking a suggestion sends it; "📍 Use my location" (browser geolocation) for "beaches near me"; specific error messages; times in the page language.
+- 7 new `AI.chat` texts in all 19 languages (machine-translated by the agent).
+- Test: `e2e/ai-chat.unit.spec.ts`. Local browser run against a mock API (390 px): names linked to `/si/plaze/evropa/hrvaska/dalmacija/split/plaza-bacvice`, photo card, 2nd and 3rd message reuse the session, `Accept-Language: si`, location sent, busy text shown, no page errors. Real OpenAI answers: owner check on dev.
+
 ## 2026-10-09 – E-mail sign-in and "Forgot password" ✅ COMPLETE
 
 Owner request 2026-10-09: accounts imported from the old site have a random password, so they need e-mail sign-in with a password reset. Backend: `POST /api/v1/forgot-password`, `POST /api/v1/reset-password` (localized e-mail via SMTP).

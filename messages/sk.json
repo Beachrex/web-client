@@ -698,7 +698,14 @@
       "welcome": "Ahoj! Som váš AI plážový asistent. Ako vám môžem dnes pomôcť?",
       "anonymousNote": "Chatujete anonymne. Prihláste sa pre uloženie vašich konverzácií a prístup k prémiové funkciám.",
       "viewDetails": "Zobraziť podrobnosti →",
-      "suggestions": "Návrhy:"
+      "suggestions": "Návrhy:",
+      "match": "{percent} % zhoda",
+      "useLocation": "Použiť moju polohu (pláže v okolí)",
+      "locationOn": "Vaša poloha sa používa pre pláže v okolí",
+      "locationDenied": "Poloha nie je dostupná. Povoľte prístup k polohe v prehliadači alebo napíšte miesto.",
+      "errorBusy": "AI asistent je práve vyťažený. Skúste to o minútu znova.",
+      "errorTooMany": "Príliš veľa správ. Chvíľu počkajte a skúste to znova.",
+      "errorTooLong": "Správa je príliš dlhá. Skráťte ju."
     },
     "itinerary": {
       "title": "Vytvoriť plážový itinerár",

@@ -698,7 +698,14 @@
       "welcome": "¡Hola! Soy tu asistente de playa con IA. ¿Cómo puedo ayudarte hoy?",
       "anonymousNote": "Estás chateando de forma anónima. Inicia sesión para guardar tus conversaciones y acceder a funciones premium.",
       "viewDetails": "Ver detalles →",
-      "suggestions": "Sugerencias:"
+      "suggestions": "Sugerencias:",
+      "match": "{percent} % de coincidencia",
+      "useLocation": "Usar mi ubicación (playas cercanas)",
+      "locationOn": "Se usa tu ubicación para las playas cercanas",
+      "locationDenied": "Ubicación no disponible. Permite el acceso a la ubicación en el navegador o escribe un lugar.",
+      "errorBusy": "El asistente de IA está ocupado. Inténtalo de nuevo en un minuto.",
+      "errorTooMany": "Demasiados mensajes. Espera un poco y vuelve a intentarlo.",
+      "errorTooLong": "El mensaje es demasiado largo. Acórtalo."
     },
     "itinerary": {
       "title": "Crear itinerario de playa",

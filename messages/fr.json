@@ -698,7 +698,14 @@
       "welcome": "Bonjour ! Je suis votre assistant de plage IA. Comment puis-je vous aider aujourd'hui ?",
       "anonymousNote": "Vous discutez de manière anonyme. Connectez-vous pour sauvegarder vos conversations et accéder aux fonctionnalités premium.",
       "viewDetails": "Voir les détails →",
-      "suggestions": "Suggestions :"
+      "suggestions": "Suggestions :",
+      "match": "{percent} % de correspondance",
+      "useLocation": "Utiliser ma position (plages à proximité)",
+      "locationOn": "Votre position est utilisée pour les plages à proximité",
+      "locationDenied": "Position indisponible. Autorisez l'accès à la position dans le navigateur ou indiquez un lieu.",
+      "errorBusy": "L'assistant IA est occupé. Réessayez dans une minute.",
+      "errorTooMany": "Trop de messages. Patientez un peu et réessayez.",
+      "errorTooLong": "Le message est trop long. Raccourcissez-le."
     },
     "itinerary": {
       "title": "Créer un itinéraire de plage",

@@ -698,7 +698,14 @@
       "welcome": "Cześć! Jestem Twoim asystentem plażowym AI. Jak mogę Ci dzisiaj pomóc?",
       "anonymousNote": "Czatujesz anonimowo. Zaloguj się, aby zapisać swoje rozmowy i uzyskać dostęp do funkcji premium.",
       "viewDetails": "Zobacz szczegóły →",
-      "suggestions": "Sugestie:"
+      "suggestions": "Sugestie:",
+      "match": "{percent}% dopasowania",
+      "useLocation": "Użyj mojej lokalizacji (plaże w pobliżu)",
+      "locationOn": "Twoja lokalizacja jest używana do plaż w pobliżu",
+      "locationDenied": "Lokalizacja niedostępna. Zezwól na dostęp do lokalizacji w przeglądarce lub podaj miejsce.",
+      "errorBusy": "Asystent AI jest teraz zajęty. Spróbuj ponownie za minutę.",
+      "errorTooMany": "Zbyt wiele wiadomości. Odczekaj chwilę i spróbuj ponownie.",
+      "errorTooLong": "Wiadomość jest za długa. Skróć ją."
     },
     "itinerary": {
       "title": "Utwórz itinerarium plażowe",

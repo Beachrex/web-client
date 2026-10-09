@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslations, useLocale } from 'next-intl';
 import { Button, Textarea, Alert } from 'flowbite-react';
@@ -9,7 +10,7 @@ import { SignInOptions, UserProfile, LogoutButton } from '@/components/Auth';
 import { Send } from 'lucide-react';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { env } from '@/env';
+import { linkBeachNames, sendChatMessage, type ChatBeach, type ChatErrorKey } from '@/lib/utils/ai-chat';
 
 // Disable static generation for this page (uses client-side auth)
 export const dynamic = 'force-dynamic';
@@ -27,35 +28,16 @@ export const dynamic = 'force-dynamic';
  * - Calls POST /ai/chat endpoint
  */
 
-interface Beach {
-  id: number;
-  name: string;
-  slug: string;
-  country_code: string;
-  city?: string;
-  surface?: string;
-  facilities?: string[];
-  distance_km?: number | null;
-  match_score?: number;
-  main_image?: string | null;
-  // Location slugs needed for buildBeachUrlFromSchema
-  continent_slug?: string | null;
-  country_slug?: string | null;
-  region_slug?: string | null;
-  island_slug?: string | null;
-  city_slug?: string | null;
-}
-
 interface Message {
   role: 'user' | 'assistant';
   content: string;
   timestamp: string; // Store as ISO string to avoid hydration issues
-  beaches?: Beach[]; // Optional beaches array
+  beaches?: ChatBeach[]; // Recommended beaches (database data in the page language)
   suggestions?: string[]; // Optional suggestions
 }
 
 export default function AIChatPage() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, token } = useAuth();
   const t = useTranslations('AI.chat');
   const locale = useLocale();
 
@@ -68,14 +50,30 @@ export default function AIChatPage() {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ChatErrorKey | 'locationDenied' | null>(null);
+  // The conversation id from the API: sent with every message so follow-up questions work.
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+  const requestLocation = () => {
+    if (!('geolocation' in navigator)) {
+      setError('locationDenied');
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => setLocation({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
+      () => setError('locationDenied'),
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 },
+    );
+  };
+
+  const handleSend = async (text?: string) => {
+    const content = (text ?? input).trim();
+    if (!content || isLoading) return;
 
     const userMessage: Message = {
       role: 'user',
-      content: input.trim(),
+      content,
       timestamp: new Date().toISOString(),
     };
 
@@ -84,46 +82,24 @@ export default function AIChatPage() {
     setIsLoading(true);
     setError(null);
 
-    try {
-      const response = await fetch(
-        `${env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/ai/chat`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: JSON.stringify({
-            message: userMessage.content,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to send message: ${response.status}`);
-      }
-
-      const data = await response.json() as {
-        message: string;
-        beaches?: Beach[];
-        suggestions?: string[];
-      };
-
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: data.message,
-        timestamp: new Date().toISOString(),
-        beaches: data.beaches,
-        suggestions: data.suggestions,
-      };
-
-      setMessages((prev) => [...prev, assistantMessage]);
-    } catch (err) {
-      console.error('[AIChatPage] Failed to send message:', err);
-      setError(t('error'));
-    } finally {
-      setIsLoading(false);
+    const result = await sendChatMessage({ message: content, sessionId, locale, token, location });
+    setIsLoading(false);
+    if (!result.ok) {
+      setError(result.error);
+      return;
     }
+
+    setSessionId(result.reply.session_id);
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: 'assistant',
+        content: result.reply.message,
+        timestamp: new Date().toISOString(),
+        beaches: result.reply.beaches,
+        suggestions: result.reply.suggestions,
+      },
+    ]);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -177,7 +153,23 @@ export default function AIChatPage() {
                       : 'bg-gray-100 text-gray-900'
                   }`}
                 >
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  <p className="whitespace-pre-wrap">
+                    {linkBeachNames(message.content, message.beaches).map((part, i) => {
+                      const href = part.beach ? buildBeachUrlFromSchema(part.beach, locale) : null;
+                      return href ? (
+                        <Link
+                          key={i}
+                          href={href}
+                          target="_blank"
+                          className="font-semibold text-blue-700 underline"
+                        >
+                          {part.text}
+                        </Link>
+                      ) : (
+                        <span key={i}>{part.text}</span>
+                      );
+                    })}
+                  </p>
 
                   {/* Render beaches if present */}
                   {message.beaches && message.beaches.length > 0 && (
@@ -209,17 +201,25 @@ export default function AIChatPage() {
                               <div className="flex items-start justify-between">
                                 <div className="flex-1">
                                   <h4 className="font-semibold text-blue-600">
-                                    {beach.name}
+                                    {beachUrl ? (
+                                      <Link
+                                        href={beachUrl}
+                                        target="_blank"
+                                        className="hover:underline"
+                                      >
+                                        {beach.name}
+                                      </Link>
+                                    ) : (
+                                      beach.name
+                                    )}
                                   </h4>
                                   {beach.city && (
                                     <p className="text-sm text-gray-600">
                                       {beach.city}, {beach.country_code}
                                     </p>
                                   )}
-                                  {beach.surface && (
-                                    <p className="text-sm text-gray-500">
-                                      Surface: {beach.surface}
-                                    </p>
+                                  {beach.type && (
+                                    <p className="text-sm text-gray-500">{beach.type}</p>
                                   )}
                                   {beach.facilities && beach.facilities.length > 0 && (
                                     <div className="flex flex-wrap gap-1 mt-1">
@@ -235,16 +235,16 @@ export default function AIChatPage() {
                                   )}
                                 </div>
                                 {(beach.distance_km !== undefined && beach.distance_km !== null)
-                                || beach.match_score !== undefined ? (
+                                || typeof beach.match_score === 'number' ? (
                                   <div className="ml-2 text-right">
                                     {beach.distance_km !== undefined && beach.distance_km !== null && (
                                       <p className="text-sm font-medium text-gray-700">
                                         {beach.distance_km.toFixed(1)} km
                                       </p>
                                     )}
-                                    {beach.match_score !== undefined && (
+                                    {typeof beach.match_score === 'number' && (
                                       <p className="text-xs text-gray-500">
-                                        {(beach.match_score * 100).toFixed(0)}% match
+                                        {t('match', { percent: Math.round(beach.match_score * 100) })}
                                       </p>
                                     )}
                                   </div>
@@ -278,7 +278,8 @@ export default function AIChatPage() {
                       {message.suggestions.map((suggestion, idx) => (
                         <button
                           key={idx}
-                          onClick={() => setInput(suggestion)}
+                          onClick={() => void handleSend(suggestion)}
+                          disabled={isLoading}
                           className="block text-sm text-blue-600 hover:underline text-left"
                         >
                           • {suggestion}
@@ -292,7 +293,7 @@ export default function AIChatPage() {
                       message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
                     }`}
                   >
-                    {new Date(message.timestamp).toLocaleTimeString([], {
+                    {new Date(message.timestamp).toLocaleTimeString(locale === 'si' ? 'sl' : locale === 'ua' ? 'uk' : locale, {
                       hour: '2-digit',
                       minute: '2-digit',
                     })}
@@ -323,12 +324,25 @@ export default function AIChatPage() {
         {/* Error Alert */}
         {error && (
           <Alert color="failure" className="mb-4" onDismiss={() => setError(null)}>
-            {error}
+            {t(error)}
           </Alert>
         )}
 
         {/* Input Area */}
         <div className="bg-white rounded-lg shadow-lg p-4">
+          <div className="mb-2">
+            {location ? (
+              <span className="text-sm text-green-700">📍 {t('locationOn')}</span>
+            ) : (
+              <button
+                type="button"
+                onClick={requestLocation}
+                className="text-sm text-blue-600 hover:underline"
+              >
+                📍 {t('useLocation')}
+              </button>
+            )}
+          </div>
           <div className="flex space-x-4">
             <Textarea
               value={input}
@@ -340,7 +354,7 @@ export default function AIChatPage() {
               disabled={isLoading}
             />
             <Button
-              onClick={handleSend}
+              onClick={() => void handleSend()}
               disabled={!input.trim() || isLoading}
               color="blue"
               className="self-end"

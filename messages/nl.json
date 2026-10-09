@@ -698,7 +698,14 @@
       "welcome": "Hallo! Ik ben je AI-strandassistent. Hoe kan ik je vandaag helpen?",
       "anonymousNote": "Je chat anoniem. Meld je aan om je gesprekken op te slaan en toegang te krijgen tot premium functies.",
       "viewDetails": "Details bekijken →",
-      "suggestions": "Suggesties:"
+      "suggestions": "Suggesties:",
+      "match": "{percent}% overeenkomst",
+      "useLocation": "Gebruik mijn locatie (stranden in de buurt)",
+      "locationOn": "Je locatie wordt gebruikt voor stranden in de buurt",
+      "locationDenied": "Locatie niet beschikbaar. Sta locatietoegang toe in de browser of noem een plaats.",
+      "errorBusy": "De AI-assistent is nu druk. Probeer het over een minuut opnieuw.",
+      "errorTooMany": "Te veel berichten. Wacht even en probeer het opnieuw.",
+      "errorTooLong": "Het bericht is te lang. Maak het korter."
     },
     "itinerary": {
       "title": "Strandreisplan maken",

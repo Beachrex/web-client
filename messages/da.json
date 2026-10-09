@@ -698,7 +698,14 @@
       "welcome": "Hej! Jeg er din AI-strandassistent. Hvordan kan jeg hjælpe dig i dag?",
       "anonymousNote": "Du chatter anonymt. Log ind for at gemme dine samtaler og få adgang til premium-funktioner.",
       "viewDetails": "Se detaljer →",
-      "suggestions": "Forslag:"
+      "suggestions": "Forslag:",
+      "match": "{percent} % match",
+      "useLocation": "Brug min placering (strande i nærheden)",
+      "locationOn": "Din placering bruges til strande i nærheden",
+      "locationDenied": "Placeringen er ikke tilgængelig. Tillad placeringsadgang i browseren, eller skriv et sted.",
+      "errorBusy": "AI-assistenten er optaget lige nu. Prøv igen om et minut.",
+      "errorTooMany": "For mange beskeder. Vent lidt, og prøv igen.",
+      "errorTooLong": "Beskeden er for lang. Gør den kortere."
     },
     "itinerary": {
       "title": "Opret strandrejseplan",
