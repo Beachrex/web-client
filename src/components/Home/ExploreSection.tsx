@@ -128,7 +128,7 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
         <div className="mt-12 text-center sm:mt-16 lg:mt-20">
           <h2
             className="text-3xl font-normal leading-tight text-variable-collection-temno-modro sm:text-4xl lg:text-5xl xl:text-6xl"
-            style={{ fontFamily: 'Damion, cursive' }}
+            style={{ fontFamily: 'var(--font-damion), cursive' }}
           >
             {tagline}
           </h2>
