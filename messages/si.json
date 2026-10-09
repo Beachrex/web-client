@@ -480,7 +480,7 @@
     "map": "Zemljevid",
     "regionsTitle": "Regije {country}",
     "citiesTitle": "Mesta {country}",
-    "islandsTitle": "Otoški {country}",
+    "islandsTitle": "Otoki {country}",
     "allRegionsCount": "Vse regije ({count})",
     "allCitiesCount": "Vsa mesta ({count})",
     "allIslandsCount": "Vsi otoki ({count})",

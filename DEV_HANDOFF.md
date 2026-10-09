@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Slovenian "Otoki {country}" heading ✅ COMPLETE
+
+Mobile report (relayed by the owner): `countryPage.islandsTitle` in `messages/si.json` was "Otoški {country}" (adjective); now "Otoki {country}", like "Regije {country}" and "Mesta {country}". The other 18 languages were checked and are correct. Spec: `e2e/si-island-title.unit.spec.ts`.
+
+---
+
 ## 2026-10-09 – Parking and swimming-pool filters no longer dropped ✅ COMPLETE
 
 Mobile report (relayed by the owner): the website dropped the `parking` and `has_swimming_pool` filters from `/beaches/filters`. Their options carried only `value: "1"`, and the filter validators (`useBeachFiltersController`, `MapWithSidebar`) matched the selected value against `code`, `slug` or `id` only.
