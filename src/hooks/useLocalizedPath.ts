@@ -11,6 +11,7 @@ import {
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildBeachUrl, getBeachesWord } from '@/lib/utils/beach-urls';
 import { isBeachesWord, translateFixedPath } from '@/lib/utils/locale-path-words';
+import { NOT_A_VIEW_HEADERS } from '@/lib/utils/beach-views';
 
 /**
  * Hook to get a localized path for language switching
@@ -166,7 +167,7 @@ export const useLocalizedPath = () => {
           // Fetch beach details in target locale to get all translated slugs
           const beachResponse = await getBeachDetails({
             path: { identifier: lastSegment },
-            headers: { 'Accept-Language': targetLocale as AcceptLanguage },
+            headers: { 'Accept-Language': targetLocale as AcceptLanguage, ...NOT_A_VIEW_HEADERS },
           });
 
 

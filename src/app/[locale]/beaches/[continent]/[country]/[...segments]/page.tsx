@@ -28,6 +28,7 @@ import {
   sanitizeMetaText,
 } from '@/lib/utils/seo-helpers';
 import { buildCdnUrl, getBeachShareImage } from '@/lib/utils/beach-images';
+import { NOT_A_VIEW_HEADERS } from '@/lib/utils/beach-views';
 import {
   buildBeachSchema,
   buildBreadcrumbSchema,
@@ -215,7 +216,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // Fetch beach details
     const beachResponse = await getBeachDetails({
       path: { identifier: lastSegment },
-      headers: { 'Accept-Language': locale as AcceptLanguage },
+      headers: { 'Accept-Language': locale as AcceptLanguage, ...NOT_A_VIEW_HEADERS },
     });
 
     const beach = beachResponse.data?.data;
@@ -379,7 +380,7 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
     if (entityType === 'beach') {
       const beachResponse = await getBeachDetails({
         path: { identifier: lastSegment },
-        headers: { 'Accept-Language': locale as AcceptLanguage },
+        headers: { 'Accept-Language': locale as AcceptLanguage, ...NOT_A_VIEW_HEADERS },
       });
 
       const beach = beachResponse.data?.data;
