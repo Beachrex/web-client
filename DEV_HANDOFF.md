@@ -18,6 +18,16 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Beach views counted from the browser ✅ COMPLETE
+
+Beach pages are now cached (ISR), so the server-side read of `/beach-details` (about once per hour) cannot count visitors, and the browser's own reads were counted by mistake (hover prefetch on cards, the language switch lookup). Backend 2026-10-09 added `POST /api/v1/beaches/{id}/view` (one count per visitor and beach per 30 minutes).
+- `src/lib/utils/beach-views.ts`: `reportBeachView(id)` (`fetch` POST, `keepalive`, errors ignored) and `NOT_A_VIEW_HEADERS` (`X-Beachrex-Client: web`).
+- `BeachDetailPage` reports the visit once on mount.
+- Not counted any more: the server render and metadata (`[...segments]/page.tsx`), hover prefetch (`prefetch-utils.ts`), language switch (`useLocalizedPath`).
+- Test: `e2e/beach-views.unit.spec.ts`.
+
+---
+
 ## 2026-10-09 – Self-hosted fonts; no double API requests on page load ✅ COMPLETE
 
 Performance audit 2026-10-09:

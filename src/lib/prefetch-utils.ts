@@ -14,6 +14,7 @@ import {
   getBeachDetailsOptions,
   getMostVisitedBeachesOptions,
 } from '@/lib/api-client/@tanstack/react-query.gen';
+import { NOT_A_VIEW_HEADERS } from '@/lib/utils/beach-views';
 
 /**
  * Cache settings for prefetched data
@@ -96,6 +97,7 @@ export const prefetchBeachDetails = async (
   await queryClient.prefetchQuery({
     ...getBeachDetailsOptions({
       path: { identifier: beachIdentifier },
+      headers: NOT_A_VIEW_HEADERS, // a hover is not a visit
     }),
     ...PREFETCH_CACHE,
   });
