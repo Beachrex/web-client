@@ -832,7 +832,8 @@
     "closeFilters": "Szűrők bezárása",
     "videoTitle": "Strandvideó",
     "virtualTourTitle": "360°-os virtuális túra",
-    "beachRouteMapTitle": "Térkép a strandhoz vezető úttal"
+    "beachRouteMapTitle": "Térkép a strandhoz vezető úttal",
+    "closeMenu": "Menü bezárása"
   },
   "FilterModal": {
     "title": "Összes strandszűrő",

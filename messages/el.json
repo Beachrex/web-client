@@ -832,7 +832,8 @@
     "closeFilters": "Κλείσιμο φίλτρων",
     "videoTitle": "Βίντεο παραλίας",
     "virtualTourTitle": "Εικονική περιήγηση 360°",
-    "beachRouteMapTitle": "Χάρτης με τη διαδρομή προς την παραλία"
+    "beachRouteMapTitle": "Χάρτης με τη διαδρομή προς την παραλία",
+    "closeMenu": "Κλείσιμο μενού"
   },
   "FilterModal": {
     "title": "Όλα τα φίλτρα παραλιών",

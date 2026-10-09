@@ -832,7 +832,8 @@
     "closeFilters": "Filters sluiten",
     "videoTitle": "Strandvideo",
     "virtualTourTitle": "360°-rondleiding",
-    "beachRouteMapTitle": "Kaart met de route naar het strand"
+    "beachRouteMapTitle": "Kaart met de route naar het strand",
+    "closeMenu": "Menu sluiten"
   },
   "FilterModal": {
     "title": "Alle strandfilters",

@@ -832,7 +832,8 @@
     "closeFilters": "Zamknij filtry",
     "videoTitle": "Film z plaży",
     "virtualTourTitle": "Wirtualny spacer 360°",
-    "beachRouteMapTitle": "Mapa z trasą na plażę"
+    "beachRouteMapTitle": "Mapa z trasą na plażę",
+    "closeMenu": "Zamknij menu"
   },
   "FilterModal": {
     "title": "Wszystkie filtry plaż",

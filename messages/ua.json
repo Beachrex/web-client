@@ -832,7 +832,8 @@
     "closeFilters": "Закрити фільтри",
     "videoTitle": "Відео пляжу",
     "virtualTourTitle": "Віртуальний тур 360°",
-    "beachRouteMapTitle": "Карта з маршрутом до пляжу"
+    "beachRouteMapTitle": "Карта з маршрутом до пляжу",
+    "closeMenu": "Закрити меню"
   },
   "FilterModal": {
     "title": "Усі фільтри пляжів",

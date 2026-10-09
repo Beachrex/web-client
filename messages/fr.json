@@ -832,7 +832,8 @@
     "closeFilters": "Fermer les filtres",
     "videoTitle": "Vidéo de la plage",
     "virtualTourTitle": "Visite virtuelle à 360°",
-    "beachRouteMapTitle": "Carte de l’itinéraire vers la plage"
+    "beachRouteMapTitle": "Carte de l’itinéraire vers la plage",
+    "closeMenu": "Fermer le menu"
   },
   "FilterModal": {
     "title": "Tous les filtres de plage",

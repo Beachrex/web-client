@@ -832,7 +832,8 @@
     "closeFilters": "Mbyll filtrat",
     "videoTitle": "Video e plazhit",
     "virtualTourTitle": "Turi virtual 360°",
-    "beachRouteMapTitle": "Harta me rrugën për në plazh"
+    "beachRouteMapTitle": "Harta me rrugën për në plazh",
+    "closeMenu": "Mbyll menunë"
   },
   "FilterModal": {
     "title": "Të gjithë filtrat e plazhit",

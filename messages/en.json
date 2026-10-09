@@ -832,7 +832,8 @@
     "closeFilters": "Close filters",
     "videoTitle": "Beach video",
     "virtualTourTitle": "360° virtual tour",
-    "beachRouteMapTitle": "Map with the route to the beach"
+    "beachRouteMapTitle": "Map with the route to the beach",
+    "closeMenu": "Close menu"
   },
   "FilterModal": {
     "title": "All beach filters",
