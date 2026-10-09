@@ -18,6 +18,15 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Self-hosted fonts; no double API requests on page load ✅ COMPLETE
+
+Performance audit 2026-10-09:
+- Figtree and Damion (hero script text) were loaded by a render-blocking Google Fonts `@import` in `globals.css`. They now come from `next/font/google` in the locale layout (self-hosted, `display: swap`, CSS variables `--font-figtree` / `--font-damion` used by `globals.css`, Tailwind `font-figtree` / `font-damion` and `ExploreSection`).
+- `ApiClientProvider` set `Accept-Language` in an effect that ran after the children's effects, then called `resetQueries()`: every client query (footer, menu, continents, countries, filters, …) went out once without the language and again after the reset, and a third time when the sign-in token loaded. The client is now configured before the first render (browser only, so the shared server-side client never gets one visitor's headers); queries are reset only when the language changes.
+- Test: `e2e/fonts-and-api-client.unit.spec.ts`.
+
+---
+
 ## 2026-10-09 – Lighter images: home tiles, hero preloaded, no priority on every card ✅ COMPLETE
 
 Performance audit 2026-10-09: the home page downloaded ~10 MB of images.

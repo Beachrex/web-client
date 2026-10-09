@@ -5,7 +5,7 @@ import DefaultLayout from '@/components/Layout';
 import { env } from '@/env';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
-import { Open_Sans } from 'next/font/google';
+import { Damion, Figtree, Open_Sans } from 'next/font/google';
 import { buildOrganizationSchema, buildWebSiteSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { isProductionSite } from '@/lib/utils/environment';
@@ -51,6 +51,19 @@ const openSans = Open_Sans({
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
 });
+// Self-hosted by next/font (was a render-blocking Google Fonts @import in globals.css)
+const figtree = Figtree({
+  subsets: ['latin', 'latin-ext'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-figtree',
+});
+const damion = Damion({
+  subsets: ['latin'], // Damion has no latin-ext subset (same as the old Google Fonts CSS)
+  weight: '400',
+  display: 'swap',
+  variable: '--font-damion',
+});
 export default async function LocaleLayout({
   children,
   params,
@@ -73,7 +86,7 @@ export default async function LocaleLayout({
   const webSiteSchema = buildWebSiteSchema();
 
   return (
-    <html lang={locale} className={openSans.className}>
+    <html lang={locale} className={`${openSans.className} ${figtree.variable} ${damion.variable}`}>
       <head>
         {/* Consent, analytics and ads: production only */}
         {isProductionSite(env.NEXT_PUBLIC_BASE_URL) && <ThirdPartyScripts />}
