@@ -92,3 +92,45 @@ test('the static menu JSON (English slugs) is gone', () => {
   const menu = readFileSync(join(process.cwd(), 'src/components/Header/BurgerMenu.tsx'), 'utf8');
   expect(menu).not.toMatch(/menu_en\.json|\/beach-accommodation|href="\/beach-map"/);
 });
+
+test('menu groups of pre-filtered beaches open the localized beach map with one filter', () => {
+  const items = buildMenuItems({
+    locale: 'hr',
+    continents,
+    countries,
+    aboutUrl: null,
+    contactUrl: null,
+    labels,
+    filterGroups: [
+      {
+        label: 'Vrste plaža',
+        icon: '/images/categories/sand-castle.png',
+        tiles: [{ filterKey: 'beach_type', code: 'sand', label: 'Pješčana', icon: '/images/categories/sand-castle.png' }],
+      },
+      { label: 'Empty', icon: '/x.png', tiles: [] },
+    ],
+  });
+  const group = items.find((i) => i.label === 'Vrste plaža')!;
+  expect(group.href).toBe(buildBeachMapUrl('hr'));
+  expect(group.subItems).toEqual([
+    { label: 'Pješčana', href: `${buildBeachMapUrl('hr')}?beach_type=sand`, icon: '/images/categories/sand-castle.png' },
+  ]);
+  expect(items.find((i) => i.label === 'Empty')).toBeUndefined();
+  // Before the AI group, after the browse groups
+  const order = items.map((i) => i.label);
+  expect(order.indexOf('Vrste plaža')).toBeGreaterThan(order.indexOf(labels.topCountries));
+  expect(order.indexOf('Vrste plaža')).toBeLessThan(order.indexOf(labels.aiAssistant));
+});
+
+test('menu filter picks use filter keys the map understands and icons that exist', async () => {
+  const { existsSync } = await import('fs');
+  const { MENU_FILTER_GROUPS } = await import('@/config/menuBeachFilters');
+  const mapKeys = ['beach_type', 'user_type', 'location_infrastructure', 'culinary_offer', 'natural_location_condition'];
+  for (const group of MENU_FILTER_GROUPS) {
+    expect(existsSync(join(process.cwd(), 'public', group.icon))).toBe(true);
+    for (const pick of group.picks) {
+      expect(mapKeys).toContain(pick.filterKey);
+      expect(existsSync(join(process.cwd(), 'public', pick.icon)), pick.icon).toBe(true);
+    }
+  }
+});

@@ -722,7 +722,10 @@
     "topCountries": "Популярные пляжные страны",
     "aiChat": "AI-чат о пляжах",
     "aiItinerary": "AI-планировщик поездок",
-    "contact": "Контакты"
+    "contact": "Контакты",
+    "beachTypes": "Типы пляжей",
+    "beachesFor": "Пляжи для",
+    "onTheBeach": "На пляже"
   },
   "MediaKit": {
     "downloadsTitle": "Загрузки",

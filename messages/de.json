@@ -722,7 +722,10 @@
     "topCountries": "Beliebteste Strandländer",
     "aiChat": "KI-Strand-Chat",
     "aiItinerary": "KI-Reiseplaner",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "beachTypes": "Strandarten",
+    "beachesFor": "Strände für",
+    "onTheBeach": "Am Strand"
   },
   "MediaKit": {
     "downloadsTitle": "Downloads",

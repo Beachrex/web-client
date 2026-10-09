@@ -722,7 +722,10 @@
     "topCountries": "Δημοφιλείς χώρες με παραλίες",
     "aiChat": "AI συνομιλία για παραλίες",
     "aiItinerary": "AI σχεδιαστής ταξιδιών",
-    "contact": "Επικοινωνία"
+    "contact": "Επικοινωνία",
+    "beachTypes": "Τύποι παραλιών",
+    "beachesFor": "Παραλίες για",
+    "onTheBeach": "Στην παραλία"
   },
   "MediaKit": {
     "downloadsTitle": "Λήψεις",

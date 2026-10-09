@@ -1,5 +1,6 @@
 import type { Country } from '@/lib/api-client/types.gen';
-import { buildContinentUrl, buildCountryUrl, getBeachesWord } from '@/lib/utils/beach-urls';
+import { buildBeachMapUrl, buildContinentUrl, buildCountryUrl, getBeachesWord } from '@/lib/utils/beach-urls';
+import type { QuickFilterTile } from '@/lib/utils/quick-filters';
 
 export interface MenuItem {
   label: string;
@@ -13,6 +14,13 @@ interface MenuContinent {
   name: string;
   slug: string;
   beaches_count: number;
+}
+
+/** A menu group of pre-filtered beaches; every tile opens the beach map with that filter. */
+export interface MenuFilterGroupItems {
+  label: string;
+  icon: string;
+  tiles: QuickFilterTile[];
 }
 
 export interface MenuLabels {
@@ -40,6 +48,7 @@ export function buildMenuItems({
   aboutUrl,
   contactUrl,
   labels,
+  filterGroups = [],
 }: {
   locale: string;
   continents: MenuContinent[];
@@ -47,6 +56,7 @@ export function buildMenuItems({
   aboutUrl: string | null;
   contactUrl: string | null;
   labels: MenuLabels;
+  filterGroups?: MenuFilterGroupItems[];
 }): MenuItem[] {
   const items: MenuItem[] = [];
 
@@ -73,6 +83,20 @@ export function buildMenuItems({
       subItems: top.map((c) => ({
         label: c.name!,
         href: buildCountryUrl(locale, continentSlug.get(c.continent_code!)!, c.slug!),
+      })),
+    });
+  }
+
+  for (const group of filterGroups) {
+    if (group.tiles.length === 0) continue;
+    items.push({
+      label: group.label,
+      href: buildBeachMapUrl(locale),
+      icon: group.icon,
+      subItems: group.tiles.map((tile) => ({
+        label: tile.label,
+        href: buildBeachMapUrl(locale, new URLSearchParams({ [tile.filterKey]: tile.code }).toString()),
+        icon: tile.icon,
       })),
     });
   }

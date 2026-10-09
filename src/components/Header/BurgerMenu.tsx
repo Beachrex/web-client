@@ -14,6 +14,10 @@ import { staticPageUrl, useFooterStaticPages } from '@/hooks/useStaticPages';
 import { FEATURES } from '@/lib/constants/features';
 import { buildMenuItems, type MenuItem } from '@/lib/utils/menu-items';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { useQuery } from '@tanstack/react-query';
+import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import { MENU_FILTER_GROUPS } from '@/config/menuBeachFilters';
+import { resolveQuickFilters } from '@/lib/utils/quick-filters';
 
 const sidebarTheme: CustomFlowbiteTheme['sidebar'] = {
   root: {
@@ -127,6 +131,9 @@ const BurgerMenu = () => {
   const { continents } = useContinents();
   const { countries } = useCountries();
   const staticPages = useFooterStaticPages();
+  // Same query as the home category tiles (shared cache); labels in the visitor's language.
+  const { data: filtersData } = useQuery(getBeachFiltersOptions({ query: {} as never }));
+  const filterOptions = filtersData?.data as Parameters<typeof resolveQuickFilters>[1];
 
   // Built from API data: continents and countries with beaches, CMS pages by code.
   const menuItems = useMemo(
@@ -137,6 +144,11 @@ const BurgerMenu = () => {
         countries,
         aboutUrl: staticPageUrl(staticPages, 'about-us', locale),
         contactUrl: staticPageUrl(staticPages, 'contact', locale),
+        filterGroups: MENU_FILTER_GROUPS.map((group) => ({
+          label: t(group.labelKey),
+          icon: group.icon,
+          tiles: resolveQuickFilters(group.picks, filterOptions),
+        })),
         labels: {
           browseBeaches: t('browseBeaches'),
           topCountries: t('topCountries'),
@@ -147,7 +159,7 @@ const BurgerMenu = () => {
           contact: t('contact'),
         },
       }),
-    [locale, continents, countries, staticPages, t, tCommon, tAI],
+    [locale, continents, countries, staticPages, filterOptions, t, tCommon, tAI],
   );
 
   const closeMenu = () => setIsOpen(false);

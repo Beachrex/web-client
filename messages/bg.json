@@ -722,7 +722,10 @@
     "topCountries": "Най-популярни плажни държави",
     "aiChat": "AI чат за плажове",
     "aiItinerary": "AI планировчик на пътувания",
-    "contact": "Контакт"
+    "contact": "Контакт",
+    "beachTypes": "Видове плажове",
+    "beachesFor": "Плажове за",
+    "onTheBeach": "На плажа"
   },
   "MediaKit": {
     "downloadsTitle": "Изтегляния",

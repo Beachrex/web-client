@@ -722,7 +722,10 @@
     "topCountries": "Legnépszerűbb strandországok",
     "aiChat": "AI strandcsevegő",
     "aiItinerary": "AI útitervező",
-    "contact": "Kapcsolat"
+    "contact": "Kapcsolat",
+    "beachTypes": "Strandtípusok",
+    "beachesFor": "Kinek ajánlott",
+    "onTheBeach": "A strandon"
   },
   "MediaKit": {
     "downloadsTitle": "Letöltések",

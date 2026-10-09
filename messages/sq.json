@@ -722,7 +722,10 @@
     "topCountries": "Vendet më të njohura me plazhe",
     "aiChat": "Bisedë AI për plazhet",
     "aiItinerary": "Planifikues udhëtimi AI",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "beachTypes": "Llojet e plazheve",
+    "beachesFor": "Plazhe për",
+    "onTheBeach": "Në plazh"
   },
   "MediaKit": {
     "downloadsTitle": "Shkarkime",
