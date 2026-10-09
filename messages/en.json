@@ -710,28 +710,72 @@
       "errorTooLong": "The message is too long. Please shorten it."
     },
     "itinerary": {
-      "title": "Create Beach Itinerary",
-      "subtitle": "Generate a personalized multi-day beach vacation plan",
+      "title": "Plan your beach trip",
+      "subtitle": "Pick a country and the length of your trip. We plan the beaches for every day from the Beachrex database, with a link to each beach.",
       "form": {
-        "destination": "Destination",
-        "destinationPlaceholder": "e.g., Croatia, Bali, Caribbean",
-        "days": "Number of Days",
-        "daysPlaceholder": "e.g., 7",
-        "interests": "Interests",
-        "interestsPlaceholder": "e.g., snorkeling, relaxation, nightlife",
-        "budget": "Budget Level",
-        "budgetLow": "Budget",
-        "budgetMedium": "Moderate",
-        "budgetHigh": "Luxury",
-        "generate": "Generate Itinerary",
-        "generating": "Generating your itinerary..."
+        "country": "Country",
+        "countryPlaceholder": "Choose a country",
+        "region": "Region (optional)",
+        "wholeCountry": "Whole country",
+        "duration": "Trip length",
+        "daysOption": "{days} days",
+        "plansAvailable": "{count} ready to use",
+        "interests": "What do you enjoy?",
+        "surface": "Beach surface",
+        "pace": "Pace",
+        "adults": "Adults",
+        "children": "Children"
       },
-      "error": "Failed to generate itinerary. Please try again.",
-      "paymentRequired": "Multi-day itineraries require credits. Please purchase credits to continue.",
-      "creditsRemaining": "Credits remaining: {count}",
-      "purchaseCredits": "Purchase Credits",
-      "assumptions": "Assumptions:",
-      "purchaseError": "The purchase could not be started. Please try again."
+      "interest": {
+        "swimming": "Swimming",
+        "snorkeling": "Snorkelling",
+        "family": "Family-friendly",
+        "quiet": "Quiet",
+        "nightlife": "Nightlife",
+        "nature": "Nature",
+        "diving": "Diving",
+        "surfing": "Surfing",
+        "kayaking": "Kayaking",
+        "hiking": "Hiking"
+      },
+      "surface": {
+        "sand": "Sand",
+        "pebble": "Pebbles",
+        "rock": "Rocks"
+      },
+      "pace": {
+        "relaxed": "Relaxed",
+        "balanced": "Balanced",
+        "packed": "Packed"
+      },
+      "progressBeaches": "Finding beaches that match your wishes…",
+      "progressRoute": "Planning the route day by day…",
+      "progressTips": "Writing tips for each beach…",
+      "progressNote": "This usually takes 20–60 seconds. Please keep this page open.",
+      "signInToStart": "Sign in to buy and create your plan.",
+      "generate": "Create my plan",
+      "usesOnePlan": "Uses one of your {days}-day plans.",
+      "buy": "Buy {days}-day plan · {price}",
+      "buyNote": "One-off payment, no subscription. After paying you come back here and create your plan.",
+      "errors": {
+        "signInRequired": "Please sign in first.",
+        "buyRequired": "You have no plan of this length left. Buy one to continue.",
+        "notEnoughBeaches": "Not enough beaches match. Try the whole country, fewer wishes or a shorter trip. Your plan was not used.",
+        "busy": "The planner is busy right now. Please try again in a minute. Your plan was not used.",
+        "error": "Something went wrong and your plan was not used. Please try again.",
+        "purchaseError": "The payment could not be started. Please try again."
+      },
+      "fallbackNote": "This time the AI tips could not be written, so the plan has short facts instead. Your plan was not used and you can create it again.",
+      "day": "Day {number}",
+      "timeBlock": {
+        "morning": "Morning",
+        "afternoon": "Afternoon",
+        "evening": "Evening"
+      },
+      "tip": "Tip",
+      "travelKm": "About {km} km of driving this day.",
+      "assumptions": "Good to know",
+      "newPlan": "Plan another trip"
     },
     "entitlements": {
       "title": "My Credits",

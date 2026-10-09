@@ -18,6 +18,36 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – AI itinerary planner (AI-3b): a form that can be sold ✅ COMPLETE
+
+`src/app/[locale]/ai/itinerary/page.tsx` + `src/lib/utils/itinerary.ts`. The old form sent any free-text destination as Croatia, any number of days (the API only accepts 3/7/14), and free-text interests that the API rejects. A "budget" field did nothing.
+
+**The form now has:**
+- A country from `GET /countries` and an optional region from `GET /regions?country_code=`, in the page language.
+- 3/7/14-day cards with the real price from the new `GET /payments/products` (`Intl.NumberFormat`), plus how many plans of that length the user already has.
+- Chips for interests and beach surface (values from the backend `ItineraryRequest`), plus pace, adults and children.
+
+**What the button shows:**
+- Signed out: sign-in.
+- Has a plan of that length: "Create my plan (uses one plan)".
+- Otherwise: "Buy N-day plan · price". The form is kept in sessionStorage across the Stripe checkout, and credits are polled briefly after returning, because the webhook can land a few seconds later.
+
+**While generating:** 3 progress messages. Every error says whether the plan was used (402 buy, 422 too few beaches, 429/503 busy).
+
+**Result:** days with time blocks; every beach links to its page (`buildBeachUrlFromSchema` with the slugs the backend now returns), with its photo. Travel km, parking and accessibility notes per day. A fallback plan shows a note that the plan was not charged.
+
+**Texts:** all in 19 languages under `AI.itinerary`; the old keys are removed.
+
+**Tests:** `e2e/itinerary-planner.unit.spec.ts`
+- the request format;
+- form values allowed by the backend validation (checked against `ItineraryRequest.php` when the backend repo is next to this one);
+- prices, error mapping, credits;
+- all 19 languages have the same keys and placeholders.
+
+Checked in a 390 px browser with a mocked API: no horizontal overflow; the beach link is `/si/plaze/evropa/hrvaska/istra/porec/plaza-borik`.
+
+**Needs backend #77** (`/payments/products` and the beach slugs).
+
 ## 2026-10-09 – Phones: no zoom or sideways scroll when typing ✅ COMPLETE
 
 On the owner's iPhone the AI chat page scrolled sideways after tapping the message field. The cause: iOS Safari zooms in when a field with a font size below 16 px gets focus. Measured at 390 px: header search 12 px, chat textarea 14 px, e-mail field 14 px. Without focus there was no overflow (`scrollWidth` = 390).

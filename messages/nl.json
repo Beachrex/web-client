@@ -710,28 +710,72 @@
       "errorTooLong": "Het bericht is te lang. Maak het korter."
     },
     "itinerary": {
-      "title": "Strandreisplan maken",
-      "subtitle": "Genereer een persoonlijk meerdaags strandvakantieplan",
+      "title": "Plan je strandvakantie",
+      "subtitle": "Kies een land en de lengte van je reis. Wij plannen de stranden voor elke dag uit de Beachrex-database, met een link naar elk strand.",
       "form": {
-        "destination": "Bestemming",
-        "destinationPlaceholder": "bijv. Kroatië, Bali, Caribisch gebied",
-        "days": "Aantal dagen",
-        "daysPlaceholder": "bijv. 7",
-        "interests": "Interesses",
-        "interestsPlaceholder": "bijv. snorkelen, ontspanning, nachtleven",
-        "budget": "Budgetniveau",
-        "budgetLow": "Budget",
-        "budgetMedium": "Gemiddeld",
-        "budgetHigh": "Luxe",
-        "generate": "Reisplan genereren",
-        "generating": "Je reisplan wordt gegenereerd..."
+        "country": "Land",
+        "countryPlaceholder": "Kies een land",
+        "region": "Regio (optioneel)",
+        "wholeCountry": "Heel het land",
+        "duration": "Reisduur",
+        "daysOption": "{days} dagen",
+        "plansAvailable": "{count} beschikbaar",
+        "interests": "Wat vind je leuk?",
+        "surface": "Strandondergrond",
+        "pace": "Tempo",
+        "adults": "Volwassenen",
+        "children": "Kinderen"
       },
-      "error": "Reisplan genereren mislukt. Probeer het opnieuw.",
-      "paymentRequired": "Meerdaagse reisplannen vereisen credits. Koop credits om door te gaan.",
-      "creditsRemaining": "Resterende credits: {count}",
-      "purchaseCredits": "Credits kopen",
-      "assumptions": "Aannames:",
-      "purchaseError": "De aankoop kon niet worden gestart. Probeer het opnieuw."
+      "interest": {
+        "swimming": "Zwemmen",
+        "snorkeling": "Snorkelen",
+        "family": "Gezinsvriendelijk",
+        "quiet": "Rust",
+        "nightlife": "Nachtleven",
+        "nature": "Natuur",
+        "diving": "Duiken",
+        "surfing": "Surfen",
+        "kayaking": "Kajakken",
+        "hiking": "Wandelen"
+      },
+      "surface": {
+        "sand": "Zand",
+        "pebble": "Kiezels",
+        "rock": "Rotsen"
+      },
+      "pace": {
+        "relaxed": "Ontspannen",
+        "balanced": "Gebalanceerd",
+        "packed": "Vol"
+      },
+      "progressBeaches": "We zoeken stranden die bij je wensen passen…",
+      "progressRoute": "We plannen de route dag voor dag…",
+      "progressTips": "We schrijven tips voor elk strand…",
+      "progressNote": "Dit duurt meestal 20–60 seconden. Houd deze pagina open.",
+      "signInToStart": "Log in om je plan te kopen en te maken.",
+      "generate": "Maak mijn plan",
+      "usesOnePlan": "Gebruikt een van je {days}-daagse plannen.",
+      "buy": "Koop {days}-daags plan · {price}",
+      "buyNote": "Eenmalige betaling, geen abonnement. Na het betalen kom je hier terug en maak je je plan.",
+      "errors": {
+        "signInRequired": "Log eerst in.",
+        "buyRequired": "Je hebt geen plan van deze lengte meer. Koop er een om verder te gaan.",
+        "notEnoughBeaches": "Te weinig stranden passen. Probeer heel het land, minder wensen of een kortere reis. Je plan is niet gebruikt.",
+        "busy": "De planner is nu druk. Probeer het over een minuut opnieuw. Je plan is niet gebruikt.",
+        "error": "Er ging iets mis en je plan is niet gebruikt. Probeer het opnieuw.",
+        "purchaseError": "De betaling kon niet worden gestart. Probeer het opnieuw."
+      },
+      "fallbackNote": "Deze keer konden de AI-tips niet worden geschreven, dus het plan bevat korte feiten. Je plan is niet gebruikt en je kunt het opnieuw maken.",
+      "day": "Dag {number}",
+      "timeBlock": {
+        "morning": "Ochtend",
+        "afternoon": "Middag",
+        "evening": "Avond"
+      },
+      "tip": "Tip",
+      "travelKm": "Ongeveer {km} km rijden op deze dag.",
+      "assumptions": "Goed om te weten",
+      "newPlan": "Plan een andere reis"
     },
     "entitlements": {
       "title": "Mijn credits",

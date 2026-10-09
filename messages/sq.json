@@ -710,28 +710,72 @@
       "errorTooLong": "Mesazhi është shumë i gjatë. Shkurtojeni."
     },
     "itinerary": {
-      "title": "Krijo itinerar plazhesh",
-      "subtitle": "Gjenero një plan të personalizuara pushimesh me disa ditë në plazh",
+      "title": "Planifikoni udhëtimin tuaj në plazh",
+      "subtitle": "Zgjidhni një shtet dhe kohëzgjatjen e udhëtimit. Ne planifikojmë plazhet për çdo ditë nga baza e të dhënave Beachrex, me një lidhje për çdo plazh.",
       "form": {
-        "destination": "Destinacion",
-        "destinationPlaceholder": "p.sh., Kroacia, Bali, Karaibet",
-        "days": "Numri i ditëve",
-        "daysPlaceholder": "p.sh., 7",
-        "interests": "Interesat",
-        "interestsPlaceholder": "p.sh., snorkeling, relaksim, jetë nate",
-        "budget": "Niveli i buxhetit",
-        "budgetLow": "Buxhet",
-        "budgetMedium": "Mesatar",
-        "budgetHigh": "Luksoz",
-        "generate": "Gjenero itinerar",
-        "generating": "Duke gjeneruar itinerarin tuaj..."
+        "country": "Shteti",
+        "countryPlaceholder": "Zgjidhni një shtet",
+        "region": "Rajoni (opsional)",
+        "wholeCountry": "I gjithë shteti",
+        "duration": "Kohëzgjatja e udhëtimit",
+        "daysOption": "{days} ditë",
+        "plansAvailable": "Në dispozicion: {count}",
+        "interests": "Çfarë ju pëlqen?",
+        "surface": "Lloji i plazhit",
+        "pace": "Ritmi",
+        "adults": "Të rritur",
+        "children": "Fëmijë"
       },
-      "error": "Dështoi gjenerimi i itinerarit. Ju lutemi provoni përsëri.",
-      "paymentRequired": "Itinerarët me disa ditë kërkojnë kredite. Ju lutemi blini kredite për të vazhduar.",
-      "creditsRemaining": "Kreditë e mbetura: {count}",
-      "purchaseCredits": "Bli kredite",
-      "assumptions": "Supozime:",
-      "purchaseError": "Blerja nuk mund të fillonte. Provoni përsëri."
+      "interest": {
+        "swimming": "Not",
+        "snorkeling": "Snorkeling",
+        "family": "Për familje",
+        "quiet": "Qetësi",
+        "nightlife": "Jeta e natës",
+        "nature": "Natyrë",
+        "diving": "Zhytje",
+        "surfing": "Surf",
+        "kayaking": "Kajak",
+        "hiking": "Ecje në natyrë"
+      },
+      "surface": {
+        "sand": "Rërë",
+        "pebble": "Zall",
+        "rock": "Shkëmbinj"
+      },
+      "pace": {
+        "relaxed": "I qetë",
+        "balanced": "I balancuar",
+        "packed": "I ngjeshur"
+      },
+      "progressBeaches": "Po kërkojmë plazhe sipas dëshirave tuaja…",
+      "progressRoute": "Po planifikojmë itinerarin ditë pas dite…",
+      "progressTips": "Po shkruajmë këshilla për çdo plazh…",
+      "progressNote": "Zakonisht zgjat 20–60 sekonda. Mbajeni këtë faqe të hapur.",
+      "signInToStart": "Hyni për të blerë dhe krijuar planin tuaj.",
+      "generate": "Krijo planin tim",
+      "usesOnePlan": "Përdor një nga planet tuaja {days}-ditore.",
+      "buy": "Bli planin {days}-ditor · {price}",
+      "buyNote": "Pagesë e njëhershme, pa abonim. Pas pagesës ktheheni këtu dhe krijoni planin tuaj.",
+      "errors": {
+        "signInRequired": "Ju lutemi hyni fillimisht.",
+        "buyRequired": "Nuk keni më plane me këtë kohëzgjatje. Blini një për të vazhduar.",
+        "notEnoughBeaches": "Përputhen shumë pak plazhe. Provoni të gjithë shtetin, më pak dëshira ose një udhëtim më të shkurtër. Plani juaj nuk u përdor.",
+        "busy": "Planifikuesi është i zënë tani. Provoni përsëri pas një minute. Plani juaj nuk u përdor.",
+        "error": "Diçka shkoi keq dhe plani juaj nuk u përdor. Provoni përsëri.",
+        "purchaseError": "Pagesa nuk mund të niste. Provoni përsëri."
+      },
+      "fallbackNote": "Këtë herë këshillat e IA-së nuk mund të shkruheshin, prandaj plani përmban fakte të shkurtra. Plani juaj nuk u përdor dhe mund ta krijoni përsëri.",
+      "day": "Dita {number}",
+      "timeBlock": {
+        "morning": "Mëngjes",
+        "afternoon": "Pasdite",
+        "evening": "Mbrëmje"
+      },
+      "tip": "Këshillë",
+      "travelKm": "Rreth {km} km udhëtim me makinë këtë ditë.",
+      "assumptions": "Mirë të dini",
+      "newPlan": "Planifikoni një udhëtim tjetër"
     },
     "entitlements": {
       "title": "Kreditë e mia",

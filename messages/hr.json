@@ -710,28 +710,72 @@
       "errorTooLong": "Poruka je predugačka. Skratite je."
     },
     "itinerary": {
-      "title": "Kreiraj plan putovanja na plažu",
-      "subtitle": "Generiraj personalizirani višednevni plan odmora na plaži",
+      "title": "Isplanirajte putovanje na plažu",
+      "subtitle": "Odaberite državu i trajanje putovanja. Iz Beachrex baze planiramo plaže za svaki dan, s poveznicom na svaku plažu.",
       "form": {
-        "destination": "Destinacija",
-        "destinationPlaceholder": "npr. Hrvatska, Bali, Karibi",
-        "days": "Broj dana",
-        "daysPlaceholder": "npr. 7",
-        "interests": "Interesi",
-        "interestsPlaceholder": "npr. ronjenje s maskom, opuštanje, noćni život",
-        "budget": "Razina budžeta",
-        "budgetLow": "Budžet",
-        "budgetMedium": "Srednji",
-        "budgetHigh": "Luksuz",
-        "generate": "Generiraj plan putovanja",
-        "generating": "Generiranje vašeg plana putovanja..."
+        "country": "Država",
+        "countryPlaceholder": "Odaberite državu",
+        "region": "Regija (neobavezno)",
+        "wholeCountry": "Cijela država",
+        "duration": "Trajanje putovanja",
+        "daysOption": "{days} dana",
+        "plansAvailable": "Dostupno: {count}",
+        "interests": "Što volite?",
+        "surface": "Podloga plaže",
+        "pace": "Tempo",
+        "adults": "Odrasli",
+        "children": "Djeca"
       },
-      "error": "Neuspjelo generiranje plana putovanja. Molimo pokušajte ponovno.",
-      "paymentRequired": "Višednevni planovi putovanja zahtijevaju kredite. Molimo kupite kredite za nastavak.",
-      "creditsRemaining": "Preostalo kredita: {count}",
-      "purchaseCredits": "Kupi kredite",
-      "assumptions": "Pretpostavke:",
-      "purchaseError": "Kupnju nije bilo moguće pokrenuti. Pokušajte ponovno."
+      "interest": {
+        "swimming": "Plivanje",
+        "snorkeling": "Ronjenje s maskom",
+        "family": "Za obitelji",
+        "quiet": "Mir",
+        "nightlife": "Noćni život",
+        "nature": "Priroda",
+        "diving": "Ronjenje",
+        "surfing": "Surfanje",
+        "kayaking": "Kajak",
+        "hiking": "Planinarenje"
+      },
+      "surface": {
+        "sand": "Pijesak",
+        "pebble": "Šljunak",
+        "rock": "Stijene"
+      },
+      "pace": {
+        "relaxed": "Opušten",
+        "balanced": "Uravnotežen",
+        "packed": "Pun"
+      },
+      "progressBeaches": "Tražimo plaže koje odgovaraju vašim željama…",
+      "progressRoute": "Planiramo rutu za svaki dan…",
+      "progressTips": "Pišemo savjete za svaku plažu…",
+      "progressNote": "Obično traje 20–60 sekundi. Ostavite ovu stranicu otvorenom.",
+      "signInToStart": "Prijavite se da biste kupili i izradili plan.",
+      "generate": "Izradi moj plan",
+      "usesOnePlan": "Koristi jedan od vaših planova od {days} dana.",
+      "buy": "Kupi plan od {days} dana · {price}",
+      "buyNote": "Jednokratno plaćanje, bez pretplate. Nakon plaćanja vraćate se ovdje i izrađujete plan.",
+      "errors": {
+        "signInRequired": "Najprije se prijavite.",
+        "buyRequired": "Nemate više plana ovog trajanja. Kupite ga za nastavak.",
+        "notEnoughBeaches": "Premalo plaža odgovara. Odaberite cijelu državu, manje želja ili kraće putovanje. Plan nije potrošen.",
+        "busy": "Planer je trenutno zauzet. Pokušajte ponovno za minutu. Plan nije potrošen.",
+        "error": "Došlo je do pogreške, plan nije potrošen. Pokušajte ponovno.",
+        "purchaseError": "Plaćanje nije moguće pokrenuti. Pokušajte ponovno."
+      },
+      "fallbackNote": "Ovaj put AI savjete nije bilo moguće napisati, pa plan sadrži kratke činjenice. Plan nije potrošen i možete ga ponovno izraditi.",
+      "day": "{number}. dan",
+      "timeBlock": {
+        "morning": "Ujutro",
+        "afternoon": "Poslijepodne",
+        "evening": "Navečer"
+      },
+      "tip": "Savjet",
+      "travelKm": "Toga dana oko {km} km vožnje.",
+      "assumptions": "Dobro je znati",
+      "newPlan": "Planiraj novo putovanje"
     },
     "entitlements": {
       "title": "Moji krediti",

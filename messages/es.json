@@ -710,28 +710,72 @@
       "errorTooLong": "El mensaje es demasiado largo. Acórtalo."
     },
     "itinerary": {
-      "title": "Crear itinerario de playa",
-      "subtitle": "Genera un plan de vacaciones en la playa personalizado de varios días",
+      "title": "Planifica tu viaje de playa",
+      "subtitle": "Elige un país y la duración del viaje. Planificamos las playas de cada día con la base de datos de Beachrex, con un enlace a cada playa.",
       "form": {
-        "destination": "Destino",
-        "destinationPlaceholder": "ej., Croacia, Bali, Caribe",
-        "days": "Número de días",
-        "daysPlaceholder": "ej., 7",
-        "interests": "Intereses",
-        "interestsPlaceholder": "ej., snorkel, relajación, vida nocturna",
-        "budget": "Nivel de presupuesto",
-        "budgetLow": "Económico",
-        "budgetMedium": "Moderado",
-        "budgetHigh": "Lujo",
-        "generate": "Generar itinerario",
-        "generating": "Generando tu itinerario..."
+        "country": "País",
+        "countryPlaceholder": "Elige un país",
+        "region": "Región (opcional)",
+        "wholeCountry": "Todo el país",
+        "duration": "Duración del viaje",
+        "daysOption": "{days} días",
+        "plansAvailable": "{count} disponibles",
+        "interests": "¿Qué te gusta?",
+        "surface": "Tipo de playa",
+        "pace": "Ritmo",
+        "adults": "Adultos",
+        "children": "Niños"
       },
-      "error": "Error al generar el itinerario. Por favor inténtalo de nuevo.",
-      "paymentRequired": "Los itinerarios de varios días requieren créditos. Por favor compra créditos para continuar.",
-      "creditsRemaining": "Créditos restantes: {count}",
-      "purchaseCredits": "Comprar créditos",
-      "assumptions": "Supuestos:",
-      "purchaseError": "No se pudo iniciar la compra. Inténtalo de nuevo."
+      "interest": {
+        "swimming": "Nadar",
+        "snorkeling": "Esnórquel",
+        "family": "Para familias",
+        "quiet": "Tranquilidad",
+        "nightlife": "Vida nocturna",
+        "nature": "Naturaleza",
+        "diving": "Buceo",
+        "surfing": "Surf",
+        "kayaking": "Kayak",
+        "hiking": "Senderismo"
+      },
+      "surface": {
+        "sand": "Arena",
+        "pebble": "Guijarros",
+        "rock": "Rocas"
+      },
+      "pace": {
+        "relaxed": "Tranquilo",
+        "balanced": "Equilibrado",
+        "packed": "Intenso"
+      },
+      "progressBeaches": "Buscamos playas que encajen con tus deseos…",
+      "progressRoute": "Planificamos la ruta día a día…",
+      "progressTips": "Escribimos consejos para cada playa…",
+      "progressNote": "Suele tardar entre 20 y 60 segundos. Mantén esta página abierta.",
+      "signInToStart": "Inicia sesión para comprar y crear tu plan.",
+      "generate": "Crear mi plan",
+      "usesOnePlan": "Usa uno de tus planes de {days} días.",
+      "buy": "Comprar plan de {days} días · {price}",
+      "buyNote": "Pago único, sin suscripción. Tras pagar vuelves aquí y creas tu plan.",
+      "errors": {
+        "signInRequired": "Inicia sesión primero.",
+        "buyRequired": "No te quedan planes de esta duración. Compra uno para continuar.",
+        "notEnoughBeaches": "Coinciden muy pocas playas. Prueba con todo el país, menos deseos o un viaje más corto. Tu plan no se ha usado.",
+        "busy": "El planificador está ocupado. Vuelve a intentarlo en un minuto. Tu plan no se ha usado.",
+        "error": "Algo ha fallado y tu plan no se ha usado. Inténtalo de nuevo.",
+        "purchaseError": "No se pudo iniciar el pago. Inténtalo de nuevo."
+      },
+      "fallbackNote": "Esta vez no se pudieron escribir los consejos de la IA, así que el plan tiene datos breves. Tu plan no se ha usado y puedes crearlo de nuevo.",
+      "day": "Día {number}",
+      "timeBlock": {
+        "morning": "Mañana",
+        "afternoon": "Tarde",
+        "evening": "Noche"
+      },
+      "tip": "Consejo",
+      "travelKm": "Unos {km} km de coche este día.",
+      "assumptions": "Conviene saber",
+      "newPlan": "Planificar otro viaje"
     },
     "entitlements": {
       "title": "Mis créditos",
