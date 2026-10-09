@@ -226,7 +226,7 @@
     "viewBeachMap": "Посмотреть карту пляжей"
   },
   "SearchBeach": {
-    "title": "Просмотреть все пляжи в Европе",
+    "title": "Просмотреть все пляжи в {continent}",
     "filterButton": "Фильтр",
     "mapButton": "Показать карту",
     "displayLabel": "Вид пляжа:",

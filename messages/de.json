@@ -226,7 +226,7 @@
     "viewBeachMap": "Strandkarte anzeigen"
   },
   "SearchBeach": {
-    "title": "Alle Strände in Europa durchsuchen",
+    "title": "Alle Strände in {continent} durchsuchen",
     "filterButton": "Filter",
     "mapButton": "Karte anzeigen",
     "displayLabel": "Strandansicht:",

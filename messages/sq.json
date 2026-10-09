@@ -226,7 +226,7 @@
     "viewBeachMap": "Shiko hartën e plazheve"
   },
   "SearchBeach": {
-    "title": "Shfletoni të gjithë plazhet në Evropë",
+    "title": "Shfletoni të gjithë plazhet në {continent}",
     "filterButton": "Filtro",
     "mapButton": "Shfaq hartën",
     "displayLabel": "Pamja e plazhit:",

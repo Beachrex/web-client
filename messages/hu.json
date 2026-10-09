@@ -226,7 +226,7 @@
     "viewBeachMap": "Strand térkép megtekintése"
   },
   "SearchBeach": {
-    "title": "Böngéssz az összes európai strand között",
+    "title": "Összes strand böngészése {continent}",
     "filterButton": "Szűrő",
     "mapButton": "Térkép megjelenítése",
     "displayLabel": "Strand nézet:",

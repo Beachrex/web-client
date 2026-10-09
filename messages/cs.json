@@ -226,7 +226,7 @@
     "viewBeachMap": "Zobrazit mapu pláží"
   },
   "SearchBeach": {
-    "title": "Procházet všechny pláže v Evropě",
+    "title": "Procházet všechny pláže v {continent}",
     "filterButton": "Filtr",
     "mapButton": "Zobrazit mapu",
     "displayLabel": "Pohled na pláž:",

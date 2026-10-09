@@ -4,7 +4,7 @@
     "mapButtonFilter": "Zemljevid plaž s filtri",
     "menu": "Meni",
     "about": "O nas",
-    "numBeaches": "plaže: ",
+    "numBeaches": "Plaže: ",
     "numAccommodations": "Nastanitve: ",
     "hotelPrice": "Cena hotela",
     "home": "Domov",
@@ -226,7 +226,7 @@
     "viewBeachMap": "Poglej zemljevid plaž"
   },
   "SearchBeach": {
-    "title": "Brskaj po vseh plažah Evrope",
+    "title": "Brskaj po vseh plažah {continent}",
     "filterButton": "Filtriraj",
     "mapButton": "Prikaži zemljevid",
     "displayLabel": "Prikaz plaže:",
@@ -404,7 +404,7 @@
   },
   "WorldTopBar": {
     "worldLabel": "Svet",
-    "countriesWithBeachesLabel": "Držav z plažami",
+    "countriesWithBeachesLabel": "Države s plažami",
     "totalBeachesLabel": "Plaž na svetu",
     "openPoolsLabel": "Odprtih bazenov na svetu",
     "indoorPoolsLabel": "Zaprtih bazenov na svetu",

@@ -226,7 +226,7 @@
     "viewBeachMap": "Se strandkort"
   },
   "SearchBeach": {
-    "title": "Gennemse alle strande i Europa",
+    "title": "Gennemse alle strande i {continent}",
     "filterButton": "Filtrer",
     "mapButton": "Vis kort",
     "displayLabel": "Strandvisning:",

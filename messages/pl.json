@@ -226,7 +226,7 @@
     "viewBeachMap": "Zobacz mapę plaż"
   },
   "SearchBeach": {
-    "title": "Przeglądaj wszystkie plaże w Europie",
+    "title": "Przeglądaj wszystkie plaże w {continent}",
     "filterButton": "Filtruj",
     "mapButton": "Pokaż mapę",
     "displayLabel": "Widok plaży:",
