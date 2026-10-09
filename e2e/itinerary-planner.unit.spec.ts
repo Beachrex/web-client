@@ -125,3 +125,37 @@ test('the planner starts a background plan and opens its page; the plan page pol
   expect(page).toContain('router.push(`/ai/itinerary/plans/${data.id}`)');
   expect(readFileSync(join(root, 'src/components/Itinerary/ItineraryPlanPage.tsx'), 'utf8')).toContain('/api/v1/me/itinerary-plans/');
 });
+
+test('map stops: only beaches with coordinates, numbered per day in visiting order', async () => {
+  const { planStops } = await import('@/lib/utils/itinerary');
+  const beach = (id: number, lat?: number) => ({ id, name: `B${id}`, latitude: lat, longitude: lat === undefined ? undefined : 14 });
+  const plan = {
+    title: '', summary: '', duration_days: 2, assumptions: [], metadata: {},
+    days: [
+      { day_number: 1, theme: '', base_area: null, logistics: { estimated_travel_km: 0, parking_notes: null, accessibility_notes: null },
+        items: [
+          { type: 'beach', time_block: 'morning', notes: '', why: null, beach: beach(1, 45) },
+          { type: 'food', time_block: 'evening', notes: '', why: null },
+          { type: 'beach', time_block: 'afternoon', notes: '', why: null, beach: beach(2, 45.1) },
+        ] },
+      { day_number: 2, theme: '', base_area: null, logistics: { estimated_travel_km: 0, parking_notes: null, accessibility_notes: null },
+        items: [
+          { type: 'beach', time_block: 'morning', notes: '', why: null, beach: beach(3) },
+          { type: 'beach', time_block: 'afternoon', notes: '', why: null, beach: beach(4, 44) },
+        ] },
+    ],
+  };
+
+  expect(planStops(plan, (b) => `/b/${b.id}`).map((s) => [s.day, s.order, s.name, s.href])).toEqual([
+    [1, 1, 'B1', '/b/1'],
+    [1, 2, 'B2', '/b/2'],
+    [2, 1, 'B4', '/b/4'],
+  ]);
+});
+
+test('a printed plan (Save as PDF) leaves out the site header, footer and page controls', () => {
+  const layout = readFileSync(join(root, 'src/components/Layout.tsx'), 'utf8');
+  expect(layout).toMatch(/print:hidden[\s\S]*<TopBar\/>/);
+  expect(layout).toMatch(/print:hidden[\s\S]*<Footer\/>/);
+  expect(readFileSync(join(root, 'src/components/Itinerary/ItineraryPlanView.tsx'), 'utf8')).toContain('window.print()');
+});

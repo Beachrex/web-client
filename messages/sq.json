@@ -791,7 +791,9 @@
           "timeout": "Krijimi i planit zgjati shumë. Plani nuk u përdor, provoni përsëri.",
           "error": "Diçka shkoi keq. Plani nuk u përdor, provoni përsëri."
         }
-      }
+      },
+      "savePdf": "Ruaj si PDF",
+      "mapTitle": "Harta e udhëtimit"
     },
     "entitlements": {
       "title": "Kreditë e mia",

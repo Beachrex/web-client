@@ -791,7 +791,9 @@
           "timeout": "Tworzenie planu trwało zbyt długo. Plan nie został wykorzystany, spróbuj ponownie.",
           "error": "Coś poszło nie tak. Plan nie został wykorzystany, spróbuj ponownie."
         }
-      }
+      },
+      "savePdf": "Zapisz jako PDF",
+      "mapTitle": "Mapa podróży"
     },
     "entitlements": {
       "title": "Moje kredyty",

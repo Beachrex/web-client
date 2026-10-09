@@ -791,7 +791,9 @@
           "timeout": "Creating the plan took too long. The plan was not used, please try again.",
           "error": "Something went wrong. The plan was not used, please try again."
         }
-      }
+      },
+      "savePdf": "Save as PDF",
+      "mapTitle": "Map of the trip"
     },
     "entitlements": {
       "title": "My Credits",

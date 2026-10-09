@@ -791,7 +791,9 @@
           "timeout": "A criação demorou demasiado. O plano não foi usado, tente novamente.",
           "error": "Ocorreu um erro. O plano não foi usado, tente novamente."
         }
-      }
+      },
+      "savePdf": "Guardar como PDF",
+      "mapTitle": "Mapa da viagem"
     },
     "entitlements": {
       "title": "Os meus créditos",

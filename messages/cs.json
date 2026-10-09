@@ -791,7 +791,9 @@
           "timeout": "Vytváření plánu trvalo příliš dlouho. Plán nebyl použit, zkuste to znovu.",
           "error": "Něco se pokazilo. Plán nebyl použit, zkuste to znovu."
         }
-      }
+      },
+      "savePdf": "Uložit jako PDF",
+      "mapTitle": "Mapa cesty"
     },
     "entitlements": {
       "title": "Moje kredity",

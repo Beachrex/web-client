@@ -791,7 +791,9 @@
           "timeout": "La création a pris trop de temps. Le plan n'a pas été utilisé, veuillez réessayer.",
           "error": "Une erreur s'est produite. Le plan n'a pas été utilisé, veuillez réessayer."
         }
-      }
+      },
+      "savePdf": "Enregistrer en PDF",
+      "mapTitle": "Carte du voyage"
     },
     "entitlements": {
       "title": "Mes crédits",

@@ -791,7 +791,9 @@
           "timeout": "Izrada plana trajala je predugo. Plan nije potrošen, pokušajte ponovno.",
           "error": "Došlo je do pogreške. Plan nije potrošen, pokušajte ponovno."
         }
-      }
+      },
+      "savePdf": "Spremi kao PDF",
+      "mapTitle": "Karta putovanja"
     },
     "entitlements": {
       "title": "Moji krediti",

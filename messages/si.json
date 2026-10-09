@@ -801,7 +801,9 @@
           "timeout": "Priprava načrta je trajala predolgo. Načrt ni bil porabljen, poskusite znova.",
           "error": "Prišlo je do napake. Načrt ni bil porabljen, poskusite znova."
         }
-      }
+      },
+      "savePdf": "Shrani kot PDF",
+      "mapTitle": "Zemljevid potovanja"
     },
     "entitlements": {
       "title": "Moji krediti",

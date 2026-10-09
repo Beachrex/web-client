@@ -791,7 +791,9 @@
           "timeout": "La creazione ha richiesto troppo tempo. Il piano non è stato usato, riprova.",
           "error": "Si è verificato un errore. Il piano non è stato usato, riprova."
         }
-      }
+      },
+      "savePdf": "Salva come PDF",
+      "mapTitle": "Mappa del viaggio"
     },
     "entitlements": {
       "title": "I miei crediti",

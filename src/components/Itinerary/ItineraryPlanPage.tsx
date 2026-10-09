@@ -62,7 +62,7 @@ export default function ItineraryPlanPage({ id }: { id: string }) {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-4xl px-4 py-8">
-        <div className="mb-6 flex items-center justify-between gap-4">
+        <div className="mb-6 flex items-center justify-between gap-4 print:hidden">
           <Link href="/ai/itinerary/plans" className="text-sm font-medium text-blue-700 hover:underline">
             ← {t('plans.title')}
           </Link>

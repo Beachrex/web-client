@@ -791,7 +791,9 @@
           "timeout": "Die Erstellung hat zu lange gedauert. Der Plan wurde nicht verbraucht, bitte versuchen Sie es erneut.",
           "error": "Etwas ist schiefgelaufen. Der Plan wurde nicht verbraucht, bitte versuchen Sie es erneut."
         }
-      }
+      },
+      "savePdf": "Als PDF speichern",
+      "mapTitle": "Karte der Reise"
     },
     "entitlements": {
       "title": "Meine Credits",
