@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Guardar como PDF",
-      "mapTitle": "Mapa da viagem"
+      "mapTitle": "Mapa da viagem",
+      "consent": {
+        "terms": "Aceito as <link>condições de venda</link>.",
+        "withdrawal": "Quero que o plano fique disponível de imediato. Compreendo que perco o direito de livre resolução de 14 dias quando criar o plano; até lá, ainda posso resolver o contrato."
+      }
     },
     "entitlements": {
       "title": "Os meus créditos",

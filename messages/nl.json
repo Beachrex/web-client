@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Opslaan als pdf",
-      "mapTitle": "Kaart van de reis"
+      "mapTitle": "Kaart van de reis",
+      "consent": {
+        "terms": "Ik ga akkoord met de <link>verkoopvoorwaarden</link>.",
+        "withdrawal": "Ik wil dat het plan meteen beschikbaar is. Ik begrijp dat ik mijn herroepingsrecht van 14 dagen verlies zodra ik het plan maak; tot dan kan ik nog herroepen."
+      }
     },
     "entitlements": {
       "title": "Mijn credits",

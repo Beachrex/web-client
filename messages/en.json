@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Save as PDF",
-      "mapTitle": "Map of the trip"
+      "mapTitle": "Map of the trip",
+      "consent": {
+        "terms": "I accept the <link>terms of sale</link>.",
+        "withdrawal": "I want the plan to be available right away. I understand that I lose my 14-day right of withdrawal once I create the plan; until then I can still withdraw."
+      }
     },
     "entitlements": {
       "title": "My Credits",

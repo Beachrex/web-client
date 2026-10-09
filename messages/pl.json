@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Zapisz jako PDF",
-      "mapTitle": "Mapa podróży"
+      "mapTitle": "Mapa podróży",
+      "consent": {
+        "terms": "Akceptuję <link>warunki sprzedaży</link>.",
+        "withdrawal": "Chcę, aby plan był dostępny od razu. Rozumiem, że tracę 14-dniowe prawo odstąpienia od umowy, gdy utworzę plan; do tego czasu mogę jeszcze odstąpić."
+      }
     },
     "entitlements": {
       "title": "Moje kredyty",

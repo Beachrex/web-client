@@ -18,6 +18,18 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Buying a plan: consent to the terms of sale and the withdrawal waiver (AI-4, part 1) ✅ COMPLETE
+
+**Needs backend #81** (checkout requires `accept_terms` and `waive_withdrawal`; terms §5 rewritten as terms of sale).
+
+- `/ai/itinerary`: above "Buy N-day plan" there are now two checkboxes, and the button stays disabled until both are ticked:
+  1. "I accept the terms of sale". It links to the terms page by its localized slug, taken from the footer static-pages query: same query key, so no extra request.
+  2. "I want the plan right away; I lose my 14-day withdrawal right once I create the plan; until then I can still withdraw."
+- The checkout request sends `accept_terms` and `waive_withdrawal`.
+- Texts: `AI.itinerary.consent.{terms,withdrawal}` in 19 languages (`terms` uses `t.rich` with `<link>`).
+- Test: `e2e/itinerary-planner.unit.spec.ts` (+1).
+- Browser check at 390 px with a mocked API: disabled → disabled (terms only) → enabled (both); the terms link is `/si/p/pogoji-uporabe`; the body is `{"product_type":"itinerary_7day","accept_terms":true,"waive_withdrawal":true}`.
+
 ## 2026-10-09 – AI itinerary (AI-3d): trip map and Save as PDF ✅ COMPLETE
 
 - **Map:** `src/components/Itinerary/ItineraryMap.tsx` (react-leaflet, loaded with `dynamic`, `ssr: false`) is shown on every finished plan. Each day has its own colour; stops are numbered `day.order` in visiting order and the day's route is drawn as a line. Popups link to the beach page, and a legend lists the days. Stops come from `planStops()`, which uses the beaches' `latitude`/`longitude` that the backend already returns.

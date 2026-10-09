@@ -803,7 +803,11 @@
         }
       },
       "savePdf": "Shrani kot PDF",
-      "mapTitle": "Zemljevid potovanja"
+      "mapTitle": "Zemljevid potovanja",
+      "consent": {
+        "terms": "Sprejemam <link>pogoje prodaje</link>.",
+        "withdrawal": "Želim, da je načrt na voljo takoj. Razumem, da pravico do odstopa v 14 dneh izgubim, ko načrt ustvarim; do takrat lahko še odstopim."
+      }
     },
     "entitlements": {
       "title": "Moji krediti",

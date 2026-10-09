@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Spremi kao PDF",
-      "mapTitle": "Karta putovanja"
+      "mapTitle": "Karta putovanja",
+      "consent": {
+        "terms": "Prihvaćam <link>uvjete prodaje</link>.",
+        "withdrawal": "Želim da plan bude dostupan odmah. Razumijem da pravo na raskid u roku od 14 dana gubim kada izradim plan; do tada još mogu raskinuti ugovor."
+      }
     },
     "entitlements": {
       "title": "Moji krediti",
