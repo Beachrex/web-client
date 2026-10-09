@@ -18,7 +18,7 @@ import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { buildCanonicalUrl, buildCompleteMetadata, buildLocalizedAlternates } from '@/lib/utils/metadata-helpers';
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 interface PageProps {
   params: { locale: string };
@@ -26,6 +26,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'SEO' });
   return buildCompleteMetadata({
     title: t('beachesPageTitle'),
@@ -65,6 +66,7 @@ async function loadWorldData(locale: string) {
 
 export default async function WorldBeachesPage({ params }: PageProps) {
   const { locale } = params;
+  setRequestLocale(locale);
   const tWorld = await getTranslations({ locale, namespace: 'WorldTopBar' });
   const tSEO = await getTranslations({ locale, namespace: 'WorldSEO' });
   const tSchema = await getTranslations({ locale, namespace: 'SEO' });

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslations } from 'next-intl';
@@ -31,7 +31,7 @@ import { googleExchange } from '@/lib/api-client';
  * - Error: ?error=error_code&message=error_message
  */
 
-export default function AuthCallbackPage() {
+function AuthCallbackPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { login } = useAuth();
@@ -131,5 +131,14 @@ export default function AuthCallbackPage() {
         ) : null}
       </div>
     </div>
+  );
+}
+
+/** `useSearchParams` needs a Suspense boundary on a statically rendered (ISR) page. */
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={null}>
+      <AuthCallbackPageContent />
+    </Suspense>
   );
 }

@@ -9,7 +9,7 @@ import { buildBeachMapUrl, buildBeachUrlFromSchema, buildCityUrlFromSchema } fro
 import { Pagination } from 'flowbite-react';
 import { useLocale, useTranslations, type TranslationValues } from 'next-intl';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import { PropertyMediaContext } from '@/components/PropertySection';
 
@@ -66,7 +66,7 @@ interface DynamicSearchBeachesProps {
   optionScopeFilters?: Record<string, string | number>;
 }
 
-export default function DynamicSearchBeaches({
+function DynamicSearchBeachesInner({
   translationNamespace,
   filterNamespace = 'Filters',
   titleKey,
@@ -561,3 +561,14 @@ alt=""
   );
 }
 
+/**
+ * The browse list reads the URL filters (`useSearchParams`). Pages are cached as static HTML (ISR), and Next 14 needs
+ * a Suspense boundary around `useSearchParams` there, otherwise the page fails with a 500.
+ */
+export default function DynamicSearchBeaches(props: DynamicSearchBeachesProps) {
+  return (
+    <Suspense fallback={<section className="min-h-[400px] bg-[#F5F5F5]" aria-busy="true" />}>
+      <DynamicSearchBeachesInner {...props} />
+    </Suspense>
+  );
+}

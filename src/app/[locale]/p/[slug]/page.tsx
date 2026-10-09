@@ -12,6 +12,7 @@ import { buildCompleteMetadata, buildSelfAlternate } from '@/lib/utils/metadata-
 import { getStaticPageBySlug } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage, StaticPage } from '@/lib/api-client/types.gen';
 import StaticPageContent from '@/components/StaticPage/StaticPageContent';
+import { setRequestLocale } from 'next-intl/server';
 
 interface PageProps {
     params: { locale: string; slug: string };
@@ -37,6 +38,7 @@ async function fetchStaticPage(locale: string, slug: string): Promise<StaticPage
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { locale, slug } = params;
+    setRequestLocale(locale);
     try {
         const page = await fetchStaticPage(locale, slug);
         if (!page) return {};
@@ -58,6 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function StaticPageRoute({ params }: PageProps) {
     const { locale, slug } = params;
+    setRequestLocale(locale);
     const page = await fetchStaticPage(locale, slug);
     if (!page) notFound();
 
@@ -67,3 +70,11 @@ export default async function StaticPageRoute({ params }: PageProps) {
 // Revalidate every hour (ISR). The backend also caches for 30 days and
 // invalidates on admin edits; this is a safety net for the frontend cache.
 export const revalidate = 3600;
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
+}

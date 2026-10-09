@@ -10,7 +10,7 @@
  */
 
 import { notFound, redirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import React from 'react';
 
@@ -147,6 +147,7 @@ export async function generateStaticParams() {
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, continent, country, segments } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'SEO' });
 
   // Get the last segment
@@ -323,6 +324,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  */
 export default async function FlexibleGeographyPage({ params }: PageProps) {
   const { locale, country, segments } = params;
+  setRequestLocale(locale);
 
   // Get the last segment
   const lastSegment = segments[segments.length - 1];
@@ -490,6 +492,7 @@ async function buildDestinationMetadata(
   t: Translate,
 ): Promise<Metadata> {
   const { locale, continent, country, segments } = params;
+  setRequestLocale(locale);
   const slug = segments[segments.length - 1]!;
   const details = await DETAILS_FETCHERS[kind](slug, locale);
 
@@ -525,6 +528,7 @@ async function renderDestinationPage(
   slug: string,
 ) {
   const { locale, continent, country, segments } = params;
+  setRequestLocale(locale);
 
   let details: RegionDetails | IslandDetails | CityDetails;
   let content: React.ReactNode;

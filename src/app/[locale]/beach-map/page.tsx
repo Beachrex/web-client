@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import BeachMapClient from '@/components/Map/BeachMapClient';
 import { getBeachMapWord } from '@/lib/utils/beach-urls';
 import { buildCompleteMetadata, buildLocalizedAlternates } from '@/lib/utils/metadata-helpers';
@@ -14,6 +14,7 @@ interface PageProps {
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'SEO' });
   return buildCompleteMetadata({
     title: t('beachMapTitle'),
@@ -26,6 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function BeachMapPage({ params }: PageProps) {
+  setRequestLocale(params.locale);
   const t = await getTranslations({ locale: params.locale, namespace: 'SEO' });
   return (
     <>
