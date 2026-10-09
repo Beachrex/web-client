@@ -14,6 +14,7 @@ import type { Metadata } from 'next';
 
 import BeachCategorySearch from '@/components/Home/BeachCategorySearch';
 import HeroSection from '@/components/Home/HeroSection';
+import { heroBackgroundUrl } from '@/lib/utils/hero-image';
 import HomeAccommodationSection from '@/components/Home/HomeAccommodationSection';
 import WorldMapSection from '@/components/Home/WorldMapSection';
 import BeachMediaSection from '../../components/Home/BeachMediaSection';
@@ -154,7 +155,10 @@ export default async function HomePage({ params }: PageProps) {
   return (
     <>
       {/* Hero Section */}
-      <HeroSection initialTitle={sections.hero_banner?.title ?? ''} />
+      <HeroSection
+        initialTitle={sections.hero_banner?.title ?? ''}
+        initialBackground={heroBackgroundUrl(sections.hero_banner?.media)}
+      />
 
       {/* World Map Section */}
       {browseMap && (

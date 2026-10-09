@@ -52,7 +52,7 @@ test('page titles are h1 elements; the beach details heading is not', () => {
   expect(read('src/components/Beach/BeachBanner/BeachTitleBlock.tsx')).toMatch(/<h1[\s\S]*?\{title\}[\s\S]*?<\/h1>/);
   expect(read('src/components/Home/HeroSection.tsx')).toMatch(/<h1[\s\S]*?\{heroTitle\}[\s\S]*?<\/h1>/);
   expect(read('src/components/Beach/BeachDetails/beachDetailsSection.tsx')).not.toMatch(/<h1/);
-  expect(read('src/app/[locale]/page.tsx')).toMatch(/<HeroSection initialTitle=/);
+  expect(read('src/app/[locale]/page.tsx')).toMatch(/<HeroSection\s+initialTitle=/);
 });
 
 test('beach map has its own metadata and an h1', () => {

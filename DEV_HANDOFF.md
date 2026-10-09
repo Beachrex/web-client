@@ -18,6 +18,16 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Lighter images: home tiles, hero preloaded, no priority on every card ✅ COMPLETE
+
+Performance audit 2026-10-09: the home page downloaded ~10 MB of images.
+- Re-encoded the 8 heavy images the pages use (`next.config.js` has `images.unoptimized`, so files are served as they are): the 4 home category tiles (100 px tall, 10 % opacity) to 640 px wide, ~45 KB each (were 1.8–3.4 MB); `sea-beaches`, `spain` (destination fallback), `hvar` (continent search), `live-cam` to ~150 KB. Total 11.2 MB → 0.8 MB. Images nothing references were left as they are.
+- Home hero: the background URL is computed on the server (`heroBackgroundUrl`, `src/lib/utils/hero-image.ts`) and rendered as `<Image priority fill>`, so it is in the initial HTML and preloaded; before it was a CSS background set only after JavaScript and an extra API call.
+- `DestinationCard`: no `priority` on every card (dozens of preloads competed with the hero); `sizes` added.
+- Test: `e2e/image-weight.unit.spec.ts`.
+
+---
+
 ## 2026-10-09 – Pages are cached (ISR): served from cache instead of rendered on every visit ✅ COMPLETE
 
 Performance audit 2026-10-09 (owner: "da bi bila bliskovito hitra"): no `[locale]` page was ever cached, so every visit rendered the page on the server and called the API. Causes, all verified with `next build` + `next start` (`x-nextjs-cache` header):
