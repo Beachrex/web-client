@@ -10,7 +10,8 @@ import { SignInOptions, UserProfile, LogoutButton } from '@/components/Auth';
 import { Send } from 'lucide-react';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { linkBeachNames, sendChatMessage, type ChatBeach, type ChatErrorKey } from '@/lib/utils/ai-chat';
+import { linkBeachNames, parseAgentMarkdown, sendChatMessage, type ChatBeach, type ChatErrorKey } from '@/lib/utils/ai-chat';
+import { env } from '@/env';
 
 // Disable static generation for this page (uses client-side auth)
 export const dynamic = 'force-dynamic';
@@ -34,6 +35,7 @@ interface Message {
   timestamp: string; // Store as ISO string to avoid hydration issues
   beaches?: ChatBeach[]; // Recommended beaches (database data in the page language)
   suggestions?: string[]; // Optional suggestions
+  format?: 'markdown' | 'text';
 }
 
 export default function AIChatPage() {
@@ -98,6 +100,7 @@ export default function AIChatPage() {
         timestamp: new Date().toISOString(),
         beaches: result.reply.beaches,
         suggestions: result.reply.suggestions,
+        format: result.reply.format,
       },
     ]);
   };
@@ -153,23 +156,48 @@ export default function AIChatPage() {
                       : 'bg-gray-100 text-gray-900'
                   }`}
                 >
-                  <p className="whitespace-pre-wrap">
-                    {linkBeachNames(message.content, message.beaches).map((part, i) => {
-                      const href = part.beach ? buildBeachUrlFromSchema(part.beach, locale) : null;
-                      return href ? (
-                        <Link
-                          key={i}
-                          href={href}
-                          target="_blank"
-                          className="font-semibold text-blue-700 underline"
-                        >
-                          {part.text}
-                        </Link>
-                      ) : (
-                        <span key={i}>{part.text}</span>
-                      );
-                    })}
-                  </p>
+                  {message.format === 'markdown' ? (
+                    <div className="space-y-1">
+                      {parseAgentMarkdown(message.content, env.NEXT_PUBLIC_BASE_URL).map((line, li) => (
+                        <p key={li} className="min-h-[0.5rem]">
+                          {line.map((part, pi) =>
+                            part.href ? (
+                              <Link
+                                key={pi}
+                                href={part.href}
+                                target="_blank"
+                                className="font-semibold text-blue-700 underline"
+                              >
+                                {part.text}
+                              </Link>
+                            ) : part.bold ? (
+                              <strong key={pi}>{part.text}</strong>
+                            ) : (
+                              <span key={pi}>{part.text}</span>
+                            ),
+                          )}
+                        </p>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="whitespace-pre-wrap">
+                      {linkBeachNames(message.content, message.beaches).map((part, i) => {
+                        const href = part.beach ? buildBeachUrlFromSchema(part.beach, locale) : null;
+                        return href ? (
+                          <Link
+                            key={i}
+                            href={href}
+                            target="_blank"
+                            className="font-semibold text-blue-700 underline"
+                          >
+                            {part.text}
+                          </Link>
+                        ) : (
+                          <span key={i}>{part.text}</span>
+                        );
+                      })}
+                    </p>
+                  )}
 
                   {/* Render beaches if present */}
                   {message.beaches && message.beaches.length > 0 && (
