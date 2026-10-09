@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Card tags on continent pages, no "0.0" rating badge ✅ COMPLETE
+
+Owner feedback on dev after favorites:
+- **Continent (and world) page cards had no tag line** ("Swimming • Snorkeling • …") although the API sends `tags`: `beachesToProperties` dropped them. Same for the "all beaches" search cards (`DynamicSearchBeaches`). Both now use `cardTags()` (`src/lib/utils/beach-properties.ts`). Spec: `e2e/card-tags.unit.spec.ts`.
+- **Rating badge hidden**: every card showed a "0.0" star (no rating source yet). `PropertyCard` now shows the star only for a rating above 0; recorded as H16 in the backend `docs/features/hidden-for-launch.md`.
+
+---
+
 ## 2026-10-09 – Favorite beaches on the web (H6 shown) ✅ COMPLETE
 
 Owner decision 2026-10-09 ("ja, potrjujem"): saved beaches use the backend favorites API (backend #85, the same one the mobile app uses).

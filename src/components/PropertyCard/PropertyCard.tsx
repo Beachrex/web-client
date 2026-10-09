@@ -354,12 +354,15 @@ const webcamUrl = React.useMemo(
         </div>
       )}
 
-      <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
-        <Star size={14} className="text-[#FFD700]" fill="#FFD700" />
-        <span className="text-[10px] text-[#4D4D4D] font-semibold">
-          {Number(rating ?? 0).toFixed(1)}
-        </span>
-      </div>
+      {/* No rating source yet (every card had 0.0, owner 2026-10-09): the star shows only a real rating. */}
+      {Number(rating) > 0 && (
+        <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
+          <Star size={14} className="text-[#FFD700]" fill="#FFD700" />
+          <span className="text-[10px] text-[#4D4D4D] font-semibold">
+            {Number(rating).toFixed(1)}
+          </span>
+        </div>
+      )}
     </div>
 
     {/* FAVORITES HEART */}
@@ -479,6 +482,7 @@ const webcamUrl = React.useMemo(
 }, (prevProps, nextProps) => {
   // Custom comparison to prevent unnecessary re-renders
   return (
+    prevProps.id === nextProps.id &&
     prevProps.beachUrl === nextProps.beachUrl &&
     prevProps.beachSlug === nextProps.beachSlug &&
     prevProps.image === nextProps.image &&
