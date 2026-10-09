@@ -751,7 +751,6 @@
       "progressBeaches": "We zoeken stranden die bij je wensen passen…",
       "progressRoute": "We plannen de route dag voor dag…",
       "progressTips": "We schrijven tips voor elk strand…",
-      "progressNote": "Dit duurt meestal 20–60 seconden. Houd deze pagina open.",
       "signInToStart": "Log in om je plan te kopen en te maken.",
       "generate": "Maak mijn plan",
       "usesOnePlan": "Gebruikt een van je {days}-daagse plannen.",
@@ -775,7 +774,24 @@
       "tip": "Tip",
       "travelKm": "Ongeveer {km} km rijden op deze dag.",
       "assumptions": "Goed om te weten",
-      "newPlan": "Plan een andere reis"
+      "newPlan": "Plan een andere reis",
+      "plans": {
+        "title": "Mijn plannen",
+        "empty": "Je hebt nog geen plannen. Maak je eerste.",
+        "untitled": "Reis van {days} dagen ({country})",
+        "notFound": "Dit plan bestaat niet of hoort bij een ander account.",
+        "waitNote": "Je kunt deze pagina sluiten: het plan wordt bewaard onder Mijn plannen zodra het klaar is.",
+        "status": {
+          "running": "Wordt gemaakt",
+          "done": "Klaar",
+          "failed": "Niet gemaakt"
+        },
+        "failed": {
+          "notEnoughBeaches": "Te weinig stranden passen bij deze reis. Het plan is niet gebruikt: probeer heel het land, minder wensen of een kortere reis.",
+          "timeout": "Het maken duurde te lang. Het plan is niet gebruikt, probeer het opnieuw.",
+          "error": "Er ging iets mis. Het plan is niet gebruikt, probeer het opnieuw."
+        }
+      }
     },
     "entitlements": {
       "title": "Mijn credits",

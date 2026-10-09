@@ -751,7 +751,6 @@
       "progressBeaches": "Hledáme pláže podle vašich přání…",
       "progressRoute": "Plánujeme trasu den po dni…",
       "progressTips": "Píšeme tipy ke každé pláži…",
-      "progressNote": "Obvykle to trvá 20–60 sekund. Nechte tuto stránku otevřenou.",
       "signInToStart": "Přihlaste se, abyste mohli plán koupit a vytvořit.",
       "generate": "Vytvořit můj plán",
       "usesOnePlan": "Použije jeden z vašich {days}denních plánů.",
@@ -775,7 +774,24 @@
       "tip": "Tip",
       "travelKm": "Tento den asi {km} km jízdy.",
       "assumptions": "Dobré vědět",
-      "newPlan": "Naplánovat další cestu"
+      "newPlan": "Naplánovat další cestu",
+      "plans": {
+        "title": "Moje plány",
+        "empty": "Zatím nemáte žádné plány. Vytvořte první.",
+        "untitled": "{days}denní cesta ({country})",
+        "notFound": "Tento plán neexistuje nebo patří jinému účtu.",
+        "waitNote": "Tuto stránku můžete zavřít: plán se uloží do Mých plánů, jakmile bude hotový.",
+        "status": {
+          "running": "Připravuje se",
+          "done": "Hotovo",
+          "failed": "Nevytvořeno"
+        },
+        "failed": {
+          "notEnoughBeaches": "Této cestě odpovídá příliš málo pláží. Plán nebyl použit: zkuste celou zemi, méně přání nebo kratší cestu.",
+          "timeout": "Vytváření plánu trvalo příliš dlouho. Plán nebyl použit, zkuste to znovu.",
+          "error": "Něco se pokazilo. Plán nebyl použit, zkuste to znovu."
+        }
+      }
     },
     "entitlements": {
       "title": "Moje kredity",

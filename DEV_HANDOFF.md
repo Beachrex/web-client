@@ -18,6 +18,36 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – AI itinerary (AI-3c): plans generated in the background, "My plans" ✅ COMPLETE
+
+**Needs backend #78** (`POST /ai/itinerary-plans`, `GET /me/itinerary-plans(/{id})`, worker container).
+
+**Planner (`/ai/itinerary`)**
+- "Create my plan" calls `POST /api/v1/ai/itinerary-plans` (202) and opens `/ai/itinerary/plans/{id}`.
+- Signed-in users get a "My plans" link in the header.
+
+**Plan page (`/ai/itinerary/plans/[id]`)**
+- A server page (`generateStaticParams` returns `[]`, plus `setRequestLocale`) renders the client `ItineraryPlanPage`.
+- It polls `GET /me/itinerary-plans/{id}`: every 3 s for the first minute, then every 10 s.
+- While waiting it shows progress, and that the page can be closed.
+- When done it renders `ItineraryPlanView` (moved out of the planner page). When failed it shows why and that the plan was not used.
+
+**My plans (`/ai/itinerary/plans`)**
+- Lists `GET /me/itinerary-plans`: title, length, country, date and status badge.
+- Failed plans show why.
+
+**Texts:** `AI.itinerary.plans.*` in 19 languages; `progressNote` removed.
+
+**Tests:** `e2e/itinerary-planner.unit.spec.ts` (+2): plan states, failure keys, polling pace, and the endpoints the pages call.
+
+**Checked in a 390 px browser** with a mocked API:
+- start → plan page;
+- "running" (progress text) → "done" after 4 polls, with the beach link `/si/plaze/evropa/hrvaska/porec/plaza-borik`;
+- My plans with "Ready" and "Not created" (reason shown);
+- no horizontal overflow.
+
+**Note:** the Tailwind theme replaces the colour palette, so only Flowbite's colours exist (no `amber`).
+
 ## 2026-10-09 – AI itinerary planner (AI-3b): a form that can be sold ✅ COMPLETE
 
 `src/app/[locale]/ai/itinerary/page.tsx` + `src/lib/utils/itinerary.ts`. The old form sent any free-text destination as Croatia, any number of days (the API only accepts 3/7/14), and free-text interests that the API rejects. A "budget" field did nothing.
