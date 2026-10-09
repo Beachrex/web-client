@@ -90,6 +90,8 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   isWeatherLoading,
 }) => {
   const t = useTranslations('BannerSection');
+  const tCommon = useTranslations('Common');
+  const tFilters = useTranslations('Filters');
   const locale = useLocale();
 
   const variant = topBarVariant;
@@ -212,7 +214,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
           >
             <Image
               src="/images/common/map-icon.svg"
-              alt="play beach"
+              alt={tCommon('map')}
               width={24}
               height={24}
               className="h-[24px] w-[24px] sm:h-[33px] sm:w-[33px]"
@@ -239,7 +241,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
           >
             <Image
               src="/images/common/white-filter.svg"
-              alt="filters"
+              alt={tFilters('filterButton')}
               width={20}
               height={20}
               className="h-[20px] w-[20px] sm:h-[28px] sm:w-[28px]"

@@ -126,7 +126,7 @@ priority sizes="100vw" className="object-cover object-center"
             <div className="flex items-center gap-3 sm:gap-4">
               <Image
                 src="/images/beach.png"
-                alt="beach"
+                alt=""
                 width={40}
                 height={40}
                 className="sm:h-[60px] sm:w-[60px]"
@@ -145,7 +145,7 @@ priority sizes="100vw" className="object-cover object-center"
             <div className="flex items-center gap-3 sm:gap-4">
               <Image
                 src="/images/map.png"
-                alt="map"
+                alt=""
                 width={40}
                 height={40}
                 className="sm:h-[60px] sm:w-[60px]"
@@ -165,7 +165,7 @@ priority sizes="100vw" className="object-cover object-center"
               <div className="flex items-center gap-3 sm:gap-4">
                 <Image
                   src="/images/accomodation.png"
-                  alt="accommodation"
+                  alt=""
                   width={40}
                   height={40}
                   className="sm:h-[60px] sm:w-[60px]"
@@ -195,7 +195,7 @@ priority sizes="100vw" className="object-cover object-center"
         >
           <Image
             src="/images/map.png"
-            alt="play beach"
+            alt=""
             width={24}
             height={24}
             className="sm:h-[33px] sm:w-[33px]"
@@ -220,7 +220,7 @@ priority sizes="100vw" className="object-cover object-center"
         >
           <Image
             src="/images/filters.png"
-            alt="filters"
+            alt=""
             width={20}
             height={20}
             className="sm:h-[28px] sm:w-[28px]"

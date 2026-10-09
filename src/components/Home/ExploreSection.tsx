@@ -58,7 +58,7 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
                       {item.buttonIconUrl && (
                         <Image
                           src={item.buttonIconUrl}
-                          alt="Button icon"
+                          alt=""
                           width={20}
                           height={20}
                           className="sm:h-6 sm:w-6"
@@ -109,7 +109,7 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
                       {item.buttonIconUrl && (
                         <Image
                           src={item.buttonIconUrl}
-                          alt="Button icon"
+                          alt=""
                           width={20}
                           height={20}
                           className="sm:h-6 sm:w-6"

@@ -49,6 +49,7 @@ const TopBar: React.FC<TopBarProps> = ({
   const t = useTranslations('TopBar');
   const tContinent = useTranslations('Continents');
   const tCommon = useTranslations('Common');
+  const tFilters = useTranslations('Filters');
   /* ------------------------------------------------
    * VARIANT LOGIC
    * ------------------------------------------------ */
@@ -351,7 +352,7 @@ const TopBar: React.FC<TopBarProps> = ({
             className="flex h-[41px] w-[35px] items-center justify-center rounded-[6px] bg-white sm:w-[41px]"
           >
             <Image
-src={filterIcon} alt="filter" width={20}
+src={filterIcon} alt={tFilters('filterButton')} width={20}
 height={20} />
           </button>
         )}

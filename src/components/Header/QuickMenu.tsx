@@ -159,7 +159,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           <div className="flex items-center">
             <NavIcon
               src={`${CDN_ASSETS}img/icon/hamburgerMenu.svg`}
-              alt="Hamburger Menu"
+              alt={t('menu')}
               label=""
               horizontal={true}
               className="cursor-pointer"
@@ -213,7 +213,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           <div className="flex items-center space-x-4 lg:space-x-6">
             <NavIcon
               src={`${CDN_ASSETS}img/icon/hamburgerMenu.svg`}
-              alt="Hamburger Menu"
+              alt={t('menu')}
               label=""
               horizontal={true}
               className="cursor-pointer"

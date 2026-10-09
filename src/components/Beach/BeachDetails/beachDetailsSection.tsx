@@ -67,7 +67,7 @@ const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
           return (
             <div key={index} className="relative h-[300px] w-full">
               <Image
-src={src} alt={`media-${index}`} fill
+src={src} alt="" fill
 className="object-cover"
               />
             </div>

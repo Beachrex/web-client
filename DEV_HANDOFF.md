@@ -18,6 +18,16 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Image alt texts (TASK-004 A6) ✅ COMPLETE
+
+About 90 hard-coded English alt texts ("Accommodation 1", "image 0", "Map icon", "play beach", …) are gone:
+- **decorative icons and backgrounds** next to visible text: `alt=""`, so screen readers skip them and search engines see no English noise on localized pages;
+- **images that are the only content of a button or link** (menu, map and filter buttons): a translated alt from existing keys (`Common.menu`, `Common.map`, `Filters.filterButton`, all 19 languages);
+- **photos:** beach banner `alt={beachName}`, card carousel `alt="{title} (n)"`;
+- **brand names** (BeachRex, Facebook, Instagram, YouTube) stay.
+
+**Test:** `e2e/alt-texts.unit.spec.ts` fails on any literal `alt="..."` other than a brand name.
+
 ## 2026-10-09 – Unknown beach URLs answer 404 (not 200) ✅ COMPLETE
 
 - **Problem:** `/{locale}/beaches/...` with an unknown continent, country or place showed the 404 page with HTTP status 200 (found 2026-10-08; bad for Google). An unknown country even crashed with a 500 (`countryDetails!.code!`).

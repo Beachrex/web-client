@@ -45,7 +45,7 @@ export default function GetYourGuideSection({
         <div className="relative aspect-square w-[260px] max-w-full">
           <Image
             src="/images/banner/signpost-big.png"
-            alt="Decorative activities signpost"
+            alt=""
             fill
             className="h-full w-full select-none object-contain"
             priority
@@ -92,7 +92,7 @@ export default function GetYourGuideSection({
             >
               <Image
                 src="/images/filters.png"
-                alt="Filter icon"
+                alt=""
                 width={20}
                 height={20}
               />
@@ -107,7 +107,7 @@ export default function GetYourGuideSection({
             >
               <Image
                 src="/images/map.png"
-                alt="Map icon"
+                alt=""
                 width={20}
                 height={20}
               />

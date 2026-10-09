@@ -155,7 +155,7 @@ const flagUrl =
             <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#008260] px-3 text-white">
               <Image
                 src="/images/accomodation.png"
-                alt="Accommodation"
+                alt=""
                 width={26}
                 height={26}
               />
@@ -173,7 +173,7 @@ const flagUrl =
           <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#0069AB] px-3 text-white">
             <Image
               src="/images/beach.png"
-              alt="Beaches"
+              alt=""
               width={26}
               height={26}
             />
@@ -192,7 +192,7 @@ const flagUrl =
          {showFlag && flagUrl && (
   <Image
     src={flagUrl}
-    alt={`${name} flag`}
+    alt=""
     width={32}
     height={24}
     className="w-[32px] h-[24px] rounded-md object-cover sm:w-[32px] sm:h-[24px]"
@@ -206,7 +206,7 @@ const flagUrl =
         </div>
         <Image
           src={locationIconSrc}
-          alt="Location"
+          alt=""
           width={24}
           height={24}
           className="sm:h-8 sm:w-8"
@@ -220,7 +220,7 @@ const flagUrl =
           <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#008260] px-3 text-white">
             <Image
               src="/images/accomodation.png"
-              alt="Accommodation"
+              alt=""
               width={26}
               height={26}
             />
@@ -236,7 +236,7 @@ const flagUrl =
         )}
         <div className="flex h-[41px] flex-1 items-center justify-start gap-2 rounded bg-[#0069AB] px-3 text-white">
           <Image
-src="/images/beach.png" alt="Beaches" width={26}
+src="/images/beach.png" alt="" width={26}
 height={26}
           />
           <span className="text-[13px] font-semibold">

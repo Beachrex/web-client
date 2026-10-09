@@ -48,7 +48,7 @@ const SearchContinent: React.FC<SearchContinentProps> = ({
   >
     <Image
       src="/images/map.png"
-      alt="Map icon"
+      alt=""
       width={20}
       height={20}
       className="sm:h-5 sm:w-5"
@@ -60,7 +60,7 @@ const SearchContinent: React.FC<SearchContinentProps> = ({
             <button className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#006b4f] px-6 font-figtree text-sm font-bold text-white transition-colors hover:bg-[#008260]">
               <Image
                 src="/images/accomodation.png"
-                alt="Accommodation icon"
+                alt=""
                 width={20}
                 height={20}
               />

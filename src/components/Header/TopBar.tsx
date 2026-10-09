@@ -63,7 +63,7 @@ const TopBar = () => {
             <Image
               width="16"
               height="12"
-              alt="Language"
+              alt=""
               src={`${CDN_ASSETS}img/icon/globeTranslate.svg`}
             />
             {isClient ? (
@@ -122,7 +122,7 @@ const TopBar = () => {
             <Image
               width="20"
               height="16"
-              alt="Beachrex Language"
+              alt=""
               src={`${CDN_ASSETS}img/icon/globeTranslate.svg`}
             />
             {isClient ? (

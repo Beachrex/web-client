@@ -7,7 +7,7 @@ const MapWidget: React.FC = () => {
     <div className="relative h-[144px] w-[144px] overflow-hidden rounded-[10px]">
       <Image
         src="/images/banner/banner-map.png"
-        alt="mapa"
+        alt=""
         fill
         className="object-cover"
         priority

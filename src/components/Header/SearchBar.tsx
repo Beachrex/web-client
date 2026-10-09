@@ -66,7 +66,7 @@ const SearchBar = () => {
                                 <div className="flex flex-col items-center flex-1">
                                     <Image
                                         src={buildCdnUrl('img/icon/accomodation.svg', 'icon') ?? ''}
-                                        alt={`${t('accommodations')} ${t('icon')}`}
+                                        alt=""
                                         width={24}
                                         height={24}
                                     />
@@ -77,7 +77,7 @@ const SearchBar = () => {
                                 <div className="flex flex-col items-center flex-1">
                                     <Image
                                         src={buildCdnUrl('img/icon/store.svg', 'icon') ?? ''}
-                                        alt={`${t('shop')} ${t('icon')}`}
+                                        alt=""
                                         width={24}
                                         height={24}
                                     />
@@ -105,7 +105,7 @@ const SearchBar = () => {
                         <Link href={buildBeachMapUrl(locale)} className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] hover:bg-variable-collection-morje">
                             <Image
                                 src={buildCdnUrl('img/icon/map.svg', 'icon') ?? ''}
-                                alt={`${t('map')} ${t('icon')}`}
+                                alt=""
                                 width={20}
                                 height={20}
                             />
@@ -127,14 +127,14 @@ const SearchBar = () => {
                             {FEATURES.accommodation && (
                                 <NavIcon
                                     src={buildCdnUrl('img/icon/accomodation.svg', 'icon') ?? ''}
-                                    alt={`${t('accommodations')} ${t('icon')}`}
+                                    alt=""
                                     label=""
                                 />
                             )}
                             {FEATURES.shop && (
                                 <NavIcon
                                     src={buildCdnUrl('img/icon/store.svg', 'icon') ?? ''}
-                                    alt={`${t('shop')} ${t('icon')}`}
+                                    alt=""
                                     label=""
                                 />
                             )}
@@ -171,14 +171,14 @@ const SearchBar = () => {
                         {FEATURES.accommodation && (
                             <NavIcon
                                 src={buildCdnUrl('img/icon/accomodation.svg', 'icon') ?? ''}
-                                alt={`${t('accommodations')} ${t('icon')}`}
+                                alt=""
                                 label={t('accommodations')}
                             />
                         )}
                         {FEATURES.shop && (
                             <NavIcon
                                 src={buildCdnUrl('img/icon/store.svg', 'icon') ?? ''}
-                                alt={`${t('shop')} ${t('icon')}`}
+                                alt=""
                                 label={t('shop')}
                             />
                         )}
@@ -189,7 +189,7 @@ const SearchBar = () => {
                         <Link href={buildBeachMapUrl(locale)} className="inline-flex items-center justify-center gap-5 px-10 py-[10px] bg-variable-collection-temno-modro text-white rounded-[6px] shadow-[0px_0px_4px_0px_rgba(0,0,0,0.20)] flex-shrink-0 hover:bg-variable-collection-morje">
                             <Image
                                 src={buildCdnUrl('img/icon/map.svg', 'icon') ?? ''}
-                                alt={`${t('map')} ${t('icon')}`}
+                                alt=""
                                 width={26}
                                 height={26}
                             />
