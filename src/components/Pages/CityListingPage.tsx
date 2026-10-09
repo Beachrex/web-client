@@ -210,9 +210,8 @@ const islandPillLabel = cityDetails?.island?.name
   titleKey="browseBeachesTitle"
   titleParams={{ town: cityName }}
   filterButtonColor="#FF8000"
-  baseFilters={{
-    city: _citySlug,
-  }}
+  baseFilters={initialData.listFilters}
+  initialPage={initialData.firstPage}
   hiddenFilterKeys={['country', 'region', 'island', 'city']}
      />
 

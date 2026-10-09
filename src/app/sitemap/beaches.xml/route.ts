@@ -76,7 +76,8 @@ export async function GET() {
 
     // Fetch beaches with pagination to avoid memory exhaustion
     // The API has memory limits, so we fetch in smaller batches
-    const limit = 50; // Reduced from 100 to avoid 502 errors
+    // The API pages for real since 2026-10-09 (before, `page` was ignored and the same 50 beaches repeated).
+    const limit = 100; // API maximum per page
     let page = 1;
     let allBeaches: BeachSchema[] = [];
     let hasMore = true;
@@ -133,9 +134,9 @@ export async function GET() {
         hasMore = false;
       }
 
-      // Safety limit: stop after 50 pages (5000 beaches)
-      if (page > 50) {
-        console.warn('[sitemap/beaches] Reached safety limit of 50 pages, stopping pagination');
+      // Safety limit: stop after 200 pages (20,000 beaches)
+      if (page > 200) {
+        console.warn('[sitemap/beaches] Reached safety limit of 200 pages, stopping pagination');
         hasMore = false;
       }
     }

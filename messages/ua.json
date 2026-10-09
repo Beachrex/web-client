@@ -70,7 +70,9 @@
     "linkCopied": "Скопійовано",
     "shareOn": "Поділитися в {network}",
     "shareByEmail": "Поділитися електронною поштою",
-    "moreShareOptions": "Більше варіантів"
+    "moreShareOptions": "Більше варіантів",
+    "paginationPrevious": "Попередня",
+    "paginationNext": "Наступна"
   },
   "Search": {
     "typeBeach": "Пляж",

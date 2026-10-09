@@ -70,7 +70,9 @@
     "linkCopied": "Копирано",
     "shareOn": "Сподели в {network}",
     "shareByEmail": "Сподели по имейл",
-    "moreShareOptions": "Още опции"
+    "moreShareOptions": "Още опции",
+    "paginationPrevious": "Предишна",
+    "paginationNext": "Следваща"
   },
   "Search": {
     "typeBeach": "Плаж",

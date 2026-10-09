@@ -70,7 +70,9 @@
     "linkCopied": "Αντιγράφηκε",
     "shareOn": "Κοινοποίηση στο {network}",
     "shareByEmail": "Κοινοποίηση με email",
-    "moreShareOptions": "Περισσότερες επιλογές"
+    "moreShareOptions": "Περισσότερες επιλογές",
+    "paginationPrevious": "Προηγούμενη",
+    "paginationNext": "Επόμενη"
   },
   "Search": {
     "typeBeach": "Παραλία",

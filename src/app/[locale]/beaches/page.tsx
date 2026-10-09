@@ -13,6 +13,7 @@ import WorldBannerSection from '@/components/WorldPage/WorldBanner/WorldBannerSe
 import { getContinents, getCountries, getFirstPageContent, getMostVisitedBeaches } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { beachesToProperties } from '@/lib/utils/beach-properties';
+import { fetchFirstBeachPage } from '@/lib/server/destination-page-data';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
@@ -41,11 +42,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 /** World totals from the API; a failed request leaves the stat empty (hidden) instead of breaking the page. */
 async function loadWorldData(locale: string) {
   const headers = { 'Accept-Language': locale as AcceptLanguage };
-  const [continents, countries, mostVisited, sections] = await Promise.all([
+  const [continents, countries, mostVisited, sections, firstBeachPage] = await Promise.all([
     getContinents({ headers }).then((r) => r.data?.data ?? []).catch(() => []),
     getCountries({ headers }).then((r) => r.data?.data ?? []).catch(() => []),
     getMostVisitedBeaches({ query: { limit: 20 }, headers }).then((r) => r.data?.data ?? []).catch(() => []),
     getFirstPageContent({ headers }).then((r) => r.data?.data ?? []).catch(() => []),
+    fetchFirstBeachPage({}, locale).catch(() => null),
   ]);
 
   // Banner image: the home hero background from the admin (the previous static image file did not exist)
@@ -61,6 +63,7 @@ async function loadWorldData(locale: string) {
     countriesWithBeaches: countriesWithBeaches > 0 ? countriesWithBeaches : undefined,
     mostVisited,
     bannerImage,
+    firstBeachPage,
   };
 }
 
@@ -71,7 +74,7 @@ export default async function WorldBeachesPage({ params }: PageProps) {
   const tSEO = await getTranslations({ locale, namespace: 'WorldSEO' });
   const tSchema = await getTranslations({ locale, namespace: 'SEO' });
 
-  const { totalBeaches, countriesWithBeaches, mostVisited, bannerImage } = await loadWorldData(locale);
+  const { totalBeaches, countriesWithBeaches, mostVisited, bannerImage, firstBeachPage } = await loadWorldData(locale);
   const properties = beachesToProperties(mostVisited, locale);
 
   const breadcrumbSchema = buildBreadcrumbSchema([
@@ -108,6 +111,7 @@ export default async function WorldBeachesPage({ params }: PageProps) {
         titleKey="browseBeachesTitle"
         filterButtonColor="#0B99C2"
         baseFilters={{}}
+        initialPage={firstBeachPage}
       />
 
       {/* SEO text */}

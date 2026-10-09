@@ -1464,9 +1464,29 @@ export type BeachListResponseSchema = {
       max_longitude?: number | null;
     };
     /**
-     * Total number of beaches returned (respects limit parameter)
+     * GET /beaches: number of beaches matching the filters (all pages); other endpoints: number returned
      */
     total_beaches?: number;
+    /**
+     * GET /beaches: beaches matching the filters (all pages)
+     */
+    total?: number;
+    /**
+     * GET /beaches: this page
+     */
+    current_page?: number;
+    /**
+     * GET /beaches: page size
+     */
+    per_page?: number;
+    /**
+     * GET /beaches: last page number
+     */
+    last_page?: number;
+    /**
+     * GET /beaches: order used
+     */
+    sort?: "popular" | "newest";
   };
 };
 
@@ -3798,7 +3818,7 @@ export type AiChatErrors = {
    */
   500: AiErrorResponse;
   /**
-   * Service Unavailable - AI service temporarily disabled
+   * Service Unavailable - AI service temporarily disabled (error=service_unavailable), or the AI provider is busy / out of quota / timed out (error=ai_unavailable, Retry-After: 60)
    */
   503: AiServiceUnavailableError;
 };
@@ -4889,9 +4909,25 @@ export type GetBeachesData = {
   path?: never;
   query?: {
     /**
-     * Maximum number of beaches to return (default: 5000)
+     * Beaches per page (default 20, max 100). Pages are ordered by `sort`; meta has total, current_page, last_page.
+     */
+    per_page?: number;
+    /**
+     * Page number (default 1)
+     */
+    page?: number;
+    /**
+     * popular (most viewed first, default) or newest
+     */
+    sort?: "popular" | "newest";
+    /**
+     * Deprecated alias of per_page (max 100). Before 2026-10-09 the default was 5000 and `page` was ignored.
      */
     limit?: number;
+    /**
+     * Alias of city_code (same for region / island → region_code / island_code). Codes or ids, not slugs.
+     */
+    city?: string;
     /**
      * Filter by continent code(s) or ID(s). Supports: single value (continent_code=EU), comma-separated (continent_code=EU,AS), or array (continent_code[]=EU&continent_code[]=AS). Can mix codes and IDs.
      */

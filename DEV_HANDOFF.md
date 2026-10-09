@@ -18,6 +18,16 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – "Browse all beaches": right beaches, one server page at a time, first page in the HTML ✅ COMPLETE
+
+Owner (Risskov DK, Murter HR): the list showed beaches of every country and took seconds to load. Causes: the place **slug** was sent as `city=`/`region=`/`island=` (the API filters by code and ignored it), the hook downloaded **every** beach (API default 5000) and the browser sliced 16 per page; the sort dropdown was not wired; "Top rated" had no ratings behind it. Backend: Beachrex/backend#73 (`page`, `per_page`, `sort`, pagination meta, place aliases).
+- `src/lib/server/destination-page-data.ts`: details first, then (in parallel) most visited and `fetchFirstBeachPage()`; the list filters use the place **code** (`placeFilterValue`: code → id → slug), so the list, the filter options and the "Map" button get the right place. Most visited also uses the code (it used the slug).
+- `src/hooks/useBeaches.ts`: `useBeachPage(filters, page, sort, initial)` — one page (`per_page` 16) per request, previous cards kept while the next page loads, server first page used as initial data (no request on load). `useAllBeaches` (download everything) removed.
+- `DynamicSearchBeaches`: server pages, real total in "Found (n)", sort popular/newest sent to the API ("Top rated" removed), scroll to the list on page change, localized pager (`Common.paginationPrevious/Next`, 19 languages). The Suspense fallback (what the cached HTML contains) is the server-rendered first page of cards: visible at once and indexable.
+- City, region, island, country and `/plaze` pages pass `initialPage`; country keeps its code filter.
+- `sitemap/beaches.xml`: 100 per page, safety cap 200 pages (it repeated the same 50 beaches before the API paged).
+- Test: `e2e/beach-list-paging.unit.spec.ts`. Local build against a paging mock API: city page HTML contains the first 16 cards (request `city=bol-code&page=1&per_page=16&sort=popular`), the browser makes **no** list request on load, page 2 requests only page 2 and shows beaches 17-32; no page errors.
+
 ## 2026-10-09 – City page: category tiles hidden ✅ COMPLETE
 
 Owner (screenshot of a city page): the tiles "Peščene plaže, Kamnite plaže, Bazen, Primerne za pse, …" had no function. `CityCategories` has no click handlers at all, so it is hidden behind `FEATURES.cityCategoryTiles = false` (listed in backend `docs/features/hidden-for-launch.md`). To bring it back, each tile must set the matching filter of the "Browse all beaches" list. Test: `e2e/placeholder-content.unit.spec.ts`.

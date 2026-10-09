@@ -70,7 +70,9 @@
     "linkCopied": "Copiato",
     "shareOn": "Condividi su {network}",
     "shareByEmail": "Condividi via e-mail",
-    "moreShareOptions": "Altre opzioni"
+    "moreShareOptions": "Altre opzioni",
+    "paginationPrevious": "Precedente",
+    "paginationNext": "Successiva"
   },
   "Search": {
     "typeBeach": "Spiaggia",

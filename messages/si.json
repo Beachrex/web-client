@@ -70,7 +70,9 @@
     "linkCopied": "Kopirano",
     "shareOn": "Deli na {network}",
     "shareByEmail": "Deli po e-pošti",
-    "moreShareOptions": "Več možnosti"
+    "moreShareOptions": "Več možnosti",
+    "paginationPrevious": "Prejšnja",
+    "paginationNext": "Naslednja"
   },
   "Search": {
     "typeBeach": "Plaža",

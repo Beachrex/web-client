@@ -207,7 +207,7 @@ export function useBeachFiltersController({
 
   /* ---------------- FINAL FILTERS ---------------- */
 
-  // Memoize so consumers (e.g. useAllBeaches) receive a stable reference and
+  // Memoize so consumers (e.g. useBeachPage) receive a stable reference and
   // don't refetch / re-render on every parent render.
   const filters = useMemo(
     () => ({
