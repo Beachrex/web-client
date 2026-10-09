@@ -5592,6 +5592,39 @@ export type GetBeachTypeByIdResponses = {
 export type GetBeachTypeByIdResponse =
   GetBeachTypeByIdResponses[keyof GetBeachTypeByIdResponses];
 
+export type CountBeachViewData = {
+  body?: never;
+  path: {
+    /**
+     * Beach ID
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/api/v1/beaches/{id}/view";
+};
+
+export type CountBeachViewErrors = {
+  /**
+   * No active beach with this ID
+   */
+  404: unknown;
+  /**
+   * Too many requests
+   */
+  429: unknown;
+};
+
+export type CountBeachViewResponses = {
+  /**
+   * Counted (or already counted for this visitor)
+   */
+  204: void;
+};
+
+export type CountBeachViewResponse =
+  CountBeachViewResponses[keyof CountBeachViewResponses];
+
 export type GetCitiesData = {
   body?: never;
   headers?: {
@@ -8359,6 +8392,123 @@ export type GetParkingCapacityByIdResponses = {
 
 export type GetParkingCapacityByIdResponse =
   GetParkingCapacityByIdResponses[keyof GetParkingCapacityByIdResponses];
+
+export type ForgotPasswordData = {
+  body: {
+    email: string;
+  };
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/forgot-password";
+};
+
+export type ForgotPasswordErrors = {
+  /**
+   * Validation error
+   */
+  422: unknown;
+  /**
+   * Too many requests
+   */
+  429: unknown;
+};
+
+export type ForgotPasswordResponses = {
+  /**
+   * Request accepted
+   */
+  200: {
+    message?: string;
+  };
+};
+
+export type ForgotPasswordResponse =
+  ForgotPasswordResponses[keyof ForgotPasswordResponses];
+
+export type ResetPasswordData = {
+  body: {
+    token: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+  };
+  headers?: {
+    /**
+     * Language preference for the response (ISO 639-1 language codes)
+     */
+    "Accept-Language"?:
+      | "en"
+      | "si"
+      | "de"
+      | "hr"
+      | "fr"
+      | "es"
+      | "it"
+      | "ua"
+      | "ru"
+      | "pl"
+      | "cs"
+      | "hu"
+      | "bg"
+      | "sk"
+      | "da"
+      | "pt"
+      | "nl"
+      | "el"
+      | "sq";
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/reset-password";
+};
+
+export type ResetPasswordErrors = {
+  /**
+   * Validation error, or the link is invalid/expired (error on `token`)
+   */
+  422: unknown;
+  /**
+   * Too many requests
+   */
+  429: unknown;
+};
+
+export type ResetPasswordResponses = {
+  /**
+   * Password changed
+   */
+  200: {
+    message?: string;
+  };
+};
+
+export type ResetPasswordResponse =
+  ResetPasswordResponses[keyof ResetPasswordResponses];
 
 export type GetBeachesWithinRadiusData = {
   body?: never;
