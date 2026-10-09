@@ -7,6 +7,7 @@ import type { BeachSchema, GetBeachFiltersResponse } from '@/lib/api-client/type
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Map as MapIcon, SlidersHorizontal, X } from 'lucide-react';
 import Dropdown, { MediaToggleInline } from '../Dropdown';
 import LeftSidebarFilters from './LeftSidebarFilters';
 import ReactLeafletMap from './ReactLeafletMap';
@@ -60,10 +61,19 @@ const MapWithSidebar = () => {
     const [mapCenter, setMapCenter] = useState<[number, number] | null>(null);
     const [mapZoom, setMapZoom] = useState<number>(6);
     const [columnLayout, setColumnLayout] = useState<ColumnLayout>(1);
-    const [isListVisible, setIsListVisible] = useState(true);
     const [isMobileMapOpen, setIsMobileMapOpen] = useState(false);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
+    // The side map is only mounted on md+ screens: hidden with CSS alone, phones still rendered
+    // thousands of markers in an invisible map, which made the whole page stutter.
+    const [isDesktop, setIsDesktop] = useState(false);
+    useEffect(() => {
+        const query = window.matchMedia('(min-width: 768px)');
+        const update = () => setIsDesktop(query.matches);
+        update();
+        query.addEventListener('change', update);
+        return () => query.removeEventListener('change', update);
+    }, []);
     const [boundingBox, setBoundingBox] = useState<{
         min_lat: number;
         min_lon: number;
@@ -588,20 +598,22 @@ const MapWithSidebar = () => {
 
                 {/* Right side: mobile controls + list + map */}
                 <div className="flex-1 flex flex-col gap-2">
-                    {/* Mobile controls to toggle list/map visibility */}
+                    {/* Mobile controls: filters panel and full-screen map */}
                     <div className="w-full flex items-center justify-between gap-2 px-3 py-2 md:hidden">
                         <button
                             type="button"
-                            className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm"
-                            onClick={() => setIsListVisible((prev) => !prev)}
+                            className="flex flex-1 items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm"
+                            onClick={() => setIsMobileFiltersOpen(true)}
                         >
-                            {isListVisible ? 'Hide list' : 'Show list'}
+                            <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+                            {t('filters')}
                         </button>
                         <button
                             type="button"
-                            className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm"
+                            className="flex flex-1 items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm"
                             onClick={() => setIsMobileMapOpen(true)}
                         >
+                            <MapIcon className="h-4 w-4" aria-hidden="true" />
                             {t('openMap')}
                         </button>
                     </div>
@@ -611,7 +623,7 @@ const MapWithSidebar = () => {
                         {/* Middle Column - Beach Cards List */}
                         <div
                             ref={beachCardsContainerRef}
-                            className={`rounded-lg scrollbar-hide w-full overflow-x-hidden md:flex-shrink-0 md:h-screen md:overflow-y-auto ${isListVisible ? 'block' : 'hidden'} md:block`}
+                            className="rounded-lg scrollbar-hide w-full overflow-x-hidden md:flex-shrink-0 md:h-screen md:overflow-y-auto"
                             style={{
                                 width: `${getContainerWidth()}px`,
                                 maxWidth: '100%',
@@ -711,7 +723,7 @@ const MapWithSidebar = () => {
                         {/* Right Side - Map (desktop only, mobile uses popup) */}
                         <div className="hidden md:block flex-1 h-screen">
                             <div ref={mapContainerRef} className='h-full w-full rounded-lg overflow-hidden'>
-                                {mapCenter ? (
+                                {!isDesktop ? null : mapCenter ? (
                                     <ReactLeafletMap
                                         beaches={beaches}
                                         center={mapCenter}
@@ -742,7 +754,7 @@ const MapWithSidebar = () => {
 
                 {/* Mobile full-screen map popup */}
                 {isMobileMapOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 md:hidden">
+                    <div className="fixed inset-0 z-[10001] flex items-center justify-center bg-black/60 md:hidden">
                         <div className="relative w-full h-full p-2 flex items-center justify-center">
                             <div className="relative h-full w-full">
                                 <div className="h-full w-full rounded-lg overflow-hidden bg-white">
@@ -774,10 +786,10 @@ const MapWithSidebar = () => {
                                 <button
                                     type="button"
                                     onClick={() => setIsMobileMapOpen(false)}
-                                    className="absolute -top-4 right-4 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-white text-xl font-bold text-gray-800 shadow"
+                                    className="absolute top-3 right-3 z-[1100] flex h-11 w-11 items-center justify-center rounded-full bg-white text-gray-800 shadow-lg"
                                     aria-label={tUi('closeMap')}
                                 >
-                                    X
+                                    <X className="h-6 w-6" aria-hidden="true" />
                                 </button>
                             </div>
                         </div>
@@ -786,15 +798,15 @@ const MapWithSidebar = () => {
 
                 {/* Mobile slide-in filters panel */}
                 {isMobileFiltersOpen && (
-                    <div className="fixed inset-0 z-40 flex justify-end bg-black/40 md:hidden">
+                    <div className="fixed inset-0 z-[10001] flex justify-end bg-black/40 md:hidden">
                         <div className="relative h-full w-4/5 max-w-xs bg-[#F6F6F5] shadow-lg">
                             <button
                                 type="button"
                                 onClick={() => setIsMobileFiltersOpen(false)}
-                                className="absolute top-3 right-3 z-50 flex h-8 w-8 items-center justify-center rounded-full bg-white text-lg font-bold text-gray-800 shadow"
+                                className="absolute top-3 right-3 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-800 shadow"
                                 aria-label={tUi('closeFilters')}
                             >
-                                X
+                                <X className="h-5 w-5" aria-hidden="true" />
                             </button>
                             <div className="h-full overflow-y-auto pt-12 px-3 pb-4">
                                 <LeftSidebarFilters
@@ -810,20 +822,8 @@ const MapWithSidebar = () => {
                     </div>
                 )}
 
-                {/* Floating filters button on mobile */}
-                {!isMobileFiltersOpen && !isMobileMapOpen && (
-                    <button
-                        type="button"
-                        onClick={() => setIsMobileFiltersOpen(true)}
-                        className="fixed top-1/2 right-4 -translate-y-1/2 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow md:hidden"
-                        aria-label={t('filters')}
-                    >
-                        F
-                    </button>
-                )}
-
                 {/* Scroll-to-top button for long list on mobile */}
-                {showScrollTop && !isMobileMapOpen && (
+                {showScrollTop && !isMobileMapOpen && !isMobileFiltersOpen && (
                     <button
                         type="button"
                         onClick={() => {
