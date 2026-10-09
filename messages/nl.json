@@ -70,7 +70,9 @@
     "linkCopied": "Gekopieerd",
     "shareOn": "Delen op {network}",
     "shareByEmail": "Delen via e-mail",
-    "moreShareOptions": "Meer opties"
+    "moreShareOptions": "Meer opties",
+    "paginationPrevious": "Vorige",
+    "paginationNext": "Volgende"
   },
   "Search": {
     "typeBeach": "Strand",

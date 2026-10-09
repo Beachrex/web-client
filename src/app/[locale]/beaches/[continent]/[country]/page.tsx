@@ -44,6 +44,8 @@ import type { CountryDetails } from '@/types/CountryDetails';
 import DestinationsSection from '@/components/DestinationsSection';
 import { FEATURES } from '@/lib/constants/features';
 import AllBeachesLink from '@/components/AllBeachesLink';
+import { fetchFirstBeachPage } from '@/lib/server/destination-page-data';
+import type { BeachListResponseSchema } from '@/lib/api-client/types.gen';
 
 interface PageProps {
   params: {
@@ -139,6 +141,7 @@ export default async function Page({ params }: PageProps) {
   let cities: City[] = [];
   let islands: Island[] = [];
   let mostVisited: BeachSchema[] = [];
+  let firstBeachPage: BeachListResponseSchema | null = null;
 
   try {
     // Fetch country details
@@ -152,7 +155,7 @@ export default async function Page({ params }: PageProps) {
 
     if (countryCode) {
       // Fetch all related data in parallel
-      const [regionsResponse, citiesResponse, islandsResponse, mostVisitedResponse] =
+      const [regionsResponse, citiesResponse, islandsResponse, mostVisitedResponse, firstPageResponse] =
         await Promise.all([
           getRegions({
             query: { country_code: countryCode },
@@ -170,12 +173,14 @@ export default async function Page({ params }: PageProps) {
             query: { country_code: countryCode, limit: 20 },
             headers: { 'Accept-Language': locale as AcceptLanguage },
           }),
+          fetchFirstBeachPage({ country: countryCode }, locale),
         ]);
 
       regions = regionsResponse.data?.data ?? [];
       cities = citiesResponse.data?.data ?? [];
       islands = islandsResponse.data?.data ?? [];
       mostVisited = mostVisitedResponse.data?.data ?? [];
+      firstBeachPage = firstPageResponse;
     }
   } catch (error) {
     console.error('Error fetching country page data:', error);
@@ -420,6 +425,7 @@ const beachProperties: Property[] =
   baseFilters={{
     country: countryDetails!.code!,
   }}
+  initialPage={firstBeachPage}
   optionScopeFilters={{
     country: countryDetails!.code!, // filter-options endpoint
   }}

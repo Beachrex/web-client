@@ -166,9 +166,8 @@ export default function IslandListingPage({
   titleKey="browseBeachesTitle"
   titleParams={{ island: islandName }}
   filterButtonColor="#FFC422"
-  baseFilters={{
-    island: _islandSlug,
-  }}
+  baseFilters={initialData.listFilters}
+  initialPage={initialData.firstPage}
   hiddenFilterKeys={['country', 'region', 'island']}
      />
 

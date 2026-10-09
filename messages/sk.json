@@ -70,7 +70,9 @@
     "linkCopied": "Skopírované",
     "shareOn": "Zdieľať na {network}",
     "shareByEmail": "Zdieľať e-mailom",
-    "moreShareOptions": "Ďalšie možnosti"
+    "moreShareOptions": "Ďalšie možnosti",
+    "paginationPrevious": "Predchádzajúca",
+    "paginationNext": "Ďalšia"
   },
   "Search": {
     "typeBeach": "Pláž",

@@ -70,7 +70,9 @@
     "linkCopied": "Copied",
     "shareOn": "Share on {network}",
     "shareByEmail": "Share by e-mail",
-    "moreShareOptions": "More options"
+    "moreShareOptions": "More options",
+    "paginationPrevious": "Previous",
+    "paginationNext": "Next"
   },
   "Search": {
     "typeBeach": "Beach",

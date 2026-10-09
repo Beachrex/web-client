@@ -70,7 +70,9 @@
     "linkCopied": "Skopiowano",
     "shareOn": "Udostępnij na {network}",
     "shareByEmail": "Wyślij e-mailem",
-    "moreShareOptions": "Więcej opcji"
+    "moreShareOptions": "Więcej opcji",
+    "paginationPrevious": "Poprzednia",
+    "paginationNext": "Następna"
   },
   "Search": {
     "typeBeach": "Plaża",

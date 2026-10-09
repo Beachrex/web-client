@@ -7,6 +7,7 @@
  */
 
 import {
+  getBeaches,
   getCities,
   getCity,
   getIsland,
@@ -16,6 +17,7 @@ import {
 } from '@/lib/api-client';
 import type {
   AcceptLanguage,
+  BeachListResponseSchema,
   BeachSchema,
   City,
   GetCityResponse,
@@ -23,6 +25,7 @@ import type {
   GetRegionResponse,
   Island,
 } from '@/lib/api-client/types.gen';
+import { BEACH_PAGE_SIZE, placeFilterValue } from '@/lib/utils/beach-list';
 
 export type RegionDetails = NonNullable<GetRegionResponse['data']>;
 export type IslandDetails = NonNullable<GetIslandResponse['data']>;
@@ -36,17 +39,26 @@ export interface RegionPageData {
   cities: City[];
   islands: Island[];
   mostVisited: BeachSchema[];
+  /** Filters of the "Browse all beaches" list (place code) and its first page, rendered on the server. */
+  listFilters: Record<string, string | number>;
+  firstPage: BeachListResponseSchema | null;
 }
 
 export interface IslandPageData {
   details: IslandDetails;
   cities: City[];
   mostVisited: BeachSchema[];
+  /** Filters of the "Browse all beaches" list (place code) and its first page, rendered on the server. */
+  listFilters: Record<string, string | number>;
+  firstPage: BeachListResponseSchema | null;
 }
 
 export interface CityPageData {
   details: CityDetails;
   mostVisited: BeachSchema[];
+  /** Filters of the "Browse all beaches" list (place code) and its first page, rendered on the server. */
+  listFilters: Record<string, string | number>;
+  firstPage: BeachListResponseSchema | null;
 }
 
 const languageHeaders = (locale: string) => ({ 'Accept-Language': locale as AcceptLanguage });
@@ -67,55 +79,81 @@ export async function fetchCityDetails(slug: string, locale: string): Promise<Ci
   return response.data?.data ?? null;
 }
 
+/** First page of the "Browse all beaches" list for these filters (same query as the client's page 1). */
+export async function fetchFirstBeachPage(
+  filters: Record<string, string | number>,
+  locale: string,
+): Promise<BeachListResponseSchema | null> {
+  const response = await getBeaches({
+    query: { ...filters, page: 1, per_page: BEACH_PAGE_SIZE, sort: 'popular' } as never,
+    headers: languageHeaders(locale),
+  });
+  return response.data ?? null;
+}
+
 export async function fetchRegionPageData(slug: string, locale: string): Promise<RegionPageData | null> {
   const headers = languageHeaders(locale);
-  const [details, cities, islands, mostVisited] = await Promise.all([
-    fetchRegionDetails(slug, locale),
+  const details = await fetchRegionDetails(slug, locale);
+  if (!details) return null;
+
+  const code = details.code ?? slug;
+  const listFilters = { region: placeFilterValue(details, slug) };
+  const [cities, islands, mostVisited, firstPage] = await Promise.all([
     getCities({ query: { region_code: slug }, headers }),
     getIslands({ query: { region_code: slug }, headers }),
-    getMostVisitedBeaches({ query: { region_code: slug, limit: MOST_VISITED_LIMIT }, headers }),
+    getMostVisitedBeaches({ query: { region_code: code, limit: MOST_VISITED_LIMIT }, headers }),
+    fetchFirstBeachPage(listFilters, locale),
   ]);
-
-  if (!details) return null;
 
   return {
     details,
     cities: cities.data?.data ?? [],
     islands: islands.data?.data ?? [],
     mostVisited: mostVisited.data?.data ?? [],
+    listFilters,
+    firstPage,
   };
 }
 
 export async function fetchIslandPageData(slug: string, locale: string): Promise<IslandPageData | null> {
   const headers = languageHeaders(locale);
-  const [details, cities, mostVisited] = await Promise.all([
-    fetchIslandDetails(slug, locale),
-    getCities({ query: { island_code: slug }, headers }),
-    getMostVisitedBeaches({ query: { island_code: slug, limit: MOST_VISITED_LIMIT }, headers }),
-  ]);
-
+  const details = await fetchIslandDetails(slug, locale);
   if (!details) return null;
+
+  const code = details.code ?? slug;
+  const listFilters = { island: placeFilterValue(details, slug) };
+  const [cities, mostVisited, firstPage] = await Promise.all([
+    getCities({ query: { island_code: slug }, headers }),
+    getMostVisitedBeaches({ query: { island_code: code, limit: MOST_VISITED_LIMIT }, headers }),
+    fetchFirstBeachPage(listFilters, locale),
+  ]);
 
   return {
     details,
     cities: cities.data?.data ?? [],
     mostVisited: mostVisited.data?.data ?? [],
+    listFilters,
+    firstPage,
   };
 }
 
 export async function fetchCityPageData(slug: string, locale: string): Promise<CityPageData | null> {
-  const [details, mostVisited] = await Promise.all([
-    fetchCityDetails(slug, locale),
+  const details = await fetchCityDetails(slug, locale);
+  if (!details) return null;
+
+  const listFilters = { city: placeFilterValue(details, slug) };
+  const [mostVisited, firstPage] = await Promise.all([
     getMostVisitedBeaches({
-      query: { city_code: slug, limit: MOST_VISITED_LIMIT },
+      query: { city_code: details.code ?? slug, limit: MOST_VISITED_LIMIT },
       headers: languageHeaders(locale),
     }),
+    fetchFirstBeachPage(listFilters, locale),
   ]);
-
-  if (!details) return null;
 
   return {
     details,
     mostVisited: mostVisited.data?.data ?? [],
+    listFilters,
+    firstPage,
   };
 }

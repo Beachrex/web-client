@@ -70,7 +70,9 @@
     "linkCopied": "Скопировано",
     "shareOn": "Поделиться в {network}",
     "shareByEmail": "Поделиться по электронной почте",
-    "moreShareOptions": "Другие варианты"
+    "moreShareOptions": "Другие варианты",
+    "paginationPrevious": "Предыдущая",
+    "paginationNext": "Следующая"
   },
   "Search": {
     "typeBeach": "Пляж",

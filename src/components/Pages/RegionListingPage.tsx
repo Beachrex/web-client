@@ -167,9 +167,8 @@ export default function RegionListingPage({ regionSlug, initialData }: RegionLis
   titleKey="browseBeachesTitle"
   titleParams={{ region: regionName }}
   filterButtonColor="#FF2877"
-  baseFilters={{
-    region: regionSlug,
-  }}
+  baseFilters={initialData.listFilters}
+  initialPage={initialData.firstPage}
   hiddenFilterKeys={['country', 'region']}
       />
 

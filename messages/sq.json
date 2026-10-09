@@ -70,7 +70,9 @@
     "linkCopied": "U kopjua",
     "shareOn": "Ndaj në {network}",
     "shareByEmail": "Ndaj me email",
-    "moreShareOptions": "Më shumë opsione"
+    "moreShareOptions": "Më shumë opsione",
+    "paginationPrevious": "E mëparshmja",
+    "paginationNext": "Tjetra"
   },
   "Search": {
     "typeBeach": "Plazh",
