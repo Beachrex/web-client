@@ -7,7 +7,7 @@ import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { getMainBeachImage } from '@/lib/utils/beach-images';
 import { buildBeachBadges } from '@/lib/utils/beach-badges';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import BeachTitleBlock from './BeachTitleBlock';
@@ -29,6 +29,8 @@ export default function BeachBannerSection({
   activityCount,
 }: BeachBannerSectionProps) {
   const locale = useLocale();
+  const tCommon = useTranslations('Common');
+  const tFilters = useTranslations('Filters');
 
   const beachName = beachDetails?.basic_info?.name ?? '';
   const beachSlug = beachDetails?.basic_info?.slug;
@@ -101,7 +103,7 @@ export default function BeachBannerSection({
         {mainImage ? (
           <Image
             src={mainImage}
-            alt={`${beachName} banner`}
+            alt={beachName}
             fill
             className="object-cover object-center"
             priority
@@ -174,7 +176,7 @@ export default function BeachBannerSection({
         >
           <Image
             src="/images/map.png"
-            alt="open beach map"
+            alt={tCommon('map')}
             width={24}
             height={24}
             className="sm:h-[33px] sm:w-[33px]"
@@ -183,7 +185,7 @@ export default function BeachBannerSection({
         <button className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-[#008260] sm:h-[68.46px] sm:w-[71px]">
           <Image
             src="/images/accomodation.png"
-            alt="filters"
+            alt={tFilters('filterButton')}
             width={20}
             height={20}
             className="sm:h-[28px] sm:w-[28px]"

@@ -68,7 +68,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({
         <div className="mt-[4px] flex items-center gap-[4px]">
           <Image
             src="/images/banner/rotated-arrow.png"
-            alt="location"
+            alt=""
             width={10}
             height={10}
           />

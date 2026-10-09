@@ -133,7 +133,7 @@ const hasAnyWebcam = React.useMemo(
         <div className="relative h-[400px] w-[250px] opacity-70 sm:w-[300px] lg:w-[350px]">
           <Image
             src="/images/propertycard/beach-gray.png"
-            alt="decor beach"
+            alt=""
             width={400}
             height={400}
             className="h-full w-full object-contain object-left"
@@ -171,7 +171,7 @@ const hasAnyWebcam = React.useMemo(
                     src="/images/beachmedia/photo.png"
                     width={24}
                     height={24}
-                    alt="gallery"
+                    alt=""
                   />
                   {mediaMode === 'gallery' && (
                     <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
@@ -196,7 +196,7 @@ const hasAnyWebcam = React.useMemo(
                     src="/images/beachmedia/play-button-arrowhead-white.png"
                     width={24}
                     height={24}
-                    alt="video"
+                    alt=""
                   />
                   {mediaMode === 'video' && (
                     <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
@@ -220,7 +220,7 @@ const hasAnyWebcam = React.useMemo(
                     src="/images/beachmedia/360-degree-white.png"
                     width={24}
                     height={24}
-                    alt="360"
+                    alt=""
                   />
                   {mediaMode === 'sphere' && (
                     <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
@@ -246,7 +246,7 @@ const hasAnyWebcam = React.useMemo(
       src="/images/beachmedia/video-icon-white.png"
       width={24}
       height={24}
-      alt="webcam"
+      alt=""
     />
     {mediaMode === 'webcam' && (
       <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
@@ -258,7 +258,7 @@ const hasAnyWebcam = React.useMemo(
       src="/images/beachmedia/video-icon-white.png"
       width={24}
       height={24}
-      alt="webcam"
+      alt=""
     />
   </div>
 )}

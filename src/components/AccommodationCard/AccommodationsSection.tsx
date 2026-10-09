@@ -49,7 +49,7 @@ export default function AccommodationSection({
         <div className="relative h-[400px] w-[400px]">
           <Image
             src="/images/accomodation.svg"
-            alt="Decorative beach image"
+            alt=""
             width={400}
             height={400}
             className="h-full w-full select-none object-contain"
@@ -97,7 +97,7 @@ export default function AccommodationSection({
             >
               <Image
                 src="/images/filters.png"
-                alt="Filter icon"
+                alt=""
                 width={20}
                 height={20}
               />
@@ -111,7 +111,7 @@ export default function AccommodationSection({
            >
   <Image
     src="/images/map.png"
-    alt="Map icon"
+    alt=""
     width={20}
     height={20}
   />

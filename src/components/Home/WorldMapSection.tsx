@@ -37,7 +37,7 @@ const WorldMapSection: React.FC<WorldMapSectionProps> = ({
                       <Link href={buttonUrl} className="font-figtree flex w-full sm:w-auto sm:max-w-[220px] items-center justify-center gap-2 rounded-md bg-variable-collection-temno-modro px-5 py-2.5 text-sm text-white shadow transition hover:bg-[#162f4f]">
                           <Image
                               src="/images/map.png"
-                              alt="map icon"
+                              alt=""
                               width={20}
                               height={20}
                           />
@@ -51,7 +51,7 @@ const WorldMapSection: React.FC<WorldMapSectionProps> = ({
                           {mapImageUrl && (
                             <Image
                                 src={mapImageUrl}
-                                alt="World map"
+                                alt=""
                                 fill
                                 className="object-contain"
                             />

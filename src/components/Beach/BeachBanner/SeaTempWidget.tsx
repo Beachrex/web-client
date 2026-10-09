@@ -19,7 +19,7 @@ const SeaTempWidget: React.FC<SeaTempWidgetProps> = ({ tempC, isLoading = false 
       <div className="relative h-[144px] w-[144px] overflow-hidden rounded-[10px] font-figtree text-white">
         <Image
           src="/images/sea.png"
-          alt="sea background"
+          alt=""
           fill
           className="object-cover opacity-80 mix-blend-lighten"
           priority
@@ -37,7 +37,7 @@ const SeaTempWidget: React.FC<SeaTempWidgetProps> = ({ tempC, isLoading = false 
       {/* Faded background image */}
       <Image
         src="/images/sea.png"
-        alt="sea background"
+        alt=""
         fill
         className="object-cover opacity-80 mix-blend-lighten"
         priority

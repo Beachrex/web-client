@@ -267,7 +267,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
                 >
                     <Image
                         src="/images/filters-blue.png"
-                        alt="All Filters"
+                        alt=""
                         width={20}
                         height={20}
                         className="h-5 w-5 mr-1 object-contain"
@@ -301,7 +301,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/sunset.png"
-                alt="Sunset icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
@@ -325,7 +325,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/gozd.png"
-                alt="Forest icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
@@ -349,7 +349,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/reka.png"
-                alt="River icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
@@ -366,14 +366,14 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
           >
             <Image
               src="/images/categories/bazen.jpg"
-              alt="Zunanji bazeni background"
+              alt=""
               fill
               className="object-cover opacity-10"
             />
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/reka.png"
-                alt="Pool icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
@@ -397,7 +397,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/reka.png"
-                alt="Indoor pool icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"

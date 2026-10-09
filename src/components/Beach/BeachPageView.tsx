@@ -135,7 +135,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
               >
                 <Image
                   src={item.icon}
-                  alt={`${item.label} icon`}
+                  alt=""
                   width={20}
                   height={20}
                 />

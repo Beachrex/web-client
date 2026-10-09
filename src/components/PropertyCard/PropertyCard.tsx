@@ -374,7 +374,7 @@ const webcamUrl = React.useMemo(
     <div className="pointer-events-auto flex h-[40px] items-center gap-1 bg-[#008260] text-white px-3 rounded">
       <Image
         src="/images/accomodation.png"
-        alt="acc"
+        alt=""
         width={16}
         height={16}
       />
@@ -401,7 +401,7 @@ const webcamUrl = React.useMemo(
           src={flagUrl ?? '/images/propertycard/default-flag.png'}
           width={50}
           height={40}
-          alt="flag"
+          alt=""
           className="h-full w-full object-cover"
         />
       </div>
@@ -434,7 +434,7 @@ const webcamUrl = React.useMemo(
        >
   <Image
     src="/images/propertycard/location.png"
-    alt="location"
+    alt=""
     width={32}
     height={32}
   />
