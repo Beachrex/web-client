@@ -722,7 +722,10 @@
     "topCountries": "Populaire strandlanden",
     "aiChat": "AI-strandchat",
     "aiItinerary": "AI-reisplanner",
-    "contact": "Contact"
+    "contact": "Contact",
+    "beachTypes": "Soorten stranden",
+    "beachesFor": "Stranden voor",
+    "onTheBeach": "Op het strand"
   },
   "MediaKit": {
     "downloadsTitle": "Downloads",

@@ -722,7 +722,10 @@
     "topCountries": "Top beach countries",
     "aiChat": "AI beach chat",
     "aiItinerary": "AI trip planner",
-    "contact": "Contact"
+    "contact": "Contact",
+    "beachTypes": "Beach types",
+    "beachesFor": "Beaches for",
+    "onTheBeach": "On the beach"
   },
   "MediaKit": {
     "downloadsTitle": "Downloads",

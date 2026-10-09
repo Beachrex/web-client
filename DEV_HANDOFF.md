@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Burger menu: pre-filtered beaches that open the map ✅ COMPLETE
+
+Owner, 2026-10-09: "stranski meni bi lahko napolnili s predfiltriranimi plažami — za mlade, peščene … in peljemo na mapo ob kliku". Three new menu groups after the browse groups: **Beach types** (sand, small stones, grass), **Beaches for** (families, young people/party, adventurers, dogs, wheelchair access) and **On the beach** (pool, waterslide, beach bar, natural shade, playground, parking). Each item opens the localized beach map with that one filter (`/{locale}/{beachMapWord}?beach_type=sand`), which the map already reads from the URL. Labels come from `GET /beaches/filters` in the visitor's language (same cached query as the home tiles); an option the API does not return is left out; empty groups are hidden. Config: `src/config/menuBeachFilters.ts`; builder: `buildMenuItems({ filterGroups })`; group titles `Menu.beachTypes/beachesFor/onTheBeach` in 19 locales. Tests: `e2e/navigation-links.unit.spec.ts` (+2). Local check: Chromium shows the groups and the map links (`/hr/karta-plaza?user_type=youth`, …).
+
+---
+
 ## 2026-10-08 – Cleanup: unused files, one API URL source (TASK-004 audit F2, F3, F4) ✅ COMPLETE
 
 - **F2:** removed 19 files nothing imported (checked across `src/`, configs and tests): `TestImageComponent`, `Home/HeroSearchSection`, `Map/LeafletMapComponent`, `Map/MapRadiusControl` (+ its commented-out use), `StairsElement`, `Beach/BeachPromoBanner`, `BeachDetails/{DetailRow,PillList,TickList,TickValueList}`, `ui/image-with-fallback`, hooks `useBeachDetails`/`useCountryDetails`/`useRegions`, `mapBeachToPropertyWithUrl`, `lib/query-keys`, `lib/tailwind`, `lib/utils/transformers`, `lib/utils/__tests__/manual-test-seo`. The `no-console-log` allowlist now only lists flag-gated perf logging.

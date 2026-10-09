@@ -722,7 +722,10 @@
     "topCountries": "Najpopularnije zemlje",
     "aiChat": "AI chat o plažama",
     "aiItinerary": "AI planer putovanja",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "beachTypes": "Vrste plaža",
+    "beachesFor": "Plaže za",
+    "onTheBeach": "Na plaži"
   },
   "MediaKit": {
     "downloadsTitle": "Preuzimanja",

@@ -722,7 +722,10 @@
     "topCountries": "Populære strandlande",
     "aiChat": "AI-strandchat",
     "aiItinerary": "AI-rejseplanlægger",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "beachTypes": "Strandtyper",
+    "beachesFor": "Strande for",
+    "onTheBeach": "På stranden"
   },
   "MediaKit": {
     "downloadsTitle": "Downloads",

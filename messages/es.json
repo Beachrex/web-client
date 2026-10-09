@@ -722,7 +722,10 @@
     "topCountries": "Países de playa populares",
     "aiChat": "Chat IA de playas",
     "aiItinerary": "Planificador de viajes IA",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "beachTypes": "Tipos de playa",
+    "beachesFor": "Playas para",
+    "onTheBeach": "En la playa"
   },
   "MediaKit": {
     "downloadsTitle": "Descargas",
