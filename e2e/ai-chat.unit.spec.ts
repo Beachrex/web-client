@@ -76,6 +76,7 @@ test('agent markdown: own links become relative, foreign links stay text, bold a
     { text: '.' },
   ]);
   expect(lines[1]).toEqual([{ text: '• ' }, { text: 'Zlatni rat', href: '/si/plaze/evropa/hrvaska/bol/zlatni-rat' }]);
-  expect(lines[2].find((p) => p.text === 'Zlo')?.href).toBeUndefined();
-  expect(lines[2].map((p) => p.text).join('')).toContain('<script>x</script>'); // rendered as text by React, never as HTML
+  const third = lines[2] ?? [];
+  expect(third.find((p) => p.text === 'Zlo')?.href).toBeUndefined();
+  expect(third.map((p) => p.text).join('')).toContain('<script>x</script>'); // rendered as text by React, never as HTML
 });
