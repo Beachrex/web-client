@@ -18,6 +18,18 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – E-mail sign-in and "Forgot password" ✅ COMPLETE
+
+Owner request 2026-10-09: accounts imported from the old site have a random password, so they need e-mail sign-in with a password reset. Backend: `POST /api/v1/forgot-password`, `POST /api/v1/reset-password` (localized e-mail via SMTP).
+- `src/components/Auth/SignInOptions.tsx`: Google button, "or", then **Sign in with e-mail** opens `EmailLoginForm` (e-mail, password, "Forgot password?"). Used on the AI chat and itinerary pages (the only places with sign-in; "My account" stays hidden for launch). Their header row stacks on phones.
+- `/{locale}/auth/forgot-password` (`ForgotPasswordForm`): always the same answer (no account enumeration).
+- `/{locale}/auth/reset-password?token=…&email=…` (`ResetPasswordForm`, the e-mail link): new password twice (min 8), then signs the user in. The token is read in the browser (page stays static/ISR) and removed from the address bar. Invalid/expired/used link → "Request a new link".
+- `src/app/[locale]/auth/layout.tsx`: all `/auth/*` pages `noindex, nofollow` and `referrer: no-referrer`.
+- `src/lib/utils/password-auth.ts`: API calls + status → message (422, 429 "too many attempts", other).
+- `src/lib/api-client/` regenerated from the backend spec (`npx openapi-ts -i <backend>/storage/api-docs/api-docs.json`; `client.gen.ts`/`index.ts` kept).
+- 23 new `Auth` texts in all 19 languages (machine-translated by the agent).
+- Test: `e2e/password-reset.unit.spec.ts`. Local end-to-end (real backend, mail to the log, Chromium 390 px): forgot (si) → e-mail "Ponastavite geslo za Beachrex" with the link → mismatch error → reset → signed in → same link again "invalid" → AI chat (de) wrong password error → sign-in works; no page errors.
+
 ## 2026-10-09 – Localized error page; AI chat beach images ✅ COMPLETE
 
 - `src/app/[locale]/error.tsx`: a page that throws while rendering now shows a localized message (header/footer stay) with **Try again** and **Go Home**, instead of the default English Next.js error screen.

@@ -28,6 +28,9 @@ import type {
   B0722F9026Fe14D1F2Be5Ffa1A33E9aResponses,
   CalculateDistanceData,
   CalculateDistanceResponses,
+  CountBeachViewData,
+  CountBeachViewErrors,
+  CountBeachViewResponses,
   CreateBeachData,
   CreateBeachErrors,
   CreateBeachResponses,
@@ -40,6 +43,9 @@ import type {
   Ff50Fb7Baeca2626Aeb337957Ff2001Data,
   Ff50Fb7Baeca2626Aeb337957Ff2001Errors,
   Ff50Fb7Baeca2626Aeb337957Ff2001Responses,
+  ForgotPasswordData,
+  ForgotPasswordErrors,
+  ForgotPasswordResponses,
   GenerateItineraryData,
   GenerateItineraryErrors,
   GenerateItineraryResponses,
@@ -287,6 +293,9 @@ import type {
   RegisterUserData,
   RegisterUserErrors,
   RegisterUserResponses,
+  ResetPasswordData,
+  ResetPasswordErrors,
+  ResetPasswordResponses,
   ResolveLegacyUrlData,
   ResolveLegacyUrlErrors,
   ResolveLegacyUrlResponses,
@@ -901,6 +910,24 @@ export const getBeachTypeById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/beach-types/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Count a beach page view
+ *
+ * Called by the browser when a visitor opens a beach page. One view per visitor (IP) and beach per 30 minutes is counted; repeated calls return 204 without counting. Rate limited (60/min per IP).
+ */
+export const countBeachView = <ThrowOnError extends boolean = false>(
+  options: Options<CountBeachViewData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    CountBeachViewResponses,
+    CountBeachViewErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/beaches/{id}/view",
     ...options,
   });
 };
@@ -1635,6 +1662,50 @@ export const getParkingCapacityById = <ThrowOnError extends boolean = false>(
   >({
     url: "/api/v1/parking-capacities/{id}",
     ...options,
+  });
+};
+
+/**
+ * Send a password reset link by e-mail
+ *
+ * Always answers 200 with the same message, whether or not an account exists (no account enumeration). The e-mail is sent after the response, in the request's language, with a link to `{FRONTEND_URL}/{locale}/auth/reset-password?token=…&email=…` (valid 60 minutes, at most one e-mail per address per minute). Rate limit: 5 requests per minute per IP.
+ */
+export const forgotPassword = <ThrowOnError extends boolean = false>(
+  options: Options<ForgotPasswordData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    ForgotPasswordResponses,
+    ForgotPasswordErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/forgot-password",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Set a new password with the token from the reset e-mail
+ *
+ * On success all API tokens of the user are revoked (other devices are signed out) and the e-mail counts as verified. The user then signs in with POST /api/v1/login. Rate limit: 10 requests per minute per IP.
+ */
+export const resetPassword = <ThrowOnError extends boolean = false>(
+  options: Options<ResetPasswordData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    ResetPasswordResponses,
+    ResetPasswordErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/reset-password",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 

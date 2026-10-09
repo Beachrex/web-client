@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslations, useLocale } from 'next-intl';
 import { Button, Textarea, Alert } from 'flowbite-react';
-import { GoogleLoginButton, UserProfile, LogoutButton } from '@/components/Auth';
+import { SignInOptions, UserProfile, LogoutButton } from '@/components/Auth';
 import { Send } from 'lucide-react';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
@@ -138,7 +138,7 @@ export default function AIChatPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
               <p className="text-gray-600 mt-1">{t('subtitle')}</p>
@@ -150,7 +150,7 @@ export default function AIChatPage() {
                   <LogoutButton variant="link" />
                 </div>
               ) : (
-                <GoogleLoginButton />
+                <SignInOptions />
               )}
             </div>
           </div>

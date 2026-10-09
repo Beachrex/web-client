@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslations } from 'next-intl';
 import { Button, Label, TextInput, Select, Textarea, Alert, Card } from 'flowbite-react';
-import { GoogleLoginButton, UserProfile, LogoutButton } from '@/components/Auth';
+import { SignInOptions, UserProfile, LogoutButton } from '@/components/Auth';
 import { MapPin, CreditCard } from 'lucide-react';
 import { env } from '@/env';
 
@@ -242,7 +242,7 @@ export default function AIItineraryPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
               <p className="text-gray-600 mt-1">{t('subtitle')}</p>
@@ -254,7 +254,7 @@ export default function AIItineraryPage() {
                   <LogoutButton variant="link" />
                 </div>
               ) : (
-                <GoogleLoginButton />
+                <SignInOptions />
               )}
             </div>
           </div>
