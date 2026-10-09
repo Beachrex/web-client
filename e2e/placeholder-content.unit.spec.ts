@@ -59,3 +59,13 @@ test('no hardcoded accommodation totals', () => {
   const hits = SOURCES.filter((f) => /totalCount=\{\d+\}/.test(readFileSync(f, 'utf8')));
   expect(hits.map((f) => relative(ROOT, f))).toEqual([]);
 });
+
+test('header search bar: accommodation and shop are gated in every layout (mobile too), CGP logo', () => {
+  const source = readFileSync(join(process.cwd(), 'src/components/Header/SearchBar.tsx'), 'utf8');
+  const count = (re: RegExp) => (source.match(re) ?? []).length;
+  // Owner, 2026-10-09: the mobile header still showed "Accommodations" and "Shop".
+  expect(count(/accomodation\.svg/g)).toBe(count(/FEATURES\.accommodation && \(/g));
+  expect(count(/store\.svg/g)).toBe(count(/FEATURES\.shop && \(/g));
+  expect(source).not.toContain('logo_dark.png');
+  expect(source).toContain('/brand/BeachRex_CGP/01_Logo/Horizontal/SVG/beachrex_horizontal_color.svg');
+});

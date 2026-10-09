@@ -832,7 +832,8 @@
     "closeFilters": "Zavrieť filtre",
     "videoTitle": "Video pláže",
     "virtualTourTitle": "Virtuálna prehliadka 360°",
-    "beachRouteMapTitle": "Mapa s cestou na pláž"
+    "beachRouteMapTitle": "Mapa s cestou na pláž",
+    "closeMenu": "Zavrieť ponuku"
   },
   "FilterModal": {
     "title": "Všetky filtre pláží",

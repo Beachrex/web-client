@@ -18,6 +18,17 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Mobile header and side menu cleanup ✅ COMPLETE
+
+Owner, 2026-10-09 (phone screenshots of dev): the mobile header still showed "Accommodations" and "Shop", and the side menu had too much padding.
+- `SearchBar.tsx` mobile layout: accommodation and shop are now behind `FEATURES` like on tablet/desktop (missed in TASK-004 #18). The mobile header is one row shorter: logo and a "Map" button on one row, search below.
+- Header logo: the CGP colour SVG (`/brand/.../beachrex_horizontal_color.svg`, ≥ 140 px wide as the CGP requires) instead of the grey `logo_dark.png` from Spaces at 80 px.
+- `BurgerMenu.tsx`: full-width rows with 20 px side padding (was a fixed `ml-[100px] mr-[50px] w-[250px]` column), logo + close button header, groups expand with a chevron on the right, sub-items indented, full-width map button. New `UI.closeMenu` label in 19 locales.
+- Test: `e2e/placeholder-content.unit.spec.ts` (every accommodation/shop icon in `SearchBar` is behind its flag; CGP logo); fails against the old `SearchBar`.
+- Local check at 390 px (iPhone 13 viewport) and 1440 px: header, menu, home, `/beaches`, region/city, map, AI, author, 404 and payment pages have no horizontal overflow and no page errors.
+
+---
+
 ## 2026-10-09 – Burger menu: pre-filtered beaches that open the map ✅ COMPLETE
 
 Owner, 2026-10-09: "stranski meni bi lahko napolnili s predfiltriranimi plažami — za mlade, peščene … in peljemo na mapo ob kliku". Three new menu groups after the browse groups: **Beach types** (sand, small stones, grass), **Beaches for** (families, young people/party, adventurers, dogs, wheelchair access) and **On the beach** (pool, waterslide, beach bar, natural shade, playground, parking). Each item opens the localized beach map with that one filter (`/{locale}/{beachMapWord}?beach_type=sand`), which the map already reads from the URL. Labels come from `GET /beaches/filters` in the visitor's language (same cached query as the home tiles); an option the API does not return is left out; empty groups are hidden. Config: `src/config/menuBeachFilters.ts`; builder: `buildMenuItems({ filterGroups })`; group titles `Menu.beachTypes/beachesFor/onTheBeach` in 19 locales. Tests: `e2e/navigation-links.unit.spec.ts` (+2). Local check: Chromium shows the groups and the map links (`/hr/karta-plaza?user_type=youth`, …).

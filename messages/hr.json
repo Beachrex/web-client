@@ -832,7 +832,8 @@
     "closeFilters": "Zatvori filtre",
     "videoTitle": "Video plaže",
     "virtualTourTitle": "Virtualna tura 360°",
-    "beachRouteMapTitle": "Karta s putem do plaže"
+    "beachRouteMapTitle": "Karta s putem do plaže",
+    "closeMenu": "Zatvori izbornik"
   },
   "FilterModal": {
     "title": "Svi filtri plaža",

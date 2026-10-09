@@ -832,7 +832,8 @@
     "closeFilters": "Luk filtre",
     "videoTitle": "Strandvideo",
     "virtualTourTitle": "360° virtuel rundvisning",
-    "beachRouteMapTitle": "Kort med vejen til stranden"
+    "beachRouteMapTitle": "Kort med vejen til stranden",
+    "closeMenu": "Luk menuen"
   },
   "FilterModal": {
     "title": "Alle strandfiltre",

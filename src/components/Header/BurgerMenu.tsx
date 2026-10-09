@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import QuickMenu from './QuickMenu';
 import Image from 'next/image';
-import { ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useContinents } from '@/hooks/useContinents';
 import { useCountries } from '@/hooks/useCountries';
 import { staticPageUrl, useFooterStaticPages } from '@/hooks/useStaticPages';
@@ -26,93 +26,83 @@ const sidebarTheme: CustomFlowbiteTheme['sidebar'] = {
   },
 };
 
+/** CGP v1.0 colour horizontal logo. */
+const MENU_LOGO = '/brand/BeachRex_CGP/01_Logo/Horizontal/SVG/beachrex_horizontal_color.svg';
+
 // Recursive component for rendering nested menu
 const NestedMenu = ({
   items,
   closeMenu,
+  level = 0,
 }: {
   items: MenuItem[];
   closeMenu: () => void;
+  level?: number;
 }) => {
   return (
-    <ul className="pl-4">
+    <ul className={level > 0 ? 'bg-white/70' : ''}>
       {items.map((item, index) => (
-        <MenuItemComponent key={index} item={item} closeMenu={closeMenu} />
+        <MenuItemComponent
+key={index} item={item} closeMenu={closeMenu}
+level={level}
+        />
       ))}
     </ul>
   );
 };
 
-// Individual menu item component
+const MenuIcon = ({ item }: { item: MenuItem }) =>
+  typeof item.icon === 'string' && item.icon !== '' ? (
+    <Image
+src={item.icon} alt="" width={24}
+height={24} className="h-6 w-6 shrink-0 object-contain"
+    />
+  ) : (
+    <span className="h-6 w-6 shrink-0" aria-hidden />
+  );
+
+// Individual menu item component: full-width rows; groups expand in place, links close the menu.
 const MenuItemComponent: React.FC<{
   item: MenuItem;
   closeMenu: () => void;
-}> = ({ item, closeMenu }) => {
+  level: number;
+}> = ({ item, closeMenu, level }) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    if (item.subItems && item.subItems.length > 0) {
-      setIsOpen((prev) => !prev);
-    } else {
-      closeMenu();
-    }
-  };
+  const isGroup = Boolean(item.subItems?.length);
+  const indent = level > 0 ? 'pl-12' : 'pl-5';
+  const row = `flex w-full items-center gap-3 border-b border-[#E7E7E7] py-3 pr-5 text-left hover:bg-white ${indent}`;
+  const label = (
+    <span
+      className={`flex-1 font-figtree leading-tight text-[#222222] ${level > 0 ? 'text-[14px] font-semibold' : 'text-[15px] font-bold'}`}
+    >
+      {item.label}
+    </span>
+  );
 
   return (
-    <li className="mb-1">
-      <div
-        onClick={toggleMenu}
-        className="relative ml-[100px] mr-[50px] flex w-[250px] cursor-pointer items-center justify-between border-b border-[#E7E7E7] py-2 pl-6 transition-colors hover:bg-white/60"
-      >
-        {item.subItems?.length ? (
-          <span
-            className={`absolute left-0 top-1/2 -translate-y-1/2 text-xs transition-transform ${isOpen ? 'rotate-90' : ''} `}
-          >
-            ➔
-          </span>
-        ) : null}
-
-        {item.subItems?.length ? (
-          <span className="flex flex-1 items-center gap-2">
-            {typeof item.icon === 'string' && item.icon !== '' && (
-              <Image
-                src={item.icon}
-                alt={item.label}
-                width={26}
-                height={26}
-                className="shrink-0"
-              />
-            )}
-            <span className="font-figtree text-[14px] font-bold leading-[100%] text-[#4D4D4D]">
-              {item.label}
-            </span>
-          </span>
-        ) : (
-          <Link
-            href={item.href}
-            className="flex flex-1 items-center gap-2"
-            onClick={closeMenu}
-          >
-            {typeof item.icon === 'string' && item.icon !== '' && (
-              <Image
-                src={item.icon}
-                alt={item.label}
-                width={26}
-                height={26}
-                className="shrink-0"
-              />
-            )}
-            <span className="font-figtree text-[14px] font-bold leading-[100%] text-[#4D4D4D]">
-              {item.label}
-            </span>
-          </Link>
-        )}
-
-        <ChevronRight size={18} className="text-[#B0B0B0]" />
-      </div>
+    <li>
+      {isGroup ? (
+        <button
+type="button" onClick={() => setIsOpen((prev) => !prev)} aria-expanded={isOpen}
+className={row}
+        >
+          <MenuIcon item={item} />
+          {label}
+          <ChevronDown
+            size={18}
+            className={`shrink-0 text-[#8D8D8D] transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          />
+        </button>
+      ) : (
+        <Link href={item.href} onClick={closeMenu} className={row}>
+          <MenuIcon item={item} />
+          {label}
+          <ChevronRight size={18} className="shrink-0 text-[#B0B0B0]" />
+        </Link>
+      )}
 
       {isOpen && item.subItems && (
-        <NestedMenu items={item.subItems} closeMenu={closeMenu} />
+        <NestedMenu items={item.subItems} closeMenu={closeMenu} level={level + 1} />
       )}
     </li>
   );
@@ -128,6 +118,7 @@ const BurgerMenu = () => {
   const t = useTranslations('Menu');
   const tCommon = useTranslations('Common');
   const tAI = useTranslations('AI.landing');
+  const tUi = useTranslations('UI');
   const { continents } = useContinents();
   const { countries } = useCountries();
   const staticPages = useFooterStaticPages();
@@ -175,27 +166,36 @@ const BurgerMenu = () => {
       <Sidebar
         id="sidebar"
         theme={sidebarTheme}
-        className={`w-full max-w-[450px] shadow-[0_0_4px_0_#00000033] transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} `}
+        className={`w-full max-w-[420px] shadow-[0_0_4px_0_#00000033] transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} `}
       >
         <Sidebar.Items className="h-full">
           <Sidebar.ItemGroup className="flex h-full flex-col">
             {/* HEADER */}
-            <div className="flex justify-end p-4">
-              <button onClick={closeMenu}>
+            <div className="flex items-center justify-between border-b border-[#E7E7E7] px-5 py-4">
+              <Link href={`/${locale}`} onClick={closeMenu} aria-label="BeachRex">
+                <Image
+src={MENU_LOGO} alt="BeachRex" width={150}
+height={29} className="h-[29px] w-auto"
+                />
+              </Link>
+              <button
+type="button" onClick={closeMenu} aria-label={tUi('closeMenu')}
+className="-mr-2 rounded-full p-2 hover:bg-white"
+              >
                 <HiX className="h-6 w-6 text-gray-800" />
               </button>
             </div>
 
             {/* MENU (SCROLL) */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto pb-8">
               <NestedMenu items={menuItems} closeMenu={closeMenu} />
 
               {/* CTA (NOT STICKY, PART OF CONTENT) */}
-              <div className="ml-[100px] mr-[50px] mt-10 flex w-[250px] flex-col gap-3">
+              <div className="mt-6 flex flex-col gap-3 px-5">
                 <Link
                   href={buildBeachMapUrl(locale)}
                   onClick={closeMenu}
-                  className="flex h-[41px] items-center justify-center gap-3 rounded-lg bg-[#1A3C68] text-white transition-all duration-200 hover:bg-[#162f4f] hover:shadow-[0_4px_10px_rgba(26,60,104,0.25)] active:scale-[0.98]"
+                  className="flex h-[44px] items-center justify-center gap-3 rounded-lg bg-[#1A3C68] text-white transition-all duration-200 hover:bg-[#162f4f] hover:shadow-[0_4px_10px_rgba(26,60,104,0.25)] active:scale-[0.98]"
                 >
                   <Image
 src="/images/map.png" alt="" width={26}
