@@ -11,7 +11,6 @@ const FIXED: Record<string, string[]> = {
   'src/app/[locale]/ai/page.tsx': ['Ask our AI assistant', 'Start chatting', 'Generate personalized', 'Create itinerary', 'New to Beachrex AI?'],
   'src/app/[locale]/ai/chat/page.tsx': ['View details →', 'Suggestions:'],
   'src/app/[locale]/ai/itinerary/page.tsx': ['Assumptions:', 'Failed to initiate purchase'],
-  'src/app/[locale]/beaches/[continent]/loading.tsx': ['Loading continent data'],
   'src/components/DestinationsCarousel.tsx': ['Loading carousel'],
   'src/components/AccommodationCard/AccommodationCarousel.tsx': ['Loading carousel'],
   'src/components/PropertySection.tsx': ['Loading...'],
