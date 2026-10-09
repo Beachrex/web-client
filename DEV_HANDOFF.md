@@ -18,6 +18,13 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Beach map page on phones: smooth, map closes, real filters button ✅ COMPLETE
+
+`src/components/Map/MapWithSidebar.tsx` (owner report from an iPhone):
+- **Stutter:** the side map was hidden on phones with CSS only, so phones still rendered Leaflet with ~3,000 markers. It is now mounted only on md+ screens (`matchMedia('(min-width: 768px)')`); phones mount a map only in the full-screen popup.
+- **Map could not be closed:** the X sat at `-top-4`, above the screen edge. It is now a 44 px button inside the map (top right, above the Leaflet controls). Both popups use `z-[10001]`, so they sit above the header dropdowns.
+- **Floating blue "F":** removed. The mobile row is now "Filters" (icon) and "Open Map" (icon), both localized. The hard-coded English "Hide list / Show list" toggle is gone, because hiding the list left the page empty.
+
 ## 2026-10-09 – AI chat (AI-2, web): agent answers with links ✅ COMPLETE
 
 When the backend chat runs as the tool-calling agent (`AI_CHAT_ENGINE=agent`, backend AI-2), answers come with `format: "markdown"` and links `[Beach](https://…/si/plaze/…)`. `parseAgentMarkdown()` (`src/lib/utils/ai-chat.ts`) renders them safely: links only to our own site (made relative, so they work on dev/uat/prod), `**bold**`, `- ` list lines; foreign links stay plain text; no HTML is ever injected. Plain answers (pipeline engine) keep the beach-name linking. Test: `e2e/ai-chat.unit.spec.ts`.
