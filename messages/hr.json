@@ -698,7 +698,14 @@
       "welcome": "Pozdrav! Ja sam vaš AI asistent za plaže. Kako vam mogu pomoći danas?",
       "anonymousNote": "Razgovarate anonimno. Prijavite se kako biste spremili razgovore i pristupili premium funkcijama.",
       "viewDetails": "Pogledaj detalje →",
-      "suggestions": "Prijedlozi:"
+      "suggestions": "Prijedlozi:",
+      "match": "{percent}% podudaranje",
+      "useLocation": "Koristi moju lokaciju (plaže u blizini)",
+      "locationOn": "Vaša se lokacija koristi za plaže u blizini",
+      "locationDenied": "Lokacija nije dostupna. U pregledniku dopustite pristup lokaciji ili napišite mjesto.",
+      "errorBusy": "AI asistent je trenutno zauzet. Pokušajte ponovno za minutu.",
+      "errorTooMany": "Previše poruka. Pričekajte malo i pokušajte ponovno.",
+      "errorTooLong": "Poruka je predugačka. Skratite je."
     },
     "itinerary": {
       "title": "Kreiraj plan putovanja na plažu",

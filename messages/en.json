@@ -698,7 +698,14 @@
       "welcome": "Hello! I'm your AI beach assistant. How can I help you today?",
       "anonymousNote": "You're chatting anonymously. Sign in to save your conversations and access premium features.",
       "viewDetails": "View details →",
-      "suggestions": "Suggestions:"
+      "suggestions": "Suggestions:",
+      "match": "{percent}% match",
+      "useLocation": "Use my location (beaches near me)",
+      "locationOn": "Your location is used for nearby beaches",
+      "locationDenied": "Your location is not available. Allow location access in the browser or name a place.",
+      "errorBusy": "The AI assistant is busy right now. Please try again in a minute.",
+      "errorTooMany": "Too many messages. Please wait a little and try again.",
+      "errorTooLong": "The message is too long. Please shorten it."
     },
     "itinerary": {
       "title": "Create Beach Itinerary",

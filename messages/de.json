@@ -698,7 +698,14 @@
       "welcome": "Hallo! Ich bin Ihr KI-Strandassistent. Wie kann ich Ihnen heute helfen?",
       "anonymousNote": "Sie chatten anonym. Melden Sie sich an, um Ihre Unterhaltungen zu speichern und auf Premium-Funktionen zuzugreifen.",
       "viewDetails": "Details ansehen →",
-      "suggestions": "Vorschläge:"
+      "suggestions": "Vorschläge:",
+      "match": "{percent}% Übereinstimmung",
+      "useLocation": "Meinen Standort verwenden (Strände in der Nähe)",
+      "locationOn": "Dein Standort wird für Strände in der Nähe verwendet",
+      "locationDenied": "Standort nicht verfügbar. Erlaube den Standortzugriff im Browser oder nenne einen Ort.",
+      "errorBusy": "Der KI-Assistent ist gerade ausgelastet. Bitte versuche es in einer Minute erneut.",
+      "errorTooMany": "Zu viele Nachrichten. Bitte warte kurz und versuche es erneut.",
+      "errorTooLong": "Die Nachricht ist zu lang. Bitte kürze sie."
     },
     "itinerary": {
       "title": "Strand-Reiseplan erstellen",

@@ -698,7 +698,14 @@
       "welcome": "Olá! Sou o seu assistente de praias com IA. Como posso ajudá-lo hoje?",
       "anonymousNote": "Está a conversar anonimamente. Inicie sessão para guardar as suas conversas e aceder a funcionalidades premium.",
       "viewDetails": "Ver detalhes →",
-      "suggestions": "Sugestões:"
+      "suggestions": "Sugestões:",
+      "match": "{percent}% de correspondência",
+      "useLocation": "Usar a minha localização (praias próximas)",
+      "locationOn": "A sua localização é usada para praias próximas",
+      "locationDenied": "Localização indisponível. Permita o acesso à localização no navegador ou indique um local.",
+      "errorBusy": "O assistente de IA está ocupado. Tente novamente dentro de um minuto.",
+      "errorTooMany": "Demasiadas mensagens. Aguarde um pouco e tente novamente.",
+      "errorTooLong": "A mensagem é demasiado longa. Encurte-a."
     },
     "itinerary": {
       "title": "Criar itinerário de praia",

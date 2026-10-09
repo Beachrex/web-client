@@ -698,7 +698,14 @@
       "welcome": "Përshëndetje! Jam asistenti juaj AI i plazheve. Si mund t'ju ndihmoj sot?",
       "anonymousNote": "Po bisedoni anonimisht. Hyni për të ruajtur bisedat tuaja dhe për të përdorur funksionet premium.",
       "viewDetails": "Shiko detajet →",
-      "suggestions": "Sugjerime:"
+      "suggestions": "Sugjerime:",
+      "match": "{percent}% përputhje",
+      "useLocation": "Përdor vendndodhjen time (plazhet afër)",
+      "locationOn": "Vendndodhja juaj përdoret për plazhet afër",
+      "locationDenied": "Vendndodhja nuk është e disponueshme. Lejoni qasjen në vendndodhje te shfletuesi ose shkruani një vend.",
+      "errorBusy": "Asistenti AI është i zënë tani. Provoni përsëri pas një minute.",
+      "errorTooMany": "Shumë mesazhe. Prisni pak dhe provoni përsëri.",
+      "errorTooLong": "Mesazhi është shumë i gjatë. Shkurtojeni."
     },
     "itinerary": {
       "title": "Krijo itinerar plazhesh",

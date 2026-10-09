@@ -708,7 +708,14 @@
       "welcome": "Pozdravljeni! Sem vaš AI pomočnik za plaže. Kako vam lahko pomagam?",
       "anonymousNote": "Klepetate anonimno. Prijavite se, da shranite pogovore in dostopate do naprednih funkcij.",
       "viewDetails": "Poglej podrobnosti →",
-      "suggestions": "Predlogi:"
+      "suggestions": "Predlogi:",
+      "match": "{percent}% ujemanje",
+      "useLocation": "Uporabi mojo lokacijo (plaže v bližini)",
+      "locationOn": "Vaša lokacija se uporablja za plaže v bližini",
+      "locationDenied": "Lokacija ni na voljo. V brskalniku dovolite dostop do lokacije ali napišite kraj.",
+      "errorBusy": "AI pomočnik je trenutno zaseden. Poskusite znova čez minuto.",
+      "errorTooMany": "Preveč sporočil. Počakajte malo in poskusite znova.",
+      "errorTooLong": "Sporočilo je predolgo. Skrajšajte ga."
     },
     "itinerary": {
       "title": "Ustvari načrt potovanja",
