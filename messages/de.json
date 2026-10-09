@@ -141,6 +141,13 @@
     "browseBeaches": "Alle Strände durchsuchen",
     "goHome": "Zur Startseite"
   },
+  "ErrorPage": {
+    "title": "Etwas ist schiefgelaufen.",
+    "subtitle": "Fehler",
+    "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es gleich noch einmal.",
+    "retry": "Erneut versuchen",
+    "goHome": "Zur Startseite"
+  },
   "BeachTypePage": {
     "title": "Strandtypen",
     "pageTitle": "Strandtypen-Seite",

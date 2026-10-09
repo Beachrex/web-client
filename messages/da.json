@@ -141,6 +141,13 @@
     "browseBeaches": "Gennemse alle strande",
     "goHome": "Til forsiden"
   },
+  "ErrorPage": {
+    "title": "Noget gik galt.",
+    "subtitle": "Fejl",
+    "description": "Der opstod en uventet fejl. Prøv igen om et øjeblik.",
+    "retry": "Prøv igen",
+    "goHome": "Til forsiden"
+  },
   "BeachTypePage": {
     "title": "Strandtyper",
     "pageTitle": "Strandtype-side",

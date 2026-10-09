@@ -141,6 +141,13 @@
     "browseBeaches": "Parcourir toutes les plages",
     "goHome": "Accueil"
   },
+  "ErrorPage": {
+    "title": "Une erreur s'est produite.",
+    "subtitle": "Erreur",
+    "description": "Une erreur inattendue s'est produite. Veuillez réessayer dans un instant.",
+    "retry": "Réessayer",
+    "goHome": "Accueil"
+  },
   "BeachTypePage": {
     "title": "Types de plages",
     "pageTitle": "Page des types de plages",

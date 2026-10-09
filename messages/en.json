@@ -141,6 +141,13 @@
     "browseBeaches": "Browse All Beaches",
     "goHome": "Go Home"
   },
+  "ErrorPage": {
+    "title": "Something went wrong.",
+    "subtitle": "Error",
+    "description": "An unexpected error occurred. Please try again in a moment.",
+    "retry": "Try again",
+    "goHome": "Go Home"
+  },
   "BeachTypePage": {
     "title": "Beach Types",
     "pageTitle": "Beach Types Page",

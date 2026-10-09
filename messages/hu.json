@@ -141,6 +141,13 @@
     "browseBeaches": "Összes strand böngészése",
     "goHome": "Főoldal"
   },
+  "ErrorPage": {
+    "title": "Valami hiba történt.",
+    "subtitle": "Hiba",
+    "description": "Váratlan hiba történt. Kérjük, próbáld újra egy pillanat múlva.",
+    "retry": "Újrapróbálás",
+    "goHome": "Kezdőlap"
+  },
   "BeachTypePage": {
     "title": "Strand típusok",
     "pageTitle": "Strand típusok oldal",
