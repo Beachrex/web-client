@@ -226,7 +226,7 @@
     "viewBeachMap": "Pogledaj kartu plaža"
   },
   "SearchBeach": {
-    "title": "Pregledaj sve plaže u Europi",
+    "title": "Pregledaj sve plaže u {continent}",
     "filterButton": "Filter",
     "mapButton": "Prikaži kartu",
     "displayLabel": "Prikaz plaže:",

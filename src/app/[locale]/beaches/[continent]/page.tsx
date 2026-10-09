@@ -267,6 +267,7 @@ const Page = async ({ params }: PageProps) => {
         <DynamicSearchBeaches
   translationNamespace="SearchBeach"
   titleKey="title"
+  titleParams={{ continent: continent.name ?? '' }}
   filterButtonColor="#5E1CA5"
   baseFilters={{
     continent_code: continentCode,

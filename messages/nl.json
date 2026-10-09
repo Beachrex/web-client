@@ -226,7 +226,7 @@
     "viewBeachMap": "Strandkaart bekijken"
   },
   "SearchBeach": {
-    "title": "Alle stranden in Europa doorbladeren",
+    "title": "Alle stranden in {continent} doorbladeren",
     "filterButton": "Filter",
     "mapButton": "Kaart weergeven",
     "displayLabel": "Strandweergave:",

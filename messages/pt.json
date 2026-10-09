@@ -226,7 +226,7 @@
     "viewBeachMap": "Ver mapa de praias"
   },
   "SearchBeach": {
-    "title": "Ver todas as praias na Europa",
+    "title": "Ver todas as praias em {continent}",
     "filterButton": "Filtrar",
     "mapButton": "Mostrar mapa",
     "displayLabel": "Vista da praia:",

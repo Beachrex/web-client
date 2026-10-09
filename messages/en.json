@@ -226,7 +226,7 @@
     "viewBeachMap": "View beach map"
   },
   "SearchBeach": {
-    "title": "Browse all beaches in Europe",
+    "title": "Browse all beaches in {continent}",
     "filterButton": "Filter",
     "mapButton": "Show map",
     "displayLabel": "Beach view:",

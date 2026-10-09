@@ -18,6 +18,15 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Continent page title had "Europe" built in; Slovenian labels ✅ COMPLETE
+
+Mobile report (relayed by the owner):
+- `SearchBeach.title` ("Browse all beaches in Europe") had Europe written into the text in all 19 languages, so every continent page said Europe. Now `{continent}` (same wording as each language's `countryPage.browseBeachesTitle`), passed by `beaches/[continent]/page.tsx`.
+- Slovenian: `Common.numBeaches` "plaže:" → "Plaže:"; `WorldTopBar.countriesWithBeachesLabel` "Držav z plažami" → "Države s plažami".
+- Spec: `e2e/continent-browse-title.unit.spec.ts`.
+
+---
+
 ## 2026-10-09 – Slovenian "Otoki {country}" heading ✅ COMPLETE
 
 Mobile report (relayed by the owner): `countryPage.islandsTitle` in `messages/si.json` was "Otoški {country}" (adjective); now "Otoki {country}", like "Regije {country}" and "Mesta {country}". The other 18 languages were checked and are correct. Spec: `e2e/si-island-title.unit.spec.ts`.
