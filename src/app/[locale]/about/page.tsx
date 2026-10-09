@@ -1,6 +1,7 @@
 import { notFound, permanentRedirect } from 'next/navigation';
 import { getStaticPagesForFooter } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
+import { setRequestLocale } from 'next-intl/server';
 
 /**
  * `/about` (localized: `/si/o-nas`, …) had only placeholder text. "About us" is the CMS page with
@@ -8,6 +9,7 @@ import type { AcceptLanguage } from '@/lib/api-client/types.gen';
  */
 export default async function AboutPage({ params }: { params: { locale: string } }) {
   const { locale } = params;
+  setRequestLocale(locale);
   let slug: string | undefined;
   try {
     const { data } = await getStaticPagesForFooter({
@@ -20,3 +22,6 @@ export default async function AboutPage({ params }: { params: { locale: string }
   if (!slug) notFound();
   permanentRedirect(`/${locale}/p/${slug}`);
 }
+
+// The CMS slug of the about page can change; re-check hourly.
+export const revalidate = 3600;

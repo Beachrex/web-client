@@ -9,7 +9,7 @@
  * - Enable ISR with revalidate
  */
 
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 
 import BeachCategorySearch from '@/components/Home/BeachCategorySearch';
@@ -38,6 +38,7 @@ interface PageProps {
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'SEO' });
 
   const title = t('homeTitle');
@@ -58,6 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  */
 export default async function HomePage({ params }: PageProps) {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'HomePage' });
   const tFeature = await getTranslations({ locale, namespace: 'FeatureCards' });
 
@@ -211,7 +213,7 @@ export default async function HomePage({ params }: PageProps) {
   );
 }
 
-// Render dynamically on every request so admin changes appear immediately.
-// The API (Laravel) caches the DB query in Redis and invalidates it on admin
-// save, so this still stays fast while staying fresh.
-export const dynamic = 'force-dynamic';
+// Cached HTML (ISR), rebuilt in the background at most every 5 minutes: admin changes to the
+// home content appear within 5 minutes. Rendering on every request (force-dynamic) made the
+// home page the slowest page of the site.
+export const revalidate = 300;

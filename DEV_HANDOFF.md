@@ -18,6 +18,25 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Pages are cached (ISR): served from cache instead of rendered on every visit ✅ COMPLETE
+
+Performance audit 2026-10-09 (owner: "da bi bila bliskovito hitra"): no `[locale]` page was ever cached, so every visit rendered the page on the server and called the API. Causes, all verified with `next build` + `next start` (`x-nextjs-cache` header):
+- next-intl read the locale from `headers()` because no page called `setRequestLocale` → every page dynamic.
+- The home page had `dynamic = 'force-dynamic'`.
+- Next 14 renders dynamic segments without `generateStaticParams` on every request.
+
+Changes:
+- `setRequestLocale(locale)` in the locale layout and every server page/`generateMetadata`.
+- `generateStaticParams() { return [] }` in the layout and every route with its own dynamic segment: nothing is rendered at build time (the build does not depend on the API); each page is rendered on its first visit and then served from the cache, refreshed in the background after `revalidate` (beach/place pages 1 h, home 5 min, CMS pages 1 h).
+- `useSearchParams` users inside `Suspense` (`DynamicSearchBeaches`, payment success, auth callback); without it a static page fails with 500.
+- Removed `beaches/[continent]/not-found.tsx`: it called `getTranslations('NotFoundPage')` without a locale (reads headers), which turned a missing continent into a 500 on a cached page. The locale-level 404 page is used instead.
+
+Effect: second request of every page type is `x-nextjs-cache: HIT` (home, `/beaches`, continent, country, region/island/city, beach map with filters, CMS, author, AI, payment, auth callback); the HTML language matches the URL (`/hr/plaze` → `lang="hr"`, Croatian title). Admin edits now appear after the `revalidate` time (home 5 min, other pages 1 h), not immediately. The cache is in the container and starts empty after each deploy.
+
+Test: `e2e/page-caching.unit.spec.ts` (4 tests; all fail against the old layout/home/search component).
+
+---
+
 ## 2026-10-09 – Mobile header and side menu cleanup ✅ COMPLETE
 
 Owner, 2026-10-09 (phone screenshots of dev): the mobile header still showed "Accommodations" and "Shop", and the side menu had too much padding.

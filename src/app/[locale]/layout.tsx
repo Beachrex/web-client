@@ -4,7 +4,7 @@ import { ApiClientProvider } from '@/components/ApiClientProvider';
 import DefaultLayout from '@/components/Layout';
 import { env } from '@/env';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { Open_Sans } from 'next/font/google';
 import { buildOrganizationSchema, buildWebSiteSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { AuthProvider } from '@/contexts/AuthContext';
@@ -18,6 +18,7 @@ export async function generateMetadata({
   params: { locale: string };
 }) {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 
   const isProduction = isProductionSite(env.NEXT_PUBLIC_BASE_URL);
@@ -59,6 +60,7 @@ export default async function LocaleLayout({
 }) {
   // Next.js 14: params is directly available (not a Promise)
   const { locale } = params;
+  setRequestLocale(locale);
 
   const messages = (await getMessages()) as Record<string, string>;
 
@@ -95,4 +97,12 @@ export default async function LocaleLayout({
       </body>
     </html>
   );
+}
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
 }

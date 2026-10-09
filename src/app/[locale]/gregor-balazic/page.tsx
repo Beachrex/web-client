@@ -10,7 +10,7 @@
 
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
   AUTHOR_BEACH_PHOTO,
   AUTHOR_NAME,
@@ -40,6 +40,7 @@ const WRAP = 'mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8';
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'AuthorPage' });
   return buildCompleteMetadata({
     title: t('metaTitle'),
@@ -54,6 +55,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function AuthorPage({ params }: PageProps) {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'AuthorPage' });
   // Always group thousands: Slovenian (and others) would print 2445 while the text says 2.445
   const fmt = new Intl.NumberFormat(numberLocale(locale), { useGrouping: 'always' } as unknown as Intl.NumberFormatOptions);

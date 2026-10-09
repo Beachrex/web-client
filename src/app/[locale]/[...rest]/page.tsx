@@ -2,6 +2,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { resolveLegacyUrl } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildLegacyTargetUrl, type LegacyTarget } from '@/lib/utils/legacy-redirect';
+import { setRequestLocale } from 'next-intl/server';
 
 interface PageProps {
   params: { locale: string; rest: string[] };
@@ -31,7 +32,16 @@ async function resolveOldUrl(locale: string, rest: string[]): Promise<LegacyTarg
  */
 export default async function CatchAllPage({ params }: PageProps) {
   const { locale, rest } = params;
+  setRequestLocale(locale);
   const target = buildLegacyTargetUrl(await resolveOldUrl(locale, rest), locale);
   if (target) permanentRedirect(target);
   notFound();
+}
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
 }

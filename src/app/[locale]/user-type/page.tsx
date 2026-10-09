@@ -1,8 +1,9 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { PageProps } from '@/types';
 
 export async function generateMetadata({ params }: PageProps) {
     const resolvedParams = await params;
+    setRequestLocale(resolvedParams.locale);
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'UserTypePage' });
 
     // Placeholder page, hidden for launch (backend docs/features/hidden-for-launch.md): not indexed.
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 const Page = async ({ params }: PageProps) => {
     const resolvedParams = await params;
+    setRequestLocale(resolvedParams.locale);
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'UserTypePage' });
     const pathname = '/user-type';
 

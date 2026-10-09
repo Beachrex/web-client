@@ -10,7 +10,7 @@
  */
 
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
@@ -60,6 +60,7 @@ interface PageProps {
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, country: countrySlug } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'SEO' });
 
   try {
@@ -127,6 +128,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  */
 export default async function Page({ params }: PageProps) {
   const { locale, country: countryParam } = params;
+  setRequestLocale(locale);
 
   const tCountry = await getTranslations({ locale, namespace: 'countryPage' });
   const tProperty = await getTranslations({ locale, namespace: 'PropertySection' });
@@ -432,3 +434,11 @@ const beachProperties: Property[] =
 
 // Enable ISR - Revalidate every hour (3600 seconds)
 export const revalidate = 3600;
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
+}

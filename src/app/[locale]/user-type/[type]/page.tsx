@@ -1,10 +1,11 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { PageProps } from '@/types';
 
 type UserTypePageProps = PageProps<{ type: string }>;
 
 export async function generateMetadata({ params }: UserTypePageProps) {
     const resolvedParams = await params;
+    setRequestLocale(resolvedParams.locale);
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'UserTypePage' });
 
     // Placeholder page, hidden for launch (backend docs/features/hidden-for-launch.md): not indexed.
@@ -17,6 +18,7 @@ export async function generateMetadata({ params }: UserTypePageProps) {
 
 const Page = async ({ params }: UserTypePageProps) => {
     const resolvedParams = await params;
+    setRequestLocale(resolvedParams.locale);
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'UserTypePage' });
     const pathname = `/user-type/${resolvedParams.type}`;
 
@@ -35,3 +37,11 @@ const Page = async ({ params }: UserTypePageProps) => {
 };
 
 export default Page;
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
+}

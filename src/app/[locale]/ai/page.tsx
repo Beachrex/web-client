@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { MessageSquare, MapPin } from 'lucide-react';
 
@@ -16,6 +16,7 @@ export async function generateMetadata({
   params: { locale: string };
 }) {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'AI.landing' });
 
   return {
@@ -30,6 +31,7 @@ export default async function AILandingPage({
   params: { locale: string };
 }) {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'AI.landing' });
 
   return (

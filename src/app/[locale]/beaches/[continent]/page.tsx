@@ -25,7 +25,7 @@ import { buildBreadcrumbSchema, buildContinentSchema, renderJsonLd } from '@/lib
 import { buildCanonicalUrl, buildCompleteMetadata, buildSelfAlternate } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 
 
@@ -65,6 +65,7 @@ const validateAndGetContinentCode = async (
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
+  setRequestLocale(resolvedParams.locale);
   const { locale, continent: continentSlug } = resolvedParams;
   const t = await getTranslations({ locale, namespace: 'SEO' });
 
@@ -139,6 +140,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 const Page = async ({ params }: PageProps) => {
   const resolvedParams = await params;
+  setRequestLocale(resolvedParams.locale);
   const beachesWord = getBeachesWord(resolvedParams.locale);
   const pathname = `/${beachesWord}/${resolvedParams.continent}`;
 
@@ -288,3 +290,11 @@ export default Page;
  * Revalidate continent pages every hour (3600 seconds)
  */
 export const revalidate = 3600;
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
+}
