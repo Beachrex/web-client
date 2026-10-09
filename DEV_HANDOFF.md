@@ -18,6 +18,17 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Unknown beach URLs answer 404 (not 200) ✅ COMPLETE
+
+- **Problem:** `/{locale}/beaches/...` with an unknown continent, country or place showed the 404 page with HTTP status 200 (found 2026-10-08; bad for Google). An unknown country even crashed with a 500 (`countryDetails!.code!`).
+- **Fix:**
+  - removed `src/app/[locale]/beaches/[continent]/loading.tsx`. Its Suspense boundary made Next stream status 200 before `notFound()` ran; the pages are ISR-cached, so the skeleton was rarely seen.
+  - the country page calls `notFound()` when the API answers 404 for the country. When the API cannot be reached it throws instead, so ISR keeps the last good page and never caches a 404 for a real country.
+- **Checked with `next dev` against a mock API:**
+  - `/en/beaches/nowhere`, `/en/beaches/europe/nocountry` and `/en/beaches/europe/croatia/x/y` → 404 (all 200 before);
+  - a known country → 200.
+- **Test:** `e2e/not-found-status.unit.spec.ts` checks that there is no loading UI above the slug pages, and the country 404 and API-down handling.
+
 ## 2026-10-09 – Buying a plan: consent to the terms of sale and the withdrawal waiver (AI-4, part 1) ✅ COMPLETE
 
 **Needs backend #81** (checkout requires `accept_terms` and `waive_withdrawal`; terms §5 rewritten as terms of sale).
