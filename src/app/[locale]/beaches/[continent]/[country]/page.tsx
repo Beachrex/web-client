@@ -9,6 +9,7 @@
  * - Enable ISR with revalidate
  */
 
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
@@ -142,6 +143,7 @@ export default async function Page({ params }: PageProps) {
   let islands: Island[] = [];
   let mostVisited: BeachSchema[] = [];
   let firstBeachPage: BeachListResponseSchema | null = null;
+  let countryStatus: number | undefined;
 
   try {
     // Fetch country details
@@ -150,6 +152,7 @@ export default async function Page({ params }: PageProps) {
       headers: { 'Accept-Language': locale as AcceptLanguage },
     });
     countryDetails = countryResponse.data?.data ?? null;
+    countryStatus = countryResponse.response?.status;
 
     const countryCode = countryDetails?.code;
 
@@ -185,6 +188,13 @@ export default async function Page({ params }: PageProps) {
   } catch (error) {
     console.error('Error fetching country page data:', error);
     // Continue with empty data - components will handle gracefully
+  }
+
+  // Unknown country: a real 404 (before, `countryDetails.code` crashed with a 500). An unreachable API stays an
+  // error, so ISR keeps serving the last good page instead of caching a 404 for a real country.
+  if (!countryDetails?.code) {
+    if (countryStatus === 404) notFound();
+    throw new Error(`Country page data unavailable (${countryParam}, API status ${countryStatus ?? 'none'})`);
   }
 
   const countryName =
@@ -423,11 +433,11 @@ const beachProperties: Property[] =
   filterButtonColor="#DD0000"
   hiddenFilterKeys={['country']}
   baseFilters={{
-    country: countryDetails!.code!,
+    country: countryDetails.code,
   }}
   initialPage={firstBeachPage}
   optionScopeFilters={{
-    country: countryDetails!.code!, // filter-options endpoint
+    country: countryDetails.code, // filter-options endpoint
   }}
 
 
