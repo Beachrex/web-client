@@ -4,6 +4,12 @@ export type ClientOptions = {
   baseUrl: "https://dev-api.beachrex.com" | (string & {});
 };
 
+export type AppPlatformConfig = {
+  min_supported_version?: string;
+  latest_version?: string;
+  store_url?: string | null;
+};
+
 /**
  * AI Beach Recommendation
  *
@@ -133,6 +139,10 @@ export type AiChatResponse = {
    * Session identifier
    */
   session_id: string;
+  /**
+   * markdown when the tool-calling agent answered (AI_CHAT_ENGINE=agent): beach links as [name](url) to the website; absent/text otherwise
+   */
+  format?: "text" | "markdown";
   /**
    * AI response message
    */
@@ -364,6 +374,30 @@ export type AiItineraryItem = {
      * Distance from user location (usually null for itineraries)
      */
     distance_km?: number | null;
+    /**
+     * Place slug in the page language, for the beach page link
+     */
+    continent_slug?: string | null;
+    /**
+     * Place slug in the page language, for the beach page link
+     */
+    country_slug?: string | null;
+    /**
+     * Place slug in the page language, for the beach page link
+     */
+    region_slug?: string | null;
+    /**
+     * Place slug in the page language, for the beach page link
+     */
+    island_slug?: string | null;
+    /**
+     * Place slug in the page language, for the beach page link
+     */
+    city_slug?: string | null;
+    /**
+     * Main photo path (CDN relative)
+     */
+    main_image?: string | null;
   } | null;
   /**
    * Notes for this item (1-3 sentences)
@@ -553,6 +587,14 @@ export type AiItineraryResponse = {
      * Was response cached?
      */
     cached: boolean;
+    /**
+     * llm = AI-written texts; fallback = the AI failed and the plan has short factual texts
+     */
+    narrative?: "llm" | "fallback";
+    /**
+     * Paid multi-day plans only: whether a credit was used (false for a fallback plan; the credit was given back)
+     */
+    credit_used?: boolean;
   };
 };
 
@@ -590,6 +632,28 @@ export type AiResponseMetadata = {
    * Chat only: what the API could not apply (unknown place, relaxed filters).
    */
   assumptions?: Array<string>;
+};
+
+/**
+ * A background itinerary (AI-3)
+ */
+export type ItineraryPlanSummary = {
+  id?: string;
+  status?: "queued" | "running" | "done" | "failed";
+  country_code?: string;
+  region_slug?: string | null;
+  duration_days?: number;
+  title?: string | null;
+  /**
+   * Why a failed plan failed (its credit was given back)
+   */
+  error?: "not_enough_beaches" | "error" | "timeout";
+  /**
+   * false when the credit was given back
+   */
+  credit_used?: boolean;
+  created_at?: string;
+  finished_at?: string | null;
 };
 
 /**
@@ -2935,6 +2999,14 @@ export type CheckoutRequest = {
    * Type of product to purchase
    */
   product_type: "itinerary_3day" | "itinerary_7day" | "itinerary_14day";
+  /**
+   * The buyer accepts the terms of sale (must be true)
+   */
+  accept_terms: boolean;
+  /**
+   * The buyer asks for immediate delivery and acknowledges losing the 14-day withdrawal right once a plan is created (must be true)
+   */
+  waive_withdrawal: boolean;
 };
 
 export type CheckoutResponse = {
@@ -3917,6 +3989,106 @@ export type GenerateItineraryResponses = {
 export type GenerateItineraryResponse =
   GenerateItineraryResponses[keyof GenerateItineraryResponses];
 
+export type C6Daa719A01185279387Ae7245D8F72Data = {
+  body: AiItineraryRequest;
+  headers?: {
+    /**
+     * Language of the plan
+     */
+    "Accept-Language"?: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/ai/itinerary-plans";
+};
+
+export type C6Daa719A01185279387Ae7245D8F72Errors = {
+  /**
+   * Not signed in
+   */
+  401: unknown;
+  /**
+   * No credit for this trip length
+   */
+  402: unknown;
+  /**
+   * Validation error
+   */
+  422: unknown;
+};
+
+export type C6Daa719A01185279387Ae7245D8F72Responses = {
+  /**
+   * Queued
+   */
+  202: {
+    data?: ItineraryPlanSummary;
+  };
+};
+
+export type C6Daa719A01185279387Ae7245D8F72Response =
+  C6Daa719A01185279387Ae7245D8F72Responses[keyof C6Daa719A01185279387Ae7245D8F72Responses];
+
+export type E10Da97131375Fbf16Ec38396Ecf9Bf4Data = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/v1/me/itinerary-plans";
+};
+
+export type E10Da97131375Fbf16Ec38396Ecf9Bf4Errors = {
+  /**
+   * Not signed in
+   */
+  401: unknown;
+};
+
+export type E10Da97131375Fbf16Ec38396Ecf9Bf4Responses = {
+  /**
+   * Plans
+   */
+  200: {
+    data?: Array<ItineraryPlanSummary>;
+  };
+};
+
+export type E10Da97131375Fbf16Ec38396Ecf9Bf4Response =
+  E10Da97131375Fbf16Ec38396Ecf9Bf4Responses[keyof E10Da97131375Fbf16Ec38396Ecf9Bf4Responses];
+
+export type Fc737A971C05555A5Aa9478Cd76E77Data = {
+  body?: never;
+  path: {
+    id: string;
+  };
+  query?: never;
+  url: "/api/v1/me/itinerary-plans/{id}";
+};
+
+export type Fc737A971C05555A5Aa9478Cd76E77Errors = {
+  /**
+   * Not signed in
+   */
+  401: unknown;
+  /**
+   * Not found or not yours
+   */
+  404: unknown;
+};
+
+export type Fc737A971C05555A5Aa9478Cd76E77Responses = {
+  /**
+   * Plan
+   */
+  200: {
+    data?: ItineraryPlanSummary & {
+      itinerary?: AiItineraryResponse | null;
+    };
+  };
+};
+
+export type Fc737A971C05555A5Aa9478Cd76E77Response =
+  Fc737A971C05555A5Aa9478Cd76E77Responses[keyof Fc737A971C05555A5Aa9478Cd76E77Responses];
+
 export type GetAccessibilitiesData = {
   body?: never;
   headers?: {
@@ -4186,6 +4358,35 @@ export type GetAccommodationTypeByIdResponses = {
 
 export type GetAccommodationTypeByIdResponse =
   GetAccommodationTypeByIdResponses[keyof GetAccommodationTypeByIdResponses];
+
+export type GetAppConfigData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/v1/app-config";
+};
+
+export type GetAppConfigResponses = {
+  /**
+   * App configuration
+   */
+  200: {
+    data?: {
+      ios?: AppPlatformConfig;
+      android?: AppPlatformConfig;
+      features?: {
+        ai_chat?: boolean;
+        itinerary?: boolean;
+        favorites?: boolean;
+        native_sign_in?: boolean;
+      };
+      api_version?: string;
+    };
+  };
+};
+
+export type GetAppConfigResponse =
+  GetAppConfigResponses[keyof GetAppConfigResponses];
 
 export type GetAreaDescriptionsData = {
   body?: never;
@@ -4553,6 +4754,47 @@ export type LogoutResponses = {
 };
 
 export type LogoutResponse2 = LogoutResponses[keyof LogoutResponses];
+
+export type DeleteMyAccountData = {
+  body: {
+    /**
+     * Current password (accounts created with e-mail and password)
+     */
+    password?: string;
+    /**
+     * Accounts linked to Google only (they may have no password of their own)
+     */
+    confirm?: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/me";
+};
+
+export type DeleteMyAccountErrors = {
+  /**
+   * Not signed in
+   */
+  401: unknown;
+  /**
+   * Admin accounts cannot be deleted through the API
+   */
+  403: unknown;
+  /**
+   * Wrong password or missing confirmation
+   */
+  422: unknown;
+};
+
+export type DeleteMyAccountResponses = {
+  /**
+   * Deleted
+   */
+  204: void;
+};
+
+export type DeleteMyAccountResponse =
+  DeleteMyAccountResponses[keyof DeleteMyAccountResponses];
 
 export type GetMeData = {
   body?: never;
@@ -6521,6 +6763,122 @@ export type GetCulinaryOfferByIdResponses = {
 
 export type GetCulinaryOfferByIdResponse =
   GetCulinaryOfferByIdResponses[keyof GetCulinaryOfferByIdResponses];
+
+export type GetMyFavoritesData = {
+  body?: never;
+  headers?: {
+    "Accept-Language"?: string;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/me/favorites";
+};
+
+export type GetMyFavoritesErrors = {
+  /**
+   * Not signed in
+   */
+  401: unknown;
+};
+
+export type GetMyFavoritesResponses = {
+  /**
+   * Saved beaches
+   */
+  200: {
+    data?: Array<BeachSchema>;
+    meta?: {
+      total?: number;
+      limit?: number;
+    };
+  };
+};
+
+export type GetMyFavoritesResponse =
+  GetMyFavoritesResponses[keyof GetMyFavoritesResponses];
+
+export type AddFavoriteData = {
+  body: {
+    beach_id: number;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/me/favorites";
+};
+
+export type AddFavoriteErrors = {
+  /**
+   * Not signed in
+   */
+  401: unknown;
+  /**
+   * Unknown or unpublished beach, or the list is full (error: favorites_limit)
+   */
+  422: unknown;
+};
+
+export type AddFavoriteResponses = {
+  /**
+   * Already saved
+   */
+  200: unknown;
+  /**
+   * Saved
+   */
+  201: unknown;
+};
+
+export type GetMyFavoriteIdsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/v1/me/favorites/ids";
+};
+
+export type GetMyFavoriteIdsErrors = {
+  /**
+   * Not signed in
+   */
+  401: unknown;
+};
+
+export type GetMyFavoriteIdsResponses = {
+  /**
+   * Beach ids, newest first
+   */
+  200: {
+    data?: Array<number>;
+  };
+};
+
+export type GetMyFavoriteIdsResponse =
+  GetMyFavoriteIdsResponses[keyof GetMyFavoriteIdsResponses];
+
+export type RemoveFavoriteData = {
+  body?: never;
+  path: {
+    beachId: number;
+  };
+  query?: never;
+  url: "/api/v1/me/favorites/{beachId}";
+};
+
+export type RemoveFavoriteErrors = {
+  /**
+   * Not signed in
+   */
+  401: unknown;
+};
+
+export type RemoveFavoriteResponses = {
+  /**
+   * Removed (or was not saved)
+   */
+  204: void;
+};
+
+export type RemoveFavoriteResponse =
+  RemoveFavoriteResponses[keyof RemoveFavoriteResponses];
 
 export type GetBeachFiltersData = {
   body?: never;
@@ -10699,6 +11057,31 @@ export type GetWaterbodyByIdResponses = {
 export type GetWaterbodyByIdResponse =
   GetWaterbodyByIdResponses[keyof GetWaterbodyByIdResponses];
 
+export type Bdaa500E411Fd41304F9C5C828905fData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/v1/payments/products";
+};
+
+export type Bdaa500E411Fd41304F9C5C828905fResponses = {
+  /**
+   * Packages, shortest first
+   */
+  200: {
+    data?: Array<{
+      product_type?: string;
+      days?: number;
+      amount?: number;
+      currency?: string;
+      credits?: number;
+    }>;
+  };
+};
+
+export type Bdaa500E411Fd41304F9C5C828905fResponse =
+  Bdaa500E411Fd41304F9C5C828905fResponses[keyof Bdaa500E411Fd41304F9C5C828905fResponses];
+
 export type A957Abdc0A1F026Bb8B6F4D5Ec975B8eData = {
   body: CheckoutRequest;
   path?: never;
@@ -10715,6 +11098,10 @@ export type A957Abdc0A1F026Bb8B6F4D5Ec975B8eErrors = {
    * Unauthenticated
    */
   401: PaymentErrorResponse;
+  /**
+   * consent_required: accept_terms and waive_withdrawal must be true
+   */
+  422: PaymentErrorResponse;
   /**
    * Payment gateway error
    */

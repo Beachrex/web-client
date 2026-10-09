@@ -18,6 +18,19 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-09 – Favorite beaches on the web (H6 shown) ✅ COMPLETE
+
+Owner decision 2026-10-09 ("ja, potrjujem"): saved beaches use the backend favorites API (backend #85, the same one the mobile app uses).
+- **Heart on every beach card** (`PropertyCard`, via `src/components/Favorites/FavoriteButton.tsx`) and **"Save" in the beach page banner** (`TopBarBeachRight`). Filled red heart = saved. The heart changes at once and rolls back if the API refuses; a full list (422 `favorites_limit`) or another error shows a short message under the heart.
+- **Signed-out visitors** get a sign-in dialog (`SignInOptions`: Google or e-mail). After an e-mail sign-in in the dialog the beach is saved, so the click is not lost (Google sign-in leaves the page, so the visitor taps the heart again).
+- **"My favorite beaches" page** `/{locale}/favorites` (never indexed), linked from the top bar heart (mobile and desktop). Removing a heart there hides the card at once.
+- `src/hooks/useFavorites.ts`: one cached id list (`GET /me/favorites/ids`) drives every heart; the page reads `GET /me/favorites`. Cache keys include the token, so another account never sees cached ids.
+- `FEATURES.favorites` is now `true`; search cards (`DynamicSearchBeaches`) now carry the beach id.
+- API client regenerated from the backend OpenAPI (favorites, `app-config`, `DELETE /me`).
+- Texts: new `Favorites` namespace in all 19 languages. Spec: `e2e/favorites.unit.spec.ts`.
+
+---
+
 ## 2026-10-09 – Image alt texts (TASK-004 A6) ✅ COMPLETE
 
 About 90 hard-coded English alt texts ("Accommodation 1", "image 0", "Map icon", "play beach", …) are gone:

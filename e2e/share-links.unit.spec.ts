@@ -20,7 +20,7 @@ test('each network gets its own share URL with the page encoded', () => {
   expect(links.x).not.toContain('& okolica');
 });
 
-test('banner shows only share: no hardcoded rating, no save button', () => {
+test('banner: no hardcoded rating; save is the real favorites button (FavoriteButton), share opens the menu', () => {
   const src = readFileSync(join(process.cwd(), 'src/components/Beach/BeachBanner/TopBarBeachRight.tsx'), 'utf8');
   expect(src).not.toContain('7.2');
   expect(src).not.toMatch(/t\('save'\)|t\('reviews'\)/);

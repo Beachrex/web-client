@@ -949,5 +949,19 @@
     "applyCount": "Apply filters ({count})",
     "showLess": "Show less",
     "showMore": "Show {count} more…"
+  },
+  "Favorites": {
+    "title": "My favorite beaches",
+    "add": "Save to favorites",
+    "remove": "Remove from favorites",
+    "save": "Save",
+    "saved": "Saved",
+    "signInTitle": "Sign in to save beaches",
+    "signInText": "Your favorite beaches are saved to your account, so you can find them on any device.",
+    "empty": "You have not saved any beaches yet. Tap the heart on a beach to save it.",
+    "browse": "Browse beaches",
+    "limit": "Your favorites list is full. Remove a beach to save another one.",
+    "error": "The beach could not be saved. Please try again.",
+    "loadError": "Your favorite beaches could not be loaded. Please try again."
   }
 }

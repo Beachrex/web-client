@@ -949,5 +949,19 @@
     "applyCount": "Szűrők alkalmazása ({count})",
     "showLess": "Kevesebb mutatása",
     "showMore": "Még {count} mutatása…"
+  },
+  "Favorites": {
+    "title": "Kedvenc strandjaim",
+    "add": "Mentés a kedvencek közé",
+    "remove": "Eltávolítás a kedvencek közül",
+    "save": "Mentés",
+    "saved": "Mentve",
+    "signInTitle": "Jelentkezzen be a strandok mentéséhez",
+    "signInText": "Kedvenc strandjait a fiókjába mentjük, így bármely eszközön megtalálja őket.",
+    "empty": "Még nem mentett strandot. Egy strand mentéséhez koppintson a szívre.",
+    "browse": "Strandok böngészése",
+    "limit": "A kedvencek listája megtelt. Távolítson el egy strandot, hogy újat menthessen.",
+    "error": "A strandot nem sikerült menteni. Kérjük, próbálja újra.",
+    "loadError": "A kedvenc strandokat nem sikerült betölteni. Kérjük, próbálja újra."
   }
 }

@@ -62,6 +62,7 @@ function useBeachCards(beaches: BeachSchema[]): PropertyCardProps[] {
     const sphere = b.media?.spheres_360?.[0] ?? null;
 
     return {
+      id: String(b.id),
       beachUrl: buildBeachUrlFromSchema(b, locale) ?? undefined,
       image: mainImage,
       galleryImages: buildGallery(b),

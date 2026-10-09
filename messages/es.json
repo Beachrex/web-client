@@ -949,5 +949,19 @@
     "applyCount": "Aplicar filtros ({count})",
     "showLess": "Mostrar menos",
     "showMore": "Mostrar {count} más…"
+  },
+  "Favorites": {
+    "title": "Mis playas favoritas",
+    "add": "Guardar en favoritos",
+    "remove": "Quitar de favoritos",
+    "save": "Guardar",
+    "saved": "Guardada",
+    "signInTitle": "Inicia sesión para guardar playas",
+    "signInText": "Tus playas favoritas se guardan en tu cuenta, así que las encontrarás en cualquier dispositivo.",
+    "empty": "Aún no has guardado ninguna playa. Toca el corazón de una playa para guardarla.",
+    "browse": "Ver playas",
+    "limit": "Tu lista de favoritos está llena. Quita una playa para guardar otra.",
+    "error": "No se ha podido guardar la playa. Inténtalo de nuevo.",
+    "loadError": "No se han podido cargar tus playas favoritas. Inténtalo de nuevo."
   }
 }

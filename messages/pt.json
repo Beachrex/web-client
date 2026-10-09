@@ -949,5 +949,19 @@
     "applyCount": "Aplicar filtros ({count})",
     "showLess": "Mostrar menos",
     "showMore": "Mostrar mais {count}…"
+  },
+  "Favorites": {
+    "title": "As minhas praias favoritas",
+    "add": "Guardar nos favoritos",
+    "remove": "Remover dos favoritos",
+    "save": "Guardar",
+    "saved": "Guardada",
+    "signInTitle": "Inicie sessão para guardar praias",
+    "signInText": "As suas praias favoritas ficam guardadas na sua conta, para as encontrar em qualquer dispositivo.",
+    "empty": "Ainda não guardou nenhuma praia. Toque no coração de uma praia para a guardar.",
+    "browse": "Ver praias",
+    "limit": "A sua lista de favoritos está cheia. Remova uma praia para guardar outra.",
+    "error": "Não foi possível guardar a praia. Tente novamente.",
+    "loadError": "Não foi possível carregar as suas praias favoritas. Tente novamente."
   }
 }

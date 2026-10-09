@@ -949,5 +949,19 @@
     "applyCount": "Zastosuj filtry ({count})",
     "showLess": "Pokaż mniej",
     "showMore": "Pokaż jeszcze {count}…"
+  },
+  "Favorites": {
+    "title": "Moje ulubione plaże",
+    "add": "Zapisz w ulubionych",
+    "remove": "Usuń z ulubionych",
+    "save": "Zapisz",
+    "saved": "Zapisano",
+    "signInTitle": "Zaloguj się, aby zapisywać plaże",
+    "signInText": "Ulubione plaże są zapisywane na Twoim koncie, więc znajdziesz je na każdym urządzeniu.",
+    "empty": "Nie masz jeszcze zapisanych plaż. Dotknij serca przy plaży, aby ją zapisać.",
+    "browse": "Przeglądaj plaże",
+    "limit": "Lista ulubionych jest pełna. Usuń plażę, aby zapisać inną.",
+    "error": "Nie udało się zapisać plaży. Spróbuj ponownie.",
+    "loadError": "Nie udało się wczytać ulubionych plaż. Spróbuj ponownie."
   }
 }

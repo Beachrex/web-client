@@ -10,8 +10,8 @@ export const FEATURES = {
   accommodation: false,
   /** GetYourGuide activities section on the beach page. */
   getYourGuide: false,
-  /** Favorites (top bar heart button). */
-  favorites: false,
+  /** Favorites: top bar link, hearts on beach cards and the beach page (shown, owner 2026-10-09). */
+  favorites: true,
   /** My account (top bar user button). */
   account: false,
   /** Shop (header search bar icon). */

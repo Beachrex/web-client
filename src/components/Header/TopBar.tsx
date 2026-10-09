@@ -4,7 +4,7 @@ import { Heart, UserCircle, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import { Dropdown } from 'flowbite-react';
 import { locales, languageNames } from '@/app/config/locales';
-import { usePathname } from '@/i18n/routing';
+import { Link, usePathname } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
@@ -103,9 +103,9 @@ const TopBar = () => {
           {/* Right: Icons Only (favorites and account are hidden for launch) */}
           <div className="flex items-center space-x-2">
             {FEATURES.favorites && (
-              <button className="flex items-center">
+              <Link href="/favorites" className="flex items-center" aria-label={t('favorite_beaches')}>
                 <Heart className="h-[18px] w-[18px]" />
-              </button>
+              </Link>
             )}
             {FEATURES.account && (
               <button className="flex items-center">
@@ -160,7 +160,12 @@ const TopBar = () => {
           {/* Right Section */}
           <div className="flex items-center space-x-4">
             {/* Favorites and account: hidden for launch */}
-            {FEATURES.favorites && <IconButton icon={Heart} label={t('favorite_beaches')} />}
+            {FEATURES.favorites && (
+              <Link href="/favorites" className="flex items-center space-x-1">
+                <Heart className="h-[20px] w-[20px]" />
+                <span className="text-[10px] font-semibold">{t('favorite_beaches')}</span>
+              </Link>
+            )}
             {FEATURES.account && <IconButton icon={UserCircle} label={t('my_account')} />}
           </div>
         </div>

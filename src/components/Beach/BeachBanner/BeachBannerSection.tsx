@@ -138,7 +138,7 @@ export default function BeachBannerSection({
         </div>
 
         {/* Right: review / save / share */}
-        <TopBarBeachRight />
+        <TopBarBeachRight beachId={beachId} />
       </div>
 
       {/* === Title + widgets anchored near bottom === */}
