@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Gem som PDF",
-      "mapTitle": "Kort over rejsen"
+      "mapTitle": "Kort over rejsen",
+      "consent": {
+        "terms": "Jeg accepterer <link>salgsbetingelserne</link>.",
+        "withdrawal": "Jeg ønsker, at planen er tilgængelig med det samme. Jeg forstår, at jeg mister min 14-dages fortrydelsesret, når jeg laver planen; indtil da kan jeg stadig fortryde."
+      }
     },
     "entitlements": {
       "title": "Min kredit",

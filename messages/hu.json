@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Mentés PDF-ként",
-      "mapTitle": "Az út térképe"
+      "mapTitle": "Az út térképe",
+      "consent": {
+        "terms": "Elfogadom az <link>értékesítési feltételeket</link>.",
+        "withdrawal": "Szeretném, ha a terv azonnal elérhető lenne. Tudomásul veszem, hogy a terv elkészítésével elveszítem a 14 napos elállási jogomat; addig még elállhatok."
+      }
     },
     "entitlements": {
       "title": "Kreditjeim",

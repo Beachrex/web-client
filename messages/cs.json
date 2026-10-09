@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Uložit jako PDF",
-      "mapTitle": "Mapa cesty"
+      "mapTitle": "Mapa cesty",
+      "consent": {
+        "terms": "Souhlasím s <link>obchodními podmínkami</link>.",
+        "withdrawal": "Chci, aby byl plán k dispozici ihned. Beru na vědomí, že vytvořením plánu ztrácím 14denní právo na odstoupení; do té doby mohu ještě odstoupit."
+      }
     },
     "entitlements": {
       "title": "Moje kredity",

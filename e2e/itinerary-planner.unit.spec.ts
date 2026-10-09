@@ -159,3 +159,17 @@ test('a printed plan (Save as PDF) leaves out the site header, footer and page c
   expect(layout).toMatch(/print:hidden[\s\S]*<Footer\/>/);
   expect(readFileSync(join(root, 'src/components/Itinerary/ItineraryPlanView.tsx'), 'utf8')).toContain('window.print()');
 });
+
+test('buying needs both consents (terms of sale, withdrawal waiver), sent to the checkout API', () => {
+  const page = readFileSync(join(root, 'src/app/[locale]/ai/itinerary/page.tsx'), 'utf8');
+  expect(page).toContain('disabled={!form.countryCode || !product || !acceptTerms || !waiveWithdrawal}');
+  expect(page).toMatch(/accept_terms: acceptTerms,\s*waive_withdrawal: waiveWithdrawal/);
+  expect(page).toContain("p.code === 'terms-of-use'");
+  for (const f of readdirSync(join(root, 'messages')).filter((x) => x.endsWith('.json'))) {
+    const consent = (JSON.parse(readFileSync(join(root, 'messages', f), 'utf8')) as {
+      AI: { itinerary: { consent: { terms: string; withdrawal: string } } };
+    }).AI.itinerary.consent;
+    expect(consent.terms, f).toMatch(/<link>.+<\/link>/);
+    expect(consent.withdrawal, f).toContain('14');
+  }
+});

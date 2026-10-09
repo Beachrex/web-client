@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Enregistrer en PDF",
-      "mapTitle": "Carte du voyage"
+      "mapTitle": "Carte du voyage",
+      "consent": {
+        "terms": "J'accepte les <link>conditions de vente</link>.",
+        "withdrawal": "Je souhaite que le plan soit disponible immédiatement. Je comprends que je perds mon droit de rétractation de 14 jours dès que je crée le plan ; d'ici là, je peux encore me rétracter."
+      }
     },
     "entitlements": {
       "title": "Mes crédits",

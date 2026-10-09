@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Ruaj si PDF",
-      "mapTitle": "Harta e udhëtimit"
+      "mapTitle": "Harta e udhëtimit",
+      "consent": {
+        "terms": "Pranoj <link>kushtet e shitjes</link>.",
+        "withdrawal": "Dua që plani të jetë i disponueshëm menjëherë. E kuptoj se e humb të drejtën e tërheqjes brenda 14 ditëve kur krijoj planin; deri atëherë mund të tërhiqem ende."
+      }
     },
     "entitlements": {
       "title": "Kreditë e mia",

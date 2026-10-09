@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
 import { Alert, Button, Card, Label, Select } from 'flowbite-react';
 import { Check, MapPin } from 'lucide-react';
@@ -30,6 +31,8 @@ import {
   type PlanSummary,
 } from '@/lib/utils/itinerary';
 import { env } from '@/env';
+import { getStaticPagesForFooter } from '@/lib/api-client/sdk.gen';
+import type { AcceptLanguage, StaticPageFooter } from '@/lib/api-client/types.gen';
 
 /**
  * AI itinerary planner (AI-3). The visitor picks a country (and optionally a region) from the API, a 3/7/14-day
@@ -55,6 +58,25 @@ export default function AIItineraryPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ItineraryErrorKey | 'purchaseError' | null>(null);
   const router = useRouter();
+  // AI-4: consent before paying (terms of sale; immediate delivery and the withdrawal waiver).
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [waiveWithdrawal, setWaiveWithdrawal] = useState(false);
+  // Same query as the footer, so the localized terms slug costs no extra request.
+  const { data: footerPages } = useQuery<StaticPageFooter[]>({
+    queryKey: ['static-pages', 'footer', locale],
+    queryFn: async () => {
+      try {
+        const { data } = await getStaticPagesForFooter({ headers: { 'Accept-Language': locale as AcceptLanguage } });
+        return data?.data ?? [];
+      } catch {
+        return [];
+      }
+    },
+    staleTime: 60 * 60 * 1000,
+    gcTime: 2 * 60 * 60 * 1000,
+    retry: 1,
+  });
+  const termsSlug = footerPages?.find((p) => p.code === 'terms-of-use')?.slug ?? 'terms-of-use';
 
   const api = env.NEXT_PUBLIC_API_ENDPOINT;
   const headers = useCallback(
@@ -158,7 +180,11 @@ export default function AIItineraryPage() {
       const r = await fetch(`${api}/api/v1/payments/stripe/checkout`, {
         method: 'POST',
         headers: headers(true),
-        body: JSON.stringify({ product_type: productTypeFor(form.days) }),
+        body: JSON.stringify({
+          product_type: productTypeFor(form.days),
+          accept_terms: acceptTerms,
+          waive_withdrawal: waiveWithdrawal,
+        }),
       });
       if (!r.ok) throw new Error(String(r.status));
       const d = (await r.json()) as { checkout_url: string };
@@ -384,9 +410,37 @@ onClick={() => void handleGenerate()} disabled={!form.countryCode}
                 </div>
               ) : (
                 <div className="text-center">
+                  <div className="mb-4 space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-3 text-left text-sm text-gray-700">
+                    <label className="flex items-start gap-2">
+                      <input
+                        type="checkbox"
+                        className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border-gray-300"
+                        checked={acceptTerms}
+                        onChange={(e) => setAcceptTerms(e.target.checked)}
+                      />
+                      <span>
+                        {t.rich('consent.terms', {
+                          link: (chunks) => (
+                            <Link href={`/p/${termsSlug}`} target="_blank" className="font-medium text-blue-700 underline">
+                              {chunks}
+                            </Link>
+                          ),
+                        })}
+                      </span>
+                    </label>
+                    <label className="flex items-start gap-2">
+                      <input
+                        type="checkbox"
+                        className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border-gray-300"
+                        checked={waiveWithdrawal}
+                        onChange={(e) => setWaiveWithdrawal(e.target.checked)}
+                      />
+                      <span>{t('consent.withdrawal')}</span>
+                    </label>
+                  </div>
                   <Button
 color="blue" size="lg" className="w-full"
-onClick={() => void handleBuy()} disabled={!form.countryCode || !product}
+onClick={() => void handleBuy()} disabled={!form.countryCode || !product || !acceptTerms || !waiveWithdrawal}
                   >
                     {product ? t('buy', { days: form.days, price: formatPrice(product, locale) }) : t('generate')}
                   </Button>

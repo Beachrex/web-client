@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Als PDF speichern",
-      "mapTitle": "Karte der Reise"
+      "mapTitle": "Karte der Reise",
+      "consent": {
+        "terms": "Ich akzeptiere die <link>Verkaufsbedingungen</link>.",
+        "withdrawal": "Ich möchte, dass der Plan sofort verfügbar ist. Mir ist bekannt, dass ich mein 14-tägiges Widerrufsrecht verliere, sobald ich den Plan erstelle; bis dahin kann ich noch widerrufen."
+      }
     },
     "entitlements": {
       "title": "Meine Credits",

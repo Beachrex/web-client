@@ -793,7 +793,11 @@
         }
       },
       "savePdf": "Salva come PDF",
-      "mapTitle": "Mappa del viaggio"
+      "mapTitle": "Mappa del viaggio",
+      "consent": {
+        "terms": "Accetto le <link>condizioni di vendita</link>.",
+        "withdrawal": "Voglio che il piano sia disponibile subito. Sono consapevole di perdere il diritto di recesso di 14 giorni quando creo il piano; fino ad allora posso ancora recedere."
+      }
     },
     "entitlements": {
       "title": "I miei crediti",
