@@ -141,6 +141,13 @@
     "browseBeaches": "Procházet všechny pláže",
     "goHome": "Domů"
   },
+  "ErrorPage": {
+    "title": "Něco se pokazilo.",
+    "subtitle": "Chyba",
+    "description": "Došlo k neočekávané chybě. Zkuste to prosím za chvíli znovu.",
+    "retry": "Zkusit znovu",
+    "goHome": "Domů"
+  },
   "BeachTypePage": {
     "title": "Typy pláží",
     "pageTitle": "Stránka typů pláží",

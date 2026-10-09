@@ -141,6 +141,13 @@
     "browseBeaches": "Alle stranden doorbladeren",
     "goHome": "Naar home"
   },
+  "ErrorPage": {
+    "title": "Er is iets misgegaan.",
+    "subtitle": "Fout",
+    "description": "Er is een onverwachte fout opgetreden. Probeer het zo meteen opnieuw.",
+    "retry": "Opnieuw proberen",
+    "goHome": "Naar home"
+  },
   "BeachTypePage": {
     "title": "Strandtypes",
     "pageTitle": "Strandtypes-pagina",

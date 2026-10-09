@@ -8,6 +8,7 @@ import { Button, Textarea, Alert } from 'flowbite-react';
 import { GoogleLoginButton, UserProfile, LogoutButton } from '@/components/Auth';
 import { Send } from 'lucide-react';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { env } from '@/env';
 
 // Disable static generation for this page (uses client-side auth)
@@ -183,10 +184,7 @@ export default function AIChatPage() {
                     <div className="mt-4 space-y-3">
                       {message.beaches.map((beach) => {
                         const beachUrl = buildBeachUrlFromSchema(beach, locale);
-                        const imagorEndpoint = process.env.NEXT_PUBLIC_IMAGOR_ENDPOINT ?? '';
-                        const imageUrl = beach.main_image
-                          ? `${imagorEndpoint}/unsafe/fit-in/400x200/filters:quality(85)/${beach.main_image}`
-                          : null;
+                        const imageUrl = buildCdnUrl(beach.main_image, 'list');
 
                         return (
                           <div

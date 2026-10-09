@@ -141,6 +141,13 @@
     "browseBeaches": "Pregledaj sve plaže",
     "goHome": "Na početnu"
   },
+  "ErrorPage": {
+    "title": "Nešto je pošlo po zlu.",
+    "subtitle": "Greška",
+    "description": "Došlo je do neočekivane pogreške. Pokušajte ponovno za trenutak.",
+    "retry": "Pokušaj ponovno",
+    "goHome": "Na početnu"
+  },
   "BeachTypePage": {
     "title": "Tipovi plaža",
     "pageTitle": "Stranica tipova plaža",

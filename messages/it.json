@@ -141,6 +141,13 @@
     "browseBeaches": "Sfoglia tutte le spiagge",
     "goHome": "Vai alla home"
   },
+  "ErrorPage": {
+    "title": "Qualcosa è andato storto.",
+    "subtitle": "Errore",
+    "description": "Si è verificato un errore imprevisto. Riprova tra un momento.",
+    "retry": "Riprova",
+    "goHome": "Vai alla home"
+  },
   "BeachTypePage": {
     "title": "Tipi di spiagge",
     "pageTitle": "Pagina tipi di spiagge",

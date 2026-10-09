@@ -141,6 +141,13 @@
     "browseBeaches": "Shfleto të gjitha plazhet",
     "goHome": "Shko në fillim"
   },
+  "ErrorPage": {
+    "title": "Diçka shkoi keq.",
+    "subtitle": "Gabim",
+    "description": "Ndodhi një gabim i papritur. Provoni përsëri pas pak.",
+    "retry": "Provo përsëri",
+    "goHome": "Kreu"
+  },
   "BeachTypePage": {
     "title": "Llojet e plazheve",
     "pageTitle": "Faqja e llojeve të plazheve",

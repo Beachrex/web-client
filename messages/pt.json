@@ -141,6 +141,13 @@
     "browseBeaches": "Procurar todas as praias",
     "goHome": "Ir para início"
   },
+  "ErrorPage": {
+    "title": "Algo correu mal.",
+    "subtitle": "Erro",
+    "description": "Ocorreu um erro inesperado. Tente novamente dentro de momentos.",
+    "retry": "Tentar novamente",
+    "goHome": "Ir para o início"
+  },
   "BeachTypePage": {
     "title": "Tipos de praia",
     "pageTitle": "Página de tipos de praia",
