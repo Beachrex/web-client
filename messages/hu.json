@@ -543,6 +543,11 @@
     },
     "legal": {
       "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Minden jog fenntartva."
+    },
+    "app": {
+      "title": "Töltsd le az appot",
+      "googlePlayTop": "SZEREZD MEG:",
+      "appStoreTop": "Letöltés az"
     }
   },
   "BeachSimilarBeaches": {

@@ -543,6 +543,11 @@
     },
     "legal": {
       "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Wszelkie prawa zastrzeżone."
+    },
+    "app": {
+      "title": "Pobierz aplikację",
+      "googlePlayTop": "POBIERZ Z",
+      "appStoreTop": "Pobierz w"
     }
   },
   "BeachSimilarBeaches": {

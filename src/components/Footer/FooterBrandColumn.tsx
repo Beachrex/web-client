@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { authorUrl } from '@/lib/constants/author';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import FooterAppBadges from './FooterAppBadges';
 import FooterSocial from './FooterSocial';
 
 /** Logo from the brand package (CGP v1.0, `public/brand/`). */
@@ -48,6 +49,8 @@ height={20}
         />
         <span>{t('cta')}</span>
       </Link>
+
+      <FooterAppBadges />
 
       <FooterSocial />
     </div>
