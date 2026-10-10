@@ -20,4 +20,6 @@ export const FEATURES = {
   blog: false,
   /** City page category tiles (sandy, pebble, pool, dogs, ...): no click action yet (owner 2026-10-09). */
   cityCategoryTiles: false,
+  /** App Store badge in the footer: the iOS app is not published yet (owner 2026-10-10). Needs APP_STORE_URL. */
+  iosAppBadge: false,
 } as const;

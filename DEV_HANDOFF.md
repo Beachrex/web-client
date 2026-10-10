@@ -18,6 +18,13 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-10 – Google Play badge in the footer (App Store badge hidden) ✅ COMPLETE
+
+Owner: "dodaj v nogo link do google play mobilne aplikacije, ios gumb še skrij".
+- `src/components/Footer/FooterAppBadges.tsx` in the brand column: "Get the app" + a Google Play badge linking to `https://play.google.com/store/apps/details?id=com.datavallis.beachrex` (`src/lib/constants/mobile-apps.ts`).
+- The App Store badge is built but hidden: `FEATURES.iosAppBadge = false` and `APP_STORE_URL = ''` (backend `docs/features/hidden-for-launch.md` H17). To show it: set the URL and turn the flag on.
+- Strings `Footer.app.{title,googlePlayTop,appStoreTop}` in all 19 locales. Spec: `e2e/footer-app-badges.unit.spec.ts`.
+
 ## 2026-10-10 – Beach map on phones: Filters button slow, list jumping ✅ COMPLETE
 
 Owner video (iPhone 16 Pro, `/en/beach-map`): the Filters button reacted only after several seconds and the list jumped back to the top.
