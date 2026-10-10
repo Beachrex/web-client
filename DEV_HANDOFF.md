@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-10 – Beach map on phones: Filters button slow, list jumping ✅ COMPLETE
+
+Owner video (iPhone 16 Pro, `/en/beach-map`): the Filters button reacted only after several seconds and the list jumped back to the top.
+- Cause: on phones the page scrolls, so the list column has no fixed height. react-window then sized the list to all rows and rendered every one of them (2 876 beaches, an 894 436 px tall element, 2 876 IntersectionObservers).
+- Fix (`src/components/Map/VirtualizedBeachList.tsx`): on screens under 768 px the list shows 20 cards and a "Show 20 more…" button (`FilterModal.showMore`, already in all 19 locales); a new result set starts again at 20. Desktop keeps the virtualized list (decided by screen width, not by the narrow list column).
+- Measured locally (mock API with 2 876 beaches, Chromium iPhone emulation, 6× CPU throttling): before 2 876 card slots, page 895 666 px, Filters panel open after 572 ms, 341 ms of long tasks; after 20 slots, page 1 832 px, panel after 209 ms, 0 ms long tasks. Desktop still renders only the visible rows (5).
+- Spec: `e2e/beach-map-mobile-list.unit.spec.ts`.
+
 ## 2026-10-09 – Continent page title had "Europe" built in; Slovenian labels ✅ COMPLETE
 
 Mobile report (relayed by the owner):
