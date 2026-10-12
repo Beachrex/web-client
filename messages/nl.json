@@ -562,7 +562,7 @@
     "title": "Gedetailleerde informatie",
     "beachMediaGallery": "Strandgalerij",
     "beachMediaVideo": "Strandvideo",
-    "beachMedia360": "360°-weergave",
+    "beachMedia360": "360° weergave",
     "beachMediaLiveCam": "Live cam",
     "groups": {
       "beach": "Strand",
@@ -821,7 +821,7 @@
     "priceFrom": "vanaf {price} €",
     "webcamLabel": "Webcam",
     "noWebcam": "Geen webcam beschikbaar",
-    "no360": "Geen 360°-weergave beschikbaar",
+    "no360": "Geen 360° weergave beschikbaar",
     "noVideo": "Geen video beschikbaar",
     "mostVisited": "Meest bezocht",
     "loading": "Laden...",
@@ -915,7 +915,7 @@
     "beachCaption": "Een van de 2.445 stranden die Gregor heeft bezocht en gefotografeerd.",
     "quote": "We hebben een visie – over een paar jaar staat elk strand ter wereld op de kaart.",
     "ctaTitle": "Ontdek de stranden die Gregor bezocht",
-    "ctaText": "Elke foto, elk 360°-panorama en elk detail op Beachrex is op deze reis ontstaan.",
+    "ctaText": "Elke foto, elk 360° panorama en elk detail op Beachrex is op deze reis ontstaan.",
     "ctaMap": "Verken de kaart",
     "ctaContact": "Schrijf ons",
     "footerLink": "Maak kennis met de auteur"
@@ -941,7 +941,7 @@
     "closeMap": "Kaart sluiten",
     "closeFilters": "Filters sluiten",
     "videoTitle": "Strandvideo",
-    "virtualTourTitle": "360°-rondleiding",
+    "virtualTourTitle": "360° rondleiding",
     "beachRouteMapTitle": "Kaart met de route naar het strand",
     "closeMenu": "Menu sluiten"
   },

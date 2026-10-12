@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-12 – No hyphen after "360°" (German, Dutch) ✅ COMPLETE
+
+Owner (Strand Wulfen, `/de`): the sphere button read "360°-Ansicht". `messages/de.json` and `messages/nl.json` now write "360° Ansicht", "360° Rundgang", "360° weergave", … (Hungarian "360°-os" is grammar and stays). Spec: `e2e/sphere-label-hyphen.unit.spec.ts`.
+
 ## 2026-10-10 – Google Play badge in the footer (App Store badge hidden) ✅ COMPLETE
 
 Owner: "dodaj v nogo link do google play mobilne aplikacije, ios gumb še skrij".

@@ -562,7 +562,7 @@
     "title": "Detaillierte Informationen",
     "beachMediaGallery": "Strandgalerie",
     "beachMediaVideo": "Strandvideo",
-    "beachMedia360": "360°-Ansicht",
+    "beachMedia360": "360° Ansicht",
     "beachMediaLiveCam": "Live-Cam",
     "groups": {
       "beach": "Strand",
@@ -821,7 +821,7 @@
     "priceFrom": "ab {price} €",
     "webcamLabel": "Webcam",
     "noWebcam": "Keine Webcam verfügbar",
-    "no360": "Keine 360°-Ansicht verfügbar",
+    "no360": "Keine 360° Ansicht verfügbar",
     "noVideo": "Kein Video verfügbar",
     "mostVisited": "Meist besucht",
     "loading": "Lädt...",
@@ -915,7 +915,7 @@
     "beachCaption": "Einer der 2.445 Strände, die Gregor besucht und fotografiert hat.",
     "quote": "Wir haben eine Vision – in ein paar Jahren wird jeder einzelne Strand der Welt auf der Karte sein.",
     "ctaTitle": "Entdecken Sie die Strände, die Gregor besucht hat",
-    "ctaText": "Jedes Foto, jede 360°-Aufnahme und jedes Detail auf Beachrex ist auf dieser Reise entstanden.",
+    "ctaText": "Jedes Foto, jede 360° Aufnahme und jedes Detail auf Beachrex ist auf dieser Reise entstanden.",
     "ctaMap": "Karte durchsuchen",
     "ctaContact": "Schreiben Sie uns",
     "footerLink": "Lernen Sie den Autor kennen"
@@ -941,7 +941,7 @@
     "closeMap": "Karte schließen",
     "closeFilters": "Filter schließen",
     "videoTitle": "Strandvideo",
-    "virtualTourTitle": "360°-Rundgang",
+    "virtualTourTitle": "360° Rundgang",
     "beachRouteMapTitle": "Karte mit dem Weg zum Strand",
     "closeMenu": "Menü schließen"
   },
