@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-12 – Beach cards use the first gallery photo when there is no main image ✅ COMPLETE
+
+Owner (Bretagne, Nouvelle-Aquitaine): region "Most visited" empty, "All beaches (0)", city pages without beaches. The API returned the beaches, but mobile-app beaches had `main_image: null` and every card list skips beaches without a main image. `withMainImage()` (`src/lib/utils/beach-cards.ts`) fills it from the first gallery photo before that filter (`beachesToProperties`, `DynamicSearchBeaches`). The backend sets the same fallback (Beachrex/backend, `main_image` PR). Spec: `e2e/main-image-fallback.unit.spec.ts`.
+
 ## 2026-10-12 – Breadcrumbs show translated names ✅ COMPLETE
 
 Owner (Greek beach page): the breadcrumb read "Paralies > Europe > Slovenia > Obalno Kraska > Strunjan > Beach Mesecev Zaliv" — every segment was its URL slug in title case, in every language. `DynamicBreadcrumbs` now takes `labels` (`slug → name`) built by `breadcrumbLabels()` (`src/lib/utils/breadcrumb-labels.ts`) from the page data: beach `location` + `basic_info`, region/island/city details (with their country and continent), country details, continent. The beaches word uses `Common.statsBeaches`. Unknown slugs still fall back to title case. Spec: `e2e/breadcrumb-labels.unit.spec.ts`.

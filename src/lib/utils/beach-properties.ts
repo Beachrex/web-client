@@ -1,6 +1,6 @@
 import type { Property } from '@/components/PropertySection';
 import type { BeachSchema } from '@/lib/api-client/types.gen';
-import { hasMainImage } from '@/lib/utils/beach-cards';
+import { hasMainImage, withMainImage } from '@/lib/utils/beach-cards';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
@@ -28,7 +28,7 @@ export function cardTags(beach: Pick<BeachSchema, 'tags'>): string[] | undefined
  * Beaches without a main image are skipped: next/image throws on a missing src (QA #55).
  */
 export function beachesToProperties(beaches: BeachSchema[], locale: string): Property[] {
-  return beaches.filter(hasMainImage).map((beach) => {
+  return beaches.map(withMainImage).filter(hasMainImage).map((beach) => {
     const mainImage = buildCdnUrl(beach.main_image, 'list')!;
     const sphere = beach.media?.spheres_360?.[0] ?? null;
 
