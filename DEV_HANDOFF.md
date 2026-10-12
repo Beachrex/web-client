@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-12 – Fixed badges on destination cards hidden ✅ COMPLETE
+
+Owner (city card "Scenic town"): the badge on country, region, city and island cards was a fixed text per card type (`cityBadge` "Scenic town", `regionBadge`, `islandBadge`, `HomePage.seaExperiences`), the same on every card. `DestinationCard` now renders it only when `FEATURES.placeCardBadges` is on (off for launch; backend `docs/features/hidden-for-launch.md` H18). The translation keys stay. Spec: `e2e/place-card-badges.unit.spec.ts`.
+
 ## 2026-10-12 – Beach cards use the first gallery photo when there is no main image ✅ COMPLETE
 
 Owner (Bretagne, Nouvelle-Aquitaine): region "Most visited" empty, "All beaches (0)", city pages without beaches. The API returned the beaches, but mobile-app beaches had `main_image: null` and every card list skips beaches without a main image. `withMainImage()` (`src/lib/utils/beach-cards.ts`) fills it from the first gallery photo before that filter (`beachesToProperties`, `DynamicSearchBeaches`). The backend sets the same fallback (Beachrex/backend, `main_image` PR). Spec: `e2e/main-image-fallback.unit.spec.ts`.

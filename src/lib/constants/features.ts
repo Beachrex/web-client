@@ -22,4 +22,7 @@ export const FEATURES = {
   cityCategoryTiles: false,
   /** App Store badge in the footer: the iOS app is not published yet (owner 2026-10-10). Needs APP_STORE_URL. */
   iosAppBadge: false,
+  /** Fixed badge on country/region/city/island cards ("Scenic town", "Sea experiences"): same text on every card
+   * (owner 2026-10-12). */
+  placeCardBadges: false,
 } as const;
