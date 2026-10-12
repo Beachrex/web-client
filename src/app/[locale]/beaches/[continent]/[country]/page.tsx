@@ -47,6 +47,7 @@ import { FEATURES } from '@/lib/constants/features';
 import AllBeachesLink from '@/components/AllBeachesLink';
 import { fetchFirstBeachPage } from '@/lib/server/destination-page-data';
 import type { BeachListResponseSchema } from '@/lib/api-client/types.gen';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
 
 interface PageProps {
   params: {
@@ -354,6 +355,7 @@ const beachProperties: Property[] =
 
       <DynamicTopBar
   pathname={pathname}
+        breadcrumbLabels={breadcrumbLabels(countryDetails)}
   navigation={navigationWithUrls}
   variant="country"
       />

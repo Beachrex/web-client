@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-12 – Breadcrumbs show translated names ✅ COMPLETE
+
+Owner (Greek beach page): the breadcrumb read "Paralies > Europe > Slovenia > Obalno Kraska > Strunjan > Beach Mesecev Zaliv" — every segment was its URL slug in title case, in every language. `DynamicBreadcrumbs` now takes `labels` (`slug → name`) built by `breadcrumbLabels()` (`src/lib/utils/breadcrumb-labels.ts`) from the page data: beach `location` + `basic_info`, region/island/city details (with their country and continent), country details, continent. The beaches word uses `Common.statsBeaches`. Unknown slugs still fall back to title case. Spec: `e2e/breadcrumb-labels.unit.spec.ts`.
+
 ## 2026-10-12 – Banner map thumbnail is a link ✅ COMPLETE
 
 Owner (Bretagne): the map image in the banner was not clickable. `MapWidget` takes `href` + `label`; the place banner (`BannerSection`: country, region, island, city) and the beach banner pass their existing beach-map URL (same filters as the side "map" button; the beach adds `beach_id`, `lat`, `lng`). Label `WorldTopBar.mapButton` (19 locales). Spec: `e2e/banner-map-link.unit.spec.ts`.
