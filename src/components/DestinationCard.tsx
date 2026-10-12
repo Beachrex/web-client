@@ -142,7 +142,8 @@ const flagUrl =
           className="object-cover"
         />
 
-        {badgeLabel && (
+        {/* Fixed placeholder badge ("Scenic town"): hidden for launch */}
+        {FEATURES.placeCardBadges && badgeLabel && (
           <div className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-[#0A2342] sm:text-sm">
             {badgeLabel}
           </div>
