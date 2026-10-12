@@ -92,6 +92,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   const t = useTranslations('BannerSection');
   const tCommon = useTranslations('Common');
   const tFilters = useTranslations('Filters');
+  const tWorldTopBar = useTranslations('WorldTopBar');
   const locale = useLocale();
 
   const variant = topBarVariant;
@@ -186,7 +187,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
 
               {/* Widgets */}
               <div className="flex shrink-0 justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
-                <MapWidget />
+                <MapWidget href={buildMapUrl()} label={tWorldTopBar('mapButton')} />
 
                 {variant !== 'country' && variant !== 'continent' && (
   <WeatherWidget

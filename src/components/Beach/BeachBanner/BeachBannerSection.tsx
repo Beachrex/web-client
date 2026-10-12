@@ -31,6 +31,7 @@ export default function BeachBannerSection({
   const locale = useLocale();
   const tCommon = useTranslations('Common');
   const tFilters = useTranslations('Filters');
+  const tWorldTopBar = useTranslations('WorldTopBar');
 
   const beachName = beachDetails?.basic_info?.name ?? '';
   const beachSlug = beachDetails?.basic_info?.slug;
@@ -147,7 +148,7 @@ export default function BeachBannerSection({
           <BeachTitleBlock title={beachName} />
 
           <div className="flex justify-center gap-[6px] sm:gap-[10px] lg:justify-end pointer-events-auto">
-            <MapWidget />
+            <MapWidget href={buildMapUrl()} label={tWorldTopBar('mapButton')} />
             <WeatherWidget
               weather={weatherData}
               locationName={locationName}
