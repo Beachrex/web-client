@@ -2,7 +2,7 @@
 
 import { useBeachPage, type BeachSort } from '@/hooks/useBeaches';
 import type { BeachListResponseSchema, BeachSchema } from '@/lib/api-client/types.gen';
-import { hasMainImage } from '@/lib/utils/beach-cards';
+import { hasMainImage, withMainImage } from '@/lib/utils/beach-cards';
 import { cardTags } from '@/lib/utils/beach-properties';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
@@ -58,7 +58,7 @@ function useBeachCards(beaches: BeachSchema[]): PropertyCardProps[] {
   const locale = useLocale();
   const tCommon = useTranslations('Common');
 
-  return beaches.filter(hasMainImage).map((b) => {
+  return beaches.map(withMainImage).filter(hasMainImage).map((b) => {
     const mainImage = buildCdnUrl(b.main_image, 'list')!;
     const sphere = b.media?.spheres_360?.[0] ?? null;
 
