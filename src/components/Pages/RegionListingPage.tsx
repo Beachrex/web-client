@@ -20,6 +20,7 @@ import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import DestinationsSection from '../DestinationsSection';
 import { FEATURES } from '@/lib/constants/features';
 import AllBeachesLink from '@/components/AllBeachesLink';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
 
 interface RegionListingPageProps {
   regionSlug: string;
@@ -99,6 +100,7 @@ export default function RegionListingPage({ regionSlug, initialData }: RegionLis
     <>
       <DynamicTopBar
         pathname={pathname ?? ''}
+        breadcrumbLabels={breadcrumbLabels(regionDetails)}
         variant="region"
         navigation={regionDetails?.navigation}
       />

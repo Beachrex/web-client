@@ -17,6 +17,7 @@ import DynamicSearchBeaches from '../DynamicSearchBeaches';
 import DestinationsSection from '../DestinationsSection';
 import { FEATURES } from '@/lib/constants/features';
 import AllBeachesLink from '@/components/AllBeachesLink';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
 
 interface IslandListingPageProps {
   islandSlug: string;
@@ -104,6 +105,7 @@ export default function IslandListingPage({
     <>
       <DynamicTopBar
         pathname={pathname ?? ''}
+        breadcrumbLabels={breadcrumbLabels(islandDetails)}
         variant="island"
         navigation={islandDetails?.navigation}
       />

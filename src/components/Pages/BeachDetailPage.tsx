@@ -18,6 +18,7 @@ import { buildBeachUrlFromNavigation } from '@/lib/utils/beach-urls';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { FEATURES } from '@/lib/constants/features';
 import { reportBeachView } from '@/lib/utils/beach-views';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
 
 interface BeachDetailPageProps {
   beachDetails: BeachDetailsSchema;
@@ -93,6 +94,7 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
       {/* TOP BAR */}
       <DynamicTopBar
         pathname={pathname ?? ''}
+        breadcrumbLabels={breadcrumbLabels(beachDetails.location, beachDetails.basic_info)}
         variant="beach"
         navigation={beachDetails.navigation}
         buildUrl={(item) =>

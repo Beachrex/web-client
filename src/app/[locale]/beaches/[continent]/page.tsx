@@ -27,6 +27,7 @@ import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
 
 
 interface PageProps {
@@ -230,6 +231,7 @@ const Page = async ({ params }: PageProps) => {
         {/* Breadcrumbs */}
     <DynamicTopBar
   pathname={pathname}
+        breadcrumbLabels={breadcrumbLabels(continent)}
   variant="continent"
     />
 

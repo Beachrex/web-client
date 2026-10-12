@@ -2,29 +2,30 @@
 
 import { Link } from '@/i18n/routing';
 import { Breadcrumb } from 'flowbite-react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { getBeachesWord } from '@/lib/utils/beach-urls';
+import { breadcrumbLabel } from '@/lib/utils/breadcrumb-labels';
 import { Home } from 'lucide-react';
 
 interface DynamicBreadcrumbsProps {
   pathname: string;
   textClass: string;
   accentColor: string;
+  /** `slug → localized name` for the segments (see `breadcrumbLabels`); unknown slugs are title-cased. */
+  labels?: Record<string, string>;
 }
 
-function formatBreadcrumbSegment(segment: string): string {
-  return segment
-    .replace(/[-_]/g, ' ')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
-}
 
 export default function DynamicBreadcrumbs({
   pathname,
   textClass,
   accentColor,
+  labels = {},
 }: DynamicBreadcrumbsProps) {
   const locale = useLocale();
+  const tCommon = useTranslations('Common');
+  const segmentLabels = { [getBeachesWord(locale)]: tCommon('statsBeaches'), ...labels };
+  const formatBreadcrumbSegment = (segment: string) => breadcrumbLabel(segment, segmentLabels);
 
   if (!pathname) {
     return null;

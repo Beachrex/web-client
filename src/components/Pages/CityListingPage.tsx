@@ -21,6 +21,7 @@ import { formatRegionPillLabel } from '../BannerSection/topbar-utils';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
 import { FEATURES } from '@/lib/constants/features';
 import AllBeachesLink from '@/components/AllBeachesLink';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
 
 interface CityListingPageProps {
   citySlug: string;
@@ -143,6 +144,7 @@ const islandPillLabel = cityDetails?.island?.name
       {/* Shared top bar: breadcrumbs + city prev/next navigation */}
       <DynamicTopBar
         pathname={pathname ?? ''}
+        breadcrumbLabels={breadcrumbLabels(cityDetails)}
         variant="city"
         navigation={cityDetails?.navigation}
         buildUrl={(item) =>
