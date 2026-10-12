@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-12 – Banner map thumbnail is a link ✅ COMPLETE
+
+Owner (Bretagne): the map image in the banner was not clickable. `MapWidget` takes `href` + `label`; the place banner (`BannerSection`: country, region, island, city) and the beach banner pass their existing beach-map URL (same filters as the side "map" button; the beach adds `beach_id`, `lat`, `lng`). Label `WorldTopBar.mapButton` (19 locales). Spec: `e2e/banner-map-link.unit.spec.ts`.
+
 ## 2026-10-12 – No hyphen after "360°" (German, Dutch) ✅ COMPLETE
 
 Owner (Strand Wulfen, `/de`): the sphere button read "360°-Ansicht". `messages/de.json` and `messages/nl.json` now write "360° Ansicht", "360° Rundgang", "360° weergave", … (Hungarian "360°-os" is grammar and stays). Spec: `e2e/sphere-label-hyphen.unit.spec.ts`.
