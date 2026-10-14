@@ -639,7 +639,10 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Webcam en direct",
+    "webcamIframeTitle": "Webcam en direct : {name}",
+    "webcamCredit": "Webcam fournie par Windy.com"
   },
   "Auth": {
     "continueWithGoogle": "Continuer avec Google",

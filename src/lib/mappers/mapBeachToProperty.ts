@@ -5,7 +5,7 @@ import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import type { BeachCardFeatures } from '@/lib/utils/beach-badges';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
-import { parseWebcamUrl } from '@/lib/utils/webcam';
+import { webcamLink } from '@/lib/utils/webcam';
 
 /* ------------------------------------------------------------------
  * Minimal input types for mapper (NO any, NO API coupling)
@@ -23,6 +23,7 @@ interface BeachMediaSphere {
 interface BeachMediaEmbeds {
   video_url?: string | null;
   webcam?: string | null;
+  windy_webcam_id?: number | null;
 }
 
 interface BeachMedia {
@@ -120,8 +121,8 @@ export function mapBeachToProperty(
   /* ---------------------------
    * WEBCAM
    * --------------------------- */
-  // Only a parsable webcam URL counts, so "has webcam" matches what the card can open.
-  const webcamEmbed = parseWebcamUrl(beach.media?.embeds?.webcam) ?? undefined;
+  // Only a link the card can open counts as "has webcam" (TASK-006: the verified Windy webcam).
+  const webcamEmbed = webcamLink(beach.media?.embeds) ?? undefined;
 
   /* ---------------------------
    * LOCATION LABEL

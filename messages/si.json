@@ -639,7 +639,10 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Spletna kamera v živo",
+    "webcamIframeTitle": "Spletna kamera v živo: {name}",
+    "webcamCredit": "Spletno kamero zagotavlja Windy.com"
   },
   "PropertyCard": {
     "priceFrom": "od {price} €",

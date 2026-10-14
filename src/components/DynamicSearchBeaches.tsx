@@ -6,7 +6,7 @@ import { hasMainImage, withMainImage } from '@/lib/utils/beach-cards';
 import { cardTags } from '@/lib/utils/beach-properties';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
-import { parseWebcamUrl } from '@/lib/utils/webcam';
+import { webcamLink } from '@/lib/utils/webcam';
 import { buildBeachMapUrl, buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import { Pagination } from 'flowbite-react';
 import { useLocale, useTranslations, type TranslationValues } from 'next-intl';
@@ -70,7 +70,7 @@ function useBeachCards(beaches: BeachSchema[]): PropertyCardProps[] {
       sphereThumbnail: sphere ? mainImage : undefined,
       sphereTourUrl: buildSphereTourUrl(sphere?.tour_url) ?? undefined,
       videoEmbedUrl: buildBeachVideoUrl(b.media?.embeds?.video_url, b.media?.videos) ?? undefined,
-      webcamEmbed: parseWebcamUrl(b.media?.embeds?.webcam),
+      webcamEmbed: webcamLink(b.media?.embeds),
       features: b.features ?? null,
       title: b.name ?? tCommon('unknownBeach'),
       location: b.city_name ?? b.country_name ?? '',

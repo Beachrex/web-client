@@ -639,7 +639,10 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Kamera na żywo",
+    "webcamIframeTitle": "Kamera na żywo: {name}",
+    "webcamCredit": "Kamerę udostępnia Windy.com"
   },
   "Auth": {
     "continueWithGoogle": "Kontynuuj z Google",

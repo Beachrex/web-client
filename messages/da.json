@@ -639,7 +639,10 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Live-webcam",
+    "webcamIframeTitle": "Live-webcam: {name}",
+    "webcamCredit": "Webcam leveret af Windy.com"
   },
   "Auth": {
     "continueWithGoogle": "Fortsæt med Google",

@@ -639,7 +639,10 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Live webcam",
+    "webcamIframeTitle": "Live webcam: {name}",
+    "webcamCredit": "Webcam provided by Windy.com"
   },
   "Auth": {
     "continueWithGoogle": "Continue with Google",

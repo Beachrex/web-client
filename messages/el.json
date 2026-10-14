@@ -639,7 +639,10 @@
       "unit": {
         "meters": "μ"
       }
-    }
+    },
+    "webcamHeading": "Ζωντανή κάμερα",
+    "webcamIframeTitle": "Ζωντανή κάμερα: {name}",
+    "webcamCredit": "Η κάμερα παρέχεται από το Windy.com"
   },
   "Auth": {
     "continueWithGoogle": "Συνέχεια με Google",
