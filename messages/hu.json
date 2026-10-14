@@ -639,7 +639,10 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Élő webkamera",
+    "webcamIframeTitle": "Élő webkamera: {name}",
+    "webcamCredit": "A webkamerát a Windy.com biztosítja"
   },
   "Auth": {
     "continueWithGoogle": "Folytatás Google-lal",

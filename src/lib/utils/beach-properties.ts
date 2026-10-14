@@ -4,7 +4,7 @@ import { hasMainImage, withMainImage } from '@/lib/utils/beach-cards';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
-import { parseWebcamUrl } from '@/lib/utils/webcam';
+import { webcamLink } from '@/lib/utils/webcam';
 
 /** Up to 5 gallery images in their admin order. */
 function buildGallery(beach: BeachSchema): string[] {
@@ -40,7 +40,7 @@ export function beachesToProperties(beaches: BeachSchema[], locale: string): Pro
       sphereThumbnail: sphere ? mainImage : undefined,
       sphereTourUrl: buildSphereTourUrl(sphere?.tour_url) ?? undefined,
       videoEmbedUrl: buildBeachVideoUrl(beach.media?.embeds?.video_url ?? null, beach.media?.videos) ?? undefined,
-      webcamEmbed: parseWebcamUrl(beach.media?.embeds?.webcam),
+      webcamEmbed: webcamLink(beach.media?.embeds),
       features: beach.features ?? null,
       title: beach.name ?? '',
       location: beach.city_name ?? beach.country_name ?? '',

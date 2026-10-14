@@ -25,4 +25,7 @@ export const FEATURES = {
   /** Fixed badge on country/region/city/island cards ("Scenic town", "Sea experiences"): same text on every card
    * (owner 2026-10-12). */
   placeCardBadges: false,
+  /** TASK-006 (owner 2026-10-14): show only verified Windy webcams (iframe on the beach page, Windy link on cards
+   * and the map). Off = the old pasted `beach.webcam` links. Rollout switch; the old path goes once this is stable. */
+  windyWebcams: true,
 } as const;

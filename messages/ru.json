@@ -639,7 +639,10 @@
       "unit": {
         "meters": "м"
       }
-    }
+    },
+    "webcamHeading": "Веб-камера онлайн",
+    "webcamIframeTitle": "Веб-камера онлайн: {name}",
+    "webcamCredit": "Веб-камера предоставлена Windy.com"
   },
   "Auth": {
     "continueWithGoogle": "Продолжить с Google",

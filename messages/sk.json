@@ -639,7 +639,10 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Webkamera naživo",
+    "webcamIframeTitle": "Webkamera naživo: {name}",
+    "webcamCredit": "Webkameru poskytuje Windy.com"
   },
   "Auth": {
     "continueWithGoogle": "Pokračovať s Google",

@@ -639,7 +639,10 @@
       "unit": {
         "meters": "м"
       }
-    }
+    },
+    "webcamHeading": "Уебкамера на живо",
+    "webcamIframeTitle": "Уебкамера на живо: {name}",
+    "webcamCredit": "Уебкамерата е предоставена от Windy.com"
   },
   "Auth": {
     "continueWithGoogle": "Продължи с Google",

@@ -18,6 +18,15 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-14 – Verified Windy webcams on the beach page (TASK-006) ✅ COMPLETE
+
+Owner decisions 2026-10-14 (backend `docs/tasks/TASK-006-windy-webcams.md`): direct iframe, other providers hidden.
+- Beach page: new `WindyWebcams` section from the API's `webcams[]` (Beachrex/backend#118): Windy's public player iframe (the same iframe Windy's `player.js` creates; no third-party script), mounted when the section is within 300 px of the viewport, `loading="lazy"`, 16:9, title per webcam, link + credit "Webcam provided by Windy.com" (19 languages: `BeachDetails.webcamHeading`, `webcamIframeTitle`, `webcamCredit`). No webcam → no section. The iframe URL is built from the id, never taken from the API.
+- Cards, lists and the map: "has webcam" and the webcam button use `media.embeds.windy_webcam_id` → `https://www.windy.com/webcams/{id}` (`webcamLink()`); the old pasted links (Lookr, WhatsUpCams, Webcamgalore) are no longer shown.
+- Rollout switch `FEATURES.windyWebcams` (on). Off = the old `beach.webcam` link behaviour.
+- `src/lib/api-client` not regenerated: regenerating from the current backend spec also pulls nullable search slugs (backend 2026-10-09) that break `GlobalSearch.tsx` types — separate fix. The new fields are read through `parseWindyWebcams()` / `webcamLink()`.
+- Spec: `e2e/webcam.unit.spec.ts`.
+
 ## 2026-10-12 – Fixed badges on destination cards hidden ✅ COMPLETE
 
 Owner (city card "Scenic town"): the badge on country, region, city and island cards was a fixed text per card type (`cityBadge` "Scenic town", `regionBadge`, `islandBadge`, `HomePage.seaExperiences`), the same on every card. `DestinationCard` now renders it only when `FEATURES.placeCardBadges` is on (off for launch; backend `docs/features/hidden-for-launch.md` H18). The translation keys stay. Spec: `e2e/place-card-badges.unit.spec.ts`.

@@ -40,3 +40,38 @@ test.describe('parseWebcamUrl', () => {
     }
   });
 });
+
+/* TASK-006: verified Windy webcams replace the pasted links. */
+import { parseWindyWebcams, webcamLink, windyPlayerUrl } from '@/lib/utils/webcam';
+
+test.describe('Windy webcams (TASK-006)', () => {
+  test('player url is the iframe Windy builds, page url is windy.com', () => {
+    expect(windyPlayerUrl(1616668973)).toBe(
+      'https://webcams.windy.com/webcams/public/embed/player?webcamId=1616668973&playerType=day&loop=0&autoPlay=0&interactive=1',
+    );
+  });
+
+  test('webcams[] → primary first, malformed entries dropped, urls built locally', () => {
+    const cams = parseWindyWebcams([
+      { windy_id: 2, title: 'B', is_primary: false, player_url: 'https://evil.example/x' },
+      { windy_id: 1, title: 'A', is_primary: true },
+      { windy_id: 'x' },
+      null,
+      { windy_id: -5 },
+    ]);
+    expect(cams.map((c) => c.windyId)).toEqual([1, 2]);
+    expect(cams[1]?.playerUrl).toBe(windyPlayerUrl(2)); // never the API's / an attacker's URL
+    expect(cams[0]?.pageUrl).toBe('https://www.windy.com/webcams/1');
+    expect(parseWindyWebcams(undefined)).toEqual([]);
+    expect(parseWindyWebcams('nope')).toEqual([]);
+  });
+
+  test('cards and map: Windy link when verified, nothing otherwise; old links only with the flag off', () => {
+    const lookr = '<a name="lkr-timelapse-player" data-id="1400255409" href="https://www.lookr.com/lookout/1400255409-Pula">x</a>';
+    expect(webcamLink({ webcam: lookr, windy_webcam_id: 1400255409 }, true)).toBe('https://www.windy.com/webcams/1400255409');
+    expect(webcamLink({ webcam: lookr, windy_webcam_id: null }, true)).toBeNull();
+    expect(webcamLink({ webcam: 'brez' }, true)).toBeNull();
+    expect(webcamLink(undefined, true)).toBeNull();
+    expect(webcamLink({ webcam: lookr, windy_webcam_id: null }, false)).toBe('https://www.lookr.com/lookout/1400255409-Pula');
+  });
+});

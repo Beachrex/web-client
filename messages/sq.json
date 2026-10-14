@@ -639,7 +639,10 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Kamerë live",
+    "webcamIframeTitle": "Kamerë live: {name}",
+    "webcamCredit": "Kamera ofrohet nga Windy.com"
   },
   "Auth": {
     "continueWithGoogle": "Vazhdo me Google",

@@ -8,7 +8,9 @@ import React from 'react';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
-import { parseWebcamUrl } from '@/lib/utils/webcam';
+import WindyWebcams from '@/components/Beach/WindyWebcams';
+import { FEATURES } from '@/lib/constants/features';
+import { parseWebcamUrl, parseWindyWebcams } from '@/lib/utils/webcam';
 
 interface BeachPageViewProps {
   beachDetails: BeachDetailsSchema;
@@ -63,8 +65,12 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const hasVideo = Boolean(videoEmbedUrl);
   const hasSphere = spheres.length > 0 && Boolean(sphereTourUrl);
 
-  // QA #36: the beach page never showed the webcam that the map and cards offer.
-  const webcamUrl = parseWebcamUrl(embeds?.webcam);
+  // TASK-006: verified Windy webcams get their own section with the player; the old
+  // pasted-link card (QA #36) only while FEATURES.windyWebcams is off.
+  const windyWebcams = FEATURES.windyWebcams
+    ? parseWindyWebcams((beachDetails as { webcams?: unknown }).webcams)
+    : [];
+  const webcamUrl = FEATURES.windyWebcams ? null : parseWebcamUrl(embeds?.webcam);
 
   const rawItems: (MediaCard & { enabled: boolean })[] = [
     {
@@ -100,11 +106,16 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const mediaItems: MediaCard[] = rawItems.filter((i) => i.enabled);
 
 
+  const webcamSection = (
+    <WindyWebcams webcams={windyWebcams} beachName={beachDetails.basic_info?.name} />
+  );
+
   if (mediaItems.length === 0) {
-    return null;
+    return webcamSection;
   }
 
   return (
+    <>
     <section className="bg-white py-12 sm:py-16 lg:py-20">
       <div className="container mx-auto px-4">
         {/* Cards */}
@@ -231,6 +242,8 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
         </div>
       )}
     </section>
+    {webcamSection}
+    </>
   );
 };
 
