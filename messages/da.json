@@ -462,7 +462,7 @@
     "beachImageAltNoCity": "{beachName} strand i {countryName}",
     "iconAlt": "{iconName} ikon",
     "facilityAlt": "{facilityName} facilitet-ikon",
-    "countryFlagAlt": "{countryName} flag",
+    "countryFlagAlt": "Flag for {countryName}",
     "continentImageAlt": "{continentName} - Udforsk strande",
     "countryImageAlt": "{countryName} - Stranddestinationer",
     "regionImageAlt": "{regionName}, {countryName} - Strandregion",
