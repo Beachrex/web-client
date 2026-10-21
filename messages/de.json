@@ -971,5 +971,8 @@
     "limit": "Ihre Favoritenliste ist voll. Entfernen Sie einen Strand, um einen neuen zu speichern.",
     "error": "Der Strand konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
     "loadError": "Ihre Lieblingsstrände konnten nicht geladen werden. Bitte versuchen Sie es erneut."
+  },
+  "BeachFaq": {
+    "title": "Häufige Fragen zu {name}"
   }
 }

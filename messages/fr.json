@@ -971,5 +971,8 @@
     "limit": "Votre liste de favoris est pleine. Retirez une plage pour en enregistrer une autre.",
     "error": "La plage n'a pas pu être enregistrée. Veuillez réessayer.",
     "loadError": "Vos plages favorites n'ont pas pu être chargées. Veuillez réessayer."
+  },
+  "BeachFaq": {
+    "title": "Questions fréquentes sur {name}"
   }
 }

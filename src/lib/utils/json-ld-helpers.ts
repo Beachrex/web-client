@@ -345,6 +345,7 @@ export function buildBeachListSchema(
  * />
  */
 export function renderJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
-  return JSON.stringify(schema);
+  // `<` as \u003c: text from the database (descriptions, FAQ) can never close the <script> tag. Still valid JSON.
+  return JSON.stringify(schema).replace(/</g, '\\u003c');
 }
 

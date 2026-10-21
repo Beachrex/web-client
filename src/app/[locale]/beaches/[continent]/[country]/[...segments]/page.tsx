@@ -54,6 +54,7 @@ import {
 
 // Import page components
 import BeachDetailPage from '@/components/Pages/BeachDetailPage';
+import { buildBeachFaqSchema, readBeachFaq, readMetaDescription } from '@/lib/utils/beach-faq';
 import RegionListingPage from '@/components/Pages/RegionListingPage';
 import IslandListingPage from '@/components/Pages/IslandListingPage';
 import CityListingPage from '@/components/Pages/CityListingPage';
@@ -234,8 +235,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const regionName = beach.location?.region?.name ?? null;
     const islandName = beach.location?.island?.name ?? null;
 
-    // Build description from beach description or generate one
-    let description = beach.basic_info?.description ?? '';
+    // TASK-007: the search snippet written for this language wins; else the description or a generated line
+    let description = readMetaDescription(beach) ?? beach.basic_info?.description ?? '';
     if (!description) {
       // Generate description from beach characteristics
       const characteristics: string[] = [];
@@ -439,6 +440,7 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
 
       const beachSchema = buildBeachSchema(beach, locale, canonicalUrl);
       const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs);
+      const faqSchema = buildBeachFaqSchema(readBeachFaq(beach), canonicalUrl);
 
       // Render beach detail page (SSR) with JSON-LD
       return (
@@ -451,6 +453,12 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumbSchema) }}
           />
+          {faqSchema && (
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: renderJsonLd(faqSchema) }}
+            />
+          )}
           <BeachDetailPage beachDetails={beach} />
         </>
       );

@@ -971,5 +971,8 @@
     "limit": "Seznam oblíbených je plný. Odeberte pláž, abyste mohli uložit jinou.",
     "error": "Pláž se nepodařilo uložit. Zkuste to prosím znovu.",
     "loadError": "Oblíbené pláže se nepodařilo načíst. Zkuste to prosím znovu."
+  },
+  "BeachFaq": {
+    "title": "Časté otázky o pláži {name}"
   }
 }

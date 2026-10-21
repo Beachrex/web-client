@@ -971,5 +971,8 @@
     "limit": "Your favorites list is full. Remove a beach to save another one.",
     "error": "The beach could not be saved. Please try again.",
     "loadError": "Your favorite beaches could not be loaded. Please try again."
+  },
+  "BeachFaq": {
+    "title": "Frequently asked questions about {name}"
   }
 }
