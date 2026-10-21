@@ -18,3 +18,15 @@ test('the accommodation price badge on beach cards is hidden behind the accommod
   expect(card.slice(gateAt, priceAt)).not.toContain(')}');
   expect(card.match(/t\('priceFrom'/g)).toHaveLength(1);
 });
+
+/** Owner 2026-10-21: the accommodation buttons with no action (continent search, beach banner) are hidden too. */
+test('the accommodation buttons on the continent search and the beach banner are behind the flag', () => {
+  for (const f of ['src/components/Continent/SearchContinent.tsx', 'src/components/Beach/BeachBanner/BeachBannerSection.tsx']) {
+    const src = readFileSync(join(process.cwd(), f), 'utf8');
+    const iconAt = src.indexOf('/images/accomodation.png');
+    const gateAt = src.lastIndexOf('{FEATURES.accommodation && (', iconAt);
+    expect(iconAt, f).toBeGreaterThan(-1);
+    expect(gateAt, f).toBeGreaterThan(-1);
+    expect(src.slice(gateAt, iconAt), f).not.toContain(')}');
+  }
+});
