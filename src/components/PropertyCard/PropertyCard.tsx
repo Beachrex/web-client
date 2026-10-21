@@ -379,17 +379,20 @@ const webcamUrl = React.useMemo(
 
 {mediaMode !== 'sphere' && mediaMode !== 'video' && (
   <div className="absolute bottom-2 left-2 right-2 flex justify-between pointer-events-none z-20">
-    <div className="pointer-events-auto flex h-[40px] items-center gap-1 bg-[#008260] text-white px-3 rounded">
-      <Image
-        src="/images/accomodation.png"
-        alt=""
-        width={16}
-        height={16}
-      />
-      <span className="text-[12px] font-medium">{t('priceFrom', { price })}</span>
-    </div>
+    {/* Accommodation price: hidden until accommodation pricing exists (FEATURES.accommodation). */}
+    {FEATURES.accommodation && (
+      <div className="pointer-events-auto flex h-[40px] items-center gap-1 bg-[#008260] text-white px-3 rounded">
+        <Image
+          src="/images/accomodation.png"
+          alt=""
+          width={16}
+          height={16}
+        />
+        <span className="text-[12px] font-medium">{t('priceFrom', { price })}</span>
+      </div>
+    )}
 
-    <div className="pointer-events-auto flex items-center gap-2">
+    <div className="pointer-events-auto ml-auto flex items-center gap-2">
       {locationUrl ? (
         <Link
           href={locationUrl}

@@ -18,6 +18,13 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-21 – Accommodation price badge hidden on beach cards ✅ COMPLETE
+
+Owner 2026-10-21: the green "from 0 €" accommodation badge on `PropertyCard` (beach lists, map list, favorites) was the only accommodation UI not behind `FEATURES.accommodation`. It is now gated; the location badge keeps its place on the right (`ml-auto`). Regression test: `e2e/beach-card-price.unit.spec.ts`.
+The "Browse accommodations" button in `Continent/SearchContinent.tsx` and the green accommodation button in `Beach/BeachBanner/BeachBannerSection.tsx` (both without an action) are gated the same way.
+
+---
+
 ## 2026-10-14 – Verified Windy webcams on the beach page (TASK-006) ✅ COMPLETE
 
 Owner decisions 2026-10-14 (backend `docs/tasks/TASK-006-windy-webcams.md`): direct iframe, other providers hidden.
