@@ -971,5 +971,8 @@
     "limit": "Lista ulubionych jest pełna. Usuń plażę, aby zapisać inną.",
     "error": "Nie udało się zapisać plaży. Spróbuj ponownie.",
     "loadError": "Nie udało się wczytać ulubionych plaż. Spróbuj ponownie."
+  },
+  "BeachFaq": {
+    "title": "Najczęstsze pytania o {name}"
   }
 }

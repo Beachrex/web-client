@@ -18,6 +18,18 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-21 – Beach FAQ, FAQPage JSON-LD and search snippet (TASK-007) ✅ COMPLETE (web side)
+
+Spec: backend `docs/tasks/TASK-007-seo-geo-descriptions.md` (owner 2026-10-21, all six proposals).
+- Beach page: `BeachFaqSection` after the details (native `<details>`, answers in the HTML; heading `BeachFaq.title` in 19 languages); hidden without questions.
+- `FAQPage` JSON-LD next to `TouristAttraction` and the breadcrumb, from the same items.
+- `generateMetadata`: `basic_info.meta_description` (requested language only) wins over the description.
+- `renderJsonLd` escapes `<` as `\u003c`, so database text cannot close the `<script>` tag (all JSON-LD).
+- Types for the new fields live in `src/lib/utils/beach-faq.ts` until `yarn generate:api` is run against dev.
+- Tests: `e2e/beach-faq.unit.spec.ts`. Nothing shows until the backend fields exist and `content:ai` has written data.
+
+---
+
 ## 2026-10-21 – Accommodation price badge hidden on beach cards ✅ COMPLETE
 
 Owner 2026-10-21: the green "from 0 €" accommodation badge on `PropertyCard` (beach lists, map list, favorites) was the only accommodation UI not behind `FEATURES.accommodation`. It is now gated; the location badge keeps its place on the right (`ml-auto`). Regression test: `e2e/beach-card-price.unit.spec.ts`.
