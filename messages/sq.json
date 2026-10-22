@@ -828,7 +828,8 @@
     "noVideo": "Nuk ka video në dispozicion",
     "mostVisited": "Më të vizituarit",
     "loading": "Duke ngarkuar...",
-    "showOnMap": "Shfaq {title} në hartë"
+    "showOnMap": "Shfaq {title} në hartë",
+    "webcamClose": "Mbyll kamerën"
   },
   "Menu": {
     "browseBeaches": "Shfleto plazhet",

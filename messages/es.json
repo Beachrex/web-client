@@ -828,7 +828,8 @@
     "noVideo": "Video no disponible",
     "mostVisited": "Más visitada",
     "loading": "Cargando...",
-    "showOnMap": "Mostrar {title} en el mapa"
+    "showOnMap": "Mostrar {title} en el mapa",
+    "webcamClose": "Cerrar la webcam"
   },
   "Menu": {
     "browseBeaches": "Explorar playas",

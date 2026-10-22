@@ -828,7 +828,8 @@
     "noVideo": "No video available",
     "mostVisited": "Most visited",
     "loading": "Loading...",
-    "showOnMap": "Show {title} on map"
+    "showOnMap": "Show {title} on map",
+    "webcamClose": "Close webcam"
   },
   "Menu": {
     "browseBeaches": "Browse beaches",

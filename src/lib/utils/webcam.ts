@@ -61,6 +61,13 @@ export function windyPageUrl(windyId: number): string {
   return `https://www.windy.com/webcams/${windyId}`;
 }
 
+/** `https://www.windy.com/webcams/123` (what cards get from `webcamLink`) → 123, else null. */
+export function windyIdFromPageUrl(url: unknown): number | null {
+  if (typeof url !== 'string') return null;
+  const m = /^https:\/\/www\.windy\.com\/webcams\/(\d+)$/.exec(url.trim());
+  return m ? toWindyId(m[1]) : null;
+}
+
 /** `webcams[]` from beach details → verified webcams, primary first. Ignores anything malformed. */
 export function parseWindyWebcams(raw: unknown): WindyWebcam[] {
   if (!Array.isArray(raw)) return [];

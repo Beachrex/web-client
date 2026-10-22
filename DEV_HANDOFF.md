@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – Webcams on beach cards play in a popup ✅ COMPLETE
+
+Owner 2026-10-22: the webcam button on beach cards (map, city, region, island lists — every `PropertyCard`) opened Windy in a new tab; it now opens `WebcamModal` on our page with the same Windy player iframe as the beach page section (built from the id). Escape, the close button or a click outside closes it; focus stays inside and returns to the card; page scroll is locked while open. Events from the portal are stopped so the card behind does not navigate. An old pasted link (`FEATURES.windyWebcams` off) still opens a new tab. New label `PropertyCard.webcamClose` (19 languages). Test: `e2e/webcam-popup.unit.spec.ts`.
+
+---
+
 ## 2026-10-22 – Map media switch in the beach page order ✅ COMPLETE
 
 Owner 2026-10-22: the map page switch showed photos, webcam, 360, video; the beach page shows photos, video, 360, webcam. `MediaToggleInline` (`Dropdown.tsx`) and the map dropdown options (`MapWithSidebar.tsx`) now use the beach page order. Test: `e2e/media-toggle-order.unit.spec.ts` (fails on the old order).

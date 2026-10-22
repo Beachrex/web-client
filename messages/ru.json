@@ -828,7 +828,8 @@
     "noVideo": "Видео недоступно",
     "mostVisited": "Самый посещаемый",
     "loading": "Загрузка...",
-    "showOnMap": "Показать {title} на карте"
+    "showOnMap": "Показать {title} на карте",
+    "webcamClose": "Закрыть веб-камеру"
   },
   "Menu": {
     "browseBeaches": "Смотреть пляжи",

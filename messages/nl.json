@@ -828,7 +828,8 @@
     "noVideo": "Geen video beschikbaar",
     "mostVisited": "Meest bezocht",
     "loading": "Laden...",
-    "showOnMap": "{title} op kaart weergeven"
+    "showOnMap": "{title} op kaart weergeven",
+    "webcamClose": "Webcam sluiten"
   },
   "Menu": {
     "browseBeaches": "Stranden bekijken",
