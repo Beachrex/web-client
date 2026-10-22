@@ -30,6 +30,7 @@ const MapWithSidebar = () => {
     const c = useTranslations('SearchBeach');
     const searchParams = useSearchParams();
 
+    // Same order as the beach page and the inline toggle: photos, video, 360, webcam.
     const mediaOptions = [
         {
             value: 'gallery',
@@ -37,14 +38,14 @@ const MapWithSidebar = () => {
             icon: '/images/beachmedia/photo.png',
         },
         {
-            value: 'sphere',
-            label: d('beachMedia360'),
-            icon: '/images/beachmedia/360-degree-white.png',
-        },
-        {
             value: 'video',
             label: d('beachMediaVideo'),
             icon: '/images/beachmedia/play-button-arrowhead-white.png',
+        },
+        {
+            value: 'sphere',
+            label: d('beachMedia360'),
+            icon: '/images/beachmedia/360-degree-white.png',
         },
         {
             value: 'webcam',

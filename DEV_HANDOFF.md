@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – Map media switch in the beach page order ✅ COMPLETE
+
+Owner 2026-10-22: the map page switch showed photos, webcam, 360, video; the beach page shows photos, video, 360, webcam. `MediaToggleInline` (`Dropdown.tsx`) and the map dropdown options (`MapWithSidebar.tsx`) now use the beach page order. Test: `e2e/media-toggle-order.unit.spec.ts` (fails on the old order).
+
+---
+
 ## 2026-10-21 – Beach FAQ, FAQPage JSON-LD and search snippet (TASK-007) ✅ COMPLETE (web side)
 
 Spec: backend `docs/tasks/TASK-007-seo-geo-descriptions.md` (owner 2026-10-21, all six proposals).
