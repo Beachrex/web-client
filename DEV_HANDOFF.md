@@ -43,6 +43,15 @@ The "Browse accommodations" button in `Continent/SearchContinent.tsx` and the gr
 
 ---
 
+## 2026-10-21 – `<html lang>` and `hreflang` use ISO 639-1 language codes ✅ COMPLETE
+
+Owner (2026-10-21): keep the URL codes, fix only the language attributes.
+- Two URL locales are country codes, not language codes: `si` (as a language code it means Sinhala) and `ua` (not a language code). `<html lang>` and every `hreflang` (page metadata alternates + all six sitemaps) now use `sl` and `uk`. URLs (`/si/...`, `/ua/...`), routing and API `Accept-Language` are unchanged.
+- New helper `toHtmlLang()` in `src/app/config/locales.ts`; used in `app/[locale]/layout.tsx`, `buildAlternateLanguages()` and the sitemap routes.
+- Spec: `e2e/html-lang.unit.spec.ts` (fails against an identity helper: 3 of 4 tests).
+
+---
+
 ## 2026-10-14 – Verified Windy webcams on the beach page (TASK-006) ✅ COMPLETE
 
 Owner decisions 2026-10-14 (backend `docs/tasks/TASK-006-windy-webcams.md`): direct iframe, other providers hidden.

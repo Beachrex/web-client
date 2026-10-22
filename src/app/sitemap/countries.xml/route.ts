@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { locales } from '@/app/config/locales';
+import { locales, toHtmlLang } from '@/app/config/locales';
 import { env } from '@/env';
 import type { Country } from '@/lib/api-client/types.gen';
 
@@ -58,7 +58,7 @@ function generateSitemapXML(entries: MetadataRoute.Sitemap): string {
         ? Object.entries(entry.alternates.languages)
             .map(
               ([lang, url]) =>
-                `    <xhtml:link rel="alternate" hreflang="${lang}" href="${url}" />`,
+                `    <xhtml:link rel="alternate" hreflang="${toHtmlLang(lang)}" href="${url}" />`,
             )
             .join('\n')
         : '';
