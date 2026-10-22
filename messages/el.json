@@ -828,7 +828,8 @@
     "noVideo": "Δεν υπάρχει διαθέσιμο βίντεο",
     "mostVisited": "Πιο επισκέψιμες",
     "loading": "Φόρτωση...",
-    "showOnMap": "Εμφάνιση {title} στον χάρτη"
+    "showOnMap": "Εμφάνιση {title} στον χάρτη",
+    "webcamClose": "Κλείσιμο κάμερας"
   },
   "Menu": {
     "browseBeaches": "Εξερευνήστε παραλίες",

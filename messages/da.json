@@ -828,7 +828,8 @@
     "noVideo": "Ingen video tilgængelig",
     "mostVisited": "Mest besøgte",
     "loading": "Indlæser...",
-    "showOnMap": "Vis {title} på kort"
+    "showOnMap": "Vis {title} på kort",
+    "webcamClose": "Luk webcam"
   },
   "Menu": {
     "browseBeaches": "Udforsk strande",

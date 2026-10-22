@@ -828,7 +828,8 @@
     "noVideo": "Video nije dostupan",
     "mostVisited": "Najposjećenije",
     "loading": "Učitavanje...",
-    "showOnMap": "Prikaži {title} na karti"
+    "showOnMap": "Prikaži {title} na karti",
+    "webcamClose": "Zatvori web kameru"
   },
   "Menu": {
     "browseBeaches": "Pregledaj plaže",

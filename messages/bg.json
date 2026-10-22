@@ -828,7 +828,8 @@
     "noVideo": "Няма налично видео",
     "mostVisited": "Най-посещавана",
     "loading": "Зареждане...",
-    "showOnMap": "Покажи {title} на картата"
+    "showOnMap": "Покажи {title} на картата",
+    "webcamClose": "Затвори уеб камерата"
   },
   "Menu": {
     "browseBeaches": "Разгледай плажовете",

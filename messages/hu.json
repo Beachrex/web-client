@@ -828,7 +828,8 @@
     "noVideo": "Nincs elérhető videó",
     "mostVisited": "Leglátogatottabb",
     "loading": "Betöltés...",
-    "showOnMap": "{title} megjelenítése a térképen"
+    "showOnMap": "{title} megjelenítése a térképen",
+    "webcamClose": "Webkamera bezárása"
   },
   "Menu": {
     "browseBeaches": "Strandok böngészése",

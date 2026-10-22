@@ -828,7 +828,8 @@
     "noVideo": "Video není k dispozici",
     "mostVisited": "Nejnavštěvovanější",
     "loading": "Načítání...",
-    "showOnMap": "Zobrazit {title} na mapě"
+    "showOnMap": "Zobrazit {title} na mapě",
+    "webcamClose": "Zavřít webkameru"
   },
   "Menu": {
     "browseBeaches": "Procházet pláže",

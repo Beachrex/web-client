@@ -652,7 +652,8 @@
     "noVideo": "Video ni na voljo",
     "mostVisited": "Najbolj obiskana",
     "loading": "Nalaganje...",
-    "showOnMap": "Prikaži {title} na zemljevidu"
+    "showOnMap": "Prikaži {title} na zemljevidu",
+    "webcamClose": "Zapri spletno kamero"
   },
   "Auth": {
     "continueWithGoogle": "Nadaljuj z Googlom",

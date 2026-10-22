@@ -5,7 +5,8 @@ import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/p
 import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
 import { buildCardFeatureIcons, type BeachCardFeatures } from '@/lib/utils/beach-badges';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { parseWebcamUrl } from '@/lib/utils/webcam';
+import { parseWebcamUrl, windyIdFromPageUrl } from '@/lib/utils/webcam';
+import WebcamModal from '@/components/Beach/WebcamModal';
 import { useQueryClient } from '@tanstack/react-query';
 import { Star } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -135,6 +136,10 @@ const webcamUrl = React.useMemo(
   () => parseWebcamUrl(webcamEmbed),
   [webcamEmbed]
 );
+// Owner 2026-10-22: a verified Windy webcam plays in a popup on our page; only an old pasted link opens a new tab.
+const windyId = React.useMemo(() => windyIdFromPageUrl(webcamUrl), [webcamUrl]);
+const [webcamOpen, setWebcamOpen] = React.useState(false);
+const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
 
   /**
    * IMAGES TO SHOW
@@ -159,10 +164,13 @@ const webcamUrl = React.useMemo(
   // Memoize event handlers to prevent recreation on every render
   const handleWebcamClick = React.useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    if (webcamUrl) {
+    e.preventDefault();
+    if (windyId) {
+      setWebcamOpen(true);
+    } else if (webcamUrl) {
       window.open(webcamUrl, '_blank', 'noopener,noreferrer');
     }
-  }, [webcamUrl]);
+  }, [webcamUrl, windyId]);
 
   const handleSphereClick = React.useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -210,6 +218,9 @@ const webcamUrl = React.useMemo(
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {webcamOpen && windyId ? (
+        <WebcamModal windyId={windyId} beachName={title} onClose={closeWebcam} />
+      ) : null}
       <div className="relative grow overflow-hidden">
 
       {/* MEDIA DISPLAY */}
@@ -225,10 +236,11 @@ const webcamUrl = React.useMemo(
         loading="lazy"
       />
 
-      {/* OPEN WEBCAM IN NEW TAB */}
+      {/* OPEN WEBCAM (popup for Windy, new tab for an old pasted link) */}
       <button
         type="button"
         onClick={handleWebcamClick}
+        aria-haspopup={windyId ? 'dialog' : undefined}
         className="absolute inset-0 z-30 flex items-center justify-center"
       >
         <div className="flex items-center gap-3 rounded-full bg-black/60 px-6 py-4 backdrop-blur-sm hover:bg-black/70 transition">
