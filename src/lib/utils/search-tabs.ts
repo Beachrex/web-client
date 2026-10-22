@@ -54,3 +54,30 @@ export function searchTabs(results: { type: SearchResultType }[]): SearchTabInfo
   if (counts.length < 2) return [];
   return [{ tab: 'all', count: results.length }, ...counts];
 }
+
+/** Map filter key per place type (`?country=GR`, `?region=attiki`, …), see the beach map filters. */
+export const MAP_FILTER_KEY: Record<Exclude<SearchResultType, 'beach'>, string> = {
+  country: 'country',
+  region: 'region',
+  island: 'island',
+  city: 'city',
+};
+
+/**
+ * Owner 2026-10-22, "Show all" in the search dropdown: the place the query names (exact or prefix match on a
+ * country, region, island or city, closest first), or null when the query only matches beaches.
+ */
+export function showAllTarget<T extends { type: SearchResultType; name: string; code?: string }>(
+  results: T[],
+  query: string,
+): (T & { type: Exclude<SearchResultType, 'beach'>; code: string }) | null {
+  const place = resultsForTab(results, 'all', query).find(
+    (r) => r.type !== 'beach' && Boolean(r.code) && matchRank(r.name, query) <= 1,
+  );
+  return (place as (T & { type: Exclude<SearchResultType, 'beach'>; code: string }) | undefined) ?? null;
+}
+
+/** Query string for the beach map filtered to that place. */
+export function showAllQuery(target: { type: Exclude<SearchResultType, 'beach'>; code: string }): string {
+  return new URLSearchParams({ [MAP_FILTER_KEY[target.type]]: target.code }).toString();
+}

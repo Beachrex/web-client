@@ -18,6 +18,13 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – "All beaches on the map" in the search dropdown ✅ COMPLETE
+
+Owner 2026-10-22: a button at the bottom of the search dropdown opens the beach map filtered to the place the query names — the closest country, region, island or city whose name equals or starts with the query (`showAllTarget` in `src/lib/utils/search-tabs.ts`), as `?country=GR`, `?region=<code>`, `?island=<code>`, `?city=<code>` (the codes the map filters accept). No button when only beaches match (the map has no text filter). Label `Search.showAllOnMap` in 19 languages. Tests in `e2e/search-tabs.unit.spec.ts`.
+Backend Beachrex/backend#130 (not merged, waits for the owner) makes "grčija", "nemčija" … find beaches and towns too.
+
+---
+
 ## 2026-10-22 – Search dropdown split into tabs per result type ✅ COMPLETE
 
 Owner 2026-10-22: the header search listed beaches, cities, regions and the country in one long list ("albanija" showed the country last). `GlobalSearch` now shows tabs — All, Beaches, Cities, Islands, Regions, Countries — with counts, only for types that have results and only when there are at least two types. "All" puts the closest name matches first (exact, prefix, word prefix; diacritics ignored), otherwise the API order. A new query starts on "All"; arrow keys and Enter work within the active tab; the input keeps focus when a tab is clicked. Logic in `src/lib/utils/search-tabs.ts`; labels `Search.tab*` in 19 languages. Test: `e2e/search-tabs.unit.spec.ts`.

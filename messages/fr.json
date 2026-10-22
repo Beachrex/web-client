@@ -90,7 +90,8 @@
     "tabIslands": "Îles",
     "tabRegions": "Régions",
     "tabCountries": "Pays",
-    "tabsLabel": "Filtrer les résultats par type"
+    "tabsLabel": "Filtrer les résultats par type",
+    "showAllOnMap": "Toutes les plages sur la carte : {name}"
   },
   "HomePage": {
     "allBeaches": "Toutes les plages",

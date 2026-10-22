@@ -90,7 +90,8 @@
     "tabIslands": "Szigetek",
     "tabRegions": "Régiók",
     "tabCountries": "Országok",
-    "tabsLabel": "Találatok szűrése típus szerint"
+    "tabsLabel": "Találatok szűrése típus szerint",
+    "showAllOnMap": "Összes strand a térképen: {name}"
   },
   "HomePage": {
     "allBeaches": "Összes strand",

@@ -90,7 +90,8 @@
     "tabIslands": "Ishuj",
     "tabRegions": "Rajone",
     "tabCountries": "Shtete",
-    "tabsLabel": "Filtro rezultatet sipas llojit"
+    "tabsLabel": "Filtro rezultatet sipas llojit",
+    "showAllOnMap": "Të gjitha plazhet në hartë: {name}"
   },
   "HomePage": {
     "allBeaches": "Të gjithë plazhet",

@@ -90,7 +90,8 @@
     "tabIslands": "Øer",
     "tabRegions": "Regioner",
     "tabCountries": "Lande",
-    "tabsLabel": "Filtrer resultater efter type"
+    "tabsLabel": "Filtrer resultater efter type",
+    "showAllOnMap": "Alle strande på kortet: {name}"
   },
   "HomePage": {
     "allBeaches": "Alle strande",

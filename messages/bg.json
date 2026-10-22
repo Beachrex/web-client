@@ -90,7 +90,8 @@
     "tabIslands": "Острови",
     "tabRegions": "Региони",
     "tabCountries": "Държави",
-    "tabsLabel": "Филтриране на резултатите по вид"
+    "tabsLabel": "Филтриране на резултатите по вид",
+    "showAllOnMap": "Всички плажове на картата: {name}"
   },
   "HomePage": {
     "allBeaches": "Всички плажове",

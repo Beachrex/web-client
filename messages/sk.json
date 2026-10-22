@@ -90,7 +90,8 @@
     "tabIslands": "Ostrovy",
     "tabRegions": "Regióny",
     "tabCountries": "Krajiny",
-    "tabsLabel": "Filtrovať výsledky podľa typu"
+    "tabsLabel": "Filtrovať výsledky podľa typu",
+    "showAllOnMap": "Všetky pláže na mape: {name}"
   },
   "HomePage": {
     "allBeaches": "Všetky pláže",

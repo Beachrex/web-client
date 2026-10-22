@@ -76,3 +76,28 @@ test('tab labels exist in all 19 languages', () => {
     }
   }
 });
+
+/** Owner 2026-10-22: "Show all" opens the beach map filtered to the place the query names. */
+test('show all targets the place the query names and builds the map filter', async () => {
+  const { showAllTarget, showAllQuery } = await import('@/lib/utils/search-tabs');
+  const results = [
+    { type: 'beach' as const, name: 'Plazhi Ksamil 2' },
+    { type: 'city' as const, name: 'Arbanija', code: 'arbanija' },
+    { type: 'region' as const, name: 'Vlorë', code: 'vlore' },
+    { type: 'country' as const, name: 'Albanija', code: 'AL' },
+  ];
+
+  const country = showAllTarget(results, 'albanija');
+  expect(country?.name).toBe('Albanija');
+  expect(showAllQuery(country!)).toBe('country=AL');
+  expect(showAllQuery(showAllTarget(results, 'vlo')!), 'prefix match on a region').toBe('region=vlore');
+  expect(showAllTarget(results, 'ksamil'), 'only a beach matches: no target').toBeNull();
+  expect(showAllTarget([{ type: 'country' as const, name: 'Grčija' }], 'grčija'), 'no code: no target').toBeNull();
+});
+
+test('the dropdown shows the button and the label exists in all 19 languages', () => {
+  expect(read('src/components/Header/GlobalSearch.tsx')).toContain('data-testid="search-show-all"');
+  for (const f of readdirSync(join(root, 'messages')).filter((x) => x.endsWith('.json'))) {
+    expect(JSON.parse(read(`messages/${f}`)).Search?.showAllOnMap, f).toContain('{name}');
+  }
+});

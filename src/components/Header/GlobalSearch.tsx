@@ -10,7 +10,8 @@ import { useQuery } from '@tanstack/react-query';
 import { globalSearchOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildSearchResultUrl } from '@/lib/utils/search-result-url';
-import { resultsForTab, searchTabs, type SearchTab } from '@/lib/utils/search-tabs';
+import { resultsForTab, searchTabs, showAllQuery, showAllTarget, type SearchTab } from '@/lib/utils/search-tabs';
+import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import Image from 'next/image';
 
 // Unified search result type
@@ -19,6 +20,8 @@ interface UnifiedSearchResult {
     type: 'beach' | 'city' | 'island' | 'region' | 'country';
     name: string;
     slug: string;
+    /** Filter code for the beach map (countries, regions, islands, cities) */
+    code?: string;
     location?: string;
     main_image?: string;
     // URL building slugs
@@ -100,6 +103,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 type: 'city',
                 name: city.name ?? '',
                 slug: city.slug ?? '',
+                code: ((city as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: [city.region_name, city.country_name].filter(Boolean).join(', '),
                 main_image: city.main_image,
                 continent_slug: city.continent_slug,
@@ -116,6 +120,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 type: 'island',
                 name: (island as Record<string, unknown>).name as string ?? '',
                 slug: (island as Record<string, unknown>).slug as string ?? '',
+                code: ((island as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: [
                     (island as Record<string, unknown>).region_name,
                     (island as Record<string, unknown>).country_name,
@@ -134,6 +139,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 type: 'region',
                 name: (region as Record<string, unknown>).name as string ?? '',
                 slug: (region as Record<string, unknown>).slug as string ?? '',
+                code: ((region as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: (region as Record<string, unknown>).country_name as string ?? '',
                 main_image: (region as Record<string, unknown>).main_image as string | undefined,
                 continent_slug: region.continent_slug,
@@ -148,6 +154,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 type: 'country',
                 name: (country as Record<string, unknown>).name as string ?? '',
                 slug: (country as Record<string, unknown>).slug as string ?? '',
+                code: ((country as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: '',
                 main_image: (country as Record<string, unknown>).main_image as string | undefined,
                 continent_slug: country.continent_slug,
@@ -164,6 +171,16 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         () => resultsForTab(results, currentTab, debouncedQuery),
         [results, currentTab, debouncedQuery],
     );
+
+    // "Show all on the map" for the place the query names (owner 2026-10-22)
+    const showAll = React.useMemo(() => showAllTarget(results, debouncedQuery), [results, debouncedQuery]);
+    const openShowAll = () => {
+        if (!showAll) return;
+        setIsOpen(false);
+        setQuery('');
+        setSelectedIndex(-1);
+        router.push(buildBeachMapUrl(locale, showAllQuery(showAll)));
+    };
 
     useEffect(() => {
         setActiveTab('all');
@@ -439,6 +456,21 @@ rounded-lg hover:bg-blue-50 transition-all duration-150 ${
                             </button>
                         ))}
                     </div>
+                    {showAll && (
+                        <div className="sticky bottom-0 border-t border-gray-100 bg-white p-2">
+                            <button
+                                type="button"
+                                onMouseDown={(e) => e.preventDefault()}
+                                onClick={openShowAll}
+                                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#1A3C68] px-4 py-2.5 \
+text-sm font-semibold text-white transition-colors hover:bg-[#2a4c78]"
+                                data-testid="search-show-all"
+                            >
+                                <MapPin size={16} aria-hidden="true" />
+                                {tSearch('showAllOnMap', { name: showAll.name })}
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
 

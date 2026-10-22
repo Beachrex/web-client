@@ -90,7 +90,8 @@
     "tabIslands": "Eilanden",
     "tabRegions": "Regio's",
     "tabCountries": "Landen",
-    "tabsLabel": "Resultaten filteren op type"
+    "tabsLabel": "Resultaten filteren op type",
+    "showAllOnMap": "Alle stranden op de kaart: {name}"
   },
   "HomePage": {
     "allBeaches": "Alle stranden",

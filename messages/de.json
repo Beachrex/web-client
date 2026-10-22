@@ -90,7 +90,8 @@
     "tabIslands": "Inseln",
     "tabRegions": "Regionen",
     "tabCountries": "Länder",
-    "tabsLabel": "Ergebnisse nach Art filtern"
+    "tabsLabel": "Ergebnisse nach Art filtern",
+    "showAllOnMap": "Alle Strände auf der Karte: {name}"
   },
   "HomePage": {
     "allBeaches": "Alle Strände",
