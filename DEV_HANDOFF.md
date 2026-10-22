@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – "Beach view" switch in Browse all beaches ✅ COMPLETE
+
+Owner 2026-10-22 (country pages): the "Beach view" switch (photos, video, 360°, webcam) worked in "Most visited" but "Browse all beaches" had none (its `mediaMode` was fixed to photos). The switch is now one component, `src/components/BeachViewToggle.tsx`, used by `PropertySection` and `DynamicSearchBeaches`, so it appears on every page with the browse list (world, continent, country, region, city, island). In the browse list it changes the card view and does not hide beaches (the page comes from the server, so the old unused client-side filter would have broken the count and paging); a beach without the medium shows the card's own empty state. Buttons have `aria-pressed` and labels from `BeachDetails.beachMedia*` (same as the beach page, 19 languages). Tests: `e2e/browse-beach-view.unit.spec.ts`; `e2e/media-toggle-order.unit.spec.ts` now reads the order from the shared component.
+
+---
+
 ## 2026-10-22 – Map: a filter with no matches shows 0 beaches ✅ COMPLETE
 
 Owner 2026-10-22: on `/beach-map?waterbody=pool` (and `river`) the map showed every beach, while `sea` and `lake` worked. The filter reached the API correctly; `MapWithSidebar` only accepted a bounding-box response when it had beaches, so an empty result kept the previous list. Now every response replaces the list (`nextDisplayedBeaches` in `src/lib/utils/map-results.ts`); while a new query loads the previous beaches stay. An empty result shows `BeachesMap.noBeachesFound` (already in 19 languages). Any other filter with no matches now behaves the same way. Test: `e2e/map-empty-results.unit.spec.ts` (fails on the old code).
