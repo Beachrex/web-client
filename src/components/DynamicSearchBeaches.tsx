@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { Suspense, useEffect, useState } from 'react';
 
 import { PropertyMediaContext } from '@/components/PropertySection';
+import BeachViewToggle, { type BeachMediaMode } from '@/components/BeachViewToggle';
 
 import Dropdown from './Dropdown';
 import type { PropertyCardProps } from './PropertyCard/PropertyCard';
@@ -152,8 +153,7 @@ function DynamicSearchBeachesInner({
     setCurrentPage(page);
     document.getElementById(ALL_BEACHES_SECTION_ID)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-const [mediaMode] =
-  useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
+  const [mediaMode, setMediaMode] = useState<BeachMediaMode>('gallery');
 
   // Build map URL with current filters
   // Locale-prefixed: a bare '/beach-map' let the NEXT_LOCALE cookie pick the language (QA #24)
@@ -186,15 +186,12 @@ const [mediaMode] =
 
   const properties = useBeachCards(beaches);
 
-  const filteredProperties = properties.filter((p) => {
-    if (mediaMode === 'sphere') return Boolean(p.sphereTourUrl);
-    if (mediaMode === 'video') return Boolean(p.videoEmbedUrl);
-    if (mediaMode === 'webcam') return Boolean(p.webcamEmbed);
-    return true;
-  });
+  // The view switch changes how cards look, it does not hide beaches: the page comes from the server, so hiding
+  // cards here would break the count and paging. A beach without the medium shows its own empty state.
+  const hasAnyWebcam = properties.some((p) => Boolean(p.webcamEmbed));
 
   const totalPages = lastPage;
-  const paginatedItems = filteredProperties;
+  const paginatedItems = properties;
 
   return (
     <section
@@ -505,6 +502,8 @@ const [mediaMode] =
           </h2>
 
           <div className="flex flex-wrap gap-3 items-center">
+            <BeachViewToggle mode={mediaMode} onChange={setMediaMode} webcamAvailable={hasAnyWebcam} />
+
             <button
               type="button"
               onClick={() => setIsFilterOpen(true)}
