@@ -2,7 +2,7 @@
 
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema, buildCityUrlFromSchema, buildCountryUrl } from '@/lib/utils/beach-urls';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -30,6 +30,12 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
     const flagUrl = beach.country_code
         ? buildCdnUrl(`img/flag/${beach.country_code.toLowerCase()}.svg`, 'icon')
         : null;
+
+    const cityUrl = buildCityUrlFromSchema(beach, locale) ?? undefined;
+    const countryUrl =
+        beach.continent_slug && beach.country_slug
+            ? buildCountryUrl(locale, beach.continent_slug, beach.country_slug)
+            : undefined;
 
     const location = beach.city_name ?? beach.country_name ?? '';
     const title = beach.name ?? 'Beach';
@@ -59,13 +65,40 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                 {/* BOTTOM LABELS - same style as PropertyCard */}
                 <div className="absolute bottom-2 left-2 right-2 flex justify-between pointer-events-none z-20">
                     <div className="pointer-events-auto flex items-center gap-1">
-                        {location && (
+                        {location && (cityUrl ? (
+                            <Link
+                                href={cityUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="flex h-[32px] items-center justify-center rounded-[6px] bg-[#FF8000] px-[10px] transition-colors hover:bg-[#e67300] focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                            >
+                                <span className="text-[11px] font-bold text-white">{location}</span>
+                            </Link>
+                        ) : (
                             <div className="flex h-[32px] items-center justify-center rounded-[6px] bg-[#FF8000] px-[10px]">
                                 <span className="text-[11px] font-bold text-white">{location}</span>
                             </div>
-                        )}
+                        ))}
 
-                        {flagUrl && (
+                        {flagUrl && (countryUrl ? (
+                            <Link
+                                href={countryUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                title={beach.country_name ?? undefined}
+                                className="block h-[32px] w-[40px] overflow-hidden rounded-[6px] transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                            >
+                                <Image
+                                    src={flagUrl}
+                                    width={40}
+                                    height={32}
+                                    alt={beach.country_name ?? 'flag'}
+                                    className="h-full w-full object-cover"
+                                />
+                            </Link>
+                        ) : (
                             <div className="h-[32px] w-[40px] overflow-hidden rounded-[6px]">
                                 <Image
                                     src={flagUrl}
@@ -75,7 +108,7 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                                     className="h-full w-full object-cover"
                                 />
                             </div>
-                        )}
+                        ))}
                     </div>
                 </div>
             </div>

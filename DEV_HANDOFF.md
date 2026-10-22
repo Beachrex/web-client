@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – Map cards: country (flag) is a link too ✅ COMPLETE
+
+Owner 2026-10-22: on the map cards the city was a link but the country was not. `PropertyCard` now links the flag to the country page (`countryUrl`/`countryName`, built in `DynamicPropertyCard` with `buildCountryUrl`; the other card lists that map via `mapBeachToProperty` are unchanged), and the marker popup (`BeachMarkerTooltip`) links both the city label and the flag (city page / country page). On the map (list cards with `openInNewTab` and the popup) all of these open in a new tab, like the beach link.
+
+---
+
 ## 2026-10-22 – Map: beach opens in a new tab ✅ COMPLETE
 
 Owner 2026-10-22: on the beach map, clicking a beach opens the beach page in a new tab, both in the marker popup (`BeachMarkerTooltip`: name and "View details" links) and in the cards beside the map (`VirtualizedBeachList` → `DynamicPropertyCard` → `PropertyCard`, new prop `openInNewTab`, beach-name link). Links use `target="_blank" rel="noopener noreferrer"`, so the map position and filters stay as they were. Other pages that use `PropertyCard` (home, favorites) are unchanged. The city/region link on a card and the "show on map" button behave as before.
