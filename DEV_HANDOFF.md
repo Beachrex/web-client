@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – Map: a filter with no matches shows 0 beaches ✅ COMPLETE
+
+Owner 2026-10-22: on `/beach-map?waterbody=pool` (and `river`) the map showed every beach, while `sea` and `lake` worked. The filter reached the API correctly; `MapWithSidebar` only accepted a bounding-box response when it had beaches, so an empty result kept the previous list. Now every response replaces the list (`nextDisplayedBeaches` in `src/lib/utils/map-results.ts`); while a new query loads the previous beaches stay. An empty result shows `BeachesMap.noBeachesFound` (already in 19 languages). Any other filter with no matches now behaves the same way. Test: `e2e/map-empty-results.unit.spec.ts` (fails on the old code).
+
+---
+
 ## 2026-10-22 – Map: beach opens in a new tab ✅ COMPLETE
 
 Owner 2026-10-22: on the beach map, clicking a beach opens the beach page in a new tab, both in the marker popup (`BeachMarkerTooltip`: name and "View details" links) and in the cards beside the map (`VirtualizedBeachList` → `DynamicPropertyCard` → `PropertyCard`, new prop `openInNewTab`, beach-name link). Links use `target="_blank" rel="noopener noreferrer"`, so the map position and filters stay as they were. Other pages that use `PropertyCard` (home, favorites) are unchanged. The city/region link on a card and the "show on map" button behave as before.
