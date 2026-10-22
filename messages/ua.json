@@ -83,7 +83,14 @@
     "beaches": "пляжі",
     "noResults": "Результатів не знайдено. Спробуйте інший пошуковий запит.",
     "searching": "Пошук...",
-    "clearSearch": "Очистити пошук"
+    "clearSearch": "Очистити пошук",
+    "tabAll": "Усі",
+    "tabBeaches": "Пляжі",
+    "tabCities": "Міста",
+    "tabIslands": "Острови",
+    "tabRegions": "Регіони",
+    "tabCountries": "Країни",
+    "tabsLabel": "Фільтрувати результати за типом"
   },
   "HomePage": {
     "allBeaches": "Усі пляжі",

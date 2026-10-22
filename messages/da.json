@@ -83,7 +83,14 @@
     "beaches": "strande",
     "noResults": "Ingen resultater fundet. Prøv et andet søgeord.",
     "searching": "Søger...",
-    "clearSearch": "Ryd søgning"
+    "clearSearch": "Ryd søgning",
+    "tabAll": "Alle",
+    "tabBeaches": "Strande",
+    "tabCities": "Byer",
+    "tabIslands": "Øer",
+    "tabRegions": "Regioner",
+    "tabCountries": "Lande",
+    "tabsLabel": "Filtrer resultater efter type"
   },
   "HomePage": {
     "allBeaches": "Alle strande",

@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – Search dropdown split into tabs per result type ✅ COMPLETE
+
+Owner 2026-10-22: the header search listed beaches, cities, regions and the country in one long list ("albanija" showed the country last). `GlobalSearch` now shows tabs — All, Beaches, Cities, Islands, Regions, Countries — with counts, only for types that have results and only when there are at least two types. "All" puts the closest name matches first (exact, prefix, word prefix; diacritics ignored), otherwise the API order. A new query starts on "All"; arrow keys and Enter work within the active tab; the input keeps focus when a tab is clicked. Logic in `src/lib/utils/search-tabs.ts`; labels `Search.tab*` in 19 languages. Test: `e2e/search-tabs.unit.spec.ts`.
+
+---
+
 ## 2026-10-22 – Webcams on beach cards play in a popup ✅ COMPLETE
 
 Owner 2026-10-22: the webcam button on beach cards (map, city, region, island lists — every `PropertyCard`) opened Windy in a new tab; it now opens `WebcamModal` on our page with the same Windy player iframe as the beach page section (built from the id). Escape, the close button or a click outside closes it; focus stays inside and returns to the card; page scroll is locked while open. Events from the portal are stopped so the card behind does not navigate. An old pasted link (`FEATURES.windyWebcams` off) still opens a new tab. New label `PropertyCard.webcamClose` (19 languages). Test: `e2e/webcam-popup.unit.spec.ts`.

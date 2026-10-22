@@ -83,7 +83,14 @@
     "beaches": "παραλίες",
     "noResults": "Δεν βρέθηκαν αποτελέσματα. Δοκιμάστε διαφορετικό όρο αναζήτησης.",
     "searching": "Αναζήτηση...",
-    "clearSearch": "Καθαρισμός αναζήτησης"
+    "clearSearch": "Καθαρισμός αναζήτησης",
+    "tabAll": "Όλα",
+    "tabBeaches": "Παραλίες",
+    "tabCities": "Πόλεις",
+    "tabIslands": "Νησιά",
+    "tabRegions": "Περιοχές",
+    "tabCountries": "Χώρες",
+    "tabsLabel": "Φιλτράρισμα αποτελεσμάτων ανά τύπο"
   },
   "HomePage": {
     "allBeaches": "Όλες οι παραλίες",

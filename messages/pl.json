@@ -83,7 +83,14 @@
     "beaches": "plaże",
     "noResults": "Nie znaleziono wyników. Spróbuj innego wyszukiwania.",
     "searching": "Wyszukiwanie...",
-    "clearSearch": "Wyczyść wyszukiwanie"
+    "clearSearch": "Wyczyść wyszukiwanie",
+    "tabAll": "Wszystko",
+    "tabBeaches": "Plaże",
+    "tabCities": "Miejscowości",
+    "tabIslands": "Wyspy",
+    "tabRegions": "Regiony",
+    "tabCountries": "Kraje",
+    "tabsLabel": "Filtruj wyniki według typu"
   },
   "HomePage": {
     "allBeaches": "Wszystkie plaże",

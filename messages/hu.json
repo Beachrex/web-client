@@ -83,7 +83,14 @@
     "beaches": "strandok",
     "noResults": "Nincs találat. Próbálj meg másik keresési kifejezést.",
     "searching": "Keresés...",
-    "clearSearch": "Keresés törlése"
+    "clearSearch": "Keresés törlése",
+    "tabAll": "Összes",
+    "tabBeaches": "Strandok",
+    "tabCities": "Települések",
+    "tabIslands": "Szigetek",
+    "tabRegions": "Régiók",
+    "tabCountries": "Országok",
+    "tabsLabel": "Találatok szűrése típus szerint"
   },
   "HomePage": {
     "allBeaches": "Összes strand",
