@@ -971,5 +971,8 @@
     "limit": "Seznam priljubljenih je poln. Odstranite plažo, da shranite novo.",
     "error": "Plaže ni bilo mogoče shraniti. Poskusite znova.",
     "loadError": "Priljubljenih plaž ni bilo mogoče naložiti. Poskusite znova."
+  },
+  "BeachFaq": {
+    "title": "Pogosta vprašanja o plaži {name}"
   }
 }

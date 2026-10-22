@@ -971,5 +971,8 @@
     "limit": "A kedvencek listája megtelt. Távolítson el egy strandot, hogy újat menthessen.",
     "error": "A strandot nem sikerült menteni. Kérjük, próbálja újra.",
     "loadError": "A kedvenc strandokat nem sikerült betölteni. Kérjük, próbálja újra."
+  },
+  "BeachFaq": {
+    "title": "Gyakori kérdések: {name}"
   }
 }

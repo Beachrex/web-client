@@ -971,5 +971,8 @@
     "limit": "Je favorietenlijst is vol. Verwijder een strand om een ander op te slaan.",
     "error": "Het strand kon niet worden opgeslagen. Probeer het opnieuw.",
     "loadError": "Je favoriete stranden konden niet worden geladen. Probeer het opnieuw."
+  },
+  "BeachFaq": {
+    "title": "Veelgestelde vragen over {name}"
   }
 }

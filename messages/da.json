@@ -971,5 +971,8 @@
     "limit": "Din favoritliste er fuld. Fjern en strand for at gemme en ny.",
     "error": "Stranden kunne ikke gemmes. Prøv igen.",
     "loadError": "Dine favoritstrande kunne ikke indlæses. Prøv igen."
+  },
+  "BeachFaq": {
+    "title": "Ofte stillede spørgsmål om {name}"
   }
 }

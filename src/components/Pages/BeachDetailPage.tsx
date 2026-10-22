@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BeachBannerSection from '@/components/Beach/BeachBanner/BeachBannerSection';
 import BeachDetailsSection from '@/components/Beach/BeachDetails/beachDetailsSection';
+import BeachFaqSection from '@/components/Beach/BeachFaqSection';
 import BeachPageView from '@/components/Beach/BeachPageView';
 import GetYourGuideSection from '@/components/Beach/GetYourGuideSection';
 import SimilarBeachesSection from '@/components/Beach/SimilarBeachesSection';
@@ -19,6 +20,7 @@ import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { FEATURES } from '@/lib/constants/features';
 import { reportBeachView } from '@/lib/utils/beach-views';
 import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
+import { readBeachFaq } from '@/lib/utils/beach-faq';
 
 interface BeachDetailPageProps {
   beachDetails: BeachDetailsSchema;
@@ -126,6 +128,9 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
       )}
       {FEATURES.getYourGuide && <GetYourGuideSection />}
       <BeachDetailsSection beachDetails={beachDetails} />
+
+      {/* TASK-007: FAQ (same items as the FAQPage JSON-LD of the page) */}
+      <BeachFaqSection beachName={beachDetails.basic_info?.name ?? ''} items={readBeachFaq(beachDetails)} />
 
       {/* SIMILAR BEACHES WITH GALLERY */}
       <SimilarBeachesSection

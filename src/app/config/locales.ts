@@ -22,3 +22,18 @@ export const languageNames: Record<string, string> = {
     sq: 'Shqip',
 };
 
+
+/**
+ * URL locale code → ISO 639-1 language code for `<html lang>` and `hreflang`.
+ * Two URL codes are country codes, not language codes: `si` (Slovenia; as a
+ * language code it means Sinhala) and `ua` (Ukraine). URLs keep them; only the
+ * language attributes use the real language codes `sl` and `uk`.
+ */
+const HTML_LANG_OVERRIDES: Partial<Record<string, string>> = {
+    si: 'sl',
+    ua: 'uk',
+};
+
+export function toHtmlLang(locale: string): string {
+    return HTML_LANG_OVERRIDES[locale] ?? locale;
+}

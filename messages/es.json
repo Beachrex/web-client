@@ -971,5 +971,8 @@
     "limit": "Tu lista de favoritos está llena. Quita una playa para guardar otra.",
     "error": "No se ha podido guardar la playa. Inténtalo de nuevo.",
     "loadError": "No se han podido cargar tus playas favoritas. Inténtalo de nuevo."
+  },
+  "BeachFaq": {
+    "title": "Preguntas frecuentes sobre {name}"
   }
 }

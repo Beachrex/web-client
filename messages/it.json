@@ -971,5 +971,8 @@
     "limit": "La tua lista dei preferiti è piena. Rimuovi una spiaggia per salvarne un'altra.",
     "error": "Non è stato possibile salvare la spiaggia. Riprova.",
     "loadError": "Non è stato possibile caricare le tue spiagge preferite. Riprova."
+  },
+  "BeachFaq": {
+    "title": "Domande frequenti su {name}"
   }
 }

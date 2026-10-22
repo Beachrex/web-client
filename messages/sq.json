@@ -971,5 +971,8 @@
     "limit": "Lista e të preferuarave është plot. Hiqni një plazh për të ruajtur një tjetër.",
     "error": "Plazhi nuk u ruajt dot. Ju lutemi provoni përsëri.",
     "loadError": "Plazhet e preferuara nuk u ngarkuan dot. Ju lutemi provoni përsëri."
+  },
+  "BeachFaq": {
+    "title": "Pyetje të shpeshta për {name}"
   }
 }

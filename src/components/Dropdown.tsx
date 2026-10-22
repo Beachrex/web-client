@@ -165,6 +165,7 @@ export function MediaToggleInline({
   setMediaMode: (m: 'gallery' | 'sphere' | 'video' | 'webcam') => void;
   label: string;
 }) {
+  // Same order as the beach page section switch (owner 2026-10-22): photos, video, 360, webcam.
   return (
     <div className="flex items-center gap-[10px] rounded-[6px] bg-[#E7E7E7] px-[8px] py-[6px]">
       <span className="font-figtree text-[14px] font-semibold text-[#4D4D4D]">
@@ -181,9 +182,9 @@ export function MediaToggleInline({
         <Divider />
 
         <MediaButton
-          active={mediaMode === 'webcam'}
-          icon="/images/beachmedia/video-icon-white.png"
-          onClick={() => setMediaMode('webcam')}
+          active={mediaMode === 'video'}
+          icon="/images/beachmedia/play-button-arrowhead-white.png"
+          onClick={() => setMediaMode('video')}
         />
 
         <Divider />
@@ -197,9 +198,9 @@ export function MediaToggleInline({
         <Divider />
 
         <MediaButton
-          active={mediaMode === 'video'}
-          icon="/images/beachmedia/play-button-arrowhead-white.png"
-          onClick={() => setMediaMode('video')}
+          active={mediaMode === 'webcam'}
+          icon="/images/beachmedia/video-icon-white.png"
+          onClick={() => setMediaMode('webcam')}
         />
       </div>
     </div>

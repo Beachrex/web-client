@@ -1,3 +1,4 @@
+import { toHtmlLang } from '@/app/config/locales';
 import { env } from '@/env';
 import type { Island } from '@/lib/api-client/types.gen';
 
@@ -136,7 +137,7 @@ export async function GET() {
         // Add hreflang alternates for all locales
         for (const altLocale of locales) {
           const altUrl = buildIslandUrl(island, altLocale, baseUrl);
-          xml += `    <xhtml:link rel="alternate" hreflang="${altLocale}" href="${altUrl}" />\n`;
+          xml += `    <xhtml:link rel="alternate" hreflang="${toHtmlLang(altLocale)}" href="${altUrl}" />\n`;
         }
 
         xml += '  </url>\n';
