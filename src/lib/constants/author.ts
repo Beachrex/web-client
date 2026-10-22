@@ -10,9 +10,9 @@ export const AUTHOR_BEACH_PHOTO = '/images/author/beach-on-the-road.jpg';
 
 /** Facts from the owner's text; shown as the stats band. */
 export const AUTHOR_STATS = [
-  { key: 'beaches', value: 2445, plus: false },
-  { key: 'km', value: 30000, plus: true },
-  { key: 'countries', value: 6, plus: false },
+  { key: 'beaches', value: 4000, plus: false },
+  { key: 'km', value: 70000, plus: true },
+  { key: 'countries', value: 13, plus: false },
   { key: 'facts', value: 200, plus: true },
 ] as const;
 

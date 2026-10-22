@@ -1,7 +1,7 @@
 /**
  * Author page — /{locale}/gregor-balazic (owner, 2026-10-08).
  *
- * A dedication to Gregor Balažic, who left his job and visited 2,445 beaches with a camera and a
+ * A dedication to Gregor Balažic, who left his job and visited 4,000 beaches with a camera and a
  * van; the photos, spheres and details on Beachrex come from that journey. Follows the platform's
  * design (owner: "closer to the platform"): a photo banner with the faded category word behind the
  * title like the country pages, navy pill, light-blue cards, 10 px radii, Figtree headings in #222.
@@ -57,7 +57,7 @@ export default async function AuthorPage({ params }: PageProps) {
   const { locale } = params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'AuthorPage' });
-  // Always group thousands: Slovenian (and others) would print 2445 while the text says 2.445
+  // Always group thousands: Slovenian (and others) would print 4000 while the text says 4.000
   const fmt = new Intl.NumberFormat(numberLocale(locale), { useGrouping: 'always' } as unknown as Intl.NumberFormatOptions);
 
   const personSchema = {

@@ -882,7 +882,7 @@
   },
   "AuthorPage": {
     "metaTitle": "Gregor Balažic – a Beachrex szerzője",
-    "metaDescription": "Ismerd meg Gregor Balažicot, aki felmondott, vett egy fényképezőgépet és egy kisbuszt, majd hat országban 2 445 strandot járt be. Így született a Beachrex.",
+    "metaDescription": "Ismerd meg Gregor Balažicot, aki felmondott, vett egy fényképezőgépet és egy kisbuszt, majd 13 országban 4 000 strandot járt be. Így született a Beachrex.",
     "eyebrow": "A szerzőről",
     "bannerWord": "Szerző",
     "role": "A Beachrex alapítója",
@@ -900,8 +900,8 @@
         "text": "A strandok mindig is a nagy szenvedélyem voltak – mondja Gregor Balažic, aki felmondott a munkahelyén. Osztályvezető volt, mégis kilépett a komfortzónájából, és maga mögött hagyta a kiszámítható jövőt. Vett egy fényképezőgépet és egy kisbuszt, amely az új otthona lett, és nekivágott a világnak. Pontosabban a strandoknak."
       },
       "road": {
-        "title": "2 445 strand hat országban",
-        "text": "Bejárta Szlovénia, Horvátország, Bosznia-Hercegovina, Olaszország és Franciaország partjait és strandjait, végül Spanyolországban kötött ki. Nem kevesebb mint 2 445 strandot látogatott meg. Bár a szám óriásinak tűnik, csupán csepp a tengerben – a világon több mint 200 000 turizmusra alkalmas strand van – magyarázza Balažic."
+        "title": "4 000 strand 13 országban",
+        "text": "Bejárta Szlovénia, Horvátország, Bosznia-Hercegovina, Olaszország és Franciaország partjait és strandjait, végül Spanyolországban kötött ki. Nem kevesebb mint 4 000 strandot látogatott meg. Bár a szám óriásinak tűnik, csupán csepp a tengerben – a világon több mint 200 000 turizmusra alkalmas strand van – magyarázza Balažic."
       },
       "database": {
         "title": "A világ legnagyobb strandadatbázisa",
@@ -909,7 +909,7 @@
       },
       "hardships": {
         "title": "Az út nem mindig volt könnyű",
-        "text": "Balažic több mint 30 000 kilométert tett meg, és a lenyűgöző felvételekért néha még másznia is kellett. A több ezer kilométeres utat nem mindig ragyogta be a napfény – kellemetlen élmények is érték, és többször kirabolták. Az útja azonban (még) nem ért véget."
+        "text": "Balažic több mint 70 000 kilométert tett meg, és a lenyűgöző felvételekért néha még másznia is kellett. A több ezer kilométeres utat nem mindig ragyogta be a napfény – kellemetlen élmények is érték, és többször kirabolták. Az útja azonban (még) nem ért véget."
       }
     },
     "routeTitle": "A partok mentén",
@@ -923,7 +923,7 @@
     },
     "photoAlt": "Gregor Balažic fényképezőgéppel egy homokos strandon",
     "beachAlt": "Homokos strand felfordított csónakkal a sziklák és fenyők mellett",
-    "beachCaption": "Egy a 2 445 strand közül, amelyet Gregor meglátogatott és lefényképezett.",
+    "beachCaption": "Egy a 4 000 strand közül, amelyet Gregor meglátogatott és lefényképezett.",
     "quote": "Van egy víziónk: néhány éven belül a világ minden egyes strandja felkerül a térképre.",
     "ctaTitle": "Fedezd fel a strandokat, amelyeket Gregor meglátogatott",
     "ctaText": "A Beachrex minden fotója, 360°-os panorámája és részlete ezen az úton született.",

@@ -882,7 +882,7 @@
   },
   "AuthorPage": {
     "metaTitle": "Gregor Balažic – manden bag Beachrex",
-    "metaDescription": "Mød Gregor Balažic, der sagde sit job op, købte et kamera og en varevogn og besøgte 2.445 strande i seks lande. Ud af rejsen opstod Beachrex.",
+    "metaDescription": "Mød Gregor Balažic, der sagde sit job op, købte et kamera og en varevogn og besøgte 4.000 strande i 13 lande. Ud af rejsen opstod Beachrex.",
     "eyebrow": "Om forfatteren",
     "bannerWord": "Forfatter",
     "role": "Grundlægger af Beachrex",
@@ -900,8 +900,8 @@
         "text": "Strande har altid været min store passion, siger Gregor Balažic, der sagde sit job op. Han var afdelingsleder, men trådte ud af sin komfortzone og lod en forudsigelig fremtid ligge. Han købte et kamera og en varevogn, der blev hans nye hjem, og drog ud i verden. Eller rettere: til strandene."
       },
       "road": {
-        "title": "2.445 strande i seks lande",
-        "text": "Turen gik langs kyster og strande i Slovenien, Kroatien, Bosnien-Hercegovina, Italien og Frankrig, indtil han endte i Spanien. Han besøgte hele 2.445 strande. Selvom tallet virker enormt, er det kun en dråbe i havet – der findes over 200.000 strande i verden, som egner sig til turisme, forklarer Balažic."
+        "title": "4.000 strande i 13 lande",
+        "text": "Turen gik langs kyster og strande i Slovenien, Kroatien, Bosnien-Hercegovina, Italien og Frankrig, indtil han endte i Spanien. Han besøgte hele 4.000 strande. Selvom tallet virker enormt, er det kun en dråbe i havet – der findes over 200.000 strande i verden, som egner sig til turisme, forklarer Balažic."
       },
       "database": {
         "title": "Verdens største database over strande",
@@ -909,7 +909,7 @@
       },
       "hardships": {
         "title": "Vejen var ikke altid let",
-        "text": "Balažic har tilbagelagt mere end 30.000 kilometer, og for at få de flotteste billeder har han nogle gange måttet klatre. Rejsen på tusindvis af kilometer har ikke altid været badet i solskin – han har også oplevet ubehagelige episoder og er blevet røvet flere gange. Men hans rejse er (endnu) ikke slut."
+        "text": "Balažic har tilbagelagt mere end 70.000 kilometer, og for at få de flotteste billeder har han nogle gange måttet klatre. Rejsen på tusindvis af kilometer har ikke altid været badet i solskin – han har også oplevet ubehagelige episoder og er blevet røvet flere gange. Men hans rejse er (endnu) ikke slut."
       }
     },
     "routeTitle": "Langs kysterne",
@@ -923,7 +923,7 @@
     },
     "photoAlt": "Gregor Balažic med sit kamera på en sandstrand",
     "beachAlt": "Sandstrand med en væltet båd ved klipperne og fyrretræerne",
-    "beachCaption": "En af de 2.445 strande, som Gregor har besøgt og fotograferet.",
+    "beachCaption": "En af de 4.000 strande, som Gregor har besøgt og fotograferet.",
     "quote": "Vi har en vision – om få år vil hver eneste strand i verden være på kortet.",
     "ctaTitle": "Opdag de strande, Gregor har besøgt",
     "ctaText": "Hvert foto, hvert 360°-panorama og hver detalje på Beachrex er blevet til på denne rejse.",
