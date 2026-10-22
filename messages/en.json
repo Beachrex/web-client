@@ -83,7 +83,14 @@
     "beaches": "beaches",
     "noResults": "No results found. Try a different search term.",
     "searching": "Searching...",
-    "clearSearch": "Clear search"
+    "clearSearch": "Clear search",
+    "tabAll": "All",
+    "tabBeaches": "Beaches",
+    "tabCities": "Cities",
+    "tabIslands": "Islands",
+    "tabRegions": "Regions",
+    "tabCountries": "Countries",
+    "tabsLabel": "Filter results by type"
   },
   "HomePage": {
     "allBeaches": "All Beaches",

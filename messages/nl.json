@@ -83,7 +83,14 @@
     "beaches": "stranden",
     "noResults": "Geen resultaten gevonden. Probeer een andere zoekterm.",
     "searching": "Zoeken...",
-    "clearSearch": "Zoekopdracht wissen"
+    "clearSearch": "Zoekopdracht wissen",
+    "tabAll": "Alles",
+    "tabBeaches": "Stranden",
+    "tabCities": "Plaatsen",
+    "tabIslands": "Eilanden",
+    "tabRegions": "Regio's",
+    "tabCountries": "Landen",
+    "tabsLabel": "Resultaten filteren op type"
   },
   "HomePage": {
     "allBeaches": "Alle stranden",

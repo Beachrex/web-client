@@ -83,7 +83,14 @@
     "beaches": "plazhe",
     "noResults": "Nuk u gjetën rezultate. Provoni një term tjetër kërkimi.",
     "searching": "Duke kërkuar...",
-    "clearSearch": "Pastro kërkimin"
+    "clearSearch": "Pastro kërkimin",
+    "tabAll": "Të gjitha",
+    "tabBeaches": "Plazhe",
+    "tabCities": "Qytete",
+    "tabIslands": "Ishuj",
+    "tabRegions": "Rajone",
+    "tabCountries": "Shtete",
+    "tabsLabel": "Filtro rezultatet sipas llojit"
   },
   "HomePage": {
     "allBeaches": "Të gjithë plazhet",

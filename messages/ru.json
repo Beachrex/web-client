@@ -83,7 +83,14 @@
     "beaches": "пляжи",
     "noResults": "Результатов не найдено. Попробуйте другой поисковый запрос.",
     "searching": "Поиск...",
-    "clearSearch": "Очистить поиск"
+    "clearSearch": "Очистить поиск",
+    "tabAll": "Все",
+    "tabBeaches": "Пляжи",
+    "tabCities": "Города",
+    "tabIslands": "Острова",
+    "tabRegions": "Регионы",
+    "tabCountries": "Страны",
+    "tabsLabel": "Фильтровать результаты по типу"
   },
   "HomePage": {
     "allBeaches": "Все пляжи",

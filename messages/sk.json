@@ -83,7 +83,14 @@
     "beaches": "pláže",
     "noResults": "Neboli nájdené žiadne výsledky. Skúste iný výraz.",
     "searching": "Hľadám...",
-    "clearSearch": "Vymazať vyhľadávanie"
+    "clearSearch": "Vymazať vyhľadávanie",
+    "tabAll": "Všetko",
+    "tabBeaches": "Pláže",
+    "tabCities": "Miesta",
+    "tabIslands": "Ostrovy",
+    "tabRegions": "Regióny",
+    "tabCountries": "Krajiny",
+    "tabsLabel": "Filtrovať výsledky podľa typu"
   },
   "HomePage": {
     "allBeaches": "Všetky pláže",

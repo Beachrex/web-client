@@ -83,7 +83,14 @@
     "beaches": "plaže",
     "noResults": "Nema rezultata. Pokušajte s drugim pojmom.",
     "searching": "Pretraživanje...",
-    "clearSearch": "Obriši pretraživanje"
+    "clearSearch": "Obriši pretraživanje",
+    "tabAll": "Sve",
+    "tabBeaches": "Plaže",
+    "tabCities": "Mjesta",
+    "tabIslands": "Otoci",
+    "tabRegions": "Regije",
+    "tabCountries": "Države",
+    "tabsLabel": "Filtriraj rezultate po vrsti"
   },
   "HomePage": {
     "allBeaches": "Sve plaže",

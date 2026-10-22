@@ -83,7 +83,14 @@
     "beaches": "плажове",
     "noResults": "Няма намерени резултати. Опитайте с друг термин за търсене.",
     "searching": "Търсене...",
-    "clearSearch": "Изчисти търсенето"
+    "clearSearch": "Изчисти търсенето",
+    "tabAll": "Всички",
+    "tabBeaches": "Плажове",
+    "tabCities": "Градове",
+    "tabIslands": "Острови",
+    "tabRegions": "Региони",
+    "tabCountries": "Държави",
+    "tabsLabel": "Филтриране на резултатите по вид"
   },
   "HomePage": {
     "allBeaches": "Всички плажове",

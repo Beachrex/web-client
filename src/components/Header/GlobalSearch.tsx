@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { globalSearchOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildSearchResultUrl } from '@/lib/utils/search-result-url';
+import { resultsForTab, searchTabs, type SearchTab } from '@/lib/utils/search-tabs';
 import Image from 'next/image';
 
 // Unified search result type
@@ -49,6 +50,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     const [query, setQuery] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
+    const [activeTab, setActiveTab] = useState<SearchTab>('all');
 
     const searchRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -155,6 +157,25 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         return unified;
     }, [searchData]);
 
+    // Tabs per result type (owner 2026-10-22); a new search starts on "All".
+    const tabs = React.useMemo(() => searchTabs(results), [results]);
+    const currentTab: SearchTab = tabs.some((tab) => tab.tab === activeTab) ? activeTab : 'all';
+    const visibleResults = React.useMemo(
+        () => resultsForTab(results, currentTab, debouncedQuery),
+        [results, currentTab, debouncedQuery],
+    );
+
+    useEffect(() => {
+        setActiveTab('all');
+        setSelectedIndex(-1);
+    }, [debouncedQuery]);
+
+    const selectTab = (tab: SearchTab) => {
+        setActiveTab(tab);
+        setSelectedIndex(-1);
+        inputRef.current?.focus();
+    };
+
     // Open dropdown when results are available
     useEffect(() => {
         if (results.length > 0 && debouncedQuery.length >= 2) {
@@ -178,12 +199,12 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 
     // Handle keyboard navigation
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (!isOpen || results.length === 0) return;
+        if (!isOpen || visibleResults.length === 0) return;
 
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
-                setSelectedIndex((prev) => (prev < results.length - 1 ? prev + 1 : prev));
+                setSelectedIndex((prev) => (prev < visibleResults.length - 1 ? prev + 1 : prev));
                 break;
             case 'ArrowUp':
                 e.preventDefault();
@@ -191,8 +212,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 break;
             case 'Enter':
                 e.preventDefault();
-                if (selectedIndex >= 0 && results[selectedIndex]) {
-                    handleResultClick(results[selectedIndex]);
+                if (selectedIndex >= 0 && visibleResults[selectedIndex]) {
+                    handleResultClick(visibleResults[selectedIndex]);
                 }
                 break;
             case 'Escape':
@@ -245,6 +266,18 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
             country: tSearch('typeCountry'),
         };
         return labels[type] ?? type;
+    };
+
+    const getTabLabel = (tab: SearchTab): string => {
+        const labels: Record<SearchTab, string> = {
+            all: tSearch('tabAll'),
+            beach: tSearch('tabBeaches'),
+            city: tSearch('tabCities'),
+            island: tSearch('tabIslands'),
+            region: tSearch('tabRegions'),
+            country: tSearch('tabCountries'),
+        };
+        return labels[tab];
     };
 
     // Clear search
@@ -310,8 +343,43 @@ transition-colors ${buttonClassName}`}
 border-gray-200 rounded-lg shadow-xl max-h-[500px] overflow-y-auto z-[10000] \
 animate-fadeIn search-results-scroll"
                 >
-                    <div className="p-2">
-                        {results.map((result, index) => (
+                    {tabs.length > 0 && (
+                        <div
+                            role="tablist"
+                            aria-label={tSearch('tabsLabel')}
+                            className="sticky top-0 z-10 flex gap-1.5 overflow-x-auto border-b border-gray-100 bg-white px-2 pb-2 pt-2 \
+[scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                            data-testid="search-tabs"
+                        >
+                            {tabs.map(({ tab, count }) => {
+                                const active = tab === currentTab;
+                                return (
+                                    <button
+                                        key={tab}
+                                        type="button"
+                                        role="tab"
+                                        aria-selected={active}
+                                        // Keep the input focused so typing and arrow keys keep working
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onClick={() => selectTab(tab)}
+                                        className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 \
+text-xs font-semibold transition-colors ${
+                                            active ? 'bg-[#1A3C68] text-white' : 'bg-gray-100 text-gray-700 hover:bg-blue-50'
+                                        }`}
+                                    >
+                                        {getTabLabel(tab)}
+                                        <span
+                                            className={`rounded-full px-1.5 text-[11px] ${active ? 'bg-white/20' : 'bg-white text-gray-500'}`}
+                                        >
+                                            {count}
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                    <div className="p-2" role={tabs.length > 0 ? 'tabpanel' : undefined}>
+                        {visibleResults.map((result, index) => (
                             <button
                                 key={`${result.type}-${result.id}`}
                                 onClick={() => handleResultClick(result)}
