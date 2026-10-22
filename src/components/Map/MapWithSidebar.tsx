@@ -5,6 +5,7 @@ import { PropertyMediaContext } from '@/components/PropertySection';
 import { useBeachesBoundingBox, useBeachesMapBounds, type BoundingBoxSearchFilters } from '@/hooks/useBeaches';
 import type { BeachSchema, GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
+import { nextDisplayedBeaches } from '@/lib/utils/map-results';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Map as MapIcon, SlidersHorizontal, X } from 'lucide-react';
@@ -103,8 +104,6 @@ const MapWithSidebar = () => {
     } | null>(null);
     const beachCardsContainerRef = useRef<HTMLDivElement>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    // Keep previous beaches visible while loading new data
-    const previousBeachesRef = useRef<BeachSchema[]>([]);
     // Container dimensions for virtualization
     const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
     // Show scroll-to-top button on mobile when page scrolled down
@@ -395,17 +394,14 @@ const MapWithSidebar = () => {
     // and ensure we never show empty list while loading
     const [displayedBeaches, setDisplayedBeaches] = useState<BeachSchema[]>([]);
 
-    // Update displayed beaches only when we have actual new data
+    // Update displayed beaches whenever a response arrives, including an empty one: a filter with
+    // no matches (e.g. waterbody=pool) must show 0 beaches, not keep the previous result.
+    // While a new query is loading `data` is undefined, so the previous beaches stay visible.
     useEffect(() => {
-        const allBeaches = boundingBoxResult.data?.data ?? [];
-        if (allBeaches.length > 0) {
-            setDisplayedBeaches(allBeaches);
-            previousBeachesRef.current = allBeaches;
-        }
+        setDisplayedBeaches((prev) => nextDisplayedBeaches(prev, boundingBoxResult.data?.data));
     }, [boundingBoxResult.data?.data]);
 
-    // Use displayed beaches, or fall back to previous if we don't have any yet
-    const beaches = displayedBeaches.length > 0 ? displayedBeaches : previousBeachesRef.current;
+    const beaches = displayedBeaches;
 
     const loading = boundingBoxResult.loading;
     const error = boundingBoxResult.error;
@@ -697,6 +693,12 @@ const MapWithSidebar = () => {
                                     </div>
                                 )}
 
+
+                                {!isLoading && !error && !mapBoundsError && beaches.length === 0 && (
+                                    <div className="text-center py-8">
+                                        <p className="text-gray-600">{t('noBeachesFound')}</p>
+                                    </div>
+                                )}
 
                                 {/* Show virtualized list whenever we have beaches, even while loading new data */}
                                 {!error && beaches.length > 0 && (

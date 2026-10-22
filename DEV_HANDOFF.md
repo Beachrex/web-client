@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – Map: a filter with no matches shows 0 beaches ✅ COMPLETE
+
+Owner 2026-10-22: on `/beach-map?waterbody=pool` (and `river`) the map showed every beach, while `sea` and `lake` worked. The filter reached the API correctly; `MapWithSidebar` only accepted a bounding-box response when it had beaches, so an empty result kept the previous list. Now every response replaces the list (`nextDisplayedBeaches` in `src/lib/utils/map-results.ts`); while a new query loads the previous beaches stay. An empty result shows `BeachesMap.noBeachesFound` (already in 19 languages). Any other filter with no matches now behaves the same way. Test: `e2e/map-empty-results.unit.spec.ts` (fails on the old code).
+
+---
+
 ## 2026-10-22 – Map cards: country (flag) is a link too ✅ COMPLETE
 
 Owner 2026-10-22: on the map cards the city was a link but the country was not. `PropertyCard` now links the flag to the country page (`countryUrl`/`countryName`, built in `DynamicPropertyCard` with `buildCountryUrl`; the other card lists that map via `mapBeachToProperty` are unchanged), and the marker popup (`BeachMarkerTooltip`) links both the city label and the flag (city page / country page). On the map (list cards with `openInNewTab` and the popup) all of these open in a new tab, like the beach link.
