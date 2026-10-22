@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – Map: beach opens in a new tab ✅ COMPLETE
+
+Owner 2026-10-22: on the beach map, clicking a beach opens the beach page in a new tab, both in the marker popup (`BeachMarkerTooltip`: name and "View details" links) and in the cards beside the map (`VirtualizedBeachList` → `DynamicPropertyCard` → `PropertyCard`, new prop `openInNewTab`, beach-name link). Links use `target="_blank" rel="noopener noreferrer"`, so the map position and filters stay as they were. Other pages that use `PropertyCard` (home, favorites) are unchanged. The city/region link on a card and the "show on map" button behave as before.
+
+---
+
 ## 2026-10-22 – "All beaches on the map" in the search dropdown ✅ COMPLETE
 
 Owner 2026-10-22: a button at the bottom of the search dropdown opens the beach map filtered to the place the query names — the closest country, region, island or city whose name equals or starts with the query (`showAllTarget` in `src/lib/utils/search-tabs.ts`), as `?country=GR`, `?region=<code>`, `?island=<code>`, `?city=<code>` (the codes the map filters accept). No button when only beaches match (the map has no text filter). Label `Search.showAllOnMap` in 19 languages. Tests in `e2e/search-tabs.unit.spec.ts`.

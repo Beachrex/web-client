@@ -87,6 +87,8 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                         {beachUrl ? (
                             <Link
                                 href={beachUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 onClick={(e) => e.stopPropagation()}
                                 className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
                             >
@@ -100,6 +102,8 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                     {beachUrl && (
                         <Link
                             href={beachUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
                             className="text-[11px] text-[#0069AB] font-medium hover:underline whitespace-nowrap ml-2"
                         >

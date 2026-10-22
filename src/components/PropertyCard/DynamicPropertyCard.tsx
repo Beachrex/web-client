@@ -11,12 +11,15 @@ import PropertyCard from './PropertyCard';
 interface DynamicPropertyCardProps {
   beach: BeachSchema;
   onLocationClick?: (latitude: string, longitude: string, beachId?: number) => void;
+  /** Open the beach page in a new tab (map list) */
+  openInNewTab?: boolean;
 }
 
 // OPTIMIZATION: Memoize to prevent unnecessary re-renders and blinking
 export const DynamicPropertyCard = React.memo(({
   beach,
   onLocationClick,
+  openInNewTab,
 }: DynamicPropertyCardProps) => {
   const locale = useLocale();
   const property = mapBeachToProperty(beach);
@@ -30,6 +33,7 @@ export const DynamicPropertyCard = React.memo(({
       {...property}
       beachUrl={beachUrl}
       locationUrl={locationUrl}
+      openInNewTab={openInNewTab}
       onLocationClick={
         onLocationClick
           ? () =>

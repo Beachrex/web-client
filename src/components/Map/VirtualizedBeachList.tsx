@@ -66,7 +66,7 @@ const LazyBeachCard = React.memo(function LazyBeachCard({
       onMouseLeave={() => onBeachHover?.(null)}
     >
       {isInView ? (
-        <DynamicPropertyCard beach={beach} onLocationClick={onLocationClick} />
+        <DynamicPropertyCard beach={beach} onLocationClick={onLocationClick} openInNewTab />
       ) : null}
     </div>
   );

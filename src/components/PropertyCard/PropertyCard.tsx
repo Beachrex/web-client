@@ -67,6 +67,9 @@ export interface PropertyCardProps {
   countryCode?: string;
   onLocationClick?: () => void;
 
+  /** Open the beach page in a new tab (used by the map list, so the map state is kept) */
+  openInNewTab?: boolean;
+
   /** Up to 4 descriptive tags from the API (sporting activities, culinary, natural conditions) */
   tags?: string[];
 
@@ -92,6 +95,7 @@ const PropertyCard = React.memo(function PropertyCard({
   countryCode,
   webcamEmbed,
   onLocationClick,
+  openInNewTab = false,
   tags,
   features,
 }: PropertyCardProps) {
@@ -440,6 +444,7 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
   {beachUrl ? (
     <Link
       href={beachUrl}
+      {...(openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
     >
       {title}
@@ -499,6 +504,7 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
   return (
     prevProps.id === nextProps.id &&
     prevProps.beachUrl === nextProps.beachUrl &&
+    prevProps.openInNewTab === nextProps.openInNewTab &&
     prevProps.beachSlug === nextProps.beachSlug &&
     prevProps.image === nextProps.image &&
     prevProps.title === nextProps.title &&
