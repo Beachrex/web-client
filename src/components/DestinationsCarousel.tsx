@@ -30,6 +30,7 @@ interface DestinationsCarouselProps {
   backgroundClassName?: string;
   titleClassName?: string;
   showFlag?: boolean;
+  headerActions?: React.ReactNode;
 }
 
 const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function DestinationsCarousel(props) {
@@ -42,6 +43,7 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
     backgroundClassName = 'bg-white',
     titleClassName = 'text-[#222222]',
     showFlag = false,
+    headerActions,
   } = props;
 
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
@@ -79,6 +81,8 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
             {title}
           </h2>
 
+          <div className="flex flex-wrap items-center gap-4">
+          {headerActions}
           {countLabel && items.length > itemsPerSlide && (
 <button
   type="button"
@@ -95,6 +99,7 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
     />
   </button>
 )}
+          </div>
 
         </div>
 

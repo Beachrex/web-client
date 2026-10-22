@@ -178,7 +178,11 @@
     "premiumAccommodations": "Alloggi di lusso in {continent}",
     "bestDeals": "Grandi offerte",
     "description": "Esplora le spiagge più belle in {continent}.",
-    "countriesContinent": "Paesi in {continent}"
+    "countriesContinent": "Paesi in {continent}",
+    "sortBy": "Ordina per",
+    "sortAlphabetical": "Alfabetico (A–Z)",
+    "sortBeachesDesc": "Più spiagge prima",
+    "sortBeachesAsc": "Meno spiagge prima"
   },
   "FeatureCards": {
     "beachMapButton": "Mappa delle spiagge",

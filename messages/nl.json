@@ -178,7 +178,11 @@
     "premiumAccommodations": "Luxe accommodaties in {continent}",
     "bestDeals": "Geweldige deals",
     "description": "Ontdek de mooiste stranden in {continent}.",
-    "countriesContinent": "Landen in {continent}"
+    "countriesContinent": "Landen in {continent}",
+    "sortBy": "Sorteren op",
+    "sortAlphabetical": "Alfabetisch (A–Z)",
+    "sortBeachesDesc": "Meeste stranden eerst",
+    "sortBeachesAsc": "Minste stranden eerst"
   },
   "FeatureCards": {
     "beachMapButton": "Strandkaart",

@@ -178,7 +178,11 @@
     "premiumAccommodations": "Luxusunterkünfte in {continent}",
     "bestDeals": "Tolle Angebote",
     "description": "Entdecken Sie die schönsten Strände in {continent}.",
-    "countriesContinent": "Länder in {continent}"
+    "countriesContinent": "Länder in {continent}",
+    "sortBy": "Sortieren",
+    "sortAlphabetical": "Alphabetisch (A–Z)",
+    "sortBeachesDesc": "Meiste Strände zuerst",
+    "sortBeachesAsc": "Wenigste Strände zuerst"
   },
   "FeatureCards": {
     "beachMapButton": "Strandkarte",

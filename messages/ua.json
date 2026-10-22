@@ -178,7 +178,11 @@
     "premiumAccommodations": "Розкішне житло в {continent}",
     "bestDeals": "Чудові пропозиції",
     "description": "Досліджуйте найкрасивіші пляжі в {continent}.",
-    "countriesContinent": "Країни в {continent}"
+    "countriesContinent": "Країни в {continent}",
+    "sortBy": "Сортування",
+    "sortAlphabetical": "За абеткою (А–Я)",
+    "sortBeachesDesc": "Найбільше пляжів",
+    "sortBeachesAsc": "Найменше пляжів"
   },
   "FeatureCards": {
     "beachMapButton": "Карта пляжів",

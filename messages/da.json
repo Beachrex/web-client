@@ -178,7 +178,11 @@
     "premiumAccommodations": "Luksusovernatning i {continent}",
     "bestDeals": "Gode tilbud",
     "description": "Udforsk de smukkeste strande i {continent}.",
-    "countriesContinent": "Lande i {continent}"
+    "countriesContinent": "Lande i {continent}",
+    "sortBy": "Sortér",
+    "sortAlphabetical": "Alfabetisk (A–Å)",
+    "sortBeachesDesc": "Flest strande først",
+    "sortBeachesAsc": "Færrest strande først"
   },
   "FeatureCards": {
     "beachMapButton": "Strandkort",

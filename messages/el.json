@@ -178,7 +178,11 @@
     "premiumAccommodations": "Πολυτελή καταλύματα στην {continent}",
     "bestDeals": "Ευκαιρίες",
     "description": "Εξερευνήστε τις πιο όμορφες παραλίες στην {continent}.",
-    "countriesContinent": "Χώρες στην {continent}"
+    "countriesContinent": "Χώρες στην {continent}",
+    "sortBy": "Ταξινόμηση",
+    "sortAlphabetical": "Αλφαβητικά (Α–Ω)",
+    "sortBeachesDesc": "Περισσότερες παραλίες πρώτα",
+    "sortBeachesAsc": "Λιγότερες παραλίες πρώτα"
   },
   "FeatureCards": {
     "beachMapButton": "Χάρτης παραλιών",
