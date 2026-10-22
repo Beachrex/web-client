@@ -5,6 +5,7 @@ import React from 'react';
 import type { Continent } from '@/lib/api-client/types.gen';
 import Link from 'next/link';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { FEATURES } from '@/lib/constants/features';
 
 interface SearchContinentProps {
   continent?: Continent;
@@ -57,6 +58,7 @@ const SearchContinent: React.FC<SearchContinentProps> = ({
   </Link>
 
 
+            {FEATURES.accommodation && (
             <button className="inline-flex h-[40px] items-center justify-center gap-2 rounded-md bg-[#006b4f] px-6 font-figtree text-sm font-bold text-white transition-colors hover:bg-[#008260]">
               <Image
                 src="/images/accomodation.png"
@@ -68,6 +70,7 @@ const SearchContinent: React.FC<SearchContinentProps> = ({
                 {t('browseAccommodationsButton') || 'Brskaj po nastanitvah'}
               </span>
             </button>
+            )}
           </div>
         </div>
       </div>

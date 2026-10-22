@@ -971,5 +971,8 @@
     "limit": "Popis omiljenih je pun. Uklonite plažu da biste spremili novu.",
     "error": "Plažu nije bilo moguće spremiti. Pokušajte ponovno.",
     "loadError": "Omiljene plaže nije bilo moguće učitati. Pokušajte ponovno."
+  },
+  "BeachFaq": {
+    "title": "Česta pitanja o plaži {name}"
   }
 }

@@ -7,6 +7,7 @@ import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { getMainBeachImage } from '@/lib/utils/beach-images';
 import { buildBeachBadges } from '@/lib/utils/beach-badges';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { FEATURES } from '@/lib/constants/features';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -183,6 +184,7 @@ export default function BeachBannerSection({
             className="sm:h-[33px] sm:w-[33px]"
           />
         </Link>
+        {FEATURES.accommodation && (
         <button className="flex h-12 w-12 items-center justify-center rounded-l-[10px] bg-[#008260] sm:h-[68.46px] sm:w-[71px]">
           <Image
             src="/images/accomodation.png"
@@ -192,6 +194,7 @@ export default function BeachBannerSection({
             className="sm:h-[28px] sm:w-[28px]"
           />
         </button>
+        )}
       </div>
     </section>
   );

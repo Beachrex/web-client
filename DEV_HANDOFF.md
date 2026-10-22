@@ -18,12 +18,39 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-22 – Map media switch in the beach page order ✅ COMPLETE
+
+Owner 2026-10-22: the map page switch showed photos, webcam, 360, video; the beach page shows photos, video, 360, webcam. `MediaToggleInline` (`Dropdown.tsx`) and the map dropdown options (`MapWithSidebar.tsx`) now use the beach page order. Test: `e2e/media-toggle-order.unit.spec.ts` (fails on the old order).
+
+---
+
+## 2026-10-21 – Beach FAQ, FAQPage JSON-LD and search snippet (TASK-007) ✅ COMPLETE (web side)
+
+Spec: backend `docs/tasks/TASK-007-seo-geo-descriptions.md` (owner 2026-10-21, all six proposals).
+- Beach page: `BeachFaqSection` after the details (native `<details>`, answers in the HTML; heading `BeachFaq.title` in 19 languages); hidden without questions.
+- `FAQPage` JSON-LD next to `TouristAttraction` and the breadcrumb, from the same items.
+- `generateMetadata`: `basic_info.meta_description` (requested language only) wins over the description.
+- `renderJsonLd` escapes `<` as `\u003c`, so database text cannot close the `<script>` tag (all JSON-LD).
+- Types for the new fields live in `src/lib/utils/beach-faq.ts` until `yarn generate:api` is run against dev.
+- Tests: `e2e/beach-faq.unit.spec.ts`. Nothing shows until the backend fields exist and `content:ai` has written data.
+
+---
+
+## 2026-10-21 – Accommodation price badge hidden on beach cards ✅ COMPLETE
+
+Owner 2026-10-21: the green "from 0 €" accommodation badge on `PropertyCard` (beach lists, map list, favorites) was the only accommodation UI not behind `FEATURES.accommodation`. It is now gated; the location badge keeps its place on the right (`ml-auto`). Regression test: `e2e/beach-card-price.unit.spec.ts`.
+The "Browse accommodations" button in `Continent/SearchContinent.tsx` and the green accommodation button in `Beach/BeachBanner/BeachBannerSection.tsx` (both without an action) are gated the same way.
+
+---
+
 ## 2026-10-21 – `<html lang>` and `hreflang` use ISO 639-1 language codes ✅ COMPLETE
 
 Owner (2026-10-21): keep the URL codes, fix only the language attributes.
 - Two URL locales are country codes, not language codes: `si` (as a language code it means Sinhala) and `ua` (not a language code). `<html lang>` and every `hreflang` (page metadata alternates + all six sitemaps) now use `sl` and `uk`. URLs (`/si/...`, `/ua/...`), routing and API `Accept-Language` are unchanged.
 - New helper `toHtmlLang()` in `src/app/config/locales.ts`; used in `app/[locale]/layout.tsx`, `buildAlternateLanguages()` and the sitemap routes.
 - Spec: `e2e/html-lang.unit.spec.ts` (fails against an identity helper: 3 of 4 tests).
+
+---
 
 ## 2026-10-14 – Verified Windy webcams on the beach page (TASK-006) ✅ COMPLETE
 
