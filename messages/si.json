@@ -110,7 +110,7 @@
     "outdoorPools": "Zunanji bazeni",
     "indoorPoolsSpas": "Pokriti bazeni, terme",
     "browseAccommodationsButton": "Brskaj po nastanitvah",
-    "moreAccommodations": "+More Accommodations"
+    "moreAccommodations": "+Več nastanitev"
   },
   "Metadata": {
     "title": "BeachRex - Najdi svojo popolno plažo.",
@@ -334,7 +334,7 @@
     "mapButton": "Poglej zemljevid",
     "dropdownOption": "Razdalja {distance} od plaže",
     "dropdownAria": "Razdalja od plaže",
-    "activitiesTitle": "Get your guide",
+    "activitiesTitle": "Vaš vodič",
     "activitiesLink": "Vse aktivnosti ({count})"
   },
   "BeachPromoBanner": {
@@ -500,7 +500,7 @@
       "familyFriendly": "Primerna za družine",
       "parking": "Parkirišče na voljo",
       "easyAccess": "Preprost dostop",
-      "windsurfing": "Windsurfing",
+      "windsurfing": "Jadranje na deski",
       "SeaTemperature": "Temperatura morja",
       "adventurer": "Plaža za avanturiste",
       "partyBeach": "Plaža za zabavo"

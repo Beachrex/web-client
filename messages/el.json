@@ -332,7 +332,7 @@
       "familyFriendly": "Οικογενειακή",
       "parking": "Διαθέσιμο πάρκινγκ",
       "easyAccess": "Εύκολη πρόσβαση",
-      "windsurfing": "Windsurfing",
+      "windsurfing": "Ιστιοσανίδα",
       "SeaTemperature": "Θερμοκρασία θάλασσας",
       "adventurer": "Παραλία για περιπετειώδεις",
       "partyBeach": "Παραλία για πάρτι"
@@ -662,7 +662,7 @@
     "creditsRequiredMessage": "Χρειάζεστε πιστώσεις για να δημιουργήσετε προγράμματα. Παρακαλούμε αγοράστε πιστώσεις για να συνεχίσετε.",
     "orDivider": "ή",
     "signInWithEmail": "Σύνδεση με email",
-    "email": "Email",
+    "email": "Ηλ. ταχυδρομείο",
     "password": "Κωδικός",
     "signIn": "Σύνδεση",
     "forgotPassword": "Ξεχάσατε τον κωδικό;",
