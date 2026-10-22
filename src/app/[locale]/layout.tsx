@@ -1,3 +1,4 @@
+import { toHtmlLang } from '@/app/config/locales';
 import '@/styles/globals.css';
 
 import { ApiClientProvider } from '@/components/ApiClientProvider';
@@ -86,7 +87,7 @@ export default async function LocaleLayout({
   const webSiteSchema = buildWebSiteSchema();
 
   return (
-    <html lang={locale} className={`${openSans.className} ${figtree.variable} ${damion.variable}`}>
+    <html lang={toHtmlLang(locale)} className={`${openSans.className} ${figtree.variable} ${damion.variable}`}>
       <head>
         {/* Consent, analytics and ads: production only */}
         {isProductionSite(env.NEXT_PUBLIC_BASE_URL) && <ThirdPartyScripts />}

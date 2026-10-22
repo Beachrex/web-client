@@ -49,6 +49,26 @@ The "Browse accommodations" button in `Continent/SearchContinent.tsx` and the gr
 
 ---
 
+## 2026-10-21 – `<html lang>` and `hreflang` use ISO 639-1 language codes ✅ COMPLETE
+
+Owner (2026-10-21): keep the URL codes, fix only the language attributes.
+- Two URL locales are country codes, not language codes: `si` (as a language code it means Sinhala) and `ua` (not a language code). `<html lang>` and every `hreflang` (page metadata alternates + all six sitemaps) now use `sl` and `uk`. URLs (`/si/...`, `/ua/...`), routing and API `Accept-Language` are unchanged.
+- New helper `toHtmlLang()` in `src/app/config/locales.ts`; used in `app/[locale]/layout.tsx`, `buildAlternateLanguages()` and the sitemap routes.
+- Spec: `e2e/html-lang.unit.spec.ts` (fails against an identity helper: 3 of 4 tests).
+
+---
+
+## 2026-10-21 – Untranslated UI strings fixed + guard spec ✅ COMPLETE
+
+Owner report 2026-10-21 (Greek and other languages showed English words). Audit of all 19 `messages/*.json` against `en.json`: no missing keys on `dev`; most identical strings are real words in that language (Hotel, Filter, Region, Portugal …) and stay. Fixed the ones that were not translated:
+- si: `HomePage.moreAccommodations`, `AccommodationSection.activitiesTitle`, `BottomBadgesBeach.badges.windsurfing`
+- el: `BottomBadgesBeach.badges.windsurfing`, `Auth.email`; ru: `Auth.email`, `Common.accommodationDefaultBeach`; ua: `Auth.email`
+- da: `SEO.countryFlagAlt`; sq and hr: the three parking labels
+- New spec `e2e/messages-translated.unit.spec.ts`: bg/el/ru/ua have no Latin-only strings (explicit allowlist for templates and proper names) and every locale has every `en` key. Against the old files: el, ru and ua fail.
+- Filter and beach data (Hostel, Beach bar … in Greek) come from the API, not from these files — fixed in the backend.
+
+---
+
 ## 2026-10-14 – Verified Windy webcams on the beach page (TASK-006) ✅ COMPLETE
 
 Owner decisions 2026-10-14 (backend `docs/tasks/TASK-006-windy-webcams.md`): direct iframe, other providers hidden.

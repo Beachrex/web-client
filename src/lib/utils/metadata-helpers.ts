@@ -5,7 +5,7 @@
  * Includes hreflang alternate language links, canonical URLs, and OpenGraph metadata
  */
 
-import { locales } from '@/app/config/locales';
+import { locales, toHtmlLang } from '@/app/config/locales';
 import { env } from '@/env';
 import type { Metadata } from 'next';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
@@ -61,7 +61,7 @@ export function buildAlternateLanguages(path: string): Record<string, string> {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
 
   for (const locale of locales) {
-    alternates[locale] = `${baseUrl}/${locale}${normalizedPath}`;
+    alternates[toHtmlLang(locale)] = `${baseUrl}/${locale}${normalizedPath}`;
   }
 
   // Add x-default for international users (defaults to English)
