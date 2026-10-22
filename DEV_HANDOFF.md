@@ -24,6 +24,12 @@ Owner 2026-10-22 (country pages): the "Beach view" switch (photos, video, 360°,
 
 ---
 
+## 2026-10-22 – Sticky site header ✅ COMPLETE
+
+Owner 2026-10-22: the top of every page (language bar, logo + search + Map button, and the menu strip) stays visible while scrolling. `DefaultLayout` (`src/components/Layout.tsx`) wraps `TopBar`, `SearchBar` and `BurgerMenu` in a `<header>` with `sticky top-0 z-[1050]` (above Leaflet panes, below the modals at z-[9999]+; the search results and language dropdowns are inside the header and keep their own z-index). Not printed, as before. The full-screen map page (`BeachMapClient`) sets `body[data-map-page]` and the header stays non-sticky there: its panels are `h-screen`, so a sticky header would cover their top part.
+
+---
+
 ## 2026-10-22 – Map: a filter with no matches shows 0 beaches ✅ COMPLETE
 
 Owner 2026-10-22: on `/beach-map?waterbody=pool` (and `river`) the map showed every beach, while `sea` and `lake` worked. The filter reached the API correctly; `MapWithSidebar` only accepted a bounding-box response when it had beaches, so an empty result kept the previous list. Now every response replaces the list (`nextDisplayedBeaches` in `src/lib/utils/map-results.ts`); while a new query loads the previous beaches stay. An empty result shows `BeachesMap.noBeachesFound` (already in 19 languages). Any other filter with no matches now behaves the same way. Test: `e2e/map-empty-results.unit.spec.ts` (fails on the old code).

@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
 
 // Spinner only (no text): language-neutral and no translation needed before the map loads
 const LoadingMap = () => (
@@ -15,5 +16,13 @@ const MapWithSidebar = dynamic(() => import('@/components/Map/MapWithSidebar'), 
 });
 
 export default function BeachMapClient() {
+  // The full-screen map page keeps the header non-sticky (see Layout.tsx)
+  useEffect(() => {
+    document.body.dataset.mapPage = 'true';
+    return () => {
+      delete document.body.dataset.mapPage;
+    };
+  }, []);
+
   return <MapWithSidebar />;
 }
