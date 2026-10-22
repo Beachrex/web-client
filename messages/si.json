@@ -90,7 +90,8 @@
     "tabIslands": "Otoki",
     "tabRegions": "Regije",
     "tabCountries": "Države",
-    "tabsLabel": "Filtriraj zadetke po vrsti"
+    "tabsLabel": "Filtriraj zadetke po vrsti",
+    "showAllOnMap": "Vse plaže na zemljevidu: {name}"
   },
   "HomePage": {
     "allBeaches": "Vse plaže",

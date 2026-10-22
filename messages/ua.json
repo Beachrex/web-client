@@ -90,7 +90,8 @@
     "tabIslands": "Острови",
     "tabRegions": "Регіони",
     "tabCountries": "Країни",
-    "tabsLabel": "Фільтрувати результати за типом"
+    "tabsLabel": "Фільтрувати результати за типом",
+    "showAllOnMap": "Усі пляжі на мапі: {name}"
   },
   "HomePage": {
     "allBeaches": "Усі пляжі",
