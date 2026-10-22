@@ -65,6 +65,9 @@ export interface PropertyCardProps {
   reviews: number;
   isMostVisited?: boolean;
   countryCode?: string;
+  /** Country page (the flag links to it) and its name for the accessible label */
+  countryUrl?: string;
+  countryName?: string;
   onLocationClick?: () => void;
 
   /** Open the beach page in a new tab (used by the map list, so the map state is kept) */
@@ -93,6 +96,8 @@ const PropertyCard = React.memo(function PropertyCard({
   rating,
   isMostVisited,
   countryCode,
+  countryUrl,
+  countryName,
   webcamEmbed,
   onLocationClick,
   openInNewTab = false,
@@ -412,6 +417,7 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
       {locationUrl ? (
         <Link
           href={locationUrl}
+          {...(openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           onClick={(e) => e.stopPropagation()}
           className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#FF8000] px-[12px] transition-colors hover:bg-[#e67300] focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
         >
@@ -423,15 +429,34 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
         </div>
       )}
 
-      <div className="h-[40px] w-[50px] overflow-hidden rounded-[6px]">
-        <Image
-          src={flagUrl ?? '/images/propertycard/default-flag.png'}
-          width={50}
-          height={40}
-          alt=""
-          className="h-full w-full object-cover"
-        />
-      </div>
+      {countryUrl ? (
+        <Link
+          href={countryUrl}
+          {...(openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          onClick={(e) => e.stopPropagation()}
+          aria-label={countryName}
+          title={countryName}
+          className="block h-[40px] w-[50px] overflow-hidden rounded-[6px] transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          <Image
+            src={flagUrl ?? '/images/propertycard/default-flag.png'}
+            width={50}
+            height={40}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        </Link>
+      ) : (
+        <div className="h-[40px] w-[50px] overflow-hidden rounded-[6px]">
+          <Image
+            src={flagUrl ?? '/images/propertycard/default-flag.png'}
+            width={50}
+            height={40}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
     </div>
   </div>
 )}
@@ -513,6 +538,7 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
     prevProps.rating === nextProps.rating &&
     prevProps.isMostVisited === nextProps.isMostVisited &&
     prevProps.countryCode === nextProps.countryCode &&
+    prevProps.countryUrl === nextProps.countryUrl &&
     prevProps.galleryImages?.length === nextProps.galleryImages?.length &&
     prevProps.sphereTourUrl === nextProps.sphereTourUrl &&
     prevProps.videoEmbedUrl === nextProps.videoEmbedUrl &&

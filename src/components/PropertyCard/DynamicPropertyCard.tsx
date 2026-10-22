@@ -5,7 +5,7 @@ import { useLocale } from 'next-intl';
 import React from 'react';
 
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
-import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
+import { buildBeachUrlFromSchema, buildCityUrlFromSchema, buildCountryUrl } from '@/lib/utils/beach-urls';
 import PropertyCard from './PropertyCard';
 
 interface DynamicPropertyCardProps {
@@ -25,6 +25,10 @@ export const DynamicPropertyCard = React.memo(({
   const property = mapBeachToProperty(beach);
   const beachUrl = buildBeachUrlFromSchema(beach, locale) ?? undefined;
   const locationUrl = buildCityUrlFromSchema(beach, locale) ?? undefined;
+  const countryUrl =
+    beach.continent_slug && beach.country_slug
+      ? buildCountryUrl(locale, beach.continent_slug, beach.country_slug)
+      : undefined;
 
   if (!property) return null;
 
@@ -33,6 +37,8 @@ export const DynamicPropertyCard = React.memo(({
       {...property}
       beachUrl={beachUrl}
       locationUrl={locationUrl}
+      countryUrl={countryUrl}
+      countryName={beach.country_name ?? undefined}
       openInNewTab={openInNewTab}
       onLocationClick={
         onLocationClick
