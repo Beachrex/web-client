@@ -161,7 +161,11 @@
     "premiumAccommodations": "Luksusowe zakwaterowanie w {continent}",
     "bestDeals": "Świetne oferty",
     "description": "Odkryj najpiękniejsze plaże w {continent}.",
-    "countriesContinent": "Kraje w {continent}"
+    "countriesContinent": "Kraje w {continent}",
+    "sortBy": "Sortuj",
+    "sortAlphabetical": "Alfabetycznie (A–Z)",
+    "sortBeachesDesc": "Najwięcej plaż najpierw",
+    "sortBeachesAsc": "Najmniej plaż najpierw"
   },
   "FeatureCards": {
     "beachMapButton": "Mapa plaż",

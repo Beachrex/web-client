@@ -161,7 +161,11 @@
     "premiumAccommodations": "Луксозно настаняване в {continent}",
     "bestDeals": "Страхотни оферти",
     "description": "Разгледайте най-красивите плажове в {continent}.",
-    "countriesContinent": "Държави в {continent}"
+    "countriesContinent": "Държави в {continent}",
+    "sortBy": "Подреди",
+    "sortAlphabetical": "По азбучен ред (А–Я)",
+    "sortBeachesDesc": "Най-много плажове първо",
+    "sortBeachesAsc": "Най-малко плажове първо"
   },
   "FeatureCards": {
     "beachMapButton": "Карта на плажовете",

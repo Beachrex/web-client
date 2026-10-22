@@ -161,7 +161,11 @@
     "premiumAccommodations": "Hébergements de luxe en {continent}",
     "bestDeals": "Bonnes affaires",
     "description": "Explorez les plus belles plages en {continent}.",
-    "countriesContinent": "Pays en {continent}"
+    "countriesContinent": "Pays en {continent}",
+    "sortBy": "Trier par",
+    "sortAlphabetical": "Alphabétique (A–Z)",
+    "sortBeachesDesc": "Le plus de plages d'abord",
+    "sortBeachesAsc": "Le moins de plages d'abord"
   },
   "FeatureCards": {
     "beachMapButton": "Carte des plages",

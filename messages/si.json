@@ -161,7 +161,11 @@
     "premiumAccommodations": "Luksuzne nastanitve v {continent}",
     "bestDeals": "Odlične ponude",
     "description": "Raziščite najlepše plaže v {continent}.",
-    "countriesContinent": "Države v {continent}"
+    "countriesContinent": "Države v {continent}",
+    "sortBy": "Razvrsti",
+    "sortAlphabetical": "Po abecedi (A–Ž)",
+    "sortBeachesDesc": "Največ plaž najprej",
+    "sortBeachesAsc": "Najmanj plaž najprej"
   },
   "FeatureCards": {
     "beachMapButton": "Zemljevid plaž",

@@ -161,7 +161,11 @@
     "premiumAccommodations": "Akomodim luksoz në {continent}",
     "bestDeals": "Oferta të mira",
     "description": "Eksploroni plazhet më të bukura në {continent}.",
-    "countriesContinent": "Vendet në {continent}"
+    "countriesContinent": "Vendet në {continent}",
+    "sortBy": "Rendit",
+    "sortAlphabetical": "Sipas alfabetit (A–Zh)",
+    "sortBeachesDesc": "Më shumë plazhe së pari",
+    "sortBeachesAsc": "Më pak plazhe së pari"
   },
   "FeatureCards": {
     "beachMapButton": "Harta e plazheve",

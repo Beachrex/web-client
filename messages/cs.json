@@ -161,7 +161,11 @@
     "premiumAccommodations": "Luxusní ubytování v {continent}",
     "bestDeals": "Skvělé nabídky",
     "description": "Prozkoumejte nejkrásnější pláže v {continent}.",
-    "countriesContinent": "Země v {continent}"
+    "countriesContinent": "Země v {continent}",
+    "sortBy": "Řadit",
+    "sortAlphabetical": "Abecedně (A–Z)",
+    "sortBeachesDesc": "Nejvíce pláží první",
+    "sortBeachesAsc": "Nejméně pláží první"
   },
   "FeatureCards": {
     "beachMapButton": "Mapa pláží",

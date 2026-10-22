@@ -161,7 +161,11 @@
     "premiumAccommodations": "Luxury Accommodation in {continent}",
     "bestDeals": "Great Deals",
     "description": "Explore the most beautiful beaches in {continent}.",
-    "countriesContinent": "Countries in {continent}"
+    "countriesContinent": "Countries in {continent}",
+    "sortBy": "Sort by",
+    "sortAlphabetical": "Alphabetical (A–Z)",
+    "sortBeachesDesc": "Most beaches first",
+    "sortBeachesAsc": "Fewest beaches first"
   },
   "FeatureCards": {
     "beachMapButton": "Beach Map",

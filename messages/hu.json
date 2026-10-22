@@ -161,7 +161,11 @@
     "premiumAccommodations": "Luxus szállás {continent}",
     "bestDeals": "Nagyszerű ajánlatok",
     "description": "Fedezd fel a legszebb strandokat {continent}.",
-    "countriesContinent": "Országok {continent}"
+    "countriesContinent": "Országok {continent}",
+    "sortBy": "Rendezés",
+    "sortAlphabetical": "Ábécérendben (A–Z)",
+    "sortBeachesDesc": "Legtöbb strand elöl",
+    "sortBeachesAsc": "Legkevesebb strand elöl"
   },
   "FeatureCards": {
     "beachMapButton": "Strand térkép",
