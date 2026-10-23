@@ -48,6 +48,15 @@ Owner 2026-10-22: on the beach map, clicking a beach opens the beach page in a n
 
 ---
 
+## 2026-10-23 – Popups above the sticky header; searchable place filters on the map ✅ COMPLETE
+
+Owner 2026-10-23:
+- The sticky header (`Layout.tsx`, z-[1050]) covered the beach page gallery / 360° / video popup (z-50) and its ✕. New `MediaOverlay` (`src/components/Beach/MediaOverlay.tsx`): rendered into `<body>` at z-[1100], closes on ✕, a click on the backdrop and Escape, locks page scroll, focuses the close button (label `BeachDetails.closeMedia`, 19 languages). `WebcamModal` (was z-[1000]) and the filter drawer of the beach lists (`DynamicSearchBeaches`, was z-[100]) moved to z-[1100] too.
+- Map filters country / region / island / city (`LeftSidebarFilters`): `SearchableSelect` (`src/components/ui/SearchableSelect.tsx`) instead of a plain select — "Vse države" / "Vse regije" / "Vsi otoki" / "Vsa mesta" instead of "Izberite možnost", ✕ to clear, a list with a search box (case and diacritics ignored), arrows/Enter/Escape. The list opens in place, so the scrolling sidebar never clips it. Labels `PlaceSelect.*` in 19 languages.
+- Test: `e2e/overlays-and-place-filters.unit.spec.ts`.
+
+---
+
 ## 2026-10-23 – Pre-launch SEO: one URL per page, full hreflang, sitemaps under the limits ✅ COMPLETE
 
 Pre-launch audit (owner: "danes gremo v produkcijo"):

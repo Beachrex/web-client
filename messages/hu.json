@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Élő webkamera",
     "webcamIframeTitle": "Élő webkamera: {name}",
-    "webcamCredit": "A webkamerát a Windy.com biztosítja"
+    "webcamCredit": "A webkamerát a Windy.com biztosítja",
+    "closeMedia": "Bezárás"
   },
   "Auth": {
     "continueWithGoogle": "Folytatás Google-lal",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Gyakori kérdések: {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Összes ország",
+    "allRegions": "Összes régió",
+    "allIslands": "Összes sziget",
+    "allCities": "Összes település",
+    "all": "Összes",
+    "search": "Keresés…",
+    "noMatches": "Nincs találat",
+    "clear": "Törlés"
   }
 }

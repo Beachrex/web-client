@@ -202,7 +202,7 @@ function DynamicSearchBeachesInner({
       {/* ================= FILTER DRAWER ================= */}
       {isFilterOpen && (
         <div
-          className="fixed inset-0 z-[100] bg-black/40"
+          className="fixed inset-0 z-[1100] bg-black/40"
           onClick={() => setIsFilterOpen(false)}
         >
           <div

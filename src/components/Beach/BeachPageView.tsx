@@ -9,6 +9,7 @@ import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import WindyWebcams from '@/components/Beach/WindyWebcams';
+import MediaOverlay from '@/components/Beach/MediaOverlay';
 import { FEATURES } from '@/lib/constants/features';
 import { parseWebcamUrl, parseWindyWebcams } from '@/lib/utils/webcam';
 
@@ -33,6 +34,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   // ✅ Hook vedno pokličemo, brez pogojev
   const [activeMedia, setActiveMedia] =
     React.useState<ActiveMediaType | null>(null);
+  const closeMedia = React.useCallback(() => setActiveMedia(null), []);
 
   const media = beachDetails.media;
   const embeds = beachDetails.embeds;
@@ -159,16 +161,11 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
 
       {/* MODAL OVERLAY */}
       {activeMedia && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-          <div className="relative w-full max-w-6xl rounded-xl bg-[#111] shadow-2xl">
-            {/* Close button */}
-            <button
-              type="button"
-              onClick={() => setActiveMedia(null)}
-              className="absolute right-4 top-4 z-50 rounded-full bg-black/60 px-3 py-1 text-sm font-medium text-white hover:bg-black"
-            >
-              ✕
-            </button>
+        <MediaOverlay
+          label={rawItems.find((item) => item.key === activeMedia)?.label ?? t('beachMediaGallery')}
+          closeLabel={t('closeMedia')}
+          onClose={closeMedia}
+        >
 
             {/* GALLERY FULLSCREEN + CAROUSEL */}
             {activeMedia === 'gallery' && hasGallery && (
@@ -238,8 +235,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
                 />
               </div>
             )}
-          </div>
-        </div>
+        </MediaOverlay>
       )}
     </section>
     {webcamSection}

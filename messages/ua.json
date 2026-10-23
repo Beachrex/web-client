@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Вебкамера наживо",
     "webcamIframeTitle": "Вебкамера наживо: {name}",
-    "webcamCredit": "Вебкамеру надає Windy.com"
+    "webcamCredit": "Вебкамеру надає Windy.com",
+    "closeMedia": "Закрити"
   },
   "Auth": {
     "continueWithGoogle": "Продовжити з Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Поширені запитання про {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Усі країни",
+    "allRegions": "Усі регіони",
+    "allIslands": "Усі острови",
+    "allCities": "Усі міста",
+    "all": "Усі",
+    "search": "Пошук…",
+    "noMatches": "Нічого не знайдено",
+    "clear": "Очистити"
   }
 }

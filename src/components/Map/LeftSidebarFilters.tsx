@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
+import SearchableSelect from '@/components/ui/SearchableSelect';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { MAP_QUICK_FILTERS } from '@/config/mapQuickFilters';
@@ -24,6 +25,14 @@ interface LeftSidebarFiltersProps {
     onFilterOptionsLoadingChange?: (isLoading: boolean) => void;
 }
 
+/** "All countries" etc. per place filter; other select filters say "All". */
+const PLACE_ALL_LABEL: Record<string, 'allCountries' | 'allRegions' | 'allIslands' | 'allCities'> = {
+    country: 'allCountries',
+    region: 'allRegions',
+    island: 'allIslands',
+    city: 'allCities',
+};
+
 const LeftSidebarFilters = ({
     beachesCount,
     beachesLoading,
@@ -33,7 +42,7 @@ const LeftSidebarFilters = ({
     onFilterOptionsLoadingChange,
 }: LeftSidebarFiltersProps) => {
     const t = useTranslations('BeachesMap');
-    const tUi = useTranslations('UI');
+    const tPlace = useTranslations('PlaceSelect');
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -268,20 +277,24 @@ const LeftSidebarFilters = ({
         const currentValue = currentFilters[filterName] as string | undefined;
 
         if (type === 'select') {
+            // Owner 2026-10-23: an "all countries" style label instead of the generic placeholder, plus a search box
+            const selectOptions = options.flatMap((option) => {
+                const optionValue = option.code ?? option.slug ?? option.value;
+                if (!optionValue) return [];
+                return [{ value: String(optionValue), label: option.name ?? option.label ?? String(optionValue) }];
+            });
+            const allKey = PLACE_ALL_LABEL[filterName];
             return (
                 <div className="px-4 pb-3">
-                    <select
-                        className="w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
+                    <SearchableSelect
                         value={currentValue ?? ''}
-                        onChange={(e) => handleFilterChange(filterName, e.target.value)}
-                    >
-                        <option value="">{tUi('selectOption')}</option>
-                        {options.map((option, index) => (
-                            <option key={option.id ?? index} value={option.code ?? option.slug ?? option.value}>
-                                {option.name ?? option.label}
-                            </option>
-                        ))}
-                    </select>
+                        options={selectOptions}
+                        onChange={(v) => handleFilterChange(filterName, v)}
+                        allLabel={allKey ? tPlace(allKey) : tPlace('all')}
+                        searchPlaceholder={tPlace('search')}
+                        noMatchesLabel={tPlace('noMatches')}
+                        clearLabel={tPlace('clear')}
+                    />
                 </div>
             );
         }

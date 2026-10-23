@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Spletna kamera v živo",
     "webcamIframeTitle": "Spletna kamera v živo: {name}",
-    "webcamCredit": "Spletno kamero zagotavlja Windy.com"
+    "webcamCredit": "Spletno kamero zagotavlja Windy.com",
+    "closeMedia": "Zapri"
   },
   "PropertyCard": {
     "priceFrom": "od {price} €",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Pogosta vprašanja o plaži {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Vse države",
+    "allRegions": "Vse regije",
+    "allIslands": "Vsi otoki",
+    "allCities": "Vsa mesta",
+    "all": "Vse",
+    "search": "Išči …",
+    "noMatches": "Ni zadetkov",
+    "clear": "Počisti"
   }
 }
