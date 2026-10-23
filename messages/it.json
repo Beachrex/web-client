@@ -329,11 +329,11 @@
     "islandLabel": "Isola",
     "cityLabel": "Città",
     "countryLabel": "Paese",
-    "beachLabel": "Spiaggia di mare",
+    "beachLabel": "Mare",
     "beachCountLabel": "Numero di spiagge:",
     "accommodationCountLabel": "Numero di alloggi:",
-    "beachLabelLake": "Spiaggia di lago",
-    "beachLabelRiver": "Spiaggia di fiume",
+    "beachLabelLake": "Lago",
+    "beachLabelRiver": "Fiume",
     "beachLabelPool": "Piscina"
   },
   "TopBarBeach": {

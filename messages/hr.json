@@ -329,11 +329,11 @@
     "islandLabel": "Otok",
     "cityLabel": "Grad",
     "countryLabel": "Država",
-    "beachLabel": "Morska plaža",
+    "beachLabel": "More",
     "beachCountLabel": "Broj plaža:",
     "accommodationCountLabel": "Broj smještaja:",
-    "beachLabelLake": "Jezerska plaža",
-    "beachLabelRiver": "Riječna plaža",
+    "beachLabelLake": "Jezero",
+    "beachLabelRiver": "Rijeka",
     "beachLabelPool": "Bazen"
   },
   "TopBarBeach": {

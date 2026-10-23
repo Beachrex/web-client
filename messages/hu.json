@@ -329,11 +329,11 @@
     "islandLabel": "Sziget",
     "cityLabel": "Város",
     "countryLabel": "Ország",
-    "beachLabel": "Tengeri strand",
+    "beachLabel": "Tenger",
     "beachCountLabel": "Strandok száma:",
     "accommodationCountLabel": "Szállások száma:",
-    "beachLabelLake": "Tavi strand",
-    "beachLabelRiver": "Folyóparti strand",
+    "beachLabelLake": "Tó",
+    "beachLabelRiver": "Folyó",
     "beachLabelPool": "Medence"
   },
   "TopBarBeach": {

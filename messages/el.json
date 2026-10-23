@@ -329,11 +329,11 @@
     "islandLabel": "Νησί",
     "cityLabel": "Πόλη",
     "countryLabel": "Χώρα",
-    "beachLabel": "Θαλάσσια παραλία",
+    "beachLabel": "Θάλασσα",
     "beachCountLabel": "Αριθμός παραλιών:",
     "accommodationCountLabel": "Αριθμός καταλυμάτων:",
-    "beachLabelLake": "Παραλία λίμνης",
-    "beachLabelRiver": "Παραλία ποταμού",
+    "beachLabelLake": "Λίμνη",
+    "beachLabelRiver": "Ποτάμι",
     "beachLabelPool": "Πισίνα"
   },
   "TopBarBeach": {

@@ -329,11 +329,11 @@
     "islandLabel": "Ostrov",
     "cityLabel": "Mesto",
     "countryLabel": "Krajina",
-    "beachLabel": "Morská pláž",
+    "beachLabel": "More",
     "beachCountLabel": "Počet pláží:",
     "accommodationCountLabel": "Počet ubytovaní:",
-    "beachLabelLake": "Jazerná pláž",
-    "beachLabelRiver": "Riečna pláž",
+    "beachLabelLake": "Jazero",
+    "beachLabelRiver": "Rieka",
     "beachLabelPool": "Bazén"
   },
   "TopBarBeach": {

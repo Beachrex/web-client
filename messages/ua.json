@@ -329,11 +329,11 @@
     "islandLabel": "Острів",
     "cityLabel": "Місто",
     "countryLabel": "Країна",
-    "beachLabel": "Морський пляж",
+    "beachLabel": "Море",
     "beachCountLabel": "Кількість пляжів:",
     "accommodationCountLabel": "Кількість житла:",
-    "beachLabelLake": "Озерний пляж",
-    "beachLabelRiver": "Річковий пляж",
+    "beachLabelLake": "Озеро",
+    "beachLabelRiver": "Річка",
     "beachLabelPool": "Басейн"
   },
   "TopBarBeach": {

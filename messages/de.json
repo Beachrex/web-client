@@ -329,11 +329,11 @@
     "islandLabel": "Insel",
     "cityLabel": "Stadt",
     "countryLabel": "Land",
-    "beachLabel": "Meeresstrand",
+    "beachLabel": "Meer",
     "beachCountLabel": "Anzahl Strände:",
     "accommodationCountLabel": "Anzahl Unterkünfte:",
-    "beachLabelLake": "Seestrand",
-    "beachLabelRiver": "Flussstrand",
+    "beachLabelLake": "See",
+    "beachLabelRiver": "Fluss",
     "beachLabelPool": "Pool"
   },
   "TopBarBeach": {

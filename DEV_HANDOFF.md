@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-23 – Beach pill shows only the water ✅ COMPLETE
+
+- Owner: the beach banner pill says just the water — "Morje", "Jezero", "Reka", "Bazen" (was "Morska plaža", "Jezerska plaža", …), in all 19 locales (`TopBar.beachLabel*`).
+
 ## 2026-10-23 – Beach page wording follows the waterbody ✅ COMPLETE
 
 - Owner: lake, river and pool beaches said "Morska plaža", "Temperatura morja" and "Morsko dno".

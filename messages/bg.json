@@ -329,11 +329,11 @@
     "islandLabel": "Остров",
     "cityLabel": "Град",
     "countryLabel": "Държава",
-    "beachLabel": "Морски плаж",
+    "beachLabel": "Море",
     "beachCountLabel": "Брой плажове:",
     "accommodationCountLabel": "Брой настанявания:",
-    "beachLabelLake": "Плаж на езеро",
-    "beachLabelRiver": "Плаж на река",
+    "beachLabelLake": "Езеро",
+    "beachLabelRiver": "Река",
     "beachLabelPool": "Басейн"
   },
   "TopBarBeach": {
