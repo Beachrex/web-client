@@ -997,6 +997,8 @@
     "all": "Alles",
     "search": "Zoeken…",
     "noMatches": "Geen resultaten",
-    "clear": "Wissen"
+    "clear": "Wissen",
+    "selected": "Geselecteerde filters",
+    "remove": "{name} verwijderen"
   }
 }

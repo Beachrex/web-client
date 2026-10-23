@@ -997,6 +997,8 @@
     "all": "Alle",
     "search": "Søg…",
     "noMatches": "Ingen resultater",
-    "clear": "Ryd"
+    "clear": "Ryd",
+    "selected": "Valgte filtre",
+    "remove": "Fjern {name}"
   }
 }

@@ -997,6 +997,8 @@
     "all": "Wszystko",
     "search": "Szukaj…",
     "noMatches": "Brak wyników",
-    "clear": "Wyczyść"
+    "clear": "Wyczyść",
+    "selected": "Wybrane filtry",
+    "remove": "Usuń {name}"
   }
 }

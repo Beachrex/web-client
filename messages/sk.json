@@ -997,6 +997,8 @@
     "all": "Všetko",
     "search": "Hľadať…",
     "noMatches": "Žiadne výsledky",
-    "clear": "Vymazať"
+    "clear": "Vymazať",
+    "selected": "Vybrané filtre",
+    "remove": "Odstrániť {name}"
   }
 }

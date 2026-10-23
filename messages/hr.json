@@ -997,6 +997,8 @@
     "all": "Sve",
     "search": "Traži …",
     "noMatches": "Nema rezultata",
-    "clear": "Očisti"
+    "clear": "Očisti",
+    "selected": "Odabrani filtri",
+    "remove": "Ukloni {name}"
   }
 }

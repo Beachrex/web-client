@@ -997,6 +997,8 @@
     "all": "Vse",
     "search": "Išči …",
     "noMatches": "Ni zadetkov",
-    "clear": "Počisti"
+    "clear": "Počisti",
+    "selected": "Izbrani filtri",
+    "remove": "Odstrani {name}"
   }
 }
