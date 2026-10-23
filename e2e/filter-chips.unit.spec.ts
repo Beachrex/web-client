@@ -47,8 +47,11 @@ test('removing a chip keeps every other value and filter', async () => {
 test('the sidebar shows the chips, allows several places and keeps sections open', () => {
   const sidebar = read('src/components/Map/LeftSidebarFilters.tsx');
   expect(sidebar).toContain('handleFilterChange(chip.filterKey, withoutChip(currentFilters, chip))');
-  expect(sidebar).toContain('multiple={Boolean(allKey)}');
+  expect(sidebar, 'the country is a single choice').toContain("multiple={Boolean(allKey) && filterName !== 'country'}");
   expect(sidebar).not.toContain('setExpandedSections({});');
+  expect(sidebar, 'labels stay while the next options load').toContain('placeholderData: keepPreviousData');
+  expect(sidebar, 'validation still waits for the new options').toContain('const isLoading = isFirstLoad || isPlaceholderData;');
+  expect(sidebar, 'the list does not hide on every change').toContain('{!isFirstLoad && !error && filterOptions && (');
 
   const select = read('src/components/ui/SearchableSelect.tsx');
   expect(select).toContain('aria-multiselectable={multiple || undefined}');

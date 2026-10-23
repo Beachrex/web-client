@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { ChevronDown, ChevronUp, X } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
@@ -147,12 +147,18 @@ const LeftSidebarFilters = ({
     }, [currentFilters]);
 
     // Fetch filter options using TanStack Query with all currently selected filters
-    const { data, isLoading, error } = useQuery(
-        getBeachFiltersOptions({
+    const { data, isLoading: isFirstLoad, isPlaceholderData, error } = useQuery({
+        ...getBeachFiltersOptions({
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
             query: queryParams as any,
-        })
-    );
+        }),
+        // Keep the current options while the next ones load: the chips and lists kept their labels
+        // instead of flashing raw codes ("HR", "sand") after every change (owner 2026-10-23)
+        placeholderData: keepPreviousData,
+    });
+    // For the map's validation the options count as loading until the new ones are in (as before keepPreviousData);
+    // the lists only show the loading text on the first load.
+    const isLoading = isFirstLoad || isPlaceholderData;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const filterOptions = data?.data ?? null;
     const chips = useMemo(
@@ -291,8 +297,9 @@ const LeftSidebarFilters = ({
             return (
                 <div className="px-4 pb-3">
                     <SearchableSelect
-                        // Places allow several values ("HR,IT"); the API filters by any of them (owner 2026-10-23)
-                        multiple={Boolean(allKey)}
+                        // Several regions / islands / towns at once; the country stays a single choice
+                        // (owner 2026-10-23: two countries emptied the region, island and town lists)
+                        multiple={Boolean(allKey) && filterName !== 'country'}
                         value={currentValue ?? ''}
                         options={selectOptions}
                         onChange={(v) => handleFilterChange(filterName, v)}
@@ -466,7 +473,7 @@ text-xs font-semibold text-[#1A3C68] transition-colors hover:bg-[#d6e1ef]"
             {isExpanded && (
                 <div className="flex-1 overflow-y-auto px-6 py-6">
                     <div className="flex flex-col gap-4">
-                        {isLoading && (
+                        {isFirstLoad && (
                             <div className="text-center text-gray-500 py-4">
                                 {t('loadingFilters')}
                             </div>
@@ -478,7 +485,7 @@ text-xs font-semibold text-[#1A3C68] transition-colors hover:bg-[#d6e1ef]"
                             </div>
                         )}
 
-                        {!isLoading && !error && filterOptions && (
+                        {!isFirstLoad && !error && filterOptions && (
                             <>
                                 {/* Dynamically render all filter categories */}
                                 {Object.entries(filterOptions).map(([filterKey, filterData]) => {
