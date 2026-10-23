@@ -17,3 +17,16 @@ test('the beach page redirects permanently from an old slug', () => {
   const page = readFileSync(join(process.cwd(), 'src/app/[locale]/beaches/[continent]/[country]/[...segments]/page.tsx'), 'utf8');
   expect(page).toMatch(/isOldBeachSlug\(lastSegment, beachSlug\)\) \{\s*permanentRedirect\(buildBeachUrl\(beach, locale\)\)/);
 });
+
+test('the middleware spots old beach slugs and swaps them', async () => {
+  const { oldBeachSlug, withBeachSlug } = await import('../src/lib/utils/old-beach-slug');
+  expect(oldBeachSlug('/pl/plaze/europa/slowenia/obalno-kraska/izola/beach-svetilnik')).toBe('beach-svetilnik');
+  expect(oldBeachSlug('/pl/plaze/europa/slowenia/obalno-kraska/izola/svetilnik')).toBeNull();
+  expect(oldBeachSlug('/pl/plaze/europa/slowenia/beach-x')).toBeNull(); // too short for a beach
+  expect(oldBeachSlug('/pl/p/beach-guide/a/b/beach-x')).toBeNull(); // not a beaches path
+  expect(withBeachSlug('/pl/plaze/europa/slowenia/obalno-kraska/izola/beach-svetilnik', 'svetilnik')).toBe(
+    '/pl/plaze/europa/slowenia/obalno-kraska/izola/svetilnik',
+  );
+  const middleware = readFileSync(join(process.cwd(), 'src/middleware.ts'), 'utf8');
+  expect(middleware).toContain('NextResponse.redirect(url, 301)');
+});
