@@ -329,11 +329,11 @@
     "islandLabel": "Ishull",
     "cityLabel": "Qytet",
     "countryLabel": "Vend",
-    "beachLabel": "Plazh deti",
+    "beachLabel": "Det",
     "beachCountLabel": "Numri i plazheve:",
     "accommodationCountLabel": "Numri i akomodimeve:",
-    "beachLabelLake": "Plazh liqeni",
-    "beachLabelRiver": "Plazh lumi",
+    "beachLabelLake": "Liqen",
+    "beachLabelRiver": "Lumë",
     "beachLabelPool": "Pishinë"
   },
   "TopBarBeach": {

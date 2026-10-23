@@ -329,11 +329,11 @@
     "islandLabel": "Остров",
     "cityLabel": "Город",
     "countryLabel": "Страна",
-    "beachLabel": "Морской пляж",
+    "beachLabel": "Море",
     "beachCountLabel": "Количество пляжей:",
     "accommodationCountLabel": "Количество жилья:",
-    "beachLabelLake": "Озёрный пляж",
-    "beachLabelRiver": "Речной пляж",
+    "beachLabelLake": "Озеро",
+    "beachLabelRiver": "Река",
     "beachLabelPool": "Бассейн"
   },
   "TopBarBeach": {

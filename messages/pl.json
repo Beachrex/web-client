@@ -329,11 +329,11 @@
     "islandLabel": "Wyspa",
     "cityLabel": "Miasto",
     "countryLabel": "Kraj",
-    "beachLabel": "Plaża morska",
+    "beachLabel": "Morze",
     "beachCountLabel": "Liczba plaż:",
     "accommodationCountLabel": "Liczba obiektów:",
-    "beachLabelLake": "Plaża nad jeziorem",
-    "beachLabelRiver": "Plaża nad rzeką",
+    "beachLabelLake": "Jezioro",
+    "beachLabelRiver": "Rzeka",
     "beachLabelPool": "Basen"
   },
   "TopBarBeach": {

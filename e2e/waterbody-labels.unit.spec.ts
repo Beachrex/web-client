@@ -38,7 +38,10 @@ test('every locale has the pill and seabed labels for each waterbody', () => {
     }
   }
   const si = JSON.parse(read('messages/si.json'));
-  expect(si.TopBar.beachLabelLake).toBe('Jezerska plaža');
+  expect(si.TopBar.beachLabel).toBe('Morje');
+  expect(si.TopBar.beachLabelLake).toBe('Jezero');
+  expect(si.TopBar.beachLabelRiver).toBe('Reka');
+  expect(si.TopBar.beachLabelPool).toBe('Bazen');
   expect(si.BeachDetails.labels.seabedLake).toBe('Dno jezera');
 });
 

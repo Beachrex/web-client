@@ -329,11 +329,11 @@
     "islandLabel": "Ø",
     "cityLabel": "By",
     "countryLabel": "Land",
-    "beachLabel": "Havstrand",
+    "beachLabel": "Hav",
     "beachCountLabel": "Antal strande:",
     "accommodationCountLabel": "Antal overnatninger:",
-    "beachLabelLake": "Søstrand",
-    "beachLabelRiver": "Flodstrand",
+    "beachLabelLake": "Sø",
+    "beachLabelRiver": "Flod",
     "beachLabelPool": "Pool"
   },
   "TopBarBeach": {
