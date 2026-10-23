@@ -7,6 +7,8 @@ import React from 'react';
 
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { seabedLabelKey, waterKind } from '@/lib/utils/waterbody';
+
 import InfoRow from './InfoRow';
 import SingleValue from './SingleValue';
 
@@ -263,7 +265,7 @@ height={20}
                 <SingleValue valueRaw={beachFromApi.swimmingArea} />
               </InfoRow>
 
-              <InfoRow labelKey="seabed">
+              <InfoRow labelKey={seabedLabelKey(waterKind(characteristics?.waterbody?.code))}>
                 {renderTickList(beachFromApi.seabed)}
               </InfoRow>
             </div>

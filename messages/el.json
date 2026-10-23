@@ -331,7 +331,10 @@
     "countryLabel": "Χώρα",
     "beachLabel": "Θαλάσσια παραλία",
     "beachCountLabel": "Αριθμός παραλιών:",
-    "accommodationCountLabel": "Αριθμός καταλυμάτων:"
+    "accommodationCountLabel": "Αριθμός καταλυμάτων:",
+    "beachLabelLake": "Παραλία λίμνης",
+    "beachLabelRiver": "Παραλία ποταμού",
+    "beachLabelPool": "Πισίνα"
   },
   "TopBarBeach": {
     "beachLabel": "Θαλάσσια παραλία",
@@ -601,7 +604,10 @@
       "wayToParking": "Επιφάνεια προς πάρκινγκ",
       "recommendedAccess": "Προτεινόμενη πρόσβαση",
       "distance": "Απόσταση (πάρκινγκ — παραλία)",
-      "elevationDiff": "Υψομετρική διαφορά (πάρκινγκ προς παραλία)"
+      "elevationDiff": "Υψομετρική διαφορά (πάρκινγκ προς παραλία)",
+      "seabedLake": "Βυθός λίμνης",
+      "seabedRiver": "Κοίτη ποταμού",
+      "seabedPool": "Πυθμένας πισίνας"
     },
     "buttons": {
       "photo": "Φωτογραφία",

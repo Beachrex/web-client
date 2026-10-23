@@ -331,7 +331,10 @@
     "countryLabel": "Land",
     "beachLabel": "Havstrand",
     "beachCountLabel": "Antal strande:",
-    "accommodationCountLabel": "Antal overnatninger:"
+    "accommodationCountLabel": "Antal overnatninger:",
+    "beachLabelLake": "Søstrand",
+    "beachLabelRiver": "Flodstrand",
+    "beachLabelPool": "Pool"
   },
   "TopBarBeach": {
     "beachLabel": "Havstrand",
@@ -601,7 +604,10 @@
       "wayToParking": "Underlag til parkering",
       "recommendedAccess": "Anbefalet adgang",
       "distance": "Afstand (parkering — strand)",
-      "elevationDiff": "Højdeforskel (parkering til strand)"
+      "elevationDiff": "Højdeforskel (parkering til strand)",
+      "seabedLake": "Søbund",
+      "seabedRiver": "Flodleje",
+      "seabedPool": "Poolbund"
     },
     "buttons": {
       "photo": "Foto",

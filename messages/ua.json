@@ -331,7 +331,10 @@
     "countryLabel": "Країна",
     "beachLabel": "Морський пляж",
     "beachCountLabel": "Кількість пляжів:",
-    "accommodationCountLabel": "Кількість житла:"
+    "accommodationCountLabel": "Кількість житла:",
+    "beachLabelLake": "Озерний пляж",
+    "beachLabelRiver": "Річковий пляж",
+    "beachLabelPool": "Басейн"
   },
   "TopBarBeach": {
     "beachLabel": "Морський пляж",
@@ -601,7 +604,10 @@
       "wayToParking": "Покриття до парковки",
       "recommendedAccess": "Рекомендований доступ",
       "distance": "Відстань (парковка — пляж)",
-      "elevationDiff": "Перепад висот (парковка до пляжу)"
+      "elevationDiff": "Перепад висот (парковка до пляжу)",
+      "seabedLake": "Дно озера",
+      "seabedRiver": "Річкове дно",
+      "seabedPool": "Дно басейну"
     },
     "buttons": {
       "photo": "Фото",

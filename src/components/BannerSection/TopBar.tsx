@@ -30,6 +30,8 @@ interface TopBarProps {
   beachCount?: number;
   showLocationPills?: boolean;
   showFilter?: boolean;
+  /** TopBar key that replaces the variant's pill label (beach pages: lake/river/pool wording). */
+  pillLabelKey?: string;
 }
 
 const TopBar: React.FC<TopBarProps> = ({
@@ -45,6 +47,7 @@ const TopBar: React.FC<TopBarProps> = ({
   beachCount,
   showLocationPills,
   showFilter,
+  pillLabelKey: pillLabelKeyOverride,
 }) => {
   const t = useTranslations('TopBar');
   const tContinent = useTranslations('Continents');
@@ -100,7 +103,7 @@ const TopBar: React.FC<TopBarProps> = ({
    * ------------------------------------------------ */
   const barBgClass = VARIANT_BG_CLASS[variant];
   const accentTextClass = VARIANT_TEXT_CLASS[variant];
-  const pillLabelKey = VARIANT_PILL_LABEL_KEY[variant];
+  const pillLabelKey = pillLabelKeyOverride ?? VARIANT_PILL_LABEL_KEY[variant];
 
   const barRadiusClass =
     variant === 'continent'

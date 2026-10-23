@@ -14,6 +14,7 @@ import Link from 'next/link';
 import BeachTitleBlock from './BeachTitleBlock';
 import BottomBadgesBeach from './BottomBadgesBeach';
 import SeaTempWidget from './SeaTempWidget';
+import { beachPillKey, showsSeaTemperature, waterKind } from '@/lib/utils/waterbody';
 import TopBarBeachRight from './TopBarBeachRight';
 import TopBar from '@/components/BannerSection/TopBar';
 import { mapBeachLocationToTopBar } from '@/lib/mappers/mapBeachLocationToTopBar';
@@ -96,6 +97,7 @@ export default function BeachBannerSection({
   const badges = buildBeachBadges(beachDetails);
 
   const topBarData = mapBeachLocationToTopBar(beachDetails);
+  const water = waterKind(beachDetails?.characteristics?.waterbody?.code);
 
 
   return (
@@ -134,6 +136,7 @@ export default function BeachBannerSection({
   activityCount={activityCount}
   showLocationPills
   showFilter={false}
+  pillLabelKey={beachPillKey(water)}
 />
 
 
@@ -155,10 +158,12 @@ export default function BeachBannerSection({
               locationName={locationName}
               isLoading={isWeatherLoading}
             />
-            <SeaTempWidget
-              tempC={seaTemperature}
-              isLoading={isWeatherLoading}
-            />
+            {showsSeaTemperature(water) && (
+              <SeaTempWidget
+                tempC={seaTemperature}
+                isLoading={isWeatherLoading}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -331,7 +331,10 @@
     "countryLabel": "País",
     "beachLabel": "Playa de mar",
     "beachCountLabel": "Número de playas:",
-    "accommodationCountLabel": "Número de alojamientos:"
+    "accommodationCountLabel": "Número de alojamientos:",
+    "beachLabelLake": "Playa de lago",
+    "beachLabelRiver": "Playa de río",
+    "beachLabelPool": "Piscina"
   },
   "TopBarBeach": {
     "beachLabel": "Playa de mar",
@@ -601,7 +604,10 @@
       "wayToParking": "Superficie hasta el aparcamiento",
       "recommendedAccess": "Acceso recomendado",
       "distance": "Distancia (aparcamiento — playa)",
-      "elevationDiff": "Diferencia de elevación (aparcamiento a playa)"
+      "elevationDiff": "Diferencia de elevación (aparcamiento a playa)",
+      "seabedLake": "Fondo del lago",
+      "seabedRiver": "Lecho del río",
+      "seabedPool": "Fondo de la piscina"
     },
     "buttons": {
       "photo": "Foto",

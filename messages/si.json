@@ -331,7 +331,10 @@
     "countryLabel": "Država",
     "beachLabel": "Morska plaža",
     "beachCountLabel": "Število plaž:",
-    "accommodationCountLabel": "Število nastanitev:"
+    "accommodationCountLabel": "Število nastanitev:",
+    "beachLabelLake": "Jezerska plaža",
+    "beachLabelRiver": "Rečna plaža",
+    "beachLabelPool": "Bazen"
   },
   "TopBarBeach": {
     "beachLabel": "Morska plaža",
@@ -601,7 +604,10 @@
       "wayToParking": "Pot do parkirišča",
       "recommendedAccess": "Priporočljiv dostop",
       "distance": "Razdalja (parkirišče—plaža)",
-      "elevationDiff": "Višinska razlika (od parkirišča do plaže)"
+      "elevationDiff": "Višinska razlika (od parkirišča do plaže)",
+      "seabedLake": "Dno jezera",
+      "seabedRiver": "Rečno dno",
+      "seabedPool": "Dno bazena"
     },
     "buttons": {
       "photo": "Slika",
