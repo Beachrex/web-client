@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-23 – Old beach slugs redirect permanently ✅ COMPLETE
+
+- Owner: beach URLs ended in an English "beach-" slug in every language (`/pl/plaze/.../beach-svetilnik`). The backend (migration `2026_10_23_140000_beach_slugs_from_local_names`) gives each beach a slug of its local name (`svetilnik`, `plage-de-la-garoupe`, town appended when a name repeats) and still finds a beach by its old slug.
+- The beach page answers an old slug with a 301 to the current URL (`isOldBeachSlug` in `src/lib/utils/beach-urls.ts`).
+- Test: `e2e/beach-old-slug.unit.spec.ts`.
+
 ## 2026-10-23 – Beach pill shows only the water ✅ COMPLETE
 
 - Owner: the beach banner pill says just the water — "Morje", "Jezero", "Reka", "Bazen" (was "Morska plaža", "Jezerska plaža", …), in all 19 locales (`TopBar.beachLabel*`).

@@ -101,6 +101,21 @@ export function buildBeachMapUrl(locale: string, queryString?: string): string {
  * buildBeachUrl(beachDetails, 'en')
  * // Returns: /en/beaches/europe/monaco/beach-name
  */
+/**
+ * Owner 2026-10-23: beach slugs lost their English "beach-" prefix (`beach-svetilnik` → `svetilnik`). The backend
+ * still finds a beach by its old slug; the page then redirects permanently when the URL's slug is not the current one.
+ */
+export function isOldBeachSlug(requested: string | undefined, current: string | null | undefined): boolean {
+  if (!requested || !current) return false;
+  let decoded = requested;
+  try {
+    decoded = decodeURIComponent(requested);
+  } catch {
+    // keep the raw segment
+  }
+  return decoded !== current;
+}
+
 export function buildBeachUrl(
   beachDetails: BeachDetailsSchema,
   locale: string
