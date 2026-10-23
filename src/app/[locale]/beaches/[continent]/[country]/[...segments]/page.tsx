@@ -16,7 +16,7 @@ import React from 'react';
 
 import { getBeachDetails, resolveSlug, getCountries, getMostVisitedBeaches } from '@/lib/api-client';
 import type { AcceptLanguage, BeachDetailsSchema, Country } from '@/lib/api-client/types.gen';
-import { buildBeachUrl, getBeachesWord } from '@/lib/utils/beach-urls';
+import { buildBeachUrl, getBeachesWord, isOldBeachSlug } from '@/lib/utils/beach-urls';
 import {
   buildCompleteMetadata,
   buildPlaceAlternates,
@@ -418,6 +418,11 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
       // language (/si/plaze/europe/croatia/…, as the old sitemap listed) moves permanently to this language's.
       const continentSlug = beach.location?.continent?.slug ?? params.continent;
       const countrySlug = beach.location?.country?.slug ?? params.country;
+      // Owner 2026-10-23: an old beach slug (the former "beach-svetilnik") moves permanently to the current one.
+      const beachSlug = beach.basic_info?.slug;
+      if (isOldBeachSlug(lastSegment, beachSlug)) {
+        permanentRedirect(buildBeachUrl(beach, locale));
+      }
       if (continentSlug !== params.continent || countrySlug !== params.country) {
         permanentRedirect(buildBeachUrl(beach, locale));
       }
