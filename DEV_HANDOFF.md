@@ -52,7 +52,8 @@ Owner 2026-10-22: on the beach map, clicking a beach opens the beach page in a n
 
 Owner 2026-10-23 ("ne morem pa odstranit … lahko bi blo multiple select"):
 - Under "Najdeno / Pobriši": one chip per selected value ("Hrvaška ✕", "Istra ✕", "Pesek ✕"), also when its section is closed and in the quick view; ✕ removes only that value (`src/lib/utils/filter-chips.ts`). Map view state (`lat`, `lng`, `beach_id` …) is not shown.
-- Country / region / island / town: several values (`SearchableSelect multiple`, comma list "HR,IT"; the API filters by any of them: HR 1 167 + IT 264 = 1 431). The list stays open while choosing; the button shows "Hrvaška +1".
+- Region / island / town: several values (`SearchableSelect multiple`, comma list "istra,kvarner"; the API filters by any of them). The list stays open while choosing; the button shows "Istra +1". **Country stays a single choice** (owner 2026-10-23, follow-up: with two countries the region/island/town lists were empty — `/beaches/filters` did not scope by a list, see backend#136).
+- Filter options keep their labels while the next ones load (`keepPreviousData`); the map's validation still waits for the new options.
 - Sections no longer collapse on every filter change; a closed section shows how many values are selected.
 - Labels `PlaceSelect.selected` / `remove` (19 languages). Test: `e2e/filter-chips.unit.spec.ts`.
 
