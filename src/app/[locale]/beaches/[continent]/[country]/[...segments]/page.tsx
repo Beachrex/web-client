@@ -9,7 +9,7 @@
  * Task 0.6: Add generateStaticParams for Top Beaches
  */
 
-import { notFound, redirect } from 'next/navigation';
+import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import React from 'react';
@@ -19,7 +19,7 @@ import type { AcceptLanguage, BeachDetailsSchema, Country } from '@/lib/api-clie
 import { buildBeachUrl, getBeachesWord } from '@/lib/utils/beach-urls';
 import {
   buildCompleteMetadata,
-  buildSelfAlternate,
+  buildPlaceAlternates,
   buildCanonicalUrl,
 } from '@/lib/utils/metadata-helpers';
 import {
@@ -55,6 +55,8 @@ import {
 // Import page components
 import BeachDetailPage from '@/components/Pages/BeachDetailPage';
 import { buildBeachFaqSchema, readBeachFaq, readMetaDescription } from '@/lib/utils/beach-faq';
+import { beachPlaceRef, destinationPlaceRef, loadPlaceSlugs, placePath } from '@/lib/seo/place-paths';
+import { env } from '@/env';
 import RegionListingPage from '@/components/Pages/RegionListingPage';
 import IslandListingPage from '@/components/Pages/IslandListingPage';
 import CityListingPage from '@/components/Pages/CityListingPage';
@@ -296,11 +298,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       pathSegments.push(beach.basic_info.slug);
     }
 
-    const canonicalPath = `/${beachesWord}/${continent}/${country}/${pathSegments.join('/')}`;
+    // Pre-launch 2026-10-23: the continent and country slugs of this language from the API, not the request
+    // URL — /si/plaze/europe/croatia/… and /si/plaze/evropa/hrvaska/… were both canonical (duplicates).
+    const canonicalPath = `/${beachesWord}/${beach.location?.continent?.slug ?? continent}/${
+      beach.location?.country?.slug ?? country
+    }/${pathSegments.join('/')}`;
 
-    // Slugs are localized; other locales' slugs are unknown here, so no cross-locale hreflang
-    // (the old helper paired this locale's slugs with every other locale's URL).
-    const alternateLanguages = buildSelfAlternate(locale, canonicalPath);
+    // hreflang for all 19 languages (continent, country and island slugs differ per language)
+    const alternateLanguages = await buildPlaceAlternates(locale, canonicalPath, beachPlaceRef(beach));
 
     // Build complete metadata
     return buildCompleteMetadata({
@@ -409,6 +414,14 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
         redirect(canonicalUrl);
       }
 
+      // Pre-launch 2026-10-23: one URL per beach and language. A continent or country slug of another
+      // language (/si/plaze/europe/croatia/…, as the old sitemap listed) moves permanently to this language's.
+      const continentSlug = beach.location?.continent?.slug ?? params.continent;
+      const countrySlug = beach.location?.country?.slug ?? params.country;
+      if (continentSlug !== params.continent || countrySlug !== params.country) {
+        permanentRedirect(buildBeachUrl(beach, locale));
+      }
+
       // Build JSON-LD structured data
       const beachesWord = getBeachesWord(locale);
       const pathSegments: string[] = [];
@@ -417,7 +430,7 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
       if (beach.location?.city?.slug) pathSegments.push(beach.location.city.slug);
       if (beach.basic_info?.slug) pathSegments.push(beach.basic_info.slug);
 
-      const canonicalPath = `/${beachesWord}/${params.continent}/${params.country}/${pathSegments.join('/')}`;
+      const canonicalPath = `/${beachesWord}/${continentSlug}/${countrySlug}/${pathSegments.join('/')}`;
       const canonicalUrl = buildCanonicalUrl(locale, canonicalPath);
 
       // Get translations for JSON-LD
@@ -429,11 +442,11 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
         { name: homeLabel, url: buildCanonicalUrl(locale, '/') },
         {
           name: beach.location?.continent?.name ?? params.continent,
-          url: buildCanonicalUrl(locale, `/${beachesWord}/${params.continent}`),
+          url: buildCanonicalUrl(locale, `/${beachesWord}/${continentSlug}`),
         },
         {
           name: beach.location?.country?.name ?? params.country,
-          url: buildCanonicalUrl(locale, `/${beachesWord}/${params.continent}/${params.country}`),
+          url: buildCanonicalUrl(locale, `/${beachesWord}/${continentSlug}/${countrySlug}`),
         },
         { name: beach.basic_info?.name ?? 'Beach', url: canonicalUrl },
       ];
@@ -514,8 +527,13 @@ async function buildDestinationMetadata(
   const { title, description } = buildDestinationSeoText(kind, name, countryName, (key, values) =>
     t(key, values),
   );
-  const path = buildDestinationPath(locale, continent, country, segments);
   const image = buildCdnUrl(details.main_image, 'banner');
+
+  // Pre-launch 2026-10-23: canonical from this language's slugs (not the request URL) and hreflang for all
+  // 19 languages; without slug data, the request path as before.
+  const ref = destinationPlaceRef(kind, details as unknown as Record<string, unknown>);
+  const slugs = await loadPlaceSlugs(env.NEXT_PUBLIC_API_ENDPOINT);
+  const path = placePath(slugs, locale, ref) ?? buildDestinationPath(locale, continent, country, segments);
 
   return buildCompleteMetadata({
     title,
@@ -524,7 +542,7 @@ async function buildDestinationMetadata(
     path,
     images: image ? [image] : undefined,
     type: 'website',
-    alternateLanguages: buildSelfAlternate(locale, path),
+    alternateLanguages: await buildPlaceAlternates(locale, path, ref),
   });
 }
 
