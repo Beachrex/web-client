@@ -997,6 +997,8 @@
     "all": "Alle",
     "search": "Suchen …",
     "noMatches": "Keine Treffer",
-    "clear": "Zurücksetzen"
+    "clear": "Zurücksetzen",
+    "selected": "Ausgewählte Filter",
+    "remove": "{name} entfernen"
   }
 }

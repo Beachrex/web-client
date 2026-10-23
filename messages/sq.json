@@ -997,6 +997,8 @@
     "all": "Të gjitha",
     "search": "Kërko…",
     "noMatches": "Asnjë rezultat",
-    "clear": "Pastro"
+    "clear": "Pastro",
+    "selected": "Filtrat e zgjedhur",
+    "remove": "Hiq {name}"
   }
 }

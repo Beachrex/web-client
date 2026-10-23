@@ -997,6 +997,8 @@
     "all": "Összes",
     "search": "Keresés…",
     "noMatches": "Nincs találat",
-    "clear": "Törlés"
+    "clear": "Törlés",
+    "selected": "Kiválasztott szűrők",
+    "remove": "{name} eltávolítása"
   }
 }

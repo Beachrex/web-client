@@ -12,7 +12,10 @@ export interface SearchableOption {
 }
 
 interface SearchableSelectProps {
+  /** One value, or with `multiple` a comma-separated list ("HR,IT"). */
   value?: string;
+  /** Several values (owner 2026-10-23); the list stays open while choosing. */
+  multiple?: boolean;
   options: SearchableOption[];
   onChange: (value: string) => void;
   /** Shown when nothing is selected, e.g. "Vse države". */
@@ -30,6 +33,7 @@ interface SearchableSelectProps {
  */
 export default function SearchableSelect({
   value,
+  multiple = false,
   options,
   onChange,
   allLabel,
@@ -45,7 +49,14 @@ export default function SearchableSelect({
   const listRef = React.useRef<HTMLUListElement | null>(null);
   const listId = React.useId();
 
-  const selected = options.find((o) => o.value === value);
+  const selectedValues = React.useMemo(
+    () => (value ? (multiple ? value.split(',').filter(Boolean) : [value]) : []),
+    [value, multiple],
+  );
+  const selectedOptions = selectedValues.map((v) => options.find((o) => o.value === v) ?? { value: v, label: v });
+  const selected = selectedOptions[0];
+  const display =
+    selectedOptions.length > 1 ? `${selectedOptions[0]!.label} +${selectedOptions.length - 1}` : selected?.label;
   const filtered = React.useMemo(() => {
     const q = normalizeSearchText(query);
     if (!q) return options;
@@ -74,6 +85,11 @@ export default function SearchableSelect({
   }, [active]);
 
   const choose = (v: string) => {
+    if (multiple && v !== '') {
+      const next = selectedValues.includes(v) ? selectedValues.filter((x) => x !== v) : [...selectedValues, v];
+      onChange(next.join(','));
+      return; // keep the list open to pick more
+    }
     onChange(v);
     close();
   };
@@ -107,12 +123,13 @@ export default function SearchableSelect({
           type="button"
           onClick={() => (open ? close() : setOpen(true))}
           aria-haspopup="listbox"
+          title={selectedOptions.length > 1 ? selectedOptions.map((o) => o.label).join(', ') : undefined}
           aria-expanded={open}
           aria-controls={open ? listId : undefined}
           className="flex min-w-0 flex-1 items-center justify-between gap-2 px-3 py-2 text-left"
         >
           <span className={clsx('truncate', selected ? 'font-semibold text-[#1A3C68]' : 'text-gray-700')}>
-            {selected?.label ?? allLabel}
+            {display ?? allLabel}
           </span>
           {!selected && (
             <ChevronDown size={16} aria-hidden="true" className={clsx('shrink-0 text-gray-500 transition', open && 'rotate-180')} />
@@ -150,11 +167,12 @@ export default function SearchableSelect({
             ref={listRef}
             id={listId}
             role="listbox"
+            aria-multiselectable={multiple || undefined}
             className="max-h-60 overflow-y-auto py-1"
           >
             {filtered.length === 0 && <li className="px-3 py-2 text-sm text-gray-500">{noMatchesLabel}</li>}
             {filtered.map((option, index) => {
-              const isSelected = option.value === value;
+              const isSelected = selectedValues.includes(option.value);
               return (
                 <li
                   key={option.value}
@@ -166,18 +184,31 @@ export default function SearchableSelect({
                   onMouseEnter={() => setActive(index)}
                   onClick={() => choose(option.value)}
                   className={clsx(
-                    'flex cursor-pointer items-center justify-between gap-2 px-3 py-2 text-sm',
+                    'flex cursor-pointer items-center gap-2 px-3 py-2 text-sm',
+                    multiple ? 'flex-row-reverse justify-end' : 'justify-between',
                     index === active ? 'bg-blue-50' : '',
                     isSelected ? 'font-semibold text-[#1A3C68]' : 'text-gray-700',
                   )}
                 >
                   <span className="truncate">{option.label}</span>
-                  {isSelected && (
-                    <Check
-                      size={15}
+                  {multiple ? (
+                    <span
                       aria-hidden="true"
-                      className="shrink-0"
-                    />
+                      className={clsx(
+                        'flex h-4 w-4 shrink-0 items-center justify-center rounded border',
+                        isSelected ? 'border-[#1A3C68] bg-[#1A3C68] text-white' : 'border-gray-300 bg-white',
+                      )}
+                    >
+                      {isSelected && <Check size={12} />}
+                    </span>
+                  ) : (
+                    isSelected && (
+                      <Check
+                        size={15}
+                        aria-hidden="true"
+                        className="shrink-0"
+                      />
+                    )
                   )}
                 </li>
               );

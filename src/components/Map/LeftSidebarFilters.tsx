@@ -2,12 +2,13 @@
 
 import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, X } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
 import SearchableSelect from '@/components/ui/SearchableSelect';
+import { filterChips, selectedValues, withoutChip } from '@/lib/utils/filter-chips';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { MAP_QUICK_FILTERS } from '@/config/mapQuickFilters';
@@ -102,8 +103,7 @@ const LeftSidebarFilters = ({
 
         const hasFilters = Object.keys(urlFilters).length > 0;
 
-        // Reset all expanded sections when URL changes
-        setExpandedSections({});
+        // Keep the sections the visitor opened (owner 2026-10-23: removing a region collapsed its section)
 
         // Open advanced filters when the quick filters cannot show the whole selection;
         // never close them here (the user may be choosing in the advanced list).
@@ -155,6 +155,10 @@ const LeftSidebarFilters = ({
     );
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const filterOptions = data?.data ?? null;
+    const chips = useMemo(
+        () => filterChips(currentFilters, filterOptions as Parameters<typeof filterChips>[1]),
+        [currentFilters, filterOptions],
+    );
     const quickFilters = useMemo(() => resolveQuickFilters(MAP_QUICK_FILTERS, filterOptions), [filterOptions]);
 
     // Notify parent component when filter options change
@@ -287,6 +291,8 @@ const LeftSidebarFilters = ({
             return (
                 <div className="px-4 pb-3">
                     <SearchableSelect
+                        // Places allow several values ("HR,IT"); the API filters by any of them (owner 2026-10-23)
+                        multiple={Boolean(allKey)}
                         value={currentValue ?? ''}
                         options={selectOptions}
                         onChange={(v) => handleFilterChange(filterName, v)}
@@ -391,6 +397,33 @@ const LeftSidebarFilters = ({
                         {t('resetFilters')}
                     </button>
                 </div>
+
+                {/* Every selected value with its own ✕ (owner 2026-10-23), also when its section is closed */}
+                {chips.length > 0 && (
+                    <ul className="flex flex-wrap gap-1.5 pb-2" aria-label={tPlace('selected')}>
+                        {chips.map((chip) => (
+                            <li key={`${chip.filterKey}:${chip.value}`}>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        handleFilterChange(chip.filterKey, withoutChip(currentFilters, chip))
+                                    }
+                                    aria-label={tPlace('remove', { name: chip.label })}
+                                    title={chip.group}
+                                    className="flex max-w-[220px] items-center gap-1 rounded-full bg-[#E8EEF6] py-1 pl-3 pr-2 \
+text-xs font-semibold text-[#1A3C68] transition-colors hover:bg-[#d6e1ef]"
+                                >
+                                    <span className="truncate">{chip.label}</span>
+                                    <X
+                                        size={13}
+                                        aria-hidden="true"
+                                        className="shrink-0"
+                                    />
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
 
             {/* Quick filters (advanced off): options from the filters API, icons from the local set */}
@@ -469,6 +502,13 @@ const LeftSidebarFilters = ({
                                                     <h3 className="font-semibold text-sm">
                                                         {filterData.title ?? filterKey}
                                                     </h3>
+                                                    {selectedValues(currentFilters[filterKey]).length > 0 && (
+                                                        <span
+                                                            className="rounded-full bg-[#1A3C68] px-1.5 text-[11px] font-semibold text-white"
+                                                        >
+                                                            {selectedValues(currentFilters[filterKey]).length}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 {expandedSections[filterKey] ? (
                                                     <ChevronUp className="text-gray-500" />
