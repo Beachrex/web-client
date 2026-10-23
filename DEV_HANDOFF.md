@@ -18,6 +18,11 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-23 – Old beach slugs: a real 301 from the middleware ✅ COMPLETE
+
+- The page-level `permanentRedirect` for old slugs reached the browser as 200 + meta refresh (streamed, then cached by ISR). The middleware now answers paths whose last segment starts with `beach-` with a **301** to the current slug, asking `GET /api/v1/beaches/{slug}` (the backend resolves old slugs). New slugs never hit the API.
+- `src/lib/utils/old-beach-slug.ts`; test in `e2e/beach-old-slug.unit.spec.ts`.
+
 ## 2026-10-23 – Old beach slugs redirect permanently ✅ COMPLETE
 
 - Owner: beach URLs ended in an English "beach-" slug in every language (`/pl/plaze/.../beach-svetilnik`). The backend (migration `2026_10_23_140000_beach_slugs_from_local_names`) gives each beach a slug of its local name (`svetilnik`, `plage-de-la-garoupe`, town appended when a name repeats) and still finds a beach by its old slug.
