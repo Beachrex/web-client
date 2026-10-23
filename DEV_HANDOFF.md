@@ -3009,7 +3009,7 @@ Tests are configured to **only run when triggered via API**, not on push/merge.
 ```bash
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
 ```
@@ -3018,7 +3018,7 @@ curl -X POST \
 ```bash
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[BASE_URL]=https://staging.beachrex.com" \
   --form "variables[BROWSER]=chromium" \
@@ -3030,7 +3030,7 @@ curl -X POST \
 # Run specific test file
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[TEST_FILTER]=tests/home.spec.ts" \
   "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
@@ -3038,7 +3038,7 @@ curl -X POST \
 # Run tests in specific folder
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[TEST_FILTER]=tests/auth/" \
   "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
@@ -3046,7 +3046,7 @@ curl -X POST \
 # Run tests matching pattern (grep)
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[TEST_FILTER]=-g 'login'" \
   "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
@@ -3054,7 +3054,7 @@ curl -X POST \
 # Combine filters: specific file + pattern + browser
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[BROWSER]=firefox" \
   --form "variables[TEST_FILTER]=tests/home.spec.ts -g 'hero'" \
