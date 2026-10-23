@@ -48,6 +48,12 @@ Owner 2026-10-22: on the beach map, clicking a beach opens the beach page in a n
 
 ---
 
+## 2026-10-23 – Opening a place filter opens its list with the search ready ✅ COMPLETE
+
+Owner 2026-10-23 ("da ni treba 2x klik"): opening the country / region / island / town section opens its list with the search box focused (`SearchableSelect autoOpen`), one click instead of two. Only for a section the visitor opens; sections the page opens because they hold a selection do not open their list. Cleared on every filter change, so a re-render never reopens it.
+
+---
+
 ## 2026-10-23 – Map filters: chips for every selected value, several places at once ✅ COMPLETE
 
 Owner 2026-10-23 ("ne morem pa odstranit … lahko bi blo multiple select"):

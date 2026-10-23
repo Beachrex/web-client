@@ -53,7 +53,11 @@ test('the sidebar shows the chips, allows several places and keeps sections open
   expect(sidebar, 'validation still waits for the new options').toContain('const isLoading = isFirstLoad || isPlaceholderData;');
   expect(sidebar, 'the list does not hide on every change').toContain('{!isFirstLoad && !error && filterOptions && (');
 
+  expect(sidebar, 'opening a section opens its list').toContain('autoOpen={justOpened === filterName}');
+  expect(sidebar).toContain('setJustOpened(expandedSections[section] ? null : section);');
+
   const select = read('src/components/ui/SearchableSelect.tsx');
+  expect(select).toContain('React.useState(autoOpen)');
   expect(select).toContain('aria-multiselectable={multiple || undefined}');
   expect(select).toContain('return; // keep the list open to pick more');
 });
