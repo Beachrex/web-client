@@ -1,9 +1,10 @@
 import { Facebook, Instagram, Youtube } from 'lucide-react';
+import { SOCIAL_PROFILES } from '@/lib/constants/social';
 
 const SOCIAL_LINKS = [
-  { href: 'https://www.facebook.com/beachrexproject/', label: 'Facebook', Icon: Facebook },
-  { href: 'https://www.instagram.com/beachrex_project/', label: 'Instagram', Icon: Instagram },
-  { href: 'https://www.youtube.com/@BeachRex', label: 'YouTube', Icon: Youtube },
+  { href: SOCIAL_PROFILES.facebook, label: 'Facebook', Icon: Facebook },
+  { href: SOCIAL_PROFILES.instagram, label: 'Instagram', Icon: Instagram },
+  { href: SOCIAL_PROFILES.youtube, label: 'YouTube', Icon: Youtube },
 ];
 
 export default function FooterSocial() {
