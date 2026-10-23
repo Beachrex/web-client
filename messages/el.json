@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Ζωντανή κάμερα",
     "webcamIframeTitle": "Ζωντανή κάμερα: {name}",
-    "webcamCredit": "Η κάμερα παρέχεται από το Windy.com"
+    "webcamCredit": "Η κάμερα παρέχεται από το Windy.com",
+    "closeMedia": "Κλείσιμο"
   },
   "Auth": {
     "continueWithGoogle": "Συνέχεια με Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Συχνές ερωτήσεις για {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Όλες οι χώρες",
+    "allRegions": "Όλες οι περιοχές",
+    "allIslands": "Όλα τα νησιά",
+    "allCities": "Όλες οι πόλεις",
+    "all": "Όλα",
+    "search": "Αναζήτηση…",
+    "noMatches": "Κανένα αποτέλεσμα",
+    "clear": "Καθαρισμός"
   }
 }

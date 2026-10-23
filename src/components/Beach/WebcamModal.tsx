@@ -61,7 +61,7 @@ export default function WebcamModal({ windyId, beachName, onClose }: WebcamModal
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 p-3 sm:p-6"
+      className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/70 p-3 sm:p-6"
       // A portal still bubbles React events to the card: stop them here so nothing behind navigates.
       onClick={(e) => {
         e.stopPropagation();

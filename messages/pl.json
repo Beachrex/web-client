@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Kamera na żywo",
     "webcamIframeTitle": "Kamera na żywo: {name}",
-    "webcamCredit": "Kamerę udostępnia Windy.com"
+    "webcamCredit": "Kamerę udostępnia Windy.com",
+    "closeMedia": "Zamknij"
   },
   "Auth": {
     "continueWithGoogle": "Kontynuuj z Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Najczęstsze pytania o {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Wszystkie kraje",
+    "allRegions": "Wszystkie regiony",
+    "allIslands": "Wszystkie wyspy",
+    "allCities": "Wszystkie miejscowości",
+    "all": "Wszystko",
+    "search": "Szukaj…",
+    "noMatches": "Brak wyników",
+    "clear": "Wyczyść"
   }
 }

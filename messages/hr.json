@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Web kamera uživo",
     "webcamIframeTitle": "Web kamera uživo: {name}",
-    "webcamCredit": "Web kameru pruža Windy.com"
+    "webcamCredit": "Web kameru pruža Windy.com",
+    "closeMedia": "Zatvori"
   },
   "Auth": {
     "continueWithGoogle": "Nastavi s Googleom",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Česta pitanja o plaži {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Sve države",
+    "allRegions": "Sve regije",
+    "allIslands": "Svi otoci",
+    "allCities": "Sva mjesta",
+    "all": "Sve",
+    "search": "Traži …",
+    "noMatches": "Nema rezultata",
+    "clear": "Očisti"
   }
 }

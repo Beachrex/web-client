@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Live webcam",
     "webcamIframeTitle": "Live webcam: {name}",
-    "webcamCredit": "Webcam provided by Windy.com"
+    "webcamCredit": "Webcam provided by Windy.com",
+    "closeMedia": "Close"
   },
   "Auth": {
     "continueWithGoogle": "Continue with Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Frequently asked questions about {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "All countries",
+    "allRegions": "All regions",
+    "allIslands": "All islands",
+    "allCities": "All towns",
+    "all": "All",
+    "search": "Search…",
+    "noMatches": "No matches",
+    "clear": "Clear"
   }
 }

@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Уебкамера на живо",
     "webcamIframeTitle": "Уебкамера на живо: {name}",
-    "webcamCredit": "Уебкамерата е предоставена от Windy.com"
+    "webcamCredit": "Уебкамерата е предоставена от Windy.com",
+    "closeMedia": "Затвори"
   },
   "Auth": {
     "continueWithGoogle": "Продължи с Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Често задавани въпроси за {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Всички държави",
+    "allRegions": "Всички региони",
+    "allIslands": "Всички острови",
+    "allCities": "Всички градове",
+    "all": "Всички",
+    "search": "Търсене…",
+    "noMatches": "Няма резултати",
+    "clear": "Изчисти"
   }
 }

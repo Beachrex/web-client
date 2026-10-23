@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Live-webcam",
     "webcamIframeTitle": "Live-webcam: {name}",
-    "webcamCredit": "Webcam leveret af Windy.com"
+    "webcamCredit": "Webcam leveret af Windy.com",
+    "closeMedia": "Luk"
   },
   "Auth": {
     "continueWithGoogle": "Fortsæt med Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Ofte stillede spørgsmål om {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Alle lande",
+    "allRegions": "Alle regioner",
+    "allIslands": "Alle øer",
+    "allCities": "Alle byer",
+    "all": "Alle",
+    "search": "Søg…",
+    "noMatches": "Ingen resultater",
+    "clear": "Ryd"
   }
 }

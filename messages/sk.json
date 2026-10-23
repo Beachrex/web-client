@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Webkamera naživo",
     "webcamIframeTitle": "Webkamera naživo: {name}",
-    "webcamCredit": "Webkameru poskytuje Windy.com"
+    "webcamCredit": "Webkameru poskytuje Windy.com",
+    "closeMedia": "Zavrieť"
   },
   "Auth": {
     "continueWithGoogle": "Pokračovať s Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Časté otázky o pláži {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Všetky krajiny",
+    "allRegions": "Všetky regióny",
+    "allIslands": "Všetky ostrovy",
+    "allCities": "Všetky miesta",
+    "all": "Všetko",
+    "search": "Hľadať…",
+    "noMatches": "Žiadne výsledky",
+    "clear": "Vymazať"
   }
 }

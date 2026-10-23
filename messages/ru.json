@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Веб-камера онлайн",
     "webcamIframeTitle": "Веб-камера онлайн: {name}",
-    "webcamCredit": "Веб-камера предоставлена Windy.com"
+    "webcamCredit": "Веб-камера предоставлена Windy.com",
+    "closeMedia": "Закрыть"
   },
   "Auth": {
     "continueWithGoogle": "Продолжить с Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Частые вопросы о {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Все страны",
+    "allRegions": "Все регионы",
+    "allIslands": "Все острова",
+    "allCities": "Все города",
+    "all": "Все",
+    "search": "Поиск…",
+    "noMatches": "Ничего не найдено",
+    "clear": "Очистить"
   }
 }

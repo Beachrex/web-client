@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Live webcam",
     "webcamIframeTitle": "Live webcam: {name}",
-    "webcamCredit": "Webcam aangeboden door Windy.com"
+    "webcamCredit": "Webcam aangeboden door Windy.com",
+    "closeMedia": "Sluiten"
   },
   "Auth": {
     "continueWithGoogle": "Doorgaan met Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Veelgestelde vragen over {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Alle landen",
+    "allRegions": "Alle regio's",
+    "allIslands": "Alle eilanden",
+    "allCities": "Alle plaatsen",
+    "all": "Alles",
+    "search": "Zoeken…",
+    "noMatches": "Geen resultaten",
+    "clear": "Wissen"
   }
 }

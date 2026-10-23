@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Kamerë live",
     "webcamIframeTitle": "Kamerë live: {name}",
-    "webcamCredit": "Kamera ofrohet nga Windy.com"
+    "webcamCredit": "Kamera ofrohet nga Windy.com",
+    "closeMedia": "Mbyll"
   },
   "Auth": {
     "continueWithGoogle": "Vazhdo me Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Pyetje të shpeshta për {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Të gjitha shtetet",
+    "allRegions": "Të gjitha rajonet",
+    "allIslands": "Të gjithë ishujt",
+    "allCities": "Të gjitha qytetet",
+    "all": "Të gjitha",
+    "search": "Kërko…",
+    "noMatches": "Asnjë rezultat",
+    "clear": "Pastro"
   }
 }

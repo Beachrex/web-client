@@ -654,7 +654,8 @@
     },
     "webcamHeading": "Webcam in diretta",
     "webcamIframeTitle": "Webcam in diretta: {name}",
-    "webcamCredit": "Webcam fornita da Windy.com"
+    "webcamCredit": "Webcam fornita da Windy.com",
+    "closeMedia": "Chiudi"
   },
   "Auth": {
     "continueWithGoogle": "Continua con Google",
@@ -987,5 +988,15 @@
   },
   "BeachFaq": {
     "title": "Domande frequenti su {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Tutti i paesi",
+    "allRegions": "Tutte le regioni",
+    "allIslands": "Tutte le isole",
+    "allCities": "Tutte le località",
+    "all": "Tutti",
+    "search": "Cerca…",
+    "noMatches": "Nessun risultato",
+    "clear": "Cancella"
   }
 }
