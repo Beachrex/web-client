@@ -215,7 +215,12 @@ const LeftSidebarFilters = ({
       });
     }, [currentFilters, filterOptions]);
 
+    // The section the visitor just opened: its place list opens with the search box ready (owner 2026-10-23:
+    // one click instead of two). Sections opened by the page itself (a selected value) do not open their list.
+    const [justOpened, setJustOpened] = useState<string | null>(null);
+
     const toggleSection = (section: string) => {
+        setJustOpened(expandedSections[section] ? null : section);
         setExpandedSections(prev => ({
             ...prev,
             [section]: !prev[section],
@@ -250,6 +255,7 @@ const LeftSidebarFilters = ({
     };
 
     const handleFilterChange = (filterKey: string, value: string | undefined) => {
+        setJustOpened(null); // a later re-render must not open the list again
         const newFilters = {
             ...currentFilters,
             [filterKey]: value ?? undefined, // Remove key if value is empty
@@ -300,6 +306,7 @@ const LeftSidebarFilters = ({
                         // Several regions / islands / towns at once; the country stays a single choice
                         // (owner 2026-10-23: two countries emptied the region, island and town lists)
                         multiple={Boolean(allKey) && filterName !== 'country'}
+                        autoOpen={justOpened === filterName}
                         value={currentValue ?? ''}
                         options={selectOptions}
                         onChange={(v) => handleFilterChange(filterName, v)}

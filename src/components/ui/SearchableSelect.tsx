@@ -16,6 +16,8 @@ interface SearchableSelectProps {
   value?: string;
   /** Several values (owner 2026-10-23); the list stays open while choosing. */
   multiple?: boolean;
+  /** Open the list with the search box focused right away (the visitor just opened this filter's section). */
+  autoOpen?: boolean;
   options: SearchableOption[];
   onChange: (value: string) => void;
   /** Shown when nothing is selected, e.g. "Vse države". */
@@ -34,6 +36,7 @@ interface SearchableSelectProps {
 export default function SearchableSelect({
   value,
   multiple = false,
+  autoOpen = false,
   options,
   onChange,
   allLabel,
@@ -41,7 +44,7 @@ export default function SearchableSelect({
   noMatchesLabel,
   clearLabel,
 }: SearchableSelectProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(autoOpen);
   const [query, setQuery] = React.useState('');
   const [active, setActive] = React.useState(0);
   const rootRef = React.useRef<HTMLDivElement | null>(null);
