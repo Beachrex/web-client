@@ -331,7 +331,10 @@
     "countryLabel": "Land",
     "beachLabel": "Zeestrand",
     "beachCountLabel": "Aantal stranden:",
-    "accommodationCountLabel": "Aantal accommodaties:"
+    "accommodationCountLabel": "Aantal accommodaties:",
+    "beachLabelLake": "Meerstrand",
+    "beachLabelRiver": "Rivierstrand",
+    "beachLabelPool": "Zwembad"
   },
   "TopBarBeach": {
     "beachLabel": "Zeestrand",
@@ -601,7 +604,10 @@
       "wayToParking": "Ondergrond naar parkeerplaats",
       "recommendedAccess": "Aanbevolen toegang",
       "distance": "Afstand (parkeerplaats — strand)",
-      "elevationDiff": "Hoogteverschil (parkeerplaats naar strand)"
+      "elevationDiff": "Hoogteverschil (parkeerplaats naar strand)",
+      "seabedLake": "Meerbodem",
+      "seabedRiver": "Rivierbedding",
+      "seabedPool": "Zwembadbodem"
     },
     "buttons": {
       "photo": "Foto",

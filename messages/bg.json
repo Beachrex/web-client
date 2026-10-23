@@ -331,7 +331,10 @@
     "countryLabel": "Държава",
     "beachLabel": "Морски плаж",
     "beachCountLabel": "Брой плажове:",
-    "accommodationCountLabel": "Брой настанявания:"
+    "accommodationCountLabel": "Брой настанявания:",
+    "beachLabelLake": "Плаж на езеро",
+    "beachLabelRiver": "Плаж на река",
+    "beachLabelPool": "Басейн"
   },
   "TopBarBeach": {
     "beachLabel": "Морски плаж",
@@ -601,7 +604,10 @@
       "wayToParking": "Повърхност до паркинга",
       "recommendedAccess": "Препоръчителен достъп",
       "distance": "Разстояние (паркинг — плаж)",
-      "elevationDiff": "Разлика във височината (от паркинга до плажа)"
+      "elevationDiff": "Разлика във височината (от паркинга до плажа)",
+      "seabedLake": "Дъно на езерото",
+      "seabedRiver": "Речно дъно",
+      "seabedPool": "Дъно на басейна"
     },
     "buttons": {
       "photo": "Снимка",

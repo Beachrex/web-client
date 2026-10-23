@@ -331,7 +331,10 @@
     "countryLabel": "Ország",
     "beachLabel": "Tengeri strand",
     "beachCountLabel": "Strandok száma:",
-    "accommodationCountLabel": "Szállások száma:"
+    "accommodationCountLabel": "Szállások száma:",
+    "beachLabelLake": "Tavi strand",
+    "beachLabelRiver": "Folyóparti strand",
+    "beachLabelPool": "Medence"
   },
   "TopBarBeach": {
     "beachLabel": "Tengeri strand",
@@ -601,7 +604,10 @@
       "wayToParking": "Felület a parkolóhoz",
       "recommendedAccess": "Ajánlott megközelítés",
       "distance": "Távolság (parkoló — strand)",
-      "elevationDiff": "Szintkülönbség (parkolótól a strandig)"
+      "elevationDiff": "Szintkülönbség (parkolótól a strandig)",
+      "seabedLake": "Tómeder",
+      "seabedRiver": "Folyómeder",
+      "seabedPool": "Medencealj"
     },
     "buttons": {
       "photo": "Fotó",

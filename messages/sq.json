@@ -331,7 +331,10 @@
     "countryLabel": "Vend",
     "beachLabel": "Plazh deti",
     "beachCountLabel": "Numri i plazheve:",
-    "accommodationCountLabel": "Numri i akomodimeve:"
+    "accommodationCountLabel": "Numri i akomodimeve:",
+    "beachLabelLake": "Plazh liqeni",
+    "beachLabelRiver": "Plazh lumi",
+    "beachLabelPool": "Pishinë"
   },
   "TopBarBeach": {
     "beachLabel": "Plazh deti",
@@ -601,7 +604,10 @@
       "wayToParking": "Siperfaqja drejt parkimit",
       "recommendedAccess": "Aksesi i rekomanduar",
       "distance": "Distanca (parking — plazh)",
-      "elevationDiff": "Ndryshimi i lartësisë (parking në plazh)"
+      "elevationDiff": "Ndryshimi i lartësisë (parking në plazh)",
+      "seabedLake": "Fundi i liqenit",
+      "seabedRiver": "Shtrati i lumit",
+      "seabedPool": "Fundi i pishinës"
     },
     "buttons": {
       "photo": "Foto",

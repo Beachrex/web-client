@@ -18,6 +18,15 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-23 – Beach page wording follows the waterbody ✅ COMPLETE
+
+- Owner: lake, river and pool beaches said "Morska plaža", "Temperatura morja" and "Morsko dno".
+- `src/lib/utils/waterbody.ts`: `waterKind(characteristics.waterbody.code)` → sea | lake | river | pool (unknown → sea).
+- Banner pill: `TopBar` takes an optional `pillLabelKey`; new keys `TopBar.beachLabelLake/River/Pool`.
+- Details row: `BeachDetails.labels.seabedLake/River/Pool` ("Dno jezera", "Rečno dno", "Dno bazena").
+- The water-temperature widget shows only on sea beaches: the value comes from the Open-Meteo marine model, so on inland water it was the nearest sea (or "--").
+- All 19 locales; test `e2e/waterbody-labels.unit.spec.ts`.
+
 ## 2026-10-22 – "Beach view" switch in Browse all beaches ✅ COMPLETE
 
 Owner 2026-10-22 (country pages): the "Beach view" switch (photos, video, 360°, webcam) worked in "Most visited" but "Browse all beaches" had none (its `mediaMode` was fixed to photos). The switch is now one component, `src/components/BeachViewToggle.tsx`, used by `PropertySection` and `DynamicSearchBeaches`, so it appears on every page with the browse list (world, continent, country, region, city, island). In the browse list it changes the card view and does not hide beaches (the page comes from the server, so the old unused client-side filter would have broken the count and paging); a beach without the medium shows the card's own empty state. Buttons have `aria-pressed` and labels from `BeachDetails.beachMedia*` (same as the beach page, 19 languages). Tests: `e2e/browse-beach-view.unit.spec.ts`; `e2e/media-toggle-order.unit.spec.ts` now reads the order from the shared component.

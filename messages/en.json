@@ -331,7 +331,10 @@
     "countryLabel": "Country",
     "beachLabel": "Sea beach",
     "beachCountLabel": "Beach count:",
-    "accommodationCountLabel": "Accommodation count:"
+    "accommodationCountLabel": "Accommodation count:",
+    "beachLabelLake": "Lake beach",
+    "beachLabelRiver": "River beach",
+    "beachLabelPool": "Pool"
   },
   "TopBarBeach": {
     "beachLabel": "Sea beach",
@@ -601,7 +604,10 @@
       "wayToParking": "Surface to parking",
       "recommendedAccess": "Recommended access",
       "distance": "Distance (parking — beach)",
-      "elevationDiff": "Elevation difference (parking to beach)"
+      "elevationDiff": "Elevation difference (parking to beach)",
+      "seabedLake": "Lake bed",
+      "seabedRiver": "Riverbed",
+      "seabedPool": "Pool floor"
     },
     "buttons": {
       "photo": "Photo",

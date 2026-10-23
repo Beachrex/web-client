@@ -331,7 +331,10 @@
     "countryLabel": "Land",
     "beachLabel": "Meeresstrand",
     "beachCountLabel": "Anzahl Strände:",
-    "accommodationCountLabel": "Anzahl Unterkünfte:"
+    "accommodationCountLabel": "Anzahl Unterkünfte:",
+    "beachLabelLake": "Seestrand",
+    "beachLabelRiver": "Flussstrand",
+    "beachLabelPool": "Pool"
   },
   "TopBarBeach": {
     "beachLabel": "Meeresstrand",
@@ -601,7 +604,10 @@
       "wayToParking": "Oberfläche zum Parkplatz",
       "recommendedAccess": "Empfohlener Zugang",
       "distance": "Entfernung (Parkplatz — Strand)",
-      "elevationDiff": "Höhenunterschied (Parkplatz zum Strand)"
+      "elevationDiff": "Höhenunterschied (Parkplatz zum Strand)",
+      "seabedLake": "Seegrund",
+      "seabedRiver": "Flussbett",
+      "seabedPool": "Beckenboden"
     },
     "buttons": {
       "photo": "Foto",

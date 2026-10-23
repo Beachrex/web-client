@@ -331,7 +331,10 @@
     "countryLabel": "Země",
     "beachLabel": "Mořská pláž",
     "beachCountLabel": "Počet pláží:",
-    "accommodationCountLabel": "Počet ubytování:"
+    "accommodationCountLabel": "Počet ubytování:",
+    "beachLabelLake": "Jezerní pláž",
+    "beachLabelRiver": "Říční pláž",
+    "beachLabelPool": "Bazén"
   },
   "TopBarBeach": {
     "beachLabel": "Mořská pláž",
@@ -601,7 +604,10 @@
       "wayToParking": "Povrch k parkování",
       "recommendedAccess": "Doporučený přístup",
       "distance": "Vzdálenost (parkování — pláž)",
-      "elevationDiff": "Výškový rozdíl (parkování k pláži)"
+      "elevationDiff": "Výškový rozdíl (parkování k pláži)",
+      "seabedLake": "Dno jezera",
+      "seabedRiver": "Říční dno",
+      "seabedPool": "Dno bazénu"
     },
     "buttons": {
       "photo": "Fotografie",
