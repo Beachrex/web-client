@@ -1,20 +1,23 @@
+import { sitemapFiles } from '@/lib/seo/sitemap-sections';
 /**
  * /sitemap.xml — sitemap index (sitemaps.org protocol) pointing to the section sitemaps.
  *
  * The previous `app/sitemap.ts` emitted a <urlset> whose <url> entries were other sitemaps;
  * search engines expect a <sitemapindex> for that (TASK-004 SEO).
  */
-const SITEMAP_SECTIONS = ['static', 'beaches', 'countries', 'regions', 'cities', 'islands'] as const;
+
+/** Static pages, then one file per section and language (pre-launch 2026-10-23: files were over 50 MB). */
+const FILES = ['static.xml', ...sitemapFiles()];
 
 export const revalidate = 86400;
 
 export function GET(): Response {
   const base = (process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
   const lastmod = new Date().toISOString();
-  const entries = SITEMAP_SECTIONS.map((name) =>
+  const entries = FILES.map((name) =>
     [
       '  <sitemap>',
-      `    <loc>${base}/sitemap/${name}.xml</loc>`,
+      `    <loc>${base}/sitemap/${name}</loc>`,
       `    <lastmod>${lastmod}</lastmod>`,
       '  </sitemap>',
     ].join('\n'),

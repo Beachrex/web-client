@@ -9,6 +9,7 @@ import { locales, toHtmlLang } from '@/app/config/locales';
 import { env } from '@/env';
 import type { Metadata } from 'next';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
+import type { PlaceRef } from '@/lib/seo/place-paths';
 
 /**
  * Get the base URL for the application
@@ -78,7 +79,8 @@ export function buildLocalizedAlternates(pathFor: (locale: string) => string): R
   const baseUrl = getBaseUrlInternal();
   const alternates: Record<string, string> = {};
   for (const locale of locales) {
-    alternates[locale] = `${baseUrl}/${locale}${pathFor(locale)}`;
+    // hreflang takes a language code: the URL's "si"/"ua" are sl/uk (pre-launch 2026-10-23)
+    alternates[toHtmlLang(locale)] = `${baseUrl}/${locale}${pathFor(locale)}`;
   }
   alternates['x-default'] = alternates.en ?? `${baseUrl}/en${pathFor('en')}`;
   return alternates;
@@ -91,7 +93,25 @@ export function buildLocalizedAlternates(pathFor: (locale: string) => string): R
  * producing wrong hreflang URLs (TASK-004 SEO). A missing hreflang is better than a wrong one.
  */
 export function buildSelfAlternate(locale: string, path: string): Record<string, string> {
-  return { [locale]: buildCanonicalUrl(locale, path) };
+  return { [toHtmlLang(locale)]: buildCanonicalUrl(locale, path) };
+}
+
+/**
+ * Pre-launch 2026-10-23: hreflang for a beach or place page in all 19 languages (see seo/place-paths.ts).
+ * This page's own entry is always its canonical URL; without slug data it falls back to the self link.
+ */
+export async function buildPlaceAlternates(
+  locale: string,
+  path: string,
+  ref: PlaceRef,
+): Promise<Record<string, string>> {
+  const { loadPlaceSlugs, placeAlternates } = await import('@/lib/seo/place-paths');
+  const slugs = await loadPlaceSlugs(env.NEXT_PUBLIC_API_ENDPOINT);
+  const alternates = placeAlternates(slugs, ref, getBaseUrlInternal());
+  const self = buildCanonicalUrl(locale, path);
+  alternates[toHtmlLang(locale)] = self;
+  if (locale === 'en') alternates['x-default'] = self;
+  return alternates;
 }
 
 /**

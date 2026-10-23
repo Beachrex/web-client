@@ -43,9 +43,9 @@ test('place filter value prefers the code, then the id, then the slug', async ()
 });
 
 test('the beach sitemap pages through all beaches (100 per page)', () => {
-  const sitemap = read('src/app/sitemap/beaches.xml/route.ts');
-  expect(sitemap).toContain('const limit = 100;');
-  expect(sitemap).toContain('if (page > 200)');
+  const sitemap = read('src/lib/seo/sitemap-sections.ts');
+  expect(sitemap).toContain('/api/v1/beaches?limit=100&page=${page}');
+  expect(sitemap).toContain('if (page >= lastPage || rows.length === 0) break;');
 });
 
 test('the pager is localized in all 19 languages', () => {

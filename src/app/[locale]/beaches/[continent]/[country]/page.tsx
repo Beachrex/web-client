@@ -39,7 +39,7 @@ import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, buildCountrySchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
-import { buildCanonicalUrl, buildCompleteMetadata, buildSelfAlternate } from '@/lib/utils/metadata-helpers';
+import { buildCanonicalUrl, buildCompleteMetadata, buildPlaceAlternates } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { CountryDetails } from '@/types/CountryDetails';
 import DestinationsSection from '@/components/DestinationsSection';
@@ -102,7 +102,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     // Build canonical path with localized "beaches" word
     const beachesWord = getBeachesWord(locale);
-    const canonicalPath = `/${beachesWord}/${continentSlug}/${countrySlug}`;
+    // This language's slugs from the API, not the request URL (pre-launch 2026-10-23: one URL per page)
+    const apiCountry = countryDetails as {
+      slug?: string | null;
+      continent?: { slug?: string | null } | null;
+    };
+    const canonicalContinent = apiCountry.continent?.slug ?? continentSlug;
+    const canonicalPath = `/${beachesWord}/${canonicalContinent}/${apiCountry.slug ?? countrySlug}`;
 
     // Build image URL
     const imageUrl = countryDetails.main_image
@@ -113,8 +119,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       locale,
-      // Localized slugs: other locales' URLs are unknown here, so no cross-locale hreflang
-      alternateLanguages: buildSelfAlternate(locale, canonicalPath),
+      // hreflang for all 19 languages (pre-launch 2026-10-23)
+      alternateLanguages: await buildPlaceAlternates(locale, canonicalPath, {
+        continent: countryDetails.continent_code ?? null,
+        country: countryDetails.code ?? null,
+      }),
       path: canonicalPath,
       images: imageUrl ? [imageUrl] : undefined,
       type: 'website',

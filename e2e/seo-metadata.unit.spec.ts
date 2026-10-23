@@ -17,24 +17,26 @@ const read = (p: string) => readFileSync(join(root, p), 'utf8');
 test('hreflang for localized fixed paths uses each locale\'s own word', async () => {
   const { buildLocalizedAlternates } = await import('@/lib/utils/metadata-helpers');
   const alt = buildLocalizedAlternates((l) => `/${getBeachesWord(l)}`);
-  expect(alt.si).toBe(`https://beachrex.com/si/${getBeachesWord('si')}`);
+  // hreflang keys are language codes: the URL's "si" is Slovenian, "sl" (pre-launch 2026-10-23)
+  expect(alt.sl).toBe(`https://beachrex.com/si/${getBeachesWord('si')}`);
+  expect(alt.si).toBeUndefined();
   expect(alt.de).toBe(`https://beachrex.com/de/${getBeachesWord('de')}`);
   expect(alt['x-default']).toBe(alt.en);
   const map = buildLocalizedAlternates((l) => `/${getBeachMapWord(l)}`);
   expect(map.hr).toBe(`https://beachrex.com/hr/${getBeachMapWord('hr')}`);
 });
 
-test('pages with localized slugs only declare themselves (no wrong cross-locale hreflang)', async () => {
+test('place pages build hreflang from each language\'s slugs; CMS pages only declare themselves', async () => {
   const { buildSelfAlternate } = await import('@/lib/utils/metadata-helpers');
-  expect(buildSelfAlternate('si', '/plaze/evropa/hrvaska')).toEqual({ si: 'https://beachrex.com/si/plaze/evropa/hrvaska' });
+  expect(buildSelfAlternate('si', '/plaze/evropa/hrvaska')).toEqual({ sl: 'https://beachrex.com/si/plaze/evropa/hrvaska' });
   for (const page of [
     'src/app/[locale]/beaches/[continent]/page.tsx',
     'src/app/[locale]/beaches/[continent]/[country]/page.tsx',
     'src/app/[locale]/beaches/[continent]/[country]/[...segments]/page.tsx',
-    'src/app/[locale]/p/[slug]/page.tsx',
   ]) {
-    expect(read(page), page).toMatch(/buildSelfAlternate\(locale, /);
+    expect(read(page), page).toMatch(/buildPlaceAlternates\(locale, /);
   }
+  expect(read('src/app/[locale]/p/[slug]/page.tsx')).toMatch(/buildSelfAlternate\(locale, /);
 });
 
 test('sitemap.xml is a sitemap index of the section sitemaps', async () => {
@@ -42,9 +44,11 @@ test('sitemap.xml is a sitemap index of the section sitemaps', async () => {
   const xml = await GET().text();
   expect(xml).toContain('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
   expect(xml).not.toContain('<urlset');
-  for (const name of ['static', 'beaches', 'countries', 'regions', 'cities', 'islands']) {
+  // One file per section and language (pre-launch 2026-10-23: the single files were over 50 MB)
+  for (const name of ['static', 'beaches-si', 'beaches-en', 'countries-de', 'regions-el', 'cities-ua', 'islands-sq']) {
     expect(xml).toContain(`<loc>https://beachrex.com/sitemap/${name}.xml</loc>`);
   }
+  expect((xml.match(/<sitemap>/g) ?? []).length).toBe(1 + 5 * 19);
 });
 
 test('page titles are h1 elements; the beach details heading is not', () => {

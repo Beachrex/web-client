@@ -48,6 +48,16 @@ Owner 2026-10-22: on the beach map, clicking a beach opens the beach page in a n
 
 ---
 
+## 2026-10-23 – Pre-launch SEO: one URL per page, full hreflang, sitemaps under the limits ✅ COMPLETE
+
+Pre-launch audit (owner: "danes gremo v produkcijo"):
+- **Sitemaps** were over the search engine limits (beaches 158 MB / 54 644 URLs, cities 51 MB; max 50 MB / 50 000). Now `/sitemap/{section}-{locale}.xml` (countries, regions, islands, cities, beaches × 19), listed in `/sitemap.xml` with `static.xml`. Old `/sitemap/beaches.xml` etc. are gone.
+- **Duplicate URLs**: a beach answered on `/si/plaze/europe/croatia/…` and `/si/plaze/evropa/hrvaska/…`, both self-canonical (the old sitemap listed the English slugs for every language). Canonical URLs of beach, country, region, island and city pages now come from the API slugs of the page language; a beach URL with another language's continent/country slug redirects permanently (308).
+- **hreflang** on beach, continent, country, region, island and city pages now covers all 19 languages (`buildPlaceAlternates`, `src/lib/seo/place-paths.ts`): continent, country and island slugs are translated, region/city/beach slugs are not; the slugs per language come from the list endpoints (cached a day). Keys are language codes (`sl`, `uk`), not the URL's `si`/`ua` — the self link used `si` (Sinhala).
+- Tests: `e2e/place-paths.unit.spec.ts`; `seo-metadata` and `beach-list-paging` specs updated.
+
+---
+
 ## 2026-10-22 – "All beaches on the map" in the search dropdown ✅ COMPLETE
 
 Owner 2026-10-22: a button at the bottom of the search dropdown opens the beach map filtered to the place the query names — the closest country, region, island or city whose name equals or starts with the query (`showAllTarget` in `src/lib/utils/search-tabs.ts`), as `?country=GR`, `?region=<code>`, `?island=<code>`, `?city=<code>` (the codes the map filters accept). No button when only beaches match (the map has no text filter). Label `Search.showAllOnMap` in 19 languages. Tests in `e2e/search-tabs.unit.spec.ts`.
