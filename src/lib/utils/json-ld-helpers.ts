@@ -1,3 +1,4 @@
+import { SOCIAL_PROFILES } from '@/lib/constants/social';
 import type { BeachDetailsSchema, Country, Continent } from '@/lib/api-client/types.gen';
 import { buildBeachImageUrl, buildCdnUrl } from '@/lib/utils/beach-images';
 import { env } from '@/env';
@@ -25,12 +26,8 @@ export function buildOrganizationSchema(description: string) {
     url: baseUrl,
     logo: `${baseUrl}${ORGANIZATION_LOGO_PATH}`,
     description,
-    sameAs: [
-      // Add social media profiles when available
-      // 'https://www.facebook.com/beachrex',
-      // 'https://www.instagram.com/beachrex',
-      // 'https://twitter.com/beachrex',
-    ],
+    // The brand's own profiles: helps search engines and AI assistants recognise Beachrex as one entity
+    sameAs: Object.values(SOCIAL_PROFILES),
   };
 }
 
@@ -149,7 +146,8 @@ export function buildBeachSchema(beach: BeachDetailsSchema, locale: string, url:
     schema.address = {
       '@type': 'PostalAddress',
       addressLocality: cityName ?? undefined,
-      addressCountry: countryName ?? undefined,
+      // ISO 3166-1 code ("HR") is what schema.org recommends; the localized name only as a fallback
+      addressCountry: beach.location?.country?.code ?? countryName ?? undefined,
     };
   }
 
