@@ -55,8 +55,47 @@ async function list(apiEndpoint: string, path: string, locale: string): Promise<
   }
 }
 
-/** Slugs of every continent, country, region, island and city in every language (5 cached requests per language). */
-export async function loadPlaceSlugs(apiEndpoint: string): Promise<PlaceSlugs> {
+const HOUR_MS = 3_600_000;
+const RETRY_MS = 60_000;
+let memo: { endpoint: string; until: number; value: Promise<PlaceSlugs> } | null = null;
+
+/**
+ * Slugs of every continent, country, region, island and city in every language, kept in memory for an hour.
+ *
+ * Dev slowdown 2026-10-26: every beach and place render (page and metadata) re-read the lists, about 19 MB of
+ * JSON (the cities list is ~1 MB per language), and built the maps again. The front container grew to ~3 GB,
+ * garbage collection stalled every request for seconds and the process restarted. One shared copy per process
+ * now; a load where a list came back empty (API hiccup) is retried after a minute instead of an hour.
+ */
+export function loadPlaceSlugs(apiEndpoint: string): Promise<PlaceSlugs> {
+  const now = Date.now();
+  if (memo?.endpoint === apiEndpoint && memo.until > now) return memo.value;
+  const value = fetchPlaceSlugs(apiEndpoint);
+  const entry = { endpoint: apiEndpoint, until: now + HOUR_MS, value };
+  memo = entry;
+  value.then(
+    (slugs) => {
+      if (!isComplete(slugs)) entry.until = Date.now() + RETRY_MS;
+    },
+    () => {
+      if (memo === entry) memo = null;
+    },
+  );
+  return value;
+}
+
+/** Every language has countries and cities (an empty list means the API did not answer). */
+export function isComplete(slugs: PlaceSlugs): boolean {
+  return locales.every((l) => (slugs[l]?.country.size ?? 0) > 0 && (slugs[l]?.city.size ?? 0) > 0);
+}
+
+/** Test hook: forget the cached slugs. */
+export function resetPlaceSlugsCache(): void {
+  memo = null;
+}
+
+/** The five list requests per language behind `loadPlaceSlugs`. */
+async function fetchPlaceSlugs(apiEndpoint: string): Promise<PlaceSlugs> {
   const entries = await Promise.all(
     locales.map(async (locale) => {
       const [continents, countries, regions, islands, cities] = await Promise.all([

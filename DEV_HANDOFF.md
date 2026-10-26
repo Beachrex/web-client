@@ -18,6 +18,13 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-26 – Dev slowdown: place slugs loaded once per hour ✅ COMPLETE
+
+- Owner: dev was slow, sometimes 30 s without an answer. Measured: the front answered in ~100 ms, then stalled 1–6 s (static JS too, so the whole Node process); the API stayed at 110–200 ms. On the VPS `front_dev` used 2.9 GB (uat: 43 MB) and had restarted.
+- Cause: `loadPlaceSlugs` (hreflang/canonical, #90) re-read continents, countries, regions, islands and cities in 19 languages (~19 MB of JSON; cities ~1 MB each) on every beach/place render and metadata call.
+- Fix: one shared copy per process for an hour (`src/lib/seo/place-paths.ts`); concurrent callers share one load; a load with an empty list retries after a minute.
+- Test: `e2e/place-slugs-memo.unit.spec.ts`.
+
 ## 2026-10-23 – Old beach slugs: a real 301 from the middleware ✅ COMPLETE
 
 - The page-level `permanentRedirect` for old slugs reached the browser as 200 + meta refresh (streamed, then cached by ISR). The middleware now answers paths whose last segment starts with `beach-` with a **301** to the current slug, asking `GET /api/v1/beaches/{slug}` (the backend resolves old slugs). New slugs never hit the API.
