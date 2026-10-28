@@ -590,7 +590,8 @@
       "sports": "Спортни дейности",
       "parking": "Паркинг",
       "pathToBeach": "Път до плажа",
-      "userType": "Тип потребител"
+      "userType": "Тип потребител",
+      "gpsLocation": "GPS местоположение"
     },
     "labels": {
       "type": "Тип",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Снимка",
-      "map": "Карта"
+      "map": "Карта",
+      "navigation": "Навигация"
     },
     "values": {
       "yes": "Да",
@@ -664,7 +666,8 @@
     "webcamHeading": "Уебкамера на живо",
     "webcamIframeTitle": "Уебкамера на живо: {name}",
     "webcamCredit": "Уебкамерата е предоставена от Windy.com",
-    "closeMedia": "Затвори"
+    "closeMedia": "Затвори",
+    "navigationAria": "Маршрут до {name} в Google Карти"
   },
   "Auth": {
     "continueWithGoogle": "Продължи с Google",

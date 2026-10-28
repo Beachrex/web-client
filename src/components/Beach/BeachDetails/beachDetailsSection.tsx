@@ -7,6 +7,7 @@ import React from 'react';
 
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { formatCoordinates, googleMapsNavigationUrl, parseCoordinates } from '@/lib/utils/geo';
 import { seabedLabelKey, waterKind } from '@/lib/utils/waterbody';
 
 import InfoRow from './InfoRow';
@@ -87,6 +88,8 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({ beachDetails 
   const tButtons = useTranslations('BeachDetails.buttons');
 
   const accessibility = beachDetails.accessibility;
+  // Owner 2026-10-28: GPS position + Google Maps navigation above Parking.
+  const position = parseCoordinates(beachDetails.basic_info?.latitude, beachDetails.basic_info?.longitude);
   const characteristics = beachDetails.characteristics;
   const description = beachDetails.basic_info?.description?.trim();
   const dimensions = beachDetails.dimensions;
@@ -367,6 +370,45 @@ height={20}
            * PARKING + PATH (original block)
            * ------------------------------------------- */}
           <div>
+            {/* GPS location + navigation */}
+            {position && (
+              <div className="mb-8" data-testid="beach-gps">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src="/images/beachicons/location-icon-orange.svg"
+                      alt=""
+                      width={30}
+                      height={30}
+                    />
+                    <h2 className="font-figtree text-[16px] font-bold">
+                      {tGroups('gpsLocation')}:{' '}
+                      <span className="select-all font-normal tabular-nums">{formatCoordinates(position)}</span>
+                    </h2>
+                  </div>
+                  <a
+                    href={googleMapsNavigationUrl(position)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={tMain('navigationAria', { name: beachDetails.basic_info?.name ?? '' })}
+                    className="inline-flex items-center gap-2 rounded-md bg-[#1A3C68] px-3 py-2 text-white hover:bg-[#214a7f]"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      fill="currentColor"
+                    >
+                      <path d="M21.7 2.3a1 1 0 0 0-1.06-.22l-18 7a1 1 0 0 0 .1 1.9l7.6 2.04 2.04 7.6a1 1 0 0 0 1.9.1l7-18a1 1 0 0 0-.22-1.06z" />
+                    </svg>
+                    <span className="font-figtree text-[14px] font-bold">{tButtons('navigation')}</span>
+                  </a>
+                </div>
+                <div className="mt-3 border-b border-[#E7E7E7]" />
+              </div>
+            )}
+
             {/* Parking */}
             <div>
               <div className="relative flex items-center justify-between">

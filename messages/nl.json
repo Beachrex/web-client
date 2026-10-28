@@ -590,7 +590,8 @@
       "sports": "Sportactiviteiten",
       "parking": "Parkeren",
       "pathToBeach": "Pad naar het strand",
-      "userType": "Gebruikerstype"
+      "userType": "Gebruikerstype",
+      "gpsLocation": "GPS-locatie"
     },
     "labels": {
       "type": "Type",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Kaart"
+      "map": "Kaart",
+      "navigation": "Navigatie"
     },
     "values": {
       "yes": "Ja",
@@ -664,7 +666,8 @@
     "webcamHeading": "Live webcam",
     "webcamIframeTitle": "Live webcam: {name}",
     "webcamCredit": "Webcam aangeboden door Windy.com",
-    "closeMedia": "Sluiten"
+    "closeMedia": "Sluiten",
+    "navigationAria": "Route naar {name} in Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Doorgaan met Google",
