@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-28 – "Sort by" on country, region and island sub-lists ✅ COMPLETE
+
+Owner request 2026-10-28: the continent page's "Sort by" (alphabetical / most beaches / fewest beaches) also on the country page (regions, cities, islands), the region page (islands, cities) and the island page (cities).
+- Sort logic moved to `src/lib/utils/destination-sort.ts` (`sortDestinations`, locale-aware `Intl.Collator`, ties by name, missing count = 0) and the control to `src/components/DestinationSortSelect.tsx`; `ContinentCountriesSection` now uses both (no visible change).
+- `DestinationsSection` sections take `sortable: true`; each sortable list keeps its own sort state (React state, like the continent list — no URL param) and starts alphabetical, as on the continent page. Before, these lists came in API order (no `ORDER BY`). Homepage list unchanged.
+- Uses `beaches_count` the list endpoints already return; no backend change. i18n: reuses `ContinentPage.sortBy` / `sortAlphabetical` / `sortBeachesDesc` / `sortBeachesAsc` (already in all 19 files), no new keys.
+- Spec: `e2e/destination-sort.unit.spec.ts` (5 tests; with code-point compare, no tie-break and the island page without `sortable`: 4 failed).
+
 ## 2026-10-28 – Beach page shows one webcam (the primary) ✅ COMPLETE
 
 Owner report 2026-10-28: Strand Ahrenshoop showed the webcam twice. Windy lists that camera under two ids (1716900945 "Ahrenshoop", 1348599722 "Ahrenshoop: Strand"); both were approved for the beach. On dev 16 of 410 beaches with a webcam have 2+ approved webcams.
