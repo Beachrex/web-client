@@ -590,7 +590,8 @@
       "sports": "Αθλητικές δραστηριότητες",
       "parking": "Πάρκινγκ",
       "pathToBeach": "Διαδρομή προς την παραλία",
-      "userType": "Τύπος χρήστη"
+      "userType": "Τύπος χρήστη",
+      "gpsLocation": "Τοποθεσία GPS"
     },
     "labels": {
       "type": "Τύπος",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Φωτογραφία",
-      "map": "Χάρτης"
+      "map": "Χάρτης",
+      "navigation": "Πλοήγηση"
     },
     "values": {
       "yes": "Ναι",
@@ -664,7 +666,8 @@
     "webcamHeading": "Ζωντανή κάμερα",
     "webcamIframeTitle": "Ζωντανή κάμερα: {name}",
     "webcamCredit": "Η κάμερα παρέχεται από το Windy.com",
-    "closeMedia": "Κλείσιμο"
+    "closeMedia": "Κλείσιμο",
+    "navigationAria": "Πλοήγηση προς {name} στους Χάρτες Google"
   },
   "Auth": {
     "continueWithGoogle": "Συνέχεια με Google",

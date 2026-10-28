@@ -590,7 +590,8 @@
       "sports": "Sportovní aktivity",
       "parking": "Parkování",
       "pathToBeach": "Cesta k pláži",
-      "userType": "Typ uživatele"
+      "userType": "Typ uživatele",
+      "gpsLocation": "GPS poloha"
     },
     "labels": {
       "type": "Typ",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Fotografie",
-      "map": "Mapa"
+      "map": "Mapa",
+      "navigation": "Navigace"
     },
     "values": {
       "yes": "Ano",
@@ -664,7 +666,8 @@
     "webcamHeading": "Webkamera živě",
     "webcamIframeTitle": "Webkamera živě: {name}",
     "webcamCredit": "Webkameru poskytuje Windy.com",
-    "closeMedia": "Zavřít"
+    "closeMedia": "Zavřít",
+    "navigationAria": "Navigace k {name} v Mapách Google"
   },
   "Auth": {
     "continueWithGoogle": "Pokračovat s Google",

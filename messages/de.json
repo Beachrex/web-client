@@ -590,7 +590,8 @@
       "sports": "Sportaktivitäten",
       "parking": "Parkplatz",
       "pathToBeach": "Weg zum Strand",
-      "userType": "Benutzertyp"
+      "userType": "Benutzertyp",
+      "gpsLocation": "GPS-Standort"
     },
     "labels": {
       "type": "Typ",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Karte"
+      "map": "Karte",
+      "navigation": "Navigation"
     },
     "values": {
       "yes": "Ja",
@@ -664,7 +666,8 @@
     "webcamHeading": "Live-Webcam",
     "webcamIframeTitle": "Live-Webcam: {name}",
     "webcamCredit": "Webcam bereitgestellt von Windy.com",
-    "closeMedia": "Schließen"
+    "closeMedia": "Schließen",
+    "navigationAria": "Navigation zu {name} in Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Mit Google fortfahren",

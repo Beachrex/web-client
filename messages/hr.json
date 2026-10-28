@@ -590,7 +590,8 @@
       "sports": "Sportske aktivnosti",
       "parking": "Parkiralište",
       "pathToBeach": "Put do plaže",
-      "userType": "Tip korisnika"
+      "userType": "Tip korisnika",
+      "gpsLocation": "GPS lokacija"
     },
     "labels": {
       "type": "Tip",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Fotografija",
-      "map": "Karta"
+      "map": "Karta",
+      "navigation": "Navigacija"
     },
     "values": {
       "yes": "Da",
@@ -664,7 +666,8 @@
     "webcamHeading": "Web kamera uživo",
     "webcamIframeTitle": "Web kamera uživo: {name}",
     "webcamCredit": "Web kameru pruža Windy.com",
-    "closeMedia": "Zatvori"
+    "closeMedia": "Zatvori",
+    "navigationAria": "Navigacija do {name} u Google kartama"
   },
   "Auth": {
     "continueWithGoogle": "Nastavi s Googleom",

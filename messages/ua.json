@@ -590,7 +590,8 @@
       "sports": "Спортивні активності",
       "parking": "Парковка",
       "pathToBeach": "Шлях до пляжу",
-      "userType": "Тип користувача"
+      "userType": "Тип користувача",
+      "gpsLocation": "GPS-координати"
     },
     "labels": {
       "type": "Тип",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Фото",
-      "map": "Карта"
+      "map": "Карта",
+      "navigation": "Навігація"
     },
     "values": {
       "yes": "Так",
@@ -664,7 +666,8 @@
     "webcamHeading": "Вебкамера наживо",
     "webcamIframeTitle": "Вебкамера наживо: {name}",
     "webcamCredit": "Вебкамеру надає Windy.com",
-    "closeMedia": "Закрити"
+    "closeMedia": "Закрити",
+    "navigationAria": "Маршрут до {name} у Google Картах"
   },
   "Auth": {
     "continueWithGoogle": "Продовжити з Google",
