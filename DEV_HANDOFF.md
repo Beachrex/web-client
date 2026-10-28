@@ -26,6 +26,12 @@ Owner request 2026-10-28: the continent page's "Sort by" (alphabetical / most be
 - Uses `beaches_count` the list endpoints already return; no backend change. i18n: reuses `ContinentPage.sortBy` / `sortAlphabetical` / `sortBeachesDesc` / `sortBeachesAsc` (already in all 19 files), no new keys.
 - Spec: `e2e/destination-sort.unit.spec.ts` (5 tests; with code-point compare, no tie-break and the island page without `sortable`: 4 failed).
 
+## 2026-10-28 – Beach page shows one webcam (the primary) ✅ COMPLETE
+
+Owner report 2026-10-28: Strand Ahrenshoop showed the webcam twice. Windy lists that camera under two ids (1716900945 "Ahrenshoop", 1348599722 "Ahrenshoop: Strand"); both were approved for the beach. On dev 16 of 410 beaches with a webcam have 2+ approved webcams.
+- `beachPageWebcams()` in `src/lib/utils/webcam.ts`: the beach page renders only the primary webcam (cards, map and the homepage example already did). The admin choice of primary still decides which one.
+- Spec: `e2e/webcam.unit.spec.ts` `beachPageWebcams` (showing all: 1 failed).
+
 ## 2026-10-28 – Beach page: GPS location + Navigation button ✅ COMPLETE
 
 Owner request 2026-10-28: show the GPS position above Parking, with a clickable "Navigation" button that opens Google Maps navigation.
