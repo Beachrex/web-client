@@ -90,6 +90,15 @@ export function parseWindyWebcams(raw: unknown): WindyWebcam[] {
 }
 
 /**
+ * Webcams shown on the beach page: only the primary one (owner 2026-10-28, Strand Ahrenshoop showed two Windy
+ * entries of the same camera). Windy often lists one camera twice; the rest of the site (cards, map, homepage)
+ * already uses only the primary webcam.
+ */
+export function beachPageWebcams(webcams: WindyWebcam[]): WindyWebcam[] {
+  return webcams.slice(0, 1);
+}
+
+/**
  * Link a card, the map or a list opens for "webcam": the Windy page of the verified
  * primary webcam, or (flag off) the old pasted embed's link. Null = no webcam.
  */
