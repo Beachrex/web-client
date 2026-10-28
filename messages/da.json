@@ -590,7 +590,8 @@
       "sports": "Sportsaktiviteter",
       "parking": "Parkering",
       "pathToBeach": "Sti til stranden",
-      "userType": "Brugertype"
+      "userType": "Brugertype",
+      "gpsLocation": "GPS-position"
     },
     "labels": {
       "type": "Type",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Kort"
+      "map": "Kort",
+      "navigation": "Navigation"
     },
     "values": {
       "yes": "Ja",
@@ -664,7 +666,8 @@
     "webcamHeading": "Live-webcam",
     "webcamIframeTitle": "Live-webcam: {name}",
     "webcamCredit": "Webcam leveret af Windy.com",
-    "closeMedia": "Luk"
+    "closeMedia": "Luk",
+    "navigationAria": "Rutevejledning til {name} i Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Fortsæt med Google",
