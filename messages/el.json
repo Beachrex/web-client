@@ -118,7 +118,10 @@
     "outdoorPools": "Εξωτερικές πισίνες",
     "indoorPoolsSpas": "Εσωτερικές πισίνες & σπα",
     "browseAccommodationsButton": "Περιήγηση καταλυμάτων",
-    "moreAccommodations": "+Περισσότερα καταλύματα"
+    "moreAccommodations": "+Περισσότερα καταλύματα",
+    "showcaseExample": "Παράδειγμα: {beach}",
+    "showcaseOpenBeach": "Δείτε {beach}",
+    "showcaseLiveBadge": "Ζωντανά"
   },
   "BeachCategories": {
     "sandyBeaches": "Αμμώδεις παραλίες",

@@ -118,7 +118,10 @@
     "outdoorPools": "Открытые бассейны",
     "indoorPoolsSpas": "Крытые бассейны и спа",
     "browseAccommodationsButton": "Просмотр жилья",
-    "moreAccommodations": "+Больше вариантов жилья"
+    "moreAccommodations": "+Больше вариантов жилья",
+    "showcaseExample": "Пример: {beach}",
+    "showcaseOpenBeach": "Посмотреть {beach}",
+    "showcaseLiveBadge": "Онлайн"
   },
   "BeachCategories": {
     "sandyBeaches": "Песчаные пляжи",

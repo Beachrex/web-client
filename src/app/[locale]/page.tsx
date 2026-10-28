@@ -18,11 +18,14 @@ import { heroBackgroundUrl } from '@/lib/utils/hero-image';
 import HomeAccommodationSection from '@/components/Home/HomeAccommodationSection';
 import WorldMapSection from '@/components/Home/WorldMapSection';
 import BeachMediaSection from '../../components/Home/BeachMediaSection';
+import BeachMediaShowcase from '@/components/Home/BeachMediaShowcase';
 import ExploreSection from '../../components/Home/ExploreSection';
-import {  getFirstPageContent } from '@/lib/api-client';
-import type { AcceptLanguage, FirstPageContent } from '@/lib/api-client/types.gen';
+import { getBeachDetails, getFirstPageContent } from '@/lib/api-client';
+import type { AcceptLanguage, BeachDetailsSchema, FirstPageContent } from '@/lib/api-client/types.gen';
+import { getBeachMediaSources, parseShowcaseBeachId, showcaseCards } from '@/lib/utils/beach-media';
+import { NOT_A_VIEW_HEADERS } from '@/lib/utils/beach-views';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { buildBeachMapUrl, buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
 import HomeCountriesSection from '@/components/Home/HomeCountriesSection';
 import { FEATURES } from '@/lib/constants/features';
@@ -117,6 +120,48 @@ export default async function HomePage({ params }: PageProps) {
     };
   }) ?? [];
 
+  // TASK-008: one real beach as the media example (`beach_views.config.showcase_beach_id`, set in admin).
+  // Any failure keeps the static cards below.
+  let showcase: React.ComponentProps<typeof BeachMediaShowcase> | null = null;
+  const showcaseBeachId = parseShowcaseBeachId(beachViews?.config);
+  if (showcaseBeachId) {
+    try {
+      const res = await getBeachDetails({
+        path: { identifier: String(showcaseBeachId) },
+        headers: { 'Accept-Language': locale as AcceptLanguage, ...NOT_A_VIEW_HEADERS },
+      });
+      const beach: BeachDetailsSchema | undefined = res.data?.data;
+      const beachName = beach?.basic_info?.name;
+      if (beach && beachName) {
+        const sources = getBeachMediaSources(beach);
+        const cards = showcaseCards(sources);
+        const loc = beach.location;
+        if (cards.length > 0) {
+          showcase = {
+            title: beachViews?.title ?? '',
+            beachName,
+            place: [loc?.city?.name, loc?.country?.name].filter(Boolean).join(', '),
+            beachUrl: buildBeachUrlFromSchema(
+              {
+                slug: beach.basic_info?.slug,
+                continent_slug: loc?.continent?.slug,
+                country_slug: loc?.country?.slug,
+                region_slug: loc?.region?.slug,
+                island_slug: loc?.island?.slug,
+                city_slug: loc?.city?.slug,
+              },
+              locale,
+            ),
+            sources,
+            cards,
+          };
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching homepage showcase beach:', error);
+    }
+  }
+
   // Process accommodation images
   const accommodationImages = accommodation?.media?.map(m => buildCdnUrl(m.url, 'carousel')).filter((url): url is string => url !== null) ?? [];
 
@@ -185,7 +230,9 @@ export default async function HomePage({ params }: PageProps) {
       )}
 
       {/* Beach Media Section */}
-      {beachViews && beachViewsItems.length > 0 && (
+      {showcase ? (
+        <BeachMediaShowcase {...showcase} />
+      ) : beachViews && beachViewsItems.length > 0 && (
         <BeachMediaSection
           title={beachViews.title ?? ''}
           items={beachViewsItems}

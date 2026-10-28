@@ -118,7 +118,10 @@
     "outdoorPools": "Freibäder",
     "indoorPoolsSpas": "Hallenbäder & Spas",
     "browseAccommodationsButton": "Unterkünfte durchsuchen",
-    "moreAccommodations": "+Weitere Unterkünfte"
+    "moreAccommodations": "+Weitere Unterkünfte",
+    "showcaseExample": "Beispiel: {beach}",
+    "showcaseOpenBeach": "{beach} ansehen",
+    "showcaseLiveBadge": "Live"
   },
   "BeachCategories": {
     "sandyBeaches": "Sandstrände",

@@ -118,7 +118,10 @@
     "outdoorPools": "Zunanji bazeni",
     "indoorPoolsSpas": "Pokriti bazeni, terme",
     "browseAccommodationsButton": "Brskaj po nastanitvah",
-    "moreAccommodations": "+Več nastanitev"
+    "moreAccommodations": "+Več nastanitev",
+    "showcaseExample": "Primer: {beach}",
+    "showcaseOpenBeach": "Oglej si plažo {beach}",
+    "showcaseLiveBadge": "V živo"
   },
   "Metadata": {
     "title": "BeachRex - Najdi svojo popolno plažo.",

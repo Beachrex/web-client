@@ -118,7 +118,10 @@
     "outdoorPools": "Szabadtéri medencék",
     "indoorPoolsSpas": "Fedett medencék és fürdők",
     "browseAccommodationsButton": "Szállások böngészése",
-    "moreAccommodations": "+További szállások"
+    "moreAccommodations": "+További szállások",
+    "showcaseExample": "Példa: {beach}",
+    "showcaseOpenBeach": "{beach} megtekintése",
+    "showcaseLiveBadge": "Élő"
   },
   "BeachCategories": {
     "sandyBeaches": "Homokos strandok",

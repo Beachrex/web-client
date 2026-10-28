@@ -18,6 +18,16 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-28 – TASK-008: interactive "View beaches from all angles" on the homepage ✅ COMPLETE
+
+Owner request 2026-10-28. Spec: backend `docs/tasks/TASK-008-homepage-media-showcase.md`, ADR 2026-10-28.
+- Homepage reads `beach_views.config.showcase_beach_id` (admin; default 989 Svetilnik, Izola via backend migration) and loads `GET /beach-details/{id}` server-side (ISR 300 s, `NOT_A_VIEW_HEADERS`).
+- New `src/components/Home/BeachMediaShowcase.tsx`: title from admin, "Example: <beach>, <city>, <country>", link to the beach page, one card per media type the beach has (its own photos, LIVE badge on the webcam card). Click opens `MediaOverlay` with the real gallery / YouTube / 360° tour / Windy player. No iframe before a click.
+- Fallback: no id, unknown beach, failed request or no media → the old static `BeachMediaSection` from admin Items.
+- Popup content extracted to `src/components/Beach/BeachMediaContent.tsx` + `src/lib/utils/beach-media.ts`; `BeachPageView` uses the same component (no visible change on the beach page). Webcam in the popup is new and used only by the homepage.
+- i18n: `HomePage.showcaseExample`, `showcaseOpenBeach`, `showcaseLiveBadge` in all 19 files. Card labels reuse `BeachDetails.beachMedia*`.
+- Spec: `e2e/beach-media.unit.spec.ts` (6 tests; with a broken id parser and duplicated card photo: 2 failed). `next build` NOT RUN in the agent sandbox (Google Fonts blocked) — checked by the deploy build and on dev.
+
 ## 2026-10-26 – Dev slowdown: place slugs loaded once per hour ✅ COMPLETE
 
 - Owner: dev was slow, sometimes 30 s without an answer. Measured: the front answered in ~100 ms, then stalled 1–6 s (static JS too, so the whole Node process); the API stayed at 110–200 ms. On the VPS `front_dev` used 2.9 GB (uat: 43 MB) and had restarted.

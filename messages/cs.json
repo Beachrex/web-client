@@ -118,7 +118,10 @@
     "outdoorPools": "Venkovní bazény",
     "indoorPoolsSpas": "Vnitřní bazény a lázně",
     "browseAccommodationsButton": "Procházet ubytování",
-    "moreAccommodations": "+Více ubytování"
+    "moreAccommodations": "+Více ubytování",
+    "showcaseExample": "Příklad: {beach}",
+    "showcaseOpenBeach": "Zobrazit {beach}",
+    "showcaseLiveBadge": "Živě"
   },
   "BeachCategories": {
     "sandyBeaches": "Písečné pláže",

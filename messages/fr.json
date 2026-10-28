@@ -118,7 +118,10 @@
     "outdoorPools": "Piscines extérieures",
     "indoorPoolsSpas": "Piscines intérieures et spas",
     "browseAccommodationsButton": "Parcourir les hébergements",
-    "moreAccommodations": "+Plus d'hébergements"
+    "moreAccommodations": "+Plus d'hébergements",
+    "showcaseExample": "Exemple : {beach}",
+    "showcaseOpenBeach": "Voir {beach}",
+    "showcaseLiveBadge": "En direct"
   },
   "BeachCategories": {
     "sandyBeaches": "Plages de sable",

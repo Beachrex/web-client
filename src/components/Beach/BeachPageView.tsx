@@ -1,6 +1,5 @@
 'use client';
 
-import { Carousel } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import React from 'react';
@@ -10,6 +9,8 @@ import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import WindyWebcams from '@/components/Beach/WindyWebcams';
 import MediaOverlay from '@/components/Beach/MediaOverlay';
+import BeachMediaContent from '@/components/Beach/BeachMediaContent';
+import { getBeachMediaSources } from '@/lib/utils/beach-media';
 import { FEATURES } from '@/lib/constants/features';
 import { parseWebcamUrl, parseWindyWebcams } from '@/lib/utils/webcam';
 
@@ -29,7 +30,6 @@ interface MediaCard {
 
 const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const t = useTranslations('BeachDetails');
-  const tUi = useTranslations('UI');
 
   // ✅ Hook vedno pokličemo, brez pogojev
   const [activeMedia, setActiveMedia] =
@@ -37,6 +37,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const closeMedia = React.useCallback(() => setActiveMedia(null), []);
 
   const media = beachDetails.media;
+  const mediaSources = React.useMemo(() => getBeachMediaSources(beachDetails), [beachDetails]);
   const embeds = beachDetails.embeds;
 
   const gallery = media?.gallery ?? [];
@@ -46,11 +47,6 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const primaryGalleryUrlTmp =
     buildCdnUrl(gallery[0]?.thumbnail_url ?? gallery[0]?.url, 'gallery') ??
     '/images/beachmedia/beach-gallery.jpg';
-
-  // High-resolution version for the fullscreen viewer (uses LARGE CDN endpoint)
-  const primaryGalleryLargeUrl =
-    buildCdnUrl(gallery[0]?.url ?? gallery[0]?.thumbnail_url, 'banner') ??
-    primaryGalleryUrlTmp;
 
   // Same rule as the map/list cards (QA #67).
   const videoEmbedUrl = buildBeachVideoUrl(embeds?.video_url, videos);
@@ -167,74 +163,11 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
           onClose={closeMedia}
         >
 
-            {/* GALLERY FULLSCREEN + CAROUSEL */}
-            {activeMedia === 'gallery' && hasGallery && (
-              <div className="relative h-[75vh] w-full overflow-hidden rounded-xl bg-black">
-                {gallery.length > 1 ? (
-                  <Carousel slide={false} className="h-full w-full">
-                    {gallery.map((img) => {
-                      const rawSrc = img.url ?? img.thumbnail_url;
-                      const src =
-                        buildCdnUrl(rawSrc, 'banner') ??
-                        primaryGalleryLargeUrl;
-                      const key = String(img.id ?? src);
-
-                      return (
-                        <div key={key} className="relative h-[75vh] w-full">
-                          <Image
-                            src={src}
-                            alt={
-                              beachDetails.basic_info?.name ??
-                              'Beach gallery image'
-                            }
-                            fill
-                            className="rounded-xl object-contain"
-                          />
-                        </div>
-                      );
-                    })}
-                  </Carousel>
-                ) : (
-                  <Image
-                    src={primaryGalleryLargeUrl}
-                    alt={
-                      beachDetails.basic_info?.name ?? 'Beach gallery image'
-                    }
-                    width={1600}
-                    height={900}
-                    className="h-[75vh] w-full rounded-xl object-contain"
-                  />
-                )}
-              </div>
-            )}
-
-            {/* VIDEO (YouTube embed) */}
-            {activeMedia === 'video' && videoEmbedUrl && (
-              <div className="relative w-full overflow-hidden rounded-xl">
-                <div className="relative w-full pt-[56.25%]">
-                  <iframe
-                    src={videoEmbedUrl}
-                    title={tUi('videoTitle')}
-                    className="absolute inset-0 h-full w-full border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* 360° VIEWER */}
-            {activeMedia === 'sphere' && sphereTourUrl && (
-              <div className="relative h-[75vh] w-full overflow-hidden rounded-xl bg-black">
-                <iframe
-                  src={sphereTourUrl}
-                  title={tUi('virtualTourTitle')}
-                  className="h-full w-full border-0"
-                  allowFullScreen
-                  loading="lazy"
-                />
-              </div>
-            )}
+          <BeachMediaContent
+            kind={activeMedia}
+            sources={mediaSources}
+            beachName={beachDetails.basic_info?.name}
+          />
         </MediaOverlay>
       )}
     </section>

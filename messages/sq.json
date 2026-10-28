@@ -118,7 +118,10 @@
     "outdoorPools": "Pishina të jashtme",
     "indoorPoolsSpas": "Pishina të brendshme & Spa",
     "browseAccommodationsButton": "Shfleto akomodimet",
-    "moreAccommodations": "+Më shumë akomodime"
+    "moreAccommodations": "+Më shumë akomodime",
+    "showcaseExample": "Shembull: {beach}",
+    "showcaseOpenBeach": "Shiko {beach}",
+    "showcaseLiveBadge": "Drejtpërdrejt"
   },
   "BeachCategories": {
     "sandyBeaches": "Plazhe me rërë",
