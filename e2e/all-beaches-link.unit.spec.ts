@@ -31,3 +31,14 @@ test('the link targets the browse section id', async () => {
   expect(read('src/components/DynamicSearchBeaches.tsx')).toContain('id={ALL_BEACHES_SECTION_ID}');
   expect(ALL_BEACHES_SECTION_ID).toBe('all-beaches');
 });
+
+/**
+ * Dev 2026-10-28: the Toscana page still showed "All beaches (20)" (43 beaches): PropertySection accepted `headerRight`
+ * but never rendered it, so the carousel expander with its card count stood in for the link above.
+ */
+test('the popular-beaches section shows the page link instead of its card-count expander', () => {
+  const source = read('src/components/PropertySection.tsx');
+  const props = source.slice(source.indexOf('export const PropertySection'), source.indexOf('=> {', source.indexOf('export const PropertySection')));
+  expect(props, 'headerRight is read').toContain('headerRight');
+  expect(source).toContain('{headerRight ?? (');
+});

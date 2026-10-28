@@ -18,6 +18,17 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-28 – Place pages: "All beaches (n)" shows the place's total again ✅ COMPLETE
+
+- Found on dev: the Toscana page showed "All beaches (20)" for a region with 43 active beaches (API `beaches_count`
+  43, `/beaches?region=toscana` total 43). `PropertySection` accepted `headerRight` (the `AllBeachesLink` with the
+  place total, TASK-004 D7) but had not rendered it since Jan 2026; its carousel expander, labelled with the 20 loaded
+  cards, stood in for it.
+- `PropertySection` renders `headerRight` when given (country, region, island, city pages); sections without it keep
+  the expander.
+- Search side: Beachrex/backend PR #145 makes search count towns/islands/beaches in a named place like these pages.
+- Test: `e2e/all-beaches-link.unit.spec.ts` (+1; fails on the old PropertySection).
+
 ## 2026-10-28 – Search dropdown: real totals in the tab badges ✅ COMPLETE
 
 **Owner report:** "france" showed "All 28 = Beaches 10 + Cities 10 + Regions 7 + Country 1" although France has ~400

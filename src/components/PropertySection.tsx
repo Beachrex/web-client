@@ -114,6 +114,7 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
   title,
   totalCount = 124,
   properties,
+  headerRight,
   controlsBelowHeader,
 }) => {
   const t = useTranslations('PropertySection');
@@ -158,6 +159,10 @@ const hasAnyWebcam = React.useMemo(
   </div>
 )}
 
+            {/* Place pages pass the real total ("All beaches (43)", a link to the full list). Without it the
+                button expands this carousel; its count is the number of cards (dev 2026-10-28: the Toscana page
+                showed "All beaches (20)" for a region with 43). */}
+            {headerRight ?? (
             <button
   type="button"
   onClick={() => setExpanded((v) => !v)}
@@ -173,6 +178,7 @@ const hasAnyWebcam = React.useMemo(
     }`}
   />
 </button>
+            )}
 
           </div>
         </div>
