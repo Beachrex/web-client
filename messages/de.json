@@ -91,7 +91,9 @@
     "tabRegions": "Regionen",
     "tabCountries": "Länder",
     "tabsLabel": "Ergebnisse nach Art filtern",
-    "showAllOnMap": "Alle Strände auf der Karte: {name}"
+    "showAllOnMap": "Alle Strände auf der Karte: {name}",
+    "showingOf": "{shown} von {total} angezeigt",
+    "openPlace": "{name} öffnen"
   },
   "HomePage": {
     "allBeaches": "Alle Strände",

@@ -91,7 +91,9 @@
     "tabRegions": "Regions",
     "tabCountries": "Countries",
     "tabsLabel": "Filter results by type",
-    "showAllOnMap": "All beaches on the map: {name}"
+    "showAllOnMap": "All beaches on the map: {name}",
+    "showingOf": "Showing {shown} of {total}",
+    "openPlace": "Open {name}"
   },
   "HomePage": {
     "allBeaches": "All Beaches",

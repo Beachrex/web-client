@@ -91,7 +91,9 @@
     "tabRegions": "Regiony",
     "tabCountries": "Kraje",
     "tabsLabel": "Filtruj wyniki według typu",
-    "showAllOnMap": "Wszystkie plaże na mapie: {name}"
+    "showAllOnMap": "Wszystkie plaże na mapie: {name}",
+    "showingOf": "Wyświetlono {shown} z {total}",
+    "openPlace": "Otwórz {name}"
   },
   "HomePage": {
     "allBeaches": "Wszystkie plaże",

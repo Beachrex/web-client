@@ -91,7 +91,9 @@
     "tabRegions": "Regije",
     "tabCountries": "Države",
     "tabsLabel": "Filtriraj zadetke po vrsti",
-    "showAllOnMap": "Vse plaže na zemljevidu: {name}"
+    "showAllOnMap": "Vse plaže na zemljevidu: {name}",
+    "showingOf": "Prikazanih {shown} od {total}",
+    "openPlace": "Odpri {name}"
   },
   "HomePage": {
     "allBeaches": "Vse plaže",

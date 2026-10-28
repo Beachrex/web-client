@@ -91,7 +91,9 @@
     "tabRegions": "Regioner",
     "tabCountries": "Lande",
     "tabsLabel": "Filtrer resultater efter type",
-    "showAllOnMap": "Alle strande på kortet: {name}"
+    "showAllOnMap": "Alle strande på kortet: {name}",
+    "showingOf": "Viser {shown} af {total}",
+    "openPlace": "Åbn {name}"
   },
   "HomePage": {
     "allBeaches": "Alle strande",

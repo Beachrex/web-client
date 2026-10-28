@@ -10,7 +10,15 @@ import { useQuery } from '@tanstack/react-query';
 import { globalSearchOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildSearchResultUrl } from '@/lib/utils/search-result-url';
-import { resultsForTab, searchTabs, showAllQuery, showAllTarget, type SearchTab } from '@/lib/utils/search-tabs';
+import {
+    moreMatches,
+    resultsForTab,
+    searchTabs,
+    showAllQuery,
+    showAllTarget,
+    type SearchTab,
+} from '@/lib/utils/search-tabs';
+import { formatCount, parseSearchMeta } from '@/lib/utils/search-totals';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import Image from 'next/image';
 
@@ -164,8 +172,14 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         return unified;
     }, [searchData]);
 
+    // Real totals and the place the query names (owner 2026-10-28), not in the generated client yet
+    const meta = React.useMemo(
+        () => parseSearchMeta((searchData as { meta?: unknown } | undefined)?.meta),
+        [searchData],
+    );
+
     // Tabs per result type (owner 2026-10-22); a new search starts on "All".
-    const tabs = React.useMemo(() => searchTabs(results), [results]);
+    const tabs = React.useMemo(() => searchTabs(results, meta.totals), [results, meta.totals]);
     const currentTab: SearchTab = tabs.some((tab) => tab.tab === activeTab) ? activeTab : 'all';
     const visibleResults = React.useMemo(
         () => resultsForTab(results, currentTab, debouncedQuery),
@@ -173,7 +187,20 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     );
 
     // "Show all on the map" for the place the query names (owner 2026-10-22)
-    const showAll = React.useMemo(() => showAllTarget(results, debouncedQuery), [results, debouncedQuery]);
+    // The API's named place wins (it also scoped the results); otherwise the closest place match in the list.
+    const showAll = React.useMemo(() => {
+        const { place } = meta;
+        if (place?.code) return { type: place.type, code: place.code, name: place.name };
+        return showAllTarget(results, debouncedQuery);
+    }, [meta, results, debouncedQuery]);
+
+    // "10 of 412" under a type tab that lists fewer than it matched, with a way to see them all
+    const more = React.useMemo(() => moreMatches(results, meta.totals, currentTab), [results, meta.totals, currentTab]);
+    const morePlace = React.useMemo(() => {
+        const { place } = meta;
+        if (!more || more.type === 'beach' || !place) return null;
+        return results.find((r) => r.type === place.type && r.id === place.id) ?? null;
+    }, [meta, more, results]);
     const openShowAll = () => {
         if (!showAll) return;
         setIsOpen(false);
@@ -388,7 +415,7 @@ text-xs font-semibold transition-colors ${
                                         <span
                                             className={`rounded-full px-1.5 text-[11px] ${active ? 'bg-white/20' : 'bg-white text-gray-500'}`}
                                         >
-                                            {count}
+                                            {formatCount(count, locale)}
                                         </span>
                                     </button>
                                 );
@@ -456,6 +483,30 @@ rounded-lg hover:bg-blue-50 transition-all duration-150 ${
                             </button>
                         ))}
                     </div>
+                    {more && (
+                        <div
+                            className="flex items-center justify-between gap-2 border-t border-gray-100 px-4 py-2 text-xs text-gray-500"
+                            data-testid="search-more"
+                        >
+                            <span>
+                                {tSearch('showingOf', {
+                                    shown: formatCount(more.shown, locale),
+                                    total: formatCount(more.total, locale),
+                                })}
+                            </span>
+                            {morePlace && (
+                                <button
+                                    type="button"
+                                    onMouseDown={(e) => e.preventDefault()}
+                                    onClick={() => handleResultClick(morePlace)}
+                                    className="shrink-0 font-semibold text-[#1A3C68] hover:underline"
+                                    data-testid="search-more-place"
+                                >
+                                    {tSearch('openPlace', { name: morePlace.name })}
+                                </button>
+                            )}
+                        </div>
+                    )}
                     {showAll && (
                         <div className="sticky bottom-0 border-t border-gray-100 bg-white p-2">
                             <button

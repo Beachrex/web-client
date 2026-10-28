@@ -46,13 +46,41 @@ export function resultsForTab<T extends { type: SearchResultType; name: string }
     .map((x) => x.r);
 }
 
-/** "All" plus one tab per type that has results; no tabs (empty list) when there is only one type. */
-export function searchTabs(results: { type: SearchResultType }[]): SearchTabInfo[] {
+/**
+ * "All" plus one tab per type that has results; no tabs (empty list) when there is only one type.
+ * `totals` (API `meta.totals_by_type`, owner 2026-10-28) are the real match counts; without them a tab counts the
+ * items returned. A total is never shown below the items listed. "All" is the sum of the tab counts.
+ */
+export function searchTabs(
+  results: { type: SearchResultType }[],
+  totals?: Partial<Record<SearchResultType, number>> | null,
+): SearchTabInfo[] {
   const counts = SEARCH_TYPE_ORDER
-    .map((type) => ({ tab: type as SearchTab, count: results.filter((r) => r.type === type).length }))
-    .filter((t) => t.count > 0);
+    .map((type) => {
+      const shown = results.filter((r) => r.type === type).length;
+      return { tab: type as SearchTab, shown, count: Math.max(shown, totals?.[type] ?? 0) };
+    })
+    .filter((t) => t.shown > 0)
+    .map(({ tab, count }) => ({ tab, count }));
   if (counts.length < 2) return [];
-  return [{ tab: 'all', count: results.length }, ...counts];
+  return [{ tab: 'all', count: counts.reduce((sum, t) => sum + t.count, 0) }, ...counts];
+}
+
+/**
+ * The type tab (or the only type, when there are no tabs) has more matches than it lists → what to tell the visitor
+ * ("10 of 412"); null otherwise.
+ */
+export function moreMatches(
+  results: { type: SearchResultType }[],
+  totals: Partial<Record<SearchResultType, number>> | null | undefined,
+  tab: SearchTab,
+): { type: SearchResultType; shown: number; total: number } | null {
+  const present = SEARCH_TYPE_ORDER.filter((type) => results.some((r) => r.type === type));
+  const type = tab !== 'all' ? tab : present.length === 1 ? present[0] : null;
+  if (!type) return null;
+  const shown = results.filter((r) => r.type === type).length;
+  const total = totals?.[type] ?? 0;
+  return shown > 0 && total > shown ? { type, shown, total } : null;
 }
 
 /** Map filter key per place type (`?country=GR`, `?region=attiki`, …), see the beach map filters. */
