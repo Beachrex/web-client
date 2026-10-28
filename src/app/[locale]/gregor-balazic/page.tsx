@@ -6,10 +6,15 @@
  * design (owner: "closer to the platform"): a photo banner with the faded category word behind the
  * title like the country pages, navy pill, light-blue cards, 10 px radii, Figtree headings in #222.
  * Text in all 19 locales (`AuthorPage`); Person structured data.
+ *
+ * Owner, 2026-10-28: the route lists all 13 countries Beachrex has beaches in; every country (chips and story text)
+ * links to its localized country page, and "4,000 beaches" / "13 countries" link to the all-beaches page.
  */
 
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
   AUTHOR_BEACH_PHOTO,
@@ -18,8 +23,13 @@ import {
   AUTHOR_PHOTO,
   AUTHOR_ROUTE,
   AUTHOR_STATS,
+  authorBeachesUrl,
+  buildAuthorCountryUrls,
   numberLocale,
+  type AuthorCountryKey,
 } from '@/lib/constants/author';
+import { getContinents, getCountries } from '@/lib/api-client/sdk.gen';
+import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import {
   buildCanonicalUrl,
@@ -33,10 +43,24 @@ interface PageProps {
   params: { locale: string };
 }
 
-type ChapterKey = 'leap' | 'road' | 'database' | 'hardships';
+type ChapterKey = 'leap' | 'database' | 'hardships';
 
 // Page width like the listing pages; not `container` (globals.css overrides its padding)
 const WRAP = 'mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8';
+
+// Inline text link in the story, in the platform's navy with a light-blue underline
+const TEXT_LINK =
+  'font-semibold text-[#1A3C68] underline decoration-[#0B99C2]/50 underline-offset-4 transition-colors hover:text-[#0B99C2] hover:decoration-[#0B99C2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0B99C2]';
+
+/** Localized country-page URLs (slugs differ per language); a failed request leaves the names unlinked. */
+async function loadCountryUrls(locale: string) {
+  const headers = { 'Accept-Language': locale as AcceptLanguage };
+  const [continents, countries] = await Promise.all([
+    getContinents({ headers }).then((r) => r.data?.data ?? []).catch(() => []),
+    getCountries({ headers }).then((r) => r.data?.data ?? []).catch(() => []),
+  ]);
+  return buildAuthorCountryUrls(locale, continents, countries);
+}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = params;
@@ -59,6 +83,56 @@ export default async function AuthorPage({ params }: PageProps) {
   const t = await getTranslations({ locale, namespace: 'AuthorPage' });
   // Always group thousands: Slovenian (and others) would print 4000 while the text says 4.000
   const fmt = new Intl.NumberFormat(numberLocale(locale), { useGrouping: 'always' } as unknown as Intl.NumberFormatOptions);
+  const countryUrls = await loadCountryUrls(locale);
+  const beachesUrl = authorBeachesUrl(locale);
+
+  const countryLink = (key: AuthorCountryKey, label: ReactNode, className: string) => {
+    const href = countryUrls[key];
+    return href ? (
+      <Link href={href} className={className}>
+        {label}
+      </Link>
+    ) : (
+      <span>{label}</span>
+    );
+  };
+
+  // "Slovenia, Croatia, … and Denmark" with the locale's own list grammar; every name links to its country page
+  const listFormat = new Intl.ListFormat(numberLocale(locale), { style: 'long', type: 'conjunction' });
+  let countryIndex = 0;
+  const countryList = listFormat.formatToParts(AUTHOR_ROUTE.map((c) => t(`countries.${c}`))).map((part, i) => {
+    if (part.type !== 'element') return <span key={i}>{part.value}</span>;
+    const key = AUTHOR_ROUTE[countryIndex++];
+    return <span key={i}>{key ? countryLink(key, part.value, TEXT_LINK) : part.value}</span>;
+  });
+  const statContent = (s: (typeof AUTHOR_STATS)[number], linked: boolean) => (
+    <>
+      <span
+        className={`block text-[32px] font-bold leading-none text-[#1A3C68] sm:text-[40px] ${linked ? 'transition-colors group-hover:text-[#0B99C2]' : ''}`}
+      >
+        {fmt.format(s.value)}
+        {s.plus && '+'}
+      </span>
+      <span
+        className={`mt-2 block text-[14px] font-medium text-[#4D4D4D] sm:text-[15px] ${linked ? 'underline-offset-4 group-hover:underline' : ''}`}
+      >
+        {t(`stats.${s.key}`)}
+      </span>
+    </>
+  );
+
+  const richLinks = {
+    beaches: (chunks: ReactNode) => (
+      <Link href={beachesUrl} className={TEXT_LINK}>
+        {chunks}
+      </Link>
+    ),
+    countries: (chunks: ReactNode) => (
+      <Link href={beachesUrl} className={TEXT_LINK}>
+        {chunks}
+      </Link>
+    ),
+  };
 
   const personSchema = {
     '@context': 'https://schema.org',
@@ -133,13 +207,17 @@ export default async function AuthorPage({ params }: PageProps) {
             <div key={s.key} className="rounded-[10px] bg-[#E5F2FB] px-5 py-6 text-center shadow-sm">
               <dt className="sr-only">{t(`stats.${s.key}`)}</dt>
               <dd>
-                <span className="block text-[32px] font-bold leading-none text-[#1A3C68] sm:text-[40px]">
-                  {fmt.format(s.value)}
-                  {s.plus && '+'}
-                </span>
-                <span className="mt-2 block text-[14px] font-medium text-[#4D4D4D] sm:text-[15px]">
-                  {t(`stats.${s.key}`)}
-                </span>
+                {s.key === 'beaches' || s.key === 'countries' ? (
+                  // Beaches and countries open the all-beaches page (world totals and the country list)
+                  <Link
+                    href={beachesUrl}
+                    className="group block rounded-[6px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0B99C2]"
+                  >
+                    {statContent(s, true)}
+                  </Link>
+                ) : (
+                  statContent(s, false)
+                )}
               </dd>
             </div>
           ))}
@@ -151,7 +229,15 @@ export default async function AuthorPage({ params }: PageProps) {
         <div className="space-y-12 lg:col-span-7">
           <p className="text-[24px] font-semibold leading-snug text-[#1A3C68] sm:text-[28px]">{t('lead')}</p>
           {chapter('leap', 1)}
-          {chapter('road', 2)}
+          <section aria-labelledby="chapter-road">
+            <p className="font-figtree text-[14px] font-bold text-[#FF8000]">02</p>
+            <h2 id="chapter-road" className="mt-1 font-figtree text-[26px] font-bold leading-tight text-[#222222] sm:text-[30px]">
+              {t.rich('chapters.road.title', richLinks)}
+            </h2>
+            <p className="mt-4 font-figtree text-[17px] leading-[1.75] text-[#4D4D4D]">
+              {t.rich('chapters.road.text', { ...richLinks, list: () => <>{countryList}</> })}
+            </p>
+          </section>
 
           {/* Route along the coasts */}
           <div className="rounded-[10px] bg-[#F5F5F5] p-5 sm:p-6">
@@ -163,7 +249,11 @@ export default async function AuthorPage({ params }: PageProps) {
                     <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#1A3C68] text-[12px] font-bold text-white">
                       {i + 1}
                     </span>
-                    <span className="text-[14px] font-semibold text-[#222222]">{t(`countries.${c}`)}</span>
+                    {countryLink(
+                      c,
+                      t(`countries.${c}`),
+                      'text-[14px] font-semibold text-[#222222] underline-offset-4 hover:text-[#0B99C2] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0B99C2]',
+                    )}
                   </span>
                   {i < AUTHOR_ROUTE.length - 1 && <span className="text-[#8D8D8D]" aria-hidden>›</span>}
                 </li>
@@ -232,5 +322,5 @@ height={20} />
   );
 }
 
-/** Static text and images; refresh daily. */
-export const revalidate = 86400;
+/** Static text and images plus localized country slugs from the API; refresh hourly like the beaches page. */
+export const revalidate = 3600;

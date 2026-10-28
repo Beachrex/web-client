@@ -915,8 +915,8 @@
         "text": "Plaže su oduvijek bile moja velika strast, kaže Gregor Balažic, koji je dao otkaz. Bio je voditelj odjela, a ipak je izašao iz zone komfora i iza sebe ostavio predvidljivu budućnost. Kupio je fotoaparat i kombi, koji mu je postao novi dom, i otisnuo se u svijet. Točnije – na plaže."
       },
       "road": {
-        "title": "4.000 plaža u 13 država",
-        "text": "Put ga je vodio uz obale i plaže Slovenije, Hrvatske, Bosne i Hercegovine, Italije i Francuske, sve do Španjolske. Posjetio je čak 4.000 plaža. Iako se ta brojka čini golemom, tek je kap u moru – u svijetu postoji više od 200.000 plaža pogodnih za turizam, objašnjava Balažic."
+        "title": "<beaches>4.000 plaža</beaches> u <countries>13 država</countries>",
+        "text": "Put ga je vodio uz obale i plaže <countries>13 država</countries>: <list></list>. Posjetio je čak <beaches>4.000 plaža</beaches>. Iako se ta brojka čini golemom, tek je kap u moru – u svijetu postoji više od 200.000 plaža pogodnih za turizam, objašnjava Balažic."
       },
       "database": {
         "title": "Najveća baza plaža na svijetu",
@@ -931,10 +931,17 @@
     "countries": {
       "si": "Slovenija",
       "hr": "Hrvatska",
-      "ba": "Bosna i Hercegovina",
+      "me": "Crna Gora",
+      "al": "Albanija",
+      "gr": "Grčka",
       "it": "Italija",
       "fr": "Francuska",
-      "es": "Španjolska"
+      "es": "Španjolska",
+      "pt": "Portugal",
+      "be": "Belgija",
+      "nl": "Nizozemska",
+      "de": "Njemačka",
+      "dk": "Danska"
     },
     "photoAlt": "Gregor Balažic s fotoaparatom na pješčanoj plaži",
     "beachAlt": "Pješčana plaža s prevrnutim čamcem uz stijene i borove",
