@@ -12,7 +12,7 @@ import MediaOverlay from '@/components/Beach/MediaOverlay';
 import BeachMediaContent from '@/components/Beach/BeachMediaContent';
 import { getBeachMediaSources } from '@/lib/utils/beach-media';
 import { FEATURES } from '@/lib/constants/features';
-import { parseWebcamUrl, parseWindyWebcams } from '@/lib/utils/webcam';
+import { beachPageWebcams, parseWebcamUrl, parseWindyWebcams } from '@/lib/utils/webcam';
 
 interface BeachPageViewProps {
   beachDetails: BeachDetailsSchema;
@@ -66,7 +66,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   // TASK-006: verified Windy webcams get their own section with the player; the old
   // pasted-link card (QA #36) only while FEATURES.windyWebcams is off.
   const windyWebcams = FEATURES.windyWebcams
-    ? parseWindyWebcams((beachDetails as { webcams?: unknown }).webcams)
+    ? beachPageWebcams(parseWindyWebcams((beachDetails as { webcams?: unknown }).webcams))
     : [];
   const webcamUrl = FEATURES.windyWebcams ? null : parseWebcamUrl(embeds?.webcam);
 

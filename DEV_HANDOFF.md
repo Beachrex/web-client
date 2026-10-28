@@ -18,6 +18,12 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-28 – Beach page shows one webcam (the primary) ✅ COMPLETE
+
+Owner report 2026-10-28: Strand Ahrenshoop showed the webcam twice. Windy lists that camera under two ids (1716900945 "Ahrenshoop", 1348599722 "Ahrenshoop: Strand"); both were approved for the beach. On dev 16 of 410 beaches with a webcam have 2+ approved webcams.
+- `beachPageWebcams()` in `src/lib/utils/webcam.ts`: the beach page renders only the primary webcam (cards, map and the homepage example already did). The admin choice of primary still decides which one.
+- Spec: `e2e/webcam.unit.spec.ts` `beachPageWebcams` (showing all: 1 failed).
+
 ## 2026-10-28 – TASK-008: interactive "View beaches from all angles" on the homepage ✅ COMPLETE
 
 Owner request 2026-10-28. Spec: backend `docs/tasks/TASK-008-homepage-media-showcase.md`, ADR 2026-10-28.
