@@ -118,7 +118,10 @@
     "outdoorPools": "Udendørs pools",
     "indoorPoolsSpas": "Indendørs pools & spa",
     "browseAccommodationsButton": "Gennemse overnatninger",
-    "moreAccommodations": "+Flere overnatninger"
+    "moreAccommodations": "+Flere overnatninger",
+    "showcaseExample": "Eksempel: {beach}",
+    "showcaseOpenBeach": "Se {beach}",
+    "showcaseLiveBadge": "Direkte"
   },
   "BeachCategories": {
     "sandyBeaches": "Sandstrande",

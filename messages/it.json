@@ -118,7 +118,10 @@
     "outdoorPools": "Piscine all'aperto",
     "indoorPoolsSpas": "Piscine coperte e spa",
     "browseAccommodationsButton": "Sfoglia alloggi",
-    "moreAccommodations": "+Altri alloggi"
+    "moreAccommodations": "+Altri alloggi",
+    "showcaseExample": "Esempio: {beach}",
+    "showcaseOpenBeach": "Scopri {beach}",
+    "showcaseLiveBadge": "Dal vivo"
   },
   "BeachCategories": {
     "sandyBeaches": "Spiagge sabbiose",

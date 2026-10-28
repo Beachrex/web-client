@@ -118,7 +118,10 @@
     "outdoorPools": "Outdoor Pools",
     "indoorPoolsSpas": "Indoor Pools & Spas",
     "browseAccommodationsButton": "Browse Accommodations",
-    "moreAccommodations": "+More Accommodations"
+    "moreAccommodations": "+More Accommodations",
+    "showcaseExample": "Example: {beach}",
+    "showcaseOpenBeach": "View {beach}",
+    "showcaseLiveBadge": "Live"
   },
   "BeachCategories": {
     "sandyBeaches": "Sandy beaches",

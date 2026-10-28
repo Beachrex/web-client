@@ -118,7 +118,10 @@
     "outdoorPools": "Piscinas al aire libre",
     "indoorPoolsSpas": "Piscinas cubiertas y spas",
     "browseAccommodationsButton": "Explorar alojamientos",
-    "moreAccommodations": "+Más alojamientos"
+    "moreAccommodations": "+Más alojamientos",
+    "showcaseExample": "Ejemplo: {beach}",
+    "showcaseOpenBeach": "Ver {beach}",
+    "showcaseLiveBadge": "En directo"
   },
   "BeachCategories": {
     "sandyBeaches": "Playas de arena",

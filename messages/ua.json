@@ -118,7 +118,10 @@
     "outdoorPools": "Відкриті басейни",
     "indoorPoolsSpas": "Криті басейни та спа",
     "browseAccommodationsButton": "Переглянути житло",
-    "moreAccommodations": "+Більше житла"
+    "moreAccommodations": "+Більше житла",
+    "showcaseExample": "Приклад: {beach}",
+    "showcaseOpenBeach": "Переглянути {beach}",
+    "showcaseLiveBadge": "Наживо"
   },
   "BeachCategories": {
     "sandyBeaches": "Піщані пляжі",

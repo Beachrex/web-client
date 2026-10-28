@@ -118,7 +118,10 @@
     "outdoorPools": "Vanjski bazeni",
     "indoorPoolsSpas": "Unutarnji bazeni i spa centri",
     "browseAccommodationsButton": "Pregledaj smještaje",
-    "moreAccommodations": "+Više smještaja"
+    "moreAccommodations": "+Više smještaja",
+    "showcaseExample": "Primjer: {beach}",
+    "showcaseOpenBeach": "Pogledaj plažu {beach}",
+    "showcaseLiveBadge": "Uživo"
   },
   "BeachCategories": {
     "sandyBeaches": "Pješčane plaže",

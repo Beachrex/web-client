@@ -118,7 +118,10 @@
     "outdoorPools": "Piscinas ao ar livre",
     "indoorPoolsSpas": "Piscinas interiores e spas",
     "browseAccommodationsButton": "Ver alojamentos",
-    "moreAccommodations": "+Mais alojamentos"
+    "moreAccommodations": "+Mais alojamentos",
+    "showcaseExample": "Exemplo: {beach}",
+    "showcaseOpenBeach": "Ver {beach}",
+    "showcaseLiveBadge": "Ao vivo"
   },
   "BeachCategories": {
     "sandyBeaches": "Praias de areia",

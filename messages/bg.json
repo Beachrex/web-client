@@ -118,7 +118,10 @@
     "outdoorPools": "Външни басейни",
     "indoorPoolsSpas": "Закрити басейни и СПА",
     "browseAccommodationsButton": "Разгледай настаняванията",
-    "moreAccommodations": "+Още настанявания"
+    "moreAccommodations": "+Още настанявания",
+    "showcaseExample": "Пример: {beach}",
+    "showcaseOpenBeach": "Виж {beach}",
+    "showcaseLiveBadge": "На живо"
   },
   "BeachCategories": {
     "sandyBeaches": "Пясъчни плажове",

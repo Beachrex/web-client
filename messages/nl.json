@@ -118,7 +118,10 @@
     "outdoorPools": "Buitenzwembaden",
     "indoorPoolsSpas": "Binnenzwembaden & spa's",
     "browseAccommodationsButton": "Accommodaties bekijken",
-    "moreAccommodations": "+Meer accommodaties"
+    "moreAccommodations": "+Meer accommodaties",
+    "showcaseExample": "Voorbeeld: {beach}",
+    "showcaseOpenBeach": "Bekijk {beach}",
+    "showcaseLiveBadge": "Live"
   },
   "BeachCategories": {
     "sandyBeaches": "Zandstranden",

@@ -118,7 +118,10 @@
     "outdoorPools": "Baseny zewnętrzne",
     "indoorPoolsSpas": "Baseny wewnętrzne i spa",
     "browseAccommodationsButton": "Przeglądaj zakwaterowanie",
-    "moreAccommodations": "+Więcej obiektów"
+    "moreAccommodations": "+Więcej obiektów",
+    "showcaseExample": "Przykład: {beach}",
+    "showcaseOpenBeach": "Zobacz {beach}",
+    "showcaseLiveBadge": "Na żywo"
   },
   "BeachCategories": {
     "sandyBeaches": "Plaże piaszczyste",
