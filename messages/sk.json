@@ -592,7 +592,8 @@
       "sports": "Športové aktivity",
       "parking": "Parkovanie",
       "pathToBeach": "Cesta na pláž",
-      "userType": "Typ používateľa"
+      "userType": "Typ používateľa",
+      "gpsLocation": "GPS poloha"
     },
     "labels": {
       "type": "Typ",
@@ -616,7 +617,8 @@
     },
     "buttons": {
       "photo": "Fotografia",
-      "map": "Mapa"
+      "map": "Mapa",
+      "navigation": "Navigácia"
     },
     "values": {
       "yes": "Áno",
@@ -666,7 +668,8 @@
     "webcamHeading": "Webkamera naživo",
     "webcamIframeTitle": "Webkamera naživo: {name}",
     "webcamCredit": "Webkameru poskytuje Windy.com",
-    "closeMedia": "Zavrieť"
+    "closeMedia": "Zavrieť",
+    "navigationAria": "Navigácia k {name} v Mapách Google"
   },
   "Auth": {
     "continueWithGoogle": "Pokračovať s Google",
@@ -917,8 +920,8 @@
         "text": "Pláže boli vždy mojou veľkou vášňou, hovorí Gregor Balažic, ktorý dal výpoveď. Bol vedúcim oddelenia, no vystúpil z komfortnej zóny a opustil predvídateľnú budúcnosť. Kúpil si fotoaparát a dodávku, ktorá sa stala jeho novým domovom, a vydal sa do sveta. Presnejšie na pláže."
       },
       "road": {
-        "title": "4 000 pláží v 13 krajinách",
-        "text": "Cestoval po pobrežiach a plážach Slovinska, Chorvátska, Bosny a Hercegoviny, Talianska a Francúzska, až sa ocitol v Španielsku. Navštívil až 4 000 pláží. Hoci sa to číslo zdá obrovské, je len kvapkou v mori – na svete je vyše 200 000 pláží vhodných pre turizmus, vysvetľuje Balažic."
+        "title": "<beaches>4 000 pláží</beaches> v <countries>13 krajinách</countries>",
+        "text": "Cestoval po pobrežiach a plážach <countries>13 krajín</countries>: <list></list>. Navštívil až <beaches>4 000 pláží</beaches>. Hoci sa to číslo zdá obrovské, je len kvapkou v mori – na svete je vyše 200 000 pláží vhodných pre turizmus, vysvetľuje Balažic."
       },
       "database": {
         "title": "Najväčšia databáza pláží na svete",
@@ -933,10 +936,17 @@
     "countries": {
       "si": "Slovinsko",
       "hr": "Chorvátsko",
-      "ba": "Bosna a Hercegovina",
+      "me": "Čierna Hora",
+      "al": "Albánsko",
+      "gr": "Grécko",
       "it": "Taliansko",
       "fr": "Francúzsko",
-      "es": "Španielsko"
+      "es": "Španielsko",
+      "pt": "Portugalsko",
+      "be": "Belgicko",
+      "nl": "Holandsko",
+      "de": "Nemecko",
+      "dk": "Dánsko"
     },
     "photoAlt": "Gregor Balažic s fotoaparátom na piesočnatej pláži",
     "beachAlt": "Piesočnatá pláž s prevrátenou loďkou pri skalách a borovicách",

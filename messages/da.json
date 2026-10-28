@@ -592,7 +592,8 @@
       "sports": "Sportsaktiviteter",
       "parking": "Parkering",
       "pathToBeach": "Sti til stranden",
-      "userType": "Brugertype"
+      "userType": "Brugertype",
+      "gpsLocation": "GPS-position"
     },
     "labels": {
       "type": "Type",
@@ -616,7 +617,8 @@
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Kort"
+      "map": "Kort",
+      "navigation": "Navigation"
     },
     "values": {
       "yes": "Ja",
@@ -666,7 +668,8 @@
     "webcamHeading": "Live-webcam",
     "webcamIframeTitle": "Live-webcam: {name}",
     "webcamCredit": "Webcam leveret af Windy.com",
-    "closeMedia": "Luk"
+    "closeMedia": "Luk",
+    "navigationAria": "Rutevejledning til {name} i Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Fortsæt med Google",
@@ -917,8 +920,8 @@
         "text": "Strande har altid været min store passion, siger Gregor Balažic, der sagde sit job op. Han var afdelingsleder, men trådte ud af sin komfortzone og lod en forudsigelig fremtid ligge. Han købte et kamera og en varevogn, der blev hans nye hjem, og drog ud i verden. Eller rettere: til strandene."
       },
       "road": {
-        "title": "4.000 strande i 13 lande",
-        "text": "Turen gik langs kyster og strande i Slovenien, Kroatien, Bosnien-Hercegovina, Italien og Frankrig, indtil han endte i Spanien. Han besøgte hele 4.000 strande. Selvom tallet virker enormt, er det kun en dråbe i havet – der findes over 200.000 strande i verden, som egner sig til turisme, forklarer Balažic."
+        "title": "<beaches>4.000 strande</beaches> i <countries>13 lande</countries>",
+        "text": "Turen gik langs kyster og strande i <countries>13 lande</countries>: <list></list>. Han besøgte hele <beaches>4.000 strande</beaches>. Selvom tallet virker enormt, er det kun en dråbe i havet – der findes over 200.000 strande i verden, som egner sig til turisme, forklarer Balažic."
       },
       "database": {
         "title": "Verdens største database over strande",
@@ -933,10 +936,17 @@
     "countries": {
       "si": "Slovenien",
       "hr": "Kroatien",
-      "ba": "Bosnien-Hercegovina",
+      "me": "Montenegro",
+      "al": "Albanien",
+      "gr": "Grækenland",
       "it": "Italien",
       "fr": "Frankrig",
-      "es": "Spanien"
+      "es": "Spanien",
+      "pt": "Portugal",
+      "be": "Belgien",
+      "nl": "Nederlandene",
+      "de": "Tyskland",
+      "dk": "Danmark"
     },
     "photoAlt": "Gregor Balažic med sit kamera på en sandstrand",
     "beachAlt": "Sandstrand med en væltet båd ved klipperne og fyrretræerne",

@@ -151,6 +151,7 @@ export default function RegionListingPage({ regionSlug, initialData }: RegionLis
       countKey: 'allIslandsCount',
       badgeKey: 'islandBadge',
       cardVariant: 'island',
+      sortable: true,
     },
     {
       type: 'city',
@@ -159,6 +160,7 @@ export default function RegionListingPage({ regionSlug, initialData }: RegionLis
       countKey: 'allCitiesCount',
       badgeKey: 'cityBadge',
       cardVariant: 'city',
+      sortable: true,
     },
   ]}
 />

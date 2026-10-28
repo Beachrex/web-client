@@ -158,6 +158,7 @@ export default function IslandListingPage({
       countKey: 'allCitiesCount',
       badgeKey: 'cityBadge',
       cardVariant: 'city',
+      sortable: true,
     },
   ]}
       />

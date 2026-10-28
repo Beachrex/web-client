@@ -416,6 +416,7 @@ const beachProperties: Property[] =
       countKey: 'allRegionsCount',
       badgeKey: 'regionBadge',
       cardVariant: 'region',
+      sortable: true,
     },
     {
       type: 'city',
@@ -424,6 +425,7 @@ const beachProperties: Property[] =
       countKey: 'allCitiesCount',
       badgeKey: 'cityBadge',
       cardVariant: 'city',
+      sortable: true,
     },
     {
       type: 'island',
@@ -432,6 +434,7 @@ const beachProperties: Property[] =
       countKey: 'allIslandsCount',
       badgeKey: 'islandBadge',
       cardVariant: 'island',
+      sortable: true,
     },
   ]}
      />

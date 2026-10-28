@@ -592,7 +592,8 @@
       "sports": "Attività sportive",
       "parking": "Parcheggio",
       "pathToBeach": "Percorso verso la spiaggia",
-      "userType": "Tipo di utente"
+      "userType": "Tipo di utente",
+      "gpsLocation": "Posizione GPS"
     },
     "labels": {
       "type": "Tipo",
@@ -616,7 +617,8 @@
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Mappa"
+      "map": "Mappa",
+      "navigation": "Navigazione"
     },
     "values": {
       "yes": "Sì",
@@ -666,7 +668,8 @@
     "webcamHeading": "Webcam in diretta",
     "webcamIframeTitle": "Webcam in diretta: {name}",
     "webcamCredit": "Webcam fornita da Windy.com",
-    "closeMedia": "Chiudi"
+    "closeMedia": "Chiudi",
+    "navigationAria": "Indicazioni per {name} su Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Continua con Google",
@@ -917,8 +920,8 @@
         "text": "Le spiagge sono sempre state la mia grande passione, racconta Gregor Balažic, che ha lasciato il lavoro. Era capo reparto: è uscito dalla sua zona di comfort e si è lasciato alle spalle un futuro prevedibile. Ha comprato una fotocamera e un furgone, diventato la sua nuova casa, ed è partito alla scoperta del mondo. Anzi, delle spiagge."
       },
       "road": {
-        "title": "4.000 spiagge in 13 paesi",
-        "text": "Ha percorso le coste e le spiagge di Slovenia, Croazia, Bosnia ed Erzegovina, Italia e Francia, fino ad approdare in Spagna. Ha visitato ben 4.000 spiagge. Anche se il numero sembra enorme, è solo una goccia nel mare: nel mondo ci sono oltre 200.000 spiagge adatte al turismo, spiega Balažic."
+        "title": "<beaches>4.000 spiagge</beaches> in <countries>13 paesi</countries>",
+        "text": "Ha percorso le coste e le spiagge di <countries>13 paesi</countries>: <list></list>. Ha visitato ben <beaches>4.000 spiagge</beaches>. Anche se il numero sembra enorme, è solo una goccia nel mare: nel mondo ci sono oltre 200.000 spiagge adatte al turismo, spiega Balažic."
       },
       "database": {
         "title": "Il più grande database di spiagge al mondo",
@@ -933,10 +936,17 @@
     "countries": {
       "si": "Slovenia",
       "hr": "Croazia",
-      "ba": "Bosnia ed Erzegovina",
+      "me": "Montenegro",
+      "al": "Albania",
+      "gr": "Grecia",
       "it": "Italia",
       "fr": "Francia",
-      "es": "Spagna"
+      "es": "Spagna",
+      "pt": "Portogallo",
+      "be": "Belgio",
+      "nl": "Paesi Bassi",
+      "de": "Germania",
+      "dk": "Danimarca"
     },
     "photoAlt": "Gregor Balažic con la sua fotocamera su una spiaggia sabbiosa",
     "beachAlt": "Spiaggia sabbiosa con una barca capovolta vicino agli scogli e ai pini",

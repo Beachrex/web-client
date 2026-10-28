@@ -592,7 +592,8 @@
       "sports": "Atividades desportivas",
       "parking": "Estacionamento",
       "pathToBeach": "Caminho para a praia",
-      "userType": "Tipo de utilizador"
+      "userType": "Tipo de utilizador",
+      "gpsLocation": "Localização GPS"
     },
     "labels": {
       "type": "Tipo",
@@ -616,7 +617,8 @@
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Mapa"
+      "map": "Mapa",
+      "navigation": "Navegação"
     },
     "values": {
       "yes": "Sim",
@@ -666,7 +668,8 @@
     "webcamHeading": "Webcam em direto",
     "webcamIframeTitle": "Webcam em direto: {name}",
     "webcamCredit": "Webcam fornecida por Windy.com",
-    "closeMedia": "Fechar"
+    "closeMedia": "Fechar",
+    "navigationAria": "Direções para {name} no Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Continuar com o Google",
@@ -917,8 +920,8 @@
         "text": "As praias sempre foram a minha grande paixão, conta Gregor Balažic, que deixou o emprego. Era chefe de departamento, mas saiu da zona de conforto e deixou para trás um futuro previsível. Comprou uma máquina fotográfica e uma carrinha, que se tornou a sua nova casa, e partiu à descoberta do mundo. Ou melhor, das praias."
       },
       "road": {
-        "title": "4 000 praias em 13 países",
-        "text": "Percorreu as costas e as praias da Eslovénia, da Croácia, da Bósnia e Herzegovina, de Itália e de França, até chegar a Espanha. Visitou nada menos do que 4 000 praias. Embora o número pareça enorme, é apenas uma gota no oceano: há mais de 200 000 praias no mundo adequadas ao turismo, explica Balažic."
+        "title": "<beaches>4 000 praias</beaches> em <countries>13 países</countries>",
+        "text": "Percorreu as costas e as praias de <countries>13 países</countries>: <list></list>. Visitou nada menos do que <beaches>4 000 praias</beaches>. Embora o número pareça enorme, é apenas uma gota no oceano: há mais de 200 000 praias no mundo adequadas ao turismo, explica Balažic."
       },
       "database": {
         "title": "A maior base de dados de praias do mundo",
@@ -933,10 +936,17 @@
     "countries": {
       "si": "Eslovénia",
       "hr": "Croácia",
-      "ba": "Bósnia e Herzegovina",
+      "me": "Montenegro",
+      "al": "Albânia",
+      "gr": "Grécia",
       "it": "Itália",
       "fr": "França",
-      "es": "Espanha"
+      "es": "Espanha",
+      "pt": "Portugal",
+      "be": "Bélgica",
+      "nl": "Países Baixos",
+      "de": "Alemanha",
+      "dk": "Dinamarca"
     },
     "photoAlt": "Gregor Balažic com a máquina fotográfica numa praia de areia",
     "beachAlt": "Praia de areia com um barco virado junto às rochas e aos pinheiros",

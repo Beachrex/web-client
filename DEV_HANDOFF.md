@@ -34,6 +34,35 @@ beaches and 87 towns. The badges counted the items returned (`limit: 10` per typ
   "All beaches on the map: {name}" button, which now prefers the API's `meta.place`.
 - New strings `Search.showingOf`, `Search.openPlace` in all 19 languages.
 - Test: `e2e/search-totals.unit.spec.ts` (5 tests; with totals ignored the tab test fails).
+## 2026-10-28 – Author page: all 13 countries, linked ✅ COMPLETE
+
+Owner request 2026-10-28: the "Along the coasts" route on `/{locale}/gregor-balazic` listed 6 countries while the page says 13; list all 13 and make the countries, the numbers and the description clickable.
+- `AUTHOR_ROUTE` (`src/lib/constants/author.ts`) = the 13 countries Beachrex has beaches in (dev country filter, 2026-10-28): SI, HR, ME, AL, GR, IT, FR, ES, PT, BE, NL, DE, DK. **Bosnia and Herzegovina removed** — Beachrex has no beaches/country page there and keeping it would make 14. Added: Montenegro, Albania, Greece, Portugal, Belgium, Netherlands, Germany, Denmark.
+- Country links: the page loads `GET /continents` + `GET /countries` server-side with the page's Accept-Language (localized slugs) and builds URLs with `buildCountryUrl` via `buildAuthorCountryUrls()`. A country the API does not return gets plain text, not a broken link. ISR lowered from 24 h to 1 h (like the beaches page).
+- Route chips, the country list in the "4,000 beaches in 13 countries" story text (rendered with `Intl.ListFormat` in the visitor's language) and every country name link to the country page. "4,000 beaches" and "13 countries" (chapter title, story text, stat cards) link to the all-beaches page `/{locale}/{getBeachesWord}` (world totals + country list; there is no separate "worldwide" page).
+- i18n: `AuthorPage.countries.*` now has the 13 keys (`ba` removed) and `AuthorPage.chapters.road.title/text` use `<beaches>`, `<countries>` and `<list></list>` rich-text tags, in all 19 files.
+- Spec: `e2e/author-page-countries.unit.spec.ts` (5 tests: 13 countries = Beachrex list, URLs localized and built by `buildCountryUrl` in all 19 locales, missing data → no link, every locale's title/text parses and wraps the right words, no hardcoded locale). Deliberate break (sk text without `<list></list>`): 1 failed.
+
+## 2026-10-28 – "Sort by" on country, region and island sub-lists ✅ COMPLETE
+
+Owner request 2026-10-28: the continent page's "Sort by" (alphabetical / most beaches / fewest beaches) also on the country page (regions, cities, islands), the region page (islands, cities) and the island page (cities).
+- Sort logic moved to `src/lib/utils/destination-sort.ts` (`sortDestinations`, locale-aware `Intl.Collator`, ties by name, missing count = 0) and the control to `src/components/DestinationSortSelect.tsx`; `ContinentCountriesSection` now uses both (no visible change).
+- `DestinationsSection` sections take `sortable: true`; each sortable list keeps its own sort state (React state, like the continent list — no URL param) and starts alphabetical, as on the continent page. Before, these lists came in API order (no `ORDER BY`). Homepage list unchanged.
+- Uses `beaches_count` the list endpoints already return; no backend change. i18n: reuses `ContinentPage.sortBy` / `sortAlphabetical` / `sortBeachesDesc` / `sortBeachesAsc` (already in all 19 files), no new keys.
+- Spec: `e2e/destination-sort.unit.spec.ts` (5 tests; with code-point compare, no tie-break and the island page without `sortable`: 4 failed).
+
+## 2026-10-28 – Beach page shows one webcam (the primary) ✅ COMPLETE
+
+Owner report 2026-10-28: Strand Ahrenshoop showed the webcam twice. Windy lists that camera under two ids (1716900945 "Ahrenshoop", 1348599722 "Ahrenshoop: Strand"); both were approved for the beach. On dev 16 of 410 beaches with a webcam have 2+ approved webcams.
+- `beachPageWebcams()` in `src/lib/utils/webcam.ts`: the beach page renders only the primary webcam (cards, map and the homepage example already did). The admin choice of primary still decides which one.
+- Spec: `e2e/webcam.unit.spec.ts` `beachPageWebcams` (showing all: 1 failed).
+
+## 2026-10-28 – Beach page: GPS location + Navigation button ✅ COMPLETE
+
+Owner request 2026-10-28: show the GPS position above Parking, with a clickable "Navigation" button that opens Google Maps navigation.
+- `beachDetailsSection.tsx`: block above Parking — "GPS location: 45.54170, 13.65600" (from `basic_info.latitude/longitude`, 5 decimals, selectable) and a **Navigation** link to `https://www.google.com/maps/dir/?api=1&destination=lat,lng` (new tab; on phones the Maps app). Hidden when the position is missing, invalid or 0,0.
+- `src/lib/utils/geo.ts` (parse, format, URL); spec `e2e/geo.unit.spec.ts` (accepting 0,0: 1 failed).
+- i18n: `BeachDetails.groups.gpsLocation`, `buttons.navigation`, `navigationAria` in all 19 files.
 
 ## 2026-10-28 – TASK-008: interactive "View beaches from all angles" on the homepage ✅ COMPLETE
 
