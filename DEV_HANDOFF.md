@@ -26,6 +26,13 @@ Owner request 2026-10-28: the continent page's "Sort by" (alphabetical / most be
 - Uses `beaches_count` the list endpoints already return; no backend change. i18n: reuses `ContinentPage.sortBy` / `sortAlphabetical` / `sortBeachesDesc` / `sortBeachesAsc` (already in all 19 files), no new keys.
 - Spec: `e2e/destination-sort.unit.spec.ts` (5 tests; with code-point compare, no tie-break and the island page without `sortable`: 4 failed).
 
+## 2026-10-28 – Beach page: GPS location + Navigation button ✅ COMPLETE
+
+Owner request 2026-10-28: show the GPS position above Parking, with a clickable "Navigation" button that opens Google Maps navigation.
+- `beachDetailsSection.tsx`: block above Parking — "GPS location: 45.54170, 13.65600" (from `basic_info.latitude/longitude`, 5 decimals, selectable) and a **Navigation** link to `https://www.google.com/maps/dir/?api=1&destination=lat,lng` (new tab; on phones the Maps app). Hidden when the position is missing, invalid or 0,0.
+- `src/lib/utils/geo.ts` (parse, format, URL); spec `e2e/geo.unit.spec.ts` (accepting 0,0: 1 failed).
+- i18n: `BeachDetails.groups.gpsLocation`, `buttons.navigation`, `navigationAria` in all 19 files.
+
 ## 2026-10-28 – TASK-008: interactive "View beaches from all angles" on the homepage ✅ COMPLETE
 
 Owner request 2026-10-28. Spec: backend `docs/tasks/TASK-008-homepage-media-showcase.md`, ADR 2026-10-28.

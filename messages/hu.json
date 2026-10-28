@@ -590,7 +590,8 @@
       "sports": "Sport tevékenységek",
       "parking": "Parkolás",
       "pathToBeach": "Út a strandhoz",
-      "userType": "Felhasználó típusa"
+      "userType": "Felhasználó típusa",
+      "gpsLocation": "GPS-helyzet"
     },
     "labels": {
       "type": "Típus",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Fotó",
-      "map": "Térkép"
+      "map": "Térkép",
+      "navigation": "Navigáció"
     },
     "values": {
       "yes": "Igen",
@@ -664,7 +666,8 @@
     "webcamHeading": "Élő webkamera",
     "webcamIframeTitle": "Élő webkamera: {name}",
     "webcamCredit": "A webkamerát a Windy.com biztosítja",
-    "closeMedia": "Bezárás"
+    "closeMedia": "Bezárás",
+    "navigationAria": "Útvonal ide: {name} a Google Térképen"
   },
   "Auth": {
     "continueWithGoogle": "Folytatás Google-lal",
