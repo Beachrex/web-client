@@ -918,8 +918,8 @@
         "text": "Beaches have always been my great passion, says Gregor Balažic, who quit his job. He was a head of department; he stepped out of his comfort zone and left a predictable future behind. He bought a camera and a van, which became his new home, and set off into the world. To the beaches, to be precise."
       },
       "road": {
-        "title": "4,000 beaches in 13 countries",
-        "text": "He travelled along the coasts and beaches of Slovenia, Croatia, Bosnia and Herzegovina, Italy and France, and ended up in Spain. He visited no fewer than 4,000 beaches. The number may seem huge, but it is only a drop in the ocean – there are more than 200,000 beaches in the world suitable for tourism, Balažic explains."
+        "title": "<beaches>4,000 beaches</beaches> in <countries>13 countries</countries>",
+        "text": "He travelled along the coasts and beaches of <countries>13 countries</countries>: <list></list>. He visited no fewer than <beaches>4,000 beaches</beaches>. The number may seem huge, but it is only a drop in the ocean – there are more than 200,000 beaches in the world suitable for tourism, Balažic explains."
       },
       "database": {
         "title": "The world’s largest beach database",
@@ -934,10 +934,17 @@
     "countries": {
       "si": "Slovenia",
       "hr": "Croatia",
-      "ba": "Bosnia and Herzegovina",
+      "me": "Montenegro",
+      "al": "Albania",
+      "gr": "Greece",
       "it": "Italy",
       "fr": "France",
-      "es": "Spain"
+      "es": "Spain",
+      "pt": "Portugal",
+      "be": "Belgium",
+      "nl": "Netherlands",
+      "de": "Germany",
+      "dk": "Denmark"
     },
     "photoAlt": "Gregor Balažic with his camera on a sandy beach",
     "beachAlt": "Sandy beach with an upturned boat by the rocks and pine trees",

@@ -18,6 +18,15 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-28 – Author page: all 13 countries, linked ✅ COMPLETE
+
+Owner request 2026-10-28: the "Along the coasts" route on `/{locale}/gregor-balazic` listed 6 countries while the page says 13; list all 13 and make the countries, the numbers and the description clickable.
+- `AUTHOR_ROUTE` (`src/lib/constants/author.ts`) = the 13 countries Beachrex has beaches in (dev country filter, 2026-10-28): SI, HR, ME, AL, GR, IT, FR, ES, PT, BE, NL, DE, DK. **Bosnia and Herzegovina removed** — Beachrex has no beaches/country page there and keeping it would make 14. Added: Montenegro, Albania, Greece, Portugal, Belgium, Netherlands, Germany, Denmark.
+- Country links: the page loads `GET /continents` + `GET /countries` server-side with the page's Accept-Language (localized slugs) and builds URLs with `buildCountryUrl` via `buildAuthorCountryUrls()`. A country the API does not return gets plain text, not a broken link. ISR lowered from 24 h to 1 h (like the beaches page).
+- Route chips, the country list in the "4,000 beaches in 13 countries" story text (rendered with `Intl.ListFormat` in the visitor's language) and every country name link to the country page. "4,000 beaches" and "13 countries" (chapter title, story text, stat cards) link to the all-beaches page `/{locale}/{getBeachesWord}` (world totals + country list; there is no separate "worldwide" page).
+- i18n: `AuthorPage.countries.*` now has the 13 keys (`ba` removed) and `AuthorPage.chapters.road.title/text` use `<beaches>`, `<countries>` and `<list></list>` rich-text tags, in all 19 files.
+- Spec: `e2e/author-page-countries.unit.spec.ts` (5 tests: 13 countries = Beachrex list, URLs localized and built by `buildCountryUrl` in all 19 locales, missing data → no link, every locale's title/text parses and wraps the right words, no hardcoded locale). Deliberate break (sk text without `<list></list>`): 1 failed.
+
 ## 2026-10-28 – "Sort by" on country, region and island sub-lists ✅ COMPLETE
 
 Owner request 2026-10-28: the continent page's "Sort by" (alphabetical / most beaches / fewest beaches) also on the country page (regions, cities, islands), the region page (islands, cities) and the island page (cities).

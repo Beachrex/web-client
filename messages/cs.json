@@ -918,8 +918,8 @@
         "text": "Pláže byly vždycky mou velkou vášní, říká Gregor Balažic, který dal výpověď. Byl vedoucím oddělení, přesto vystoupil z komfortní zóny a opustil předvídatelnou budoucnost. Koupil si fotoaparát a dodávku, která se stala jeho novým domovem, a vydal se do světa. Přesněji řečeno na pláže."
       },
       "road": {
-        "title": "4 000 pláží v 13 zemích",
-        "text": "Jeho cesta vedla po pobřežích a plážích Slovinska, Chorvatska, Bosny a Hercegoviny, Itálie a Francie až do Španělska. Navštívil celkem 4 000 pláží. I když se to číslo zdá obrovské, je jen kapkou v moři – na světě je přes 200 000 pláží vhodných pro turismus, vysvětluje Balažic."
+        "title": "<beaches>4 000 pláží</beaches> v <countries>13 zemích</countries>",
+        "text": "Jeho cesta vedla po pobřežích a plážích <countries>13 zemí</countries>: <list></list>. Navštívil celkem <beaches>4 000 pláží</beaches>. I když se to číslo zdá obrovské, je jen kapkou v moři – na světě je přes 200 000 pláží vhodných pro turismus, vysvětluje Balažic."
       },
       "database": {
         "title": "Největší databáze pláží na světě",
@@ -934,10 +934,17 @@
     "countries": {
       "si": "Slovinsko",
       "hr": "Chorvatsko",
-      "ba": "Bosna a Hercegovina",
+      "me": "Černá Hora",
+      "al": "Albánie",
+      "gr": "Řecko",
       "it": "Itálie",
       "fr": "Francie",
-      "es": "Španělsko"
+      "es": "Španělsko",
+      "pt": "Portugalsko",
+      "be": "Belgie",
+      "nl": "Nizozemsko",
+      "de": "Německo",
+      "dk": "Dánsko"
     },
     "photoAlt": "Gregor Balažic s fotoaparátem na písečné pláži",
     "beachAlt": "Písečná pláž s převrácenou lodí u skal a borovic",

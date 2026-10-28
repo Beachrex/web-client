@@ -918,8 +918,8 @@
         "text": "Stranden zijn altijd mijn grote passie geweest, zegt Gregor Balažic, die zijn baan opzegde. Hij was afdelingshoofd, maar stapte uit zijn comfortzone en liet een voorspelbare toekomst achter zich. Hij kocht een camera en een busje, dat zijn nieuwe thuis werd, en trok de wereld in. Of eigenlijk: de stranden langs."
       },
       "road": {
-        "title": "4.000 stranden in 13 landen",
-        "text": "Hij reisde langs de kusten en stranden van Slovenië, Kroatië, Bosnië en Herzegovina, Italië en Frankrijk, tot hij in Spanje belandde. Hij bezocht maar liefst 4.000 stranden. Hoe enorm dat getal ook lijkt, het is slechts een druppel op een gloeiende plaat – wereldwijd zijn er meer dan 200.000 stranden die geschikt zijn voor toerisme, legt Balažic uit."
+        "title": "<beaches>4.000 stranden</beaches> in <countries>13 landen</countries>",
+        "text": "Hij reisde langs de kusten en stranden van <countries>13 landen</countries>: <list></list>. Hij bezocht maar liefst <beaches>4.000 stranden</beaches>. Hoe enorm dat getal ook lijkt, het is slechts een druppel op een gloeiende plaat – wereldwijd zijn er meer dan 200.000 stranden die geschikt zijn voor toerisme, legt Balažic uit."
       },
       "database": {
         "title": "De grootste strandendatabase ter wereld",
@@ -934,10 +934,17 @@
     "countries": {
       "si": "Slovenië",
       "hr": "Kroatië",
-      "ba": "Bosnië en Herzegovina",
+      "me": "Montenegro",
+      "al": "Albanië",
+      "gr": "Griekenland",
       "it": "Italië",
       "fr": "Frankrijk",
-      "es": "Spanje"
+      "es": "Spanje",
+      "pt": "Portugal",
+      "be": "België",
+      "nl": "Nederland",
+      "de": "Duitsland",
+      "dk": "Denemarken"
     },
     "photoAlt": "Gregor Balažic met zijn camera op een zandstrand",
     "beachAlt": "Zandstrand met een omgekeerde boot bij de rotsen en dennenbomen",

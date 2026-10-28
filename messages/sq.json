@@ -918,8 +918,8 @@
         "text": "Plazhet kanë qenë gjithmonë pasioni im i madh, thotë Gregor Balažic, i cili la punën. Ishte drejtues departamenti, por doli nga zona e rehatisë dhe la pas një të ardhme të parashikueshme. Bleu një aparat fotografik dhe një furgon, që u bë shtëpia e tij e re, dhe u nis nëpër botë. Më saktë, drejt plazheve."
       },
       "road": {
-        "title": "4 000 plazhe në 13 vende",
-        "text": "Përshkoi brigjet dhe plazhet e Sllovenisë, Kroacisë, Bosnjë e Hercegovinës, Italisë dhe Francës, derisa përfundoi në Spanjë. Vizitoi plot 4 000 plazhe. Edhe pse numri duket i madh, është vetëm një pikë në oqean – në botë ka mbi 200 000 plazhe të përshtatshme për turizëm, shpjegon Balažic."
+        "title": "<beaches>4 000 plazhe</beaches> në <countries>13 vende</countries>",
+        "text": "Përshkoi brigjet dhe plazhet e <countries>13 vendeve</countries>: <list></list>. Vizitoi plot <beaches>4 000 plazhe</beaches>. Edhe pse numri duket i madh, është vetëm një pikë në oqean – në botë ka mbi 200 000 plazhe të përshtatshme për turizëm, shpjegon Balažic."
       },
       "database": {
         "title": "Baza më e madhe e të dhënave për plazhet në botë",
@@ -934,10 +934,17 @@
     "countries": {
       "si": "Sllovenia",
       "hr": "Kroacia",
-      "ba": "Bosnjë e Hercegovina",
+      "me": "Mali i Zi",
+      "al": "Shqipëria",
+      "gr": "Greqia",
       "it": "Italia",
       "fr": "Franca",
-      "es": "Spanja"
+      "es": "Spanja",
+      "pt": "Portugalia",
+      "be": "Belgjika",
+      "nl": "Holanda",
+      "de": "Gjermania",
+      "dk": "Danimarka"
     },
     "photoAlt": "Gregor Balažic me aparatin fotografik në një plazh me rërë",
     "beachAlt": "Plazh me rërë me një varkë të përmbysur pranë shkëmbinjve dhe pishave",

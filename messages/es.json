@@ -918,8 +918,8 @@
         "text": "Las playas siempre han sido mi gran pasión, dice Gregor Balažic, que dejó su trabajo. Era jefe de departamento, pero salió de su zona de confort y dejó atrás un futuro previsible. Compró una cámara y una furgoneta, que se convirtió en su nuevo hogar, y se lanzó a recorrer el mundo. Mejor dicho, sus playas."
       },
       "road": {
-        "title": "4.000 playas en 13 países",
-        "text": "Recorrió las costas y playas de Eslovenia, Croacia, Bosnia y Herzegovina, Italia y Francia, hasta llegar a España. Visitó nada menos que 4.000 playas. Aunque la cifra parezca enorme, no es más que una gota en el océano: en el mundo hay más de 200.000 playas aptas para el turismo, explica Balažic."
+        "title": "<beaches>4.000 playas</beaches> en <countries>13 países</countries>",
+        "text": "Recorrió las costas y playas de <countries>13 países</countries>: <list></list>. Visitó nada menos que <beaches>4.000 playas</beaches>. Aunque la cifra parezca enorme, no es más que una gota en el océano: en el mundo hay más de 200.000 playas aptas para el turismo, explica Balažic."
       },
       "database": {
         "title": "La mayor base de datos de playas del mundo",
@@ -934,10 +934,17 @@
     "countries": {
       "si": "Eslovenia",
       "hr": "Croacia",
-      "ba": "Bosnia y Herzegovina",
+      "me": "Montenegro",
+      "al": "Albania",
+      "gr": "Grecia",
       "it": "Italia",
       "fr": "Francia",
-      "es": "España"
+      "es": "España",
+      "pt": "Portugal",
+      "be": "Bélgica",
+      "nl": "Países Bajos",
+      "de": "Alemania",
+      "dk": "Dinamarca"
     },
     "photoAlt": "Gregor Balažic con su cámara en una playa de arena",
     "beachAlt": "Playa de arena con una barca volcada junto a las rocas y los pinos",

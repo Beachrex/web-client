@@ -918,8 +918,8 @@
         "text": "Strände waren schon immer meine große Leidenschaft, sagt Gregor Balažic, der seinen Job kündigte. Er war Abteilungsleiter, verließ seine Komfortzone und ließ eine vorhersehbare Zukunft hinter sich. Er kaufte eine Kamera und einen Van, der zu seinem neuen Zuhause wurde, und zog hinaus in die Welt. Genauer gesagt: an die Strände."
       },
       "road": {
-        "title": "4.000 Strände in 13 Ländern",
-        "text": "Seine Reise führte ihn entlang der Küsten und Strände Sloweniens, Kroatiens, Bosnien und Herzegowinas, Italiens und Frankreichs bis nach Spanien. Ganze 4.000 Strände hat er besucht. So gewaltig die Zahl auch wirkt, sie ist nur ein Tropfen im Meer – weltweit gibt es mehr als 200.000 Strände, die sich für den Tourismus eignen, erklärt Balažic."
+        "title": "<beaches>4.000 Strände</beaches> in <countries>13 Ländern</countries>",
+        "text": "Seine Reise führte ihn entlang der Küsten und Strände von <countries>13 Ländern</countries>: <list></list>. Ganze <beaches>4.000 Strände</beaches> hat er besucht. So gewaltig die Zahl auch wirkt, sie ist nur ein Tropfen im Meer – weltweit gibt es mehr als 200.000 Strände, die sich für den Tourismus eignen, erklärt Balažic."
       },
       "database": {
         "title": "Die größte Stranddatenbank der Welt",
@@ -934,10 +934,17 @@
     "countries": {
       "si": "Slowenien",
       "hr": "Kroatien",
-      "ba": "Bosnien und Herzegowina",
+      "me": "Montenegro",
+      "al": "Albanien",
+      "gr": "Griechenland",
       "it": "Italien",
       "fr": "Frankreich",
-      "es": "Spanien"
+      "es": "Spanien",
+      "pt": "Portugal",
+      "be": "Belgien",
+      "nl": "Niederlande",
+      "de": "Deutschland",
+      "dk": "Dänemark"
     },
     "photoAlt": "Gregor Balažic mit seiner Kamera an einem Sandstrand",
     "beachAlt": "Sandstrand mit einem umgedrehten Boot zwischen Felsen und Kiefern",
