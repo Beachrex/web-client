@@ -91,7 +91,9 @@
     "tabRegions": "Περιοχές",
     "tabCountries": "Χώρες",
     "tabsLabel": "Φιλτράρισμα αποτελεσμάτων ανά τύπο",
-    "showAllOnMap": "Όλες οι παραλίες στον χάρτη: {name}"
+    "showAllOnMap": "Όλες οι παραλίες στον χάρτη: {name}",
+    "showingOf": "Εμφανίζονται {shown} από {total}",
+    "openPlace": "Άνοιγμα: {name}"
   },
   "HomePage": {
     "allBeaches": "Όλες οι παραλίες",

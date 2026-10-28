@@ -91,7 +91,9 @@
     "tabRegions": "Regióny",
     "tabCountries": "Krajiny",
     "tabsLabel": "Filtrovať výsledky podľa typu",
-    "showAllOnMap": "Všetky pláže na mape: {name}"
+    "showAllOnMap": "Všetky pláže na mape: {name}",
+    "showingOf": "Zobrazené {shown} z {total}",
+    "openPlace": "Otvoriť {name}"
   },
   "HomePage": {
     "allBeaches": "Všetky pláže",

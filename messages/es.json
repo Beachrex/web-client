@@ -91,7 +91,9 @@
     "tabRegions": "Regiones",
     "tabCountries": "Países",
     "tabsLabel": "Filtrar resultados por tipo",
-    "showAllOnMap": "Todas las playas en el mapa: {name}"
+    "showAllOnMap": "Todas las playas en el mapa: {name}",
+    "showingOf": "Mostrando {shown} de {total}",
+    "openPlace": "Abrir {name}"
   },
   "HomePage": {
     "allBeaches": "Todas las playas",

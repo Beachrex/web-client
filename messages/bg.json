@@ -91,7 +91,9 @@
     "tabRegions": "Региони",
     "tabCountries": "Държави",
     "tabsLabel": "Филтриране на резултатите по вид",
-    "showAllOnMap": "Всички плажове на картата: {name}"
+    "showAllOnMap": "Всички плажове на картата: {name}",
+    "showingOf": "Показани {shown} от {total}",
+    "openPlace": "Отвори {name}"
   },
   "HomePage": {
     "allBeaches": "Всички плажове",

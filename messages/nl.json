@@ -91,7 +91,9 @@
     "tabRegions": "Regio's",
     "tabCountries": "Landen",
     "tabsLabel": "Resultaten filteren op type",
-    "showAllOnMap": "Alle stranden op de kaart: {name}"
+    "showAllOnMap": "Alle stranden op de kaart: {name}",
+    "showingOf": "{shown} van {total} getoond",
+    "openPlace": "{name} openen"
   },
   "HomePage": {
     "allBeaches": "Alle stranden",

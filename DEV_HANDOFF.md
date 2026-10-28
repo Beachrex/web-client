@@ -18,6 +18,23 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-28 – Search dropdown: real totals in the tab badges ✅ COMPLETE
+
+**Owner report:** "france" showed "All 28 = Beaches 10 + Cities 10 + Regions 7 + Country 1" although France has ~400
+beaches and 87 towns. The badges counted the items returned (`limit: 10` per type).
+
+- Backend Beachrex/backend PR #144 adds `meta.totals_by_type`, `meta.total_matches` and `meta.place` to
+  `GET /api/v1/search` (additive). A query that names a place limits the lower types to it (no more Italian beaches
+  for "france"). ADR 2026-10-28 "Search counts are real totals; a place name scopes the result".
+- `src/lib/utils/search-totals.ts`: typed parser for the new meta fields (the generated client is not regenerated:
+  `yarn generate:api` drift, see backend HANDOFF open items) and `formatCount` (Intl, compact from 1 000: "1.2K").
+- `searchTabs(results, totals)`: badge = real total (never below the items listed), "All" = sum. Old API → item counts.
+- `moreMatches`: a type tab that lists fewer than it matched shows "Showing 10 of 412"; for towns/islands/regions in a
+  named place it adds "Open {name}" (the place page via `buildSearchResultUrl`). Beaches keep the existing
+  "All beaches on the map: {name}" button, which now prefers the API's `meta.place`.
+- New strings `Search.showingOf`, `Search.openPlace` in all 19 languages.
+- Test: `e2e/search-totals.unit.spec.ts` (5 tests; with totals ignored the tab test fails).
+
 ## 2026-10-28 – TASK-008: interactive "View beaches from all angles" on the homepage ✅ COMPLETE
 
 Owner request 2026-10-28. Spec: backend `docs/tasks/TASK-008-homepage-media-showcase.md`, ADR 2026-10-28.

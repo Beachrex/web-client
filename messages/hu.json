@@ -91,7 +91,9 @@
     "tabRegions": "Régiók",
     "tabCountries": "Országok",
     "tabsLabel": "Találatok szűrése típus szerint",
-    "showAllOnMap": "Összes strand a térképen: {name}"
+    "showAllOnMap": "Összes strand a térképen: {name}",
+    "showingOf": "{shown} / {total} megjelenítve",
+    "openPlace": "{name} megnyitása"
   },
   "HomePage": {
     "allBeaches": "Összes strand",

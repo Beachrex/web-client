@@ -91,7 +91,9 @@
     "tabRegions": "Rajone",
     "tabCountries": "Shtete",
     "tabsLabel": "Filtro rezultatet sipas llojit",
-    "showAllOnMap": "Të gjitha plazhet në hartë: {name}"
+    "showAllOnMap": "Të gjitha plazhet në hartë: {name}",
+    "showingOf": "Shfaqen {shown} nga {total}",
+    "openPlace": "Hap {name}"
   },
   "HomePage": {
     "allBeaches": "Të gjithë plazhet",
