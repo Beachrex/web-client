@@ -42,7 +42,7 @@ test.describe('parseWebcamUrl', () => {
 });
 
 /* TASK-006: verified Windy webcams replace the pasted links. */
-import { parseWindyWebcams, webcamLink, windyPlayerUrl } from '@/lib/utils/webcam';
+import { beachPageWebcams, parseWindyWebcams, webcamLink, windyPlayerUrl } from '@/lib/utils/webcam';
 
 test.describe('Windy webcams (TASK-006)', () => {
   test('player url is the iframe Windy builds, page url is windy.com', () => {
@@ -73,5 +73,19 @@ test.describe('Windy webcams (TASK-006)', () => {
     expect(webcamLink({ webcam: 'brez' }, true)).toBeNull();
     expect(webcamLink(undefined, true)).toBeNull();
     expect(webcamLink({ webcam: lookr, windy_webcam_id: null }, false)).toBe('https://www.lookr.com/lookout/1400255409-Pula');
+  });
+});
+
+test.describe('beachPageWebcams', () => {
+  // Owner 2026-10-28: Strand Ahrenshoop (3824) showed two Windy entries of the same camera.
+  test('the beach page shows only the primary webcam', () => {
+    const cams = parseWindyWebcams([
+      { windy_id: 1348599722, title: 'Ahrenshoop: Strand', is_primary: false },
+      { windy_id: 1716900945, title: 'Ahrenshoop', is_primary: true },
+    ]);
+    const shown = beachPageWebcams(cams);
+    expect(shown).toHaveLength(1);
+    expect(shown[0]?.windyId).toBe(1716900945);
+    expect(beachPageWebcams([])).toEqual([]);
   });
 });

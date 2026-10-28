@@ -27,6 +27,12 @@ Owner request 2026-10-28: the "Along the coasts" route on `/{locale}/gregor-bala
 - i18n: `AuthorPage.countries.*` now has the 13 keys (`ba` removed) and `AuthorPage.chapters.road.title/text` use `<beaches>`, `<countries>` and `<list></list>` rich-text tags, in all 19 files.
 - Spec: `e2e/author-page-countries.unit.spec.ts` (5 tests: 13 countries = Beachrex list, URLs localized and built by `buildCountryUrl` in all 19 locales, missing data → no link, every locale's title/text parses and wraps the right words, no hardcoded locale). Deliberate break (sk text without `<list></list>`): 1 failed.
 
+## 2026-10-28 – Beach page shows one webcam (the primary) ✅ COMPLETE
+
+Owner report 2026-10-28: Strand Ahrenshoop showed the webcam twice. Windy lists that camera under two ids (1716900945 "Ahrenshoop", 1348599722 "Ahrenshoop: Strand"); both were approved for the beach. On dev 16 of 410 beaches with a webcam have 2+ approved webcams.
+- `beachPageWebcams()` in `src/lib/utils/webcam.ts`: the beach page renders only the primary webcam (cards, map and the homepage example already did). The admin choice of primary still decides which one.
+- Spec: `e2e/webcam.unit.spec.ts` `beachPageWebcams` (showing all: 1 failed).
+
 ## 2026-10-28 – Beach page: GPS location + Navigation button ✅ COMPLETE
 
 Owner request 2026-10-28: show the GPS position above Parking, with a clickable "Navigation" button that opens Google Maps navigation.
