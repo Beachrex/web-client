@@ -590,7 +590,8 @@
       "sports": "Спортивные мероприятия",
       "parking": "Парковка",
       "pathToBeach": "Путь к пляжу",
-      "userType": "Тип пользователя"
+      "userType": "Тип пользователя",
+      "gpsLocation": "GPS-координаты"
     },
     "labels": {
       "type": "Тип",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Фото",
-      "map": "Карта"
+      "map": "Карта",
+      "navigation": "Навигация"
     },
     "values": {
       "yes": "Да",
@@ -664,7 +666,8 @@
     "webcamHeading": "Веб-камера онлайн",
     "webcamIframeTitle": "Веб-камера онлайн: {name}",
     "webcamCredit": "Веб-камера предоставлена Windy.com",
-    "closeMedia": "Закрыть"
+    "closeMedia": "Закрыть",
+    "navigationAria": "Маршрут до {name} в Google Картах"
   },
   "Auth": {
     "continueWithGoogle": "Продолжить с Google",

@@ -590,7 +590,8 @@
       "sports": "Aktivitete sportive",
       "parking": "Parkim",
       "pathToBeach": "Shtegu drejt plazhit",
-      "userType": "Lloji i përdoruesit"
+      "userType": "Lloji i përdoruesit",
+      "gpsLocation": "Vendndodhja GPS"
     },
     "labels": {
       "type": "Lloji",
@@ -614,7 +615,8 @@
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Hartë"
+      "map": "Hartë",
+      "navigation": "Navigimi"
     },
     "values": {
       "yes": "Po",
@@ -664,7 +666,8 @@
     "webcamHeading": "Kamerë live",
     "webcamIframeTitle": "Kamerë live: {name}",
     "webcamCredit": "Kamera ofrohet nga Windy.com",
-    "closeMedia": "Mbyll"
+    "closeMedia": "Mbyll",
+    "navigationAria": "Udhëzime për te {name} në Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Vazhdo me Google",
