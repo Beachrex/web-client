@@ -91,23 +91,79 @@ export function determineCdnEndpointType(
 }
 
 /**
+ * Logo watermark for photos uploaded from the mobile app (ADR 2026-10-29). Photos uploaded in admin
+ * have the logo baked in; mobile uploads (`img/beaches_mobile/`) do not, so Imagor draws it when the
+ * photo is shown. The originals stay untouched. The PNG is put on the bucket by the backend command
+ * `media:publish-watermark` (versioned path: a new design is a new file, never an overwrite).
+ */
+export const WATERMARK_IMAGE_PATH = 'img/watermark/beachrex-watermark-v1.png';
+
+/**
+ * Imagor `watermark(image, x, y, alpha, w_ratio, h_ratio)`: bottom-right, 3 % / 4 % margin, opaque
+ * (the PNG has its own soft shadow), at most 20 % of the photo's width and 30 % of its height,
+ * like the baked-in logo on admin photos.
+ */
+export const WATERMARK_FILTER = `watermark(${WATERMARK_IMAGE_PATH},-3p,-4p,0,20,30)`;
+
+export interface CdnUrlOptions {
+  /** `false` never adds the watermark (e.g. 360° sphere images). Default: automatic by path. */
+  watermark?: boolean;
+}
+
+/**
+ * True for a mobile-app beach photo: `img/beaches_mobile/…` raster image. Not for videos, icons,
+ * 360° tours (`/vtour/`) or panorama/sphere images (a logo on an equirectangular image looks wrong).
+ */
+export function needsWatermark(path: string | null | undefined): boolean {
+  if (!path) return false;
+  const lower = path.toLowerCase().replace(/^\/+/, '');
+  if (!lower.startsWith('img/beaches_mobile/')) return false;
+  if (lower.includes('/vtour/')) return false;
+  const fileName = lower.slice(lower.lastIndexOf('/') + 1);
+  if (/panorama|sphere/.test(fileName)) return false;
+  return /\.(jpe?g|png|webp)$/.test(fileName);
+}
+
+/**
+ * Add an Imagor filter to an endpoint prefix such as `…/unsafe/fit-in/800x800/` or
+ * `…/unsafe/1200x630/smart/filters:format(jpeg):quality(85)/`. An existing `filters:` segment is
+ * extended (Imagor reads one filters segment). Endpoints that are not Imagor (direct Spaces assets)
+ * are returned unchanged.
+ */
+function withImagorFilter(endpoint: string, filter: string): string {
+  if (!endpoint.includes('/unsafe/')) return endpoint;
+  const base = endpoint.endsWith('/') ? endpoint : `${endpoint}/`;
+  if (/\/filters:[^/]*\/$/.test(base)) {
+    return base.replace(/\/$/, `:${filter}/`);
+  }
+  return `${base}filters:${filter}/`;
+}
+
+/**
  * Build full CDN URL with automatic endpoint selection
  *
  * Every image goes through Imagor. Storage keys are ASCII since TASK-002 (the old
  * non-ASCII keys were deleted), so there is no direct Spaces bypass any more.
  *
  * @param path - Relative image path from API
+ * Mobile-app beach photos get the logo watermark (see `needsWatermark`).
+ *
  * @param context - Optional context hint for endpoint selection
+ * @param options - `{ watermark: false }` to never add the watermark
  * @returns Full CDN URL or null if path is invalid
  */
 export function buildCdnUrl(
   path: string | null | undefined,
-  context?: 'banner' | 'hero' | 'icon' | 'video' | 'list' | 'carousel' | 'gallery'
+  context?: 'banner' | 'hero' | 'icon' | 'video' | 'list' | 'carousel' | 'gallery',
+  options: CdnUrlOptions = {}
 ): string | null {
   if (!path) return null;
 
   const endpointType = determineCdnEndpointType(path, context);
-  const endpoint = getCdnEndpoint(endpointType);
+  let endpoint = getCdnEndpoint(endpointType);
+  if (options.watermark !== false && needsWatermark(path)) {
+    endpoint = withImagorFilter(endpoint, WATERMARK_FILTER);
+  }
 
   return `${endpoint}${encodePath(path)}`;
 }
@@ -199,7 +255,8 @@ export function buildShareImageUrl(path: string | null | undefined): string | nu
   if (!path) return null;
   const large = getCdnEndpoint('large');
   const { width, height } = SHARE_IMAGE_SIZE;
-  const share = large.replace(/\/fit-in\/\d+x\d+\/$/, `/${width}x${height}/smart/filters:format(jpeg):quality(85)/`);
+  let share = large.replace(/\/fit-in\/\d+x\d+\/$/, `/${width}x${height}/smart/filters:format(jpeg):quality(85)/`);
+  if (needsWatermark(path)) share = withImagorFilter(share, WATERMARK_FILTER);
   return `${share}${encodePath(path)}`;
 }
 

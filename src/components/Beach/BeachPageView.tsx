@@ -52,7 +52,7 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const videoEmbedUrl = buildBeachVideoUrl(embeds?.video_url, videos);
 
   const sphereImageUrl =
-    buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url, 'gallery') ??
+    buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url, 'gallery', { watermark: false }) ??
     primaryGalleryUrlTmp;
 
   // Get the virtual tour URL from the first sphere
