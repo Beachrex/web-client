@@ -18,6 +18,15 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Card map pins open the beach map ✅ COMPLETE
+
+Owner: "Wherever cards have a map PIN marker, clicking it should redirect to the map page."
+- **Beach cards** (`PropertyCard`: most visited, browse all beaches, nearby beaches, favorites; blue pin next to the name): the pin is a link to the map focused on the beach, `buildBeachFocusMapUrl()` → `/{locale}/{map-slug}?beach_id=989&lat=45.54&lng=13.66` (coordinates optional). On the map page itself (its list passes `onLocationClick`) the pin still moves the side map in place.
+- **Place cards** (`DestinationCard`: country, region, island, city carousels; red / orange / yellow pin): the pin links to the map filtered to the place, `buildPlaceMapUrl()` with the banner map button's parameters, e.g. island Hvar → `/si/zemljevid-plaz?country=HR&island=<code>`; country → `continent_code` + `country`. The place value is its code (then id, then slug). The card was one `<Link>` around everything; it is now a `<div>` with a stretched card link (`absolute inset-0`) and the pin link above it (`z-20`), so links are not nested and both work with the keyboard.
+- **Map focus** (`src/lib/utils/map-focus.ts`, `MapWithSidebar`): `parseBeachFocus()` reads `beach_id` (+ optional `lat`/`lng`); the map loads the beach (`GET /beaches/{id}`), centers and zooms on it (URL coordinates first, otherwise the loaded beach's), opens its popup, and `withFocusedBeach()` adds its marker when the filters or the viewport would leave it out. The beach banner's map button (same parameters) gets this too.
+- Pins keep their icons, add hover (scale) and focus-visible rings, and are labelled with the existing `PropertyCard.showOnMap` ("Show {title} on map", 19 languages). The pin links do not prefetch.
+- Test: `e2e/card-map-pins.unit.spec.ts`.
+
 ## 2026-10-29 – Location pill tabs: full width, place-page look with beach count, on every banner ✅ COMPLETE
 
 Owner report on dev (screenshots): the open tab was only as wide as the pill (name cut to "Hrvaš", "RN" of KVARN showing through), and the native `title` tooltip appeared on top. Owner wants the tab to look like the main bar of that place's own page, with its beach count, and the pills to work on every page that shows them.

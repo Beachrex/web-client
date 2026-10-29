@@ -21,6 +21,8 @@ import { FEATURES } from '@/lib/constants/features';
 interface DestinationCardProps {
   country: Country;
   url: string;
+  /** Beach map filtered to this place (the pin opens it; owner 2026-10-29) */
+  mapUrl?: string;
   badgeLabel?: string;
   bottomVariant?: 'default' | 'city' | 'island' | 'region';
   showFlag?: boolean;
@@ -34,12 +36,14 @@ interface DestinationCardProps {
 const DestinationCard = React.memo<DestinationCardProps>(function DestinationCard({
   country,
   url,
+  mapUrl,
   badgeLabel,
   bottomVariant = 'default',
   showFlag = false,
 }) {
   const tHome = useTranslations('HomePage');
   const tDest = useTranslations('Destinations');
+  const tCard = useTranslations('PropertyCard');
   const queryClient = useQueryClient();
 
   const name = country.name ?? '';
@@ -126,12 +130,19 @@ const flagUrl =
   }, []);
 
   return (
-    <Link
-      href={url}
-      className="flex h-[310px] flex-col overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
+    // The whole card opens the place (a link stretched over the card); the pin is a separate link to the map
+    // above it, since a link cannot be nested in another one.
+    <div
+      className="relative flex h-[310px] flex-col overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg focus-within:shadow-lg"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <Link
+        href={url}
+        aria-label={name}
+        data-testid="destination-card-link"
+        className="absolute inset-0 z-10 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0A2342] focus-visible:ring-inset"
+      />
       <div className="relative w-full flex-1">
         {/* No priority: these cards sit in carousels below the fold; only the banner image is preloaded */}
         <Image
@@ -205,13 +216,32 @@ const flagUrl =
             {name}
           </span>
         </div>
-        <Image
-          src={locationIconSrc}
-          alt=""
-          width={24}
-          height={24}
-          className="sm:h-8 sm:w-8"
-        />
+        {mapUrl ? (
+          <Link
+            href={mapUrl}
+            prefetch={false}
+            data-testid="destination-card-map-pin"
+            aria-label={tCard('showOnMap', { title: name })}
+            title={tCard('showOnMap', { title: name })}
+            className="relative z-20 shrink-0 rounded-full transition-transform hover:scale-110 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0A2342] focus-visible:ring-offset-2"
+          >
+            <Image
+              src={locationIconSrc}
+              alt=""
+              width={24}
+              height={24}
+              className="sm:h-8 sm:w-8"
+            />
+          </Link>
+        ) : (
+          <Image
+            src={locationIconSrc}
+            alt=""
+            width={24}
+            height={24}
+            className="sm:h-8 sm:w-8"
+          />
+        )}
       </div>
 
       {/* mobile info row */}
@@ -245,7 +275,7 @@ height={26}
           </span>
         </div>
       </div>
-    </Link>
+    </div>
   );
 });
 

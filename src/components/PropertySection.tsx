@@ -56,6 +56,9 @@ export interface Property {
   features?: BeachCardFeatures | null;
   /** Distance from the current beach in km ("Nearby beaches"); the card shows it when set */
   distanceKm?: number | null;
+  /** Beach coordinates: the card's map pin centers the map on them */
+  latitude?: string | number | null;
+  longitude?: string | number | null;
 }
 
 interface PropertySectionProps {

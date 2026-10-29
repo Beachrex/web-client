@@ -86,6 +86,8 @@ function useBeachCards(beaches: BeachSchema[]): PropertyCardProps[] {
       rating: 0,
       reviews: 0,
       countryCode: b.country_code,
+      latitude: b.latitude ?? null,
+      longitude: b.longitude ?? null,
       tags: cardTags(b),
     };
   });
