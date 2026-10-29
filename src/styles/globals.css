@@ -242,3 +242,62 @@ div[style*="background-image"] {
     font-size: 16px !important;
   }
 }
+
+/* AI chat widget (TASK-010; mobile layout owner 2026-10-29). Phones (and phones in landscape) get a full-screen
+   sheet that follows the visual viewport: AiChatWidget sets --ai-chat-top / --ai-chat-height from
+   window.visualViewport, so the header stays at the top and the composer sits on the keyboard
+   (src/lib/utils/chat-viewport.ts; keep CHAT_SHEET_MEDIA in sync with the media query below). */
+.ai-chat-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: var(--ai-chat-top, 0px);
+  height: var(--ai-chat-height, 100vh);
+  z-index: 1080;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #fff;
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+@supports (height: 100dvh) {
+  .ai-chat-panel {
+    height: var(--ai-chat-height, 100dvh);
+  }
+}
+.ai-chat-panel .ai-chat-composer {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+.ai-chat-panel[data-keyboard] .ai-chat-composer {
+  padding-bottom: 0.5rem;
+}
+@media (min-width: 640px) and (min-height: 500px) {
+  .ai-chat-panel {
+    left: auto;
+    top: auto;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    width: 400px;
+    height: min(640px, calc(100vh - 7rem));
+    padding: 0;
+    border: 1px solid rgb(229 231 235);
+    border-radius: 0.75rem;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  }
+  @supports (height: 100dvh) {
+    .ai-chat-panel {
+      height: min(640px, calc(100dvh - 7rem));
+    }
+  }
+  .ai-chat-panel .ai-chat-composer {
+    padding-bottom: 0.75rem;
+  }
+}
+/* No iOS focus zoom on touch screens of any width (the rule above covers only < 768px). */
+@media (pointer: coarse) {
+  .ai-chat-input {
+    font-size: 16px !important;
+  }
+}
