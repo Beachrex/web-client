@@ -1,4 +1,5 @@
-import { ADSENSE_CLIENT, COOKIEYES_SCRIPT, GOOGLE_ANALYTICS_ID } from '@/lib/constants/third-party';
+import { COOKIEYES_SCRIPT, GOOGLE_ANALYTICS_ID } from '@/lib/constants/third-party';
+import { buildTagLoaderScript } from '@/lib/analytics/adsense';
 
 /**
  * Cookie consent, analytics and ads (TASK-004, owner decision 2026-10-08). Rendered in <head>
@@ -9,8 +10,11 @@ import { ADSENSE_CLIENT, COOKIEYES_SCRIPT, GOOGLE_ANALYTICS_ID } from '@/lib/con
  * 2. CookieYes banner; it updates the consent (enable "Google Consent Mode" in the CookieYes
  *    dashboard) and lists the cookies on the cookie policy page.
  * 3. Google Analytics and AdSense; they respect the consent state (no cookies while denied).
+ *
+ * AdSense (Auto ads: Google places the ads itself, the site has no ad slots) is added only when
+ * `adsEnabled` — the admin switch "Google ads (AdSense)", default off (owner 2026-10-29).
  */
-export default function ThirdPartyScripts() {
+export default function ThirdPartyScripts({ adsEnabled }: { adsEnabled: boolean }) {
   const consentDefaults = `
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -32,18 +36,7 @@ gtag('config', '${GOOGLE_ANALYTICS_ID}');
 
   // Injected from an inline script, not as async script tags: React hoists async scripts to the
   // top of <head>, ahead of the consent defaults, and a cached tag could then run first.
-  const tagLoader = `
-(function(){
-  function add(src, cross){
-    var s = document.createElement('script');
-    s.async = true; s.src = src;
-    if (cross) s.crossOrigin = 'anonymous';
-    document.head.appendChild(s);
-  }
-  add('https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}');
-  add('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}', true);
-})();
-`;
+  const tagLoader = buildTagLoaderScript({ adsEnabled });
 
   return (
     <>

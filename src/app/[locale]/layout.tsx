@@ -18,6 +18,7 @@ import { withDefaultShareImage } from '@/lib/utils/metadata-helpers';
 import ThirdPartyScripts from '@/components/Analytics/ThirdPartyScripts';
 import MicrosoftClarity from '@/components/Analytics/MicrosoftClarity';
 import { shouldLoadClarity } from '@/lib/analytics/clarity';
+import { shouldLoadAdsense } from '@/lib/analytics/adsense';
 
 export async function generateMetadata({
   params,
@@ -99,8 +100,10 @@ export default async function LocaleLayout({
   return (
     <html lang={toHtmlLang(locale)} className={`${openSans.className} ${figtree.variable} ${damion.variable}`}>
       <head>
-        {/* Consent, analytics and ads: production only */}
-        {isProductionSite(env.NEXT_PUBLIC_BASE_URL) && <ThirdPartyScripts />}
+        {/* Consent, analytics and ads: production only; AdSense also needs the admin switch (Site settings) */}
+        {isProductionSite(env.NEXT_PUBLIC_BASE_URL) && (
+          <ThirdPartyScripts adsEnabled={shouldLoadAdsense(env.NEXT_PUBLIC_BASE_URL, siteSettings)} />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: renderJsonLd(organizationSchema) }}
