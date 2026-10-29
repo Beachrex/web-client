@@ -9,7 +9,8 @@ process.env.SKIP_ENV_VALIDATION = '1';
  * shown, only the scrollbar moves". The message list is a fixed-height scroll container and nothing ever
  * set its scrollTop, so new messages were appended below the visible area.
  */
-const page = () => readFileSync(join(process.cwd(), 'src/app/[locale]/ai/chat/page.tsx'), 'utf8');
+// TASK-010: the list moved into a component shared by the /ai/chat page and the widget.
+const page = () => readFileSync(join(process.cwd(), 'src/components/AiChat/ChatMessageList.tsx'), 'utf8');
 
 test('follow only when the reader is near the bottom', async () => {
   const { distanceFromBottom, shouldAutoScroll, CHAT_FOLLOW_THRESHOLD } = await import('@/lib/utils/chat-scroll');
@@ -43,6 +44,6 @@ test('the chat page scrolls its own message container (not the window) after ren
   expect(src).toContain('new ResizeObserver(');
   expect(src).not.toContain('scrollIntoView');
   expect(src).not.toContain('window.scrollTo');
-  // Sending always resumes following.
-  expect(src).toMatch(/followRef\.current = true;\s*setMessages\(\(prev\) => \[\.\.\.prev, userMessage\]\)/);
+  // Sending (a new user message) always resumes following.
+  expect(src).toContain("if (lastRole === 'user') followRef.current = true;");
 });

@@ -741,7 +741,18 @@
       "locationDenied": "Ubicación no disponible. Permite el acceso a la ubicación en el navegador o escribe un lugar.",
       "errorBusy": "El asistente de IA está ocupado. Inténtalo de nuevo en un minuto.",
       "errorTooMany": "Demasiados mensajes. Espera un poco y vuelve a intentarlo.",
-      "errorTooLong": "El mensaje es demasiado largo. Acórtalo."
+      "errorTooLong": "El mensaje es demasiado largo. Acórtalo.",
+      "widget": {
+        "open": "Abrir el asistente de playas con IA",
+        "close": "Cerrar el chat",
+        "title": "Asistente de playas con IA",
+        "newConversation": "Nueva conversación",
+        "openFullPage": "Abrir el chat completo",
+        "inputLabel": "Tu mensaje",
+        "greeting": "¡Hola! Pregúntame lo que quieras sobre playas y tu viaje al mar.",
+        "greetingBeach": "¡Hola! Estás viendo {name}. Pregúntame lo que quieras sobre ella o sobre cualquier otra playa.",
+        "placeholderBeach": "Pregunta sobre {name}…"
+      }
     },
     "itinerary": {
       "title": "Planifica tu viaje de playa",

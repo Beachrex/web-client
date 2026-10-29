@@ -4,6 +4,8 @@ import '@/styles/globals.css';
 import { ApiClientProvider } from '@/components/ApiClientProvider';
 import DefaultLayout from '@/components/Layout';
 import { SiteSettingsProvider } from '@/contexts/SiteSettingsContext';
+import { AiChatProvider } from '@/contexts/AiChatContext';
+import AiChatWidget from '@/components/AiChat/AiChatWidget';
 import { fetchSiteSettings } from '@/lib/site-settings';
 import { env } from '@/env';
 import { NextIntlClientProvider } from 'next-intl';
@@ -108,7 +110,11 @@ export default async function LocaleLayout({
           <AuthProvider>
             <ApiClientProvider locale={locale}>
               <SiteSettingsProvider value={siteSettings}>
-                <DefaultLayout>{children}</DefaultLayout>
+                {/* TASK-010: one AI conversation for every page; the widget hides itself when the AI switch is off */}
+                <AiChatProvider>
+                  <DefaultLayout>{children}</DefaultLayout>
+                  <AiChatWidget />
+                </AiChatProvider>
               </SiteSettingsProvider>
             </ApiClientProvider>
           </AuthProvider>

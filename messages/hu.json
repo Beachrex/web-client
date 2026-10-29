@@ -741,7 +741,18 @@
       "locationDenied": "A helyzet nem érhető el. Engedélyezd a helymeghatározást a böngészőben, vagy adj meg egy helyet.",
       "errorBusy": "Az AI-asszisztens most foglalt. Próbáld újra egy perc múlva.",
       "errorTooMany": "Túl sok üzenet. Várj egy kicsit, és próbáld újra.",
-      "errorTooLong": "Az üzenet túl hosszú. Rövidítsd le."
+      "errorTooLong": "Az üzenet túl hosszú. Rövidítsd le.",
+      "widget": {
+        "open": "AI strandasszisztens megnyitása",
+        "close": "Csevegés bezárása",
+        "title": "AI strandasszisztens",
+        "newConversation": "Új beszélgetés",
+        "openFullPage": "Teljes csevegés megnyitása",
+        "inputLabel": "Az Ön üzenete",
+        "greeting": "Szia! Kérdezz bármit a strandokról és a tengerparti utazásodról.",
+        "greetingBeach": "Szia! Most ezt nézed: {name}. Kérdezz bármit róla vagy bármelyik másik strandról.",
+        "placeholderBeach": "Kérdezz erről: {name}…"
+      }
     },
     "itinerary": {
       "title": "Tervezze meg tengerparti útját",

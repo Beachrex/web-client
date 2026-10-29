@@ -40,8 +40,9 @@ test('the request keeps the session, page language, token and location', () => {
   expect(helper).toContain('session_id: args.sessionId');
   expect(helper).toContain('Authorization');
   expect(helper).toContain('context: { location: args.location }');
-  const page = read('src/app/[locale]/ai/chat/page.tsx');
-  expect(page).toContain('setSessionId(result.reply.session_id)');
+  // TASK-010: the conversation lives in AiChatProvider, the list in a shared component.
+  expect(read('src/contexts/AiChatContext.tsx')).toContain('setSessionId(result.reply.session_id)');
+  const page = read('src/components/AiChat/ChatMessageList.tsx');
   expect(page).toContain('linkBeachNames(message.content, message.beaches)');
   expect(page).not.toContain('Surface:');
   expect(page).not.toContain('% match');
