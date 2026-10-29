@@ -13,6 +13,7 @@ import { useCountries } from '@/hooks/useCountries';
 import { staticPageUrl, useFooterStaticPages } from '@/hooks/useStaticPages';
 import { FEATURES } from '@/lib/constants/features';
 import { buildMenuItems, type MenuItem } from '@/lib/utils/menu-items';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
@@ -122,6 +123,7 @@ const BurgerMenu = () => {
   const { continents } = useContinents();
   const { countries } = useCountries();
   const staticPages = useFooterStaticPages();
+  const { aiAssistantEnabled } = useSiteSettings();
   // Same query as the home category tiles (shared cache); labels in the visitor's language.
   const { data: filtersData } = useQuery(getBeachFiltersOptions({ query: {} as never }));
   const filterOptions = filtersData?.data as Parameters<typeof resolveQuickFilters>[1];
@@ -135,6 +137,7 @@ const BurgerMenu = () => {
         countries,
         aboutUrl: staticPageUrl(staticPages, 'about-us', locale),
         contactUrl: staticPageUrl(staticPages, 'contact', locale),
+        showAi: aiAssistantEnabled,
         filterGroups: MENU_FILTER_GROUPS.map((group) => ({
           label: t(group.labelKey),
           icon: group.icon,
@@ -150,7 +153,7 @@ const BurgerMenu = () => {
           contact: t('contact'),
         },
       }),
-    [locale, continents, countries, staticPages, filterOptions, t, tCommon, tAI],
+    [locale, continents, countries, staticPages, filterOptions, t, tCommon, tAI, aiAssistantEnabled],
   );
 
   const closeMenu = () => setIsOpen(false);

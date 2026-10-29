@@ -18,6 +18,15 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – TASK-009: AI guide follows the admin switch ✅ COMPLETE
+
+Owner request 2026-10-29 (backend Beachrex/backend#146, spec `docs/tasks/TASK-009-ai-assistant-switch.md`).
+- `src/lib/site-settings.ts`: reads `GET /api/v1/site-settings` server-side (revalidate 300 s). **Fails closed**: API error or malformed answer = AI guide off.
+- `[locale]/layout.tsx` passes it to `SiteSettingsProvider`; the burger menu hides "AI beach assistant" when off (`buildMenuItems({ showAi })`).
+- `[locale]/ai/layout.tsx` and `[locale]/payment/layout.tsx`: `notFound()` when off (404, not indexed).
+- `llms.txt`: AI line only when on (now ISR 300 s instead of force-static).
+- Spec `e2e/site-settings.unit.spec.ts` (menu always showing AI: 1 failed).
+
 ## 2026-10-28 – Place pages: "All beaches (n)" shows the place's total again ✅ COMPLETE
 
 - Found on dev: the Toscana page showed "All beaches (20)" for a region with 43 active beaches (API `beaches_count`
