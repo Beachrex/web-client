@@ -18,6 +18,18 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – AI chat follows the conversation (scroll fix) ✅ COMPLETE
+
+Owner 2026-10-29: "when you chat, the new question and answer are not shown; only the scrollbar moves".
+- Cause: the message list on `[locale]/ai/chat` is a fixed-height `overflow-y-auto` box and nothing ever set its
+  `scrollTop`, so every new message was appended below the visible area (the scrollbar thumb shrank, the view stayed at the top).
+- Fix: `src/lib/utils/chat-scroll.ts` (pure: `distanceFromBottom`, `shouldAutoScroll` 120 px, `chatScrollTarget`).
+  The page scrolls only its own container (never the window, so no jump under the sticky header): to the bottom after
+  each message / typing indicator, or to the newest message's start when the answer is taller than the box.
+  A `ResizeObserver` re-applies it when beach card images load. Readers who scrolled up are not pulled down; sending
+  a message resumes following. Box height `min(600px, 60dvh)` (min 280 px) so the input stays reachable on phones.
+- Spec `e2e/ai-chat-scroll.unit.spec.ts` (3 tests; all fail on the old page / a broken helper).
+
 ## 2026-10-29 – TASK-009: AI guide follows the admin switch ✅ COMPLETE
 
 Owner request 2026-10-29 (backend Beachrex/backend#146, spec `docs/tasks/TASK-009-ai-assistant-switch.md`).
