@@ -4,6 +4,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 
+import { env } from '@/env';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { sendChatMessage, type ChatErrorKey } from '@/lib/utils/ai-chat';
@@ -16,6 +17,7 @@ import {
   type AiChatPageInfo,
   type ChatMessage,
 } from '@/lib/utils/ai-chat-widget';
+import { getTurnstileToken, turnstileEnabled } from '@/lib/utils/turnstile';
 
 export type AiChatError = ChatErrorKey | 'locationDenied';
 
@@ -120,6 +122,16 @@ export function AiChatProvider({ children }: { children: React.ReactNode }) {
     );
   }, []);
 
+  // Cloudflare Turnstile (off without NEXT_PUBLIC_TURNSTILE_SITE_KEY). The backend remembers a verified
+  // conversation, so a token is fetched for the first message, and again only when the server asks for one.
+  const turnstileSiteKey = env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const turnstileOn = turnstileEnabled(turnstileSiteKey);
+  const turnstileRef = React.useRef<HTMLDivElement>(null);
+  const robotToken = React.useCallback(async (): Promise<string | null> => {
+    if (!turnstileEnabled(turnstileSiteKey) || !turnstileRef.current) return null;
+    return getTurnstileToken(turnstileRef.current, turnstileSiteKey);
+  }, [turnstileSiteKey]);
+
   const loadingRef = React.useRef(false);
   const send = React.useCallback(async (text: string) => {
     const content = text.trim();
@@ -130,7 +142,13 @@ export function AiChatProvider({ children }: { children: React.ReactNode }) {
     setError(null);
 
     const pageContext = buildPageContext(pathname, pageInfo, typeof document !== 'undefined' ? document.title : null);
-    const result = await sendChatMessage({ message: content, sessionId, locale, token, location, pageContext });
+    const request = { message: content, sessionId, locale, token, location, pageContext };
+    let result = await sendChatMessage({ ...request, turnstileToken: sessionId ? null : await robotToken() });
+    if (!result.ok && result.challenge) {
+      // New conversation on the server side, another IP, or an expired check: one fresh token, one retry.
+      const fresh = await robotToken();
+      if (fresh) result = await sendChatMessage({ ...request, turnstileToken: fresh });
+    }
     loadingRef.current = false;
     setIsLoading(false);
     if (!result.ok) {
@@ -150,7 +168,7 @@ export function AiChatProvider({ children }: { children: React.ReactNode }) {
         locale,
       },
     ]));
-  }, [pathname, pageInfo, sessionId, locale, token, location]);
+  }, [pathname, pageInfo, sessionId, locale, token, location, robotToken]);
 
   const reset = React.useCallback(() => {
     setMessages([]);
@@ -164,7 +182,13 @@ export function AiChatProvider({ children }: { children: React.ReactNode }) {
     pageInfo, setPageInfo, isOpen, setOpen,
   }), [messages, isLoading, error, location, requestLocation, send, reset, pageInfo, isOpen]);
 
-  return <AiChatContext.Provider value={value}>{children}</AiChatContext.Provider>;
+  return (
+    <AiChatContext.Provider value={value}>
+      {children}
+      {/* Turnstile shows itself here only when Cloudflare wants an interaction (above the chat widget). */}
+      {turnstileOn && aiAssistantEnabled && <div ref={turnstileRef} className="fixed bottom-24 right-4 z-[1090]" />}
+    </AiChatContext.Provider>
+  );
 }
 
 export function useAiChat(): AiChatState {

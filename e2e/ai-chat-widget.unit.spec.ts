@@ -121,7 +121,7 @@ test('provider: localStorage wrapped in try/catch, versioned key, synced between
   expect(src).toContain("window.addEventListener('storage', onStorage)");
   expect(src).toContain('fromOtherTabRef'); // no write-back loop between tabs
   expect(src).toMatch(/const reset = [\s\S]*?writeStorage\(null\)/);
-  expect(src).toContain('pageContext });');
+  expect(src).toContain('const request = { message: content, sessionId, locale, token, location, pageContext };');
   expect(read('src/lib/utils/ai-chat.ts')).toContain('page_context: args.pageContext');
 });
 

@@ -742,6 +742,8 @@
       "errorBusy": "O assistente de IA está ocupado. Tente novamente dentro de um minuto.",
       "errorTooMany": "Demasiadas mensagens. Aguarde um pouco e tente novamente.",
       "errorTooLong": "A mensagem é demasiado longa. Encurte-a.",
+      "errorResting": "O assistente de IA atingiu o limite diário e descansa até amanhã. Volte nessa altura – as páginas das praias e o mapa funcionam normalmente.",
+      "errorRobot": "Não foi possível confirmar que não é um robô. Recarregue a página e tente novamente.",
       "widget": {
         "open": "Abrir o assistente de praias com IA",
         "close": "Fechar o chat",

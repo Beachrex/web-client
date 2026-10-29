@@ -18,6 +18,25 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 - AI chat: "resting until tomorrow" at the daily limit, Cloudflare Turnstile
+
+Owner: free chat $5/day, back on the next day; "Turnstile ja" (backend Beachrex/backend#163, ADR 2026-10-29
+"AI chat daily cost cap and Turnstile").
+
+- `src/lib/utils/ai-chat.ts`: `chatErrorKey(status, body)` → `errorResting` for 503 `reason: daily_limit`,
+  `errorRobot` for 403 `turnstile_required|turnstile_failed`; `sendChatMessage` sends `turnstile_token` and returns
+  `challenge: true` when the server asks for a robot check.
+- `src/lib/utils/turnstile.ts`: loads `challenges.cloudflare.com/turnstile/v0/api.js?render=explicit` only when needed,
+  widget in execute mode, `appearance: interaction-only`, action `ai_chat`.
+- `AiChatContext`: token for the first message of a conversation; on a challenge one fresh token and one retry. The
+  widget container is a fixed element in the provider (no change to `ChatComposer` / the widget).
+- Build-time `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (`src/env.ts`, `Dockerfile.prod`; compose build arg in the backend repo).
+  Empty = Turnstile off, everything works as before.
+- New strings `AI.chat.errorResting`, `AI.chat.errorRobot` in all 19 languages (machine translation by the agent).
+- No Content-Security-Policy header on the site today; if one is added it must allow `https://challenges.cloudflare.com`
+  (`script-src`, `frame-src`).
+- Tests: `e2e/ai-chat-limits.unit.spec.ts`.
+
 ## 2026-10-29 - TASK-009 amended: AI chat and AI trip planner follow separate admin switches
 
 Owner: hide the paid trip planner, not the chat; switch either or both in admin (backend Beachrex/backend#160,
