@@ -14,6 +14,8 @@ import {
   VARIANT_TEXT_CLASS,
 } from '../ui/pageVariants';
 import { FEATURES } from '@/lib/constants/features';
+import type { LocationPillUrls } from '@/lib/utils/beach-urls';
+import LocationPill from './LocationPill';
 
 type CountryWithFlag = Country & { flag_icon?: string | null };
 
@@ -32,6 +34,10 @@ interface TopBarProps {
   showFilter?: boolean;
   /** TopBar key that replaces the variant's pill label (beach pages: lake/river/pool wording). */
   pillLabelKey?: string;
+  /** Pages of the places in the pills; a pill with a link opens on hover/focus and navigates on click. */
+  pillLinks?: Partial<LocationPillUrls>;
+  /** Full names for the region/island/city pills (their collapsed labels are shortened). */
+  pillNames?: { region?: string | null; island?: string | null; city?: string | null };
 }
 
 const TopBar: React.FC<TopBarProps> = ({
@@ -48,6 +54,8 @@ const TopBar: React.FC<TopBarProps> = ({
   showLocationPills,
   showFilter,
   pillLabelKey: pillLabelKeyOverride,
+  pillLinks,
+  pillNames,
 }) => {
   const t = useTranslations('TopBar');
   const tContinent = useTranslations('Continents');
@@ -155,15 +163,20 @@ const TopBar: React.FC<TopBarProps> = ({
         <div className="hidden lg:flex h-full items-center">
 
           {effectiveContinentCode && (
-            <div className="flex h-full w-[54px] items-center justify-center rounded-l-[10px] bg-[#5E1CA5]">
+            <LocationPill
+              first
+              name={continentName}
+              href={pillLinks?.continent}
+              colorClass="bg-[#5E1CA5]"
+            >
               <Image
                 src={getContinentIcon(effectiveContinentCode)}
-                alt={continentName}
+                alt={pillLinks?.continent ? '' : continentName}
                 width={35}
                 height={35}
                 className="object-contain"
               />
-            </div>
+            </LocationPill>
           )}
 
           {(variant === 'region' ||
@@ -171,40 +184,53 @@ const TopBar: React.FC<TopBarProps> = ({
             variant === 'city' ||
             variant === 'beach') &&
             countryIcon && (
-              <div className="flex h-full w-[54px] items-center justify-center bg-[#DD0000] -ml-[7px] rounded-l-[10px]">
+              <LocationPill
+                name={country?.name ?? ''}
+                href={pillLinks?.country}
+                colorClass="bg-[#DD0000]"
+              >
                 <Image
                   src={countryIcon}
-                  alt={country?.name ?? ''}
+                  alt={pillLinks?.country ? '' : country?.name ?? ''}
                   width={28}
                   height={26}
                   className="object-contain"
                 />
-              </div>
+              </LocationPill>
             )}
 
           {regionPillLabel &&
             (variant === 'island' || variant === 'city' || variant === 'beach') && (
-              <div className="flex h-full w-[54px] items-center justify-center bg-[#FF2877] -ml-[7px] rounded-l-[10px]">
-                <span className="font-figtree text-[14px] font-bold text-white">
-                  {regionPillLabel}
-                </span>
-              </div>
+              <LocationPill
+                textLabel
+                name={pillNames?.region ?? regionPillLabel}
+                href={pillLinks?.region}
+                colorClass="bg-[#FF2877]"
+              >
+                {regionPillLabel}
+              </LocationPill>
             )}
 
           {(variant === 'city' || variant === 'beach') && islandPillLabel && (
-            <div className="flex h-full w-[54px] items-center justify-center bg-[#FFC422] -ml-[7px] rounded-l-[10px]">
-              <span className="font-figtree text-[14px] font-bold text-white">
-                {islandPillLabel}
-              </span>
-            </div>
+            <LocationPill
+              textLabel
+              name={pillNames?.island ?? islandPillLabel}
+              href={pillLinks?.island}
+              colorClass="bg-[#FFC422]"
+            >
+              {islandPillLabel}
+            </LocationPill>
           )}
 
           {variant === 'beach' && cityPillLabel && (
-            <div className="flex h-full w-[54px] items-center justify-center bg-[#FF8000] -ml-[7px] rounded-l-[10px]">
-              <span className="font-figtree text-[14px] font-bold text-white">
-                {cityPillLabel}
-              </span>
-            </div>
+            <LocationPill
+              textLabel
+              name={pillNames?.city ?? cityPillLabel}
+              href={pillLinks?.city}
+              colorClass="bg-[#FF8000]"
+            >
+              {cityPillLabel}
+            </LocationPill>
           )}
         </div>
       )}

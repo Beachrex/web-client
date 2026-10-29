@@ -180,6 +180,52 @@ export function buildCountryUrl(
   return `/${locale}/${beachesWord}/${continentSlug}/${countrySlug}`;
 }
 
+/** Hrefs of the location pills on a beach banner (null where a slug is missing). */
+export interface LocationPillUrls {
+  continent: string | null;
+  country: string | null;
+  region: string | null;
+  island: string | null;
+  city: string | null;
+}
+
+/**
+ * Links for the location pills on the beach banner (owner, 2026-10-29: clicking a pill opens that place).
+ * Same hierarchy as the beach URL and the breadcrumbs:
+ * `/[locale]/beaches/[continent]/[country]/[region]/[island]/[city]`; each pill links to its prefix.
+ * Region and island are optional levels.
+ */
+export function buildLocationPillUrls(
+  locale: string,
+  location:
+    | {
+        continent?: { slug?: string | null } | null;
+        country?: { slug?: string | null } | null;
+        region?: { slug?: string | null } | null;
+        island?: { slug?: string | null } | null;
+        city?: { slug?: string | null } | null;
+      }
+    | null
+    | undefined,
+): LocationPillUrls {
+  const none: LocationPillUrls = { continent: null, country: null, region: null, island: null, city: null };
+  const continentSlug = location?.continent?.slug;
+  if (!continentSlug) return none;
+  const continent = buildContinentUrl(locale, continentSlug);
+  const countrySlug = location?.country?.slug;
+  if (!countrySlug) return { ...none, continent };
+
+  let path = buildCountryUrl(locale, continentSlug, countrySlug);
+  const urls: LocationPillUrls = { ...none, continent, country: path };
+  for (const level of ['region', 'island', 'city'] as const) {
+    const slug = location?.[level]?.slug;
+    if (!slug) continue;
+    path = `${path}/${slug}`;
+    urls[level] = path;
+  }
+  return urls;
+}
+
 /**
  * Build continent page URL
  * Format: /[locale]/beaches/[continent]
