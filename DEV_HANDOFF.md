@@ -18,6 +18,16 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Beach banner: location pills open and link to their place ✅ COMPLETE
+
+Owner, 2026-10-29: the pills (continent, country, region, island, city) showed only an icon or a cut 5-letter label ("KVARN", "LOPAR" overflowing) and did nothing.
+
+- `src/components/BannerSection/LocationPill.tsx` (new): on hover or keyboard focus a tab in the pill's colour slides open with the full name; a click opens the place. The tab is drawn over the following pills (absolute, `clip-path` transition, `pointer-events-none`), so the row never shifts under the cursor (a width-expanding version made the hover jump between pills). No animation with `prefers-reduced-motion`. Pills are `min-w-[54px]` instead of a fixed width.
+- `TopBar.tsx`: new optional props `pillLinks` and `pillNames`; without a link a pill renders as before (no hover).
+- `beach-urls.ts`: `buildLocationPillUrls(locale, location)` — same hierarchy as the beach URL and breadcrumbs.
+- `BeachBannerSection.tsx`: passes links and full names. Region/island/city listing pages do not pass links yet.
+- Test: `e2e/location-pills.unit.spec.ts`. Checked in Chromium: a left-to-right mouse sweep hovers each pill once, in order.
+
 ## 2026-10-29 – Responsive WebP images from Imagor, fewer font preloads ✅ COMPLETE
 
 Owner, 2026-10-29 (home page audit): the hero was a 2800 px JPEG and beach cards 800 px JPEGs on every device (`images.unoptimized`), and 7 font files were preloaded.
