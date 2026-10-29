@@ -1,6 +1,7 @@
 /**
  * Public client IDs of third-party services (owner, 2026-10-08, TASK-004). They are not secrets:
- * they appear in every page's HTML. Loaded only on the production site (see ThirdPartyScripts).
+ * they appear in every page's HTML. Loaded only on the production site (see ThirdPartyScripts);
+ * AdSense also only while the admin switch `ads_enabled` is on (src/lib/analytics/adsense.ts).
  */
 export const GOOGLE_ANALYTICS_ID = 'G-WK9LGF32VW';
 export const ADSENSE_CLIENT = 'ca-pub-5133469552990533';

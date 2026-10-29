@@ -14,32 +14,36 @@ test.describe('site settings', () => {
     expect(parseSiteSettings({ success: true, data: { ai_assistant_enabled: true, ai_trip_planner_enabled: true } })).toEqual({
       aiAssistantEnabled: true,
       aiTripPlannerEnabled: true,
+      adsEnabled: false,
     });
     expect(parseSiteSettings({ success: true, data: { ai_assistant_enabled: true, ai_trip_planner_enabled: false } })).toEqual({
       aiAssistantEnabled: true,
       aiTripPlannerEnabled: false,
+      adsEnabled: false,
     });
     expect(parseSiteSettings({ success: true, data: { ai_assistant_enabled: false, ai_trip_planner_enabled: true } })).toEqual({
       aiAssistantEnabled: false,
       aiTripPlannerEnabled: true,
+      adsEnabled: false,
     });
   });
 
   test('anything unexpected means off (fail closed), per switch', () => {
     for (const json of [null, undefined, {}, { data: null }, { data: {} }, 'x',
-      { data: { ai_assistant_enabled: 'true', ai_trip_planner_enabled: 1 } }]) {
-      expect(parseSiteSettings(json), JSON.stringify(json)).toEqual({ aiAssistantEnabled: false, aiTripPlannerEnabled: false });
+      { data: { ai_assistant_enabled: 'true', ai_trip_planner_enabled: 1, ads_enabled: 'true' } }]) {
+      expect(parseSiteSettings(json), JSON.stringify(json)).toEqual({ aiAssistantEnabled: false, aiTripPlannerEnabled: false, adsEnabled: false });
     }
     // An older API without the planner key: chat follows its switch, the planner stays hidden.
-    expect(parseSiteSettings({ data: { ai_assistant_enabled: true } })).toEqual({ aiAssistantEnabled: true, aiTripPlannerEnabled: false });
-    expect(SITE_SETTINGS_FALLBACK).toEqual({ aiAssistantEnabled: false, aiTripPlannerEnabled: false });
+    expect(parseSiteSettings({ data: { ai_assistant_enabled: true } })).toEqual({ aiAssistantEnabled: true, aiTripPlannerEnabled: false, adsEnabled: false });
+    expect(SITE_SETTINGS_FALLBACK).toEqual({ aiAssistantEnabled: false, aiTripPlannerEnabled: false, adsEnabled: false });
   });
 
   test('the /ai hub exists while at least one feature is on', () => {
-    expect(anyAiFeatureEnabled({ aiAssistantEnabled: true, aiTripPlannerEnabled: true })).toBe(true);
-    expect(anyAiFeatureEnabled({ aiAssistantEnabled: true, aiTripPlannerEnabled: false })).toBe(true);
-    expect(anyAiFeatureEnabled({ aiAssistantEnabled: false, aiTripPlannerEnabled: true })).toBe(true);
-    expect(anyAiFeatureEnabled({ aiAssistantEnabled: false, aiTripPlannerEnabled: false })).toBe(false);
+    const s = (chat: boolean, planner: boolean) => ({ aiAssistantEnabled: chat, aiTripPlannerEnabled: planner, adsEnabled: false });
+    expect(anyAiFeatureEnabled(s(true, true))).toBe(true);
+    expect(anyAiFeatureEnabled(s(true, false))).toBe(true);
+    expect(anyAiFeatureEnabled(s(false, true))).toBe(true);
+    expect(anyAiFeatureEnabled(s(false, false))).toBe(false);
   });
 
   test('the burger menu shows each AI entry by its own switch, the group only while one is on', () => {
