@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Burger menu beach types use the card icons ✅ COMPLETE
+
+Owner 2026-10-29: "Beton" had a globe icon and the other types used different icons than the beach cards. `menuBeachFilters.ts` now takes `BEACH_TYPE_ICONS` from `beach-badges.ts` (the same CDN icons as the cards and the beach page badges, incl. concrete) through `resolveBadgeIcon`. Spec `e2e/navigation-links.unit.spec.ts` (with the old icon map: 1 failed).
+
 ## 2026-10-29 – AI chat follows the conversation (scroll fix) ✅ COMPLETE
 
 Owner 2026-10-29: "when you chat, the new question and answer are not shown; only the scrollbar moves".
