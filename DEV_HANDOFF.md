@@ -18,6 +18,21 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Top quick menu: "Beach view" removed ✅ COMPLETE
+
+Owner request 2026-10-29: the top menu item "Beach view" (Prikaz plaže) made no sense and had no clear target (it opened the map filtered by natural shade / scenic view).
+- `src/components/Header/QuickMenu.tsx`: entry removed (desktop row; mobile only showed the first three items, unchanged). The middle row uses `gap-x/gap-y` instead of `space-x`, so wrapped rows on narrow desktop widths no longer get a stray left margin.
+- `Common.quickMenuBeachDisplay` removed from all 19 `messages/*.json` (no other usage; `Filter*.displayLabel` keys untouched).
+- Spec: `e2e/quick-menu.unit.spec.ts` (3 tests; against the old component: 2 failed).
+
+## 2026-10-29 – Banner: duplicate map thumbnail removed ✅ COMPLETE
+
+Owner request 2026-10-29 (Kvarner region page): remove the `banner-map.png` thumbnail from the banner, the floating map icon on the right edge (`/images/common/map-icon.svg`) already opens the same map.
+- `BannerSection` (continent / country / region / island / city): `MapWidget` removed. The floating map icon (same `buildMapUrl()` with the place filters) stays. The widget row is only rendered when it has content (weather on region/island/city, or `rightWidgets`), so continent/country pages get no empty row.
+- `BeachBannerSection`: `MapWidget` removed too; its floating map button (`/images/map.png`, same `buildMapUrl()` incl. `beach_id`/`lat`/`lng`) stays. Weather + sea temperature widgets unchanged.
+- World banner (`/beaches`) keeps the thumbnail: it has no floating map icon, so it is the only map link there. `MapWidget` is now a plain decorative thumbnail (the `href`/`label` props were only used by the removed callers); `public/images/banner/banner-map.png` stays for it.
+- Spec `e2e/banner-map-link.unit.spec.ts` rewritten (break: banner-map.png `<img>` put back in `BannerSection` → 1 failed).
+
 ## 2026-10-29 – Logo watermark on mobile-app photos (Imagor, on the fly)
 
 - Owner, 2026-10-29: photos uploaded from the mobile app (`img/beaches_mobile/…`, ~839 of 2 876 beaches on dev) had no

@@ -122,14 +122,6 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
       },
     },
     {
-      icon: 'beachShowType.svg',
-      labelKey: 'quickMenuBeachDisplay',
-      // Natural conditions and views
-      filters: {
-        natural_location_condition: ['natural_shade', 'scenic_view'],
-      },
-    },
-    {
       icon: 'shower.svg',
       labelKey: 'quickMenuBeachServices',
       // Beach services and infrastructure
@@ -222,7 +214,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           </div>
 
           {/* Middle Section (Icons and Labels) */}
-          <div className="flex flex-1 flex-wrap items-center justify-center space-x-3 lg:space-x-6">
+          <div className="flex flex-1 flex-wrap items-center justify-center gap-x-3 gap-y-2 lg:gap-x-6">
             {quickMenuCategories.map((category, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <NavIcon
