@@ -138,3 +138,9 @@ test('every page that renders a banner with location pills passes links, names a
     expect(bannerSection).toContain(prop);
   }
 });
+
+/** Owner, 2026-10-29: on the continent page the continent pill is the page itself; opening it looked like a bug. */
+test('the pill of the current page level is static (continent page)', () => {
+  const topBar = read('src/components/BannerSection/TopBar.tsx');
+  expect(topBar).toContain("href={variant === 'continent' ? null : pillLinks?.continent}");
+});

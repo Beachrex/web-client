@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Continent page: own continent pill is static ✅ COMPLETE
+
+Owner, 2026-10-29: on a continent page the continent pill opened a tab that repeated the page's own bar ("Kontinent Evropa · Plaže: 2876" twice), which looked like a bug. `TopBar` gives that pill no link there, so it does not open (other pages: every pill is a parent level and stays interactive). Test in `e2e/location-pills.unit.spec.ts`.
+
 ## 2026-10-29 – AI chat widget: mobile sheet follows the keyboard ✅ COMPLETE
 
 Owner, 2026-10-29: "ta AI chat widget na mobile responsive popravi, ker grafično ni ok." On an iPhone with the keyboard open the widget header was gone (no way to close), the top half was empty white and the homepage showed through below the composer.
