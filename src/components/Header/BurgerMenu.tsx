@@ -123,7 +123,7 @@ const BurgerMenu = () => {
   const { continents } = useContinents();
   const { countries } = useCountries();
   const staticPages = useFooterStaticPages();
-  const { aiAssistantEnabled } = useSiteSettings();
+  const { aiAssistantEnabled, aiTripPlannerEnabled } = useSiteSettings();
   // Same query as the home category tiles (shared cache); labels in the visitor's language.
   const { data: filtersData } = useQuery(getBeachFiltersOptions({ query: {} as never }));
   const filterOptions = filtersData?.data as Parameters<typeof resolveQuickFilters>[1];
@@ -137,7 +137,8 @@ const BurgerMenu = () => {
         countries,
         aboutUrl: staticPageUrl(staticPages, 'about-us', locale),
         contactUrl: staticPageUrl(staticPages, 'contact', locale),
-        showAi: aiAssistantEnabled,
+        showAiChat: aiAssistantEnabled,
+        showAiPlanner: aiTripPlannerEnabled,
         filterGroups: MENU_FILTER_GROUPS.map((group) => ({
           label: t(group.labelKey),
           icon: group.icon,
@@ -160,7 +161,10 @@ const BurgerMenu = () => {
           contact: t('contact'),
         },
       }),
-    [locale, continents, countries, staticPages, filterOptions, t, tCommon, tAI, aiAssistantEnabled],
+    [
+      locale, continents, countries, staticPages, filterOptions, t, tCommon, tAI, aiAssistantEnabled,
+      aiTripPlannerEnabled,
+    ],
   );
 
   const closeMenu = () => setIsOpen(false);
