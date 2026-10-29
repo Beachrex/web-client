@@ -854,6 +854,7 @@
     "no360": "Geen 360° weergave beschikbaar",
     "noVideo": "Geen video beschikbaar",
     "mostVisited": "Meest bezocht",
+    "distanceAway": "op {distance}",
     "loading": "Laden...",
     "showOnMap": "{title} op kaart weergeven",
     "webcamClose": "Webcam sluiten"

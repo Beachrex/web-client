@@ -678,6 +678,7 @@
     "no360": "Pogled 360° ni na voljo",
     "noVideo": "Video ni na voljo",
     "mostVisited": "Najbolj obiskana",
+    "distanceAway": "oddaljeno {distance}",
     "loading": "Nalaganje...",
     "showOnMap": "Prikaži {title} na zemljevidu",
     "webcamClose": "Zapri spletno kamero"
