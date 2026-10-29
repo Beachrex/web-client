@@ -33,6 +33,22 @@ Owner request 2026-10-29 (Kvarner region page): remove the `banner-map.png` thum
 - World banner (`/beaches`) keeps the thumbnail: it has no floating map icon, so it is the only map link there. `MapWidget` is now a plain decorative thumbnail (the `href`/`label` props were only used by the removed callers); `public/images/banner/banner-map.png` stays for it.
 - Spec `e2e/banner-map-link.unit.spec.ts` rewritten (break: banner-map.png `<img>` put back in `BannerSection` → 1 failed).
 
+## 2026-10-29 – Logo watermark on mobile-app photos (Imagor, on the fly)
+
+- Owner, 2026-10-29: photos uploaded from the mobile app (`img/beaches_mobile/…`, ~839 of 2 876 beaches on dev) had no
+  Beachrex logo, unlike admin uploads (logo baked in). ADR 2026-10-29 "Watermark mobile-app photos on the fly"
+  (backend repo) supersedes the 2026-10-08 "no watermark" note for these photos.
+- `buildCdnUrl(path, context?, options?: { watermark?: boolean })` in `src/lib/utils/beach-images.ts` adds Imagor's
+  `filters:watermark(img/watermark/beachrex-watermark-v1.png,-3p,-4p,0,20,30)` (bottom-right, 3 %/4 % margin, ≤ 20 %
+  of the width) when `needsWatermark(path)`: a raster image (`jpg/jpeg/png/webp`) under `img/beaches_mobile/`, not under
+  `/vtour/`, file name without `panorama`/`sphere`. `{ watermark: false }` opts out (360° sphere thumbnail on the beach
+  page). Non-Imagor endpoints (the direct Spaces assets endpoint for icons/videos) are never changed.
+- `buildShareImageUrl` (OG/X share image) joins the watermark into its existing `filters:format(jpeg):quality(85)`
+  segment. Every beach photo consumer goes through these two functions: cards, banners, gallery popup, carousels, map
+  tooltips, search results, itinerary, AI chat, homepage example, OG image, JSON-LD `ImageObject` / place `image`.
+- The PNG is uploaded to the bucket by the backend deploy (`media:publish-watermark`); merge the backend PR first.
+- Test: `e2e/beach-photo-watermark.unit.spec.ts` (4 tests; deliberate breaks: no watermark → 2 fail, panoramas not
+  skipped → 1 fails, second `filters:` segment in the share URL → 1 fails, opt-out ignored → 1 fails).
 ## 2026-10-29 – Fix: 360° viewer answered 404 (middleware) ✅ COMPLETE
 
 After #110 the Pannellum viewer `/vendor/pannellum-2.5.6/pannellum.htm` answered 404 on dev: the locale middleware rewrote it to `/en/vendor/…`. `vendor/` is now excluded in the middleware matcher (like `images`, `brand/`). Spec `e2e/middleware-public-files.unit.spec.ts` (without the fix: 1 failed).
