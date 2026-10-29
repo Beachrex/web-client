@@ -18,6 +18,24 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 - Microsoft Clarity on production, after analytics consent
+
+Owner: "implementiraj Microsoft Clarity, samo na PROD naj bo" (project `z5cgzffcp2`, public id).
+
+- Package `@microsoft/clarity@1.0.2` (official, injects `https://www.clarity.ms/tag/z5cgzffcp2?ref=npm` async).
+- `src/lib/analytics/clarity.ts`: project id and pure helpers - `shouldLoadClarity(baseUrl)` (= `isProductionSite`,
+  so never dev/uat/local/tests), `hasAnalyticsConsent(getCkyConsent())`, `analyticsConsentFromUpdate(detail)`,
+  `clarityConsentOptions(granted)` (ad storage always denied).
+- `src/components/Analytics/MicrosoftClarity.tsx`: client component in the locale layout `<body>`, rendered only when
+  `shouldLoadClarity`. The tag is **not loaded** until the visitor accepts the CookieYes "analytics" category (earlier
+  choice via `getCkyConsent()`, new choice via the `cookieyes_consent_update` / `cookieyes_banner_load` events). It
+  then loads on `requestIdleCallback` with `consentv2` analytics granted and tag `locale`. On withdrawal Clarity gets
+  `consentv2` analytics denied (no cookies). No `identify`, no personal data.
+- Stricter than GA (GA loads with Consent Mode denied): session recording without consent is avoided entirely.
+- Owner: Clarity cookies (`_clck`, `_clsk`, `CLID`, `MUID`...) belong to the CookieYes "Analytics" category; the
+  cookie and privacy policies name only Google Analytics today (backend static pages) and should name Microsoft Clarity.
+- Tests: `e2e/microsoft-clarity.unit.spec.ts`.
+
 ## 2026-10-29 - AI chat: "resting until tomorrow" at the daily limit, Cloudflare Turnstile
 
 Owner: free chat $5/day, back on the next day; "Turnstile ja" (backend Beachrex/backend#163, ADR 2026-10-29
