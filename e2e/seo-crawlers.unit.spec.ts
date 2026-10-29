@@ -63,12 +63,15 @@ test('consent defaults load before CookieYes, Analytics and AdSense, on producti
   // The tags are injected by the inline loader; React would hoist async script tags above the defaults.
   expect(scripts).not.toMatch(/<script\s+async/);
   const order = ['id="consent-defaults"', 'id="cookieyes"', 'id="tag-loader"'].map((s) => scripts.indexOf(s));
-  expect(scripts).toMatch(/googletagmanager\.com\/gtag\/js/);
-  expect(scripts).toMatch(/adsbygoogle\.js\?client=/);
+  // The loader text lives in src/lib/analytics/adsense.ts; AdSense only behind the admin switch (2026-10-29).
+  expect(scripts).toContain('buildTagLoaderScript({ adsEnabled })');
+  const loader = readFileSync(join(root, 'src/lib/analytics/adsense.ts'), 'utf8');
+  expect(loader).toMatch(/googletagmanager\.com\/gtag\/js/);
+  expect(loader).toMatch(/adsbygoogle\.js\?client=/);
   expect(order.every((i) => i >= 0)).toBe(true);
   expect([...order].sort((a, b) => a - b)).toEqual(order);
   expect(scripts).toMatch(/analytics_storage: 'denied'/);
   expect(scripts).toMatch(/ad_storage: 'denied'/);
   const layout = readFileSync(join(root, 'src/app/[locale]/layout.tsx'), 'utf8');
-  expect(layout).toMatch(/isProductionSite\(env\.NEXT_PUBLIC_BASE_URL\) && <ThirdPartyScripts \/>/);
+  expect(layout).toMatch(/isProductionSite\(env\.NEXT_PUBLIC_BASE_URL\) && \(\s*<ThirdPartyScripts adsEnabled=\{shouldLoadAdsense\(/);
 });
