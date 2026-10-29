@@ -66,3 +66,19 @@ test('beach map has its own metadata and an h1', () => {
   expect(page).toMatch(/<h1 className="sr-only">/);
   expect(page).not.toMatch(/'use client'/);
 });
+
+test('home page canonical and hreflang have no trailing slash (/{locale}/ redirects to /{locale})', async () => {
+  // Regression (owner 2026-10-29 launch): canonical https://beachrex.com/si/ pointed Google at a 308 redirect.
+  const { buildCanonicalUrl, buildAlternateLanguages, buildLocalizedAlternates, localeSuffix } = await import(
+    '@/lib/utils/metadata-helpers'
+  );
+  expect(buildCanonicalUrl('si', '/')).toBe('https://beachrex.com/si');
+  expect(buildCanonicalUrl('si', '')).toBe('https://beachrex.com/si');
+  expect(buildCanonicalUrl('en', '/beaches/')).toBe('https://beachrex.com/en/beaches');
+  expect(buildCanonicalUrl('en', 'beaches')).toBe('https://beachrex.com/en/beaches');
+  const alt = buildAlternateLanguages('/');
+  expect(alt.sl).toBe('https://beachrex.com/si');
+  expect(alt['x-default']).toBe('https://beachrex.com/en');
+  expect(buildLocalizedAlternates(() => '/').de).toBe('https://beachrex.com/de');
+  expect(localeSuffix('/a/b/')).toBe('/a/b');
+});
