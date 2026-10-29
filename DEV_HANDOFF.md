@@ -18,6 +18,17 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – AI chat widget: mobile sheet follows the keyboard ✅ COMPLETE
+
+Owner, 2026-10-29: "ta AI chat widget na mobile responsive popravi, ker grafično ni ok." On an iPhone with the keyboard open the widget header was gone (no way to close), the top half was empty white and the homepage showed through below the composer.
+
+- Root cause: the phone panel was `fixed inset-0`, i.e. sized to the *layout* viewport. The iOS/Android keyboard only shrinks the *visual* viewport, so Safari scrolled the page to reveal the textarea: header above the screen, empty list area, page visible under the composer. The page behind was also scrollable.
+- `src/lib/utils/chat-viewport.ts` (new): `CHAT_SHEET_MEDIA` (`max-width 639px` or `max-height 499px`, so landscape phones also get the sheet), `chatSheetRect()` (visual viewport → top/height, keyboard detection, ignored while pinch-zoomed) and `lockBodyScroll()` (iOS-safe `position: fixed` body lock, scroll position restored on close).
+- `AiChatWidget.tsx`: while open on a phone it writes `--ai-chat-top` / `--ai-chat-height` from `visualViewport` resize/scroll (rAF-throttled) and locks the page; the sheet itself gets focus on open (desktop still focuses the input). Header: 44px buttons on phones, "Nov pogovor" as an icon with the text kept for screen readers, title truncates, full-chat link now also on phones. No `interactive-widget` viewport change (site-wide side effects on Android).
+- `globals.css` `.ai-chat-panel`: layout of the sheet (`100dvh` fallback, safe-area insets, no bottom inset while the keyboard is open) and of the unchanged 400px desktop panel; `.ai-chat-input` is 16px on touch screens of any width (no iOS focus zoom in landscape either).
+- `ChatMessageList.tsx`: bubbles wrap long words/URLs (`overflow-wrap:anywhere`), beach card text can shrink, no horizontal scroll; the list keeps following the newest message when the keyboard shrinks it.
+- Checked with Playwright (`next dev` + stubbed API, fake keyboard via a stubbed `visualViewport`) at iPhone 13, 320px, Pixel 7, iPhone landscape, desktop and `/ai/chat`. Tests: `e2e/ai-chat-viewport.unit.spec.ts`. Real-device check on dev.beachrex.com still needed.
+
 ## 2026-10-29 – Map tooltip: no hardcoded "0.0" rating ✅ COMPLETE
 
 Owner, 2026-10-29: the beach tooltip on the map showed "⭐ 0.0" for every beach (hardcoded `Number(0)`), which read as a bad rating. Beaches have no rating source yet, so the badge is removed (as on `PropertyCard` since 2026-10-09). `src/components/Map/BeachMarkerTooltip.tsx`; test `e2e/map-tooltip-rating.unit.spec.ts`.

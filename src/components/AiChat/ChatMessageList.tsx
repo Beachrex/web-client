@@ -71,26 +71,30 @@ export default function ChatMessageList({
     if (followRef.current) scrollToNewest();
   }, [messages.length, isLoading, scrollToNewest]);
 
-  // Beach card images and fonts change the height after render: keep following while the reader follows.
+  // Beach card images and fonts change the height after render, and the on-screen keyboard shrinks the list
+  // (widget on phones): keep following while the reader follows.
   useEffect(() => {
     const list = listRef.current;
-    if (!list || typeof ResizeObserver === 'undefined') return;
+    const container = scrollRef.current;
+    if (!list || !container || typeof ResizeObserver === 'undefined') return;
     const observer = new ResizeObserver(() => {
       if (followRef.current) scrollToNewest();
     });
     observer.observe(list);
+    observer.observe(container);
     return () => observer.disconnect();
   }, [scrollToNewest]);
 
   const all: ChatMessage[] = [{ role: 'assistant', content: welcome, timestamp: '' }, ...messages];
-  const bubble = compact ? 'max-w-[88%] rounded-lg p-3 text-sm' : 'max-w-[80%] rounded-lg p-4';
+  // min-w-0 + overflow-wrap:anywhere: long words and URLs wrap instead of widening the bubble (phones).
+  const bubble = `min-w-0 [overflow-wrap:anywhere] ${compact ? 'max-w-[88%] rounded-lg p-3 text-sm' : 'max-w-[80%] rounded-lg p-4'}`;
 
   return (
     <div
       ref={scrollRef}
       onScroll={handleScroll}
       data-testid="chat-scroll"
-      className={`overflow-y-auto overscroll-contain ${className}`}
+      className={`overflow-y-auto overflow-x-hidden overscroll-contain ${className}`}
       aria-live="polite"
       aria-busy={isLoading}
     >
@@ -158,7 +162,7 @@ export default function ChatMessageList({
                           )}
                           <div className={compact ? 'p-2' : 'p-3'}>
                             <div className="flex items-start justify-between">
-                              <div className="flex-1">
+                              <div className="min-w-0 flex-1">
                                 <h4 className="font-semibold text-blue-600">
                                   {beachUrl ? (
                                     <Link href={beachUrl} className="hover:underline">
@@ -186,7 +190,7 @@ export default function ChatMessageList({
                               </div>
                               {(beach.distance_km !== undefined && beach.distance_km !== null)
                               || typeof beach.match_score === 'number' ? (
-                                <div className="ml-2 text-right">
+                                <div className="ml-2 shrink-0 text-right">
                                   {beach.distance_km !== undefined && beach.distance_km !== null && (
                                     <p className="text-sm font-medium text-gray-700">{beach.distance_km.toFixed(1)} km</p>
                                   )}

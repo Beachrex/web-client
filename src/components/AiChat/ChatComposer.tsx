@@ -32,7 +32,7 @@ const ChatComposer = forwardRef<HTMLTextAreaElement, {
         {locationOn ? (
           <span className="text-sm text-green-700">📍 {t('locationOn')}</span>
         ) : (
-          <button type="button" onClick={onRequestLocation} className="text-sm text-blue-600 hover:underline">
+          <button type="button" onClick={onRequestLocation} className="py-1 text-left text-sm text-blue-600 hover:underline">
             📍 {t('useLocation')}
           </button>
         )}
@@ -58,12 +58,12 @@ const ChatComposer = forwardRef<HTMLTextAreaElement, {
           aria-label={t('widget.inputLabel')}
           rows={2}
           maxLength={500}
-          className={`flex-1 resize-none rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 ${compact ? 'text-sm' : 'text-sm sm:text-base'}`}
+          className={`ai-chat-input min-w-0 flex-1 resize-none rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 ${compact ? 'text-sm' : 'text-sm sm:text-base'}`}
         />
         <button
           type="submit"
           disabled={!input.trim() || isLoading}
-          className="inline-flex shrink-0 items-center rounded-lg bg-blue-700 px-3 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-lg bg-blue-700 px-3 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-50"
           aria-label={t('send')}
         >
           {isLoading ? (
