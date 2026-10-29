@@ -2,13 +2,14 @@ import { locales } from '@/app/config/locales';
 import { buildBeachMapUrl, getBeachesWord } from '@/lib/utils/beach-urls';
 import { isProductionSite } from '@/lib/utils/environment';
 import { fetchSiteSettings } from '@/lib/site-settings';
+import { llmsAiLines } from '@/lib/utils/llms-ai-lines';
 
 /**
  * /llms.txt — a short, plain guide to the site for AI assistants and AI search engines
  * (https://llmstxt.org, TASK-004). Static text; links use the site's base URL.
  * Production only: dev and uat must stay invisible to search engines and AI (owner, 2026-10-08).
  */
-// TASK-009: the AI guide line follows the admin switch, so the file is regenerated like the pages.
+// TASK-009: the AI lines follow the admin switches, so the file is regenerated like the pages.
 export const revalidate = 300;
 
 export async function GET(): Promise<Response> {
@@ -27,10 +28,8 @@ export async function GET(): Promise<Response> {
     'Beach pages follow the structure /{language}/{beaches}/{continent}/{country}/[{region}]/[{island}]/[{town}]/{beach},',
     `for example ${beaches}/europe/croatia/...`,
   ].join(' ');
-  const { aiAssistantEnabled } = await fetchSiteSettings();
-  const aiLine = aiAssistantEnabled
-    ? `\n- [AI beach assistant](${base}/en/ai): chat about beaches and AI trip planner`
-    : '';
+  const { aiAssistantEnabled, aiTripPlannerEnabled } = await fetchSiteSettings();
+  const aiLine = llmsAiLines(base, { aiAssistantEnabled, aiTripPlannerEnabled });
   const languages = locales.map((l) => `${base}/${l}`).join(', ');
 
   const body = `# Beachrex

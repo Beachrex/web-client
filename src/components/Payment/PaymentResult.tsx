@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Link, useRouter } from '@/i18n/routing';
 
 /** Where Stripe checkout starts; both result pages send the visitor back there. */
@@ -24,6 +25,8 @@ export default function PaymentResult({ variant, sessionId }: PaymentResultProps
   const router = useRouter();
   const [countdown, setCountdown] = useState(REDIRECT_SECONDS);
   const success = variant === 'success';
+  // TASK-009: the chat has its own admin switch; payment pages follow the trip planner switch.
+  const { aiAssistantEnabled } = useSiteSettings();
 
   useEffect(() => {
     const timer = setInterval(() => setCountdown((prev) => Math.max(prev - 1, 0)), 1000);
@@ -68,7 +71,7 @@ export default function PaymentResult({ variant, sessionId }: PaymentResultProps
           <Link href={PAYMENT_RETURN_PATH} className={`${button} bg-blue-500`}>
             {success ? t('planItinerary') : t('tryAgain')}
           </Link>
-          {success && (
+          {success && aiAssistantEnabled && (
             <Link href="/ai/chat" className={`${button} bg-emerald-500`}>
               {t('tryChat')}
             </Link>
