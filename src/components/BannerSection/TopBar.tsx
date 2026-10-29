@@ -191,12 +191,13 @@ const TopBar: React.FC<TopBarProps> = ({
             <LocationPill
               first
               name={continentName}
-              href={pillLinks?.continent}
+              // On the continent's own page this pill is the page itself: no link, no tab (owner, 2026-10-29).
+              href={variant === 'continent' ? null : pillLinks?.continent}
               {...pillTab('continent')}
             >
               <Image
                 src={getContinentIcon(effectiveContinentCode)}
-                alt={pillLinks?.continent ? '' : continentName}
+                alt={variant !== 'continent' && pillLinks?.continent ? '' : continentName}
                 width={35}
                 height={35}
                 className="object-contain"
