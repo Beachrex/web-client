@@ -28,6 +28,16 @@ Owner, 2026-10-29: the pills (continent, country, region, island, city) showed o
 - `BeachBannerSection.tsx`: passes links and full names. Region/island/city listing pages do not pass links yet.
 - Test: `e2e/location-pills.unit.spec.ts`. Checked in Chromium: a left-to-right mouse sweep hovers each pill once, in order.
 
+## 2026-10-29 – Responsive WebP images from Imagor, fewer font preloads ✅ COMPLETE
+
+Owner, 2026-10-29 (home page audit): the hero was a 2800 px JPEG and beach cards 800 px JPEGs on every device (`images.unoptimized`), and 7 font files were preloaded.
+
+- `src/lib/imagor-loader.ts` (new) + `next.config.js` (`loader: "custom"`, `loaderFile`, `deviceSizes` 480–2800): `next/image` builds a `srcset`; for each width the loader asks Imagor for that width as WebP (`fit-in/{w}x{w}/filters:format(webp):quality(75)`). The width never exceeds the endpoint (800 teaser / 2800 large), so no image is larger than before. Existing filters (mobile-photo watermark) are kept. Non-Imagor sources (`public/`, Spaces icons, share images) pass through unchanged; in `next dev` these log a one-time "loader does not implement width" warning, which is expected.
+- `layout.tsx`: Figtree `preload: false` (4 of the 7 preloaded font files); Open Sans and Damion (hero h1) stay preloaded.
+- Test: `e2e/imagor-loader.unit.spec.ts`.
+- Not done: 19 header icons still load from `beachrex.fra1.digitaloceanspaces.com` (no Cloudflare). Moving them needs the SVG files (not reachable from the agent sandbox).
+- Imagor renders more width variants (cached by Cloudflare after the first request).
+
 ## 2026-10-29 – TASK-010: AI chat widget on every page, knows the current page ✅ COMPLETE
 
 Owner 2026-10-29: "bi ta AI chat naredili kot widget na strani? … da bi še vedel na kateri strani se nahajaš" and, the same day,

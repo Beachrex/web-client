@@ -81,9 +81,12 @@ const nextConfig = {
       },
     ],
 
-    // Disable Vercel Image Optimization - we use Imagor for optimization
-    // This prevents hitting Vercel's image optimization limits
-    unoptimized: true,
+    // Images are resized by Imagor, not by Next (no Next image optimizer on the server).
+    // The custom loader turns Imagor URLs into a responsive WebP srcset; other sources pass through unchanged.
+    loader: "custom",
+    loaderFile: "./src/lib/imagor-loader.ts",
+    // srcset widths for full-width / `sizes` images (Imagor endpoints cap at 800 and 2800 px)
+    deviceSizes: [480, 640, 828, 1080, 1440, 1920, 2800],
 
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
