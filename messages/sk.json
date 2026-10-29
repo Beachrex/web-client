@@ -741,7 +741,18 @@
       "locationDenied": "Poloha nie je dostupná. Povoľte prístup k polohe v prehliadači alebo napíšte miesto.",
       "errorBusy": "AI asistent je práve vyťažený. Skúste to o minútu znova.",
       "errorTooMany": "Príliš veľa správ. Chvíľu počkajte a skúste to znova.",
-      "errorTooLong": "Správa je príliš dlhá. Skráťte ju."
+      "errorTooLong": "Správa je príliš dlhá. Skráťte ju.",
+      "widget": {
+        "open": "Otvoriť AI asistenta pre pláže",
+        "close": "Zavrieť chat",
+        "title": "AI asistent pre pláže",
+        "newConversation": "Nová konverzácia",
+        "openFullPage": "Otvoriť celý chat",
+        "inputLabel": "Vaša správa",
+        "greeting": "Ahoj! Opýtajte sa ma na čokoľvek o plážach a vašej ceste k moru.",
+        "greetingBeach": "Ahoj! Prezeráte si {name}. Opýtajte sa ma na čokoľvek o tejto pláži alebo o akejkoľvek inej.",
+        "placeholderBeach": "Opýtajte sa na {name}…"
+      }
     },
     "itinerary": {
       "title": "Naplánujte si dovolenku pri mori",

@@ -48,6 +48,8 @@ export async function sendChatMessage(args: {
   locale: string;
   token: string | null;
   location: { latitude: number; longitude: number } | null;
+  /** TASK-010: the page the chat is open on (an untrusted hint; the backend validates and resolves it). */
+  pageContext?: { page_type: string; path?: string; beach_id?: number; title?: string } | null;
 }): Promise<{ ok: true; reply: ChatReply } | { ok: false; error: ChatErrorKey }> {
   try {
     const headers: Record<string, string> = {
@@ -64,6 +66,7 @@ export async function sendChatMessage(args: {
         message: args.message,
         ...(args.sessionId ? { session_id: args.sessionId } : {}),
         ...(args.location ? { context: { location: args.location } } : {}),
+        ...(args.pageContext ? { page_context: args.pageContext } : {}),
       }),
     });
     if (!response.ok) return { ok: false, error: chatErrorKey(response.status) };

@@ -741,7 +741,18 @@
       "locationDenied": "Lokacija nije dostupna. U pregledniku dopustite pristup lokaciji ili napišite mjesto.",
       "errorBusy": "AI asistent je trenutno zauzet. Pokušajte ponovno za minutu.",
       "errorTooMany": "Previše poruka. Pričekajte malo i pokušajte ponovno.",
-      "errorTooLong": "Poruka je predugačka. Skratite je."
+      "errorTooLong": "Poruka je predugačka. Skratite je.",
+      "widget": {
+        "open": "Otvori AI asistenta za plaže",
+        "close": "Zatvori chat",
+        "title": "AI asistent za plaže",
+        "newConversation": "Novi razgovor",
+        "openFullPage": "Otvori cijeli chat",
+        "inputLabel": "Vaša poruka",
+        "greeting": "Bok! Pitajte me bilo što o plažama i vašem putovanju na more.",
+        "greetingBeach": "Bok! Gledate {name}. Pitajte me bilo što o njoj ili o bilo kojoj drugoj plaži.",
+        "placeholderBeach": "Pitajte o {name}…"
+      }
     },
     "itinerary": {
       "title": "Isplanirajte putovanje na plažu",

@@ -18,6 +18,32 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – TASK-010: AI chat widget on every page, knows the current page ✅ COMPLETE
+
+Owner 2026-10-29: "bi ta AI chat naredili kot widget na strani? … da bi še vedel na kateri strani se nahajaš" and, the same day,
+"the conversation must survive closing the tab/browser by accident" + a "New conversation" button.
+Backend: Beachrex/backend#152 (`page_context` on `POST /api/v1/ai/chat`, ADR "The chat knows the page it is opened on").
+
+- `src/components/AiChat/AiChatWidget.tsx`: floating button bottom right (z-[1040], lifted on the map page) → panel
+  (phones: full screen above the sticky header, z-[1080]; desktop: 400 px panel). Media overlay, webcam modal and search
+  overlay (z-[1100]) stay above it. `role="dialog"`, Esc closes, focus goes to the input on open and back to the button on close,
+  "New conversation", link to the full chat page. **Renders nothing when the admin AI switch is off** (TASK-009) and on `/{locale}/ai/chat`.
+- `src/contexts/AiChatContext.tsx` (`AiChatProvider`, in `[locale]/layout.tsx` inside `SiteSettingsProvider`): one conversation
+  for the widget and the `/ai/chat` page; survives client navigation. **localStorage** `beachrex.aiChat.v1` (try/catch around every
+  access): messages + timestamps + session id, newest 50 messages, forgotten after 7 days without a message, restored after mount,
+  synced between tabs (`storage` event, no write-back loop). "New conversation" clears it.
+- Shared UI: `ChatMessageList.tsx` (scroll logic moved from the page unchanged), `ChatComposer.tsx`. `/ai/chat` uses them.
+  Beach links in answers now open in the same tab (the conversation is kept); old answers keep their own language's slugs (`locale` per message).
+- Page context: `src/lib/utils/ai-chat-widget.ts` (pure). Page type from the URL in all 19 locales (route words from `globalRoutes`);
+  beach / region / island / town pages register themselves with `AiChatPageMarker` (beach id from `basic_info.id`);
+  title = the page's name or `document.title` without the site suffix (≤ 120); path sanitized to the backend's charset (≤ 300).
+- Texts: `AI.chat.widget.*` in all 19 `messages/*.json`.
+- Specs: `e2e/ai-chat-widget.unit.spec.ts` (page type per locale, page_context, visibility, persistence round trip / cap / expiry
+  boundary / corrupt JSON, wiring, 19 locales). Deliberate break (expiry `>=`, visibility always on): 2 failed. Existing chat specs now
+  read the shared components.
+- Note: the server session still expires after 30 minutes without a message; the restored history stays visible but the model
+  starts a new session (earlier turns are not sent again).
+
 ## 2026-10-29 – Burger menu beach types use the card icons ✅ COMPLETE
 
 Owner 2026-10-29: "Beton" had a globe icon and the other types used different icons than the beach cards. `menuBeachFilters.ts` now takes `BEACH_TYPE_ICONS` from `beach-badges.ts` (the same CDN icons as the cards and the beach page badges, incl. concrete) through `resolveBadgeIcon`. Spec `e2e/navigation-links.unit.spec.ts` (with the old icon map: 1 failed).

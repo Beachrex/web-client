@@ -741,7 +741,18 @@
       "locationDenied": "Placeringen er ikke tilgængelig. Tillad placeringsadgang i browseren, eller skriv et sted.",
       "errorBusy": "AI-assistenten er optaget lige nu. Prøv igen om et minut.",
       "errorTooMany": "For mange beskeder. Vent lidt, og prøv igen.",
-      "errorTooLong": "Beskeden er for lang. Gør den kortere."
+      "errorTooLong": "Beskeden er for lang. Gør den kortere.",
+      "widget": {
+        "open": "Åbn AI-strandassistenten",
+        "close": "Luk chatten",
+        "title": "AI-strandassistent",
+        "newConversation": "Ny samtale",
+        "openFullPage": "Åbn hele chatten",
+        "inputLabel": "Din besked",
+        "greeting": "Hej! Spørg mig om alt om strande og din tur til havet.",
+        "greetingBeach": "Hej! Du ser på {name}. Spørg mig om alt om den eller om enhver anden strand.",
+        "placeholderBeach": "Spørg om {name}…"
+      }
     },
     "itinerary": {
       "title": "Planlæg din strandferie",
