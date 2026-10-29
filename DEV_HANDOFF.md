@@ -25,6 +25,26 @@ Owner request 2026-10-29: the top menu item "Beach view" (Prikaz plaže) made no
 - `Common.quickMenuBeachDisplay` removed from all 19 `messages/*.json` (no other usage; `Filter*.displayLabel` keys untouched).
 - Spec: `e2e/quick-menu.unit.spec.ts` (3 tests; against the old component: 2 failed).
 
+## 2026-10-29 – Banner: duplicate map thumbnail removed ✅ COMPLETE
+
+Owner request 2026-10-29 (Kvarner region page): remove the `banner-map.png` thumbnail from the banner, the floating map icon on the right edge (`/images/common/map-icon.svg`) already opens the same map.
+- `BannerSection` (continent / country / region / island / city): `MapWidget` removed. The floating map icon (same `buildMapUrl()` with the place filters) stays. The widget row is only rendered when it has content (weather on region/island/city, or `rightWidgets`), so continent/country pages get no empty row.
+- `BeachBannerSection`: `MapWidget` removed too; its floating map button (`/images/map.png`, same `buildMapUrl()` incl. `beach_id`/`lat`/`lng`) stays. Weather + sea temperature widgets unchanged.
+- World banner (`/beaches`) keeps the thumbnail: it has no floating map icon, so it is the only map link there. `MapWidget` is now a plain decorative thumbnail (the `href`/`label` props were only used by the removed callers); `public/images/banner/banner-map.png` stays for it.
+- Spec `e2e/banner-map-link.unit.spec.ts` rewritten (break: banner-map.png `<img>` put back in `BannerSection` → 1 failed).
+
+## 2026-10-29 – Fix: 360° viewer answered 404 (middleware) ✅ COMPLETE
+
+After #110 the Pannellum viewer `/vendor/pannellum-2.5.6/pannellum.htm` answered 404 on dev: the locale middleware rewrote it to `/en/vendor/…`. `vendor/` is now excluded in the middleware matcher (like `images`, `brand/`). Spec `e2e/middleware-public-files.unit.spec.ts` (without the fix: 1 failed).
+
+## 2026-10-29 – Beach page: distance on "Nearby beaches" cards ✅ COMPLETE
+
+Owner request 2026-10-29: "in 'Nearby beaches' show the distance to these beaches, like in the app".
+- Data: `GET /api/v1/spatial/beaches/within-radius` (already used by the section, centred on the current beach) returns `distance_km` per beach (PostGIS `ST_Distance`). No backend change.
+- `src/lib/utils/distance.ts`: `formatDistance(km, locale)` — same rules as the app (`mobile-app/src/lib/format.ts`): under 1 km metres rounded to 10 m (min 10 m), under 10 km one decimal, from 10 km whole km, `Intl.NumberFormat` per locale ("350 m", "4,2 km" /si, "4.2 km" /en, "12 km"). Web-only fix: 0.995–0.999 km shows "1 km", not "1.000 m". `parseDistanceKm` accepts a number or numeric string.
+- `mapBeachToProperty` → `Property.distanceKm`; `PropertyCard` shows a grey pill with a pin icon top-left on the photo (where the app puts it), with a screen-reader text `PropertyCard.distanceAway` ("{distance} away", all 19 locales). Other listings send no `distance_km`, so their cards are unchanged.
+- Spec `e2e/nearby-distance.unit.spec.ts` (break: no 1000 m guard + one decimal everywhere + mapper field removed → 3 failed).
+
 ## 2026-10-29 – 360° panorama without a tour, uploaded videos play ✅ COMPLETE
 
 Owner report 2026-10-29 (Plage du Port Vieux, Biarritz): black "360° view" popup; video file shown as a broken photo. Backend Beachrex/backend#147 (tour_url null when no tour; video files move to `videos`).
@@ -36,7 +56,7 @@ Owner report 2026-10-29 (Plage du Port Vieux, Biarritz): black "360° view" popu
 
 Owner requests 2026-10-29: "the burger menu does not list all countries" and "under Beach types only 3 of the 6 types are shown".
 - `src/lib/utils/menu-items.ts`: removed `TOP_COUNTRIES` (cap of 10). "Top beach countries" now lists every country with beaches and a known continent, most beaches first (13 on dev). The menu body already scrolls (`overflow-y-auto`).
-- `src/config/menuBeachFilters.ts`: "Beach types" is no longer 3 hardcoded picks; it uses `allOptions` (every `beach_type` option from `GET /beaches/filters`, API order and localized names) with local icons per code and `sunset.png` as fallback (rocky/concrete without a local icon still get one; new types appear automatically). `resolveAllFilterOptions` in `src/lib/utils/quick-filters.ts`.
+- `src/config/menuBeachFilters.ts`: "Beach types" is no longer 3 hardcoded picks; it uses `allOptions` (every `beach_type` option from `GET /beaches/filters`, API order and localized names) with local icons per code and `/images/menu/world.svg` as fallback (rocky/concrete without a local icon still get one; new types appear automatically). `resolveAllFilterOptions` in `src/lib/utils/quick-filters.ts`.
 - "Beaches for" and "On the beach" stay curated picks across several filter keys (a deliberate selection, not a "first N" cut).
 - Spec `e2e/navigation-links.unit.spec.ts` (cap of 10 back: 1 failed; beach types cut to 3: 1 failed).
 - Noted, not changed: `QuickMenu.tsx` filters `beach_type` with `large_stones`, a code the API does not have (`big_stones`).

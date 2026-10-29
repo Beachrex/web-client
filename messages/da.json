@@ -853,6 +853,7 @@
     "no360": "Ingen 360° visning tilgængelig",
     "noVideo": "Ingen video tilgængelig",
     "mostVisited": "Mest besøgte",
+    "distanceAway": "{distance} væk",
     "loading": "Indlæser...",
     "showOnMap": "Vis {title} på kort",
     "webcamClose": "Luk webcam"

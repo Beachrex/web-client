@@ -853,6 +853,7 @@
     "no360": "Nincs elérhető 360°-os nézet",
     "noVideo": "Nincs elérhető videó",
     "mostVisited": "Leglátogatottabb",
+    "distanceAway": "{distance} távolságra",
     "loading": "Betöltés...",
     "showOnMap": "{title} megjelenítése a térképen",
     "webcamClose": "Webkamera bezárása"

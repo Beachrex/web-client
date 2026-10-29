@@ -853,6 +853,7 @@
     "no360": "Pohľad 360° nie je k dispozícii",
     "noVideo": "Video nie je k dispozícii",
     "mostVisited": "Najnavštevovanejšia",
+    "distanceAway": "vzdialené {distance}",
     "loading": "Načítavam...",
     "showOnMap": "Zobraziť {title} na mape",
     "webcamClose": "Zavrieť webkameru"

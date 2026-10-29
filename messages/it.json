@@ -853,6 +853,7 @@
     "no360": "Nessuna vista 360° disponibile",
     "noVideo": "Nessun video disponibile",
     "mostVisited": "Più visitata",
+    "distanceAway": "a {distance}",
     "loading": "Caricamento...",
     "showOnMap": "Mostra {title} sulla mappa",
     "webcamClose": "Chiudi la webcam"

@@ -10,7 +10,6 @@ import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 
 import BottomBadges from './BottomBadges';
 import InfoCardsSection from './InfoCardsSection';
-import MapWidget from './MapWidget';
 import TopBar from './TopBar';
 import WeatherWidget from './WeatherWidget';
 
@@ -92,7 +91,6 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   const t = useTranslations('BannerSection');
   const tCommon = useTranslations('Common');
   const tFilters = useTranslations('Filters');
-  const tWorldTopBar = useTranslations('WorldTopBar');
   const locale = useLocale();
 
   const variant = topBarVariant;
@@ -100,6 +98,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   const categoryLabelKey = VARIANT_CATEGORY_LABEL_KEY[variant];
 
   const floatingButtonColorClass = variantBgClass;
+  const showWeather = variant !== 'country' && variant !== 'continent';
 
   // Build map URL with context filters
   const buildMapUrl = () => {
@@ -185,20 +184,20 @@ const BannerSection: React.FC<BannerSectionProps> = ({
 </div>
 
 
-              {/* Widgets */}
-              <div className="flex shrink-0 justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
-                <MapWidget href={buildMapUrl()} label={tWorldTopBar('mapButton')} />
-
-                {variant !== 'country' && variant !== 'continent' && (
-  <WeatherWidget
-    weather={weather}
-    locationName={weatherLocationName}
-    isLoading={isWeatherLoading}
-  />
-)}
-{rightWidgets}
-
-              </div>
+              {/* Widgets. No map thumbnail here: the floating map icon on the right edge
+                  opens the same map (owner 2026-10-29), and an empty row is not rendered. */}
+              {(showWeather || rightWidgets) && (
+                <div className="flex shrink-0 justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
+                  {showWeather && (
+                    <WeatherWidget
+                      weather={weather}
+                      locationName={weatherLocationName}
+                      isLoading={isWeatherLoading}
+                    />
+                  )}
+                  {rightWidgets}
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -853,6 +853,7 @@
     "no360": "Няма наличен изглед 360°",
     "noVideo": "Няма налично видео",
     "mostVisited": "Най-посещавана",
+    "distanceAway": "на {distance}",
     "loading": "Зареждане...",
     "showOnMap": "Покажи {title} на картата",
     "webcamClose": "Затвори уеб камерата"
