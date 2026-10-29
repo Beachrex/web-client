@@ -16,6 +16,8 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { isProductionSite } from '@/lib/utils/environment';
 import { withDefaultShareImage } from '@/lib/utils/metadata-helpers';
 import ThirdPartyScripts from '@/components/Analytics/ThirdPartyScripts';
+import MicrosoftClarity from '@/components/Analytics/MicrosoftClarity';
+import { shouldLoadClarity } from '@/lib/analytics/clarity';
 
 export async function generateMetadata({
   params,
@@ -122,6 +124,8 @@ export default async function LocaleLayout({
             </ApiClientProvider>
           </AuthProvider>
         </NextIntlClientProvider>
+        {/* Microsoft Clarity: production only, loaded after CookieYes analytics consent */}
+        {shouldLoadClarity(env.NEXT_PUBLIC_BASE_URL) && <MicrosoftClarity locale={locale} />}
       </body>
     </html>
   );
