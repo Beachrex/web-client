@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Stranden wereldwijd",
     "quickMenuBeachType": "Strandtype",
     "quickMenuUserType": "Gebruikerstype",
-    "quickMenuBeachDisplay": "Strandweergave",
     "quickMenuBeachServices": "Strandvoorzieningen",
     "quickMenuTopBeaches": "Topstranden",
     "quickMenuAboutUs": "Over ons",
@@ -854,6 +853,7 @@
     "no360": "Geen 360° weergave beschikbaar",
     "noVideo": "Geen video beschikbaar",
     "mostVisited": "Meest bezocht",
+    "distanceAway": "op {distance}",
     "loading": "Laden...",
     "showOnMap": "{title} op kaart weergeven",
     "webcamClose": "Webcam sluiten"

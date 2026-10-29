@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Beaches worldwide",
     "quickMenuBeachType": "Beach type",
     "quickMenuUserType": "User type",
-    "quickMenuBeachDisplay": "Beach view",
     "quickMenuBeachServices": "Beach services",
     "quickMenuTopBeaches": "Top beaches",
     "quickMenuAboutUs": "About us",
@@ -854,6 +853,7 @@
     "no360": "No 360° view available",
     "noVideo": "No video available",
     "mostVisited": "Most visited",
+    "distanceAway": "{distance} away",
     "loading": "Loading...",
     "showOnMap": "Show {title} on map",
     "webcamClose": "Close webcam"

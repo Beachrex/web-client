@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Плажове по света",
     "quickMenuBeachType": "Тип плаж",
     "quickMenuUserType": "Тип потребител",
-    "quickMenuBeachDisplay": "Изглед на плажа",
     "quickMenuBeachServices": "Услуги на плажа",
     "quickMenuTopBeaches": "Топ плажове",
     "quickMenuAboutUs": "За нас",
@@ -854,6 +853,7 @@
     "no360": "Няма наличен изглед 360°",
     "noVideo": "Няма налично видео",
     "mostVisited": "Най-посещавана",
+    "distanceAway": "на {distance}",
     "loading": "Зареждане...",
     "showOnMap": "Покажи {title} на картата",
     "webcamClose": "Затвори уеб камерата"

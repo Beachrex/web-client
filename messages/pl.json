@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Plaże na świecie",
     "quickMenuBeachType": "Typ plaży",
     "quickMenuUserType": "Typ użytkownika",
-    "quickMenuBeachDisplay": "Widok plaży",
     "quickMenuBeachServices": "Usługi plażowe",
     "quickMenuTopBeaches": "Najlepsze plaże",
     "quickMenuAboutUs": "O nas",
@@ -854,6 +853,7 @@
     "no360": "Brak dostępnego widoku 360°",
     "noVideo": "Brak dostępnego wideo",
     "mostVisited": "Najczęściej odwiedzana",
+    "distanceAway": "{distance} stąd",
     "loading": "Ładowanie...",
     "showOnMap": "Pokaż {title} na mapie",
     "webcamClose": "Zamknij kamerę"

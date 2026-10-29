@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Пляжи мира",
     "quickMenuBeachType": "Тип пляжа",
     "quickMenuUserType": "Тип пользователя",
-    "quickMenuBeachDisplay": "Вид пляжа",
     "quickMenuBeachServices": "Услуги на пляже",
     "quickMenuTopBeaches": "Лучшие пляжи",
     "quickMenuAboutUs": "О нас",
@@ -854,6 +853,7 @@
     "no360": "Обзор 360° недоступен",
     "noVideo": "Видео недоступно",
     "mostVisited": "Самый посещаемый",
+    "distanceAway": "в {distance}",
     "loading": "Загрузка...",
     "showOnMap": "Показать {title} на карте",
     "webcamClose": "Закрыть веб-камеру"

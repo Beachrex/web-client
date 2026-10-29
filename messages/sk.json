@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Pláže po celom svete",
     "quickMenuBeachType": "Typ pláže",
     "quickMenuUserType": "Typ používateľa",
-    "quickMenuBeachDisplay": "Zobrazenie pláže",
     "quickMenuBeachServices": "Služby na pláži",
     "quickMenuTopBeaches": "Top pláže",
     "quickMenuAboutUs": "O nás",
@@ -854,6 +853,7 @@
     "no360": "Pohľad 360° nie je k dispozícii",
     "noVideo": "Video nie je k dispozícii",
     "mostVisited": "Najnavštevovanejšia",
+    "distanceAway": "vzdialené {distance}",
     "loading": "Načítavam...",
     "showOnMap": "Zobraziť {title} na mape",
     "webcamClose": "Zavrieť webkameru"

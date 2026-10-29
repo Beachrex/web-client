@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Plaže diljem svijeta",
     "quickMenuBeachType": "Tip plaže",
     "quickMenuUserType": "Tip korisnika",
-    "quickMenuBeachDisplay": "Prikaz plaže",
     "quickMenuBeachServices": "Usluge na plaži",
     "quickMenuTopBeaches": "Top plaže",
     "quickMenuAboutUs": "O nama",
@@ -854,6 +853,7 @@
     "no360": "360° prikaz nije dostupan",
     "noVideo": "Video nije dostupan",
     "mostVisited": "Najposjećenije",
+    "distanceAway": "udaljeno {distance}",
     "loading": "Učitavanje...",
     "showOnMap": "Prikaži {title} na karti",
     "webcamClose": "Zatvori web kameru"

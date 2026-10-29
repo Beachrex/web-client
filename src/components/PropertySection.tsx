@@ -54,6 +54,8 @@ export interface Property {
   /** Up to 4 descriptive tags from the API (sporting activities, culinary, natural conditions) */
   tags?: string[];
   features?: BeachCardFeatures | null;
+  /** Distance from the current beach in km ("Nearby beaches"); the card shows it when set */
+  distanceKm?: number | null;
 }
 
 interface PropertySectionProps {

@@ -40,7 +40,8 @@ export const config = {
      * - favicon*, apple-touch-icon, android-chrome-*, site.webmanifest, og-image (icons and share image)
      * - sitemap*.xml, robots.txt, ads.txt, llms.txt (metadata files)
      * - images, brand/ (public files; brand/ is the media kit package)
+     * - vendor/ (self-hosted third-party files, e.g. the Pannellum 360° viewer)
      */
-    '/((?!api|_next/static|_next/image|favicon|apple-touch-icon|android-chrome|site\\.webmanifest|og-image|sitemap|robots\\.txt|ads\\.txt|llms\\.txt|images|brand/).*)',
+    '/((?!api|_next/static|_next/image|favicon|apple-touch-icon|android-chrome|site\\.webmanifest|og-image|sitemap|robots\\.txt|ads\\.txt|llms\\.txt|images|brand/|vendor/).*)',
   ],
 };

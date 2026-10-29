@@ -5,7 +5,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
-import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import WindyWebcams from '@/components/Beach/WindyWebcams';
 import MediaOverlay from '@/components/Beach/MediaOverlay';
@@ -52,16 +52,13 @@ const BeachPageView: React.FC<BeachPageViewProps> = ({ beachDetails }) => {
   const videoEmbedUrl = buildBeachVideoUrl(embeds?.video_url, videos);
 
   const sphereImageUrl =
-    buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url, 'gallery') ??
+    buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url, 'gallery', { watermark: false }) ??
     primaryGalleryUrlTmp;
-
-  // Get the virtual tour URL from the first sphere
-  // Use buildSphereTourUrl to handle special characters in paths (č, š, ž, etc.)
-  const sphereTourUrl = buildSphereTourUrl(spheres[0]?.tour_url);
 
   const hasGallery = gallery.length > 0;
   const hasVideo = Boolean(videoEmbedUrl);
-  const hasSphere = spheres.length > 0 && Boolean(sphereTourUrl);
+  // Tour, or our 360° viewer with the panorama when the tour was never generated (owner 2026-10-29).
+  const hasSphere = Boolean(mediaSources.sphereTourUrl);
 
   // TASK-006: verified Windy webcams get their own section with the player; the old
   // pasted-link card (QA #36) only while FEATURES.windyWebcams is off.

@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Plazhet në mbarë botën",
     "quickMenuBeachType": "Lloji i plazhit",
     "quickMenuUserType": "Lloji i përdoruesit",
-    "quickMenuBeachDisplay": "Pamja e plazhit",
     "quickMenuBeachServices": "Shërbimet e plazhit",
     "quickMenuTopBeaches": "Plazhet më të mira",
     "quickMenuAboutUs": "Rreth nesh",
@@ -854,6 +853,7 @@
     "no360": "Nuk ka pamje 360° në dispozicion",
     "noVideo": "Nuk ka video në dispozicion",
     "mostVisited": "Më të vizituarit",
+    "distanceAway": "{distance} larg",
     "loading": "Duke ngarkuar...",
     "showOnMap": "Shfaq {title} në hartë",
     "webcamClose": "Mbyll kamerën"

@@ -30,6 +30,65 @@ Owner 2026-10-29: "when you chat, the new question and answer are not shown; onl
   a message resumes following. Box height `min(600px, 60dvh)` (min 280 px) so the input stays reachable on phones.
 - Spec `e2e/ai-chat-scroll.unit.spec.ts` (3 tests; all fail on the old page / a broken helper).
 
+## 2026-10-29 – Top quick menu: "Beach view" removed ✅ COMPLETE
+
+Owner request 2026-10-29: the top menu item "Beach view" (Prikaz plaže) made no sense and had no clear target (it opened the map filtered by natural shade / scenic view).
+- `src/components/Header/QuickMenu.tsx`: entry removed (desktop row; mobile only showed the first three items, unchanged). The middle row uses `gap-x/gap-y` instead of `space-x`, so wrapped rows on narrow desktop widths no longer get a stray left margin.
+- `Common.quickMenuBeachDisplay` removed from all 19 `messages/*.json` (no other usage; `Filter*.displayLabel` keys untouched).
+- Spec: `e2e/quick-menu.unit.spec.ts` (3 tests; against the old component: 2 failed).
+
+## 2026-10-29 – Banner: duplicate map thumbnail removed ✅ COMPLETE
+
+Owner request 2026-10-29 (Kvarner region page): remove the `banner-map.png` thumbnail from the banner, the floating map icon on the right edge (`/images/common/map-icon.svg`) already opens the same map.
+- `BannerSection` (continent / country / region / island / city): `MapWidget` removed. The floating map icon (same `buildMapUrl()` with the place filters) stays. The widget row is only rendered when it has content (weather on region/island/city, or `rightWidgets`), so continent/country pages get no empty row.
+- `BeachBannerSection`: `MapWidget` removed too; its floating map button (`/images/map.png`, same `buildMapUrl()` incl. `beach_id`/`lat`/`lng`) stays. Weather + sea temperature widgets unchanged.
+- World banner (`/beaches`) keeps the thumbnail: it has no floating map icon, so it is the only map link there. `MapWidget` is now a plain decorative thumbnail (the `href`/`label` props were only used by the removed callers); `public/images/banner/banner-map.png` stays for it.
+- Spec `e2e/banner-map-link.unit.spec.ts` rewritten (break: banner-map.png `<img>` put back in `BannerSection` → 1 failed).
+
+## 2026-10-29 – Logo watermark on mobile-app photos (Imagor, on the fly)
+
+- Owner, 2026-10-29: photos uploaded from the mobile app (`img/beaches_mobile/…`, ~839 of 2 876 beaches on dev) had no
+  Beachrex logo, unlike admin uploads (logo baked in). ADR 2026-10-29 "Watermark mobile-app photos on the fly"
+  (backend repo) supersedes the 2026-10-08 "no watermark" note for these photos.
+- `buildCdnUrl(path, context?, options?: { watermark?: boolean })` in `src/lib/utils/beach-images.ts` adds Imagor's
+  `filters:watermark(img/watermark/beachrex-watermark-v1.png,-3p,-4p,0,20,30)` (bottom-right, 3 %/4 % margin, ≤ 20 %
+  of the width) when `needsWatermark(path)`: a raster image (`jpg/jpeg/png/webp`) under `img/beaches_mobile/`, not under
+  `/vtour/`, file name without `panorama`/`sphere`. `{ watermark: false }` opts out (360° sphere thumbnail on the beach
+  page). Non-Imagor endpoints (the direct Spaces assets endpoint for icons/videos) are never changed.
+- `buildShareImageUrl` (OG/X share image) joins the watermark into its existing `filters:format(jpeg):quality(85)`
+  segment. Every beach photo consumer goes through these two functions: cards, banners, gallery popup, carousels, map
+  tooltips, search results, itinerary, AI chat, homepage example, OG image, JSON-LD `ImageObject` / place `image`.
+- The PNG is uploaded to the bucket by the backend deploy (`media:publish-watermark`); merge the backend PR first.
+- Test: `e2e/beach-photo-watermark.unit.spec.ts` (4 tests; deliberate breaks: no watermark → 2 fail, panoramas not
+  skipped → 1 fails, second `filters:` segment in the share URL → 1 fails, opt-out ignored → 1 fails).
+## 2026-10-29 – Fix: 360° viewer answered 404 (middleware) ✅ COMPLETE
+
+After #110 the Pannellum viewer `/vendor/pannellum-2.5.6/pannellum.htm` answered 404 on dev: the locale middleware rewrote it to `/en/vendor/…`. `vendor/` is now excluded in the middleware matcher (like `images`, `brand/`). Spec `e2e/middleware-public-files.unit.spec.ts` (without the fix: 1 failed).
+
+## 2026-10-29 – Beach page: distance on "Nearby beaches" cards ✅ COMPLETE
+
+Owner request 2026-10-29: "in 'Nearby beaches' show the distance to these beaches, like in the app".
+- Data: `GET /api/v1/spatial/beaches/within-radius` (already used by the section, centred on the current beach) returns `distance_km` per beach (PostGIS `ST_Distance`). No backend change.
+- `src/lib/utils/distance.ts`: `formatDistance(km, locale)` — same rules as the app (`mobile-app/src/lib/format.ts`): under 1 km metres rounded to 10 m (min 10 m), under 10 km one decimal, from 10 km whole km, `Intl.NumberFormat` per locale ("350 m", "4,2 km" /si, "4.2 km" /en, "12 km"). Web-only fix: 0.995–0.999 km shows "1 km", not "1.000 m". `parseDistanceKm` accepts a number or numeric string.
+- `mapBeachToProperty` → `Property.distanceKm`; `PropertyCard` shows a grey pill with a pin icon top-left on the photo (where the app puts it), with a screen-reader text `PropertyCard.distanceAway` ("{distance} away", all 19 locales). Other listings send no `distance_km`, so their cards are unchanged.
+- Spec `e2e/nearby-distance.unit.spec.ts` (break: no 1000 m guard + one decimal everywhere + mapper field removed → 3 failed).
+
+## 2026-10-29 – 360° panorama without a tour, uploaded videos play ✅ COMPLETE
+
+Owner report 2026-10-29 (Plage du Port Vieux, Biarritz): black "360° view" popup; video file shown as a broken photo. Backend Beachrex/backend#147 (tour_url null when no tour; video files move to `videos`).
+- `src/lib/utils/beach-media.ts`: no `tour_url` but a panorama → `sphereTourUrl` is our viewer `/vendor/pannellum-2.5.6/pannellum.htm#panorama=…&autoLoad=true` (Pannellum 2.5.6 standalone, MIT, self-hosted in `public/vendor/pannellum-2.5.6/` with its licence; no npm dependency, no third-party script). `videoIsFile` for uploaded files.
+- `BeachMediaContent`: uploaded video files play in `<video controls>` (YouTube stays an iframe). `BeachPageView`: the 360° card shows for tour or panorama.
+- Spec: `e2e/beach-media.unit.spec.ts` (+4 tests; without the viewer fallback / file detection: 2 failed).
+
+## 2026-10-29 – Burger menu: all countries and all beach types ✅ COMPLETE
+
+Owner requests 2026-10-29: "the burger menu does not list all countries" and "under Beach types only 3 of the 6 types are shown".
+- `src/lib/utils/menu-items.ts`: removed `TOP_COUNTRIES` (cap of 10). "Top beach countries" now lists every country with beaches and a known continent, most beaches first (13 on dev). The menu body already scrolls (`overflow-y-auto`).
+- `src/config/menuBeachFilters.ts`: "Beach types" is no longer 3 hardcoded picks; it uses `allOptions` (every `beach_type` option from `GET /beaches/filters`, API order and localized names) with local icons per code and `/images/menu/world.svg` as fallback (rocky/concrete without a local icon still get one; new types appear automatically). `resolveAllFilterOptions` in `src/lib/utils/quick-filters.ts`.
+- "Beaches for" and "On the beach" stay curated picks across several filter keys (a deliberate selection, not a "first N" cut).
+- Spec `e2e/navigation-links.unit.spec.ts` (cap of 10 back: 1 failed; beach types cut to 3: 1 failed).
+- Noted, not changed: `QuickMenu.tsx` filters `beach_type` with `large_stones`, a code the API does not have (`big_stones`).
+
 ## 2026-10-29 – TASK-009: AI guide follows the admin switch ✅ COMPLETE
 
 Owner request 2026-10-29 (backend Beachrex/backend#146, spec `docs/tasks/TASK-009-ai-assistant-switch.md`).

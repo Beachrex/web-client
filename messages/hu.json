@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Strandok világszerte",
     "quickMenuBeachType": "Strand típusa",
     "quickMenuUserType": "Felhasználó típusa",
-    "quickMenuBeachDisplay": "Strand nézet",
     "quickMenuBeachServices": "Strand szolgáltatások",
     "quickMenuTopBeaches": "Top strandok",
     "quickMenuAboutUs": "Rólunk",
@@ -854,6 +853,7 @@
     "no360": "Nincs elérhető 360°-os nézet",
     "noVideo": "Nincs elérhető videó",
     "mostVisited": "Leglátogatottabb",
+    "distanceAway": "{distance} távolságra",
     "loading": "Betöltés...",
     "showOnMap": "{title} megjelenítése a térképen",
     "webcamClose": "Webkamera bezárása"
