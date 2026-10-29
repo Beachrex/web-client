@@ -134,9 +134,9 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                     (island as Record<string, unknown>).country_name,
                 ].filter(Boolean).join(', '),
                 main_image: (island as Record<string, unknown>).main_image as string | undefined,
-                continent_slug: island.continent_slug,
-                country_slug: island.country_slug,
-                region_slug: island.region_slug,
+                continent_slug: island.continent_slug ?? undefined,
+                country_slug: island.country_slug ?? undefined,
+                region_slug: island.region_slug ?? undefined,
             });
         });
 
@@ -150,8 +150,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 code: ((region as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: (region as Record<string, unknown>).country_name as string ?? '',
                 main_image: (region as Record<string, unknown>).main_image as string | undefined,
-                continent_slug: region.continent_slug,
-                country_slug: region.country_slug,
+                continent_slug: region.continent_slug ?? undefined,
+                country_slug: region.country_slug ?? undefined,
             });
         });
 
@@ -165,7 +165,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 code: ((country as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: '',
                 main_image: (country as Record<string, unknown>).main_image as string | undefined,
-                continent_slug: country.continent_slug,
+                continent_slug: country.continent_slug ?? undefined,
             });
         });
 

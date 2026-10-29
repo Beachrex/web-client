@@ -37,6 +37,7 @@ import type {
 } from '@/lib/api-client/types.gen';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, buildCountrySchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
 import { buildCanonicalUrl, buildCompleteMetadata, buildPlaceAlternates } from '@/lib/utils/metadata-helpers';
@@ -382,6 +383,10 @@ const beachProperties: Property[] =
         infoCards={infoCards.length ? infoCards : undefined}
         continentCode={countryDetails?.continent?.code}
         countryCode={countryDetails?.code}
+        {...mapPlacePills(locale, {
+          continent: countryDetails?.continent,
+          country: countryDetails,
+        })}
       />
 
       {/* --------------------------

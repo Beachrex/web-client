@@ -22,6 +22,7 @@ import DynamicSearchBeaches from '../DynamicSearchBeaches';
 import { FEATURES } from '@/lib/constants/features';
 import AllBeachesLink from '@/components/AllBeachesLink';
 import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 
 interface CityListingPageProps {
   citySlug: string;
@@ -180,6 +181,13 @@ const islandPillLabel = cityDetails?.island?.name
   regionSlug={cityDetails?.region?.slug}
   islandSlug={cityDetails?.island?.slug}
   citySlug={_citySlug}
+  {...mapPlacePills(locale, {
+    continent: cityDetails?.country?.continent,
+    country: cityDetails?.country,
+    region: cityDetails?.region,
+    island: cityDetails?.island,
+    city: cityDetails,
+  })}
      />
 
 

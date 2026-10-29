@@ -18,6 +18,20 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Location pill tabs: full width, place-page look with beach count, on every banner ✅ COMPLETE
+
+Owner report on dev (screenshots): the open tab was only as wide as the pill (name cut to "Hrvaš", "RN" of KVARN showing through), and the native `title` tooltip appeared on top. Owner wants the tab to look like the main bar of that place's own page, with its beach count, and the pills to work on every page that shows them.
+
+- `LocationPill`: the tab is `w-max` (sizes to its content, not to the pill) and covers what it overlaps; no `title` on interactive pills (aria-label stays). The tab shows the level word in a white pill (`TopBar.continentLabel|countryLabel|regionLabel|islandLabel|cityLabel`), the full name in bold white and the white count box with the beach icon and `Common.numBeaches` ("Plaže: 1167", count in the level colour), the same classes as TopBar's main bar, one step smaller. No count: no box (never a wrong number). Keyboard focus ring is drawn on the open tab. Still an overlay (`pointer-events-none`, clip-path, `motion-reduce:transition-none`): the row never moves under the cursor.
+- `TopBar`: new `pillCounts`; `pillTab(level)` passes colour, accent, level word and count to each pill.
+- `src/lib/mappers/mapPlacePills.ts`: links (`buildLocationPillUrls`), names and counts from the beach `location` or a place page's nested parents.
+- Wired on every banner: continent page (`beaches/[continent]/page.tsx`), country page, region/island/city listing pages (via `BannerSection`, which now forwards `pillLinks`/`pillNames`/`pillCounts`) and the beach banner.
+- API client regenerated from the backend spec (`npx openapi-ts -i <backend>/storage/api-docs/api-docs.json`, `client.gen.ts`/`index.ts` kept): `location.*.beaches_count`; it also picked up earlier backend drift (search location slugs are now nullable → `GlobalSearch` maps `null` to `undefined`).
+- Backend: Beachrex/backend PR #154 (`location.*.beaches_count` in beach details; parent counts on the country/region/island/city show endpoints).
+- No new strings: all level words and `Common.numBeaches` exist in all 19 locales (asserted by a test).
+- Tests: `e2e/location-pills.unit.spec.ts` (w-max, no title, tab content, 19 locales, `mapPlacePills`, every banner caller passes links/names/counts and no unlisted caller exists).
+- Visual check: static render of the real `TopBar` (si messages) with Tailwind CLI + Chromium: rest, hover on each pill, city page without the region count, keyboard focus; a left-to-right mouse sweep hovers Evropa > Hrvaška > Kvarner > Rab > Lopar once each, in order.
+
 ## 2026-10-29 – Map tooltip: no hardcoded "0.0" rating ✅ COMPLETE
 
 Owner, 2026-10-29: the beach tooltip on the map showed "⭐ 0.0" for every beach (hardcoded `Number(0)`), which read as a bad rating. Beaches have no rating source yet, so the badge is removed (as on `PropertyCard` since 2026-10-09). `src/components/Map/BeachMarkerTooltip.tsx`; test `e2e/map-tooltip-rating.unit.spec.ts`.
