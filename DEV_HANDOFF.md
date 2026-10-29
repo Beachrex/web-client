@@ -18,6 +18,13 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Top quick menu: "Beach view" removed ✅ COMPLETE
+
+Owner request 2026-10-29: the top menu item "Beach view" (Prikaz plaže) made no sense and had no clear target (it opened the map filtered by natural shade / scenic view).
+- `src/components/Header/QuickMenu.tsx`: entry removed (desktop row; mobile only showed the first three items, unchanged). The middle row uses `gap-x/gap-y` instead of `space-x`, so wrapped rows on narrow desktop widths no longer get a stray left margin.
+- `Common.quickMenuBeachDisplay` removed from all 19 `messages/*.json` (no other usage; `Filter*.displayLabel` keys untouched).
+- Spec: `e2e/quick-menu.unit.spec.ts` (3 tests; against the old component: 2 failed).
+
 ## 2026-10-29 – 360° panorama without a tour, uploaded videos play ✅ COMPLETE
 
 Owner report 2026-10-29 (Plage du Port Vieux, Biarritz): black "360° view" popup; video file shown as a broken photo. Backend Beachrex/backend#147 (tour_url null when no tour; video files move to `videos`).
