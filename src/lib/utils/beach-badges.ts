@@ -24,7 +24,7 @@ export const MAX_BEACH_BADGES = 9;
  */
 const CDN_ICONS = 'js/assets/images/categories_icons';
 
-const BEACH_TYPE_ICONS: Record<string, string> = {
+export const BEACH_TYPE_ICONS: Record<string, string> = {
   sand: `${CDN_ICONS}/beach_type-sand.png`,
   brown_sand: `${CDN_ICONS}/beach_type-sand.png`,
   black_sand: `${CDN_ICONS}/beach_type-sand.png`,

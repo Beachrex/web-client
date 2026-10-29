@@ -5,6 +5,8 @@ import { locales } from '@/app/config/locales';
 import type { Country } from '@/lib/api-client/types.gen';
 import { buildMenuItems } from '@/lib/utils/menu-items';
 import { resolveAllFilterOptions } from '@/lib/utils/quick-filters';
+import { BEACH_TYPE_ICONS } from '@/lib/utils/beach-badges';
+import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
 import { footerBrowseHrefs } from '@/lib/utils/footer-links';
 import { getBeachesWord, buildBeachMapUrl } from '@/lib/utils/beach-urls';
 
@@ -156,7 +158,8 @@ test('menu filter picks use filter keys the map understands and icons that exist
     expect(existsSync(join(process.cwd(), 'public', group.icon))).toBe(true);
     if (group.allOptions) {
       expect(mapKeys).toContain(group.allOptions.filterKey);
-      const icons = [...Object.values(group.allOptions.icons), group.allOptions.fallbackIcon];
+      // Local icons must exist; CDN icons (beach types, same as the cards) are checked in the next test.
+      const icons = [...Object.values(group.allOptions.icons), group.allOptions.fallbackIcon].filter((i) => i.startsWith('/'));
       for (const icon of icons) expect(existsSync(join(process.cwd(), 'public', icon)), icon).toBe(true);
     }
     for (const pick of group.picks ?? []) {
@@ -184,7 +187,12 @@ test('menu "Beach types" lists every beach type the API returns, API order and l
   ];
   const tiles = resolveAllFilterOptions(filterKey, icons, fallbackIcon, { beach_type: { options: apiTypes } });
   expect(tiles.map((t) => t.label)).toEqual(['Sand', 'Fine Pebbles', 'Large Pebbles', 'Rocky Beach', 'Grass Beach', 'Concrete', 'Future']);
-  expect(tiles[0]!.icon).toBe('/images/categories/sand-castle.png');
+  // Owner 2026-10-29: the same icons as on the beach cards, for every type ("Concrete" had the wrong one).
+  for (const code of ['sand', 'small_stones', 'big_stones', 'rock_beach', 'grass_beach', 'concrete']) {
+    expect(tiles.find((t) => t.code === code)!.icon, code).toBe(resolveBadgeIcon(BEACH_TYPE_ICONS[code]!));
+    expect(tiles.find((t) => t.code === code)!.icon, code).not.toBe(fallbackIcon);
+  }
+  expect(tiles.find((t) => t.code === 'concrete')!.icon).toContain('beach_type-concrete.png');
   expect(tiles.find((t) => t.code === 'future_type')!.icon).toBe(fallbackIcon);
   expect(resolveAllFilterOptions(filterKey, icons, fallbackIcon, null)).toEqual([]);
   // White icons (made for dark backgrounds) are invisible on the light menu: "Concrete" rendered blank on dev.

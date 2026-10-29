@@ -6,6 +6,8 @@
  * visitor's language; an option the API does not return is left out (see `resolveQuickFilters`).
  */
 import type { QuickFilterPick } from '@/config/mapQuickFilters';
+import { BEACH_TYPE_ICONS } from '@/lib/utils/beach-badges';
+import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
 
 /** Every option the API returns for one filter, in API order (new options appear automatically). */
 export interface MenuAllOptions {
@@ -28,16 +30,11 @@ export const MENU_FILTER_GROUPS: MenuFilterGroup[] = [
     // All beach types (owner 2026-10-29: the menu showed only 3 of the 6).
     allOptions: {
       filterKey: 'beach_type',
-      icons: {
-        sand: '/images/categories/sand-castle.png',
-        brown_sand: '/images/categories/sand-castle.png',
-        black_sand: '/images/categories/sand-castle.png',
-        small_stones: '/images/categories/stones.png',
-        big_stones: '/images/categories/stones-blue.png',
-        rock_beach: '/images/categories/stones-blue.png',
-        grass_beach: '/images/categories/grass-beach.png',
-      },
-      // Neutral dark icon (sunset.png is white and invisible on the light menu).
+      // Same icons as the beach cards and the beach page badges (owner 2026-10-29: the menu used other icons,
+      // and "Concrete" had none).
+      icons: Object.fromEntries(
+        Object.entries(BEACH_TYPE_ICONS).map(([code, icon]) => [code, resolveBadgeIcon(icon)])
+      ),
       fallbackIcon: '/images/menu/world.svg',
     },
   },
