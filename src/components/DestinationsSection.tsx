@@ -5,6 +5,7 @@ import { useMemo, useState, type ComponentProps } from 'react';
 import DestinationsCarousel from '@/components/DestinationsCarousel';
 import DestinationSortSelect from '@/components/DestinationSortSelect';
 import { buildDestinationUrl } from '@/lib/utils/destination-url';
+import { buildPlaceMapUrl, type MapPlace } from '@/lib/utils/beach-urls';
 import {
   DEFAULT_DESTINATION_SORT,
   sortDestinations,
@@ -132,6 +133,8 @@ export default function DestinationsSection({
         const itemsWithUrl = routableItems.map((item) => ({
           ...item,
           url: buildUrl(locale, section.type, item),
+          // The card's pin: the beach map filtered to this place (same parameters as the banner map button)
+          mapUrl: buildPlaceMapUrl(locale, section.type, item as MapPlace),
         }));
         const title =
           section.titleNamespace === 'Common'

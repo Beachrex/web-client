@@ -6,6 +6,9 @@ import { useBeachesBoundingBox, useBeachesMapBounds, type BoundingBoxSearchFilte
 import type { BeachSchema, GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
 import { nextDisplayedBeaches } from '@/lib/utils/map-results';
+import { focusCenter, parseBeachFocus, withFocusedBeach } from '@/lib/utils/map-focus';
+import { getBeachByIdentifierOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Map as MapIcon, SlidersHorizontal, X } from 'lucide-react';
@@ -16,6 +19,9 @@ import { VirtualizedBeachList } from './VirtualizedBeachList';
 import { optionMatches, type FilterOptionLike } from '@/lib/utils/filter-options';
 
 type ColumnLayout = 1 | 2;
+
+// Zoom level that guarantees markers are ungrouped (disableClusteringAtZoom is 15)
+const BEACH_DETAIL_ZOOM = 16;
 
 interface Bounds {
     min_lat: number;
@@ -229,31 +235,34 @@ const MapWithSidebar = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapBoundsData]);
 
-    // When navigating from a beach page: once the map has initialised (mapCenter is set),
-    // center on the specific beach and select it so its popup auto-opens.
-    // We intentionally do NOT set ignoreNextViewportChangeRef / skipNextBoundingBoxUpdateRef
+    // "Focus this beach" (`beach_id`, optional `lat`/`lng`; see src/lib/utils/map-focus.ts): sent by the beach
+    // banner and the pin on beach cards. The beach itself is loaded so its marker is shown even when the
+    // current filters or viewport do not contain it, and to center on it when the URL has no coordinates.
+    const focus = useMemo(() => parseBeachFocus(searchParams), [searchParams]);
+    const { data: focusedBeachResponse } = useQuery({
+        ...getBeachByIdentifierOptions({ path: { identifier: focus?.id ?? 0 } }),
+        enabled: focus !== null,
+        staleTime: 5 * 60 * 1000,
+    });
+    const focusedBeach = focus && focusedBeachResponse?.data?.id === focus.id ? focusedBeachResponse.data : null;
+
+    // Once the map has initialised (mapCenter is set), center on the focused beach and select it so its
+    // popup auto-opens. We intentionally do NOT set ignoreNextViewportChangeRef / skipNextBoundingBoxUpdateRef
     // so the viewport change triggers a bounding-box fetch for the beach's area.
     useEffect(() => {
-        if (initialBeachAppliedRef.current || !mapCenter) return;
+        if (initialBeachAppliedRef.current || !mapCenter || !focus) return;
 
-        const beachIdParam = searchParams.get('beach_id');
-        const latParam = searchParams.get('lat');
-        const lngParam = searchParams.get('lng');
-
-        if (!beachIdParam || !latParam || !lngParam) return;
-
-        const lat = parseFloat(latParam);
-        const lng = parseFloat(lngParam);
-        const id = parseInt(beachIdParam, 10);
-
-        if (isNaN(lat) || isNaN(lng) || isNaN(id)) return;
+        const center = focusCenter(focus, focusedBeach);
+        if (!center) return; // no coordinates in the URL: wait for the beach to load
 
         initialBeachAppliedRef.current = true;
-        setMapCenter([lat, lng]);
+        // The beach decides the view: the bounding box of the first result must not zoom the map back out.
+        viewportChangedByUserRef.current = true;
+        setMapCenter(center);
         setMapZoom(BEACH_DETAIL_ZOOM);
-        setSelectedBeachId(id);
+        setSelectedBeachId(focus.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [mapCenter]);
+    }, [mapCenter, focus, focusedBeach]);
 
     // Validate filters against filter options - only include filters that exist in the current options
     // Wait for filter options to load before validating, but keep previous validated filters while loading
@@ -402,6 +411,8 @@ const MapWithSidebar = () => {
     }, [boundingBoxResult.data?.data]);
 
     const beaches = displayedBeaches;
+    // Map markers: the focused beach is always among them (its popup must open even outside the filters).
+    const mapBeaches = useMemo(() => withFocusedBeach(beaches, focusedBeach), [beaches, focusedBeach]);
 
     const loading = boundingBoxResult.loading;
     const error = boundingBoxResult.error;
@@ -419,8 +430,6 @@ const MapWithSidebar = () => {
 
 
     // OPTIMIZATION: Memoize to prevent VirtualizedBeachList re-renders
-    // Zoom level that guarantees markers are ungrouped (disableClusteringAtZoom is 15)
-    const BEACH_DETAIL_ZOOM = 16;
 
     const handleLocationClick = useCallback((latitude: string, longitude: string, beachId?: number) => {
         const lat = parseFloat(latitude);
@@ -723,7 +732,7 @@ const MapWithSidebar = () => {
                             <div ref={mapContainerRef} className='h-full w-full rounded-lg overflow-hidden'>
                                 {!isDesktop ? null : mapCenter ? (
                                     <ReactLeafletMap
-                                        beaches={beaches}
+                                        beaches={mapBeaches}
                                         center={mapCenter}
                                         zoom={mapZoom}
                                         selectedBeachId={selectedBeachId}
@@ -758,7 +767,7 @@ const MapWithSidebar = () => {
                                 <div className="h-full w-full rounded-lg overflow-hidden bg-white">
                                     {mapCenter ? (
                                         <ReactLeafletMap
-                                            beaches={beaches}
+                                            beaches={mapBeaches}
                                             center={mapCenter}
                                             zoom={mapZoom}
                                             selectedBeachId={selectedBeachId}

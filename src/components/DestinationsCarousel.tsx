@@ -19,7 +19,7 @@ const FlowbiteCarousel = dynamic(
   }
 );
 
-type CountryWithUrl = Country & { url: string };
+type CountryWithUrl = Country & { url: string; mapUrl?: string };
 
 interface DestinationsCarouselProps {
   items: CountryWithUrl[];
@@ -129,6 +129,7 @@ rightControl={
                 key={c.code}
                 country={c}
                 url={c.url}
+                mapUrl={c.mapUrl}
                 badgeLabel={badgeLabel}
                 bottomVariant={cardVariant}
                 showFlag={showFlag}
@@ -146,6 +147,7 @@ rightControl={
         key={c.code}
         country={c}
         url={c.url}
+        mapUrl={c.mapUrl}
         badgeLabel={badgeLabel}
         bottomVariant={cardVariant}
         showFlag={showFlag}
