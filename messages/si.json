@@ -1034,5 +1034,19 @@
     "clear": "Počisti",
     "selected": "Izbrani filtri",
     "remove": "Odstrani {name}"
+  },
+  "PreviewAccess": {
+    "metaTitle": "Testna stran Beachrex",
+    "title": "To je testna stran Beachrex",
+    "intro": "Vpišite svoj e-naslov. Če ima dostop do te strani, boste prejeli enkratno povezavo.",
+    "emailLabel": "E-naslov",
+    "submit": "Pošlji mi povezavo",
+    "sending": "Pošiljam …",
+    "sent": "Preverite e-pošto. Če ima ta e-naslov dostop do testne strani, smo poslali povezavo. Velja 15 minut.",
+    "failed": "Povezave ni bilo mogoče zahtevati. Poskusite znova čez minuto.",
+    "linkInvalid": "Povezava ni veljavna, je že bila uporabljena ali je potekla. Zahtevajte novo.",
+    "callbackTitle": "Odpri testno stran",
+    "callbackIntro": "Kliknite gumb, da odprete testno stran Beachrex na tej napravi.",
+    "callbackButton": "Odpri testno stran"
   }
 }
