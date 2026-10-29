@@ -18,6 +18,13 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Top quick menu: "Beach view" removed ✅ COMPLETE
+
+Owner request 2026-10-29: the top menu item "Beach view" (Prikaz plaže) made no sense and had no clear target (it opened the map filtered by natural shade / scenic view).
+- `src/components/Header/QuickMenu.tsx`: entry removed (desktop row; mobile only showed the first three items, unchanged). The middle row uses `gap-x/gap-y` instead of `space-x`, so wrapped rows on narrow desktop widths no longer get a stray left margin.
+- `Common.quickMenuBeachDisplay` removed from all 19 `messages/*.json` (no other usage; `Filter*.displayLabel` keys untouched).
+- Spec: `e2e/quick-menu.unit.spec.ts` (3 tests; against the old component: 2 failed).
+
 ## 2026-10-29 – Banner: duplicate map thumbnail removed ✅ COMPLETE
 
 Owner request 2026-10-29 (Kvarner region page): remove the `banner-map.png` thumbnail from the banner, the floating map icon on the right edge (`/images/common/map-icon.svg`) already opens the same map.
