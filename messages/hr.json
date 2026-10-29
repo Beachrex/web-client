@@ -742,6 +742,8 @@
       "errorBusy": "AI asistent je trenutno zauzet. Pokušajte ponovno za minutu.",
       "errorTooMany": "Previše poruka. Pričekajte malo i pokušajte ponovno.",
       "errorTooLong": "Poruka je predugačka. Skratite je.",
+      "errorResting": "AI asistent je dosegao dnevno ograničenje i odmara se do sutra. Vratite se tada – stranice plaža i karta rade kao i obično.",
+      "errorRobot": "Nismo mogli potvrditi da niste robot. Osvježite stranicu i pokušajte ponovno.",
       "widget": {
         "open": "Otvori AI asistenta za plaže",
         "close": "Zatvori chat",

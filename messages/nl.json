@@ -742,6 +742,8 @@
       "errorBusy": "De AI-assistent is nu druk. Probeer het over een minuut opnieuw.",
       "errorTooMany": "Te veel berichten. Wacht even en probeer het opnieuw.",
       "errorTooLong": "Het bericht is te lang. Maak het korter.",
+      "errorResting": "De AI-assistent heeft zijn daglimiet bereikt en rust tot morgen. Kom dan terug – de strandpagina's en de kaart werken zoals gewoonlijk.",
+      "errorRobot": "We konden niet bevestigen dat je geen robot bent. Laad de pagina opnieuw en probeer het nog eens.",
       "widget": {
         "open": "AI-strandassistent openen",
         "close": "Chat sluiten",

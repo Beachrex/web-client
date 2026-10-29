@@ -742,6 +742,8 @@
       "errorBusy": "Asistenti AI është i zënë tani. Provoni përsëri pas një minute.",
       "errorTooMany": "Shumë mesazhe. Prisni pak dhe provoni përsëri.",
       "errorTooLong": "Mesazhi është shumë i gjatë. Shkurtojeni.",
+      "errorResting": "Asistenti AI ka arritur kufirin ditor dhe pushon deri nesër. Kthehuni atëherë – faqet e plazheve dhe harta funksionojnë si zakonisht.",
+      "errorRobot": "Nuk arritëm të konfirmojmë që nuk jeni robot. Rifreskoni faqen dhe provoni përsëri.",
       "widget": {
         "open": "Hap asistentin AI për plazhet",
         "close": "Mbyll bisedën",

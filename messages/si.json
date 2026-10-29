@@ -754,6 +754,8 @@
       "errorBusy": "AI pomočnik je trenutno zaseden. Poskusite znova čez minuto.",
       "errorTooMany": "Preveč sporočil. Počakajte malo in poskusite znova.",
       "errorTooLong": "Sporočilo je predolgo. Skrajšajte ga.",
+      "errorResting": "AI pomočnik je dosegel dnevno omejitev in počiva do jutri. Vrnite se takrat – strani plaž in zemljevid delujejo kot običajno.",
+      "errorRobot": "Nismo mogli potrditi, da niste robot. Osvežite stran in poskusite znova.",
       "widget": {
         "open": "Odpri AI pomočnika za plaže",
         "close": "Zapri klepet",

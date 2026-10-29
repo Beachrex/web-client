@@ -742,6 +742,8 @@
       "errorBusy": "AI-assistenten er optaget lige nu. Prøv igen om et minut.",
       "errorTooMany": "For mange beskeder. Vent lidt, og prøv igen.",
       "errorTooLong": "Beskeden er for lang. Gør den kortere.",
+      "errorResting": "AI-assistenten har nået sin daglige grænse og hviler til i morgen. Kom tilbage da – strandsiderne og kortet virker som normalt.",
+      "errorRobot": "Vi kunne ikke bekræfte, at du ikke er en robot. Genindlæs siden, og prøv igen.",
       "widget": {
         "open": "Åbn AI-strandassistenten",
         "close": "Luk chatten",

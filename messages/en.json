@@ -742,6 +742,8 @@
       "errorBusy": "The AI assistant is busy right now. Please try again in a minute.",
       "errorTooMany": "Too many messages. Please wait a little and try again.",
       "errorTooLong": "The message is too long. Please shorten it.",
+      "errorResting": "The AI assistant has reached its daily limit and is resting until tomorrow. Please come back then – the beach pages and the map work as usual.",
+      "errorRobot": "We could not confirm that you are not a robot. Please reload the page and try again.",
       "widget": {
         "open": "Open the AI beach assistant",
         "close": "Close the chat",
