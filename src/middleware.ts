@@ -1,68 +1,33 @@
 import createMiddleware from 'next-intl/middleware';
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { routing } from './i18n/routing';
+import { createBeachesMiddleware } from './lib/i18n/beaches-middleware';
+import { legacySlovenianPath } from './lib/utils/legacy-redirect';
+import { currentBeachSlug, oldBeachSlug, withBeachSlug } from './lib/utils/old-beach-slug';
 
 const intlMiddleware = createMiddleware(routing);
+const beachesMiddleware = createBeachesMiddleware(intlMiddleware, (url) => NextResponse.rewrite(url));
 
-// Locale-specific route translations for beaches
-const beachesRoutes: Record<string, string> = {
-  en: 'beaches',
-  si: 'plaze',
-  de: 'strande',
-  hr: 'plaze',
-  fr: 'plages',
-  es: 'playas',
-  it: 'spiagge',
-  ua: 'plyazhi',
-  ru: 'plyazhi',
-  pl: 'plaze',
-  cs: 'plaze',
-  hu: 'strandok',
-  bg: 'plyazhove',
-  sk: 'plaze',
-  da: 'straande',
-  pt: 'praias',
-  nl: 'stranden',
-  el: 'paralies',
-  sq: 'plazhet',
-};
-
-export default function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // First, let next-intl process the request for locale detection
-  const intlResponse = intlMiddleware(request);
-
-  // Check if pathname contains ANY of the localized beaches words
-  // This handles cases where the URL has a beaches word from a different locale
-  // (e.g., /en/plaze/... when switching from SI to EN)
-  for (const beachesWord of Object.values(beachesRoutes)) {
-    if (pathname.includes(`/${beachesWord}/`)) {
-      // Rewrite ANY localized beaches word to 'beaches' for internal routing
-      // e.g., /en/plaze/evropa/... -> /en/beaches/evropa/...
-      // e.g., /si/plaze/evropa/... -> /si/beaches/evropa/...
-      const rewrittenPath = pathname.replace(`/${beachesWord}/`, '/beaches/');
-
-      // Create a new URL with the rewritten path
+export default async function middleware(request: NextRequest): Promise<NextResponse> {
+  // Old beachrex.com Slovenian URLs used `/sl`; the locale is `si` now. One permanent hop,
+  // then `[locale]/[...rest]` maps the rest of the old path (TASK-004 step 5b).
+  const slovenian = legacySlovenianPath(request.nextUrl.pathname);
+  if (slovenian) {
+    const url = request.nextUrl.clone();
+    url.pathname = slovenian;
+    return NextResponse.redirect(url, 308);
+  }
+  // Former "beach-…" slugs move permanently to the current slug (owner 2026-10-23).
+  const old = oldBeachSlug(request.nextUrl.pathname);
+  if (old) {
+    const current = await currentBeachSlug(process.env.NEXT_PUBLIC_API_ENDPOINT, old);
+    if (current && current !== old) {
       const url = request.nextUrl.clone();
-      url.pathname = rewrittenPath;
-
-      // Rewrite the request to use the English folder structure
-      // but keep the intl response headers for locale detection
-      const rewriteResponse = NextResponse.rewrite(url);
-
-      // Copy headers from intl middleware to preserve locale context
-      intlResponse.headers.forEach((value, key) => {
-        rewriteResponse.headers.set(key, value);
-      });
-
-      return rewriteResponse;
+      url.pathname = withBeachSlug(request.nextUrl.pathname, current);
+      return NextResponse.redirect(url, 301);
     }
   }
-
-  // For all other routes, return the intl middleware response
-  return intlResponse;
+  return beachesMiddleware(request);
 }
 
 export const config = {
@@ -72,8 +37,11 @@ export const config = {
      * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
-     * - favicon.ico, sitemap*.xml, robots.txt (metadata files)
+     * - favicon*, apple-touch-icon, android-chrome-*, site.webmanifest, og-image (icons and share image)
+     * - sitemap*.xml, robots.txt, ads.txt, llms.txt (metadata files)
+     * - images, brand/ (public files; brand/ is the media kit package)
+     * - vendor/ (self-hosted third-party files, e.g. the Pannellum 360° viewer)
      */
-    '/((?!api|_next/static|_next/image|favicon\\.ico|favicon\\.png|sitemap|robots\\.txt|images).*)',
+    '/((?!api|_next/static|_next/image|favicon|apple-touch-icon|android-chrome|site\\.webmanifest|og-image|sitemap|robots\\.txt|ads\\.txt|llms\\.txt|images|brand/|vendor/).*)',
   ],
 };

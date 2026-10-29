@@ -45,25 +45,28 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
                   <h3 className="mb-4 text-xl font-bold leading-tight text-white sm:mb-6 sm:text-2xl lg:text-3xl">
                     {item.title}
                   </h3>
-                  <Link
-                    href={item.buttonUrl}
-                    className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-bold transition-colors sm:gap-3 sm:px-5 sm:py-3 sm:text-base"
-                    style={{
-                      backgroundColor: item.buttonBgColor,
-                      color: item.buttonTextColor,
-                    }}
-                  >
-                    {item.buttonIconUrl && (
-                      <Image
-                        src={item.buttonIconUrl}
-                        alt="Button icon"
-                        width={20}
-                        height={20}
-                        className="sm:h-6 sm:w-6"
-                      />
-                    )}
-                    <span>{item.buttonLabel}</span>
-                  </Link>
+                  {/* No button when the target is hidden for launch (empty url) */}
+                  {item.buttonUrl && (
+                    <Link
+                      href={item.buttonUrl}
+                      className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-bold transition-colors sm:gap-3 sm:px-5 sm:py-3 sm:text-base"
+                      style={{
+                        backgroundColor: item.buttonBgColor,
+                        color: item.buttonTextColor,
+                      }}
+                    >
+                      {item.buttonIconUrl && (
+                        <Image
+                          src={item.buttonIconUrl}
+                          alt=""
+                          width={20}
+                          height={20}
+                          className="sm:h-6 sm:w-6"
+                        />
+                      )}
+                      <span>{item.buttonLabel}</span>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -93,25 +96,28 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
                   <h3 className="mb-4 text-xl font-bold leading-tight text-white sm:mb-6 sm:text-2xl lg:text-3xl">
                     {item.title}
                   </h3>
-                  <Link
-                    href={item.buttonUrl}
-                    className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-bold transition-colors sm:gap-3 sm:px-5 sm:py-3 sm:text-base"
-                    style={{
-                      backgroundColor: item.buttonBgColor,
-                      color: item.buttonTextColor,
-                    }}
-                  >
-                    {item.buttonIconUrl && (
-                      <Image
-                        src={item.buttonIconUrl}
-                        alt="Button icon"
-                        width={20}
-                        height={20}
-                        className="sm:h-6 sm:w-6"
-                      />
-                    )}
-                    <span>{item.buttonLabel}</span>
-                  </Link>
+                  {/* No button when the target is hidden for launch (empty url) */}
+                  {item.buttonUrl && (
+                    <Link
+                      href={item.buttonUrl}
+                      className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-bold transition-colors sm:gap-3 sm:px-5 sm:py-3 sm:text-base"
+                      style={{
+                        backgroundColor: item.buttonBgColor,
+                        color: item.buttonTextColor,
+                      }}
+                    >
+                      {item.buttonIconUrl && (
+                        <Image
+                          src={item.buttonIconUrl}
+                          alt=""
+                          width={20}
+                          height={20}
+                          className="sm:h-6 sm:w-6"
+                        />
+                      )}
+                      <span>{item.buttonLabel}</span>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -122,7 +128,7 @@ const ExploreSection: React.FC<ExploreSectionProps> = ({ items, tagline }) => {
         <div className="mt-12 text-center sm:mt-16 lg:mt-20">
           <h2
             className="text-3xl font-normal leading-tight text-variable-collection-temno-modro sm:text-4xl lg:text-5xl xl:text-6xl"
-            style={{ fontFamily: 'Damion, cursive' }}
+            style={{ fontFamily: 'var(--font-damion), cursive' }}
           >
             {tagline}
           </h2>

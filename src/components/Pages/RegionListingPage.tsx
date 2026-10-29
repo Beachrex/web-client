@@ -9,43 +9,38 @@ import BannerSection from '@/components/BannerSection/BannerSection';
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import DynamicTopBar from '@/components/DynamicTopBar';
 
-import { useCities } from '@/hooks/useCities';
-import { useIslands } from '@/hooks/useIslands';
-import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
-import { useRegionDetails } from '@/hooks/useRegionDetails';
 import { useRegionWeather } from '@/hooks/useWeather';
+import type { RegionPageData } from '@/lib/server/destination-page-data';
 
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
-import { ChevronRight } from 'lucide-react';
 import DestinationsSection from '../DestinationsSection';
+import { FEATURES } from '@/lib/constants/features';
+import AllBeachesLink from '@/components/AllBeachesLink';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 
 interface RegionListingPageProps {
-  regionSlug?: string;
+  regionSlug: string;
+  /** Fetched on the server by the page route (SSR); only the weather loads in the browser. */
+  initialData: RegionPageData;
 }
 
-export default function RegionListingPage({ regionSlug }: RegionListingPageProps) {
+export default function RegionListingPage({ regionSlug, initialData }: RegionListingPageProps) {
   const pathname = usePathname();
   const locale = useLocale();
 
   const tRegion = useTranslations('RegionPage');
   const tProperty = useTranslations('PropertySection');
 
-  const { regionDetails, loading, error } = useRegionDetails(
-    regionSlug ?? '',
-    undefined,
-    Boolean(regionSlug),
-  );
+  const { details: regionDetails, cities, islands, mostVisited: mostVisitedBeaches } = initialData;
 
-  const regionCountryCode = regionDetails?.country?.code ?? '';
+  const regionCountryCode = regionDetails.country?.code ?? '';
 
-  const { cities } = useCities(undefined, regionSlug);
-  const { islands } = useIslands(undefined, regionSlug);
-
-  const regionName = regionDetails?.name ?? regionSlug ?? 'Region';
+  const regionName = regionDetails.name ?? regionSlug;
   const bannerImage = buildCdnUrl(regionDetails?.main_image, 'banner');
 
   const regionBeachesCount = regionDetails?.beaches_count ?? 0;
@@ -53,20 +48,15 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
 
   const { data: regionWeatherResponse, isLoading: isWeatherLoading } =
     useRegionWeather({
-      slug: regionSlug ?? '',
+      slug: regionSlug,
       countryCode: regionCountryCode,
       locale,
-      enabled: !!regionSlug && !!regionCountryCode,
+      enabled: !!regionCountryCode,
     });
 
   const regionWeather = regionWeatherResponse?.data?.weather ?? null;
   const regionWeatherLocationName =
     regionWeather?.location_name ?? regionName;
-
-  const { data: mostVisitedBeaches } = useMostVisitedBeaches({
-    region_code: regionSlug,
-    limit: 20,
-  });
 
   const mostVisitedSet = new Set(
     (mostVisitedBeaches ?? [])
@@ -76,7 +66,7 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
 
   const beachProperties: Property[] =
     mostVisitedBeaches
-      ?.map((beach) => {
+      .map((beach) => {
         const p = mapBeachToProperty(beach, {
           mostVisitedSet,
           locationFallback: regionName,
@@ -92,7 +82,7 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
           ...(url ? { beachUrl: url } : {}),
         };
       })
-      .filter((p): p is Property => p !== null) ?? [];
+      .filter((p): p is Property => p !== null);
 
   const regionBadges =
     regionDetails?.badges
@@ -107,22 +97,11 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
     locale,
   );
 
-  if (loading && !regionDetails) {
-    return <div className="container mx-auto py-8">Loading region…</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="container mx-auto py-8 text-red-600">
-        Failed to load region: {error}
-      </div>
-    );
-  }
-
   return (
     <>
       <DynamicTopBar
         pathname={pathname ?? ''}
+        breadcrumbLabels={breadcrumbLabels(regionDetails)}
         variant="region"
         navigation={regionDetails?.navigation}
       />
@@ -142,6 +121,11 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
         continentCode={regionDetails?.country?.continent?.code}
         countryCode={regionDetails?.country?.code}
         regionSlug={regionSlug}
+        {...mapPlacePills(locale, {
+          continent: regionDetails?.country?.continent,
+          country: regionDetails?.country,
+          region: regionDetails,
+        })}
       />
 
       <PropertySection
@@ -149,21 +133,18 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
         totalCount={beachProperties.length}
         properties={beachProperties}
         headerRight={
-          <a
-            href="#"
-            className="flex items-center font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px]"
-          >
-            {tProperty('allBeachesLink', { count: beachProperties.length })}
-            <ChevronRight className="h-4 w-4" />
-          </a>
+          <AllBeachesLink label={tProperty('allBeachesLink', { count: regionBeachesCount })} />
         }
       />
 
-      <AccommodationSection
-        title={tRegion('featuredAccommodationsTitle', { region: regionName })}
-        totalCount={regionAccommodationsCount}
-        showDropdown
-      />
+      {/* Hidden for launch: no accommodation source yet (fake cards) */}
+      {FEATURES.accommodation && (
+        <AccommodationSection
+          title={tRegion('featuredAccommodationsTitle', { region: regionName })}
+          totalCount={regionAccommodationsCount}
+          showDropdown
+        />
+      )}
 
 <DestinationsSection
   context="region"
@@ -176,6 +157,7 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
       countKey: 'allIslandsCount',
       badgeKey: 'islandBadge',
       cardVariant: 'island',
+      sortable: true,
     },
     {
       type: 'city',
@@ -184,6 +166,7 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
       countKey: 'allCitiesCount',
       badgeKey: 'cityBadge',
       cardVariant: 'city',
+      sortable: true,
     },
   ]}
 />
@@ -194,9 +177,8 @@ export default function RegionListingPage({ regionSlug }: RegionListingPageProps
   titleKey="browseBeachesTitle"
   titleParams={{ region: regionName }}
   filterButtonColor="#FF2877"
-  baseFilters={{
-    region: regionSlug!,
-  }}
+  baseFilters={initialData.listFilters}
+  initialPage={initialData.firstPage}
   hiddenFilterKeys={['country', 'region']}
       />
 

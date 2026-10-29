@@ -1,0 +1,29 @@
+BeachRex Teal
+  HEX #00B2C9
+  RGB 0 178 201
+  CMYK C80 M0 Y20 K0
+  PANTONE 3125 C (približek)
+
+BeachRex Orange
+  HEX #EB8751
+  RGB 235 135 81
+  CMYK C0 M56 Y70 K0
+  PANTONE 7577 C (približek)
+
+Deep Sea
+  HEX #0F3B45
+  RGB 15 59 69
+  CMYK C90 M50 Y45 K45
+  —
+
+Sand
+  HEX #FFF4E8
+  RGB 255 244 232
+  CMYK C0 M4 Y9 K0
+  —
+
+White
+  HEX #FFFFFF
+  RGB 255 255 255
+  CMYK C0 M0 Y0 K0
+  —

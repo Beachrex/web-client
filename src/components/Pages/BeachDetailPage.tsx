@@ -2,11 +2,12 @@
 
 import { usePathname } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BeachBannerSection from '@/components/Beach/BeachBanner/BeachBannerSection';
 import BeachDetailsSection from '@/components/Beach/BeachDetails/beachDetailsSection';
+import BeachFaqSection from '@/components/Beach/BeachFaqSection';
 import BeachPageView from '@/components/Beach/BeachPageView';
 import GetYourGuideSection from '@/components/Beach/GetYourGuideSection';
 import SimilarBeachesSection from '@/components/Beach/SimilarBeachesSection';
@@ -16,6 +17,10 @@ import { useBeachesRadius } from '@/hooks/useBeaches';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildBeachUrlFromNavigation } from '@/lib/utils/beach-urls';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
+import { FEATURES } from '@/lib/constants/features';
+import { reportBeachView } from '@/lib/utils/beach-views';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
+import { readBeachFaq } from '@/lib/utils/beach-faq';
 
 interface BeachDetailPageProps {
   beachDetails: BeachDetailsSchema;
@@ -35,6 +40,11 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
   // Extract correct fields from API
   // ------------------------------------
   const beachId = beachDetails.basic_info?.id ?? null;
+
+  // The page HTML is cached (ISR); the visit is counted from the browser.
+  useEffect(() => {
+    if (beachId !== null) reportBeachView(beachId);
+  }, [beachId]);
 
   const latitude = Number(beachDetails.basic_info?.latitude);
   const longitude = Number(beachDetails.basic_info?.longitude);
@@ -86,6 +96,7 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
       {/* TOP BAR */}
       <DynamicTopBar
         pathname={pathname ?? ''}
+        breadcrumbLabels={breadcrumbLabels(beachDetails.location, beachDetails.basic_info)}
         variant="beach"
         navigation={beachDetails.navigation}
         buildUrl={(item) =>
@@ -108,16 +119,18 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
 
       <BeachPageView beachDetails={beachDetails} />
 
-      <AccommodationSection
-        totalCount={569}
-        showDropdown
-        items={Array.from({ length: 12 }, () => ({}))}
-        selectedDistance={{ value: 1, label: '1 km' }}
-        onDistanceChange={(v) => console.log('distance', v)}
-        onFilterClick={() => console.log('filter')}
-      />
-      <GetYourGuideSection />
+      {/* Hidden for launch: fake accommodation cards ("569 accommodations") and an empty GetYourGuide shell */}
+      {FEATURES.accommodation && (
+        <AccommodationSection
+          showDropdown
+          selectedDistance={{ value: 1, label: '1 km' }}
+        />
+      )}
+      {FEATURES.getYourGuide && <GetYourGuideSection />}
       <BeachDetailsSection beachDetails={beachDetails} />
+
+      {/* TASK-007: FAQ (same items as the FAQPage JSON-LD of the page) */}
+      <BeachFaqSection beachName={beachDetails.basic_info?.name ?? ''} items={readBeachFaq(beachDetails)} />
 
       {/* SIMILAR BEACHES WITH GALLERY */}
       <SimilarBeachesSection

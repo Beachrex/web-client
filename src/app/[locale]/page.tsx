@@ -9,21 +9,26 @@
  * - Enable ISR with revalidate
  */
 
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 
 import BeachCategorySearch from '@/components/Home/BeachCategorySearch';
 import HeroSection from '@/components/Home/HeroSection';
+import { heroBackgroundUrl } from '@/lib/utils/hero-image';
 import HomeAccommodationSection from '@/components/Home/HomeAccommodationSection';
 import WorldMapSection from '@/components/Home/WorldMapSection';
 import BeachMediaSection from '../../components/Home/BeachMediaSection';
+import BeachMediaShowcase from '@/components/Home/BeachMediaShowcase';
 import ExploreSection from '../../components/Home/ExploreSection';
-import {  getFirstPageContent } from '@/lib/api-client';
-import type { AcceptLanguage, FirstPageContent } from '@/lib/api-client/types.gen';
+import { getBeachDetails, getFirstPageContent } from '@/lib/api-client';
+import type { AcceptLanguage, BeachDetailsSchema, FirstPageContent } from '@/lib/api-client/types.gen';
+import { getBeachMediaSources, parseShowcaseBeachId, showcaseCards } from '@/lib/utils/beach-media';
+import { NOT_A_VIEW_HEADERS } from '@/lib/utils/beach-views';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { buildBeachMapUrl, buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
 import HomeCountriesSection from '@/components/Home/HomeCountriesSection';
+import { FEATURES } from '@/lib/constants/features';
 
 interface PageProps {
   params: {
@@ -37,6 +42,7 @@ interface PageProps {
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'SEO' });
 
   const title = t('homeTitle');
@@ -57,9 +63,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  */
 export default async function HomePage({ params }: PageProps) {
   const { locale } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'HomePage' });
   const tFeature = await getTranslations({ locale, namespace: 'FeatureCards' });
-  const tRoutes = await getTranslations({ locale, namespace: 'routes' });
 
   // Fetch all data on server
 
@@ -114,15 +120,58 @@ export default async function HomePage({ params }: PageProps) {
     };
   }) ?? [];
 
+  // TASK-008: one real beach as the media example (`beach_views.config.showcase_beach_id`, set in admin).
+  // Any failure keeps the static cards below.
+  let showcase: React.ComponentProps<typeof BeachMediaShowcase> | null = null;
+  const showcaseBeachId = parseShowcaseBeachId(beachViews?.config);
+  if (showcaseBeachId) {
+    try {
+      const res = await getBeachDetails({
+        path: { identifier: String(showcaseBeachId) },
+        headers: { 'Accept-Language': locale as AcceptLanguage, ...NOT_A_VIEW_HEADERS },
+      });
+      const beach: BeachDetailsSchema | undefined = res.data?.data;
+      const beachName = beach?.basic_info?.name;
+      if (beach && beachName) {
+        const sources = getBeachMediaSources(beach);
+        const cards = showcaseCards(sources);
+        const loc = beach.location;
+        if (cards.length > 0) {
+          showcase = {
+            title: beachViews?.title ?? '',
+            beachName,
+            place: [loc?.city?.name, loc?.country?.name].filter(Boolean).join(', '),
+            beachUrl: buildBeachUrlFromSchema(
+              {
+                slug: beach.basic_info?.slug,
+                continent_slug: loc?.continent?.slug,
+                country_slug: loc?.country?.slug,
+                region_slug: loc?.region?.slug,
+                island_slug: loc?.island?.slug,
+                city_slug: loc?.city?.slug,
+              },
+              locale,
+            ),
+            sources,
+            cards,
+          };
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching homepage showcase beach:', error);
+    }
+  }
+
   // Process accommodation images
   const accommodationImages = accommodation?.media?.map(m => buildCdnUrl(m.url, 'carousel')).filter((url): url is string => url !== null) ?? [];
 
   // Process featured sections data
-  // Button configurations (hardcoded for now - can be moved to API config later)
+  // Button configurations (hardcoded for now - can be moved to API config later).
+  // Blog and accommodation are hidden for launch: an empty url renders the tile without a button.
   const buttonConfigs = [
     { label: tFeature('beachMapButton'), icon: '/images/map.png', bgColor: '#1A3C68', textColor: '#FFFFFF', url: buildBeachMapUrl(locale) },
-    { label: tFeature('browseBlogButton'), icon: '/images/blog.png', bgColor: '#F5F5F5', textColor: '#4D4D4D', url: tRoutes('blog') },
-    { label: tFeature('browseAccommodationsButton'), icon: '/images/accomodation.png', bgColor: '#006b4f', textColor: '#FFFFFF', url: tRoutes('accommodations') },
+    { label: tFeature('browseBlogButton'), icon: '/images/blog.png', bgColor: '#F5F5F5', textColor: '#4D4D4D', url: FEATURES.blog ? `/${locale}/blog` : '' },
+    { label: tFeature('browseAccommodationsButton'), icon: '/images/accomodation.png', bgColor: '#006b4f', textColor: '#FFFFFF', url: FEATURES.accommodation ? `/${locale}/accommodations` : '' },
     { label: tFeature('beachMapButton'), icon: '/images/map.png', bgColor: '#1A3C68', textColor: '#FFFFFF', url: buildBeachMapUrl(locale) },
   ];
 
@@ -151,7 +200,10 @@ export default async function HomePage({ params }: PageProps) {
   return (
     <>
       {/* Hero Section */}
-      <HeroSection />
+      <HeroSection
+        initialTitle={sections.hero_banner?.title ?? ''}
+        initialBackground={heroBackgroundUrl(sections.hero_banner?.media)}
+      />
 
       {/* World Map Section */}
       {browseMap && (
@@ -178,15 +230,17 @@ export default async function HomePage({ params }: PageProps) {
       )}
 
       {/* Beach Media Section */}
-      {beachViews && beachViewsItems.length > 0 && (
+      {showcase ? (
+        <BeachMediaShowcase {...showcase} />
+      ) : beachViews && beachViewsItems.length > 0 && (
         <BeachMediaSection
           title={beachViews.title ?? ''}
           items={beachViewsItems}
         />
       )}
 
-      {/* Accommodation Section */}
-      {accommodation && (
+      {/* Accommodation Section (hidden for launch) */}
+      {FEATURES.accommodation && accommodation && (
         <HomeAccommodationSection
           title={accommodation.title ?? ''}
           description={accommodation.description ?? ''}
@@ -210,7 +264,7 @@ export default async function HomePage({ params }: PageProps) {
   );
 }
 
-// Render dynamically on every request so admin changes appear immediately.
-// The API (Laravel) caches the DB query in Redis and invalidates it on admin
-// save, so this still stays fast while staying fresh.
-export const dynamic = 'force-dynamic';
+// Cached HTML (ISR), rebuilt in the background at most every 5 minutes: admin changes to the
+// home content appear within 5 minutes. Rendering on every request (force-dynamic) made the
+// home page the slowest page of the site.
+export const revalidate = 300;

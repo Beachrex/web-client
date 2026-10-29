@@ -1,16 +1,24 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
+import { useMemo, useState, type ComponentProps } from 'react';
 import DestinationsCarousel from '@/components/DestinationsCarousel';
+import DestinationSortSelect from '@/components/DestinationSortSelect';
 import { buildDestinationUrl } from '@/lib/utils/destination-url';
+import { buildPlaceMapUrl, type MapPlace } from '@/lib/utils/beach-urls';
+import {
+  DEFAULT_DESTINATION_SORT,
+  sortDestinations,
+  type DestinationSort,
+} from '@/lib/utils/destination-sort';
 
 type DestinationType = 'country' | 'region' | 'city' | 'island';
 
 interface DestinationLocation {
   continent_slug: string;
   country_slug: string;
-  region_slug?: string;
-  island_slug?: string;
+  region_slug?: string | null;
+  island_slug?: string | null;
 }
 
 interface RoutableDestination {
@@ -36,6 +44,8 @@ interface DestinationSectionConfig<T> {
 
   cardVariant?: 'default' | 'city' | 'island' | 'region';
   showFlag?: boolean;
+  /** Shows the "Sort by" control (alphabetical / most / fewest beaches); the list then starts alphabetical. */
+  sortable?: boolean;
 
   backgroundClassName?: string;
   titleClassName?: string;
@@ -58,6 +68,26 @@ function buildUrl(
     slug: item.slug,
     location: item.location,
   });
+}
+
+type CarouselProps = ComponentProps<typeof DestinationsCarousel>;
+
+/** A carousel with its own "Sort by" state (one per section, so each list sorts independently). */
+function SortableDestinationsCarousel(props: CarouselProps) {
+  const locale = useLocale();
+  const [sort, setSort] = useState<DestinationSort>(DEFAULT_DESTINATION_SORT);
+  const sortedItems = useMemo(
+    () => sortDestinations(props.items, sort, locale),
+    [props.items, sort, locale],
+  );
+
+  return (
+    <DestinationsCarousel
+      {...props}
+      items={sortedItems}
+      headerActions={<DestinationSortSelect value={sort} onChange={setSort} />}
+    />
+  );
 }
 
 function isRoutableDestination(item: unknown): item is RoutableDestination {
@@ -103,6 +133,8 @@ export default function DestinationsSection({
         const itemsWithUrl = routableItems.map((item) => ({
           ...item,
           url: buildUrl(locale, section.type, item),
+          // The card's pin: the beach map filtered to this place (same parameters as the banner map button)
+          mapUrl: buildPlaceMapUrl(locale, section.type, item as MapPlace),
         }));
         const title =
           section.titleNamespace === 'Common'
@@ -120,8 +152,10 @@ export default function DestinationsSection({
           ? tDefault(section.badgeKey)
           : undefined;
 
+        const Carousel = section.sortable ? SortableDestinationsCarousel : DestinationsCarousel;
+
         return (
-          <DestinationsCarousel
+          <Carousel
             key={`${section.type}-${section.titleKey}`}
             items={itemsWithUrl}
             title={title}

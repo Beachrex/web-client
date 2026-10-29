@@ -1,14 +1,16 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
 import React from 'react';
 
 import MapWidget from '@/components/BannerSection/MapWidget';
 import WorldTopBar from './WorldTopBar';
-import WeatherWidget from '@/components/BannerSection/WeatherWidget';
+import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 
 interface WorldBannerSectionProps {
-  image: string;
+  /** Background image; a plain gradient when missing. */
+  image: string | null;
   totalCountriesWithBeaches?: number;
   totalBeaches?: number;
   totalOpenPools?: number;
@@ -30,11 +32,12 @@ const WorldBannerSection: React.FC<WorldBannerSectionProps> = ({
 }) => {
   const tWorldTopBar = useTranslations('WorldTopBar');
   const worldLabel = tWorldTopBar('worldLabel');
+  const locale = useLocale();
 
   return (
     <section
       className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-hidden rounded-[10px] bg-cover bg-center sm:h-[700px] lg:h-[780px]"
-      style={{ backgroundImage: `url(${image})` }}
+      style={image ? { backgroundImage: `url(${image})` } : { backgroundImage: 'linear-gradient(135deg, #0B99C2, #1A3C68)' }}
     >
       {/* Dark overlay for better text readability */}
       <div className="absolute inset-0 bg-black/10" />
@@ -74,7 +77,7 @@ const WorldBannerSection: React.FC<WorldBannerSectionProps> = ({
                 {worldLabel.toUpperCase()}
               </span>
 
-              <span
+              <h1
                 className={[
                   'absolute bottom-0 left-[30px] font-figtree font-bold leading-[100%] text-white',
                   'text-[40px] sm:left-[50px] sm:text-[60px]',
@@ -83,17 +86,21 @@ const WorldBannerSection: React.FC<WorldBannerSectionProps> = ({
                 ].join(' ')}
               >
                 {worldLabel.toUpperCase()}
-              </span>
+              </h1>
             </div>
 
             </div>
 
-            {/* Right side: Map + Weather widgets */}
+            {/* Right side: map widget */}
             <div className="hidden sm:flex justify-end">
-              <div className="flex gap-3 rounded-[12px] bg-white/92 p-3 shadow-lg backdrop-blur-sm sm:gap-4 sm:p-4">
+              {/* The map widget opens the beach map; there is no world weather, so no weather widget */}
+              <Link
+                href={buildBeachMapUrl(locale)}
+                aria-label={tWorldTopBar('mapButton')}
+                className="flex gap-3 rounded-[12px] bg-white/92 p-3 shadow-lg backdrop-blur-sm transition hover:opacity-90 sm:gap-4 sm:p-4"
+              >
                 <MapWidget />
-                <WeatherWidget />
-              </div>
+              </Link>
             </div>
 
           </div>

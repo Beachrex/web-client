@@ -4,6 +4,7 @@ import { DynamicPropertyCard } from '@/components/PropertyCard/DynamicPropertyCa
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { List } from 'react-window';
+import { useTranslations } from 'next-intl';
 
 // Performance logging
 const ENABLE_PERF_LOGGING = false;
@@ -65,7 +66,7 @@ const LazyBeachCard = React.memo(function LazyBeachCard({
       onMouseLeave={() => onBeachHover?.(null)}
     >
       {isInView ? (
-        <DynamicPropertyCard beach={beach} onLocationClick={onLocationClick} />
+        <DynamicPropertyCard beach={beach} onLocationClick={onLocationClick} openInNewTab />
       ) : null}
     </div>
   );
@@ -94,6 +95,10 @@ interface ListRef {
 const CARD_HEIGHT = 295; // Height of PropertyCard
 const GAP = 16; // gap-4 = 16px
 const MOBILE_BREAKPOINT = 768; // md breakpoint
+// Phones scroll the whole page, so the list has no fixed height and react-window rendered every row
+// (2 876 beaches, an 894 000 px tall element): taps and scrolling stalled on an iPhone 16 Pro (owner video
+// 2026-10-10). On phones the list shows a page of cards and a "show more" button instead.
+export const MOBILE_PAGE_SIZE = 20;
 
 // Log module load completion
 if (ENABLE_PERF_LOGGING) {
@@ -110,6 +115,21 @@ const VirtualizedBeachListInner = ({
   containerWidth,
   scrollContainerRef: _scrollContainerRef,
 }: VirtualizedBeachListProps) => {
+  const tUi = useTranslations('UI');
+  const tFilter = useTranslations('FilterModal');
+  const [mobileVisible, setMobileVisible] = useState(MOBILE_PAGE_SIZE);
+  // The screen, not the list column, decides: on desktop the column is narrow too, but it has its own
+  // fixed-height scroll area where react-window works.
+  const [isPhone, setIsPhone] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches
+  );
+  useEffect(() => {
+    const query = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    const update = () => setIsPhone(query.matches);
+    update();
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
   const listRef = React.useRef<ListRef | null>(null);
   const renderStartTime = useRef(performance.now());
   const currentRenderCount = useRef(++renderCount);
@@ -230,12 +250,35 @@ const VirtualizedBeachListInner = ({
       });
     }
     renderedRowsRef.current.clear();
+    setMobileVisible(MOBILE_PAGE_SIZE);
   }, [beaches]);
 
   if (beaches.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-gray-500">No beaches found in this area</p>
+        <p className="text-gray-500">{tUi('noBeachesInArea')}</p>
+      </div>
+    );
+  }
+
+  if (isPhone) {
+    const remaining = beaches.length - mobileVisible;
+    return (
+      <div className="flex flex-col gap-4 px-4 pb-4">
+        {beaches.slice(0, mobileVisible).map((beach, index) => (
+          <div key={`${beach.id ?? index}-${index}`} className="w-[410px] max-w-full mx-auto">
+            <LazyBeachCard beach={beach} onLocationClick={onLocationClick} onBeachHover={onBeachHover} />
+          </div>
+        ))}
+        {remaining > 0 && (
+          <button
+            type="button"
+            onClick={() => setMobileVisible((visible) => visible + MOBILE_PAGE_SIZE)}
+            className="mx-auto w-full max-w-[410px] rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm"
+          >
+            {tFilter('showMore', { count: Math.min(MOBILE_PAGE_SIZE, remaining) })}
+          </button>
+        )}
       </div>
     );
   }

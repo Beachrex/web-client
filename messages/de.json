@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Strände weltweit",
     "quickMenuBeachType": "Strandtyp",
     "quickMenuUserType": "Benutzertyp",
-    "quickMenuBeachDisplay": "Strandansicht",
     "quickMenuBeachServices": "Stranddienstleistungen",
     "quickMenuTopBeaches": "Top-Strände",
     "quickMenuAboutUs": "Über uns",
@@ -65,7 +64,14 @@
     "accommodationDefaultDistance": "250 m vom Strand",
     "accommodationDefaultBeach": "Haludovo Strand",
     "accommodationDefaultPrice": "ab 25 €",
-    "beachSeaBeach": "Meeresstrand"
+    "beachSeaBeach": "Meeresstrand",
+    "copyLink": "Kopieren",
+    "linkCopied": "Kopiert",
+    "shareOn": "Auf {network} teilen",
+    "shareByEmail": "Per E-Mail teilen",
+    "moreShareOptions": "Weitere Optionen",
+    "paginationPrevious": "Zurück",
+    "paginationNext": "Weiter"
   },
   "Search": {
     "typeBeach": "Strand",
@@ -76,7 +82,17 @@
     "beaches": "Strände",
     "noResults": "Keine Ergebnisse gefunden. Versuchen Sie einen anderen Suchbegriff.",
     "searching": "Suche läuft...",
-    "clearSearch": "Suche löschen"
+    "clearSearch": "Suche löschen",
+    "tabAll": "Alle",
+    "tabBeaches": "Strände",
+    "tabCities": "Orte",
+    "tabIslands": "Inseln",
+    "tabRegions": "Regionen",
+    "tabCountries": "Länder",
+    "tabsLabel": "Ergebnisse nach Art filtern",
+    "showAllOnMap": "Alle Strände auf der Karte: {name}",
+    "showingOf": "{shown} von {total} angezeigt",
+    "openPlace": "{name} öffnen"
   },
   "HomePage": {
     "allBeaches": "Alle Strände",
@@ -103,7 +119,10 @@
     "outdoorPools": "Freibäder",
     "indoorPoolsSpas": "Hallenbäder & Spas",
     "browseAccommodationsButton": "Unterkünfte durchsuchen",
-    "moreAccommodations": "+Weitere Unterkünfte"
+    "moreAccommodations": "+Weitere Unterkünfte",
+    "showcaseExample": "Beispiel: {beach}",
+    "showcaseOpenBeach": "{beach} ansehen",
+    "showcaseLiveBadge": "Live"
   },
   "BeachCategories": {
     "sandyBeaches": "Sandstrände",
@@ -136,9 +155,12 @@
     "browseBeaches": "Alle Strände durchsuchen",
     "goHome": "Zur Startseite"
   },
-  "AboutPage": {
-    "aboutUs": "Über uns",
-    "description": "Beschreibung der Über-uns-Seite"
+  "ErrorPage": {
+    "title": "Etwas ist schiefgelaufen.",
+    "subtitle": "Fehler",
+    "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es gleich noch einmal.",
+    "retry": "Erneut versuchen",
+    "goHome": "Zur Startseite"
   },
   "BeachTypePage": {
     "title": "Strandtypen",
@@ -161,17 +183,16 @@
     "premiumAccommodations": "Luxusunterkünfte in {continent}",
     "bestDeals": "Tolle Angebote",
     "description": "Entdecken Sie die schönsten Strände in {continent}.",
-    "countriesContinent": "Länder in {continent}"
+    "countriesContinent": "Länder in {continent}",
+    "sortBy": "Sortieren",
+    "sortAlphabetical": "Alphabetisch (A–Z)",
+    "sortBeachesDesc": "Meiste Strände zuerst",
+    "sortBeachesAsc": "Wenigste Strände zuerst"
   },
   "FeatureCards": {
     "beachMapButton": "Strandkarte",
     "browseBlogButton": "Blog durchsuchen",
     "browseAccommodationsButton": "Unterkünfte durchsuchen"
-  },
-  "routes": {
-    "beachMap": "/strandkarte",
-    "blog": "/blog",
-    "accommodations": "/unterkuenfte"
   },
   "Destinations": {
     "croatia": "Kroatien",
@@ -221,7 +242,7 @@
     "viewBeachMap": "Strandkarte anzeigen"
   },
   "SearchBeach": {
-    "title": "Alle Strände in Europa durchsuchen",
+    "title": "Alle Strände in {continent} durchsuchen",
     "filterButton": "Filter",
     "mapButton": "Karte anzeigen",
     "displayLabel": "Strandansicht:",
@@ -312,9 +333,12 @@
     "islandLabel": "Insel",
     "cityLabel": "Stadt",
     "countryLabel": "Land",
-    "beachLabel": "Meeresstrand",
+    "beachLabel": "Meer",
     "beachCountLabel": "Anzahl Strände:",
-    "accommodationCountLabel": "Anzahl Unterkünfte:"
+    "accommodationCountLabel": "Anzahl Unterkünfte:",
+    "beachLabelLake": "See",
+    "beachLabelRiver": "Fluss",
+    "beachLabelPool": "Pool"
   },
   "TopBarBeach": {
     "beachLabel": "Meeresstrand",
@@ -328,7 +352,9 @@
       "parking": "Parkplatz vorhanden",
       "easyAccess": "Leichter Zugang",
       "windsurfing": "Windsurfen",
-      "SeaTemperature": "Meerestemperatur"
+      "SeaTemperature": "Meerestemperatur",
+      "adventurer": "Strand für Abenteurer",
+      "partyBeach": "Partystrand"
     }
   },
   "AccommodationSection": {
@@ -514,20 +540,16 @@
       "title": "Website durchsuchen",
       "links": [
         {
-          "label": "Alle Reiseziele im Überblick",
-          "href": "/destinations"
+          "label": "Alle Reiseziele im Überblick"
         },
         {
-          "label": "Nach Stränden suchen",
-          "href": "/beaches"
+          "label": "Nach Stränden suchen"
         },
         {
-          "label": "Nach Unterkünften suchen",
-          "href": "/accommodations"
+          "label": "Nach Unterkünften suchen"
         },
         {
-          "label": "Kartenansicht",
-          "href": "/beach-map"
+          "label": "Kartenansicht"
         }
       ]
     },
@@ -539,7 +561,12 @@
       "gdprConsent": "Ich stimme zu, Werbe-E-Mails und Neuigkeiten zu erhalten, und akzeptiere die <privacy>Datenschutzrichtlinie</privacy>."
     },
     "legal": {
-      "rights": "Alle Rechte vorbehalten BeachRex"
+      "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Alle Rechte vorbehalten."
+    },
+    "app": {
+      "title": "Hol dir die App",
+      "googlePlayTop": "JETZT BEI",
+      "appStoreTop": "Laden im"
     }
   },
   "BeachSimilarBeaches": {
@@ -554,7 +581,7 @@
     "title": "Detaillierte Informationen",
     "beachMediaGallery": "Strandgalerie",
     "beachMediaVideo": "Strandvideo",
-    "beachMedia360": "360°-Ansicht",
+    "beachMedia360": "360° Ansicht",
     "beachMediaLiveCam": "Live-Cam",
     "groups": {
       "beach": "Strand",
@@ -564,7 +591,8 @@
       "sports": "Sportaktivitäten",
       "parking": "Parkplatz",
       "pathToBeach": "Weg zum Strand",
-      "userType": "Benutzertyp"
+      "userType": "Benutzertyp",
+      "gpsLocation": "GPS-Standort"
     },
     "labels": {
       "type": "Typ",
@@ -581,11 +609,15 @@
       "wayToParking": "Oberfläche zum Parkplatz",
       "recommendedAccess": "Empfohlener Zugang",
       "distance": "Entfernung (Parkplatz — Strand)",
-      "elevationDiff": "Höhenunterschied (Parkplatz zum Strand)"
+      "elevationDiff": "Höhenunterschied (Parkplatz zum Strand)",
+      "seabedLake": "Seegrund",
+      "seabedRiver": "Flussbett",
+      "seabedPool": "Beckenboden"
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Karte"
+      "map": "Karte",
+      "navigation": "Navigation"
     },
     "values": {
       "yes": "Ja",
@@ -631,7 +663,12 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Live-Webcam",
+    "webcamIframeTitle": "Live-Webcam: {name}",
+    "webcamCredit": "Webcam bereitgestellt von Windy.com",
+    "closeMedia": "Schließen",
+    "navigationAria": "Navigation zu {name} in Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Mit Google fortfahren",
@@ -648,7 +685,30 @@
     "loginRequired": "Anmeldung erforderlich",
     "loginRequiredMessage": "Sie müssen sich anmelden, um auf diese Funktion zuzugreifen.",
     "creditsRequired": "Credits erforderlich",
-    "creditsRequiredMessage": "Sie benötigen Credits, um Reisepläne zu erstellen. Bitte kaufen Sie Credits, um fortzufahren."
+    "creditsRequiredMessage": "Sie benötigen Credits, um Reisepläne zu erstellen. Bitte kaufen Sie Credits, um fortzufahren.",
+    "orDivider": "oder",
+    "signInWithEmail": "Mit E-Mail anmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signIn": "Anmelden",
+    "forgotPassword": "Passwort vergessen?",
+    "invalidCredentials": "Falsche E-Mail oder falsches Passwort.",
+    "tooManyAttempts": "Zu viele Versuche. Bitte warte eine Minute und versuche es erneut.",
+    "genericError": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "forgotTitle": "Passwort vergessen?",
+    "forgotDescription": "Gib die E-Mail-Adresse deines Beachrex-Kontos ein. Wir senden dir einen Link, mit dem du ein neues Passwort festlegen kannst.",
+    "sendLink": "Link senden",
+    "forgotSent": "Falls für diese E-Mail-Adresse ein Konto existiert, haben wir einen Link zum Zurücksetzen gesendet. Prüfe deinen Posteingang und den Spam-Ordner.",
+    "resetTitle": "Neues Passwort festlegen",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Neues Passwort wiederholen",
+    "passwordHint": "Mindestens 8 Zeichen.",
+    "passwordsDontMatch": "Die Passwörter stimmen nicht überein.",
+    "savePassword": "Passwort speichern",
+    "resetDone": "Dein Passwort wurde geändert und du bist angemeldet.",
+    "resetDoneSignIn": "Dein Passwort wurde geändert. Du kannst dich jetzt anmelden.",
+    "resetInvalidLink": "Dieser Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.",
+    "requestNewLink": "Neuen Link anfordern"
   },
   "AI": {
     "landing": {
@@ -656,7 +716,13 @@
       "subtitle": "Ihr persönlicher Strand-Entdeckungsbegleiter mit KI",
       "description": "Erhalten Sie personalisierte Strandempfehlungen, chatten Sie mit unserem KI-Assistenten und erstellen Sie individuelle Reisepläne für Ihren perfekten Strandurlaub.",
       "chatButton": "Chat starten",
-      "itineraryButton": "Reiseplan erstellen"
+      "itineraryButton": "Reiseplan erstellen",
+      "chatCardText": "Fragen Sie unseren KI-Assistenten alles über Strände, Reiseziele und Reisetipps und erhalten Sie sofort persönliche Empfehlungen.",
+      "chatCta": "Chat starten",
+      "itineraryCardText": "Erstellen Sie persönliche mehrtägige Strandurlaubs-Reiserouten nach Ihren Vorlieben, Ihrem Budget und Ihren Interessen.",
+      "itineraryCta": "Reiseroute erstellen",
+      "infoTitle": "Neu bei Beachrex AI?",
+      "infoText": "Der Chat ist für alle kostenlos. Mehrtägige Reiserouten benötigen Credits – melden Sie sich mit Google an, um loszulegen!"
     },
     "chat": {
       "title": "Mit KI chatten",
@@ -666,29 +732,117 @@
       "sending": "Wird gesendet...",
       "error": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
       "welcome": "Hallo! Ich bin Ihr KI-Strandassistent. Wie kann ich Ihnen heute helfen?",
-      "anonymousNote": "Sie chatten anonym. Melden Sie sich an, um Ihre Unterhaltungen zu speichern und auf Premium-Funktionen zuzugreifen."
+      "anonymousNote": "Sie chatten anonym. Melden Sie sich an, um Ihre Unterhaltungen zu speichern und auf Premium-Funktionen zuzugreifen.",
+      "viewDetails": "Details ansehen →",
+      "suggestions": "Vorschläge:",
+      "match": "{percent}% Übereinstimmung",
+      "useLocation": "Meinen Standort verwenden (Strände in der Nähe)",
+      "locationOn": "Dein Standort wird für Strände in der Nähe verwendet",
+      "locationDenied": "Standort nicht verfügbar. Erlaube den Standortzugriff im Browser oder nenne einen Ort.",
+      "errorBusy": "Der KI-Assistent ist gerade ausgelastet. Bitte versuche es in einer Minute erneut.",
+      "errorTooMany": "Zu viele Nachrichten. Bitte warte kurz und versuche es erneut.",
+      "errorTooLong": "Die Nachricht ist zu lang. Bitte kürze sie.",
+      "widget": {
+        "open": "KI-Strandassistent öffnen",
+        "close": "Chat schließen",
+        "title": "KI-Strandassistent",
+        "newConversation": "Neues Gespräch",
+        "openFullPage": "Vollständigen Chat öffnen",
+        "inputLabel": "Ihre Nachricht",
+        "greeting": "Hallo! Fragen Sie mich alles über Strände und Ihre Reise ans Meer.",
+        "greetingBeach": "Hallo! Sie sehen sich {name} an. Fragen Sie mich alles dazu oder zu jedem anderen Strand.",
+        "placeholderBeach": "Fragen zu {name}…"
+      }
     },
     "itinerary": {
-      "title": "Strand-Reiseplan erstellen",
-      "subtitle": "Erstellen Sie einen personalisierten mehrtägigen Strandurlaub",
+      "title": "Planen Sie Ihre Strandreise",
+      "subtitle": "Wählen Sie ein Land und die Reisedauer. Wir planen die Strände für jeden Tag aus der Beachrex-Datenbank, mit einem Link zu jedem Strand.",
       "form": {
-        "destination": "Reiseziel",
-        "destinationPlaceholder": "z.B. Kroatien, Bali, Karibik",
-        "days": "Anzahl Tage",
-        "daysPlaceholder": "z.B. 7",
-        "interests": "Interessen",
-        "interestsPlaceholder": "z.B. Schnorcheln, Entspannung, Nachtleben",
-        "budget": "Budgetniveau",
-        "budgetLow": "Budget",
-        "budgetMedium": "Moderat",
-        "budgetHigh": "Luxus",
-        "generate": "Reiseplan erstellen",
-        "generating": "Ihr Reiseplan wird erstellt..."
+        "country": "Land",
+        "countryPlaceholder": "Land wählen",
+        "region": "Region (optional)",
+        "wholeCountry": "Ganzes Land",
+        "duration": "Reisedauer",
+        "daysOption": "{days} Tage",
+        "plansAvailable": "{count} verfügbar",
+        "interests": "Was mögen Sie?",
+        "surface": "Strandbelag",
+        "pace": "Tempo",
+        "adults": "Erwachsene",
+        "children": "Kinder"
       },
-      "error": "Reiseplan konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
-      "paymentRequired": "Mehrtägige Reisepläne erfordern Credits. Bitte kaufen Sie Credits, um fortzufahren.",
-      "creditsRemaining": "Verbleibende Credits: {count}",
-      "purchaseCredits": "Credits kaufen"
+      "interest": {
+        "swimming": "Schwimmen",
+        "snorkeling": "Schnorcheln",
+        "family": "Familienfreundlich",
+        "quiet": "Ruhe",
+        "nightlife": "Nachtleben",
+        "nature": "Natur",
+        "diving": "Tauchen",
+        "surfing": "Surfen",
+        "kayaking": "Kajak",
+        "hiking": "Wandern"
+      },
+      "surface": {
+        "sand": "Sand",
+        "pebble": "Kiesel",
+        "rock": "Felsen"
+      },
+      "pace": {
+        "relaxed": "Entspannt",
+        "balanced": "Ausgewogen",
+        "packed": "Voll"
+      },
+      "progressBeaches": "Wir suchen Strände, die zu Ihren Wünschen passen …",
+      "progressRoute": "Wir planen die Route Tag für Tag …",
+      "progressTips": "Wir schreiben Tipps für jeden Strand …",
+      "signInToStart": "Melden Sie sich an, um Ihren Plan zu kaufen und zu erstellen.",
+      "generate": "Meinen Plan erstellen",
+      "usesOnePlan": "Verbraucht einen Ihrer {days}-Tage-Pläne.",
+      "buy": "{days}-Tage-Plan kaufen · {price}",
+      "buyNote": "Einmalzahlung, kein Abo. Nach der Zahlung kommen Sie hierher zurück und erstellen Ihren Plan.",
+      "errors": {
+        "signInRequired": "Bitte melden Sie sich zuerst an.",
+        "buyRequired": "Sie haben keinen Plan dieser Länge mehr. Kaufen Sie einen, um fortzufahren.",
+        "notEnoughBeaches": "Zu wenige Strände passen. Wählen Sie das ganze Land, weniger Wünsche oder eine kürzere Reise. Ihr Plan wurde nicht verbraucht.",
+        "busy": "Der Planer ist gerade ausgelastet. Bitte versuchen Sie es in einer Minute erneut. Ihr Plan wurde nicht verbraucht.",
+        "error": "Etwas ist schiefgelaufen, Ihr Plan wurde nicht verbraucht. Bitte versuchen Sie es erneut.",
+        "purchaseError": "Die Zahlung konnte nicht gestartet werden. Bitte versuchen Sie es erneut."
+      },
+      "fallbackNote": "Diesmal konnten die KI-Tipps nicht geschrieben werden, daher enthält der Plan kurze Fakten. Ihr Plan wurde nicht verbraucht, Sie können ihn erneut erstellen.",
+      "day": "Tag {number}",
+      "timeBlock": {
+        "morning": "Vormittag",
+        "afternoon": "Nachmittag",
+        "evening": "Abend"
+      },
+      "tip": "Tipp",
+      "travelKm": "An diesem Tag etwa {km} km Fahrt.",
+      "assumptions": "Gut zu wissen",
+      "newPlan": "Neue Reise planen",
+      "plans": {
+        "title": "Meine Pläne",
+        "empty": "Sie haben noch keine Pläne. Erstellen Sie Ihren ersten.",
+        "untitled": "{days}-Tage-Reise ({country})",
+        "notFound": "Dieser Plan existiert nicht oder gehört zu einem anderen Konto.",
+        "waitNote": "Sie können diese Seite schließen: Der Plan wird unter Meine Pläne gespeichert, sobald er fertig ist.",
+        "status": {
+          "running": "Wird erstellt",
+          "done": "Fertig",
+          "failed": "Nicht erstellt"
+        },
+        "failed": {
+          "notEnoughBeaches": "Zu wenige Strände passen zu dieser Reise. Der Plan wurde nicht verbraucht: Versuchen Sie das ganze Land, weniger Wünsche oder eine kürzere Reise.",
+          "timeout": "Die Erstellung hat zu lange gedauert. Der Plan wurde nicht verbraucht, bitte versuchen Sie es erneut.",
+          "error": "Etwas ist schiefgelaufen. Der Plan wurde nicht verbraucht, bitte versuchen Sie es erneut."
+        }
+      },
+      "savePdf": "Als PDF speichern",
+      "mapTitle": "Karte der Reise",
+      "consent": {
+        "terms": "Ich akzeptiere die <link>Verkaufsbedingungen</link>.",
+        "withdrawal": "Ich möchte, dass der Plan sofort verfügbar ist. Mir ist bekannt, dass ich mein 14-tägiges Widerrufsrecht verliere, sobald ich den Plan erstelle; bis dahin kann ich noch widerrufen."
+      }
     },
     "entitlements": {
       "title": "Meine Credits",
@@ -707,10 +861,176 @@
     "priceFrom": "ab {price} €",
     "webcamLabel": "Webcam",
     "noWebcam": "Keine Webcam verfügbar",
-    "no360": "Keine 360°-Ansicht verfügbar",
+    "no360": "Keine 360° Ansicht verfügbar",
     "noVideo": "Kein Video verfügbar",
     "mostVisited": "Meist besucht",
+    "distanceAway": "{distance} entfernt",
     "loading": "Lädt...",
-    "showOnMap": "{title} auf der Karte anzeigen"
+    "showOnMap": "{title} auf der Karte anzeigen",
+    "webcamClose": "Webcam schließen"
+  },
+  "Menu": {
+    "browseBeaches": "Strände entdecken",
+    "topCountries": "Beliebteste Strandländer",
+    "aiChat": "KI-Strand-Chat",
+    "aiItinerary": "KI-Reiseplaner",
+    "contact": "Kontakt",
+    "beachTypes": "Strandarten",
+    "beachesFor": "Strände für",
+    "onTheBeach": "Am Strand"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Downloads",
+    "packageTitle": "Komplettes Markenpaket",
+    "packageDescription": "Alle Logos (SVG, PDF, EPS, PNG), Favicon und App-Icons, Social-Media-Bilder und die Farbpalette in einer ZIP-Datei.",
+    "packageButton": "ZIP herunterladen",
+    "guidelinesTitle": "Markenrichtlinien",
+    "logosTitle": "Logos",
+    "versions": {
+      "horizontal": "Horizontal (primär)",
+      "stacked": "Gestapelt",
+      "symbol": "Symbol",
+      "wordmark": "Wortmarke"
+    },
+    "colors": {
+      "color": "Vollfarbig",
+      "black": "Schwarz",
+      "white": "Weiß",
+      "teal": "Türkis",
+      "orange": "Orange"
+    },
+    "logoAlt": "Beachrex-Logo – {version}, {color}",
+    "colorsTitle": "Farben",
+    "paletteDownload": "Palette herunterladen",
+    "socialTitle": "Social-Media-Bilder",
+    "social": {
+      "profile": "Profilbild",
+      "og": "Link-Vorschaubild",
+      "facebook": "Facebook-Titelbild",
+      "linkedin": "LinkedIn-Titelbild",
+      "x": "X-Header"
+    }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – der Autor von Beachrex",
+    "metaDescription": "Lernen Sie Gregor Balažic kennen: Er kündigte, kaufte Kamera und Van und besuchte 4.000 Strände in 13 Ländern. Aus dieser Reise entstand Beachrex.",
+    "eyebrow": "Über den Autor",
+    "bannerWord": "Autor",
+    "role": "Gründer von Beachrex",
+    "lead": "„Strände waren schon immer meine große Leidenschaft.“",
+    "heroCta": "Geschichte lesen",
+    "stats": {
+      "beaches": "besuchte Strände",
+      "km": "gefahrene Kilometer",
+      "countries": "Länder",
+      "facts": "Angaben zu jedem Strand"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Raus aus der Komfortzone",
+        "text": "Strände waren schon immer meine große Leidenschaft, sagt Gregor Balažic, der seinen Job kündigte. Er war Abteilungsleiter, verließ seine Komfortzone und ließ eine vorhersehbare Zukunft hinter sich. Er kaufte eine Kamera und einen Van, der zu seinem neuen Zuhause wurde, und zog hinaus in die Welt. Genauer gesagt: an die Strände."
+      },
+      "road": {
+        "title": "<beaches>4.000 Strände</beaches> in <countries>13 Ländern</countries>",
+        "text": "Seine Reise führte ihn entlang der Küsten und Strände von <countries>13 Ländern</countries>: <list></list>. Ganze <beaches>4.000 Strände</beaches> hat er besucht. So gewaltig die Zahl auch wirkt, sie ist nur ein Tropfen im Meer – weltweit gibt es mehr als 200.000 Strände, die sich für den Tourismus eignen, erklärt Balažic."
+      },
+      "database": {
+        "title": "Die größte Stranddatenbank der Welt",
+        "text": "Die besuchten Strände wurden zur Grundlage der größten Stranddatenbank der Welt – Beachrex. Zu jedem Strand gibt es Fotos, Panoramaaufnahmen, Videos, Informationen zu Parkmöglichkeiten, GPS-Standort, Wetterdaten, Unterkünften, Sportangeboten, Restaurants und Bars sowie zur Wassertemperatur. Insgesamt sind das mehr als 200 Angaben zu jedem Strand."
+      },
+      "hardships": {
+        "title": "Der Weg war nicht immer leicht",
+        "text": "Balažic hat mehr als 70.000 Kilometer zurückgelegt, und für die schönsten Aufnahmen musste er manchmal sogar klettern. Die Tausende Kilometer lange Reise stand nicht immer unter einem guten Stern – unterwegs erlebte er auch unangenehme Momente und wurde mehrmals ausgeraubt. Doch seine Reise ist (noch) nicht zu Ende."
+      }
+    },
+    "routeTitle": "Entlang der Küsten",
+    "countries": {
+      "si": "Slowenien",
+      "hr": "Kroatien",
+      "me": "Montenegro",
+      "al": "Albanien",
+      "gr": "Griechenland",
+      "it": "Italien",
+      "fr": "Frankreich",
+      "es": "Spanien",
+      "pt": "Portugal",
+      "be": "Belgien",
+      "nl": "Niederlande",
+      "de": "Deutschland",
+      "dk": "Dänemark"
+    },
+    "photoAlt": "Gregor Balažic mit seiner Kamera an einem Sandstrand",
+    "beachAlt": "Sandstrand mit einem umgedrehten Boot zwischen Felsen und Kiefern",
+    "beachCaption": "Einer der 4.000 Strände, die Gregor besucht und fotografiert hat.",
+    "quote": "Wir haben eine Vision – in ein paar Jahren wird jeder einzelne Strand der Welt auf der Karte sein.",
+    "ctaTitle": "Entdecken Sie die Strände, die Gregor besucht hat",
+    "ctaText": "Jedes Foto, jede 360° Aufnahme und jedes Detail auf Beachrex ist auf dieser Reise entstanden.",
+    "ctaMap": "Karte durchsuchen",
+    "ctaContact": "Schreiben Sie uns",
+    "footerLink": "Lernen Sie den Autor kennen"
+  },
+  "Payment": {
+    "successTitle": "Zahlung erfolgreich",
+    "successMessage": "Vielen Dank für Ihren Kauf! Ihre Credits wurden Ihrem Konto gutgeschrieben.",
+    "sessionId": "Sitzungs-ID:",
+    "cancelTitle": "Zahlung abgebrochen",
+    "cancelMessage": "Ihre Zahlung wurde abgebrochen. Es wurde nichts belastet.",
+    "redirecting": "Zurück zum Reiseplaner in <strong>{seconds}</strong> Sekunden …",
+    "planItinerary": "Reiseroute planen",
+    "tryChat": "KI-Chat ausprobieren",
+    "tryAgain": "Erneut versuchen",
+    "goHome": "Zur Startseite",
+    "help": "Brauchen Sie Hilfe? Schreiben Sie an {email}."
+  },
+  "UI": {
+    "selectOption": "Option auswählen",
+    "noBeachesInArea": "In diesem Gebiet wurden keine Strände gefunden",
+    "singleColumn": "Einspaltige Ansicht",
+    "doubleColumn": "Zweispaltige Ansicht",
+    "closeMap": "Karte schließen",
+    "closeFilters": "Filter schließen",
+    "videoTitle": "Strandvideo",
+    "virtualTourTitle": "360° Rundgang",
+    "beachRouteMapTitle": "Karte mit dem Weg zum Strand",
+    "closeMenu": "Menü schließen"
+  },
+  "FilterModal": {
+    "title": "Alle Strandfilter",
+    "searchPlaceholder": "🔍 Filter suchen …",
+    "clearAll": "Alle löschen",
+    "cancel": "Abbrechen",
+    "apply": "Filter anwenden",
+    "applyCount": "Filter anwenden ({count})",
+    "showLess": "Weniger anzeigen",
+    "showMore": "{count} weitere anzeigen …"
+  },
+  "Favorites": {
+    "title": "Meine Lieblingsstrände",
+    "add": "Zu Favoriten hinzufügen",
+    "remove": "Aus Favoriten entfernen",
+    "save": "Merken",
+    "saved": "Gemerkt",
+    "signInTitle": "Melden Sie sich an, um Strände zu speichern",
+    "signInText": "Ihre Lieblingsstrände werden in Ihrem Konto gespeichert, sodass Sie sie auf jedem Gerät finden.",
+    "empty": "Sie haben noch keine Strände gespeichert. Tippen Sie auf das Herz bei einem Strand, um ihn zu speichern.",
+    "browse": "Strände entdecken",
+    "limit": "Ihre Favoritenliste ist voll. Entfernen Sie einen Strand, um einen neuen zu speichern.",
+    "error": "Der Strand konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+    "loadError": "Ihre Lieblingsstrände konnten nicht geladen werden. Bitte versuchen Sie es erneut."
+  },
+  "BeachFaq": {
+    "title": "Häufige Fragen zu {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Alle Länder",
+    "allRegions": "Alle Regionen",
+    "allIslands": "Alle Inseln",
+    "allCities": "Alle Orte",
+    "all": "Alle",
+    "search": "Suchen …",
+    "noMatches": "Keine Treffer",
+    "clear": "Zurücksetzen",
+    "selected": "Ausgewählte Filter",
+    "remove": "{name} entfernen"
   }
 }

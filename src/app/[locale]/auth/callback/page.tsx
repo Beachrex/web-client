@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslations } from 'next-intl';
 import { Spinner } from 'flowbite-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { googleExchange } from '@/lib/api-client';
 
 /**
@@ -31,7 +31,7 @@ import { googleExchange } from '@/lib/api-client';
  * - Error: ?error=error_code&message=error_message
  */
 
-export default function AuthCallbackPage() {
+function AuthCallbackPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { login } = useAuth();
@@ -122,7 +122,7 @@ export default function AuthCallbackPage() {
             </h1>
             <p className="text-gray-600 mb-6">{error}</p>
             <Link
-              href="/en"
+              href="/"
               className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               {t('returnHome')}
@@ -131,5 +131,14 @@ export default function AuthCallbackPage() {
         ) : null}
       </div>
     </div>
+  );
+}
+
+/** `useSearchParams` needs a Suspense boundary on a statically rendered (ISR) page. */
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={null}>
+      <AuthCallbackPageContent />
+    </Suspense>
   );
 }

@@ -11,44 +11,36 @@ import AccommodationSection from '../AccommodationCard/AccommodationsSection';
 import BannerSection from '../BannerSection/BannerSection';
 import CityCategories from '../CityPage/CityCategories';
 
-import { ChevronRight } from 'lucide-react';
 
-import { useCityDetails } from '@/hooks/useCityDetails';
-import { useMostVisitedBeaches } from '@/hooks/useMostVisitedBeaches';
+import type { CityPageData } from '@/lib/server/destination-page-data';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromNavigation } from '@/lib/utils/beach-urls';
 import { formatRegionPillLabel } from '../BannerSection/topbar-utils';
 import DynamicSearchBeaches from '../DynamicSearchBeaches';
+import { FEATURES } from '@/lib/constants/features';
+import AllBeachesLink from '@/components/AllBeachesLink';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 
 interface CityListingPageProps {
-  citySlug?: string;
-  cityDataProp?: unknown;
-  // If you later want, you can extend with:
-  // countryCode?: string;
-  // regionCode?: string;
-  // islandCode?: string;
+  citySlug: string;
+  /** Fetched on the server by the page route (SSR); only the weather loads in the browser. */
+  initialData: CityPageData;
 }
 
 export default function CityListingPage({
   citySlug: _citySlug,
-  cityDataProp: _cityDataProp,
+  initialData,
 }: CityListingPageProps) {
   const pathname = usePathname();
   const locale = useLocale();
 
   const tTown = useTranslations('TownPage');
   const tProperty = useTranslations('PropertySection');
-  // const tRegion = useTranslations('RegionPage');
 
- const { cityDetails, loading: _loading, error: _error } = useCityDetails(
-  _citySlug ?? '',
-  undefined,
-  undefined,
-  undefined,
-  Boolean(_citySlug),
-);
+  const { details: cityDetails, mostVisited: mostVisitedBeaches } = initialData;
 
 const countryCode =
   cityDetails?.country?.code ??
@@ -61,11 +53,7 @@ const countryCode =
     // Optional: analytics / scroll logic here later
   }, [pathname]);
 
-  // Prefer API name, then slug, then fallback test name
-  const cityName =
-    cityDetails?.name ??
-    _citySlug ??
-    'Malinska';
+  const cityName = cityDetails.name ?? _citySlug;
 
     const bannerImage = buildCdnUrl(cityDetails?.main_image, 'banner');
 
@@ -75,17 +63,11 @@ const countryCode =
 
   const { data: cityWeatherResponse, isLoading: isCityWeatherLoading } =
     useCityWeather({
-      slug: _citySlug ?? '',
+      slug: _citySlug,
       countryCode,
       locale,
-      enabled: !!_citySlug && !!countryCode,
+      enabled: !!countryCode,
     });
-
-const { data: mostVisitedBeaches } = useMostVisitedBeaches({
-  city_code: _citySlug,
-  limit: 20,
-});
-
 
 const mostVisitedSet = new Set(
   (mostVisitedBeaches ?? [])
@@ -95,7 +77,7 @@ const mostVisitedSet = new Set(
 
 const beachProperties: Property[] =
   mostVisitedBeaches
-    ?.map((beach) => {
+    .map((beach) => {
       const p = mapBeachToProperty(
         beach,
         {
@@ -114,7 +96,7 @@ const beachProperties: Property[] =
         ...(url ? { beachUrl: url } : {}),
       };
     })
-    .filter((p): p is Property => p !== null) ?? [];
+    .filter((p): p is Property => p !== null);
 
 {/*
   // Temporary mock cities data (replace with real API later)
@@ -163,6 +145,7 @@ const islandPillLabel = cityDetails?.island?.name
       {/* Shared top bar: breadcrumbs + city prev/next navigation */}
       <DynamicTopBar
         pathname={pathname ?? ''}
+        breadcrumbLabels={breadcrumbLabels(cityDetails)}
         variant="city"
         navigation={cityDetails?.navigation}
         buildUrl={(item) =>
@@ -198,6 +181,13 @@ const islandPillLabel = cityDetails?.island?.name
   regionSlug={cityDetails?.region?.slug}
   islandSlug={cityDetails?.island?.slug}
   citySlug={_citySlug}
+  {...mapPlacePills(locale, {
+    continent: cityDetails?.country?.continent,
+    country: cityDetails?.country,
+    region: cityDetails?.region,
+    island: cityDetails?.island,
+    city: cityDetails,
+  })}
      />
 
 
@@ -207,36 +197,31 @@ const islandPillLabel = cityDetails?.island?.name
         totalCount={beachProperties.length}
         properties={beachProperties}
         headerRight={
-          <a
-            href="#"
-            className="flex items-center font-figtree text-[14px] font-bold leading-[100%] text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
-          >
-            {tProperty('allBeachesLink', { count: beachProperties.length })}
-            <ChevronRight className="h-4 w-4" />
-          </a>
+          <AllBeachesLink label={tProperty('allBeachesLink', { count: cityBeachesCount })} />
         }
       />
 
       {/* Featured accommodations in town */}
-      <AccommodationSection
-        title={tTown('featuredAccommodationsTitle', { town: cityName })}
-        totalCount={cityAccommodationsCount}
-        showDropdown
-        selectedDistance={{ value: 1, label: '1 km' }}
-        onDistanceChange={(v) => console.log('distance', v)}
-        onFilterClick={() => console.log('filter')}
-      />
+      {/* Hidden for launch: no accommodation source yet (fake cards) */}
+      {FEATURES.accommodation && (
+        <AccommodationSection
+          title={tTown('featuredAccommodationsTitle', { town: cityName })}
+          totalCount={cityAccommodationsCount}
+          showDropdown
+          selectedDistance={{ value: 1, label: '1 km' }}
+        />
+      )}
 
-      <CityCategories />
+      {/* Hidden for launch: the tiles had no click action (owner 2026-10-09) */}
+      {FEATURES.cityCategoryTiles && <CityCategories />}
 
      <DynamicSearchBeaches
   translationNamespace="TownPage"
   titleKey="browseBeachesTitle"
   titleParams={{ town: cityName }}
   filterButtonColor="#FF8000"
-  baseFilters={{
-    city: _citySlug!,
-  }}
+  baseFilters={initialData.listFilters}
+  initialPage={initialData.firstPage}
   hiddenFilterKeys={['country', 'region', 'island', 'city']}
      />
 

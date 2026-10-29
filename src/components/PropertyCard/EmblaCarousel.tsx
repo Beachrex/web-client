@@ -46,7 +46,7 @@ export const EmblaCarousel: React.FC<EmblaCarouselProps> = ({ images, title }) =
               <div key={idx} className="embla__slide relative min-w-full h-full">
                 <Image
                   src={img}
-                  alt={`${title} - Image ${idx + 1}`}
+                  alt={`${title} (${idx + 1})`}
                   fill
                   className="object-cover"
                   sizes="100vw"

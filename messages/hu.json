@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Strandok világszerte",
     "quickMenuBeachType": "Strand típusa",
     "quickMenuUserType": "Felhasználó típusa",
-    "quickMenuBeachDisplay": "Strand nézet",
     "quickMenuBeachServices": "Strand szolgáltatások",
     "quickMenuTopBeaches": "Top strandok",
     "quickMenuAboutUs": "Rólunk",
@@ -65,7 +64,14 @@
     "accommodationDefaultDistance": "250 m a strandtól",
     "accommodationDefaultBeach": "Haludovo Strand",
     "accommodationDefaultPrice": "25 €-tól",
-    "beachSeaBeach": "Tengeri strand"
+    "beachSeaBeach": "Tengeri strand",
+    "copyLink": "Másolás",
+    "linkCopied": "Másolva",
+    "shareOn": "Megosztás: {network}",
+    "shareByEmail": "Megosztás e-mailben",
+    "moreShareOptions": "További lehetőségek",
+    "paginationPrevious": "Előző",
+    "paginationNext": "Következő"
   },
   "Search": {
     "typeBeach": "Strand",
@@ -76,7 +82,17 @@
     "beaches": "strandok",
     "noResults": "Nincs találat. Próbálj meg másik keresési kifejezést.",
     "searching": "Keresés...",
-    "clearSearch": "Keresés törlése"
+    "clearSearch": "Keresés törlése",
+    "tabAll": "Összes",
+    "tabBeaches": "Strandok",
+    "tabCities": "Települések",
+    "tabIslands": "Szigetek",
+    "tabRegions": "Régiók",
+    "tabCountries": "Országok",
+    "tabsLabel": "Találatok szűrése típus szerint",
+    "showAllOnMap": "Összes strand a térképen: {name}",
+    "showingOf": "{shown} / {total} megjelenítve",
+    "openPlace": "{name} megnyitása"
   },
   "HomePage": {
     "allBeaches": "Összes strand",
@@ -103,7 +119,10 @@
     "outdoorPools": "Szabadtéri medencék",
     "indoorPoolsSpas": "Fedett medencék és fürdők",
     "browseAccommodationsButton": "Szállások böngészése",
-    "moreAccommodations": "+További szállások"
+    "moreAccommodations": "+További szállások",
+    "showcaseExample": "Példa: {beach}",
+    "showcaseOpenBeach": "{beach} megtekintése",
+    "showcaseLiveBadge": "Élő"
   },
   "BeachCategories": {
     "sandyBeaches": "Homokos strandok",
@@ -136,9 +155,12 @@
     "browseBeaches": "Összes strand böngészése",
     "goHome": "Főoldal"
   },
-  "AboutPage": {
-    "aboutUs": "Rólunk",
-    "description": "Leírás a rólunk oldalról"
+  "ErrorPage": {
+    "title": "Valami hiba történt.",
+    "subtitle": "Hiba",
+    "description": "Váratlan hiba történt. Kérjük, próbáld újra egy pillanat múlva.",
+    "retry": "Újrapróbálás",
+    "goHome": "Kezdőlap"
   },
   "BeachTypePage": {
     "title": "Strand típusok",
@@ -161,17 +183,16 @@
     "premiumAccommodations": "Luxus szállás {continent}",
     "bestDeals": "Nagyszerű ajánlatok",
     "description": "Fedezd fel a legszebb strandokat {continent}.",
-    "countriesContinent": "Országok {continent}"
+    "countriesContinent": "Országok {continent}",
+    "sortBy": "Rendezés",
+    "sortAlphabetical": "Ábécérendben (A–Z)",
+    "sortBeachesDesc": "Legtöbb strand elöl",
+    "sortBeachesAsc": "Legkevesebb strand elöl"
   },
   "FeatureCards": {
     "beachMapButton": "Strand térkép",
     "browseBlogButton": "Blog böngészése",
     "browseAccommodationsButton": "Szállások böngészése"
-  },
-  "routes": {
-    "beachMap": "/beach-map",
-    "blog": "/blog",
-    "accommodations": "/accommodations"
   },
   "Destinations": {
     "croatia": "Horvátország",
@@ -221,7 +242,7 @@
     "viewBeachMap": "Strand térkép megtekintése"
   },
   "SearchBeach": {
-    "title": "Böngéssz az összes európai strand között",
+    "title": "Összes strand böngészése {continent}",
     "filterButton": "Szűrő",
     "mapButton": "Térkép megjelenítése",
     "displayLabel": "Strand nézet:",
@@ -312,9 +333,12 @@
     "islandLabel": "Sziget",
     "cityLabel": "Város",
     "countryLabel": "Ország",
-    "beachLabel": "Tengeri strand",
+    "beachLabel": "Tenger",
     "beachCountLabel": "Strandok száma:",
-    "accommodationCountLabel": "Szállások száma:"
+    "accommodationCountLabel": "Szállások száma:",
+    "beachLabelLake": "Tó",
+    "beachLabelRiver": "Folyó",
+    "beachLabelPool": "Medence"
   },
   "TopBarBeach": {
     "beachLabel": "Tengeri strand",
@@ -328,7 +352,9 @@
       "parking": "Parkolás elérhető",
       "easyAccess": "Könnyű hozzáférés",
       "windsurfing": "Szörfözés",
-      "SeaTemperature": "Vízhőmérséklet"
+      "SeaTemperature": "Vízhőmérséklet",
+      "adventurer": "Kalandoroknak való strand",
+      "partyBeach": "Bulis strand"
     }
   },
   "AccommodationSection": {
@@ -514,20 +540,16 @@
       "title": "Oldal böngészése",
       "links": [
         {
-          "label": "Összes úticél áttekintése",
-          "href": "/destinations"
+          "label": "Összes úticél áttekintése"
         },
         {
-          "label": "Keresés strandok szerint",
-          "href": "/beaches"
+          "label": "Keresés strandok szerint"
         },
         {
-          "label": "Keresés szállások szerint",
-          "href": "/accommodations"
+          "label": "Keresés szállások szerint"
         },
         {
-          "label": "Térkép nézet",
-          "href": "/beach-map"
+          "label": "Térkép nézet"
         }
       ]
     },
@@ -539,7 +561,12 @@
       "gdprConsent": "Egyetértek a promóciós e-mailek és hírek fogadásával, és elfogadom az <privacy>adatvédelmi irányelveket</privacy>."
     },
     "legal": {
-      "rights": "Minden jog fenntartva BeachRex"
+      "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Minden jog fenntartva."
+    },
+    "app": {
+      "title": "Töltsd le az appot",
+      "googlePlayTop": "SZEREZD MEG:",
+      "appStoreTop": "Letöltés az"
     }
   },
   "BeachSimilarBeaches": {
@@ -564,7 +591,8 @@
       "sports": "Sport tevékenységek",
       "parking": "Parkolás",
       "pathToBeach": "Út a strandhoz",
-      "userType": "Felhasználó típusa"
+      "userType": "Felhasználó típusa",
+      "gpsLocation": "GPS-helyzet"
     },
     "labels": {
       "type": "Típus",
@@ -581,11 +609,15 @@
       "wayToParking": "Felület a parkolóhoz",
       "recommendedAccess": "Ajánlott megközelítés",
       "distance": "Távolság (parkoló — strand)",
-      "elevationDiff": "Szintkülönbség (parkolótól a strandig)"
+      "elevationDiff": "Szintkülönbség (parkolótól a strandig)",
+      "seabedLake": "Tómeder",
+      "seabedRiver": "Folyómeder",
+      "seabedPool": "Medencealj"
     },
     "buttons": {
       "photo": "Fotó",
-      "map": "Térkép"
+      "map": "Térkép",
+      "navigation": "Navigáció"
     },
     "values": {
       "yes": "Igen",
@@ -631,7 +663,12 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Élő webkamera",
+    "webcamIframeTitle": "Élő webkamera: {name}",
+    "webcamCredit": "A webkamerát a Windy.com biztosítja",
+    "closeMedia": "Bezárás",
+    "navigationAria": "Útvonal ide: {name} a Google Térképen"
   },
   "Auth": {
     "continueWithGoogle": "Folytatás Google-lal",
@@ -648,7 +685,30 @@
     "loginRequired": "Bejelentkezés szükséges",
     "loginRequiredMessage": "Be kell jelentkezned a funkció eléréséhez.",
     "creditsRequired": "Kreditek szükségesek",
-    "creditsRequiredMessage": "Kreditekre van szükséged az útvonaltervek generálásához. Kérjük, vásárolj krediteket a folytatáshoz."
+    "creditsRequiredMessage": "Kreditekre van szükséged az útvonaltervek generálásához. Kérjük, vásárolj krediteket a folytatáshoz.",
+    "orDivider": "vagy",
+    "signInWithEmail": "Bejelentkezés e-maillel",
+    "email": "E-mail",
+    "password": "Jelszó",
+    "signIn": "Bejelentkezés",
+    "forgotPassword": "Elfelejtetted a jelszavad?",
+    "invalidCredentials": "Hibás e-mail-cím vagy jelszó.",
+    "tooManyAttempts": "Túl sok próbálkozás. Várj egy percet, és próbáld újra.",
+    "genericError": "Valami hiba történt. Próbáld újra.",
+    "forgotTitle": "Elfelejtetted a jelszavad?",
+    "forgotDescription": "Add meg a Beachrex-fiókod e-mail-címét, és küldünk egy linket az új jelszó beállításához.",
+    "sendLink": "Link küldése",
+    "forgotSent": "Ha ehhez az e-mail-címhez tartozik fiók, elküldtük a jelszó-visszaállító linket. Nézd meg a beérkező leveleket és a spam mappát is.",
+    "resetTitle": "Új jelszó beállítása",
+    "newPassword": "Új jelszó",
+    "confirmPassword": "Új jelszó újra",
+    "passwordHint": "Legalább 8 karakter.",
+    "passwordsDontMatch": "A jelszavak nem egyeznek.",
+    "savePassword": "Jelszó mentése",
+    "resetDone": "A jelszavad megváltozott, és be vagy jelentkezve.",
+    "resetDoneSignIn": "A jelszavad megváltozott. Most már bejelentkezhetsz.",
+    "resetInvalidLink": "Ez a jelszó-visszaállító link érvénytelen vagy lejárt.",
+    "requestNewLink": "Új link kérése"
   },
   "AI": {
     "landing": {
@@ -656,7 +716,13 @@
       "subtitle": "Személyes strand felfedező társad AI által működtetve",
       "description": "Kapj személyre szabott strand ajánlásokat, csevegj AI asszisztensünkkel, és készíts egyedi útvonalterveket a tökéletes strand nyaralásodhoz.",
       "chatButton": "Csevegés indítása",
-      "itineraryButton": "Útvonalterv készítése"
+      "itineraryButton": "Útvonalterv készítése",
+      "chatCardText": "Kérdezd AI-asszisztensünket bármiről a strandokkal, úti célokkal és utazási tippekkel kapcsolatban, és azonnal személyre szabott ajánlásokat kapsz.",
+      "chatCta": "Csevegés indítása",
+      "itineraryCardText": "Készíts személyre szabott, többnapos strandos útiterveket a preferenciáid, a költségkereted és az érdeklődési köröd alapján.",
+      "itineraryCta": "Útiterv készítése",
+      "infoTitle": "Új vagy a Beachrex AI-ban?",
+      "infoText": "A csevegés mindenkinek ingyenes. A többnapos útitervekhez kredit kell – a kezdéshez jelentkezz be Google-fiókkal!"
     },
     "chat": {
       "title": "Csevegés az AI-val",
@@ -666,29 +732,117 @@
       "sending": "Küldés...",
       "error": "Az üzenet küldése sikertelen. Kérjük, próbáld újra.",
       "welcome": "Helló! A strand AI asszisztensed vagyok. Hogyan segíthetek ma?",
-      "anonymousNote": "Névtelenül cseveg. Jelentkezz be a beszélgetések mentéséhez és a prémium funkciók eléréséhez."
+      "anonymousNote": "Névtelenül cseveg. Jelentkezz be a beszélgetések mentéséhez és a prémium funkciók eléréséhez.",
+      "viewDetails": "Részletek →",
+      "suggestions": "Javaslatok:",
+      "match": "{percent}% egyezés",
+      "useLocation": "Saját helyzetem használata (közeli strandok)",
+      "locationOn": "A helyzeted a közeli strandokhoz használjuk",
+      "locationDenied": "A helyzet nem érhető el. Engedélyezd a helymeghatározást a böngészőben, vagy adj meg egy helyet.",
+      "errorBusy": "Az AI-asszisztens most foglalt. Próbáld újra egy perc múlva.",
+      "errorTooMany": "Túl sok üzenet. Várj egy kicsit, és próbáld újra.",
+      "errorTooLong": "Az üzenet túl hosszú. Rövidítsd le.",
+      "widget": {
+        "open": "AI strandasszisztens megnyitása",
+        "close": "Csevegés bezárása",
+        "title": "AI strandasszisztens",
+        "newConversation": "Új beszélgetés",
+        "openFullPage": "Teljes csevegés megnyitása",
+        "inputLabel": "Az Ön üzenete",
+        "greeting": "Szia! Kérdezz bármit a strandokról és a tengerparti utazásodról.",
+        "greetingBeach": "Szia! Most ezt nézed: {name}. Kérdezz bármit róla vagy bármelyik másik strandról.",
+        "placeholderBeach": "Kérdezz erről: {name}…"
+      }
     },
     "itinerary": {
-      "title": "Strand útvonalterv készítése",
-      "subtitle": "Generálj személyre szabott többnapos strand nyaralási tervet",
+      "title": "Tervezze meg tengerparti útját",
+      "subtitle": "Válasszon országot és utazási hosszt. A Beachrex adatbázisából minden napra strandokat tervezünk, mindegyikhez linkkel.",
       "form": {
-        "destination": "Úticél",
-        "destinationPlaceholder": "pl. Horvátország, Bali, Karib-tenger",
-        "days": "Napok száma",
-        "daysPlaceholder": "pl. 7",
-        "interests": "Érdeklődési körök",
-        "interestsPlaceholder": "pl. búvárkodás, kikapcsolódás, éjszakai élet",
-        "budget": "Költségvetési szint",
-        "budgetLow": "Költségvetés",
-        "budgetMedium": "Közepes",
-        "budgetHigh": "Luxus",
-        "generate": "Útvonalterv generálása",
-        "generating": "Útvonalterv generálása..."
+        "country": "Ország",
+        "countryPlaceholder": "Válasszon országot",
+        "region": "Régió (nem kötelező)",
+        "wholeCountry": "Az egész ország",
+        "duration": "Utazás hossza",
+        "daysOption": "{days} nap",
+        "plansAvailable": "Elérhető: {count}",
+        "interests": "Mit szeret?",
+        "surface": "Strand talaja",
+        "pace": "Tempó",
+        "adults": "Felnőttek",
+        "children": "Gyerekek"
       },
-      "error": "Az útvonalterv generálása sikertelen. Kérjük, próbáld újra.",
-      "paymentRequired": "A többnapos útvonaltervek krediteket igényelnek. Kérjük, vásárolj krediteket a folytatáshoz.",
-      "creditsRemaining": "Fennmaradó kreditek: {count}",
-      "purchaseCredits": "Kreditek vásárlása"
+      "interest": {
+        "swimming": "Úszás",
+        "snorkeling": "Sznorkelezés",
+        "family": "Családbarát",
+        "quiet": "Nyugalom",
+        "nightlife": "Éjszakai élet",
+        "nature": "Természet",
+        "diving": "Búvárkodás",
+        "surfing": "Szörfözés",
+        "kayaking": "Kajak",
+        "hiking": "Túrázás"
+      },
+      "surface": {
+        "sand": "Homok",
+        "pebble": "Kavics",
+        "rock": "Sziklák"
+      },
+      "pace": {
+        "relaxed": "Nyugodt",
+        "balanced": "Kiegyensúlyozott",
+        "packed": "Sűrű"
+      },
+      "progressBeaches": "Az Ön kívánságainak megfelelő strandokat keresünk…",
+      "progressRoute": "Napról napra megtervezzük az útvonalat…",
+      "progressTips": "Minden strandhoz tippeket írunk…",
+      "signInToStart": "Jelentkezzen be a terv megvásárlásához és elkészítéséhez.",
+      "generate": "Tervem elkészítése",
+      "usesOnePlan": "Felhasználja egyik {days} napos tervét.",
+      "buy": "{days} napos terv vásárlása · {price}",
+      "buyNote": "Egyszeri fizetés, előfizetés nélkül. Fizetés után visszatér ide, és elkészíti a tervét.",
+      "errors": {
+        "signInRequired": "Kérjük, előbb jelentkezzen be.",
+        "buyRequired": "Nincs több ilyen hosszúságú terve. A folytatáshoz vásároljon egyet.",
+        "notEnoughBeaches": "Túl kevés strand felel meg. Próbálja az egész országot, kevesebb kívánságot vagy rövidebb utat. A terv nem lett felhasználva.",
+        "busy": "A tervező most foglalt. Próbálja újra egy perc múlva. A terv nem lett felhasználva.",
+        "error": "Hiba történt, a terv nem lett felhasználva. Kérjük, próbálja újra.",
+        "purchaseError": "A fizetést nem sikerült elindítani. Kérjük, próbálja újra."
+      },
+      "fallbackNote": "Ezúttal nem sikerült megírni az MI-tippeket, ezért a terv rövid tényeket tartalmaz. A terv nem lett felhasználva, újra elkészítheti.",
+      "day": "{number}. nap",
+      "timeBlock": {
+        "morning": "Délelőtt",
+        "afternoon": "Délután",
+        "evening": "Este"
+      },
+      "tip": "Tipp",
+      "travelKm": "Ezen a napon kb. {km} km vezetés.",
+      "assumptions": "Jó tudni",
+      "newPlan": "Új út tervezése",
+      "plans": {
+        "title": "Terveim",
+        "empty": "Még nincs terve. Készítse el az elsőt.",
+        "untitled": "{days} napos út ({country})",
+        "notFound": "Ez a terv nem létezik, vagy egy másik fiókhoz tartozik.",
+        "waitNote": "Bezárhatja ezt az oldalt: a terv a Terveim között lesz, amint elkészül.",
+        "status": {
+          "running": "Készül",
+          "done": "Kész",
+          "failed": "Nem készült el"
+        },
+        "failed": {
+          "notEnoughBeaches": "Túl kevés strand illik ehhez az úthoz. A terv nem lett felhasználva: próbálja az egész országot, kevesebb kívánságot vagy rövidebb utat.",
+          "timeout": "A terv elkészítése túl sokáig tartott. A terv nem lett felhasználva, próbálja újra.",
+          "error": "Hiba történt. A terv nem lett felhasználva, próbálja újra."
+        }
+      },
+      "savePdf": "Mentés PDF-ként",
+      "mapTitle": "Az út térképe",
+      "consent": {
+        "terms": "Elfogadom az <link>értékesítési feltételeket</link>.",
+        "withdrawal": "Szeretném, ha a terv azonnal elérhető lenne. Tudomásul veszem, hogy a terv elkészítésével elveszítem a 14 napos elállási jogomat; addig még elállhatok."
+      }
     },
     "entitlements": {
       "title": "Kreditjeim",
@@ -710,7 +864,173 @@
     "no360": "Nincs elérhető 360°-os nézet",
     "noVideo": "Nincs elérhető videó",
     "mostVisited": "Leglátogatottabb",
+    "distanceAway": "{distance} távolságra",
     "loading": "Betöltés...",
-    "showOnMap": "{title} megjelenítése a térképen"
+    "showOnMap": "{title} megjelenítése a térképen",
+    "webcamClose": "Webkamera bezárása"
+  },
+  "Menu": {
+    "browseBeaches": "Strandok böngészése",
+    "topCountries": "Legnépszerűbb strandországok",
+    "aiChat": "AI strandcsevegő",
+    "aiItinerary": "AI útitervező",
+    "contact": "Kapcsolat",
+    "beachTypes": "Strandtípusok",
+    "beachesFor": "Kinek ajánlott",
+    "onTheBeach": "A strandon"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Letöltések",
+    "packageTitle": "Teljes márkacsomag",
+    "packageDescription": "Az összes logó (SVG, PDF, EPS, PNG), favicon és alkalmazásikonok, közösségimédia-képek és a színpaletta egyetlen ZIP-fájlban.",
+    "packageButton": "ZIP letöltése",
+    "guidelinesTitle": "Arculati kézikönyv",
+    "logosTitle": "Logók",
+    "versions": {
+      "horizontal": "Vízszintes (elsődleges)",
+      "stacked": "Egymás alatti",
+      "symbol": "Szimbólum",
+      "wordmark": "Szóvédjegy"
+    },
+    "colors": {
+      "color": "Színes",
+      "black": "Fekete",
+      "white": "Fehér",
+      "teal": "Türkiz",
+      "orange": "Narancssárga"
+    },
+    "logoAlt": "Beachrex logó – {version}, {color}",
+    "colorsTitle": "Színek",
+    "paletteDownload": "Töltsd le a palettát",
+    "socialTitle": "Közösségimédia-képek",
+    "social": {
+      "profile": "Profilkép",
+      "og": "Linkelőnézeti kép",
+      "facebook": "Facebook-borítókép",
+      "linkedin": "LinkedIn-borítókép",
+      "x": "X-fejléc"
+    }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – a Beachrex szerzője",
+    "metaDescription": "Ismerd meg Gregor Balažicot, aki felmondott, vett egy fényképezőgépet és egy kisbuszt, majd 13 országban 4 000 strandot járt be. Így született a Beachrex.",
+    "eyebrow": "A szerzőről",
+    "bannerWord": "Szerző",
+    "role": "A Beachrex alapítója",
+    "lead": "„A strandok mindig is a nagy szenvedélyem voltak.”",
+    "heroCta": "Olvasd el a történetet",
+    "stats": {
+      "beaches": "meglátogatott strand",
+      "km": "megtett kilométer",
+      "countries": "ország",
+      "facts": "adat minden strandról"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Ki a komfortzónából",
+        "text": "A strandok mindig is a nagy szenvedélyem voltak – mondja Gregor Balažic, aki felmondott a munkahelyén. Osztályvezető volt, mégis kilépett a komfortzónájából, és maga mögött hagyta a kiszámítható jövőt. Vett egy fényképezőgépet és egy kisbuszt, amely az új otthona lett, és nekivágott a világnak. Pontosabban a strandoknak."
+      },
+      "road": {
+        "title": "<beaches>4 000 strand</beaches> <countries>13 országban</countries>",
+        "text": "Bejárta <countries>13 ország</countries> partjait és strandjait: <list></list>. Nem kevesebb mint <beaches>4 000 strandot</beaches> látogatott meg. Bár a szám óriásinak tűnik, csupán csepp a tengerben – a világon több mint 200 000 turizmusra alkalmas strand van – magyarázza Balažic."
+      },
+      "database": {
+        "title": "A világ legnagyobb strandadatbázisa",
+        "text": "A meglátogatott strandokból született meg a világ legnagyobb strandadatbázisa, a Beachrex. Minden strandhoz fotók, panorámaképek, videók, parkolási információk, GPS-koordináták, időjárási adatok, valamint a szállásokra, sportolási lehetőségekre, éttermekre és bárokra, továbbá a tenger hőmérsékletére vonatkozó információk tartoznak. Ez összesen több mint 200 adat minden strandról."
+      },
+      "hardships": {
+        "title": "Az út nem mindig volt könnyű",
+        "text": "Balažic több mint 70 000 kilométert tett meg, és a lenyűgöző felvételekért néha még másznia is kellett. A több ezer kilométeres utat nem mindig ragyogta be a napfény – kellemetlen élmények is érték, és többször kirabolták. Az útja azonban (még) nem ért véget."
+      }
+    },
+    "routeTitle": "A partok mentén",
+    "countries": {
+      "si": "Szlovénia",
+      "hr": "Horvátország",
+      "me": "Montenegró",
+      "al": "Albánia",
+      "gr": "Görögország",
+      "it": "Olaszország",
+      "fr": "Franciaország",
+      "es": "Spanyolország",
+      "pt": "Portugália",
+      "be": "Belgium",
+      "nl": "Hollandia",
+      "de": "Németország",
+      "dk": "Dánia"
+    },
+    "photoAlt": "Gregor Balažic fényképezőgéppel egy homokos strandon",
+    "beachAlt": "Homokos strand felfordított csónakkal a sziklák és fenyők mellett",
+    "beachCaption": "Egy a 4 000 strand közül, amelyet Gregor meglátogatott és lefényképezett.",
+    "quote": "Van egy víziónk: néhány éven belül a világ minden egyes strandja felkerül a térképre.",
+    "ctaTitle": "Fedezd fel a strandokat, amelyeket Gregor meglátogatott",
+    "ctaText": "A Beachrex minden fotója, 360°-os panorámája és részlete ezen az úton született.",
+    "ctaMap": "Böngészd a térképet",
+    "ctaContact": "Írj nekünk",
+    "footerLink": "Ismerd meg a szerzőt"
+  },
+  "Payment": {
+    "successTitle": "Sikeres fizetés",
+    "successMessage": "Köszönjük a vásárlást! A krediteket jóváírtuk a fiókodban.",
+    "sessionId": "Munkamenet-azonosító:",
+    "cancelTitle": "Fizetés megszakítva",
+    "cancelMessage": "A fizetés megszakadt. Semmilyen terhelés nem történt.",
+    "redirecting": "Visszatérés az útitervezőhöz <strong>{seconds}</strong> másodperc múlva…",
+    "planItinerary": "Útiterv készítése",
+    "tryChat": "AI csevegés kipróbálása",
+    "tryAgain": "Újrapróbálás",
+    "goHome": "Kezdőlap",
+    "help": "Segítség kell? Írj a(z) {email} címre."
+  },
+  "UI": {
+    "selectOption": "Válassz egy lehetőséget",
+    "noBeachesInArea": "Ezen a területen nem található strand",
+    "singleColumn": "Egyoszlopos nézet",
+    "doubleColumn": "Kétoszlopos nézet",
+    "closeMap": "Térkép bezárása",
+    "closeFilters": "Szűrők bezárása",
+    "videoTitle": "Strandvideó",
+    "virtualTourTitle": "360°-os virtuális túra",
+    "beachRouteMapTitle": "Térkép a strandhoz vezető úttal",
+    "closeMenu": "Menü bezárása"
+  },
+  "FilterModal": {
+    "title": "Összes strandszűrő",
+    "searchPlaceholder": "🔍 Szűrők keresése…",
+    "clearAll": "Összes törlése",
+    "cancel": "Mégse",
+    "apply": "Szűrők alkalmazása",
+    "applyCount": "Szűrők alkalmazása ({count})",
+    "showLess": "Kevesebb mutatása",
+    "showMore": "Még {count} mutatása…"
+  },
+  "Favorites": {
+    "title": "Kedvenc strandjaim",
+    "add": "Mentés a kedvencek közé",
+    "remove": "Eltávolítás a kedvencek közül",
+    "save": "Mentés",
+    "saved": "Mentve",
+    "signInTitle": "Jelentkezzen be a strandok mentéséhez",
+    "signInText": "Kedvenc strandjait a fiókjába mentjük, így bármely eszközön megtalálja őket.",
+    "empty": "Még nem mentett strandot. Egy strand mentéséhez koppintson a szívre.",
+    "browse": "Strandok böngészése",
+    "limit": "A kedvencek listája megtelt. Távolítson el egy strandot, hogy újat menthessen.",
+    "error": "A strandot nem sikerült menteni. Kérjük, próbálja újra.",
+    "loadError": "A kedvenc strandokat nem sikerült betölteni. Kérjük, próbálja újra."
+  },
+  "BeachFaq": {
+    "title": "Gyakori kérdések: {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Összes ország",
+    "allRegions": "Összes régió",
+    "allIslands": "Összes sziget",
+    "allCities": "Összes település",
+    "all": "Összes",
+    "search": "Keresés…",
+    "noMatches": "Nincs találat",
+    "clear": "Törlés",
+    "selected": "Kiválasztott szűrők",
+    "remove": "{name} eltávolítása"
   }
 }

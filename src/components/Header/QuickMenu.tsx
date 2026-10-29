@@ -3,7 +3,9 @@ import Image from 'next/image';
 import { SlBriefcase } from 'react-icons/sl';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { getBeachMapWord } from '@/lib/utils/beach-urls';
+import { staticPageUrl, useFooterStaticPages } from '@/hooks/useStaticPages';
 
 const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
 
@@ -74,6 +76,8 @@ interface QuickMenuCategory {
 const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
   const t = useTranslations('Common');
   const locale = useLocale();
+  // "About us" opens the CMS page (code `about-us`); hidden while the page is not published.
+  const aboutUrl = staticPageUrl(useFooterStaticPages(), 'about-us', locale);
   const router = useRouter();
 
   // Navigate to map with filters
@@ -118,14 +122,6 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
       },
     },
     {
-      icon: 'beachShowType.svg',
-      labelKey: 'quickMenuBeachDisplay',
-      // Natural conditions and views
-      filters: {
-        natural_location_condition: ['natural_shade', 'scenic_view'],
-      },
-    },
-    {
       icon: 'shower.svg',
       labelKey: 'quickMenuBeachServices',
       // Beach services and infrastructure
@@ -155,7 +151,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           <div className="flex items-center">
             <NavIcon
               src={`${CDN_ASSETS}img/icon/hamburgerMenu.svg`}
-              alt="Hamburger Menu"
+              alt={t('menu')}
               label=""
               horizontal={true}
               className="cursor-pointer"
@@ -209,7 +205,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           <div className="flex items-center space-x-4 lg:space-x-6">
             <NavIcon
               src={`${CDN_ASSETS}img/icon/hamburgerMenu.svg`}
-              alt="Hamburger Menu"
+              alt={t('menu')}
               label=""
               horizontal={true}
               className="cursor-pointer"
@@ -218,7 +214,7 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
           </div>
 
           {/* Middle Section (Icons and Labels) */}
-          <div className="flex flex-1 flex-wrap items-center justify-center space-x-3 lg:space-x-6">
+          <div className="flex flex-1 flex-wrap items-center justify-center gap-x-3 gap-y-2 lg:gap-x-6">
             {quickMenuCategories.map((category, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <NavIcon
@@ -234,12 +230,14 @@ const QuickMenu = ({ toggleMenu }: { toggleMenu: () => void }) => {
 
           {/* Right Section (Social Icons) */}
           <div className="flex items-center space-x-4">
-            <div className="flex items-center gap-2 pr-6">
-              <SlBriefcase className="h-[26px] w-[26px] text-variable-collection-dark-grey" />
-              <span className="cursor-pointer text-sm font-bold text-variable-collection-middle-grey">
-                {t('quickMenuAboutUs')}
-              </span>
-            </div>
+            {aboutUrl && (
+              <Link href={aboutUrl} className="flex items-center gap-2 pr-6 hover:opacity-80">
+                <SlBriefcase className="h-[26px] w-[26px] text-variable-collection-dark-grey" />
+                <span className="text-sm font-bold text-variable-collection-middle-grey">
+                  {t('quickMenuAboutUs')}
+                </span>
+              </Link>
+            )}
 
             <div className="flex items-center space-x-3">
               <NavIcon

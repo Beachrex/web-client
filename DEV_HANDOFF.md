@@ -18,6 +18,1382 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Continent page: own continent pill is static ✅ COMPLETE
+
+Owner, 2026-10-29: on a continent page the continent pill opened a tab that repeated the page's own bar ("Kontinent Evropa · Plaže: 2876" twice), which looked like a bug. `TopBar` gives that pill no link there, so it does not open (other pages: every pill is a parent level and stays interactive). Test in `e2e/location-pills.unit.spec.ts`.
+
+## 2026-10-29 – AI chat widget: mobile sheet follows the keyboard ✅ COMPLETE
+
+Owner, 2026-10-29: "ta AI chat widget na mobile responsive popravi, ker grafično ni ok." On an iPhone with the keyboard open the widget header was gone (no way to close), the top half was empty white and the homepage showed through below the composer.
+
+- Root cause: the phone panel was `fixed inset-0`, i.e. sized to the *layout* viewport. The iOS/Android keyboard only shrinks the *visual* viewport, so Safari scrolled the page to reveal the textarea: header above the screen, empty list area, page visible under the composer. The page behind was also scrollable.
+- `src/lib/utils/chat-viewport.ts` (new): `CHAT_SHEET_MEDIA` (`max-width 639px` or `max-height 499px`, so landscape phones also get the sheet), `chatSheetRect()` (visual viewport → top/height, keyboard detection, ignored while pinch-zoomed) and `lockBodyScroll()` (iOS-safe `position: fixed` body lock, scroll position restored on close).
+- `AiChatWidget.tsx`: while open on a phone it writes `--ai-chat-top` / `--ai-chat-height` from `visualViewport` resize/scroll (rAF-throttled) and locks the page; the sheet itself gets focus on open (desktop still focuses the input). Header: 44px buttons on phones, "Nov pogovor" as an icon with the text kept for screen readers, title truncates, full-chat link now also on phones. No `interactive-widget` viewport change (site-wide side effects on Android).
+- `globals.css` `.ai-chat-panel`: layout of the sheet (`100dvh` fallback, safe-area insets, no bottom inset while the keyboard is open) and of the unchanged 400px desktop panel; `.ai-chat-input` is 16px on touch screens of any width (no iOS focus zoom in landscape either).
+- `ChatMessageList.tsx`: bubbles wrap long words/URLs (`overflow-wrap:anywhere`), beach card text can shrink, no horizontal scroll; the list keeps following the newest message when the keyboard shrinks it.
+- Checked with Playwright (`next dev` + stubbed API, fake keyboard via a stubbed `visualViewport`) at iPhone 13, 320px, Pixel 7, iPhone landscape, desktop and `/ai/chat`. Tests: `e2e/ai-chat-viewport.unit.spec.ts`. Real-device check on dev.beachrex.com still needed.
+
+## 2026-10-29 – Card map pins open the beach map ✅ COMPLETE
+
+Owner: "Wherever cards have a map PIN marker, clicking it should redirect to the map page."
+- **Beach cards** (`PropertyCard`: most visited, browse all beaches, nearby beaches, favorites; blue pin next to the name): the pin is a link to the map focused on the beach, `buildBeachFocusMapUrl()` → `/{locale}/{map-slug}?beach_id=989&lat=45.54&lng=13.66` (coordinates optional). On the map page itself (its list passes `onLocationClick`) the pin still moves the side map in place.
+- **Place cards** (`DestinationCard`: country, region, island, city carousels; red / orange / yellow pin): the pin links to the map filtered to the place, `buildPlaceMapUrl()` with the banner map button's parameters, e.g. island Hvar → `/si/zemljevid-plaz?country=HR&island=<code>`; country → `continent_code` + `country`. The place value is its code (then id, then slug). The card was one `<Link>` around everything; it is now a `<div>` with a stretched card link (`absolute inset-0`) and the pin link above it (`z-20`), so links are not nested and both work with the keyboard.
+- **Map focus** (`src/lib/utils/map-focus.ts`, `MapWithSidebar`): `parseBeachFocus()` reads `beach_id` (+ optional `lat`/`lng`); the map loads the beach (`GET /beaches/{id}`), centers and zooms on it (URL coordinates first, otherwise the loaded beach's), opens its popup, and `withFocusedBeach()` adds its marker when the filters or the viewport would leave it out. The beach banner's map button (same parameters) gets this too.
+- Pins keep their icons, add hover (scale) and focus-visible rings, and are labelled with the existing `PropertyCard.showOnMap` ("Show {title} on map", 19 languages). The pin links do not prefetch.
+- Test: `e2e/card-map-pins.unit.spec.ts`.
+
+## 2026-10-29 – Location pill tabs: full width, place-page look with beach count, on every banner ✅ COMPLETE
+
+Owner report on dev (screenshots): the open tab was only as wide as the pill (name cut to "Hrvaš", "RN" of KVARN showing through), and the native `title` tooltip appeared on top. Owner wants the tab to look like the main bar of that place's own page, with its beach count, and the pills to work on every page that shows them.
+
+- `LocationPill`: the tab is `w-max` (sizes to its content, not to the pill) and covers what it overlaps; no `title` on interactive pills (aria-label stays). The tab shows the level word in a white pill (`TopBar.continentLabel|countryLabel|regionLabel|islandLabel|cityLabel`), the full name in bold white and the white count box with the beach icon and `Common.numBeaches` ("Plaže: 1167", count in the level colour), the same classes as TopBar's main bar, one step smaller. No count: no box (never a wrong number). Keyboard focus ring is drawn on the open tab. Still an overlay (`pointer-events-none`, clip-path, `motion-reduce:transition-none`): the row never moves under the cursor.
+- `TopBar`: new `pillCounts`; `pillTab(level)` passes colour, accent, level word and count to each pill.
+- `src/lib/mappers/mapPlacePills.ts`: links (`buildLocationPillUrls`), names and counts from the beach `location` or a place page's nested parents.
+- Wired on every banner: continent page (`beaches/[continent]/page.tsx`), country page, region/island/city listing pages (via `BannerSection`, which now forwards `pillLinks`/`pillNames`/`pillCounts`) and the beach banner.
+- API client regenerated from the backend spec (`npx openapi-ts -i <backend>/storage/api-docs/api-docs.json`, `client.gen.ts`/`index.ts` kept): `location.*.beaches_count`; it also picked up earlier backend drift (search location slugs are now nullable → `GlobalSearch` maps `null` to `undefined`).
+- Backend: Beachrex/backend PR #154 (`location.*.beaches_count` in beach details; parent counts on the country/region/island/city show endpoints).
+- No new strings: all level words and `Common.numBeaches` exist in all 19 locales (asserted by a test).
+- Tests: `e2e/location-pills.unit.spec.ts` (w-max, no title, tab content, 19 locales, `mapPlacePills`, every banner caller passes links/names/counts and no unlisted caller exists).
+- Visual check: static render of the real `TopBar` (si messages) with Tailwind CLI + Chromium: rest, hover on each pill, city page without the region count, keyboard focus; a left-to-right mouse sweep hovers Evropa > Hrvaška > Kvarner > Rab > Lopar once each, in order.
+
+## 2026-10-29 – Indoor / outdoor pools under "Pool" in the water body filter ✅ COMPLETE
+
+Owner, 2026-10-29: "filter bi mogli razbit na notranji in zunanji bazen … če stisneš na prvi strani outdoor ali indoor, filter ne zazna". The map did take `?pool_type=indoor|outdoor` (chip "Notranji bazen"), but the options were a separate "Vrsta bazena" group and the water body group showed only Morje / Jezero / Reka / Bazen. The 0 results are data: dev has no pool places yet (backend `DEV_HANDOFF.md` 2026-10-29, ADR "Indoor / outdoor pools").
+
+- `src/lib/utils/waterbody-filter.ts` (new): the water body options with the API's `pool_type` options nested right after `pool`; toggles, the section counter, and a select encoding (`pool_type:indoor`) for single-choice selects. Without a `pool` option or `pool_type` group nothing is merged.
+- `src/components/Map/LeftSidebarFilters.tsx` (map sidebar, desktop and the mobile filter drawer): "Notranji bazen" / "Zunanji bazen" indented under "Bazen"; the separate pool type group is hidden; the water body counter counts both parameters and the section opens when only `pool_type` is set (home page tiles).
+- `src/components/Home/FilterModal.tsx`: same nesting in the home "more filters" dialog; selections and summary chips use the right parameter.
+- `src/components/DynamicSearchBeaches.tsx` (country/region/city/island listings): the water body select lists the two pool types after "Bazen"; choosing one sets `pool_type` and clears `waterbody`.
+- URLs unchanged: `waterbody=pool` = every pool place; `pool_type=indoor|outdoor|indoor,outdoor` as the home tiles send. Labels come from `GET /beaches/filters` (backend `lang/*.json`, 19 locales), so no new `messages/*.json` strings.
+- Tests: `e2e/pool-type-filter.unit.spec.ts` (nesting, toggles, counter, select round-trip, regression: the home tile params survive the map's option validation and get the chip label). Deliberate break (no nesting) fails 3 of 6.
+
+## 2026-10-29 – Map tooltip: no hardcoded "0.0" rating ✅ COMPLETE
+
+Owner, 2026-10-29: the beach tooltip on the map showed "⭐ 0.0" for every beach (hardcoded `Number(0)`), which read as a bad rating. Beaches have no rating source yet, so the badge is removed (as on `PropertyCard` since 2026-10-09). `src/components/Map/BeachMarkerTooltip.tsx`; test `e2e/map-tooltip-rating.unit.spec.ts`.
+
+## 2026-10-29 – Beach banner: location pills open and link to their place ✅ COMPLETE
+
+Owner, 2026-10-29: the pills (continent, country, region, island, city) showed only an icon or a cut 5-letter label ("KVARN", "LOPAR" overflowing) and did nothing.
+
+- `src/components/BannerSection/LocationPill.tsx` (new): on hover or keyboard focus a tab in the pill's colour slides open with the full name; a click opens the place. The tab is drawn over the following pills (absolute, `clip-path` transition, `pointer-events-none`), so the row never shifts under the cursor (a width-expanding version made the hover jump between pills). No animation with `prefers-reduced-motion`. Pills are `min-w-[54px]` instead of a fixed width.
+- `TopBar.tsx`: new optional props `pillLinks` and `pillNames`; without a link a pill renders as before (no hover).
+- `beach-urls.ts`: `buildLocationPillUrls(locale, location)` — same hierarchy as the beach URL and breadcrumbs.
+- `BeachBannerSection.tsx`: passes links and full names. Region/island/city listing pages do not pass links yet.
+- Test: `e2e/location-pills.unit.spec.ts`. Checked in Chromium: a left-to-right mouse sweep hovers each pill once, in order.
+
+## 2026-10-29 – Responsive WebP images from Imagor, fewer font preloads ✅ COMPLETE
+
+Owner, 2026-10-29 (home page audit): the hero was a 2800 px JPEG and beach cards 800 px JPEGs on every device (`images.unoptimized`), and 7 font files were preloaded.
+
+- `src/lib/imagor-loader.ts` (new) + `next.config.js` (`loader: "custom"`, `loaderFile`, `deviceSizes` 480–2800): `next/image` builds a `srcset`; for each width the loader asks Imagor for that width as WebP (`fit-in/{w}x{w}/filters:format(webp):quality(75)`). The width never exceeds the endpoint (800 teaser / 2800 large), so no image is larger than before. Existing filters (mobile-photo watermark) are kept. Non-Imagor sources (`public/`, Spaces icons, share images) pass through unchanged; in `next dev` these log a one-time "loader does not implement width" warning, which is expected.
+- `layout.tsx`: Figtree `preload: false` (4 of the 7 preloaded font files); Open Sans and Damion (hero h1) stay preloaded.
+- Test: `e2e/imagor-loader.unit.spec.ts`.
+- Not done: 19 header icons still load from `beachrex.fra1.digitaloceanspaces.com` (no Cloudflare). Moving them needs the SVG files (not reachable from the agent sandbox).
+- Imagor renders more width variants (cached by Cloudflare after the first request).
+
+## 2026-10-29 – TASK-010: AI chat widget on every page, knows the current page ✅ COMPLETE
+
+Owner 2026-10-29: "bi ta AI chat naredili kot widget na strani? … da bi še vedel na kateri strani se nahajaš" and, the same day,
+"the conversation must survive closing the tab/browser by accident" + a "New conversation" button.
+Backend: Beachrex/backend#152 (`page_context` on `POST /api/v1/ai/chat`, ADR "The chat knows the page it is opened on").
+
+- `src/components/AiChat/AiChatWidget.tsx`: floating button bottom right (z-[1040], lifted on the map page) → panel
+  (phones: full screen above the sticky header, z-[1080]; desktop: 400 px panel). Media overlay, webcam modal and search
+  overlay (z-[1100]) stay above it. `role="dialog"`, Esc closes, focus goes to the input on open and back to the button on close,
+  "New conversation", link to the full chat page. **Renders nothing when the admin AI switch is off** (TASK-009) and on `/{locale}/ai/chat`.
+- `src/contexts/AiChatContext.tsx` (`AiChatProvider`, in `[locale]/layout.tsx` inside `SiteSettingsProvider`): one conversation
+  for the widget and the `/ai/chat` page; survives client navigation. **localStorage** `beachrex.aiChat.v1` (try/catch around every
+  access): messages + timestamps + session id, newest 50 messages, forgotten after 7 days without a message, restored after mount,
+  synced between tabs (`storage` event, no write-back loop). "New conversation" clears it.
+- Shared UI: `ChatMessageList.tsx` (scroll logic moved from the page unchanged), `ChatComposer.tsx`. `/ai/chat` uses them.
+  Beach links in answers now open in the same tab (the conversation is kept); old answers keep their own language's slugs (`locale` per message).
+- Page context: `src/lib/utils/ai-chat-widget.ts` (pure). Page type from the URL in all 19 locales (route words from `globalRoutes`);
+  beach / region / island / town pages register themselves with `AiChatPageMarker` (beach id from `basic_info.id`);
+  title = the page's name or `document.title` without the site suffix (≤ 120); path sanitized to the backend's charset (≤ 300).
+- Texts: `AI.chat.widget.*` in all 19 `messages/*.json`.
+- Specs: `e2e/ai-chat-widget.unit.spec.ts` (page type per locale, page_context, visibility, persistence round trip / cap / expiry
+  boundary / corrupt JSON, wiring, 19 locales). Deliberate break (expiry `>=`, visibility always on): 2 failed. Existing chat specs now
+  read the shared components.
+- Note: the server session still expires after 30 minutes without a message; the restored history stays visible but the model
+  starts a new session (earlier turns are not sent again).
+
+## 2026-10-29 – Burger menu beach types use the card icons ✅ COMPLETE
+
+Owner 2026-10-29: "Beton" had a globe icon and the other types used different icons than the beach cards. `menuBeachFilters.ts` now takes `BEACH_TYPE_ICONS` from `beach-badges.ts` (the same CDN icons as the cards and the beach page badges, incl. concrete) through `resolveBadgeIcon`. Spec `e2e/navigation-links.unit.spec.ts` (with the old icon map: 1 failed).
+
+## 2026-10-29 – AI chat follows the conversation (scroll fix) ✅ COMPLETE
+
+Owner 2026-10-29: "when you chat, the new question and answer are not shown; only the scrollbar moves".
+- Cause: the message list on `[locale]/ai/chat` is a fixed-height `overflow-y-auto` box and nothing ever set its
+  `scrollTop`, so every new message was appended below the visible area (the scrollbar thumb shrank, the view stayed at the top).
+- Fix: `src/lib/utils/chat-scroll.ts` (pure: `distanceFromBottom`, `shouldAutoScroll` 120 px, `chatScrollTarget`).
+  The page scrolls only its own container (never the window, so no jump under the sticky header): to the bottom after
+  each message / typing indicator, or to the newest message's start when the answer is taller than the box.
+  A `ResizeObserver` re-applies it when beach card images load. Readers who scrolled up are not pulled down; sending
+  a message resumes following. Box height `min(600px, 60dvh)` (min 280 px) so the input stays reachable on phones.
+- Spec `e2e/ai-chat-scroll.unit.spec.ts` (3 tests; all fail on the old page / a broken helper).
+
+## 2026-10-29 – Top quick menu: "Beach view" removed ✅ COMPLETE
+
+Owner request 2026-10-29: the top menu item "Beach view" (Prikaz plaže) made no sense and had no clear target (it opened the map filtered by natural shade / scenic view).
+- `src/components/Header/QuickMenu.tsx`: entry removed (desktop row; mobile only showed the first three items, unchanged). The middle row uses `gap-x/gap-y` instead of `space-x`, so wrapped rows on narrow desktop widths no longer get a stray left margin.
+- `Common.quickMenuBeachDisplay` removed from all 19 `messages/*.json` (no other usage; `Filter*.displayLabel` keys untouched).
+- Spec: `e2e/quick-menu.unit.spec.ts` (3 tests; against the old component: 2 failed).
+
+## 2026-10-29 – Banner: duplicate map thumbnail removed ✅ COMPLETE
+
+Owner request 2026-10-29 (Kvarner region page): remove the `banner-map.png` thumbnail from the banner, the floating map icon on the right edge (`/images/common/map-icon.svg`) already opens the same map.
+- `BannerSection` (continent / country / region / island / city): `MapWidget` removed. The floating map icon (same `buildMapUrl()` with the place filters) stays. The widget row is only rendered when it has content (weather on region/island/city, or `rightWidgets`), so continent/country pages get no empty row.
+- `BeachBannerSection`: `MapWidget` removed too; its floating map button (`/images/map.png`, same `buildMapUrl()` incl. `beach_id`/`lat`/`lng`) stays. Weather + sea temperature widgets unchanged.
+- World banner (`/beaches`) keeps the thumbnail: it has no floating map icon, so it is the only map link there. `MapWidget` is now a plain decorative thumbnail (the `href`/`label` props were only used by the removed callers); `public/images/banner/banner-map.png` stays for it.
+- Spec `e2e/banner-map-link.unit.spec.ts` rewritten (break: banner-map.png `<img>` put back in `BannerSection` → 1 failed).
+
+## 2026-10-29 – Logo watermark on mobile-app photos (Imagor, on the fly)
+
+- Owner, 2026-10-29: photos uploaded from the mobile app (`img/beaches_mobile/…`, ~839 of 2 876 beaches on dev) had no
+  Beachrex logo, unlike admin uploads (logo baked in). ADR 2026-10-29 "Watermark mobile-app photos on the fly"
+  (backend repo) supersedes the 2026-10-08 "no watermark" note for these photos.
+- `buildCdnUrl(path, context?, options?: { watermark?: boolean })` in `src/lib/utils/beach-images.ts` adds Imagor's
+  `filters:watermark(img/watermark/beachrex-watermark-v1.png,-3p,-4p,0,20,30)` (bottom-right, 3 %/4 % margin, ≤ 20 %
+  of the width) when `needsWatermark(path)`: a raster image (`jpg/jpeg/png/webp`) under `img/beaches_mobile/`, not under
+  `/vtour/`, file name without `panorama`/`sphere`. `{ watermark: false }` opts out (360° sphere thumbnail on the beach
+  page). Non-Imagor endpoints (the direct Spaces assets endpoint for icons/videos) are never changed.
+- `buildShareImageUrl` (OG/X share image) joins the watermark into its existing `filters:format(jpeg):quality(85)`
+  segment. Every beach photo consumer goes through these two functions: cards, banners, gallery popup, carousels, map
+  tooltips, search results, itinerary, AI chat, homepage example, OG image, JSON-LD `ImageObject` / place `image`.
+- The PNG is uploaded to the bucket by the backend deploy (`media:publish-watermark`); merge the backend PR first.
+- Test: `e2e/beach-photo-watermark.unit.spec.ts` (4 tests; deliberate breaks: no watermark → 2 fail, panoramas not
+  skipped → 1 fails, second `filters:` segment in the share URL → 1 fails, opt-out ignored → 1 fails).
+## 2026-10-29 – Fix: 360° viewer answered 404 (middleware) ✅ COMPLETE
+
+After #110 the Pannellum viewer `/vendor/pannellum-2.5.6/pannellum.htm` answered 404 on dev: the locale middleware rewrote it to `/en/vendor/…`. `vendor/` is now excluded in the middleware matcher (like `images`, `brand/`). Spec `e2e/middleware-public-files.unit.spec.ts` (without the fix: 1 failed).
+
+## 2026-10-29 – Beach page: distance on "Nearby beaches" cards ✅ COMPLETE
+
+Owner request 2026-10-29: "in 'Nearby beaches' show the distance to these beaches, like in the app".
+- Data: `GET /api/v1/spatial/beaches/within-radius` (already used by the section, centred on the current beach) returns `distance_km` per beach (PostGIS `ST_Distance`). No backend change.
+- `src/lib/utils/distance.ts`: `formatDistance(km, locale)` — same rules as the app (`mobile-app/src/lib/format.ts`): under 1 km metres rounded to 10 m (min 10 m), under 10 km one decimal, from 10 km whole km, `Intl.NumberFormat` per locale ("350 m", "4,2 km" /si, "4.2 km" /en, "12 km"). Web-only fix: 0.995–0.999 km shows "1 km", not "1.000 m". `parseDistanceKm` accepts a number or numeric string.
+- `mapBeachToProperty` → `Property.distanceKm`; `PropertyCard` shows a grey pill with a pin icon top-left on the photo (where the app puts it), with a screen-reader text `PropertyCard.distanceAway` ("{distance} away", all 19 locales). Other listings send no `distance_km`, so their cards are unchanged.
+- Spec `e2e/nearby-distance.unit.spec.ts` (break: no 1000 m guard + one decimal everywhere + mapper field removed → 3 failed).
+
+## 2026-10-29 – 360° panorama without a tour, uploaded videos play ✅ COMPLETE
+
+Owner report 2026-10-29 (Plage du Port Vieux, Biarritz): black "360° view" popup; video file shown as a broken photo. Backend Beachrex/backend#147 (tour_url null when no tour; video files move to `videos`).
+- `src/lib/utils/beach-media.ts`: no `tour_url` but a panorama → `sphereTourUrl` is our viewer `/vendor/pannellum-2.5.6/pannellum.htm#panorama=…&autoLoad=true` (Pannellum 2.5.6 standalone, MIT, self-hosted in `public/vendor/pannellum-2.5.6/` with its licence; no npm dependency, no third-party script). `videoIsFile` for uploaded files.
+- `BeachMediaContent`: uploaded video files play in `<video controls>` (YouTube stays an iframe). `BeachPageView`: the 360° card shows for tour or panorama.
+- Spec: `e2e/beach-media.unit.spec.ts` (+4 tests; without the viewer fallback / file detection: 2 failed).
+
+## 2026-10-29 – Burger menu: all countries and all beach types ✅ COMPLETE
+
+Owner requests 2026-10-29: "the burger menu does not list all countries" and "under Beach types only 3 of the 6 types are shown".
+- `src/lib/utils/menu-items.ts`: removed `TOP_COUNTRIES` (cap of 10). "Top beach countries" now lists every country with beaches and a known continent, most beaches first (13 on dev). The menu body already scrolls (`overflow-y-auto`).
+- `src/config/menuBeachFilters.ts`: "Beach types" is no longer 3 hardcoded picks; it uses `allOptions` (every `beach_type` option from `GET /beaches/filters`, API order and localized names) with local icons per code and `/images/menu/world.svg` as fallback (rocky/concrete without a local icon still get one; new types appear automatically). `resolveAllFilterOptions` in `src/lib/utils/quick-filters.ts`.
+- "Beaches for" and "On the beach" stay curated picks across several filter keys (a deliberate selection, not a "first N" cut).
+- Spec `e2e/navigation-links.unit.spec.ts` (cap of 10 back: 1 failed; beach types cut to 3: 1 failed).
+- Noted, not changed: `QuickMenu.tsx` filters `beach_type` with `large_stones`, a code the API does not have (`big_stones`).
+
+## 2026-10-29 – TASK-009: AI guide follows the admin switch ✅ COMPLETE
+
+Owner request 2026-10-29 (backend Beachrex/backend#146, spec `docs/tasks/TASK-009-ai-assistant-switch.md`).
+- `src/lib/site-settings.ts`: reads `GET /api/v1/site-settings` server-side (revalidate 300 s). **Fails closed**: API error or malformed answer = AI guide off.
+- `[locale]/layout.tsx` passes it to `SiteSettingsProvider`; the burger menu hides "AI beach assistant" when off (`buildMenuItems({ showAi })`).
+- `[locale]/ai/layout.tsx` and `[locale]/payment/layout.tsx`: `notFound()` when off (404, not indexed).
+- `llms.txt`: AI line only when on (now ISR 300 s instead of force-static).
+- Spec `e2e/site-settings.unit.spec.ts` (menu always showing AI: 1 failed).
+
+## 2026-10-28 – Place pages: "All beaches (n)" shows the place's total again ✅ COMPLETE
+
+- Found on dev: the Toscana page showed "All beaches (20)" for a region with 43 active beaches (API `beaches_count`
+  43, `/beaches?region=toscana` total 43). `PropertySection` accepted `headerRight` (the `AllBeachesLink` with the
+  place total, TASK-004 D7) but had not rendered it since Jan 2026; its carousel expander, labelled with the 20 loaded
+  cards, stood in for it.
+- `PropertySection` renders `headerRight` when given (country, region, island, city pages); sections without it keep
+  the expander.
+- Search side: Beachrex/backend PR #145 makes search count towns/islands/beaches in a named place like these pages.
+- Test: `e2e/all-beaches-link.unit.spec.ts` (+1; fails on the old PropertySection).
+
+## 2026-10-28 – Search dropdown: real totals in the tab badges ✅ COMPLETE
+
+**Owner report:** "france" showed "All 28 = Beaches 10 + Cities 10 + Regions 7 + Country 1" although France has ~400
+beaches and 87 towns. The badges counted the items returned (`limit: 10` per type).
+
+- Backend Beachrex/backend PR #144 adds `meta.totals_by_type`, `meta.total_matches` and `meta.place` to
+  `GET /api/v1/search` (additive). A query that names a place limits the lower types to it (no more Italian beaches
+  for "france"). ADR 2026-10-28 "Search counts are real totals; a place name scopes the result".
+- `src/lib/utils/search-totals.ts`: typed parser for the new meta fields (the generated client is not regenerated:
+  `yarn generate:api` drift, see backend HANDOFF open items) and `formatCount` (Intl, compact from 1 000: "1.2K").
+- `searchTabs(results, totals)`: badge = real total (never below the items listed), "All" = sum. Old API → item counts.
+- `moreMatches`: a type tab that lists fewer than it matched shows "Showing 10 of 412"; for towns/islands/regions in a
+  named place it adds "Open {name}" (the place page via `buildSearchResultUrl`). Beaches keep the existing
+  "All beaches on the map: {name}" button, which now prefers the API's `meta.place`.
+- New strings `Search.showingOf`, `Search.openPlace` in all 19 languages.
+- Test: `e2e/search-totals.unit.spec.ts` (5 tests; with totals ignored the tab test fails).
+## 2026-10-28 – Author page: all 13 countries, linked ✅ COMPLETE
+
+Owner request 2026-10-28: the "Along the coasts" route on `/{locale}/gregor-balazic` listed 6 countries while the page says 13; list all 13 and make the countries, the numbers and the description clickable.
+- `AUTHOR_ROUTE` (`src/lib/constants/author.ts`) = the 13 countries Beachrex has beaches in (dev country filter, 2026-10-28): SI, HR, ME, AL, GR, IT, FR, ES, PT, BE, NL, DE, DK. **Bosnia and Herzegovina removed** — Beachrex has no beaches/country page there and keeping it would make 14. Added: Montenegro, Albania, Greece, Portugal, Belgium, Netherlands, Germany, Denmark.
+- Country links: the page loads `GET /continents` + `GET /countries` server-side with the page's Accept-Language (localized slugs) and builds URLs with `buildCountryUrl` via `buildAuthorCountryUrls()`. A country the API does not return gets plain text, not a broken link. ISR lowered from 24 h to 1 h (like the beaches page).
+- Route chips, the country list in the "4,000 beaches in 13 countries" story text (rendered with `Intl.ListFormat` in the visitor's language) and every country name link to the country page. "4,000 beaches" and "13 countries" (chapter title, story text, stat cards) link to the all-beaches page `/{locale}/{getBeachesWord}` (world totals + country list; there is no separate "worldwide" page).
+- i18n: `AuthorPage.countries.*` now has the 13 keys (`ba` removed) and `AuthorPage.chapters.road.title/text` use `<beaches>`, `<countries>` and `<list></list>` rich-text tags, in all 19 files.
+- Spec: `e2e/author-page-countries.unit.spec.ts` (5 tests: 13 countries = Beachrex list, URLs localized and built by `buildCountryUrl` in all 19 locales, missing data → no link, every locale's title/text parses and wraps the right words, no hardcoded locale). Deliberate break (sk text without `<list></list>`): 1 failed.
+
+## 2026-10-28 – "Sort by" on country, region and island sub-lists ✅ COMPLETE
+
+Owner request 2026-10-28: the continent page's "Sort by" (alphabetical / most beaches / fewest beaches) also on the country page (regions, cities, islands), the region page (islands, cities) and the island page (cities).
+- Sort logic moved to `src/lib/utils/destination-sort.ts` (`sortDestinations`, locale-aware `Intl.Collator`, ties by name, missing count = 0) and the control to `src/components/DestinationSortSelect.tsx`; `ContinentCountriesSection` now uses both (no visible change).
+- `DestinationsSection` sections take `sortable: true`; each sortable list keeps its own sort state (React state, like the continent list — no URL param) and starts alphabetical, as on the continent page. Before, these lists came in API order (no `ORDER BY`). Homepage list unchanged.
+- Uses `beaches_count` the list endpoints already return; no backend change. i18n: reuses `ContinentPage.sortBy` / `sortAlphabetical` / `sortBeachesDesc` / `sortBeachesAsc` (already in all 19 files), no new keys.
+- Spec: `e2e/destination-sort.unit.spec.ts` (5 tests; with code-point compare, no tie-break and the island page without `sortable`: 4 failed).
+
+## 2026-10-28 – Beach page shows one webcam (the primary) ✅ COMPLETE
+
+Owner report 2026-10-28: Strand Ahrenshoop showed the webcam twice. Windy lists that camera under two ids (1716900945 "Ahrenshoop", 1348599722 "Ahrenshoop: Strand"); both were approved for the beach. On dev 16 of 410 beaches with a webcam have 2+ approved webcams.
+- `beachPageWebcams()` in `src/lib/utils/webcam.ts`: the beach page renders only the primary webcam (cards, map and the homepage example already did). The admin choice of primary still decides which one.
+- Spec: `e2e/webcam.unit.spec.ts` `beachPageWebcams` (showing all: 1 failed).
+
+## 2026-10-28 – Beach page: GPS location + Navigation button ✅ COMPLETE
+
+Owner request 2026-10-28: show the GPS position above Parking, with a clickable "Navigation" button that opens Google Maps navigation.
+- `beachDetailsSection.tsx`: block above Parking — "GPS location: 45.54170, 13.65600" (from `basic_info.latitude/longitude`, 5 decimals, selectable) and a **Navigation** link to `https://www.google.com/maps/dir/?api=1&destination=lat,lng` (new tab; on phones the Maps app). Hidden when the position is missing, invalid or 0,0.
+- `src/lib/utils/geo.ts` (parse, format, URL); spec `e2e/geo.unit.spec.ts` (accepting 0,0: 1 failed).
+- i18n: `BeachDetails.groups.gpsLocation`, `buttons.navigation`, `navigationAria` in all 19 files.
+
+## 2026-10-28 – TASK-008: interactive "View beaches from all angles" on the homepage ✅ COMPLETE
+
+Owner request 2026-10-28. Spec: backend `docs/tasks/TASK-008-homepage-media-showcase.md`, ADR 2026-10-28.
+- Homepage reads `beach_views.config.showcase_beach_id` (admin; default 989 Svetilnik, Izola via backend migration) and loads `GET /beach-details/{id}` server-side (ISR 300 s, `NOT_A_VIEW_HEADERS`).
+- New `src/components/Home/BeachMediaShowcase.tsx`: title from admin, "Example: <beach>, <city>, <country>", link to the beach page, one card per media type the beach has (its own photos, LIVE badge on the webcam card). Click opens `MediaOverlay` with the real gallery / YouTube / 360° tour / Windy player. No iframe before a click.
+- Fallback: no id, unknown beach, failed request or no media → the old static `BeachMediaSection` from admin Items.
+- Popup content extracted to `src/components/Beach/BeachMediaContent.tsx` + `src/lib/utils/beach-media.ts`; `BeachPageView` uses the same component (no visible change on the beach page). Webcam in the popup is new and used only by the homepage.
+- i18n: `HomePage.showcaseExample`, `showcaseOpenBeach`, `showcaseLiveBadge` in all 19 files. Card labels reuse `BeachDetails.beachMedia*`.
+- Spec: `e2e/beach-media.unit.spec.ts` (6 tests; with a broken id parser and duplicated card photo: 2 failed). `next build` NOT RUN in the agent sandbox (Google Fonts blocked) — checked by the deploy build and on dev.
+
+## 2026-10-26 – Dev slowdown: place slugs loaded once per hour ✅ COMPLETE
+
+- Owner: dev was slow, sometimes 30 s without an answer. Measured: the front answered in ~100 ms, then stalled 1–6 s (static JS too, so the whole Node process); the API stayed at 110–200 ms. On the VPS `front_dev` used 2.9 GB (uat: 43 MB) and had restarted.
+- Cause: `loadPlaceSlugs` (hreflang/canonical, #90) re-read continents, countries, regions, islands and cities in 19 languages (~19 MB of JSON; cities ~1 MB each) on every beach/place render and metadata call.
+- Fix: one shared copy per process for an hour (`src/lib/seo/place-paths.ts`); concurrent callers share one load; a load with an empty list retries after a minute.
+- Test: `e2e/place-slugs-memo.unit.spec.ts`.
+
+## 2026-10-23 – Old beach slugs: a real 301 from the middleware ✅ COMPLETE
+
+- The page-level `permanentRedirect` for old slugs reached the browser as 200 + meta refresh (streamed, then cached by ISR). The middleware now answers paths whose last segment starts with `beach-` with a **301** to the current slug, asking `GET /api/v1/beaches/{slug}` (the backend resolves old slugs). New slugs never hit the API.
+- `src/lib/utils/old-beach-slug.ts`; test in `e2e/beach-old-slug.unit.spec.ts`.
+
+## 2026-10-23 – Old beach slugs redirect permanently ✅ COMPLETE
+
+- Owner: beach URLs ended in an English "beach-" slug in every language (`/pl/plaze/.../beach-svetilnik`). The backend (migration `2026_10_23_140000_beach_slugs_from_local_names`) gives each beach a slug of its local name (`svetilnik`, `plage-de-la-garoupe`, town appended when a name repeats) and still finds a beach by its old slug.
+- The beach page answers an old slug with a 301 to the current URL (`isOldBeachSlug` in `src/lib/utils/beach-urls.ts`).
+- Test: `e2e/beach-old-slug.unit.spec.ts`.
+
+## 2026-10-23 – Beach pill shows only the water ✅ COMPLETE
+
+- Owner: the beach banner pill says just the water — "Morje", "Jezero", "Reka", "Bazen" (was "Morska plaža", "Jezerska plaža", …), in all 19 locales (`TopBar.beachLabel*`).
+
+## 2026-10-23 – Beach page wording follows the waterbody ✅ COMPLETE
+
+- Owner: lake, river and pool beaches said "Morska plaža", "Temperatura morja" and "Morsko dno".
+- `src/lib/utils/waterbody.ts`: `waterKind(characteristics.waterbody.code)` → sea | lake | river | pool (unknown → sea).
+- Banner pill: `TopBar` takes an optional `pillLabelKey`; new keys `TopBar.beachLabelLake/River/Pool`.
+- Details row: `BeachDetails.labels.seabedLake/River/Pool` ("Dno jezera", "Rečno dno", "Dno bazena").
+- The water-temperature widget shows only on sea beaches: the value comes from the Open-Meteo marine model, so on inland water it was the nearest sea (or "--").
+- All 19 locales; test `e2e/waterbody-labels.unit.spec.ts`.
+
+## 2026-10-22 – "Beach view" switch in Browse all beaches ✅ COMPLETE
+
+Owner 2026-10-22 (country pages): the "Beach view" switch (photos, video, 360°, webcam) worked in "Most visited" but "Browse all beaches" had none (its `mediaMode` was fixed to photos). The switch is now one component, `src/components/BeachViewToggle.tsx`, used by `PropertySection` and `DynamicSearchBeaches`, so it appears on every page with the browse list (world, continent, country, region, city, island). In the browse list it changes the card view and does not hide beaches (the page comes from the server, so the old unused client-side filter would have broken the count and paging); a beach without the medium shows the card's own empty state. Buttons have `aria-pressed` and labels from `BeachDetails.beachMedia*` (same as the beach page, 19 languages). Tests: `e2e/browse-beach-view.unit.spec.ts`; `e2e/media-toggle-order.unit.spec.ts` now reads the order from the shared component.
+
+---
+
+## 2026-10-22 – Sticky site header ✅ COMPLETE
+
+Owner 2026-10-22: the top of every page (language bar, logo + search + Map button, and the menu strip) stays visible while scrolling. `DefaultLayout` (`src/components/Layout.tsx`) wraps `TopBar`, `SearchBar` and `BurgerMenu` in a `<header>` with `sticky top-0 z-[1050]` (above Leaflet panes, below the modals at z-[9999]+; the search results and language dropdowns are inside the header and keep their own z-index). Not printed, as before. The full-screen map page (`BeachMapClient`) sets `body[data-map-page]` and the header stays non-sticky there: its panels are `h-screen`, so a sticky header would cover their top part.
+
+---
+
+## 2026-10-22 – Map: a filter with no matches shows 0 beaches ✅ COMPLETE
+
+Owner 2026-10-22: on `/beach-map?waterbody=pool` (and `river`) the map showed every beach, while `sea` and `lake` worked. The filter reached the API correctly; `MapWithSidebar` only accepted a bounding-box response when it had beaches, so an empty result kept the previous list. Now every response replaces the list (`nextDisplayedBeaches` in `src/lib/utils/map-results.ts`); while a new query loads the previous beaches stay. An empty result shows `BeachesMap.noBeachesFound` (already in 19 languages). Any other filter with no matches now behaves the same way. Test: `e2e/map-empty-results.unit.spec.ts` (fails on the old code).
+
+---
+
+## 2026-10-22 – Map cards: country (flag) is a link too ✅ COMPLETE
+
+Owner 2026-10-22: on the map cards the city was a link but the country was not. `PropertyCard` now links the flag to the country page (`countryUrl`/`countryName`, built in `DynamicPropertyCard` with `buildCountryUrl`; the other card lists that map via `mapBeachToProperty` are unchanged), and the marker popup (`BeachMarkerTooltip`) links both the city label and the flag (city page / country page). On the map (list cards with `openInNewTab` and the popup) all of these open in a new tab, like the beach link.
+
+---
+
+## 2026-10-22 – Map: beach opens in a new tab ✅ COMPLETE
+
+Owner 2026-10-22: on the beach map, clicking a beach opens the beach page in a new tab, both in the marker popup (`BeachMarkerTooltip`: name and "View details" links) and in the cards beside the map (`VirtualizedBeachList` → `DynamicPropertyCard` → `PropertyCard`, new prop `openInNewTab`, beach-name link). Links use `target="_blank" rel="noopener noreferrer"`, so the map position and filters stay as they were. Other pages that use `PropertyCard` (home, favorites) are unchanged. The city/region link on a card and the "show on map" button behave as before.
+
+---
+
+## 2026-10-23 – Opening a place filter opens its list with the search ready ✅ COMPLETE
+
+Owner 2026-10-23 ("da ni treba 2x klik"): opening the country / region / island / town section opens its list with the search box focused (`SearchableSelect autoOpen`), one click instead of two. Only for a section the visitor opens; sections the page opens because they hold a selection do not open their list. Cleared on every filter change, so a re-render never reopens it.
+
+---
+
+## 2026-10-23 – Map filters: chips for every selected value, several places at once ✅ COMPLETE
+
+Owner 2026-10-23 ("ne morem pa odstranit … lahko bi blo multiple select"):
+- Under "Najdeno / Pobriši": one chip per selected value ("Hrvaška ✕", "Istra ✕", "Pesek ✕"), also when its section is closed and in the quick view; ✕ removes only that value (`src/lib/utils/filter-chips.ts`). Map view state (`lat`, `lng`, `beach_id` …) is not shown.
+- Region / island / town: several values (`SearchableSelect multiple`, comma list "istra,kvarner"; the API filters by any of them). The list stays open while choosing; the button shows "Istra +1". **Country stays a single choice** (owner 2026-10-23, follow-up: with two countries the region/island/town lists were empty — `/beaches/filters` did not scope by a list, see backend#136).
+- Filter options keep their labels while the next ones load (`keepPreviousData`); the map's validation still waits for the new options.
+- Sections no longer collapse on every filter change; a closed section shows how many values are selected.
+- Labels `PlaceSelect.selected` / `remove` (19 languages). Test: `e2e/filter-chips.unit.spec.ts`.
+
+---
+
+## 2026-10-23 – Popups above the sticky header; searchable place filters on the map ✅ COMPLETE
+
+Owner 2026-10-23:
+- The sticky header (`Layout.tsx`, z-[1050]) covered the beach page gallery / 360° / video popup (z-50) and its ✕. New `MediaOverlay` (`src/components/Beach/MediaOverlay.tsx`): rendered into `<body>` at z-[1100], closes on ✕, a click on the backdrop and Escape, locks page scroll, focuses the close button (label `BeachDetails.closeMedia`, 19 languages). `WebcamModal` (was z-[1000]) and the filter drawer of the beach lists (`DynamicSearchBeaches`, was z-[100]) moved to z-[1100] too.
+- Map filters country / region / island / city (`LeftSidebarFilters`): `SearchableSelect` (`src/components/ui/SearchableSelect.tsx`) instead of a plain select — "Vse države" / "Vse regije" / "Vsi otoki" / "Vsa mesta" instead of "Izberite možnost", ✕ to clear, a list with a search box (case and diacritics ignored), arrows/Enter/Escape. The list opens in place, so the scrolling sidebar never clips it. Labels `PlaceSelect.*` in 19 languages.
+- Test: `e2e/overlays-and-place-filters.unit.spec.ts`.
+
+---
+
+## 2026-10-23 – Pre-launch SEO: one URL per page, full hreflang, sitemaps under the limits ✅ COMPLETE
+
+Pre-launch audit (owner: "danes gremo v produkcijo"):
+- **Sitemaps** were over the search engine limits (beaches 158 MB / 54 644 URLs, cities 51 MB; max 50 MB / 50 000). Now `/sitemap/{section}-{locale}.xml` (countries, regions, islands, cities, beaches × 19), listed in `/sitemap.xml` with `static.xml`. Old `/sitemap/beaches.xml` etc. are gone.
+- **Duplicate URLs**: a beach answered on `/si/plaze/europe/croatia/…` and `/si/plaze/evropa/hrvaska/…`, both self-canonical (the old sitemap listed the English slugs for every language). Canonical URLs of beach, country, region, island and city pages now come from the API slugs of the page language; a beach URL with another language's continent/country slug redirects permanently (308).
+- **hreflang** on beach, continent, country, region, island and city pages now covers all 19 languages (`buildPlaceAlternates`, `src/lib/seo/place-paths.ts`): continent, country and island slugs are translated, region/city/beach slugs are not; the slugs per language come from the list endpoints (cached a day). Keys are language codes (`sl`, `uk`), not the URL's `si`/`ua` — the self link used `si` (Sinhala).
+- Tests: `e2e/place-paths.unit.spec.ts`; `seo-metadata` and `beach-list-paging` specs updated.
+
+---
+
+## 2026-10-22 – "All beaches on the map" in the search dropdown ✅ COMPLETE
+
+Owner 2026-10-22: a button at the bottom of the search dropdown opens the beach map filtered to the place the query names — the closest country, region, island or city whose name equals or starts with the query (`showAllTarget` in `src/lib/utils/search-tabs.ts`), as `?country=GR`, `?region=<code>`, `?island=<code>`, `?city=<code>` (the codes the map filters accept). No button when only beaches match (the map has no text filter). Label `Search.showAllOnMap` in 19 languages. Tests in `e2e/search-tabs.unit.spec.ts`.
+Backend Beachrex/backend#130 (not merged, waits for the owner) makes "grčija", "nemčija" … find beaches and towns too.
+
+---
+
+## 2026-10-22 – Search dropdown split into tabs per result type ✅ COMPLETE
+
+Owner 2026-10-22: the header search listed beaches, cities, regions and the country in one long list ("albanija" showed the country last). `GlobalSearch` now shows tabs — All, Beaches, Cities, Islands, Regions, Countries — with counts, only for types that have results and only when there are at least two types. "All" puts the closest name matches first (exact, prefix, word prefix; diacritics ignored), otherwise the API order. A new query starts on "All"; arrow keys and Enter work within the active tab; the input keeps focus when a tab is clicked. Logic in `src/lib/utils/search-tabs.ts`; labels `Search.tab*` in 19 languages. Test: `e2e/search-tabs.unit.spec.ts`.
+
+---
+
+## 2026-10-22 – Webcams on beach cards play in a popup ✅ COMPLETE
+
+Owner 2026-10-22: the webcam button on beach cards (map, city, region, island lists — every `PropertyCard`) opened Windy in a new tab; it now opens `WebcamModal` on our page with the same Windy player iframe as the beach page section (built from the id). Escape, the close button or a click outside closes it; focus stays inside and returns to the card; page scroll is locked while open. Events from the portal are stopped so the card behind does not navigate. An old pasted link (`FEATURES.windyWebcams` off) still opens a new tab. New label `PropertyCard.webcamClose` (19 languages). Test: `e2e/webcam-popup.unit.spec.ts`.
+
+---
+
+## 2026-10-22 – Map media switch in the beach page order ✅ COMPLETE
+
+Owner 2026-10-22: the map page switch showed photos, webcam, 360, video; the beach page shows photos, video, 360, webcam. `MediaToggleInline` (`Dropdown.tsx`) and the map dropdown options (`MapWithSidebar.tsx`) now use the beach page order. Test: `e2e/media-toggle-order.unit.spec.ts` (fails on the old order).
+
+---
+
+## 2026-10-21 – Beach FAQ, FAQPage JSON-LD and search snippet (TASK-007) ✅ COMPLETE (web side)
+
+Spec: backend `docs/tasks/TASK-007-seo-geo-descriptions.md` (owner 2026-10-21, all six proposals).
+- Beach page: `BeachFaqSection` after the details (native `<details>`, answers in the HTML; heading `BeachFaq.title` in 19 languages); hidden without questions.
+- `FAQPage` JSON-LD next to `TouristAttraction` and the breadcrumb, from the same items.
+- `generateMetadata`: `basic_info.meta_description` (requested language only) wins over the description.
+- `renderJsonLd` escapes `<` as `\u003c`, so database text cannot close the `<script>` tag (all JSON-LD).
+- Types for the new fields live in `src/lib/utils/beach-faq.ts` until `yarn generate:api` is run against dev.
+- Tests: `e2e/beach-faq.unit.spec.ts`. Nothing shows until the backend fields exist and `content:ai` has written data.
+
+---
+
+## 2026-10-21 – Accommodation price badge hidden on beach cards ✅ COMPLETE
+
+Owner 2026-10-21: the green "from 0 €" accommodation badge on `PropertyCard` (beach lists, map list, favorites) was the only accommodation UI not behind `FEATURES.accommodation`. It is now gated; the location badge keeps its place on the right (`ml-auto`). Regression test: `e2e/beach-card-price.unit.spec.ts`.
+The "Browse accommodations" button in `Continent/SearchContinent.tsx` and the green accommodation button in `Beach/BeachBanner/BeachBannerSection.tsx` (both without an action) are gated the same way.
+
+---
+
+## 2026-10-21 – `<html lang>` and `hreflang` use ISO 639-1 language codes ✅ COMPLETE
+
+Owner (2026-10-21): keep the URL codes, fix only the language attributes.
+- Two URL locales are country codes, not language codes: `si` (as a language code it means Sinhala) and `ua` (not a language code). `<html lang>` and every `hreflang` (page metadata alternates + all six sitemaps) now use `sl` and `uk`. URLs (`/si/...`, `/ua/...`), routing and API `Accept-Language` are unchanged.
+- New helper `toHtmlLang()` in `src/app/config/locales.ts`; used in `app/[locale]/layout.tsx`, `buildAlternateLanguages()` and the sitemap routes.
+- Spec: `e2e/html-lang.unit.spec.ts` (fails against an identity helper: 3 of 4 tests).
+
+---
+
+## 2026-10-21 – Untranslated UI strings fixed + guard spec ✅ COMPLETE
+
+Owner report 2026-10-21 (Greek and other languages showed English words). Audit of all 19 `messages/*.json` against `en.json`: no missing keys on `dev`; most identical strings are real words in that language (Hotel, Filter, Region, Portugal …) and stay. Fixed the ones that were not translated:
+- si: `HomePage.moreAccommodations`, `AccommodationSection.activitiesTitle`, `BottomBadgesBeach.badges.windsurfing`
+- el: `BottomBadgesBeach.badges.windsurfing`, `Auth.email`; ru: `Auth.email`, `Common.accommodationDefaultBeach`; ua: `Auth.email`
+- da: `SEO.countryFlagAlt`; sq and hr: the three parking labels
+- New spec `e2e/messages-translated.unit.spec.ts`: bg/el/ru/ua have no Latin-only strings (explicit allowlist for templates and proper names) and every locale has every `en` key. Against the old files: el, ru and ua fail.
+- Filter and beach data (Hostel, Beach bar … in Greek) come from the API, not from these files — fixed in the backend.
+
+---
+
+## 2026-10-14 – Verified Windy webcams on the beach page (TASK-006) ✅ COMPLETE
+
+Owner decisions 2026-10-14 (backend `docs/tasks/TASK-006-windy-webcams.md`): direct iframe, other providers hidden.
+- Beach page: new `WindyWebcams` section from the API's `webcams[]` (Beachrex/backend#118): Windy's public player iframe (the same iframe Windy's `player.js` creates; no third-party script), mounted when the section is within 300 px of the viewport, `loading="lazy"`, 16:9, title per webcam, link + credit "Webcam provided by Windy.com" (19 languages: `BeachDetails.webcamHeading`, `webcamIframeTitle`, `webcamCredit`). No webcam → no section. The iframe URL is built from the id, never taken from the API.
+- Cards, lists and the map: "has webcam" and the webcam button use `media.embeds.windy_webcam_id` → `https://www.windy.com/webcams/{id}` (`webcamLink()`); the old pasted links (Lookr, WhatsUpCams, Webcamgalore) are no longer shown.
+- Rollout switch `FEATURES.windyWebcams` (on). Off = the old `beach.webcam` link behaviour.
+- `src/lib/api-client` not regenerated: regenerating from the current backend spec also pulls nullable search slugs (backend 2026-10-09) that break `GlobalSearch.tsx` types — separate fix. The new fields are read through `parseWindyWebcams()` / `webcamLink()`.
+- Spec: `e2e/webcam.unit.spec.ts`.
+
+## 2026-10-12 – Fixed badges on destination cards hidden ✅ COMPLETE
+
+Owner (city card "Scenic town"): the badge on country, region, city and island cards was a fixed text per card type (`cityBadge` "Scenic town", `regionBadge`, `islandBadge`, `HomePage.seaExperiences`), the same on every card. `DestinationCard` now renders it only when `FEATURES.placeCardBadges` is on (off for launch; backend `docs/features/hidden-for-launch.md` H18). The translation keys stay. Spec: `e2e/place-card-badges.unit.spec.ts`.
+
+## 2026-10-12 – Beach cards use the first gallery photo when there is no main image ✅ COMPLETE
+
+Owner (Bretagne, Nouvelle-Aquitaine): region "Most visited" empty, "All beaches (0)", city pages without beaches. The API returned the beaches, but mobile-app beaches had `main_image: null` and every card list skips beaches without a main image. `withMainImage()` (`src/lib/utils/beach-cards.ts`) fills it from the first gallery photo before that filter (`beachesToProperties`, `DynamicSearchBeaches`). The backend sets the same fallback (Beachrex/backend, `main_image` PR). Spec: `e2e/main-image-fallback.unit.spec.ts`.
+
+## 2026-10-12 – Breadcrumbs show translated names ✅ COMPLETE
+
+Owner (Greek beach page): the breadcrumb read "Paralies > Europe > Slovenia > Obalno Kraska > Strunjan > Beach Mesecev Zaliv" — every segment was its URL slug in title case, in every language. `DynamicBreadcrumbs` now takes `labels` (`slug → name`) built by `breadcrumbLabels()` (`src/lib/utils/breadcrumb-labels.ts`) from the page data: beach `location` + `basic_info`, region/island/city details (with their country and continent), country details, continent. The beaches word uses `Common.statsBeaches`. Unknown slugs still fall back to title case. Spec: `e2e/breadcrumb-labels.unit.spec.ts`.
+
+## 2026-10-12 – Banner map thumbnail is a link ✅ COMPLETE
+
+Owner (Bretagne): the map image in the banner was not clickable. `MapWidget` takes `href` + `label`; the place banner (`BannerSection`: country, region, island, city) and the beach banner pass their existing beach-map URL (same filters as the side "map" button; the beach adds `beach_id`, `lat`, `lng`). Label `WorldTopBar.mapButton` (19 locales). Spec: `e2e/banner-map-link.unit.spec.ts`.
+
+## 2026-10-12 – No hyphen after "360°" (German, Dutch) ✅ COMPLETE
+
+Owner (Strand Wulfen, `/de`): the sphere button read "360°-Ansicht". `messages/de.json` and `messages/nl.json` now write "360° Ansicht", "360° Rundgang", "360° weergave", … (Hungarian "360°-os" is grammar and stays). Spec: `e2e/sphere-label-hyphen.unit.spec.ts`.
+
+## 2026-10-10 – Google Play badge in the footer (App Store badge hidden) ✅ COMPLETE
+
+Owner: "dodaj v nogo link do google play mobilne aplikacije, ios gumb še skrij".
+- `src/components/Footer/FooterAppBadges.tsx` in the brand column: "Get the app" + a Google Play badge linking to `https://play.google.com/store/apps/details?id=com.datavallis.beachrex` (`src/lib/constants/mobile-apps.ts`).
+- The App Store badge is built but hidden: `FEATURES.iosAppBadge = false` and `APP_STORE_URL = ''` (backend `docs/features/hidden-for-launch.md` H17). To show it: set the URL and turn the flag on.
+- Strings `Footer.app.{title,googlePlayTop,appStoreTop}` in all 19 locales. Spec: `e2e/footer-app-badges.unit.spec.ts`.
+
+## 2026-10-10 – Beach map on phones: Filters button slow, list jumping ✅ COMPLETE
+
+Owner video (iPhone 16 Pro, `/en/beach-map`): the Filters button reacted only after several seconds and the list jumped back to the top.
+- Cause: on phones the page scrolls, so the list column has no fixed height. react-window then sized the list to all rows and rendered every one of them (2 876 beaches, an 894 436 px tall element, 2 876 IntersectionObservers).
+- Fix (`src/components/Map/VirtualizedBeachList.tsx`): on screens under 768 px the list shows 20 cards and a "Show 20 more…" button (`FilterModal.showMore`, already in all 19 locales); a new result set starts again at 20. Desktop keeps the virtualized list (decided by screen width, not by the narrow list column).
+- Measured locally (mock API with 2 876 beaches, Chromium iPhone emulation, 6× CPU throttling): before 2 876 card slots, page 895 666 px, Filters panel open after 572 ms, 341 ms of long tasks; after 20 slots, page 1 832 px, panel after 209 ms, 0 ms long tasks. Desktop still renders only the visible rows (5).
+- Spec: `e2e/beach-map-mobile-list.unit.spec.ts`.
+
+## 2026-10-09 – Continent page title had "Europe" built in; Slovenian labels ✅ COMPLETE
+
+Mobile report (relayed by the owner):
+- `SearchBeach.title` ("Browse all beaches in Europe") had Europe written into the text in all 19 languages, so every continent page said Europe. Now `{continent}` (same wording as each language's `countryPage.browseBeachesTitle`), passed by `beaches/[continent]/page.tsx`.
+- Slovenian: `Common.numBeaches` "plaže:" → "Plaže:"; `WorldTopBar.countriesWithBeachesLabel` "Držav z plažami" → "Države s plažami".
+- Spec: `e2e/continent-browse-title.unit.spec.ts`.
+
+---
+
+## 2026-10-09 – Slovenian "Otoki {country}" heading ✅ COMPLETE
+
+Mobile report (relayed by the owner): `countryPage.islandsTitle` in `messages/si.json` was "Otoški {country}" (adjective); now "Otoki {country}", like "Regije {country}" and "Mesta {country}". The other 18 languages were checked and are correct. Spec: `e2e/si-island-title.unit.spec.ts`.
+
+---
+
+## 2026-10-09 – Parking and swimming-pool filters no longer dropped ✅ COMPLETE
+
+Mobile report (relayed by the owner): the website dropped the `parking` and `has_swimming_pool` filters from `/beaches/filters`. Their options carried only `value: "1"`, and the filter validators (`useBeachFiltersController`, `MapWithSidebar`) matched the selected value against `code`, `slug` or `id` only.
+- New `src/lib/utils/filter-options.ts` `optionMatches()`: code, slug, id or value (an option without an id no longer matches the text "undefined"). Both validators use it.
+- The backend now also sends `code: "1"` and translated titles/labels (Beachrex/backend#93).
+- Spec: `e2e/filter-options.unit.spec.ts`.
+
+---
+
+## 2026-10-09 – Card tags on continent pages, no "0.0" rating badge ✅ COMPLETE
+
+Owner feedback on dev after favorites:
+- **Continent (and world) page cards had no tag line** ("Swimming • Snorkeling • …") although the API sends `tags`: `beachesToProperties` dropped them. Same for the "all beaches" search cards (`DynamicSearchBeaches`). Both now use `cardTags()` (`src/lib/utils/beach-properties.ts`). Spec: `e2e/card-tags.unit.spec.ts`.
+- **Rating badge hidden**: every card showed a "0.0" star (no rating source yet). `PropertyCard` now shows the star only for a rating above 0; recorded as H16 in the backend `docs/features/hidden-for-launch.md`.
+
+---
+
+## 2026-10-09 – Favorite beaches on the web (H6 shown) ✅ COMPLETE
+
+Owner decision 2026-10-09 ("ja, potrjujem"): saved beaches use the backend favorites API (backend #85, the same one the mobile app uses).
+- **Heart on every beach card** (`PropertyCard`, via `src/components/Favorites/FavoriteButton.tsx`) and **"Save" in the beach page banner** (`TopBarBeachRight`). Filled red heart = saved. The heart changes at once and rolls back if the API refuses; a full list (422 `favorites_limit`) or another error shows a short message under the heart.
+- **Signed-out visitors** get a sign-in dialog (`SignInOptions`: Google or e-mail). After an e-mail sign-in in the dialog the beach is saved, so the click is not lost (Google sign-in leaves the page, so the visitor taps the heart again).
+- **"My favorite beaches" page** `/{locale}/favorites` (never indexed), linked from the top bar heart (mobile and desktop). Removing a heart there hides the card at once.
+- `src/hooks/useFavorites.ts`: one cached id list (`GET /me/favorites/ids`) drives every heart; the page reads `GET /me/favorites`. Cache keys include the token, so another account never sees cached ids.
+- `FEATURES.favorites` is now `true`; search cards (`DynamicSearchBeaches`) now carry the beach id.
+- API client regenerated from the backend OpenAPI (favorites, `app-config`, `DELETE /me`).
+- Texts: new `Favorites` namespace in all 19 languages. Spec: `e2e/favorites.unit.spec.ts`.
+
+---
+
+## 2026-10-09 – Image alt texts (TASK-004 A6) ✅ COMPLETE
+
+About 90 hard-coded English alt texts ("Accommodation 1", "image 0", "Map icon", "play beach", …) are gone:
+- **decorative icons and backgrounds** next to visible text: `alt=""`, so screen readers skip them and search engines see no English noise on localized pages;
+- **images that are the only content of a button or link** (menu, map and filter buttons): a translated alt from existing keys (`Common.menu`, `Common.map`, `Filters.filterButton`, all 19 languages);
+- **photos:** beach banner `alt={beachName}`, card carousel `alt="{title} (n)"`;
+- **brand names** (BeachRex, Facebook, Instagram, YouTube) stay.
+
+**Test:** `e2e/alt-texts.unit.spec.ts` fails on any literal `alt="..."` other than a brand name.
+
+## 2026-10-09 – Unknown beach URLs answer 404 (not 200) ✅ COMPLETE
+
+- **Problem:** `/{locale}/beaches/...` with an unknown continent, country or place showed the 404 page with HTTP status 200 (found 2026-10-08; bad for Google). An unknown country even crashed with a 500 (`countryDetails!.code!`).
+- **Fix:**
+  - removed `src/app/[locale]/beaches/[continent]/loading.tsx`. Its Suspense boundary made Next stream status 200 before `notFound()` ran; the pages are ISR-cached, so the skeleton was rarely seen.
+  - the country page calls `notFound()` when the API answers 404 for the country. When the API cannot be reached it throws instead, so ISR keeps the last good page and never caches a 404 for a real country.
+- **Checked with `next dev` against a mock API:**
+  - `/en/beaches/nowhere`, `/en/beaches/europe/nocountry` and `/en/beaches/europe/croatia/x/y` → 404 (all 200 before);
+  - a known country → 200.
+- **Test:** `e2e/not-found-status.unit.spec.ts` checks that there is no loading UI above the slug pages, and the country 404 and API-down handling.
+
+## 2026-10-09 – Buying a plan: consent to the terms of sale and the withdrawal waiver (AI-4, part 1) ✅ COMPLETE
+
+**Needs backend #81** (checkout requires `accept_terms` and `waive_withdrawal`; terms §5 rewritten as terms of sale).
+
+- `/ai/itinerary`: above "Buy N-day plan" there are now two checkboxes, and the button stays disabled until both are ticked:
+  1. "I accept the terms of sale". It links to the terms page by its localized slug, taken from the footer static-pages query: same query key, so no extra request.
+  2. "I want the plan right away; I lose my 14-day withdrawal right once I create the plan; until then I can still withdraw."
+- The checkout request sends `accept_terms` and `waive_withdrawal`.
+- Texts: `AI.itinerary.consent.{terms,withdrawal}` in 19 languages (`terms` uses `t.rich` with `<link>`).
+- Test: `e2e/itinerary-planner.unit.spec.ts` (+1).
+- Browser check at 390 px with a mocked API: disabled → disabled (terms only) → enabled (both); the terms link is `/si/p/pogoji-uporabe`; the body is `{"product_type":"itinerary_7day","accept_terms":true,"waive_withdrawal":true}`.
+
+## 2026-10-09 – AI itinerary (AI-3d): trip map and Save as PDF ✅ COMPLETE
+
+- **Map:** `src/components/Itinerary/ItineraryMap.tsx` (react-leaflet, loaded with `dynamic`, `ssr: false`) is shown on every finished plan. Each day has its own colour; stops are numbered `day.order` in visiting order and the day's route is drawn as a line. Popups link to the beach page, and a legend lists the days. Stops come from `planStops()`, which uses the beaches' `latitude`/`longitude` that the backend already returns.
+- **PDF:** a "Save as PDF" button runs `window.print()`. `Layout.tsx` hides the top bar, search, menu and footer in print (`print:hidden`), as well as the plan page's controls; day cards use `break-inside-avoid`.
+- **Texts:** `AI.itinerary.savePdf` and `AI.itinerary.mapTitle` in 19 languages.
+- **Tests:** `e2e/itinerary-planner.unit.spec.ts` (+2): stops are numbered per day and beaches without coordinates are skipped; the print setup is in place.
+- **Checked in a 390 px browser** with a mocked API: 4 markers and 2 day lines, no overflow; in print media the header and the PDF button are hidden.
+
+## 2026-10-09 – AI itinerary (AI-3c): plans generated in the background, "My plans" ✅ COMPLETE
+
+**Needs backend #78** (`POST /ai/itinerary-plans`, `GET /me/itinerary-plans(/{id})`, worker container).
+
+**Planner (`/ai/itinerary`)**
+- "Create my plan" calls `POST /api/v1/ai/itinerary-plans` (202) and opens `/ai/itinerary/plans/{id}`.
+- Signed-in users get a "My plans" link in the header.
+
+**Plan page (`/ai/itinerary/plans/[id]`)**
+- A server page (`generateStaticParams` returns `[]`, plus `setRequestLocale`) renders the client `ItineraryPlanPage`.
+- It polls `GET /me/itinerary-plans/{id}`: every 3 s for the first minute, then every 10 s.
+- While waiting it shows progress, and that the page can be closed.
+- When done it renders `ItineraryPlanView` (moved out of the planner page). When failed it shows why and that the plan was not used.
+
+**My plans (`/ai/itinerary/plans`)**
+- Lists `GET /me/itinerary-plans`: title, length, country, date and status badge.
+- Failed plans show why.
+
+**Texts:** `AI.itinerary.plans.*` in 19 languages; `progressNote` removed.
+
+**Tests:** `e2e/itinerary-planner.unit.spec.ts` (+2): plan states, failure keys, polling pace, and the endpoints the pages call.
+
+**Checked in a 390 px browser** with a mocked API:
+- start → plan page;
+- "running" (progress text) → "done" after 4 polls, with the beach link `/si/plaze/evropa/hrvaska/porec/plaza-borik`;
+- My plans with "Ready" and "Not created" (reason shown);
+- no horizontal overflow.
+
+**Note:** the Tailwind theme replaces the colour palette, so only Flowbite's colours exist (no `amber`).
+
+## 2026-10-09 – AI itinerary planner (AI-3b): a form that can be sold ✅ COMPLETE
+
+`src/app/[locale]/ai/itinerary/page.tsx` + `src/lib/utils/itinerary.ts`. The old form sent any free-text destination as Croatia, any number of days (the API only accepts 3/7/14), and free-text interests that the API rejects. A "budget" field did nothing.
+
+**The form now has:**
+- A country from `GET /countries` and an optional region from `GET /regions?country_code=`, in the page language.
+- 3/7/14-day cards with the real price from the new `GET /payments/products` (`Intl.NumberFormat`), plus how many plans of that length the user already has.
+- Chips for interests and beach surface (values from the backend `ItineraryRequest`), plus pace, adults and children.
+
+**What the button shows:**
+- Signed out: sign-in.
+- Has a plan of that length: "Create my plan (uses one plan)".
+- Otherwise: "Buy N-day plan · price". The form is kept in sessionStorage across the Stripe checkout, and credits are polled briefly after returning, because the webhook can land a few seconds later.
+
+**While generating:** 3 progress messages. Every error says whether the plan was used (402 buy, 422 too few beaches, 429/503 busy).
+
+**Result:** days with time blocks; every beach links to its page (`buildBeachUrlFromSchema` with the slugs the backend now returns), with its photo. Travel km, parking and accessibility notes per day. A fallback plan shows a note that the plan was not charged.
+
+**Texts:** all in 19 languages under `AI.itinerary`; the old keys are removed.
+
+**Tests:** `e2e/itinerary-planner.unit.spec.ts`
+- the request format;
+- form values allowed by the backend validation (checked against `ItineraryRequest.php` when the backend repo is next to this one);
+- prices, error mapping, credits;
+- all 19 languages have the same keys and placeholders.
+
+Checked in a 390 px browser with a mocked API: no horizontal overflow; the beach link is `/si/plaze/evropa/hrvaska/istra/porec/plaza-borik`.
+
+**Needs backend #77** (`/payments/products` and the beach slugs).
+
+## 2026-10-09 – Phones: no zoom or sideways scroll when typing ✅ COMPLETE
+
+On the owner's iPhone the AI chat page scrolled sideways after tapping the message field. The cause: iOS Safari zooms in when a field with a font size below 16 px gets focus. Measured at 390 px: header search 12 px, chat textarea 14 px, e-mail field 14 px. Without focus there was no overflow (`scrollWidth` = 390).
+
+`src/styles/globals.css`: under 768 px, text fields, textareas and selects use 16 px (`!important`, so it overrides `text-sm`/`text-xs`). After the fix all three measure 16 px and there is no overflow on the chat page or the home page.
+
+## 2026-10-09 – Beach map page on phones: smooth, map closes, real filters button ✅ COMPLETE
+
+`src/components/Map/MapWithSidebar.tsx` (owner report from an iPhone):
+- **Stutter:** the side map was hidden on phones with CSS only, so phones still rendered Leaflet with ~3,000 markers. It is now mounted only on md+ screens (`matchMedia('(min-width: 768px)')`); phones mount a map only in the full-screen popup.
+- **Map could not be closed:** the X sat at `-top-4`, above the screen edge. It is now a 44 px button inside the map (top right, above the Leaflet controls). Both popups use `z-[10001]`, so they sit above the header dropdowns.
+- **Floating blue "F":** removed. The mobile row is now "Filters" (icon) and "Open Map" (icon), both localized. The hard-coded English "Hide list / Show list" toggle is gone, because hiding the list left the page empty.
+
+## 2026-10-09 – AI chat (AI-2, web): agent answers with links ✅ COMPLETE
+
+When the backend chat runs as the tool-calling agent (`AI_CHAT_ENGINE=agent`, backend AI-2), answers come with `format: "markdown"` and links `[Beach](https://…/si/plaze/…)`. `parseAgentMarkdown()` (`src/lib/utils/ai-chat.ts`) renders them safely: links only to our own site (made relative, so they work on dev/uat/prod), `**bold**`, `- ` list lines; foreign links stay plain text; no HTML is ever injected. Plain answers (pipeline engine) keep the beach-name linking. Test: `e2e/ai-chat.unit.spec.ts`.
+
+## 2026-10-09 – "Browse all beaches": right beaches, one server page at a time, first page in the HTML ✅ COMPLETE
+
+Owner (Risskov DK, Murter HR): the list showed beaches of every country and took seconds to load. Causes: the place **slug** was sent as `city=`/`region=`/`island=` (the API filters by code and ignored it), the hook downloaded **every** beach (API default 5000) and the browser sliced 16 per page; the sort dropdown was not wired; "Top rated" had no ratings behind it. Backend: Beachrex/backend#73 (`page`, `per_page`, `sort`, pagination meta, place aliases).
+- `src/lib/server/destination-page-data.ts`: details first, then (in parallel) most visited and `fetchFirstBeachPage()`; the list filters use the place **code** (`placeFilterValue`: code → id → slug), so the list, the filter options and the "Map" button get the right place. Most visited also uses the code (it used the slug).
+- `src/hooks/useBeaches.ts`: `useBeachPage(filters, page, sort, initial)` — one page (`per_page` 16) per request, previous cards kept while the next page loads, server first page used as initial data (no request on load). `useAllBeaches` (download everything) removed.
+- `DynamicSearchBeaches`: server pages, real total in "Found (n)", sort popular/newest sent to the API ("Top rated" removed), scroll to the list on page change, localized pager (`Common.paginationPrevious/Next`, 19 languages). The Suspense fallback (what the cached HTML contains) is the server-rendered first page of cards: visible at once and indexable.
+- City, region, island, country and `/plaze` pages pass `initialPage`; country keeps its code filter.
+- `sitemap/beaches.xml`: 100 per page, safety cap 200 pages (it repeated the same 50 beaches before the API paged).
+- Test: `e2e/beach-list-paging.unit.spec.ts`. Local build against a paging mock API: city page HTML contains the first 16 cards (request `city=bol-code&page=1&per_page=16&sort=popular`), the browser makes **no** list request on load, page 2 requests only page 2 and shows beaches 17-32; no page errors.
+
+## 2026-10-09 – City page: category tiles hidden ✅ COMPLETE
+
+Owner (screenshot of a city page): the tiles "Peščene plaže, Kamnite plaže, Bazen, Primerne za pse, …" had no function. `CityCategories` has no click handlers at all, so it is hidden behind `FEATURES.cityCategoryTiles = false` (listed in backend `docs/features/hidden-for-launch.md`). To bring it back, each tile must set the matching filter of the "Browse all beaches" list. Test: `e2e/placeholder-content.unit.spec.ts`.
+
+## 2026-10-09 – AI chat (AI-1, web): conversation memory, linked beach names, photos, clear errors ✅ COMPLETE
+
+Owner: "AI chat ful slabo dela … niti linkov ne da do plaž". Together with backend AI-1 (real slugs/photos in the page language, sliding session).
+- `src/lib/utils/ai-chat.ts`: `sendChatMessage()` sends `session_id` (the conversation continues; before, every message was a new session without history), `Accept-Language` = page locale (beach names/URL slugs match the website's URLs), the sign-in token and the location if shared. `linkBeachNames()` turns recommended beach names in the answer into links (longest name first, case-insensitive). `chatErrorKey()`: 503 busy / 429 too many / 413 too long.
+- `ai/chat/page.tsx`: beach names in the text and card titles link to the beach page (new tab, chat stays); cards show the photo (`main_image` now sent by the API), the localized beach type instead of the English "Surface:", "{percent}% ujemanje"; clicking a suggestion sends it; "📍 Use my location" (browser geolocation) for "beaches near me"; specific error messages; times in the page language.
+- 7 new `AI.chat` texts in all 19 languages (machine-translated by the agent).
+- Test: `e2e/ai-chat.unit.spec.ts`. Local browser run against a mock API (390 px): names linked to `/si/plaze/evropa/hrvaska/dalmacija/split/plaza-bacvice`, photo card, 2nd and 3rd message reuse the session, `Accept-Language: si`, location sent, busy text shown, no page errors. Real OpenAI answers: owner check on dev.
+
+## 2026-10-09 – E-mail sign-in and "Forgot password" ✅ COMPLETE
+
+Owner request 2026-10-09: accounts imported from the old site have a random password, so they need e-mail sign-in with a password reset. Backend: `POST /api/v1/forgot-password`, `POST /api/v1/reset-password` (localized e-mail via SMTP).
+- `src/components/Auth/SignInOptions.tsx`: Google button, "or", then **Sign in with e-mail** opens `EmailLoginForm` (e-mail, password, "Forgot password?"). Used on the AI chat and itinerary pages (the only places with sign-in; "My account" stays hidden for launch). Their header row stacks on phones.
+- `/{locale}/auth/forgot-password` (`ForgotPasswordForm`): always the same answer (no account enumeration).
+- `/{locale}/auth/reset-password?token=…&email=…` (`ResetPasswordForm`, the e-mail link): new password twice (min 8), then signs the user in. The token is read in the browser (page stays static/ISR) and removed from the address bar. Invalid/expired/used link → "Request a new link".
+- `src/app/[locale]/auth/layout.tsx`: all `/auth/*` pages `noindex, nofollow` and `referrer: no-referrer`.
+- `src/lib/utils/password-auth.ts`: API calls + status → message (422, 429 "too many attempts", other).
+- `src/lib/api-client/` regenerated from the backend spec (`npx openapi-ts -i <backend>/storage/api-docs/api-docs.json`; `client.gen.ts`/`index.ts` kept).
+- 23 new `Auth` texts in all 19 languages (machine-translated by the agent).
+- Test: `e2e/password-reset.unit.spec.ts`. Local end-to-end (real backend, mail to the log, Chromium 390 px): forgot (si) → e-mail "Ponastavite geslo za Beachrex" with the link → mismatch error → reset → signed in → same link again "invalid" → AI chat (de) wrong password error → sign-in works; no page errors.
+
+## 2026-10-09 – Localized error page; AI chat beach images ✅ COMPLETE
+
+- `src/app/[locale]/error.tsx`: a page that throws while rendering now shows a localized message (header/footer stay) with **Try again** and **Go Home**, instead of the default English Next.js error screen.
+- `src/app/global-error.tsx`: last-resort screen when the locale layout itself crashes; reads the locale from the URL and loads only that locale's `ErrorPage` messages (inline styles, no provider).
+- New `ErrorPage` namespace in all 19 `messages/*.json`.
+- AI chat (`/ai/chat`): beach images used `NEXT_PUBLIC_IMAGOR_ENDPOINT`, which is never set, so every image URL was broken; now `buildCdnUrl(main_image, 'list')`.
+- Test: `e2e/error-page.unit.spec.ts`.
+
+---
+
+## 2026-10-09 – Beach views counted from the browser ✅ COMPLETE
+
+Beach pages are now cached (ISR), so the server-side read of `/beach-details` (about once per hour) cannot count visitors, and the browser's own reads were counted by mistake (hover prefetch on cards, the language switch lookup). Backend 2026-10-09 added `POST /api/v1/beaches/{id}/view` (one count per visitor and beach per 30 minutes).
+- `src/lib/utils/beach-views.ts`: `reportBeachView(id)` (`fetch` POST, `keepalive`, errors ignored) and `NOT_A_VIEW_HEADERS` (`X-Beachrex-Client: web`).
+- `BeachDetailPage` reports the visit once on mount.
+- Not counted any more: the server render and metadata (`[...segments]/page.tsx`), hover prefetch (`prefetch-utils.ts`), language switch (`useLocalizedPath`).
+- Test: `e2e/beach-views.unit.spec.ts`.
+
+## 2026-10-09 – Self-hosted fonts; no double API requests on page load ✅ COMPLETE
+
+Performance audit 2026-10-09:
+- Figtree and Damion (hero script text) were loaded by a render-blocking Google Fonts `@import` in `globals.css`. They now come from `next/font/google` in the locale layout (self-hosted, `display: swap`, CSS variables `--font-figtree` / `--font-damion` used by `globals.css`, Tailwind `font-figtree` / `font-damion` and `ExploreSection`).
+- `ApiClientProvider` set `Accept-Language` in an effect that ran after the children's effects, then called `resetQueries()`: every client query (footer, menu, continents, countries, filters, …) went out once without the language and again after the reset, and a third time when the sign-in token loaded. The client is now configured before the first render (browser only, so the shared server-side client never gets one visitor's headers); queries are reset only when the language changes.
+- Test: `e2e/fonts-and-api-client.unit.spec.ts`.
+
+---
+
+## 2026-10-09 – Lighter images: home tiles, hero preloaded, no priority on every card ✅ COMPLETE
+
+Performance audit 2026-10-09: the home page downloaded ~10 MB of images.
+- Re-encoded the 8 heavy images the pages use (`next.config.js` has `images.unoptimized`, so files are served as they are): the 4 home category tiles (100 px tall, 10 % opacity) to 640 px wide, ~45 KB each (were 1.8–3.4 MB); `sea-beaches`, `spain` (destination fallback), `hvar` (continent search), `live-cam` to ~150 KB. Total 11.2 MB → 0.8 MB. Images nothing references were left as they are.
+- Home hero: the background URL is computed on the server (`heroBackgroundUrl`, `src/lib/utils/hero-image.ts`) and rendered as `<Image priority fill>`, so it is in the initial HTML and preloaded; before it was a CSS background set only after JavaScript and an extra API call.
+- `DestinationCard`: no `priority` on every card (dozens of preloads competed with the hero); `sizes` added.
+- Test: `e2e/image-weight.unit.spec.ts`.
+
+---
+
+## 2026-10-09 – Pages are cached (ISR): served from cache instead of rendered on every visit ✅ COMPLETE
+
+Performance audit 2026-10-09 (owner: "da bi bila bliskovito hitra"): no `[locale]` page was ever cached, so every visit rendered the page on the server and called the API. Causes, all verified with `next build` + `next start` (`x-nextjs-cache` header):
+- next-intl read the locale from `headers()` because no page called `setRequestLocale` → every page dynamic.
+- The home page had `dynamic = 'force-dynamic'`.
+- Next 14 renders dynamic segments without `generateStaticParams` on every request.
+
+Changes:
+- `setRequestLocale(locale)` in the locale layout and every server page/`generateMetadata`.
+- `generateStaticParams() { return [] }` in the layout and every route with its own dynamic segment: nothing is rendered at build time (the build does not depend on the API); each page is rendered on its first visit and then served from the cache, refreshed in the background after `revalidate` (beach/place pages 1 h, home 5 min, CMS pages 1 h).
+- `useSearchParams` users inside `Suspense` (`DynamicSearchBeaches`, payment success, auth callback); without it a static page fails with 500.
+- Removed `beaches/[continent]/not-found.tsx`: it called `getTranslations('NotFoundPage')` without a locale (reads headers), which turned a missing continent into a 500 on a cached page. The locale-level 404 page is used instead.
+
+Effect: second request of every page type is `x-nextjs-cache: HIT` (home, `/beaches`, continent, country, region/island/city, beach map with filters, CMS, author, AI, payment, auth callback); the HTML language matches the URL (`/hr/plaze` → `lang="hr"`, Croatian title). Admin edits now appear after the `revalidate` time (home 5 min, other pages 1 h), not immediately. The cache is in the container and starts empty after each deploy.
+
+Test: `e2e/page-caching.unit.spec.ts` (4 tests; all fail against the old layout/home/search component).
+
+---
+
+## 2026-10-09 – Mobile header and side menu cleanup ✅ COMPLETE
+
+Owner, 2026-10-09 (phone screenshots of dev): the mobile header still showed "Accommodations" and "Shop", and the side menu had too much padding.
+- `SearchBar.tsx` mobile layout: accommodation and shop are now behind `FEATURES` like on tablet/desktop (missed in TASK-004 #18). The mobile header is one row shorter: logo and a "Map" button on one row, search below.
+- Header logo: the CGP colour SVG (`/brand/.../beachrex_horizontal_color.svg`, ≥ 140 px wide as the CGP requires) instead of the grey `logo_dark.png` from Spaces at 80 px.
+- `BurgerMenu.tsx`: full-width rows with 20 px side padding (was a fixed `ml-[100px] mr-[50px] w-[250px]` column), logo + close button header, groups expand with a chevron on the right, sub-items indented, full-width map button. New `UI.closeMenu` label in 19 locales.
+- Test: `e2e/placeholder-content.unit.spec.ts` (every accommodation/shop icon in `SearchBar` is behind its flag; CGP logo); fails against the old `SearchBar`.
+- Local check at 390 px (iPhone 13 viewport) and 1440 px: header, menu, home, `/beaches`, region/city, map, AI, author, 404 and payment pages have no horizontal overflow and no page errors.
+
+---
+
+## 2026-10-09 – Burger menu: pre-filtered beaches that open the map ✅ COMPLETE
+
+Owner, 2026-10-09: "stranski meni bi lahko napolnili s predfiltriranimi plažami — za mlade, peščene … in peljemo na mapo ob kliku". Three new menu groups after the browse groups: **Beach types** (sand, small stones, grass), **Beaches for** (families, young people/party, adventurers, dogs, wheelchair access) and **On the beach** (pool, waterslide, beach bar, natural shade, playground, parking). Each item opens the localized beach map with that one filter (`/{locale}/{beachMapWord}?beach_type=sand`), which the map already reads from the URL. Labels come from `GET /beaches/filters` in the visitor's language (same cached query as the home tiles); an option the API does not return is left out; empty groups are hidden. Config: `src/config/menuBeachFilters.ts`; builder: `buildMenuItems({ filterGroups })`; group titles `Menu.beachTypes/beachesFor/onTheBeach` in 19 locales. Tests: `e2e/navigation-links.unit.spec.ts` (+2). Local check: Chromium shows the groups and the map links (`/hr/karta-plaza?user_type=youth`, …).
+
+---
+
+## 2026-10-08 – Cleanup: unused files, one API URL source (TASK-004 audit F2, F3, F4) ✅ COMPLETE
+
+- **F2:** removed 19 files nothing imported (checked across `src/`, configs and tests): `TestImageComponent`, `Home/HeroSearchSection`, `Map/LeafletMapComponent`, `Map/MapRadiusControl` (+ its commented-out use), `StairsElement`, `Beach/BeachPromoBanner`, `BeachDetails/{DetailRow,PillList,TickList,TickValueList}`, `ui/image-with-fallback`, hooks `useBeachDetails`/`useCountryDetails`/`useRegions`, `mapBeachToPropertyWithUrl`, `lib/query-keys`, `lib/tailwind`, `lib/utils/transformers`, `lib/utils/__tests__/manual-test-seo`. The `no-console-log` allowlist now only lists flag-gated perf logging.
+- **F3:** `ApiClientProvider` and the AI chat/itinerary pages read `env.NEXT_PUBLIC_API_ENDPOINT` (`src/env.ts`) instead of repeating `?? 'http://localhost:8000'`.
+- **F4:** verified: no `routes.*` namespace is left in any `messages/*.json` (already removed earlier), nothing to do.
+Test: `e2e/unused-code.unit.spec.ts` (fails against the old tree).
+
+
+---
+
+## 2026-10-08 – No hard-coded English UI text (TASK-004 audit A4) ✅ COMPLETE
+
+Verified in code which strings were still English for every locale (`WorldQuickActionsSection` and the `BurgerMenu` items were already gone):
+- AI landing cards and info box, chat "View details →" / "Suggestions:", itinerary "Assumptions:" and the purchase error → new keys in `AI.landing`, `AI.chat`, `AI.itinerary`.
+- Home "All filters" modal (`FilterModal`: title, search, clear all, cancel, apply, show more/less) → new `FilterModal` namespace.
+- Map: "Select an option", "No beaches found in this area", layout/close button labels; beach page iframe titles (video, 360° tour, route map) → new `UI` namespace; `StyledSelect` default placeholder from `UI.selectOption`; "Loading filters…" → existing `Filters.loadingFilters`.
+- Short-lived "Loading…" placeholders (carousels, property section, map, continent `loading.tsx`, weather location) → language-neutral skeleton/spinner.
+All new keys in all 19 `messages/*.json`. Image `alt` texts are A6 (SEO step), not part of this change. Test: `e2e/hardcoded-english.unit.spec.ts` (fails against the old files).
+
+
+---
+
+## 2026-10-08 – Payment result pages and sign-in error: working links, 19 languages (TASK-004 audit D12, D13) ✅ COMPLETE
+
+Stripe is live at launch, so `/payment/success` and `/payment/cancel` (backend `success_url`/`cancel_url`) matter. They redirected after 10 s to `/internal/ai-entitlements` and `/internal/ai-purchase-itinerary` (no such routes → 404), had locale-less `next/link` hrefs, a "View my credits" button with no page, and English-only text. Both now render `src/components/Payment/PaymentResult.tsx`: next-intl `Link`/`useRouter`, countdown back to the itinerary planner (`/ai/itinerary`, where checkout starts), new `Payment` namespace in all 19 `messages/*.json` (support e-mail `info@beachrex.com`). The sign-in error on `auth/callback` linked to a hard-coded `/en`; it now links to the home page of the current locale. The three files left the `locale-links` allowlist. Test: `e2e/payment-pages.unit.spec.ts` (fails against the old success page).
+
+
+---
+
+## 2026-10-08 – Language switch: all 19 locales, beach map, no debug output (TASK-004 audit B9) ✅ COMPLETE
+
+`src/hooks/useLocalizedPath.ts` had its own "beaches" word map without da/pt/nl/el/sq, so switching language from `/da/straande/...` was not recognised as a beaches page, and the beach map word (e.g. `/hr/karta-plaza` → `/de/karta-plaza`) was never translated. It now uses `getBeachesWord`/`getBeachMapWord` for all locales (`translateFixedPath`, `isBeachesWord` in `src/lib/utils/locale-path-words.ts`), and its ~25 `console.log` calls per switch are gone. Test: `e2e/language-switch-path.unit.spec.ts` (19×19 locale pairs; fails against the old hook).
+
+
+---
+
+## 2026-10-08 – No debug output in visitors' consoles (TASK-004 audit D5, F1) ✅ COMPLETE
+
+Removed `console.log` from the language switch in `TopBar`, `BeachCategorySearch`, `LeftSidebarFilters` (map filters), the sitemap routes and `generateStaticParams`; the city page's hidden accommodation section no longer passes console-only distance/filter handlers. Verified: the beach page's similar-beaches distance dropdown already works (it changes the radius query), so D5 was only the city page. `console.error`/`console.warn` stay. Guard: `e2e/no-console-log.unit.spec.ts` fails on any `console.log` in `src/` outside a short allowlist (flag-gated perf logging; `useLocalizedPath` → B9; unused files → F2).
+
+---
+
+## 2026-10-08 – Organization JSON-LD logo from the brand package ✅ COMPLETE
+
+`buildOrganizationSchema()` (root layout) set `logo` to `/logo.png`, which does not exist, so Google got a 404 for the site's logo. It now points to the colour horizontal PNG from the brand package (`ORGANIZATION_LOGO_PATH` = `/brand/BeachRex_CGP/01_Logo/Horizontal/PNG/beachrex_horizontal_color_1000px.png`). Test: `e2e/organization-logo.unit.spec.ts` (checks that the file exists).
+
+---
+
+## 2026-10-08 – "All beaches" links work (TASK-004 audit D7) ✅ COMPLETE
+
+Country, region, island and city pages: "All beaches (n)" next to the popular beaches carousel was `href="#"` and counted only the carousel's cards (max 20). It now jumps to the filterable beach list on the same page (`#all-beaches`, the `DynamicSearchBeaches` section) and shows the place's total `beaches_count`. Shared component `src/components/AllBeachesLink.tsx`. Test: `e2e/all-beaches-link.unit.spec.ts` (fails against the old pages).
+
+---
+
+## 2026-10-08 – Region, island and city pages render on the server (TASK-004 SEO) ✅ COMPLETE
+
+### Overview
+
+Follow-up to "SEO part 2": region, island and city pages fetched everything in the browser (react-query hooks), so the server HTML had no name, no `<h1>`, no beach cards, and the `<title>` was the capitalised URL slug with no description. Crawlers (Google, AI search bots) saw an empty page.
+
+### Changes / Files
+
+- `src/lib/server/destination-page-data.ts` (new): fetches details, cities, islands and the 20 most visited beaches on the server, with the same queries the client hooks used.
+- `[...segments]/page.tsx`: region, island and city go through `renderDestinationPage()` (data as props, `Place` + `BreadcrumbList` JSON-LD) and `buildDestinationMetadata()` (`SEO.regionTitle/islandTitle/cityTitle` + descriptions in 19 locales, canonical, self hreflang, banner image for share cards). Unknown slug or missing details → 404 page.
+- `RegionListingPage`, `IslandListingPage`, `CityListingPage`: take `initialData` (required); only the weather still loads in the browser. Removed the English "Loading region…" / "Failed to load …" placeholders and the `'Malinska'` city name fallback (audit D6).
+- `json-ld-helpers.ts`: `buildDestinationSchema()` (Place with `geo` and `containedInPlace` country).
+- `src/lib/utils/destination-seo.ts` (new): title/description and canonical path helpers.
+- Removed the hooks that no longer have callers: `useRegionDetails`, `useIslandDetails`, `useCityDetails`, `useCities`, `useIslands`, `useMostVisitedBeaches`.
+
+### Testing
+
+- `e2e/destination-ssr.unit.spec.ts` (6 tests). Deliberate break: the two source tests fail against the old route and page components.
+- `npx tsc --noEmit -p .`, `yarn lint`, all unit specs (181 passed).
+- `next build` + `next start` against a local mock API: `/hr/plaze/europa/hrvatska/dalmacija`, `…/dalmacija/brac` and `…/brac/bol` return 200 with `<title>Dalmacija plaže - Hrvatska | BeachRex</title>` (etc.), a Croatian meta description, canonical, `<h1>` with the name, the beach cards and Place/BreadcrumbList JSON-LD in the server HTML. Chromium at 1440 and 390 px: no page or hydration errors.
+- Live check on dev: owner (the sandbox cannot reach dev). View source of a region page should contain the region name in `<h1>`.
+
+---
+
+## 2026-10-08 – Author page: role "Founder of Beachrex" ✅ COMPLETE
+
+Owner, 2026-10-08: "photographer, traveller" is not Gregor's profession and could mislead; `AuthorPage.role` is now "Ustanovitelj Beachrex" / "Founder of Beachrex" in all 19 locales (also the Person `jobTitle`). The page text lives in `messages/*.json` (not in the CMS).
+
+---
+
+## 2026-10-08 – Author page: Gregor Balažic (/{locale}/gregor-balazic) ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: a page dedicated to the author — the photos, 360° spheres and details on Beachrex come from Gregor Balažic's journey (2,445 beaches, 30,000+ km, six countries). Designed as a feature story, not a CMS text page. Text from the owner (Slovenian), translated into all 19 locales.
+
+### Changes
+
+- `src/app/[locale]/gregor-balazic/page.tsx`, in the platform's design (owner feedback on the first version): photo banner with the faded word behind the name like the country pages, navy pill, light-blue stat cards, four chapters with a sticky author card (like the beach cards), route chips, navy quote block, map/e-mail buttons. `Person` JSON-LD; OG image = his photo; hreflang for all locales (same path everywhere).
+- Owner: removed the outdated claims (Kickstarter backers, "four years ago", users adding photos / sharing favourites) and "with your help, supporters" from the quote, in all locales.
+- `src/lib/constants/author.ts`, `public/images/author/` (2 photos from the owner).
+- `AuthorPage` namespace in all 19 `messages/*.json`; footer brand column links to the page ("Spoznajte avtorja →").
+- Avoids the `container` class: the global `.container { padding: 0 5px }` in `globals.css` overrides Tailwind padding utilities (site-wide; reported to the owner).
+
+### Testing
+
+`e2e/author-page.unit.spec.ts`. Local stack: 200 at 1440 and 390 px, Person JSON-LD present, footer link present.
+
+---
+
+## 2026-10-08 – Beach share image: the beach's photo as a 1200×630 JPEG ✅ COMPLETE
+
+Owner, 2026-10-08: a shared beach link should show that beach. The page already used the primary photo, but in the 2800 px "large" size (can exceed X's 5 MB card limit, wrong aspect). `getBeachShareImage()` / `buildShareImageUrl()` in `beach-images.ts` build an Imagor `1200x630/smart` JPEG crop from the large endpoint. Note: dev/uat send `Disallow: /` in robots.txt, and Twitterbot respects it, so X shows no card for dev links by design; production works. Test: `e2e/beach-share-image.unit.spec.ts`.
+
+---
+
+## 2026-10-08 – Beach photos in structured data: ImageObject with creator and licence ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: photos are works of MOJA PLAŽA, d.o.o.; Google Images should credit them. `TouristAttraction.image` was one teaser-size URL from `gallery[0]`, always on the web path (wrong for mobile uploads).
+
+### Changes
+
+- `json-ld-helpers.ts` `buildBeachImageObjects()`: up to 5 `ImageObject`s, primary image first, large size, correct path for mobile uploads; `creator`/`copyrightHolder` MOJA PLAŽA, d.o.o., `copyrightNotice`, `creditText` Beachrex, `license` → terms of use, `acquireLicensePage` → media kit (English CMS slugs). Mobile uploads (possibly other authors) carry no copyright claim.
+- `buildBeachSchema()` uses them for `image`.
+
+### Testing
+
+`e2e/beach-image-schema.unit.spec.ts` (2).
+
+---
+
+## 2026-10-08 – Footer: company and brand in the rights line ✅ COMPLETE
+
+Owner, 2026-10-08: the bottom bar reads `© {year} MOJA PLAŽA, d.o.o. · BeachRex. All rights reserved.` in all 19 locales (`Footer.legal.rights` with `{year}`). Test: `e2e/footer-rights.unit.spec.ts`.
+
+---
+
+## 2026-10-08 – Beach banner: share menu; ratings and save hidden ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: hide the Google ratings (a hardcoded 7.2) and save (favorites) buttons in the beach banner for now; the share button opens a share menu.
+
+### Changes
+
+- `ShareMenu` (new): link field with copy button, X, Facebook, LinkedIn, WhatsApp, Telegram, e-mail, and "…" for the system share sheet (Web Share API, only where the browser has it). Closes on outside click and Escape. Brand marks from Simple Icons (CC0) as inline SVG, no third-party scripts.
+- `src/lib/utils/share-links.ts`: share URLs per network.
+- `TopBarBeachRight`: only the share menu. Ratings and save recorded as hidden in the backend `docs/features/hidden-for-launch.md`.
+- `Common.copyLink`, `linkCopied`, `shareOn`, `shareByEmail`, `moreShareOptions` in all 19 `messages/*.json`.
+
+### Testing
+
+`e2e/share-links.unit.spec.ts`. Local stack: beach page shows only "deli"; the panel lists the 6 networks with localized labels and the page URL; Escape closes it.
+
+---
+
+## 2026-10-08 – Site icons and default share image ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: only a 32 px `favicon.png` existed — no `favicon.ico` (404), no phone home-screen icons, and pages without their own image (home, map, CMS pages) had no share image on Facebook/WhatsApp/LinkedIn.
+
+### Changes
+
+- `public/`: `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `android-chrome-192x192.png`, `android-chrome-512x512.png`, `site.webmanifest`, `og-image.png` (1200×630) — copied from the brand package (`public/brand/BeachRex_CGP/02_Favicon_App`, `03_Social`).
+- `[locale]/layout.tsx`: `icons` (ico + svg + apple), `manifest`, default `openGraph`/`twitter` image.
+- `metadata-helpers.ts`: `withDefaultShareImage()` — `buildCompleteMetadata` uses the default image when a page passes none.
+- Middleware matcher skips the icon, manifest and share image paths.
+
+### Testing
+
+`e2e/site-icons.unit.spec.ts` (files exist, default image, middleware matcher).
+
+---
+
+## 2026-10-08 – Footer layout for 13" laptops ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08 (screenshot on a 13" MacBook): the footer looked scattered — four equal columns, a 10 px description far from the logo, the newsletter squeezed under the link columns.
+
+### Changes
+
+- `Footer.tsx`: 12-column grid on desktop (brand 4, most visited 3, information 3, browse 2), newsletter as its own band below, bottom bar `© {year} · {rights}`.
+- `FooterBrandColumn`: logo from the brand package (`public/brand/…/beachrex_horizontal_color.svg`), 14 px description, map button, social icons.
+- `FooterSocial` (new): the social links moved out of the newsletter, `rel="noopener noreferrer"`.
+- `FooterNewsletter`: text and form side by side on desktop; the submit button is navy when enabled, grey while disabled.
+- Link columns: headings in navy, 14 px links with line height for readable spacing.
+
+### Testing
+
+Local stack screenshots at 1440, 1280 and 390 px; `tsc`, lint, unit tests.
+
+---
+
+## 2026-10-08 – Media kit: brand package and downloads under the CMS page `media-kit` ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: add the brand package (CGP v1.0: logos, favicon/app icons, social images, colours, guidelines SL/EN) to git and publish a media kit page in the footer with all guidelines and logos for download.
+
+### Changes
+
+- `public/brand/BeachRex_CGP/` — the package as delivered (without `.DS_Store`/`__MACOSX`), plus `public/brand/BeachRex_CGP.zip` (whole package).
+- `src/config/mediaKit.ts` — file list (4 logo versions × 5 colours × SVG/PNG 1000/PNG 3000/PDF/EPS, guidelines, palette, social images).
+- `src/components/StaticPage/MediaKitDownloads.tsx` — downloads with logo previews (white logo on teal), rendered under the CMS page whose `code` is `media-kit`. Page text, title, slug and footer entry come from the CMS (backend `database/content/static-pages`, `static-pages:sync`).
+- `MediaKit` namespace in all 19 `messages/*.json`.
+- Middleware matcher skips `brand/` so the files are served without a locale prefix.
+
+### Testing
+
+`e2e/media-kit.unit.spec.ts` — every download link points at an existing file in `public/`.
+
+---
+
+## 2026-10-08 – Beach map: quick filters when advanced filters are off ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08 (map design "basic filters"): with the advanced toggle off, the map sidebar was empty. It now shows a 2-column grid of icon tiles (sand, small stones, grass, pool, natural shade, waterslide, party, beach bar, playground, sports fields, parking, autocamp, dogs, disabled access, family).
+
+### Changes
+
+- `src/config/mapQuickFilters.ts`: which `GET /beaches/filters` options are quick filters, in design order, with local icons from `public/images/categories/`.
+- `src/lib/utils/quick-filters.ts`: tiles from the API response (label = API option name, a missing option is not shown), toggle of comma-separated values.
+- `LeftSidebarFilters`: the grid; a tile writes the same URL param as the advanced checkbox (`?beach_type=sand,small_stones`). A URL with a non-quick value opens the advanced list; selecting in the advanced list no longer closes it.
+- Not shown (no backend filter or no icon), recorded in the backend `docs/features/hidden-for-launch.md`: free beach, parking nearby, wide beach, naturist beach (filter exists, no icon).
+
+### Testing
+
+`e2e/quick-filters.unit.spec.ts` (7). Local stack: 15 tiles with Slovenian API labels on `/si/zemljevid-plaz`; clicking "Pesek" → `?beach_type=sand`, tile pressed, result count updates.
+
+---
+
+## 2026-10-08 – Adventurer and party beach icons (cards and beach page) ✅ COMPLETE
+
+### Overview
+
+Owner, 2026-10-08: only the family user type had an icon; adventurer and party beaches need theirs too. The API now returns `features.adventurer` and `features.youth` (party) (Beachrex/backend#50).
+
+### Changes / Files
+
+- `src/lib/utils/beach-badges.ts`: `user_type-adventurer.png` and `user_type-youth.png` from the same CDN `categories_icons` set as `user_type-family.png`, on cards (`buildCardFeatureIcons`) and on the beach page badges (`USER_TYPE_ICONS`).
+- `messages/*.json` (19): `BottomBadgesBeach.badges.adventurer` and `partyBeach`.
+- `src/lib/api-client/`: regenerated from the backend spec (`client.gen.ts`, `index.ts` kept).
+- `e2e/beach-badges.unit.spec.ts`: adventurer/party icons on cards and badges.
+
+### Testing
+
+- `npx tsc --noEmit -p .`, `yarn lint`, all unit specs (155 passed).
+- The icon file names follow the family icon; the owner confirms they exist on Spaces (the sandbox cannot reach Spaces).
+
+---
+
+## 2026-10-08 – SEO part 2: one h1 per page, correct hreflang, sitemap index, beach map metadata (TASK-004) ✅ COMPLETE
+
+### Overview
+
+Verified in code: home, continent, country, region, island and city pages had no `<h1>` (titles were `<span>`); the beach page's only `<h1>` was "Detailed information"; the beach map had no metadata and no `<h1>`; `sitemap.xml` was a `<urlset>` listing other sitemaps; hreflang alternates paired one locale's localized slugs with every other locale (e.g. `/en/plaze/evropa/...`), so most alternates pointed to wrong URLs.
+
+### Changes / Files
+
+- **h1**:
+  - the banner title (`BannerSection`) is the `<h1>` on continent, country, region, island and city pages;
+  - the beach name (`BeachTitleBlock`) is the `<h1>` on beach pages, and "Detailed information" is now `<h2>`;
+  - the home hero title is the `<h1>` and is rendered on the server (`HeroSection initialTitle`).
+- **hreflang** (`metadata-helpers.ts`):
+  - new `buildLocalizedAlternates(pathFor)` for pages whose path only differs by the localized word (`/beaches`, the beach map);
+  - new `buildSelfAlternate(locale, path)` for continent, country, region/island/city/beach and CMS pages: the other locales' slugs are unknown there, and a missing hreflang is better than a wrong one.
+- **Sitemap**: `src/app/sitemap.xml/route.ts` returns a `<sitemapindex>` (replaces `src/app/sitemap.ts`).
+- **Beach map**: server wrapper with `generateMetadata` (`SEO.beachMapTitle/Description`, canonical, hreflang) and an `sr-only` `<h1>`. The client map moved to `src/components/Map/BeachMapClient.tsx`.
+- **`/about`**: a permanent redirect (308) to the CMS page.
+- `e2e/seo-metadata.unit.spec.ts` (new).
+
+### Known gap (follow-up)
+
+Region, island and city pages render their content on the client (`RegionListingPage`, … use react-query hooks), so the server HTML has the metadata but not the content and `<h1>`. A follow-up can prefetch on the server and hydrate the query cache.
+
+### Testing
+
+- `npx tsc --noEmit -p .`, `yarn lint`, all unit specs (154 passed).
+- Production-like build + `next start`: `/sitemap.xml` is a `<sitemapindex>`; `/hr/karta-plaza` has `<title>Interaktivna karta plaža | BeachRex</title>`, an `sr-only` h1 and `hrefLang="de"` → `/de/strand-karte`; `/hr/plaze` → `hrefLang="si"` `/si/plaze`.
+
+---
+
+## 2026-10-08 – robots.txt fixed for production, AI crawler policy, consent + Analytics + AdSense, ads.txt, llms.txt (TASK-004 SEO) ✅ COMPLETE
+
+### Overview
+
+- **Critical:** a static `public/robots.txt` (`Disallow: /`) shadowed `src/app/robots.ts`; verified on a local `next start` (`/robots.txt` served the static file). On beachrex.com every search engine would have been blocked.
+- Owner decisions 2026-10-08: AI search bots yes, AI training bots no; Google Analytics, AdSense and the CookieYes banner (IDs from the owner); dev and uat must stay invisible to search engines and AI. Only the production domain may be indexed.
+
+### Changes / Files
+
+- `public/robots.txt` removed. `src/app/robots.ts`:
+  - production: `*` allowed except `/api/` (`/_next/` is crawlable again; Google needs JS/CSS to render);
+  - AI search bots (`src/lib/constants/crawlers.ts`: OAI-SearchBot, ChatGPT-User, PerplexityBot, Perplexity-User, Claude-SearchBot, Claude-User) allowed;
+  - AI training bots (GPTBot, ClaudeBot, anthropic-ai, Google-Extended, Applebot-Extended, CCBot, Meta-ExternalAgent, Bytespider) disallowed;
+  - plus the sitemap;
+  - dev/uat/local: `Disallow: /` for everyone (unchanged, together with the existing `X-Robots-Tag` and meta `noindex`).
+- `src/components/Analytics/ThirdPartyScripts.tsx` (new), rendered in `<head>` **on the production site only**, in this order:
+  1. Google Consent Mode v2 defaults (all denied);
+  2. the CookieYes banner;
+  3. Google Analytics `G-WK9LGF32VW`;
+  4. AdSense `ca-pub-5133469552990533`.
+
+  GA and AdSense are injected by an inline loader after the first two: React hoists async script tags to the top of `<head>`, ahead of the consent defaults (seen in a production build).
+
+  The IDs are public client IDs in `src/lib/constants/third-party.ts`. In the CookieYes dashboard, "Google Consent Mode" must be enabled (owner).
+- `public/ads.txt` (new): the AdSense publisher line.
+- `src/app/llms.txt/route.ts` (new): a plain guide for AI assistants (llmstxt.org); production only, 404 elsewhere.
+- `src/middleware.ts`: `ads.txt` and `llms.txt` bypass the locale middleware.
+- `e2e/seo-crawlers.unit.spec.ts` (new).
+
+### Testing
+
+- Deliberate break: with the static `public/robots.txt` back, the guard fails.
+- `npx tsc --noEmit -p .`, `yarn lint`, all unit specs (149 passed).
+- Production-like build (`NEXT_PUBLIC_BASE_URL=https://beachrex.com`, `next start`): `/robots.txt` lists the three rule groups and the sitemap; `/ads.txt` and `/llms.txt` served; `/en` has `consent-defaults` → `cookieyes` → `tag-loader` in this order; no `X-Robots-Tag`.
+
+---
+
+## 2026-10-08 – World beaches page on real data, same cards as the other pages (QA #48, TASK-004 step 4) ✅ COMPLETE
+
+### Overview
+
+`/[locale]/beaches` (`/si/plaze`, …) was a client page with mock data: "Plaža Ladinka" ×4 with a price and rating, "Country 1..12" with `Math.random()` counts and prices (hydration mismatch), invented world totals (120 countries, 22 000 river beaches, …), quick-action buttons that only logged, "All beaches" → `#`, and a banner image (`/images/banner/world-banner.png`) that does not exist. Verified in code before the fix.
+
+### Changes / Files
+
+- `src/app/[locale]/beaches/page.tsx`: server component (SSR, `revalidate = 3600`) with `generateMetadata` (`SEO.beachesPageTitle/Description`, canonical, hreflang) and breadcrumb JSON-LD. Data from the API: world totals (beaches = sum of continents, countries with beaches), most visited beaches worldwide, the home hero image as the banner. Sections: banner, most visited (same cards and media switch as the continent pages), countries, beach search with filters (`DynamicSearchBeaches`), SEO text.
+- `src/lib/utils/beach-properties.ts` (new): `beachesToProperties()` — one card transform (gallery, sphere, video, webcam, features, URLs) for the world and continent pages; the continent page uses it instead of its inline copy.
+- `WorldBannerSection`: the title is the page `<h1>`; the map widget links to the beach map; the weather widget (no world weather) is removed; missing image → gradient.
+- `WorldTopBar`: stats without data (pools, rivers, lakes, islands) are hidden instead of showing invented numbers.
+- `ContinentCountriesSection`: takes the title and `continentCode` from the page. Continent pages showed "Countries in Europe" and all countries on every continent (audit D8).
+- Removed `WorldQuickActionsSection` and `WorldSearchBeaches` (mock-only).
+- `e2e/world-beaches-page.unit.spec.ts` (new).
+
+### Testing
+
+- Deliberate break: the guard on the old page fails; the card helper test checks URLs, gallery order and skipping beaches without an image.
+- `npx tsc --noEmit -p .` (it also type-checks `e2e/`; the first CI run failed on a possibly-undefined card in the new spec, fixed), `yarn lint`, unit specs (142 passed).
+- Local stack (`next build` + `next start` against a local API): `/hr/plaze` → 200, `<title>Istražite plaže svijeta | BeachRex</title>`, one `<h1>`, `BreadcrumbList` JSON-LD, no mock names.
+
+---
+
+## 2026-10-08 – Old beachrex.com URLs redirect to the new pages (TASK-004 step 5b) ✅ COMPLETE
+
+### Overview
+
+The owner put many old beach URLs on Google Maps and other sites; each must lead to the exact new page. The backend resolves an old path (`GET /api/v1/legacy-redirect`, Beachrex/backend#46). Old URLs match no route here, so they reach the `[locale]/[...rest]` catch-all, which now answers with a permanent redirect.
+
+### Changes / Files
+
+- `src/app/[locale]/[...rest]/page.tsx`: asks the resolver with `/{locale}/{rest...}` and the locale's `Accept-Language`; a match → `permanentRedirect` (308) to `/{locale}/{beaches}/{segments...}` or the beach map; no match → the localized 404. `revalidate = 86400`.
+- `src/middleware.ts`: the old Slovenian prefix `/sl/...` → 308 to `/si/...` before next-intl (otherwise next-intl would treat `sl` as a path and pick a locale from the cookie).
+- `src/lib/utils/legacy-redirect.ts` (new): `legacySlovenianPath`, `buildLegacyTargetUrl`.
+- `src/lib/api-client/`: regenerated with `openapi-ts -i <backend storage/api-docs/api-docs.json>` (new `resolveLegacyUrl`). `client.gen.ts` and `index.ts` kept as committed.
+- `e2e/legacy-redirect.unit.spec.ts` (new).
+
+### Testing
+
+- Unit: `e2e/legacy-redirect.unit.spec.ts` (4 tests).
+- End to end, local stack (backend on local PostgreSQL with one seeded beach, `next build` + `next start`):
+  - `/hr/hrvatska/dalmacija/tisno-plaze/plaza-tisno` → 308 `/hr/plaze/europa/hrvatska/dalmacija-sibenik/tisno/plaza-tisno`;
+  - `/sl/hrvaska/dalmacija/tisno-plaze/plaza-tisno?c=x` → 308 `/si/...` → 308 `/si/plaze/evropa/hrvaska/dalmatia-sibenik/tisno/plaza-tisno`;
+  - `/en/beach/beach-tisno` → 308 `/en/beaches/europe/croatia/dalmatia-sibenik/tisno/beach-tisno`;
+  - `/de/kroatien/dalmatien/tisno-strande/strand-kroatien` (translated beach name) → 308 to the city page;
+  - `/en/beach-filter` → 308 `/en/beach-map`;
+  - `/en/no-such/page` → 404 with the localized not-found page.
+- Live check on dev: owner action (the sandbox cannot reach dev).
+
+---
+
+## 2026-10-08 – Menu and footer from real data, dead buttons hidden, localized 404 (TASK-004 B1–B4, B6, B7, B10, B11, C2, D9–D11) ✅ COMPLETE
+
+### Overview
+
+TASK-004 audit (backend `docs/tasks/TASK-004-audit.md`) and the owner's decisions of 2026-10-08 (ADR "TASK-004: What Visitors See at Launch"; hidden items in backend `docs/features/hidden-for-launch.md`).
+
+### Changes / Files
+
+- **Burger menu** (`Header/BurgerMenu.tsx`, new `src/lib/utils/menu-items.ts`): built from the API instead of `public/menu_en.json`/`menu_si.json` (removed; 17 locales got English continent slugs → 404). Groups: browse beaches (continents with beaches, localized slugs), top 10 beach countries, AI assistant (chat, trip planner), About us and Contact (CMS pages by code, shown only when published). Map CTA label translated and localized URL. The accommodation CTA (`/beach-accommodation`, 404) and the commented-out mobile-app block are gone/hidden.
+- **Feature flags** (`src/lib/constants/features.ts`): `favorites`, `account`, `shop`, `blog` (all `false`). Hidden: top bar favorites and account buttons, search bar accommodation and shop icons, home blog and accommodation buttons (the tile stays, without a button).
+- **Quick menu "About us"**: link to the CMS page `about-us` (was a `<span>`).
+- **`/about`** (`/si/o-nas`, …): redirects to the CMS page `about-us`; 404 if it is not published. `AboutPage` messages removed.
+- **Footer browse column**: hrefs built in `src/lib/utils/footer-links.ts` (overview → `/beaches`, search → home, map → beach map; accommodation hidden). The `href` values are removed from `Footer.browse.links` in all 19 files (they pointed to 404 routes and differed per locale).
+- **CMS pages hook** (`src/hooks/useStaticPages.ts`): one cached footer-pages query shared by the footer, menu and quick menu.
+- **404**: `[locale]/[...rest]` catch-all calls `notFound()`, so unknown URLs get the localized 404 with header and footer; `not-found.tsx` now has links home, to beaches and to the map.
+- **`/beach-type`, `/user-type`**: `noindex`, removed from `sitemap/static.xml` (with `/about`).
+- **Messages**: new `Menu` namespace in all 19 files; unused `routes` and `AboutPage` namespaces removed.
+- `e2e/navigation-links.unit.spec.ts` (new): menu hrefs localized and locale-prefixed, empty continents/countries skipped, About/Contact only when published, footer hrefs per locale without 404 routes.
+
+### Testing
+
+- Deliberate break: the menu guard on the old `BurgerMenu.tsx` fails.
+- `npx tsc --noEmit -p .`, `yarn lint`, all `e2e/*.unit.spec.ts`.
+
+---
+
+## 2026-10-08 – No placeholder content for visitors: accommodation hidden, no Lorem Ipsum (TASK-004 D2, D3, D9) ✅ COMPLETE
+
+### Overview
+
+TASK-004 audit (backend `docs/tasks/TASK-004-audit.md`): beach, city, region, island and country pages rendered fake accommodation cards ("Apartma Pehta", "569 accommodations" on every beach), destination cards showed a default "20" accommodations and a fixed price, home showed "+6250 accommodations", and a beach without a description showed Lorem Ipsum in the banner. Owner decision 2026-10-08: hide unfinished features for launch and record them (backend `docs/features/hidden-for-launch.md`, ADR "TASK-004: What Visitors See at Launch").
+
+### Changes / Files
+
+- `src/lib/constants/features.ts` (new): `FEATURES.accommodation` and `FEATURES.getYourGuide`, both `false`.
+- Behind `FEATURES.accommodation`: `AccommodationSection` on the beach, city, region, island and country pages; `HomeAccommodationSection` and the hero accommodation stat on home; the accommodation counters in the banner `TopBar`; the accommodation/price box on `DestinationCard`.
+- Behind `FEATURES.getYourGuide`: `GetYourGuideSection` on the beach page (empty shell).
+- `BottomBadgesBeach`: no Lorem Ipsum fallback; the text card shows only when the beach has a description. "Read more" links to `#beach-details`.
+- `beachDetailsSection`: `id="beach-details"` and the full description under the heading.
+- `e2e/placeholder-content.unit.spec.ts` (new): no Lorem Ipsum/dummy text in `src/` and `messages/`; hidden sections are rendered only behind their flag; no hardcoded `totalCount={n}`.
+
+### Testing
+
+- Deliberate break: the new spec on the old components → 5 of 6 failed; after: 6 passed.
+- `npx tsc --noEmit -p .`, `yarn lint`, all `e2e/*.unit.spec.ts`.
+
+---
+
+## 2026-10-08 – Slovenian sign-in/AI strings, locale key parity in CI (TASK-004 A1, A2, A5, A7) ✅ COMPLETE
+
+### Overview
+
+The TASK-004 pre-launch audit (backend `docs/tasks/TASK-004-audit.md`) found that `messages/si.json` had no `Auth` and no `AI` namespace (56 keys). next-intl has no fallback locale here (`src/i18n/request.ts`), so Slovenian sign-in and AI pages had no strings. The top bar also showed a hardcoded Slovenian placeholder ("Sporočilo...", "Izpostavljeno sporočilo...") in every locale.
+
+### Changes / Files
+
+- `messages/si.json`: `Auth` and `AI` in Slovenian.
+- `messages/it.json`, `ru.json`, `ua.json`: removed unused namespaces that are not in `en.json` (`Navigation`, `Header`, `CountrySelector`; no code uses them).
+- `src/components/Header/TopBar.tsx`: the placeholder message is gone (empty spacer keeps the layout).
+- `e2e/messages-parity.unit.spec.ts` (new): every `messages/<locale>.json` has exactly the keys of `en.json`, no empty values, no `{{double}}` braces. Runs in PR CI with the other unit specs.
+
+### Testing
+
+- `BASE_URL=http://localhost:9 npx playwright test e2e/messages-parity.unit.spec.ts --project=chromium`: before the fix 4 failed (si missing, it/ru/ua extra), after: 37 passed.
+- `npx tsc --noEmit -p .`, `yarn lint`, all `e2e/*.unit.spec.ts` (106 passed).
+
+---
+
+## 2026-10-08 – Real beach type icons from the CDN (QA #45 follow-up) ✅ COMPLETE
+
+### Overview
+
+The owner checked the new card icons on dev. The beach type icon used generic images (a sand castle for sand, grey pebbles for stones, a route icon for concrete), which do not read as beach types. The old site's beach type icons are on Spaces under `public/js/assets/images/categories_icons/` (listed by the owner on 2026-10-08).
+
+### Changes / Files
+
+- `src/lib/utils/beach-badges.ts`: each beach type code maps to its CDN icon:
+
+  | Code | Icon |
+  |---|---|
+  | `sand`, `brown_sand`, `black_sand` | `beach_type-sand.png` |
+  | `small_stones` | `beach_type-fine_gravel.png` |
+  | `big_stones` | `beach_type-gravel.png` |
+  | `rock_beach` | `beach_type-rocks.png` |
+  | `grass_beach` | `beach_type-grass.png` |
+  | `concrete` | `beach_type-concrete.png` |
+
+  The same map is used for the beach page badges and the list/map cards.
+- `src/lib/utils/beach-badge-icons.ts` (new): `resolveBadgeIcon()` builds the URL with `buildCdnUrl(…, 'icon')` (`NEXT_PUBLIC_CDN_ASSETS`), so the URL is `https://beachrex.fra1.digitaloceanspaces.com/public/js/assets/images/categories_icons/…`. Family and parking also use the same CDN set (`user_type-family.png`, `parking.png`; owner, 2026-10-08), so all card and badge icons share one style.
+- `PropertyCard.tsx` and `BottomBadgesBeach.tsx` use it.
+- Tests: every DB code maps to an icon file; the resolver builds the Spaces URL.
+
+### Testing
+
+Run the unit specs. On dev, cards show a sand dune, pebbles, rocks, grass or concrete slabs, matching the beach's type.
+
+---
+
+## 2026-10-08 – Card icons follow the beach's data (QA #45, cards) ✅ COMPLETE
+
+### Overview
+
+List and map cards (`PropertyCard`) always showed the same three icons (stones, family, parking). The API now returns `features` on every beach item (Beachrex/backend, QA #45: beach type, family, parking). The card shows only the icons the beach has.
+
+### Changes / Files
+
+- `src/lib/utils/beach-badges.ts`: `buildCardFeatureIcons(features)`.
+  - The beach type icon uses `stones.png` for stony types and the category icons for sand, grass and concrete.
+  - Family and parking appear only when true.
+  - Labels (alt/title) come from the API name or the existing `BottomBadgesBeach.badges` keys. No new strings.
+- `PropertyCard.tsx`: renders those icons. The memo comparator includes `features`.
+- `features` is passed through `mapBeachToProperty.ts`, `DynamicSearchBeaches.tsx` and the continent page.
+- `src/lib/api-client/`: regenerated with `openapi-ts -i <backend storage/api-docs/api-docs.json>`, because the sandbox cannot reach the dev API. `client.gen.ts` and `index.ts` were kept as committed: the generator would hard-code `baseUrl`.
+- `e2e/beach-badges.unit.spec.ts`: 2 new tests. With the old static icons, both fail.
+
+### Testing
+
+Run the unit specs. On dev, a sand beach card shows a sand icon, and a beach without parking has no parking icon.
+
+---
+
+## 2026-10-08 – Indoor and outdoor pool tiles filter separately (QA #70) ✅ COMPLETE
+
+### Overview
+
+On the home page, "Outdoor pools" and "Indoor pools & spas" both sent `waterbody=pool`, so the map could not tell them apart. The backend now has a `pool_type` filter (`indoor` / `outdoor`, based on the admin's `indoor_pools_count` / `outdoor_pools_count`). It is offered by `/beaches/filters` with translated labels, so the map sidebar shows it automatically.
+
+### Changes / Files
+
+- `Home/BeachCategorySearch.tsx`: the tiles send `pool_type=outdoor` and `pool_type=indoor`.
+- `e2e/pool-type-tiles.unit.spec.ts` (new). It fails on the old tiles.
+- Needs the backend `pool_type` filter (Beachrex/backend, QA #70) on the same environment. Without it the map drops the unknown filter.
+- `yarn generate:api`: NOT RUN (the sandbox cannot reach the API). No generated types are used for this filter.
+
+### Testing
+
+Run the unit specs. On dev, the outdoor and indoor pool tiles open the map with "Pool type" checked. Results appear once pool data is entered in the admin (QA #69).
+
+---
+
+## 2026-10-08 – Cards show uploaded videos like the beach page (QA #67) ✅ COMPLETE
+
+### Overview
+
+Map and list cards took the video only from `media.embeds.video_url` (YouTube). The beach page also used the first uploaded video (`media.videos`), which the search/map API already returns. So a beach could show a video on its page, while its card said "No video" and was hidden by the "video" filter.
+
+### Changes / Files
+
+- `src/lib/utils/beach-video.ts` (new): `buildBeachVideoUrl(embedUrl, videos)`. It uses the embed URL first (YouTube URLs become embed URLs), otherwise the primary or first uploaded video through `buildCdnUrl(…, 'video')`.
+- Used by `mapBeachToProperty.ts`, `DynamicSearchBeaches.tsx`, the continent page and `Beach/BeachPageView.tsx`. The 3 copies of the YouTube conversion are removed.
+- `e2e/beach-video.unit.spec.ts` (new). Without the `media.videos` fallback, "uploaded video is used when there is no embed" fails.
+
+### Testing
+
+Run the unit specs. On dev, for a beach with an uploaded video and no YouTube link, the card's video mode plays the same video as the beach page.
+
+---
+
+## 2026-10-08 – Webcam: one rule for "has webcam", and the beach page shows it (QA #36, #65, #68) ✅ COMPLETE
+
+### Overview
+
+The `beach.webcam` column holds pasted embed code. On dev (2026-10-08) 252 rows are Lookr embeds with an `href`, 2 are bare whatsupcams URLs, 2 are junk (`bret`, `bre`), and 3 518 are empty. Lists and the map counted any string as a webcam, but the card could only open an `href`. So a beach could be offered as having a webcam that showed nothing. The bare URLs were never opened. The beach page never showed a webcam at all.
+
+### Changes / Files
+
+- `src/lib/utils/webcam.ts` (new): `parseWebcamUrl()` takes the `href`, an iframe `src` or a bare URL, and accepts only http(s).
+- `mapBeachToProperty.ts`, `DynamicSearchBeaches.tsx` and the continent page set `webcamEmbed` only to a parsed URL, so the webcam toggle (`hasAnyWebcam`) and the "Live cam" filter count only real webcams. `PropertyCard` opens the same URL.
+- `Beach/BeachPageView.tsx`: a "Live cam" card (existing `BeachDetails.beachMediaLiveCam` string, all 19 locales) opens the webcam in a new tab, like the cards do.
+- `e2e/webcam.unit.spec.ts` (new). With the old rule ("any string"), 5 of 5 tests fail.
+
+### Testing
+
+Run the unit specs. On dev, open a beach with a Lookr webcam: the beach page shows "Live cam" and it opens the webcam. Piran / Portorož (whatsupcams URLs) now open too.
+
+---
+
+## 2026-10-08 – All images through Imagor (TASK-002 §5 cleanup) ✅ COMPLETE
+
+### Overview
+
+TASK-002 renamed every storage key to ASCII, and on 2026-10-08 the old non-ASCII keys were deleted (10 685). The Imagor bypass in `buildCdnUrl`, which linked paths with č/š/ž directly to Spaces in NFD form, can no longer find anything, so it is removed.
+
+### Changes / Files
+
+- `src/lib/utils/beach-images.ts`: `buildCdnUrl` always uses the endpoint for the context (Imagor for images). A stray non-ASCII path is percent-encoded and sent to Imagor. It still returns a string for a non-empty path, because callers use `!` (a `null` would bring back the QA #55/#56 crash). Assets (SVG, video, tour HTML) still use `NEXT_PUBLIC_CDN_ASSETS`, as before.
+- `e2e/beach-images.unit.spec.ts` (new): non-ASCII paths never get a Spaces URL. Fails on the old code.
+- `docs/features/image-url-encoding-handoff.md`: marked historical.
+
+### Testing
+
+Run the unit specs. On dev: beach pages with former šumniki (e.g. Brač, Lošinj) show images from `s3.beachrex.com`.
+
+---
+
+## 2026-10-08 – Beach page badges come from the beach's data (QA #45, #46) ✅ COMPLETE
+
+### Overview
+
+The badge strip under the beach banner was a hardcoded placeholder list (stony, family friendly, parking, easy access, windsurfing), and `BottomBadgesBeach` repeated it to fill 9 slots. So every beach showed the same icons (QA #45), sand beaches showed "stony" and icons appeared twice (QA #46).
+
+### Changes / Files
+
+- `src/lib/utils/beach-badges.ts` (new): `buildBeachBadges(beachDetails)` builds badges from `characteristics.beach_type`, `activities.user_types` (family), parking (`location_infrastructure` `parking` or a public `parking_capacity`), `accessibility` `easy`, selected infrastructure (disabled access, dog friendly, pool, waterslide, dance floor) and windsurfing. Labels are the API names (already translated); parking and easy access use the existing `BottomBadgesBeach.badges` keys. No duplicates, max 9.
+- `BeachBannerSection.tsx`: uses `buildBeachBadges` instead of the placeholder list.
+- `BottomBadgesBeach.tsx`: renders only the real badges (no repeat filling).
+- `e2e/beach-badges.unit.spec.ts` (new): fails on the old hardcoded list (5 of 5).
+
+Not in this change: the three static icons on listing/map cards (`PropertyCard`) need beach type, user type and parking in the search/map API. That is a separate backend + frontend PR.
+
+### Testing
+
+Run the unit specs. Retest on dev: a sand beach shows a sand badge, a beach without data shows no badges, no icon appears twice.
+
+---
+
+## 2026-10-07 – Logo and map links keep the language (QA #24, #25, #74) ✅ COMPLETE
+
+### Overview
+
+Some links used a plain `next/link` with a locale-less href (`/`, `/beach-map`). The next-intl middleware then picks the locale from the `NEXT_LOCALE` cookie. In production it also reuses a prefetched redirect cached under the bare `/`, and that survives a language switch. So the logo went back to EN (QA #74), the footer map button went to another locale (QA #25), and the map button on listing pages jumped e.g. from PL to RU (QA #24).
+
+### Changes / Files
+
+- `Header/SearchBar.tsx`: the 3 logo links go to `/${locale}`.
+- `Footer/FooterBrandColumn.tsx`: the logo goes to `/${locale}`; the map button uses `buildBeachMapUrl(locale)`.
+- `DynamicSearchBeaches.tsx` (map button on continent/country/region/island/city pages) and `Continent/SearchContinent.tsx`: use `buildBeachMapUrl(locale)`.
+- `e2e/locale-links.unit.spec.ts` (new): a guard that fails on locale-less hrefs in files using plain `next/link`. On the old code it lists 9 offenders. Known remaining offenders are allowlisted: the payment success/cancel and auth callback pages, recorded in HANDOFF open items.
+
+### Testing
+
+Run the unit specs (48 passed). Retest on dev: DE → map → logo stays DE; PL listing page → Map stays PL; footer "map" button on a localized map page.
+
+---
+
+## 2026-10-07 – Search results open in every language (QA #52, #53, #54) ✅ COMPLETE
+
+### Overview
+
+In every non-EN locale, clicking a global search result (country, region, island, city or beach) opened an empty page.
+
+- `GlobalSearch` pushed `/beaches/...` through the next-intl router, which only adds the locale, so `si` went to `/si/beaches/...`.
+- next-intl answers that URL with a redirect to `/si/plaze/...`. `src/middleware.ts` then rewrote the request anyway and copied every intl header, `location` included, onto the 200 rewrite. Next serves a 200 with a `location` header as an empty body.
+- The same empty page appeared for a foreign beaches word, e.g. `/en/plaze/...` after a language switch.
+
+### Changes / Files
+
+- `src/lib/utils/search-result-url.ts` (new): `buildSearchResultUrl(result, locale)` returns the full localized URL (`/si/plaze/evropa/hrvaska`). `GlobalSearch` uses it with the `next/navigation` router.
+- `src/lib/i18n/beaches-middleware.ts` (new): the beaches rewrite moved out of `src/middleware.ts` so it can be unit-tested. It returns next-intl's redirect when there is one, instead of a 200 with a `location` header. Its word list now comes from `globalRoutes.beaches` (exported from `src/i18n/routing.ts`).
+- `e2e/search-urls.unit.spec.ts` (new): 7 tests. They cover the URL builder for all 19 locales and the real next-intl middleware. 2 fail without the redirect fix.
+
+### Testing
+
+Run `npx tsc --noEmit -p .`, `yarn lint` and the unit specs. Retest on dev: search in SI/DE/PL for a country, region, city and beach and open each result.
+
+---
+
+## 2026-10-07 – Continent and country pages no longer crash (QA #19, #53, #55, #56, #60, #77) ✅ COMPLETE
+
+### Overview
+
+Testers saw "Application error: a client-side exception" after the continent page (Europe) or most country pages loaded. Root causes found in the code:
+
+1. `DynamicSearchBeaches` (the "browse beaches" list on continent, country, region, island and city pages) threw `Missing main_image for beach …` for any beach without a main image. Europe and most countries have at least one such beach; the countries that worked (SI, DK, BE, AL, NL) apparently have none.
+2. The continent page's "most visited" cards passed a null image to `next/image`, which throws.
+3. `buildDestinationUrl` threw for a city or island without a region (the API sends `region_slug: null`). `DestinationsSection` calls it while rendering, so one such city crashed the country page.
+4. `destination-url.ts` had its own 14-locale "beaches" map, so destination cards in da/pt/nl/el/sq linked to `/da/beaches/...`.
+
+### Changes / Files
+
+- `src/lib/utils/beach-cards.ts` (new): `hasMainImage()` type guard. Beaches without an image are skipped in card lists (same rule as `mapBeachToProperty`).
+- `src/components/DynamicSearchBeaches.tsx`, `src/app/[locale]/beaches/[continent]/page.tsx`: filter with `hasMainImage` instead of throwing / asserting.
+- `src/lib/utils/destination-url.ts`: uses `getBeachesWord` (all 19 locales); the region segment is optional for cities and islands, as in `GlobalSearch` and the `[...segments]` resolver.
+- `e2e/destination-pages.unit.spec.ts` (new): 7 tests; 4 fail on the old `destination-url.ts`.
+
+### Testing
+
+`npx tsc --noEmit -p .`, `yarn lint`, `BASE_URL=http://localhost:9 npx playwright test e2e/*.unit.spec.ts --project=chromium` (40 passed). Retest on dev: Europe, Croatia, France, Italy, and "next country" from a country page.
+
+---
+
 ## 2026-10-07 – CI on Pull Requests ✅ COMPLETE
 
 ### Overview
@@ -1940,7 +3316,7 @@ Tests are configured to **only run when triggered via API**, not on push/merge.
 ```bash
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
 ```
@@ -1949,7 +3325,7 @@ curl -X POST \
 ```bash
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[BASE_URL]=https://staging.beachrex.com" \
   --form "variables[BROWSER]=chromium" \
@@ -1961,7 +3337,7 @@ curl -X POST \
 # Run specific test file
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[TEST_FILTER]=tests/home.spec.ts" \
   "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
@@ -1969,7 +3345,7 @@ curl -X POST \
 # Run tests in specific folder
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[TEST_FILTER]=tests/auth/" \
   "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
@@ -1977,7 +3353,7 @@ curl -X POST \
 # Run tests matching pattern (grep)
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[TEST_FILTER]=-g 'login'" \
   "https://gitlab.com/api/v4/projects/61956481/trigger/pipeline"
@@ -1985,7 +3361,7 @@ curl -X POST \
 # Combine filters: specific file + pattern + browser
 curl -X POST \
   --fail \
-  --form token=glptt-KNqkrPWTWFjheXxTyKpV \
+  --form token=<GITLAB_TRIGGER_TOKEN> \
   --form ref=main \
   --form "variables[BROWSER]=firefox" \
   --form "variables[TEST_FILTER]=tests/home.spec.ts -g 'hero'" \

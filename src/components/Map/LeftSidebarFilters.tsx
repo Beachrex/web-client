@@ -2,13 +2,26 @@
 
 import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { ChevronDown, ChevronUp, X } from 'lucide-react';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
+import SearchableSelect from '@/components/ui/SearchableSelect';
+import { filterChips, selectedValues, withoutChip } from '@/lib/utils/filter-chips';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { MAP_QUICK_FILTERS } from '@/config/mapQuickFilters';
+import { isQuickFilterSelected, onlyQuickFilters, resolveQuickFilters, toggleFilterValue } from '@/lib/utils/quick-filters';
+import {
+    POOL_TYPE_KEY,
+    WATERBODY_KEY,
+    isChoiceSelected,
+    mergesPoolTypes,
+    toggleChoice,
+    waterbodyChoices,
+    waterbodySelectedCount,
+} from '@/lib/utils/waterbody-filter';
 
 type FilterValue = string | number | boolean | undefined;
 type FilterOptions = GetBeachFiltersResponse['data'];
@@ -22,6 +35,14 @@ interface LeftSidebarFiltersProps {
     onFilterOptionsLoadingChange?: (isLoading: boolean) => void;
 }
 
+/** "All countries" etc. per place filter; other select filters say "All". */
+const PLACE_ALL_LABEL: Record<string, 'allCountries' | 'allRegions' | 'allIslands' | 'allCities'> = {
+    country: 'allCountries',
+    region: 'allRegions',
+    island: 'allIslands',
+    city: 'allCities',
+};
+
 const LeftSidebarFilters = ({
     beachesCount,
     beachesLoading,
@@ -31,6 +52,7 @@ const LeftSidebarFilters = ({
     onFilterOptionsLoadingChange,
 }: LeftSidebarFiltersProps) => {
     const t = useTranslations('BeachesMap');
+    const tPlace = useTranslations('PlaceSelect');
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -52,10 +74,9 @@ const LeftSidebarFilters = ({
             const hasFilters = Object.keys(urlFilters).length > 0;
 
             if (hasFilters) {
-                console.log('[LeftSidebarFilters] Initializing from URL params:', urlFilters);
 
-                // Expand advanced filters section if there are filters in URL
-                setIsExpanded(true);
+                // Open advanced filters unless the quick filters show the whole selection
+                setIsExpanded(!onlyQuickFilters(urlFilters, MAP_QUICK_FILTERS));
 
                 // Apply filters from URL
                 if (onFiltersChange) {
@@ -81,7 +102,6 @@ const LeftSidebarFilters = ({
             return;
         }
 
-        console.log('[LeftSidebarFilters] URL params changed:', searchParamsString);
         lastSearchParamsRef.current = searchParamsString;
 
         const urlFilters: Record<string, FilterValue> = {};
@@ -92,16 +112,12 @@ const LeftSidebarFilters = ({
 
         const hasFilters = Object.keys(urlFilters).length > 0;
 
-        // Reset all expanded sections when URL changes
-        setExpandedSections({});
+        // Keep the sections the visitor opened (owner 2026-10-23: removing a region collapsed its section)
 
-        if (hasFilters) {
-            console.log('[LeftSidebarFilters] Applying filters from URL:', urlFilters);
-            // Expand advanced filters section if there are filters in URL
+        // Open advanced filters when the quick filters cannot show the whole selection;
+        // never close them here (the user may be choosing in the advanced list).
+        if (hasFilters && !onlyQuickFilters(urlFilters, MAP_QUICK_FILTERS)) {
             setIsExpanded(true);
-        } else {
-            // Collapse advanced filters section if no filters in URL
-            setIsExpanded(false);
         }
 
         // Apply filters from URL
@@ -132,7 +148,6 @@ const LeftSidebarFilters = ({
         });
 
         if (Object.keys(params).length > 0) {
-            console.log('[LeftSidebarFilters] Computing query params:', params);
         }
 
         // Type assertion: API accepts geographic filters, but we pass all selected filters
@@ -141,14 +156,34 @@ const LeftSidebarFilters = ({
     }, [currentFilters]);
 
     // Fetch filter options using TanStack Query with all currently selected filters
-    const { data, isLoading, error } = useQuery(
-        getBeachFiltersOptions({
+    const { data, isLoading: isFirstLoad, isPlaceholderData, error } = useQuery({
+        ...getBeachFiltersOptions({
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
             query: queryParams as any,
-        })
-    );
+        }),
+        // Keep the current options while the next ones load: the chips and lists kept their labels
+        // instead of flashing raw codes ("HR", "sand") after every change (owner 2026-10-23)
+        placeholderData: keepPreviousData,
+    });
+    // For the map's validation the options count as loading until the new ones are in (as before keepPreviousData);
+    // the lists only show the loading text on the first load.
+    const isLoading = isFirstLoad || isPlaceholderData;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const filterOptions = data?.data ?? null;
+    const chips = useMemo(
+        () => filterChips(currentFilters, filterOptions as Parameters<typeof filterChips>[1]),
+        [currentFilters, filterOptions],
+    );
+    const quickFilters = useMemo(() => resolveQuickFilters(MAP_QUICK_FILTERS, filterOptions), [filterOptions]);
+    // Indoor / outdoor pools are shown under "Pool" in the water body group (owner 2026-10-29)
+    const poolTypesMerged = useMemo(
+        () => mergesPoolTypes(filterOptions as Parameters<typeof mergesPoolTypes>[0]),
+        [filterOptions],
+    );
+    const sectionHasValue = (key: string): boolean => {
+        const has = (k: string) => currentFilters[k] !== undefined && currentFilters[k] !== null && currentFilters[k] !== '';
+        return has(key) || (poolTypesMerged && key === WATERBODY_KEY && has(POOL_TYPE_KEY));
+    };
 
     // Notify parent component when filter options change
     useEffect(() => {
@@ -170,14 +205,12 @@ const LeftSidebarFilters = ({
     const initialExpandedState: Record<string, boolean> = {};
     Object.keys(filterOptions).forEach(key => {
       // Auto-expand section if it has a selected value
-      const hasValue = currentFilters[key] !== undefined &&
-                      currentFilters[key] !== null &&
-                      currentFilters[key] !== '';
-      initialExpandedState[key] = hasValue;
+      initialExpandedState[key] = sectionHasValue(key);
     });
     setExpandedSections(initialExpandedState);
   }
-}, [filterOptions, expandedSections, currentFilters]);
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [filterOptions, expandedSections, currentFilters, poolTypesMerged]);
 
     // Auto-expand/collapse sections when currentFilters change
     useEffect(() => {
@@ -186,19 +219,22 @@ const LeftSidebarFilters = ({
       setExpandedSections(prev => {
         const updated = { ...prev };
         Object.keys(filterOptions).forEach(key => {
-          const hasValue = currentFilters[key] !== undefined &&
-                          currentFilters[key] !== null &&
-                          currentFilters[key] !== '';
           // Only auto-expand, don't auto-collapse if user manually expanded
-          if (hasValue && !prev[key]) {
+          if (sectionHasValue(key) && !prev[key]) {
             updated[key] = true;
           }
         });
         return updated;
       });
-    }, [currentFilters, filterOptions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentFilters, filterOptions, poolTypesMerged]);
+
+    // The section the visitor just opened: its place list opens with the search box ready (owner 2026-10-23:
+    // one click instead of two). Sections opened by the page itself (a selected value) do not open their list.
+    const [justOpened, setJustOpened] = useState<string | null>(null);
 
     const toggleSection = (section: string) => {
+        setJustOpened(expandedSections[section] ? null : section);
         setExpandedSections(prev => ({
             ...prev,
             [section]: !prev[section],
@@ -227,17 +263,13 @@ const LeftSidebarFilters = ({
         const queryString = params.toString();
         const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
 
-        console.log('[LeftSidebarFilters] Updating URL with filters:', {
-            filters,
-            queryString,
-            newUrl,
-        });
 
         // Update URL without page reload
         router.replace(newUrl, { scroll: false });
     };
 
     const handleFilterChange = (filterKey: string, value: string | undefined) => {
+        setJustOpened(null); // a later re-render must not open the list again
         const newFilters = {
             ...currentFilters,
             [filterKey]: value ?? undefined, // Remove key if value is empty
@@ -271,24 +303,57 @@ const LeftSidebarFilters = ({
     ) => {
         if (!options) return null;
 
+        if (filterName === WATERBODY_KEY && poolTypesMerged) {
+            const choices = waterbodyChoices(filterOptions as Parameters<typeof waterbodyChoices>[0]);
+            return (
+                <div className="px-4 pb-3 space-y-2">
+                    {choices.map((choice) => (
+                        <label
+                            key={`${choice.filterKey}:${choice.code}`}
+                            className={`flex items-center gap-2 cursor-pointer${choice.nested ? ' pl-6' : ''}`}
+                        >
+                            <input
+                                type="checkbox"
+                                value={choice.code}
+                                checked={isChoiceSelected(currentFilters, choice)}
+                                onChange={() =>
+                                    handleFilterChange(choice.filterKey, toggleChoice(currentFilters, choice))
+                                }
+                                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                            />
+                            <span className="text-sm">{choice.label}</span>
+                        </label>
+                    ))}
+                </div>
+            );
+        }
+
         const type = inputType?.toLowerCase();
         const currentValue = currentFilters[filterName] as string | undefined;
 
         if (type === 'select') {
+            // Owner 2026-10-23: an "all countries" style label instead of the generic placeholder, plus a search box
+            const selectOptions = options.flatMap((option) => {
+                const optionValue = option.code ?? option.slug ?? option.value;
+                if (!optionValue) return [];
+                return [{ value: String(optionValue), label: option.name ?? option.label ?? String(optionValue) }];
+            });
+            const allKey = PLACE_ALL_LABEL[filterName];
             return (
                 <div className="px-4 pb-3">
-                    <select
-                        className="w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
+                    <SearchableSelect
+                        // Several regions / islands / towns at once; the country stays a single choice
+                        // (owner 2026-10-23: two countries emptied the region, island and town lists)
+                        multiple={Boolean(allKey) && filterName !== 'country'}
+                        autoOpen={justOpened === filterName}
                         value={currentValue ?? ''}
-                        onChange={(e) => handleFilterChange(filterName, e.target.value)}
-                    >
-                        <option value="">Select an option</option>
-                        {options.map((option, index) => (
-                            <option key={option.id ?? index} value={option.code ?? option.slug ?? option.value}>
-                                {option.name ?? option.label}
-                            </option>
-                        ))}
-                    </select>
+                        options={selectOptions}
+                        onChange={(v) => handleFilterChange(filterName, v)}
+                        allLabel={allKey ? tPlace(allKey) : tPlace('all')}
+                        searchPlaceholder={tPlace('search')}
+                        noMatchesLabel={tPlace('noMatches')}
+                        clearLabel={tPlace('clear')}
+                    />
                 </div>
             );
         }
@@ -385,13 +450,76 @@ const LeftSidebarFilters = ({
                         {t('resetFilters')}
                     </button>
                 </div>
+
+                {/* Every selected value with its own ✕ (owner 2026-10-23), also when its section is closed */}
+                {chips.length > 0 && (
+                    <ul className="flex flex-wrap gap-1.5 pb-2" aria-label={tPlace('selected')}>
+                        {chips.map((chip) => (
+                            <li key={`${chip.filterKey}:${chip.value}`}>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        handleFilterChange(chip.filterKey, withoutChip(currentFilters, chip))
+                                    }
+                                    aria-label={tPlace('remove', { name: chip.label })}
+                                    title={chip.group}
+                                    className="flex max-w-[220px] items-center gap-1 rounded-full bg-[#E8EEF6] py-1 pl-3 pr-2 \
+text-xs font-semibold text-[#1A3C68] transition-colors hover:bg-[#d6e1ef]"
+                                >
+                                    <span className="truncate">{chip.label}</span>
+                                    <X
+                                        size={13}
+                                        aria-hidden="true"
+                                        className="shrink-0"
+                                    />
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
+
+            {/* Quick filters (advanced off): options from the filters API, icons from the local set */}
+            {!isExpanded && quickFilters.length > 0 && (
+                <div className="flex-1 overflow-y-auto px-6 py-6">
+                    <div className="grid grid-cols-2 gap-3">
+                        {quickFilters.map((tile) => {
+                            const selected = isQuickFilterSelected(currentFilters, tile.filterKey, tile.code);
+                            return (
+                                <button
+                                    key={`${tile.filterKey}:${tile.code}`}
+                                    type="button"
+                                    aria-pressed={selected}
+                                    onClick={() => handleFilterChange(
+                                        tile.filterKey,
+                                        toggleFilterValue(currentFilters[tile.filterKey], tile.code),
+                                    )}
+                                    className={[
+                                        'flex min-h-[88px] flex-col items-center justify-center gap-1.5',
+                                        'rounded-lg border bg-white p-2 text-center transition-colors hover:border-gray-400',
+                                        selected ? 'border-[#222] shadow-sm' : 'border-gray-200',
+                                    ].join(' ')}
+                                >
+                                    <Image
+                                        src={tile.icon}
+                                        alt=""
+                                        width={36}
+                                        height={36}
+                                        className="h-9 w-9 object-contain"
+                                    />
+                                    <span className="text-xs leading-tight text-[#222]">{tile.label}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
 
             {/* Scrollable Filter Categories */}
             {isExpanded && (
                 <div className="flex-1 overflow-y-auto px-6 py-6">
                     <div className="flex flex-col gap-4">
-                        {isLoading && (
+                        {isFirstLoad && (
                             <div className="text-center text-gray-500 py-4">
                                 {t('loadingFilters')}
                             </div>
@@ -403,11 +531,16 @@ const LeftSidebarFilters = ({
                             </div>
                         )}
 
-                        {!isLoading && !error && filterOptions && (
+                        {!isFirstLoad && !error && filterOptions && (
                             <>
                                 {/* Dynamically render all filter categories */}
                                 {Object.entries(filterOptions).map(([filterKey, filterData]) => {
                                     if (!filterData) return null;
+                                    // Shown under "Pool" in the water body group
+                                    if (filterKey === POOL_TYPE_KEY && poolTypesMerged) return null;
+                                    const selectedCount = filterKey === WATERBODY_KEY
+                                        ? waterbodySelectedCount(currentFilters, poolTypesMerged)
+                                        : selectedValues(currentFilters[filterKey]).length;
                                     return (
                                         <div key={filterKey} className="border border-gray-200 rounded-lg">
                                             <button
@@ -427,6 +560,13 @@ const LeftSidebarFilters = ({
                                                     <h3 className="font-semibold text-sm">
                                                         {filterData.title ?? filterKey}
                                                     </h3>
+                                                    {selectedCount > 0 && (
+                                                        <span
+                                                            className="rounded-full bg-[#1A3C68] px-1.5 text-[11px] font-semibold text-white"
+                                                        >
+                                                            {selectedCount}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 {expandedSections[filterKey] ? (
                                                     <ChevronUp className="text-gray-500" />

@@ -2,22 +2,12 @@
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
+import type { BeachBadge } from '@/lib/utils/beach-badges';
 import React from 'react';
 
-type BadgeId =
-  | 'stony'
-  | 'familyFriendly'
-  | 'parking'
-  | 'easyAccess'
-  | 'windsurfing';
-
-interface Badge {
-  id: BadgeId;
-  icon: string;
-}
-
 interface BottomBadgesBeachProps {
-  badges: Badge[];
+  badges: BeachBadge[];
   description?: string;
   onReadMore?: () => void;
   readMoreHref?: string;
@@ -27,14 +17,12 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
   badges,
   description,
   onReadMore,
-  readMoreHref = '#',
+  readMoreHref = '#beach-details',
 }) => {
   const t = useTranslations('BottomBadgesBeach');
   const tCommon = useTranslations('Common');
 
-  const desc =
-    description ??
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen";
+  const desc = description?.trim();
 
   const renderReadMore = () => {
     const label = tCommon('readMore');
@@ -48,17 +36,6 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
     );
   };
 
-  // Build up to 9 badges (repeat if fewer)
-  const MAX_BADGES = 9;
-  const src = badges.slice(0, MAX_BADGES);
-  const filledBadges =
-    src.length === 0
-      ? []
-      : (Array.from(
-          { length: MAX_BADGES },
-          (_, i) => src[i % src.length],
-        ).filter(Boolean) as Badge[]);
-
   return (
     <div className="w-full">
       <div className="container mx-auto px-4">
@@ -67,13 +44,13 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
           {/* Badges (hidden below lg). On lg show first 6; on xl show up to 9. */}
           <div className="hidden h-full w-full overflow-hidden lg:flex">
             <div className="flex h-full flex-nowrap items-stretch gap-2 sm:gap-3">
-              {filledBadges.map((b, i) => {
-                const label = t(`badges.${b.id}`);
+              {badges.map((b, i) => {
+                const label = b.labelKey ? t(`badges.${b.labelKey}`) : (b.label ?? '');
                 const visibility = i < 6 ? 'flex' : 'hidden xl:flex'; // Show only first 6 on lg, all 9 on xl
 
                 return (
     <div
-      key={`${b.id}-${i}`}
+      key={b.key}
       className={`
         ${visibility}
         flex flex-col items-center justify-center
@@ -82,7 +59,7 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
       `}
     >
       <Image
-        src={b.icon}
+        src={resolveBadgeIcon(b.icon)}
         alt={label}
         width={35}
         height={35}
@@ -97,7 +74,9 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
             </div>
           </div>
 
-          {/* Right text card (full width below lg; always 100px tall; read-more pinned) */}
+          {/* Right text card (full width below lg; always 100px tall; read-more pinned).
+              Only when the beach has a description; most beaches have none yet. */}
+          {desc && (
           <div className="flex h-[100px] flex-col overflow-hidden rounded-[10px] bg-[#F5F5F5] p-3 sm:p-4">
             <p
               className="overflow-hidden text-ellipsis font-figtree text-[12px] leading-4 text-[#4D4D4D]"
@@ -122,6 +101,7 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
               )}
             </div>
           </div>
+          )}
         </div>
       </div>
     </div>

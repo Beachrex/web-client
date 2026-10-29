@@ -1,20 +1,39 @@
-'use client';
+import type { Metadata } from 'next';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import BeachMapClient from '@/components/Map/BeachMapClient';
+import { getBeachMapWord } from '@/lib/utils/beach-urls';
+import { buildCompleteMetadata, buildLocalizedAlternates } from '@/lib/utils/metadata-helpers';
 
-import dynamic from 'next/dynamic';
+interface PageProps {
+  params: { locale: string };
+}
 
-// Simple loading component without translations to avoid hydration issues
-const LoadingMap = () => (
-  <div className="h-screen flex flex-col items-center justify-center bg-gray-100 gap-2">
-    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
-    <p className="text-gray-600 text-base">Loading map...</p>
-  </div>
-);
+/**
+ * Beach map page. The map itself is client-only (Leaflet); this server wrapper gives the page its
+ * own title, description, canonical and hreflang, plus an h1 (TASK-004 SEO; it had neither).
+ */
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'SEO' });
+  return buildCompleteMetadata({
+    title: t('beachMapTitle'),
+    description: t('beachMapDescription'),
+    locale,
+    path: `/${getBeachMapWord(locale)}`,
+    type: 'website',
+    alternateLanguages: buildLocalizedAlternates((l) => `/${getBeachMapWord(l)}`),
+  });
+}
 
-const MapWithSidebar = dynamic(() => import('@/components/Map/MapWithSidebar'), {
-  loading: LoadingMap,
-  ssr: false,
-});
-
-export default function BeachMapPage() {
-  return <MapWithSidebar />;
+export default async function BeachMapPage({ params }: PageProps) {
+  setRequestLocale(params.locale);
+  const t = await getTranslations({ locale: params.locale, namespace: 'SEO' });
+  return (
+    <>
+      {/* Visually hidden: the map fills the screen, but the page still needs one h1 */}
+      <h1 className="sr-only">{t('beachMapTitle').split(' | ')[0]}</h1>
+      <BeachMapClient />
+    </>
+  );
 }

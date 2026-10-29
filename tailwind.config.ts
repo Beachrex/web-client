@@ -19,8 +19,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        figtree: ["Figtree", "sans-serif"],
-        damion: ["Damion", "cursive"],
+        figtree: ["var(--font-figtree)", "sans-serif"],
+        damion: ["var(--font-damion)", "cursive"],
       },
     },
     colors: {

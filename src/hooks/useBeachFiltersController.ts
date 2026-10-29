@@ -2,6 +2,7 @@ import { useCallback, useMemo, useRef } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import { optionMatches, type FilterOptionLike } from '@/lib/utils/filter-options';
 
 interface UseBeachFiltersControllerProps {
   baseFilters?: Record<string, string | number>;
@@ -28,11 +29,7 @@ type NormalizedFilterOptions = Record<
 >;
 
 interface FilterOptionGroup {
-  options?: {
-    id?: number;
-    code?: string;
-    slug?: string;
-  }[];
+  options?: FilterOptionLike[];
 }
 
 export function useBeachFiltersController({
@@ -175,25 +172,13 @@ export function useBeachFiltersController({
 
       if (typeof value === 'string' && value.includes(',')) {
         const selected = value.split(',');
-        const valid = selected.filter((v) =>
-          filterData.options?.some(
-            (opt) =>
-              opt.code === v ||
-              opt.slug === v ||
-              String(opt.id) === v,
-          ),
-        );
+        const valid = selected.filter((v) => filterData.options?.some((opt) => optionMatches(opt, v)));
 
         if (valid.length > 0) {
           validated[key] = valid.join(',');
         }
       } else {
-        const isValid = filterData.options.some(
-          (opt) =>
-            opt.code === value ||
-            opt.slug === value ||
-            String(opt.id) === String(value),
-        );
+        const isValid = filterData.options.some((opt) => optionMatches(opt, value));
 
         if (isValid) {
           validated[key] = value;
@@ -207,7 +192,7 @@ export function useBeachFiltersController({
 
   /* ---------------- FINAL FILTERS ---------------- */
 
-  // Memoize so consumers (e.g. useAllBeaches) receive a stable reference and
+  // Memoize so consumers (e.g. useBeachPage) receive a stable reference and
   // don't refetch / re-render on every parent render.
   const filters = useMemo(
     () => ({

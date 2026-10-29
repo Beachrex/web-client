@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Strande i hele verden",
     "quickMenuBeachType": "Strandtype",
     "quickMenuUserType": "Brugertype",
-    "quickMenuBeachDisplay": "Strandvisning",
     "quickMenuBeachServices": "Strandtjenester",
     "quickMenuTopBeaches": "Topstrande",
     "quickMenuAboutUs": "Om os",
@@ -65,7 +64,14 @@
     "accommodationDefaultDistance": "250 m fra stranden",
     "accommodationDefaultBeach": "Haludovo Beach",
     "accommodationDefaultPrice": "fra 25 €",
-    "beachSeaBeach": "Havstrand"
+    "beachSeaBeach": "Havstrand",
+    "copyLink": "Kopiér",
+    "linkCopied": "Kopieret",
+    "shareOn": "Del på {network}",
+    "shareByEmail": "Del via e-mail",
+    "moreShareOptions": "Flere muligheder",
+    "paginationPrevious": "Forrige",
+    "paginationNext": "Næste"
   },
   "Search": {
     "typeBeach": "Strand",
@@ -76,7 +82,17 @@
     "beaches": "strande",
     "noResults": "Ingen resultater fundet. Prøv et andet søgeord.",
     "searching": "Søger...",
-    "clearSearch": "Ryd søgning"
+    "clearSearch": "Ryd søgning",
+    "tabAll": "Alle",
+    "tabBeaches": "Strande",
+    "tabCities": "Byer",
+    "tabIslands": "Øer",
+    "tabRegions": "Regioner",
+    "tabCountries": "Lande",
+    "tabsLabel": "Filtrer resultater efter type",
+    "showAllOnMap": "Alle strande på kortet: {name}",
+    "showingOf": "Viser {shown} af {total}",
+    "openPlace": "Åbn {name}"
   },
   "HomePage": {
     "allBeaches": "Alle strande",
@@ -103,7 +119,10 @@
     "outdoorPools": "Udendørs pools",
     "indoorPoolsSpas": "Indendørs pools & spa",
     "browseAccommodationsButton": "Gennemse overnatninger",
-    "moreAccommodations": "+Flere overnatninger"
+    "moreAccommodations": "+Flere overnatninger",
+    "showcaseExample": "Eksempel: {beach}",
+    "showcaseOpenBeach": "Se {beach}",
+    "showcaseLiveBadge": "Direkte"
   },
   "BeachCategories": {
     "sandyBeaches": "Sandstrande",
@@ -136,9 +155,12 @@
     "browseBeaches": "Gennemse alle strande",
     "goHome": "Til forsiden"
   },
-  "AboutPage": {
-    "aboutUs": "Om os",
-    "description": "Beskrivelse af om-os-siden"
+  "ErrorPage": {
+    "title": "Noget gik galt.",
+    "subtitle": "Fejl",
+    "description": "Der opstod en uventet fejl. Prøv igen om et øjeblik.",
+    "retry": "Prøv igen",
+    "goHome": "Til forsiden"
   },
   "BeachTypePage": {
     "title": "Strandtyper",
@@ -161,17 +183,16 @@
     "premiumAccommodations": "Luksusovernatning i {continent}",
     "bestDeals": "Gode tilbud",
     "description": "Udforsk de smukkeste strande i {continent}.",
-    "countriesContinent": "Lande i {continent}"
+    "countriesContinent": "Lande i {continent}",
+    "sortBy": "Sortér",
+    "sortAlphabetical": "Alfabetisk (A–Å)",
+    "sortBeachesDesc": "Flest strande først",
+    "sortBeachesAsc": "Færrest strande først"
   },
   "FeatureCards": {
     "beachMapButton": "Strandkort",
     "browseBlogButton": "Gennemse blog",
     "browseAccommodationsButton": "Gennemse overnatninger"
-  },
-  "routes": {
-    "beachMap": "/strandkort",
-    "blog": "/blog",
-    "accommodations": "/overnatninger"
   },
   "Destinations": {
     "croatia": "Kroatien",
@@ -221,7 +242,7 @@
     "viewBeachMap": "Se strandkort"
   },
   "SearchBeach": {
-    "title": "Gennemse alle strande i Europa",
+    "title": "Gennemse alle strande i {continent}",
     "filterButton": "Filtrer",
     "mapButton": "Vis kort",
     "displayLabel": "Strandvisning:",
@@ -312,9 +333,12 @@
     "islandLabel": "Ø",
     "cityLabel": "By",
     "countryLabel": "Land",
-    "beachLabel": "Havstrand",
+    "beachLabel": "Hav",
     "beachCountLabel": "Antal strande:",
-    "accommodationCountLabel": "Antal overnatninger:"
+    "accommodationCountLabel": "Antal overnatninger:",
+    "beachLabelLake": "Sø",
+    "beachLabelRiver": "Flod",
+    "beachLabelPool": "Pool"
   },
   "TopBarBeach": {
     "beachLabel": "Havstrand",
@@ -328,7 +352,9 @@
       "parking": "Parkering tilgængelig",
       "easyAccess": "Nem adgang",
       "windsurfing": "Windsurfing",
-      "SeaTemperature": "Havtemperatur"
+      "SeaTemperature": "Havtemperatur",
+      "adventurer": "Strand for eventyrere",
+      "partyBeach": "Feststrand"
     }
   },
   "AccommodationSection": {
@@ -455,7 +481,7 @@
     "beachImageAltNoCity": "{beachName} strand i {countryName}",
     "iconAlt": "{iconName} ikon",
     "facilityAlt": "{facilityName} facilitet-ikon",
-    "countryFlagAlt": "{countryName} flag",
+    "countryFlagAlt": "Flag for {countryName}",
     "continentImageAlt": "{continentName} - Udforsk strande",
     "countryImageAlt": "{countryName} - Stranddestinationer",
     "regionImageAlt": "{regionName}, {countryName} - Strandregion",
@@ -514,20 +540,16 @@
       "title": "Gennemse siden",
       "links": [
         {
-          "label": "Oversigt over alle destinationer",
-          "href": "/destinations"
+          "label": "Oversigt over alle destinationer"
         },
         {
-          "label": "Søg efter strande",
-          "href": "/straande"
+          "label": "Søg efter strande"
         },
         {
-          "label": "Søg efter overnatninger",
-          "href": "/overnatninger"
+          "label": "Søg efter overnatninger"
         },
         {
-          "label": "Kortvisning",
-          "href": "/strandkort"
+          "label": "Kortvisning"
         }
       ]
     },
@@ -539,7 +561,12 @@
       "gdprConsent": "Jeg accepterer at modtage reklame-e-mails og nyheder, og jeg accepterer <privacy>privatlivspolitikken</privacy>."
     },
     "legal": {
-      "rights": "Alle rettigheder forbeholdes BeachRex"
+      "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Alle rettigheder forbeholdes."
+    },
+    "app": {
+      "title": "Hent appen",
+      "googlePlayTop": "NU PÅ",
+      "appStoreTop": "Download i"
     }
   },
   "BeachSimilarBeaches": {
@@ -564,7 +591,8 @@
       "sports": "Sportsaktiviteter",
       "parking": "Parkering",
       "pathToBeach": "Sti til stranden",
-      "userType": "Brugertype"
+      "userType": "Brugertype",
+      "gpsLocation": "GPS-position"
     },
     "labels": {
       "type": "Type",
@@ -581,11 +609,15 @@
       "wayToParking": "Underlag til parkering",
       "recommendedAccess": "Anbefalet adgang",
       "distance": "Afstand (parkering — strand)",
-      "elevationDiff": "Højdeforskel (parkering til strand)"
+      "elevationDiff": "Højdeforskel (parkering til strand)",
+      "seabedLake": "Søbund",
+      "seabedRiver": "Flodleje",
+      "seabedPool": "Poolbund"
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Kort"
+      "map": "Kort",
+      "navigation": "Navigation"
     },
     "values": {
       "yes": "Ja",
@@ -631,7 +663,12 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Live-webcam",
+    "webcamIframeTitle": "Live-webcam: {name}",
+    "webcamCredit": "Webcam leveret af Windy.com",
+    "closeMedia": "Luk",
+    "navigationAria": "Rutevejledning til {name} i Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Fortsæt med Google",
@@ -648,7 +685,30 @@
     "loginRequired": "Login påkrævet",
     "loginRequiredMessage": "Du skal logge ind for at få adgang til denne funktion.",
     "creditsRequired": "Kredit påkrævet",
-    "creditsRequiredMessage": "Du har brug for kredit for at generere rejseplaner. Køb venligst kredit for at fortsætte."
+    "creditsRequiredMessage": "Du har brug for kredit for at generere rejseplaner. Køb venligst kredit for at fortsætte.",
+    "orDivider": "eller",
+    "signInWithEmail": "Log ind med e-mail",
+    "email": "E-mail",
+    "password": "Adgangskode",
+    "signIn": "Log ind",
+    "forgotPassword": "Glemt adgangskode?",
+    "invalidCredentials": "Forkert e-mail eller adgangskode.",
+    "tooManyAttempts": "For mange forsøg. Vent et minut, og prøv igen.",
+    "genericError": "Noget gik galt. Prøv igen.",
+    "forgotTitle": "Glemt din adgangskode?",
+    "forgotDescription": "Indtast e-mailen på din Beachrex-konto, så sender vi dig et link til at vælge en ny adgangskode.",
+    "sendLink": "Send link",
+    "forgotSent": "Hvis der findes en konto med denne e-mail, har vi sendt et link til at nulstille adgangskoden. Tjek din indbakke og spammappe.",
+    "resetTitle": "Vælg en ny adgangskode",
+    "newPassword": "Ny adgangskode",
+    "confirmPassword": "Gentag ny adgangskode",
+    "passwordHint": "Mindst 8 tegn.",
+    "passwordsDontMatch": "Adgangskoderne er ikke ens.",
+    "savePassword": "Gem adgangskode",
+    "resetDone": "Din adgangskode er ændret, og du er logget ind.",
+    "resetDoneSignIn": "Din adgangskode er ændret. Du kan nu logge ind.",
+    "resetInvalidLink": "Dette link til nulstilling af adgangskoden er ugyldigt eller udløbet.",
+    "requestNewLink": "Anmod om et nyt link"
   },
   "AI": {
     "landing": {
@@ -656,7 +716,13 @@
       "subtitle": "Din personlige strandopdagelses-assistent drevet af AI",
       "description": "Få personlige strandanbefalinger, chat med vores AI-assistent, og opret tilpassede rejseplaner til din perfekte strandferie.",
       "chatButton": "Start chat",
-      "itineraryButton": "Opret rejseplan"
+      "itineraryButton": "Opret rejseplan",
+      "chatCardText": "Spørg vores AI-assistent om alt om strande, destinationer og rejsetips, og få personlige anbefalinger med det samme.",
+      "chatCta": "Start chatten",
+      "itineraryCardText": "Lav personlige rejseplaner for strandferie over flere dage, tilpasset dine ønsker, dit budget og dine interesser.",
+      "itineraryCta": "Lav en rejseplan",
+      "infoTitle": "Ny i Beachrex AI?",
+      "infoText": "Chatten er gratis for alle. Rejseplaner over flere dage kræver kreditter – log ind med Google for at komme i gang!"
     },
     "chat": {
       "title": "Chat med AI",
@@ -666,29 +732,117 @@
       "sending": "Sender...",
       "error": "Kunne ikke sende besked. Prøv venligst igen.",
       "welcome": "Hej! Jeg er din AI-strandassistent. Hvordan kan jeg hjælpe dig i dag?",
-      "anonymousNote": "Du chatter anonymt. Log ind for at gemme dine samtaler og få adgang til premium-funktioner."
+      "anonymousNote": "Du chatter anonymt. Log ind for at gemme dine samtaler og få adgang til premium-funktioner.",
+      "viewDetails": "Se detaljer →",
+      "suggestions": "Forslag:",
+      "match": "{percent} % match",
+      "useLocation": "Brug min placering (strande i nærheden)",
+      "locationOn": "Din placering bruges til strande i nærheden",
+      "locationDenied": "Placeringen er ikke tilgængelig. Tillad placeringsadgang i browseren, eller skriv et sted.",
+      "errorBusy": "AI-assistenten er optaget lige nu. Prøv igen om et minut.",
+      "errorTooMany": "For mange beskeder. Vent lidt, og prøv igen.",
+      "errorTooLong": "Beskeden er for lang. Gør den kortere.",
+      "widget": {
+        "open": "Åbn AI-strandassistenten",
+        "close": "Luk chatten",
+        "title": "AI-strandassistent",
+        "newConversation": "Ny samtale",
+        "openFullPage": "Åbn hele chatten",
+        "inputLabel": "Din besked",
+        "greeting": "Hej! Spørg mig om alt om strande og din tur til havet.",
+        "greetingBeach": "Hej! Du ser på {name}. Spørg mig om alt om den eller om enhver anden strand.",
+        "placeholderBeach": "Spørg om {name}…"
+      }
     },
     "itinerary": {
-      "title": "Opret strandrejseplan",
-      "subtitle": "Generer en personlig fler-dages strandferieplan",
+      "title": "Planlæg din strandferie",
+      "subtitle": "Vælg et land og rejsens længde. Vi planlægger strandene for hver dag ud fra Beachrex-databasen, med et link til hver strand.",
       "form": {
-        "destination": "Destination",
-        "destinationPlaceholder": "f.eks. Kroatien, Bali, Caribien",
-        "days": "Antal dage",
-        "daysPlaceholder": "f.eks. 7",
-        "interests": "Interesser",
-        "interestsPlaceholder": "f.eks. snorkling, afslapning, natteliv",
-        "budget": "Budgetniveau",
-        "budgetLow": "Budget",
-        "budgetMedium": "Moderat",
-        "budgetHigh": "Luksus",
-        "generate": "Generér rejseplan",
-        "generating": "Genererer din rejseplan..."
+        "country": "Land",
+        "countryPlaceholder": "Vælg et land",
+        "region": "Region (valgfri)",
+        "wholeCountry": "Hele landet",
+        "duration": "Rejsens længde",
+        "daysOption": "{days} dage",
+        "plansAvailable": "{count} klar til brug",
+        "interests": "Hvad kan du lide?",
+        "surface": "Strandunderlag",
+        "pace": "Tempo",
+        "adults": "Voksne",
+        "children": "Børn"
       },
-      "error": "Kunne ikke generere rejseplan. Prøv venligst igen.",
-      "paymentRequired": "Fler-dages rejseplaner kræver kredit. Køb venligst kredit for at fortsætte.",
-      "creditsRemaining": "Tilbageværende kredit: {count}",
-      "purchaseCredits": "Køb kredit"
+      "interest": {
+        "swimming": "Svømning",
+        "snorkeling": "Snorkling",
+        "family": "Børnevenlig",
+        "quiet": "Ro",
+        "nightlife": "Natteliv",
+        "nature": "Natur",
+        "diving": "Dykning",
+        "surfing": "Surfing",
+        "kayaking": "Kajak",
+        "hiking": "Vandring"
+      },
+      "surface": {
+        "sand": "Sand",
+        "pebble": "Småsten",
+        "rock": "Klipper"
+      },
+      "pace": {
+        "relaxed": "Afslappet",
+        "balanced": "Afbalanceret",
+        "packed": "Tætpakket"
+      },
+      "progressBeaches": "Vi finder strande, der passer til dine ønsker …",
+      "progressRoute": "Vi planlægger ruten dag for dag …",
+      "progressTips": "Vi skriver tips til hver strand …",
+      "signInToStart": "Log ind for at købe og lave din plan.",
+      "generate": "Lav min plan",
+      "usesOnePlan": "Bruger en af dine {days}-dages planer.",
+      "buy": "Køb {days}-dages plan · {price}",
+      "buyNote": "Engangsbetaling, intet abonnement. Efter betalingen kommer du tilbage hertil og laver din plan.",
+      "errors": {
+        "signInRequired": "Log ind først.",
+        "buyRequired": "Du har ikke flere planer af denne længde. Køb en for at fortsætte.",
+        "notEnoughBeaches": "For få strande passer. Prøv hele landet, færre ønsker eller en kortere rejse. Din plan blev ikke brugt.",
+        "busy": "Planlæggeren har travlt lige nu. Prøv igen om et minut. Din plan blev ikke brugt.",
+        "error": "Noget gik galt, og din plan blev ikke brugt. Prøv igen.",
+        "purchaseError": "Betalingen kunne ikke startes. Prøv igen."
+      },
+      "fallbackNote": "Denne gang kunne AI-tipsene ikke skrives, så planen indeholder korte fakta. Din plan blev ikke brugt, og du kan lave den igen.",
+      "day": "Dag {number}",
+      "timeBlock": {
+        "morning": "Formiddag",
+        "afternoon": "Eftermiddag",
+        "evening": "Aften"
+      },
+      "tip": "Tip",
+      "travelKm": "Cirka {km} km kørsel denne dag.",
+      "assumptions": "Godt at vide",
+      "newPlan": "Planlæg en ny rejse",
+      "plans": {
+        "title": "Mine planer",
+        "empty": "Du har ingen planer endnu. Lav din første.",
+        "untitled": "Rejse på {days} dage ({country})",
+        "notFound": "Denne plan findes ikke eller tilhører en anden konto.",
+        "waitNote": "Du kan lukke siden: planen gemmes under Mine planer, når den er klar.",
+        "status": {
+          "running": "Under udarbejdelse",
+          "done": "Klar",
+          "failed": "Ikke lavet"
+        },
+        "failed": {
+          "notEnoughBeaches": "For få strande passer til denne rejse. Planen blev ikke brugt: prøv hele landet, færre ønsker eller en kortere rejse.",
+          "timeout": "Det tog for lang tid at lave planen. Planen blev ikke brugt, prøv igen.",
+          "error": "Noget gik galt. Planen blev ikke brugt, prøv igen."
+        }
+      },
+      "savePdf": "Gem som PDF",
+      "mapTitle": "Kort over rejsen",
+      "consent": {
+        "terms": "Jeg accepterer <link>salgsbetingelserne</link>.",
+        "withdrawal": "Jeg ønsker, at planen er tilgængelig med det samme. Jeg forstår, at jeg mister min 14-dages fortrydelsesret, når jeg laver planen; indtil da kan jeg stadig fortryde."
+      }
     },
     "entitlements": {
       "title": "Min kredit",
@@ -710,7 +864,173 @@
     "no360": "Ingen 360° visning tilgængelig",
     "noVideo": "Ingen video tilgængelig",
     "mostVisited": "Mest besøgte",
+    "distanceAway": "{distance} væk",
     "loading": "Indlæser...",
-    "showOnMap": "Vis {title} på kort"
+    "showOnMap": "Vis {title} på kort",
+    "webcamClose": "Luk webcam"
+  },
+  "Menu": {
+    "browseBeaches": "Udforsk strande",
+    "topCountries": "Populære strandlande",
+    "aiChat": "AI-strandchat",
+    "aiItinerary": "AI-rejseplanlægger",
+    "contact": "Kontakt",
+    "beachTypes": "Strandtyper",
+    "beachesFor": "Strande for",
+    "onTheBeach": "På stranden"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Downloads",
+    "packageTitle": "Komplet brandpakke",
+    "packageDescription": "Alle logoer (SVG, PDF, EPS, PNG), favicon og app-ikoner, billeder til sociale medier og farvepaletten i én ZIP-fil.",
+    "packageButton": "Download ZIP",
+    "guidelinesTitle": "Brandretningslinjer",
+    "logosTitle": "Logoer",
+    "versions": {
+      "horizontal": "Vandret (primært)",
+      "stacked": "Stablet",
+      "symbol": "Symbol",
+      "wordmark": "Ordmærke"
+    },
+    "colors": {
+      "color": "Fuld farve",
+      "black": "Sort",
+      "white": "Hvid",
+      "teal": "Turkis",
+      "orange": "Orange"
+    },
+    "logoAlt": "Beachrex-logo – {version}, {color}",
+    "colorsTitle": "Farver",
+    "paletteDownload": "Download paletten",
+    "socialTitle": "Billeder til sociale medier",
+    "social": {
+      "profile": "Profilbillede",
+      "og": "Billede til linkforhåndsvisning",
+      "facebook": "Facebook-coverbillede",
+      "linkedin": "LinkedIn-coverbillede",
+      "x": "X-header"
+    }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – manden bag Beachrex",
+    "metaDescription": "Mød Gregor Balažic, der sagde sit job op, købte et kamera og en varevogn og besøgte 4.000 strande i 13 lande. Ud af rejsen opstod Beachrex.",
+    "eyebrow": "Om forfatteren",
+    "bannerWord": "Forfatter",
+    "role": "Grundlægger af Beachrex",
+    "lead": "»Strande har altid været min store passion.«",
+    "heroCta": "Læs historien",
+    "stats": {
+      "beaches": "besøgte strande",
+      "km": "kørte kilometer",
+      "countries": "lande",
+      "facts": "oplysninger om hver strand"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Ud af komfortzonen",
+        "text": "Strande har altid været min store passion, siger Gregor Balažic, der sagde sit job op. Han var afdelingsleder, men trådte ud af sin komfortzone og lod en forudsigelig fremtid ligge. Han købte et kamera og en varevogn, der blev hans nye hjem, og drog ud i verden. Eller rettere: til strandene."
+      },
+      "road": {
+        "title": "<beaches>4.000 strande</beaches> i <countries>13 lande</countries>",
+        "text": "Turen gik langs kyster og strande i <countries>13 lande</countries>: <list></list>. Han besøgte hele <beaches>4.000 strande</beaches>. Selvom tallet virker enormt, er det kun en dråbe i havet – der findes over 200.000 strande i verden, som egner sig til turisme, forklarer Balažic."
+      },
+      "database": {
+        "title": "Verdens største database over strande",
+        "text": "De besøgte strande blev grundlaget for verdens største database over strande – Beachrex. Hver strand har fotos, panoramabilleder, videoer, oplysninger om parkering, GPS-placering, vejrdata, overnatning, sportsaktiviteter, restauranter og barer samt havtemperatur. Alt i alt over 200 oplysninger om hver strand."
+      },
+      "hardships": {
+        "title": "Vejen var ikke altid let",
+        "text": "Balažic har tilbagelagt mere end 70.000 kilometer, og for at få de flotteste billeder har han nogle gange måttet klatre. Rejsen på tusindvis af kilometer har ikke altid været badet i solskin – han har også oplevet ubehagelige episoder og er blevet røvet flere gange. Men hans rejse er (endnu) ikke slut."
+      }
+    },
+    "routeTitle": "Langs kysterne",
+    "countries": {
+      "si": "Slovenien",
+      "hr": "Kroatien",
+      "me": "Montenegro",
+      "al": "Albanien",
+      "gr": "Grækenland",
+      "it": "Italien",
+      "fr": "Frankrig",
+      "es": "Spanien",
+      "pt": "Portugal",
+      "be": "Belgien",
+      "nl": "Nederlandene",
+      "de": "Tyskland",
+      "dk": "Danmark"
+    },
+    "photoAlt": "Gregor Balažic med sit kamera på en sandstrand",
+    "beachAlt": "Sandstrand med en væltet båd ved klipperne og fyrretræerne",
+    "beachCaption": "En af de 4.000 strande, som Gregor har besøgt og fotograferet.",
+    "quote": "Vi har en vision – om få år vil hver eneste strand i verden være på kortet.",
+    "ctaTitle": "Opdag de strande, Gregor har besøgt",
+    "ctaText": "Hvert foto, hvert 360°-panorama og hver detalje på Beachrex er blevet til på denne rejse.",
+    "ctaMap": "Udforsk kortet",
+    "ctaContact": "Skriv til os",
+    "footerLink": "Mød forfatteren"
+  },
+  "Payment": {
+    "successTitle": "Betaling gennemført",
+    "successMessage": "Tak for dit køb! Dine kreditter er tilføjet din konto.",
+    "sessionId": "Sessions-ID:",
+    "cancelTitle": "Betaling annulleret",
+    "cancelMessage": "Din betaling blev annulleret. Der er ikke trukket noget.",
+    "redirecting": "Tilbage til rejseplanlæggeren om <strong>{seconds}</strong> sekunder …",
+    "planItinerary": "Planlæg en rejserute",
+    "tryChat": "Prøv AI-chatten",
+    "tryAgain": "Prøv igen",
+    "goHome": "Gå til forsiden",
+    "help": "Brug for hjælp? Skriv til {email}."
+  },
+  "UI": {
+    "selectOption": "Vælg en mulighed",
+    "noBeachesInArea": "Der blev ikke fundet nogen strande i dette område",
+    "singleColumn": "Visning i én kolonne",
+    "doubleColumn": "Visning i to kolonner",
+    "closeMap": "Luk kortet",
+    "closeFilters": "Luk filtre",
+    "videoTitle": "Strandvideo",
+    "virtualTourTitle": "360° virtuel rundvisning",
+    "beachRouteMapTitle": "Kort med vejen til stranden",
+    "closeMenu": "Luk menuen"
+  },
+  "FilterModal": {
+    "title": "Alle strandfiltre",
+    "searchPlaceholder": "🔍 Søg i filtre …",
+    "clearAll": "Ryd alle",
+    "cancel": "Annuller",
+    "apply": "Anvend filtre",
+    "applyCount": "Anvend filtre ({count})",
+    "showLess": "Vis mindre",
+    "showMore": "Vis {count} mere …"
+  },
+  "Favorites": {
+    "title": "Mine favoritstrande",
+    "add": "Gem som favorit",
+    "remove": "Fjern fra favoritter",
+    "save": "Gem",
+    "saved": "Gemt",
+    "signInTitle": "Log ind for at gemme strande",
+    "signInText": "Dine favoritstrande gemmes på din konto, så du kan finde dem på alle enheder.",
+    "empty": "Du har ikke gemt nogen strande endnu. Tryk på hjertet ved en strand for at gemme den.",
+    "browse": "Se strande",
+    "limit": "Din favoritliste er fuld. Fjern en strand for at gemme en ny.",
+    "error": "Stranden kunne ikke gemmes. Prøv igen.",
+    "loadError": "Dine favoritstrande kunne ikke indlæses. Prøv igen."
+  },
+  "BeachFaq": {
+    "title": "Ofte stillede spørgsmål om {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Alle lande",
+    "allRegions": "Alle regioner",
+    "allIslands": "Alle øer",
+    "allCities": "Alle byer",
+    "all": "Alle",
+    "search": "Søg…",
+    "noMatches": "Ingen resultater",
+    "clear": "Ryd",
+    "selected": "Valgte filtre",
+    "remove": "Fjern {name}"
   }
 }

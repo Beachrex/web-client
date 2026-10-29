@@ -2,6 +2,7 @@
 
 'use client';
 
+import type { BeachCardFeatures } from '@/lib/utils/beach-badges';
 import {
   ChevronRight as ArrowRight,
 } from 'lucide-react';
@@ -10,6 +11,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import PropertyCard from './PropertyCard/PropertyCard';
+import BeachViewToggle, { type BeachMediaMode } from './BeachViewToggle';
 
 // Dynamically import PropertyCarousel to reduce initial bundle size
 const PropertyCarousel = dynamic(
@@ -17,7 +19,7 @@ const PropertyCarousel = dynamic(
   {
     loading: () => (
       <div className="flex h-[295px] w-full items-center justify-center">
-        <div className="animate-pulse text-gray-400">Loading...</div>
+        <div className="animate-pulse text-gray-400" />
       </div>
     ),
     ssr: false,
@@ -51,6 +53,12 @@ export interface Property {
 
   /** Up to 4 descriptive tags from the API (sporting activities, culinary, natural conditions) */
   tags?: string[];
+  features?: BeachCardFeatures | null;
+  /** Distance from the current beach in km ("Nearby beaches"); the card shows it when set */
+  distanceKm?: number | null;
+  /** Beach coordinates: the card's map pin centers the map on them */
+  latitude?: string | number | null;
+  longitude?: string | number | null;
 }
 
 interface PropertySectionProps {
@@ -73,7 +81,7 @@ const noop = () => undefined;
 
 
 export const PropertyMediaContext = React.createContext({
-  mediaMode: 'gallery' as 'gallery' | 'sphere' | 'video' | 'webcam',
+  mediaMode: 'gallery' as BeachMediaMode,
   openSphere: (_url: string) => noop(),
   openVideo: (_url: string) => noop(),
 });
@@ -111,14 +119,14 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
   title,
   totalCount = 124,
   properties,
+  headerRight,
   controlsBelowHeader,
 }) => {
   const t = useTranslations('PropertySection');
  const [expanded, setExpanded] = useState(false);
  const c = useTranslations('Common');
 
- const [mediaMode, setMediaMode] =
-  useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
+ const [mediaMode, setMediaMode] = useState<BeachMediaMode>('gallery');
 const hasAnyWebcam = React.useMemo(
   () => properties.some((p) => Boolean(p.webcamEmbed)),
   [properties]
@@ -131,7 +139,7 @@ const hasAnyWebcam = React.useMemo(
         <div className="relative h-[400px] w-[250px] opacity-70 sm:w-[300px] lg:w-[350px]">
           <Image
             src="/images/propertycard/beach-gray.png"
-            alt="decor beach"
+            alt=""
             width={400}
             height={400}
             className="h-full w-full object-contain object-left"
@@ -148,122 +156,7 @@ const hasAnyWebcam = React.useMemo(
           </h2>
 
           <div className="flex flex-wrap items-center gap-[16px]">
-            {/* DISPLAY TOGGLE */}
-            <div className="flex items-center gap-[10px] rounded-[6px] bg-[#E7E7E7] px-[8px] py-[6px]">
-              <span className="font-figtree text-[14px] font-semibold text-[#4D4D4D]">
-                {t('displayLabel')}
-              </span>
-
-              <div className="flex items-center gap-[10px]">
-
-                {/* GALLERY */}
-                <button
-                  onClick={() => setMediaMode('gallery')}
-                  className={`relative p-1 rounded-[6px] transition-all duration-150 ${
-                    mediaMode === 'gallery'
-                      ? 'bg-[#D9EBF6] shadow-inner'
-                      : 'opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <Image
-                    src="/images/beachmedia/photo.png"
-                    width={24}
-                    height={24}
-                    alt="gallery"
-                  />
-                  {mediaMode === 'gallery' && (
-                    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-                  )}
-                </button>
-
-                <div className="h-[25px] w-[1px] bg-white" />
-
-
-  {/* VIDEO */}
-                <button
-                  onClick={() =>
-                    setMediaMode((m) => (m === 'video' ? 'gallery' : 'video'))
-                  }
-                  className={`relative p-1 rounded-[6px] transition-all duration-150 ${
-                    mediaMode === 'video'
-                      ? 'bg-[#D9EBF6] shadow-inner'
-                      : 'opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <Image
-                    src="/images/beachmedia/play-button-arrowhead-white.png"
-                    width={24}
-                    height={24}
-                    alt="video"
-                  />
-                  {mediaMode === 'video' && (
-                    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-                  )}
-                </button>
-
-                <div className="h-[25px] w-[1px] bg-white" />
-
-                {/* SPHERE */}
-                <button
-                  onClick={() =>
-                    setMediaMode((m) => (m === 'sphere' ? 'gallery' : 'sphere'))
-                  }
-                  className={`relative p-1 rounded-[6px] transition-all duration-150 ${
-                    mediaMode === 'sphere'
-                      ? 'bg-[#D9EBF6] shadow-inner'
-                      : 'opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <Image
-                    src="/images/beachmedia/360-degree-white.png"
-                    width={24}
-                    height={24}
-                    alt="360"
-                  />
-                  {mediaMode === 'sphere' && (
-                    <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-                  )}
-                </button>
-
-                <div className="h-[25px] w-[1px] bg-white" />
-
-
-  {/* WEBCAM */}
-{hasAnyWebcam ? (
-  <button
-    onClick={() =>
-      setMediaMode((m) => (m === 'webcam' ? 'gallery' : 'webcam'))
-    }
-    className={`relative p-1 rounded-[6px] transition-all duration-150 ${
-      mediaMode === 'webcam'
-        ? 'bg-[#D9EBF6] shadow-inner'
-        : 'opacity-60 hover:opacity-100'
-    }`}
-  >
-    <Image
-      src="/images/beachmedia/video-icon-white.png"
-      width={24}
-      height={24}
-      alt="webcam"
-    />
-    {mediaMode === 'webcam' && (
-      <span className="absolute left-0 right-0 -bottom-[3px] mx-auto h-[2px] w-[14px] bg-[#1A3C68] rounded-full" />
-    )}
-  </button>
-) : (
-  <div className="opacity-40 cursor-not-allowed p-1">
-    <Image
-      src="/images/beachmedia/video-icon-white.png"
-      width={24}
-      height={24}
-      alt="webcam"
-    />
-  </div>
-)}
-
-
-              </div>
-            </div>
+            <BeachViewToggle mode={mediaMode} onChange={setMediaMode} webcamAvailable={hasAnyWebcam} />
 
           {controlsBelowHeader && (
   <div className="flex justify-end">
@@ -271,6 +164,10 @@ const hasAnyWebcam = React.useMemo(
   </div>
 )}
 
+            {/* Place pages pass the real total ("All beaches (43)", a link to the full list). Without it the
+                button expands this carousel; its count is the number of cards (dev 2026-10-28: the Toscana page
+                showed "All beaches (20)" for a region with 43). */}
+            {headerRight ?? (
             <button
   type="button"
   onClick={() => setExpanded((v) => !v)}
@@ -286,6 +183,7 @@ const hasAnyWebcam = React.useMemo(
     }`}
   />
 </button>
+            )}
 
           </div>
         </div>

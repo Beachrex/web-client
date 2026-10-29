@@ -2,12 +2,24 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, MapPin, X, Mountain, Globe } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useRouter } from '@/i18n/routing';
+import { useLocale, useTranslations } from 'next-intl';
+// next/navigation, not the next-intl router: buildSearchResultUrl already returns the locale-prefixed path
+import { useRouter } from 'next/navigation';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useQuery } from '@tanstack/react-query';
 import { globalSearchOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildSearchResultUrl } from '@/lib/utils/search-result-url';
+import {
+    moreMatches,
+    resultsForTab,
+    searchTabs,
+    showAllQuery,
+    showAllTarget,
+    type SearchTab,
+} from '@/lib/utils/search-tabs';
+import { formatCount, parseSearchMeta } from '@/lib/utils/search-totals';
+import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import Image from 'next/image';
 
 // Unified search result type
@@ -16,6 +28,8 @@ interface UnifiedSearchResult {
     type: 'beach' | 'city' | 'island' | 'region' | 'country';
     name: string;
     slug: string;
+    /** Filter code for the beach map (countries, regions, islands, cities) */
+    code?: string;
     location?: string;
     main_image?: string;
     // URL building slugs
@@ -42,10 +56,12 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     const t = useTranslations('Common');
     const tSearch = useTranslations('Search');
     const router = useRouter();
+    const locale = useLocale();
 
     const [query, setQuery] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
+    const [activeTab, setActiveTab] = useState<SearchTab>('all');
 
     const searchRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -95,6 +111,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 type: 'city',
                 name: city.name ?? '',
                 slug: city.slug ?? '',
+                code: ((city as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: [city.region_name, city.country_name].filter(Boolean).join(', '),
                 main_image: city.main_image,
                 continent_slug: city.continent_slug,
@@ -111,14 +128,15 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 type: 'island',
                 name: (island as Record<string, unknown>).name as string ?? '',
                 slug: (island as Record<string, unknown>).slug as string ?? '',
+                code: ((island as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: [
                     (island as Record<string, unknown>).region_name,
                     (island as Record<string, unknown>).country_name,
                 ].filter(Boolean).join(', '),
                 main_image: (island as Record<string, unknown>).main_image as string | undefined,
-                continent_slug: island.continent_slug,
-                country_slug: island.country_slug,
-                region_slug: island.region_slug,
+                continent_slug: island.continent_slug ?? undefined,
+                country_slug: island.country_slug ?? undefined,
+                region_slug: island.region_slug ?? undefined,
             });
         });
 
@@ -129,10 +147,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 type: 'region',
                 name: (region as Record<string, unknown>).name as string ?? '',
                 slug: (region as Record<string, unknown>).slug as string ?? '',
+                code: ((region as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: (region as Record<string, unknown>).country_name as string ?? '',
                 main_image: (region as Record<string, unknown>).main_image as string | undefined,
-                continent_slug: region.continent_slug,
-                country_slug: region.country_slug,
+                continent_slug: region.continent_slug ?? undefined,
+                country_slug: region.country_slug ?? undefined,
             });
         });
 
@@ -143,14 +162,63 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 type: 'country',
                 name: (country as Record<string, unknown>).name as string ?? '',
                 slug: (country as Record<string, unknown>).slug as string ?? '',
+                code: ((country as Record<string, unknown>).code as string | undefined) ?? undefined,
                 location: '',
                 main_image: (country as Record<string, unknown>).main_image as string | undefined,
-                continent_slug: country.continent_slug,
+                continent_slug: country.continent_slug ?? undefined,
             });
         });
 
         return unified;
     }, [searchData]);
+
+    // Real totals and the place the query names (owner 2026-10-28), not in the generated client yet
+    const meta = React.useMemo(
+        () => parseSearchMeta((searchData as { meta?: unknown } | undefined)?.meta),
+        [searchData],
+    );
+
+    // Tabs per result type (owner 2026-10-22); a new search starts on "All".
+    const tabs = React.useMemo(() => searchTabs(results, meta.totals), [results, meta.totals]);
+    const currentTab: SearchTab = tabs.some((tab) => tab.tab === activeTab) ? activeTab : 'all';
+    const visibleResults = React.useMemo(
+        () => resultsForTab(results, currentTab, debouncedQuery),
+        [results, currentTab, debouncedQuery],
+    );
+
+    // "Show all on the map" for the place the query names (owner 2026-10-22)
+    // The API's named place wins (it also scoped the results); otherwise the closest place match in the list.
+    const showAll = React.useMemo(() => {
+        const { place } = meta;
+        if (place?.code) return { type: place.type, code: place.code, name: place.name };
+        return showAllTarget(results, debouncedQuery);
+    }, [meta, results, debouncedQuery]);
+
+    // "10 of 412" under a type tab that lists fewer than it matched, with a way to see them all
+    const more = React.useMemo(() => moreMatches(results, meta.totals, currentTab), [results, meta.totals, currentTab]);
+    const morePlace = React.useMemo(() => {
+        const { place } = meta;
+        if (!more || more.type === 'beach' || !place) return null;
+        return results.find((r) => r.type === place.type && r.id === place.id) ?? null;
+    }, [meta, more, results]);
+    const openShowAll = () => {
+        if (!showAll) return;
+        setIsOpen(false);
+        setQuery('');
+        setSelectedIndex(-1);
+        router.push(buildBeachMapUrl(locale, showAllQuery(showAll)));
+    };
+
+    useEffect(() => {
+        setActiveTab('all');
+        setSelectedIndex(-1);
+    }, [debouncedQuery]);
+
+    const selectTab = (tab: SearchTab) => {
+        setActiveTab(tab);
+        setSelectedIndex(-1);
+        inputRef.current?.focus();
+    };
 
     // Open dropdown when results are available
     useEffect(() => {
@@ -175,12 +243,12 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 
     // Handle keyboard navigation
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (!isOpen || results.length === 0) return;
+        if (!isOpen || visibleResults.length === 0) return;
 
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
-                setSelectedIndex((prev) => (prev < results.length - 1 ? prev + 1 : prev));
+                setSelectedIndex((prev) => (prev < visibleResults.length - 1 ? prev + 1 : prev));
                 break;
             case 'ArrowUp':
                 e.preventDefault();
@@ -188,8 +256,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
                 break;
             case 'Enter':
                 e.preventDefault();
-                if (selectedIndex >= 0 && results[selectedIndex]) {
-                    handleResultClick(results[selectedIndex]);
+                if (selectedIndex >= 0 && visibleResults[selectedIndex]) {
+                    handleResultClick(visibleResults[selectedIndex]);
                 }
                 break;
             case 'Escape':
@@ -208,75 +276,8 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         router.push(url);
     };
 
-    // Build URL based on result type using localized slugs from API
-    // Note: We use canonical "/beaches/..." paths, and next-intl router will handle localization
-    const buildResultUrl = (result: UnifiedSearchResult): string => {
-        const segments: string[] = ['beaches'];
-
-        switch (result.type) {
-            case 'beach': {
-                // Beach URL: /beaches/continent/country/[region]/[island]/[city]/beach
-                if (!result.continent_slug || !result.country_slug) {
-                    console.error('Beach missing required slugs:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.country_slug);
-                if (result.region_slug) segments.push(result.region_slug);
-                if (result.island_slug) segments.push(result.island_slug);
-                if (result.city_slug) segments.push(result.city_slug);
-                segments.push(result.slug);
-                break;
-            }
-            case 'city': {
-                // City URL: /beaches/continent/country/[region]/[island]/city
-                if (!result.continent_slug || !result.country_slug) {
-                    console.error('City missing required slugs:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.country_slug);
-                if (result.island_slug) {
-                    segments.push(result.island_slug);
-                } else if (result.region_slug) {
-                    segments.push(result.region_slug);
-                }
-                segments.push(result.slug);
-                break;
-            }
-            case 'island': {
-                // Island URL: /beaches/continent/country/[region]/island
-                if (!result.continent_slug || !result.country_slug) {
-                    console.error('Island missing required slugs:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.country_slug);
-                if (result.region_slug) segments.push(result.region_slug);
-                segments.push(result.slug);
-                break;
-            }
-            case 'region': {
-                // Region URL: /beaches/continent/country/region
-                if (!result.continent_slug || !result.country_slug) {
-                    console.error('Region missing required slugs:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.country_slug, result.slug);
-                break;
-            }
-            case 'country': {
-                // Country URL: /beaches/continent/country
-                if (!result.continent_slug) {
-                    console.error('Country missing continent slug:', result);
-                    return '/beaches';
-                }
-                segments.push(result.continent_slug, result.slug);
-                break;
-            }
-            default:
-                return '/beaches';
-        }
-
-        return '/' + segments.join('/');
-    };
+    // Full localized URL (/si/plaze/...), see buildSearchResultUrl (QA #52, #53, #54)
+    const buildResultUrl = (result: UnifiedSearchResult): string => buildSearchResultUrl(result, locale);
 
     // Get icon for result type
     const getTypeIcon = (type: string) => {
@@ -309,6 +310,18 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
             country: tSearch('typeCountry'),
         };
         return labels[type] ?? type;
+    };
+
+    const getTabLabel = (tab: SearchTab): string => {
+        const labels: Record<SearchTab, string> = {
+            all: tSearch('tabAll'),
+            beach: tSearch('tabBeaches'),
+            city: tSearch('tabCities'),
+            island: tSearch('tabIslands'),
+            region: tSearch('tabRegions'),
+            country: tSearch('tabCountries'),
+        };
+        return labels[tab];
     };
 
     // Clear search
@@ -374,8 +387,43 @@ transition-colors ${buttonClassName}`}
 border-gray-200 rounded-lg shadow-xl max-h-[500px] overflow-y-auto z-[10000] \
 animate-fadeIn search-results-scroll"
                 >
-                    <div className="p-2">
-                        {results.map((result, index) => (
+                    {tabs.length > 0 && (
+                        <div
+                            role="tablist"
+                            aria-label={tSearch('tabsLabel')}
+                            className="sticky top-0 z-10 flex gap-1.5 overflow-x-auto border-b border-gray-100 bg-white px-2 pb-2 pt-2 \
+[scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                            data-testid="search-tabs"
+                        >
+                            {tabs.map(({ tab, count }) => {
+                                const active = tab === currentTab;
+                                return (
+                                    <button
+                                        key={tab}
+                                        type="button"
+                                        role="tab"
+                                        aria-selected={active}
+                                        // Keep the input focused so typing and arrow keys keep working
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onClick={() => selectTab(tab)}
+                                        className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 \
+text-xs font-semibold transition-colors ${
+                                            active ? 'bg-[#1A3C68] text-white' : 'bg-gray-100 text-gray-700 hover:bg-blue-50'
+                                        }`}
+                                    >
+                                        {getTabLabel(tab)}
+                                        <span
+                                            className={`rounded-full px-1.5 text-[11px] ${active ? 'bg-white/20' : 'bg-white text-gray-500'}`}
+                                        >
+                                            {formatCount(count, locale)}
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                    <div className="p-2" role={tabs.length > 0 ? 'tabpanel' : undefined}>
+                        {visibleResults.map((result, index) => (
                             <button
                                 key={`${result.type}-${result.id}`}
                                 onClick={() => handleResultClick(result)}
@@ -435,6 +483,45 @@ rounded-lg hover:bg-blue-50 transition-all duration-150 ${
                             </button>
                         ))}
                     </div>
+                    {more && (
+                        <div
+                            className="flex items-center justify-between gap-2 border-t border-gray-100 px-4 py-2 text-xs text-gray-500"
+                            data-testid="search-more"
+                        >
+                            <span>
+                                {tSearch('showingOf', {
+                                    shown: formatCount(more.shown, locale),
+                                    total: formatCount(more.total, locale),
+                                })}
+                            </span>
+                            {morePlace && (
+                                <button
+                                    type="button"
+                                    onMouseDown={(e) => e.preventDefault()}
+                                    onClick={() => handleResultClick(morePlace)}
+                                    className="shrink-0 font-semibold text-[#1A3C68] hover:underline"
+                                    data-testid="search-more-place"
+                                >
+                                    {tSearch('openPlace', { name: morePlace.name })}
+                                </button>
+                            )}
+                        </div>
+                    )}
+                    {showAll && (
+                        <div className="sticky bottom-0 border-t border-gray-100 bg-white p-2">
+                            <button
+                                type="button"
+                                onMouseDown={(e) => e.preventDefault()}
+                                onClick={openShowAll}
+                                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#1A3C68] px-4 py-2.5 \
+text-sm font-semibold text-white transition-colors hover:bg-[#2a4c78]"
+                                data-testid="search-show-all"
+                            >
+                                <MapPin size={16} aria-hidden="true" />
+                                {tSearch('showAllOnMap', { name: showAll.name })}
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
 

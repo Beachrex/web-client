@@ -2,8 +2,7 @@
 
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
-import { Star } from 'lucide-react';
+import { buildBeachUrlFromSchema, buildCityUrlFromSchema, buildCountryUrl } from '@/lib/utils/beach-urls';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
@@ -31,6 +30,12 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
         ? buildCdnUrl(`img/flag/${beach.country_code.toLowerCase()}.svg`, 'icon')
         : null;
 
+    const cityUrl = buildCityUrlFromSchema(beach, locale) ?? undefined;
+    const countryUrl =
+        beach.continent_slug && beach.country_slug
+            ? buildCountryUrl(locale, beach.continent_slug, beach.country_slug)
+            : undefined;
+
     const location = beach.city_name ?? beach.country_name ?? '';
     const title = beach.name ?? 'Beach';
 
@@ -46,26 +51,46 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                     sizes="280px"
                 />
 
-                {/* BADGES - same style as PropertyCard */}
-                <div className="absolute left-2 top-2 flex gap-1 z-20">
-                    <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
-                        <Star size={14} className="text-[#FFD700]" fill="#FFD700" />
-                        <span className="text-[10px] text-[#4D4D4D] font-semibold">
-                            {Number(0).toFixed(1)}
-                        </span>
-                    </div>
-                </div>
+                {/* No rating badge: beaches have no rating source yet, and a hardcoded "0.0" read as a bad
+                    rating (owner, 2026-10-29; same as PropertyCard since 2026-10-09). */}
 
                 {/* BOTTOM LABELS - same style as PropertyCard */}
                 <div className="absolute bottom-2 left-2 right-2 flex justify-between pointer-events-none z-20">
                     <div className="pointer-events-auto flex items-center gap-1">
-                        {location && (
+                        {location && (cityUrl ? (
+                            <Link
+                                href={cityUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="flex h-[32px] items-center justify-center rounded-[6px] bg-[#FF8000] px-[10px] transition-colors hover:bg-[#e67300] focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                            >
+                                <span className="text-[11px] font-bold text-white">{location}</span>
+                            </Link>
+                        ) : (
                             <div className="flex h-[32px] items-center justify-center rounded-[6px] bg-[#FF8000] px-[10px]">
                                 <span className="text-[11px] font-bold text-white">{location}</span>
                             </div>
-                        )}
+                        ))}
 
-                        {flagUrl && (
+                        {flagUrl && (countryUrl ? (
+                            <Link
+                                href={countryUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                title={beach.country_name ?? undefined}
+                                className="block h-[32px] w-[40px] overflow-hidden rounded-[6px] transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                            >
+                                <Image
+                                    src={flagUrl}
+                                    width={40}
+                                    height={32}
+                                    alt={beach.country_name ?? 'flag'}
+                                    className="h-full w-full object-cover"
+                                />
+                            </Link>
+                        ) : (
                             <div className="h-[32px] w-[40px] overflow-hidden rounded-[6px]">
                                 <Image
                                     src={flagUrl}
@@ -75,7 +100,7 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                                     className="h-full w-full object-cover"
                                 />
                             </div>
-                        )}
+                        ))}
                     </div>
                 </div>
             </div>
@@ -87,6 +112,8 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                         {beachUrl ? (
                             <Link
                                 href={beachUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 onClick={(e) => e.stopPropagation()}
                                 className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
                             >
@@ -100,6 +127,8 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                     {beachUrl && (
                         <Link
                             href={beachUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
                             className="text-[11px] text-[#0069AB] font-medium hover:underline whitespace-nowrap ml-2"
                         >

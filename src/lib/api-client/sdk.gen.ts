@@ -12,6 +12,7 @@ import type {
   A5F92F332537A406934C0832A0A08A7fErrors,
   A5F92F332537A406934C0832A0A08A7fResponses,
   A772Fcf0B465F9Cbba29F104D89A465Data,
+  A772Fcf0B465F9Cbba29F104D89A465Errors,
   A772Fcf0B465F9Cbba29F104D89A465Responses,
   A957Abdc0A1F026Bb8B6F4D5Ec975B8eData,
   A957Abdc0A1F026Bb8B6F4D5Ec975B8eErrors,
@@ -19,24 +20,49 @@ import type {
   Aa759989C685509Bf36Ff8153A83fData,
   Aa759989C685509Bf36Ff8153A83fErrors,
   Aa759989C685509Bf36Ff8153A83fResponses,
+  AddFavoriteData,
+  AddFavoriteErrors,
+  AddFavoriteResponses,
   AiChatData,
   AiChatErrors,
   AiChatResponses,
   B0722F9026Fe14D1F2Be5Ffa1A33E9aData,
+  B0722F9026Fe14D1F2Be5Ffa1A33E9aErrors,
   B0722F9026Fe14D1F2Be5Ffa1A33E9aResponses,
+  Bdaa500E411Fd41304F9C5C828905fData,
+  Bdaa500E411Fd41304F9C5C828905fResponses,
+  C6Daa719A01185279387Ae7245D8F72Data,
+  C6Daa719A01185279387Ae7245D8F72Errors,
+  C6Daa719A01185279387Ae7245D8F72Responses,
   CalculateDistanceData,
   CalculateDistanceResponses,
+  CountBeachViewData,
+  CountBeachViewErrors,
+  CountBeachViewResponses,
   CreateBeachData,
   CreateBeachErrors,
   CreateBeachResponses,
   D5F3076785B02F519F50Dbec06cData,
+  D5F3076785B02F519F50Dbec06cErrors,
   D5F3076785B02F519F50Dbec06cResponses,
+  DeleteMyAccountData,
+  DeleteMyAccountErrors,
+  DeleteMyAccountResponses,
+  E10Da97131375Fbf16Ec38396Ecf9Bf4Data,
+  E10Da97131375Fbf16Ec38396Ecf9Bf4Errors,
+  E10Da97131375Fbf16Ec38396Ecf9Bf4Responses,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Data,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Errors,
   E3A9C3C756B5255539Aa1Ab9F3A2A6A8Responses,
+  Fc737A971C05555A5Aa9478Cd76E77Data,
+  Fc737A971C05555A5Aa9478Cd76E77Errors,
+  Fc737A971C05555A5Aa9478Cd76E77Responses,
   Ff50Fb7Baeca2626Aeb337957Ff2001Data,
   Ff50Fb7Baeca2626Aeb337957Ff2001Errors,
   Ff50Fb7Baeca2626Aeb337957Ff2001Responses,
+  ForgotPasswordData,
+  ForgotPasswordErrors,
+  ForgotPasswordResponses,
   GenerateItineraryData,
   GenerateItineraryErrors,
   GenerateItineraryResponses,
@@ -52,6 +78,8 @@ import type {
   GetAccommodationTypesData,
   GetAccommodationTypesErrors,
   GetAccommodationTypesResponses,
+  GetAppConfigData,
+  GetAppConfigResponses,
   GetAreaDescriptionByIdData,
   GetAreaDescriptionByIdErrors,
   GetAreaDescriptionByIdResponses,
@@ -140,6 +168,9 @@ import type {
   GetFirstPageContentData,
   GetFirstPageContentErrors,
   GetFirstPageContentResponses,
+  GetHealthData,
+  GetHealthErrors,
+  GetHealthResponses,
   GetIslandData,
   GetIslandErrors,
   GetIslandResponses,
@@ -167,6 +198,12 @@ import type {
   GetMostVisitedBeachesData,
   GetMostVisitedBeachesErrors,
   GetMostVisitedBeachesResponses,
+  GetMyFavoriteIdsData,
+  GetMyFavoriteIdsErrors,
+  GetMyFavoriteIdsResponses,
+  GetMyFavoritesData,
+  GetMyFavoritesErrors,
+  GetMyFavoritesResponses,
   GetNaturalLocationConditionByIdData,
   GetNaturalLocationConditionByIdErrors,
   GetNaturalLocationConditionByIdResponses,
@@ -223,6 +260,8 @@ import type {
   GetRoadToParkingTypesData,
   GetRoadToParkingTypesErrors,
   GetRoadToParkingTypesResponses,
+  GetSiteSettingsData,
+  GetSiteSettingsResponses,
   GetSportingActivitiesData,
   GetSportingActivitiesErrors,
   GetSportingActivitiesResponses,
@@ -281,6 +320,15 @@ import type {
   RegisterUserData,
   RegisterUserErrors,
   RegisterUserResponses,
+  RemoveFavoriteData,
+  RemoveFavoriteErrors,
+  RemoveFavoriteResponses,
+  ResetPasswordData,
+  ResetPasswordErrors,
+  ResetPasswordResponses,
+  ResolveLegacyUrlData,
+  ResolveLegacyUrlErrors,
+  ResolveLegacyUrlResponses,
   ResolveSlugData,
   ResolveSlugErrors,
   ResolveSlugResponses,
@@ -309,7 +357,7 @@ export type Options<
 /**
  * Send message to AI agent
  *
- * Send a message to the AI agent and get a response with beach recommendations. Authentication is optional - anonymous users can use free tier features, authenticated users can access paid features.
+ * Send a message to the AI agent and get a response with beach recommendations. Authentication is optional - anonymous users can use free tier features, authenticated users can access paid features. Send the returned session_id with every following message to continue the conversation (expires 30 minutes after the last message; an expired or foreign session silently starts a new one). Send Accept-Language = the page language: beach names and URL slugs (continent_slug … slug) are in that language, main_image is the first photo path. Beach fields come from the database only; the model contributes the choice and match_score. Recommended beach names appear verbatim in `message` so the client can link them.
  */
 export const aiChat = <ThrowOnError extends boolean = false>(
   options: Options<AiChatData, ThrowOnError>,
@@ -359,6 +407,84 @@ export const generateItinerary = <ThrowOnError extends boolean = false>(
       "Content-Type": "application/json",
       ...options.headers,
     },
+  });
+};
+
+/**
+ * Start a paid itinerary in the background
+ *
+ * Reserves one credit for the trip length and queues the plan. Poll GET /api/v1/me/itinerary-plans/{id} until status is done or failed. Failed plans and plans without the AI narrative give the credit back.
+ */
+export const c6Daa719A01185279387Ae7245D8F72 = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<C6Daa719A01185279387Ae7245D8F72Data, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    C6Daa719A01185279387Ae7245D8F72Responses,
+    C6Daa719A01185279387Ae7245D8F72Errors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/ai/itinerary-plans",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * My itinerary plans (newest first, max 50)
+ */
+export const e10Da97131375Fbf16Ec38396Ecf9Bf4 = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<E10Da97131375Fbf16Ec38396Ecf9Bf4Data, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    E10Da97131375Fbf16Ec38396Ecf9Bf4Responses,
+    E10Da97131375Fbf16Ec38396Ecf9Bf4Errors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/itinerary-plans",
+    ...options,
+  });
+};
+
+/**
+ * One of my itinerary plans, with the full plan when done
+ */
+export const fc737A971C05555A5Aa9478Cd76E77 = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<Fc737A971C05555A5Aa9478Cd76E77Data, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    Fc737A971C05555A5Aa9478Cd76E77Responses,
+    Fc737A971C05555A5Aa9478Cd76E77Errors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/itinerary-plans/{id}",
+    ...options,
   });
 };
 
@@ -430,6 +556,24 @@ export const getAccommodationTypeById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/accommodation-around/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Mobile app configuration
+ *
+ * Per platform: the lowest app version still supported (below it the app asks the user to update), the latest version and the store link; plus feature flags. Public, cacheable for 5 minutes.
+ */
+export const getAppConfig = <ThrowOnError extends boolean = false>(
+  options?: Options<GetAppConfigData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetAppConfigResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/v1/app-config",
     ...options,
   });
 };
@@ -549,6 +693,34 @@ export const logout = <ThrowOnError extends boolean = false>(
     ],
     url: "/api/v1/auth/logout",
     ...options,
+  });
+};
+
+/**
+ * Delete my account
+ *
+ * Removes personal data (profile, sign-in, tokens, saved beaches, itineraries, AI chat history, credits). Purchases are kept anonymised because accounting law requires it. Confirm with `password`; accounts linked to Google may send `confirm: DELETE` instead. Admin accounts cannot be deleted here.
+ */
+export const deleteMyAccount = <ThrowOnError extends boolean = false>(
+  options: Options<DeleteMyAccountData, ThrowOnError>,
+) => {
+  return (options.client ?? client).delete<
+    DeleteMyAccountResponses,
+    DeleteMyAccountErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 
@@ -711,7 +883,7 @@ export const getBeaches = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Create a new beach
+ * Create a new beach (admin only)
  */
 export const createBeach = <ThrowOnError extends boolean = false>(
   options: Options<CreateBeachData, ThrowOnError>,
@@ -721,6 +893,12 @@ export const createBeach = <ThrowOnError extends boolean = false>(
     CreateBeachErrors,
     ThrowOnError
   >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
     url: "/api/v1/beaches",
     ...options,
     headers: {
@@ -886,6 +1064,24 @@ export const getBeachTypeById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/beach-types/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Count a beach page view
+ *
+ * Called by the browser when a visitor opens a beach page. One view per visitor (IP) and beach per 30 minutes is counted; repeated calls return 204 without counting. Rate limited (60/min per IP).
+ */
+export const countBeachView = <ThrowOnError extends boolean = false>(
+  options: Options<CountBeachViewData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    CountBeachViewResponses,
+    CountBeachViewErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/beaches/{id}/view",
     ...options,
   });
 };
@@ -1071,9 +1267,101 @@ export const getCulinaryOfferById = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * My saved beaches (newest first), as beach cards
+ */
+export const getMyFavorites = <ThrowOnError extends boolean = false>(
+  options?: Options<GetMyFavoritesData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetMyFavoritesResponses,
+    GetMyFavoritesErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/favorites",
+    ...options,
+  });
+};
+
+/**
+ * Save a beach (idempotent)
+ */
+export const addFavorite = <ThrowOnError extends boolean = false>(
+  options: Options<AddFavoriteData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    AddFavoriteResponses,
+    AddFavoriteErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/favorites",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Ids of my saved beaches (to show the heart state on any list)
+ */
+export const getMyFavoriteIds = <ThrowOnError extends boolean = false>(
+  options?: Options<GetMyFavoriteIdsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetMyFavoriteIdsResponses,
+    GetMyFavoriteIdsErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/favorites/ids",
+    ...options,
+  });
+};
+
+/**
+ * Remove a saved beach (idempotent)
+ */
+export const removeFavorite = <ThrowOnError extends boolean = false>(
+  options: Options<RemoveFavoriteData, ThrowOnError>,
+) => {
+  return (options.client ?? client).delete<
+    RemoveFavoriteResponses,
+    RemoveFavoriteErrors,
+    ThrowOnError
+  >({
+    security: [
+      {
+        name: "Authorization",
+        type: "apiKey",
+      },
+    ],
+    url: "/api/v1/me/favorites/{beachId}",
+    ...options,
+  });
+};
+
+/**
  * Get beach filter options with optional cascading filters
  *
- * Returns available filter options for beaches. When geographic filters (continent_code, country, region, island) are provided, returns only options that have active beaches in those locations. All data is translated based on Accept-Language header with English fallback. Additional filters may include: accommodation_around, culinary_offer, location_infrastructure, natural_location_condition, sporting_activities, underwater_characteristic, recommended_transport_type, accessibility, area_description, parking_capacity, beach_inclination, swimming_depth_of_one_m, occupancy_rate, parking (boolean), has_swimming_pool (boolean).
+ * Returns available filter options for beaches. When geographic filters (continent_code, country, region, island) are provided, returns only options that have active beaches in those locations. All data is translated based on Accept-Language header with English fallback. Additional filters may include: accommodation_around, culinary_offer, location_infrastructure, natural_location_condition, sporting_activities, underwater_characteristic, recommended_transport_type, accessibility, area_description, parking_capacity, beach_inclination, swimming_depth_of_one_m, occupancy_rate, parking (boolean), has_swimming_pool (boolean), pool_type (indoor/outdoor).
  */
 export const getBeachFilters = <ThrowOnError extends boolean = false>(
   options?: Options<GetBeachFiltersData, ThrowOnError>,
@@ -1120,6 +1408,24 @@ export const getFirstPageContentByCode = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/first-page-content/{code}",
+    ...options,
+  });
+};
+
+/**
+ * Health check for uptime monitoring and deploy verification
+ *
+ * Checks database and Redis. Returns the deployed git revision (written by CI) and the time of the last successful database backup. 503 when a dependency is down.
+ */
+export const getHealth = <ThrowOnError extends boolean = false>(
+  options?: Options<GetHealthData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetHealthResponses,
+    GetHealthErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/health",
     ...options,
   });
 };
@@ -1174,6 +1480,24 @@ export const getIslandWeather = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/islands/{slug}/weather",
+    ...options,
+  });
+};
+
+/**
+ * Resolve an old beachrex.com URL to the new page
+ *
+ * Maps a path of the old site (e.g. /hr/hrvatska/dalmacija/tisno-plaze/plaza-tisno) to the new page. The most specific match wins: beach, city, island, region, country. `segments` are the localized slugs after the beaches word: the new URL is /{locale}/{beaches}/{segments...}. Type `map` means the beach map. `language` is the old language prefix of the path (sl, en, hr, de, fr, es, it, ua, ru), if any.
+ */
+export const resolveLegacyUrl = <ThrowOnError extends boolean = false>(
+  options: Options<ResolveLegacyUrlData, ThrowOnError>,
+) => {
+  return (options.client ?? client).get<
+    ResolveLegacyUrlResponses,
+    ResolveLegacyUrlErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/legacy-redirect",
     ...options,
   });
 };
@@ -1291,7 +1615,7 @@ export const a772Fcf0B465F9Cbba29F104D89A465 = <
 ) => {
   return (options.client ?? client).delete<
     A772Fcf0B465F9Cbba29F104D89A465Responses,
-    unknown,
+    A772Fcf0B465F9Cbba29F104D89A465Errors,
     ThrowOnError
   >({
     security: [
@@ -1333,7 +1657,7 @@ export const d5F3076785B02F519F50Dbec06C = <
 ) => {
   return (options.client ?? client).put<
     D5F3076785B02F519F50Dbec06cResponses,
-    unknown,
+    D5F3076785B02F519F50Dbec06cErrors,
     ThrowOnError
   >({
     security: [
@@ -1361,7 +1685,7 @@ export const b0722F9026Fe14D1F2Be5Ffa1A33E9A = <
 ) => {
   return (options?.client ?? client).post<
     B0722F9026Fe14D1F2Be5Ffa1A33E9aResponses,
-    unknown,
+    B0722F9026Fe14D1F2Be5Ffa1A33E9aErrors,
     ThrowOnError
   >({
     security: [
@@ -1584,6 +1908,50 @@ export const getParkingCapacityById = <ThrowOnError extends boolean = false>(
   >({
     url: "/api/v1/parking-capacities/{id}",
     ...options,
+  });
+};
+
+/**
+ * Send a password reset link by e-mail
+ *
+ * Always answers 200 with the same message, whether or not an account exists (no account enumeration). The e-mail is sent after the response, in the request's language, with a link to `{FRONTEND_URL}/{locale}/auth/reset-password?token=…&email=…` (valid 60 minutes, at most one e-mail per address per minute). Rate limit: 5 requests per minute per IP.
+ */
+export const forgotPassword = <ThrowOnError extends boolean = false>(
+  options: Options<ForgotPasswordData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    ForgotPasswordResponses,
+    ForgotPasswordErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/forgot-password",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * Set a new password with the token from the reset e-mail
+ *
+ * On success all API tokens of the user are revoked (other devices are signed out) and the e-mail counts as verified. The user then signs in with POST /api/v1/login. Rate limit: 10 requests per minute per IP.
+ */
+export const resetPassword = <ThrowOnError extends boolean = false>(
+  options: Options<ResetPasswordData, ThrowOnError>,
+) => {
+  return (options.client ?? client).post<
+    ResetPasswordResponses,
+    ResetPasswordErrors,
+    ThrowOnError
+  >({
+    url: "/api/v1/reset-password",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
   });
 };
 
@@ -1860,6 +2228,24 @@ export const globalSearch = <ThrowOnError extends boolean = false>(
 };
 
 /**
+ * Public site switches
+ *
+ * Switches the owner sets in admin (System → Site settings), per environment. Clients hide a feature that is off. ai_assistant_enabled = false: the AI beach guide (chat, itineraries, buying credits) is off and its /api/v1/ai* routes answer 503 ai_disabled.
+ */
+export const getSiteSettings = <ThrowOnError extends boolean = false>(
+  options?: Options<GetSiteSettingsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetSiteSettingsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/v1/site-settings",
+    ...options,
+  });
+};
+
+/**
  * Resolve a slug to determine its entity type
  *
  * Determines whether a slug represents a region, island, city, or beach. This is useful for dynamic routing where the URL structure can vary. Returns the entity type and basic information.
@@ -2117,6 +2503,26 @@ export const getWaterbodyById = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/waterbodies/{id}",
+    ...options,
+  });
+};
+
+/**
+ * Itinerary packages and prices
+ *
+ * AI-3: the itinerary packages with their prices, so the website shows the price the checkout will charge.
+ */
+export const bdaa500E411Fd41304F9C5C828905F = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<Bdaa500E411Fd41304F9C5C828905fData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    Bdaa500E411Fd41304F9C5C828905fResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/v1/payments/products",
     ...options,
   });
 };

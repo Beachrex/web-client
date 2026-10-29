@@ -1,13 +1,16 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { PageProps } from '@/types';
 
 type BeachTypePageProps = PageProps<{ type: string }>;
 
 export async function generateMetadata({ params }: BeachTypePageProps) {
     const resolvedParams = await params;
+    setRequestLocale(resolvedParams.locale);
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'BeachTypePage' });
 
+    // Placeholder page, hidden for launch (backend docs/features/hidden-for-launch.md): not indexed.
     return {
+        robots: { index: false, follow: true },
         title: `${resolvedParams.type} - ${t('title')}`,
         description: t('description', { type: resolvedParams.type }),
     };
@@ -15,6 +18,7 @@ export async function generateMetadata({ params }: BeachTypePageProps) {
 
 const Page = async ({ params }: BeachTypePageProps) => {
     const resolvedParams = await params;
+    setRequestLocale(resolvedParams.locale);
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'BeachTypePage' });
     const pathname = `/beach-type/${resolvedParams.type}`;
 
@@ -33,3 +37,11 @@ const Page = async ({ params }: BeachTypePageProps) => {
 };
 
 export default Page;
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
+}

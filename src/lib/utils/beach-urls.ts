@@ -101,6 +101,21 @@ export function buildBeachMapUrl(locale: string, queryString?: string): string {
  * buildBeachUrl(beachDetails, 'en')
  * // Returns: /en/beaches/europe/monaco/beach-name
  */
+/**
+ * Owner 2026-10-23: beach slugs lost their English "beach-" prefix (`beach-svetilnik` → `svetilnik`). The backend
+ * still finds a beach by its old slug; the page then redirects permanently when the URL's slug is not the current one.
+ */
+export function isOldBeachSlug(requested: string | undefined, current: string | null | undefined): boolean {
+  if (!requested || !current) return false;
+  let decoded = requested;
+  try {
+    decoded = decodeURIComponent(requested);
+  } catch {
+    // keep the raw segment
+  }
+  return decoded !== current;
+}
+
 export function buildBeachUrl(
   beachDetails: BeachDetailsSchema,
   locale: string
@@ -163,6 +178,52 @@ export function buildCountryUrl(
 ): string {
   const beachesWord = getBeachesWord(locale);
   return `/${locale}/${beachesWord}/${continentSlug}/${countrySlug}`;
+}
+
+/** Hrefs of the location pills on a beach banner (null where a slug is missing). */
+export interface LocationPillUrls {
+  continent: string | null;
+  country: string | null;
+  region: string | null;
+  island: string | null;
+  city: string | null;
+}
+
+/**
+ * Links for the location pills on the beach banner (owner, 2026-10-29: clicking a pill opens that place).
+ * Same hierarchy as the beach URL and the breadcrumbs:
+ * `/[locale]/beaches/[continent]/[country]/[region]/[island]/[city]`; each pill links to its prefix.
+ * Region and island are optional levels.
+ */
+export function buildLocationPillUrls(
+  locale: string,
+  location:
+    | {
+        continent?: { slug?: string | null } | null;
+        country?: { slug?: string | null } | null;
+        region?: { slug?: string | null } | null;
+        island?: { slug?: string | null } | null;
+        city?: { slug?: string | null } | null;
+      }
+    | null
+    | undefined,
+): LocationPillUrls {
+  const none: LocationPillUrls = { continent: null, country: null, region: null, island: null, city: null };
+  const continentSlug = location?.continent?.slug;
+  if (!continentSlug) return none;
+  const continent = buildContinentUrl(locale, continentSlug);
+  const countrySlug = location?.country?.slug;
+  if (!countrySlug) return { ...none, continent };
+
+  let path = buildCountryUrl(locale, continentSlug, countrySlug);
+  const urls: LocationPillUrls = { ...none, continent, country: path };
+  for (const level of ['region', 'island', 'city'] as const) {
+    const slug = location?.[level]?.slug;
+    if (!slug) continue;
+    path = `${path}/${slug}`;
+    urls[level] = path;
+  }
+  return urls;
 }
 
 /**
@@ -566,4 +627,64 @@ export function buildLocationLabelAdvanced(
 
   // Fallback to country name only
   return baseName;
+}
+
+/**
+ * Beach-map URL that focuses one beach (owner 2026-10-29: the pin on a beach card opens the map).
+ * `beach_id` is the stable key; `lat`/`lng` are optional hints so the map can center before it loads the beach.
+ * The map page reads them with `parseBeachFocus()` (`src/lib/utils/map-focus.ts`): it centers on the beach,
+ * zooms in, opens its popup and shows its marker even when the current filters or viewport exclude it.
+ *
+ * @example buildBeachFocusMapUrl('si', { id: 989, latitude: '45.54', longitude: '13.66' })
+ * // → /si/zemljevid-plaz?beach_id=989&lat=45.54&lng=13.66
+ */
+export function buildBeachFocusMapUrl(
+  locale: string,
+  beach: { id: number | string; latitude?: string | number | null; longitude?: string | number | null },
+): string {
+  const params = new URLSearchParams();
+  params.set('beach_id', String(beach.id));
+  const lat = Number(beach.latitude);
+  const lng = Number(beach.longitude);
+  const hasCoords = beach.latitude != null && beach.longitude != null && Number.isFinite(lat) && Number.isFinite(lng);
+  if (hasCoords && (lat !== 0 || lng !== 0)) {
+    params.set('lat', String(beach.latitude));
+    params.set('lng', String(beach.longitude));
+  }
+  return buildBeachMapUrl(locale, params.toString());
+}
+
+export type MapPlaceType = 'country' | 'region' | 'island' | 'city';
+
+export interface MapPlace {
+  code?: string | null;
+  id?: number | null;
+  slug?: string | null;
+  /** Country of a region / island / city (the country itself uses `code`) */
+  country_code?: string | null;
+  /** Continent of a country */
+  continent_code?: string | null;
+}
+
+/**
+ * Beach-map URL filtered to a place (the pin on country / region / island / city cards).
+ * Same query parameters as the banner map button (`BannerSection` `buildMapUrl`): `continent_code`, `country`,
+ * `region`, `island`, `city`. The place value is its code (then id, then slug): the API filters by code.
+ *
+ * @example buildPlaceMapUrl('en', 'island', { code: 'hvar', country_code: 'HR' })
+ * // → /en/beach-map?country=HR&island=hvar
+ */
+export function buildPlaceMapUrl(locale: string, type: MapPlaceType, place: MapPlace): string {
+  const params = new URLSearchParams();
+  if (type === 'country') {
+    if (place.continent_code) params.set('continent_code', place.continent_code);
+    const country = place.code ?? place.country_code;
+    if (country) params.set('country', country);
+  } else {
+    if (place.country_code) params.set('country', place.country_code);
+    const value = place.code ?? (place.id != null ? String(place.id) : place.slug);
+    if (value) params.set(type, value);
+  }
+  const query = params.toString();
+  return buildBeachMapUrl(locale, query || undefined);
 }

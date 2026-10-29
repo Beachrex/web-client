@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { locales } from '@/app/config/locales';
+import { locales, toHtmlLang } from '@/app/config/locales';
 import { env } from '@/env';
 import { getStaticPagesForFooter } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
@@ -17,11 +17,10 @@ import type { AcceptLanguage } from '@/lib/api-client/types.gen';
  * - Homepage (/)
  * - Beaches listing (/beaches)
  * - Beach map (/beach-map)
- * - Beach type (/beach-type)
- * - User type (/user-type)
- * - About (/about)
+ * - CMS pages (/p/{slug})
  *
- * Total URLs: 6 pages × 19 locales = 114 URLs
+ * Not included (TASK-004): /beach-type and /user-type (placeholders, noindex) and /about
+ * (redirects to the CMS page `about-us`).
  */
 
 // Localized route translations
@@ -67,69 +66,6 @@ const routeTranslations = {
     nl: 'strandkaart',
     el: 'chartis-paralion',
     sq: 'harta-plazheve',
-  },
-  beachType: {
-    en: 'beach-type',
-    si: 'tip-plaze',
-    de: 'strand-typ',
-    hr: 'tip-plaze',
-    fr: 'type-de-plage',
-    es: 'tipo-de-playa',
-    it: 'tipo-di-spiaggia',
-    ua: 'typ-plyazhu',
-    ru: 'tip-plyazha',
-    pl: 'typ-plazy',
-    cs: 'typ-plaze',
-    hu: 'strand-tipus',
-    bg: 'tip-na-plyazh',
-    sk: 'typ-plaze',
-    da: 'strandtype',
-    pt: 'tipo-praia',
-    nl: 'strandtype',
-    el: 'typos-paralias',
-    sq: 'lloji-plazhit',
-  },
-  userType: {
-    en: 'user-type',
-    si: 'tip-uporabnika',
-    de: 'benutzertyp',
-    hr: 'tip-korisnika',
-    fr: 'type-utilisateur',
-    es: 'tipo-de-usuario',
-    it: 'tipo-di-utente',
-    ua: 'typ-korystuvacha',
-    ru: 'tip-polzovatelya',
-    pl: 'typ-uzytkownika',
-    cs: 'typ-uzivatele',
-    hu: 'felhasznalo-tipus',
-    bg: 'tip-potrebitel',
-    sk: 'typ-pouzivatela',
-    da: 'brugertype',
-    pt: 'tipo-usuario',
-    nl: 'gebruikerstype',
-    el: 'typos-christi',
-    sq: 'lloji-perdoruesit',
-  },
-  about: {
-    en: 'about',
-    si: 'o-nas',
-    de: 'uber-uns',
-    hr: 'o-nama',
-    fr: 'a-propos',
-    es: 'acerca-de',
-    it: 'chi-siamo',
-    ua: 'pro-nas',
-    ru: 'o-nas',
-    pl: 'o-nas',
-    cs: 'o-nas',
-    hu: 'rolunk',
-    bg: 'za-nas',
-    sk: 'o-nas',
-    da: 'om-os',
-    pt: 'sobre',
-    nl: 'over-ons',
-    el: 'schetika',
-    sq: 'rreth-nesh',
   },
 };
 
@@ -221,39 +157,6 @@ export async function GET() {
       },
     });
 
-    // Beach type index - Medium priority, changes weekly
-    staticPages.push({
-      url: `${baseUrl}/${locale}/${routeTranslations.beachType[locale]}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-      alternates: {
-        languages: generateAlternates('beachType'),
-      },
-    });
-
-    // User type index - Medium priority, changes weekly
-    staticPages.push({
-      url: `${baseUrl}/${locale}/${routeTranslations.userType[locale]}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7,
-      alternates: {
-        languages: generateAlternates('userType'),
-      },
-    });
-
-    // About page - Lower priority, changes monthly
-    staticPages.push({
-      url: `${baseUrl}/${locale}/${routeTranslations.about[locale]}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-      alternates: {
-        languages: generateAlternates('about'),
-      },
-    });
-
     // CMS-managed static pages — '/p' prefix is constant across locales,
     // only the slug is localized. Emit one URL per (locale, page) and build
     // hreflang alternates by pairing the same page code across locales.
@@ -299,7 +202,7 @@ function generateSitemapXML(entries: MetadataRoute.Sitemap): string {
         ? Object.entries(entry.alternates.languages)
             .map(
               ([lang, url]) =>
-                `    <xhtml:link rel="alternate" hreflang="${lang}" href="${url}" />`,
+                `    <xhtml:link rel="alternate" hreflang="${toHtmlLang(lang)}" href="${url}" />`,
             )
             .join('\n')
         : '';

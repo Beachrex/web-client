@@ -5,7 +5,7 @@ Quick reference for triggering E2E tests via GitLab API.
 ## Basic Setup
 
 ```bash
-GITLAB_TOKEN="glptt-KNqkrPWTWFjheXxTyKpV"
+GITLAB_TOKEN="<GITLAB_TRIGGER_TOKEN>"
 GITLAB_PROJECT_ID="61956481"
 GITLAB_API="https://gitlab.com/api/v4/projects/$GITLAB_PROJECT_ID/trigger/pipeline"
 ```

@@ -1,5 +1,7 @@
 # Beachrex frontend — agent instructions
 
+**Role:** this repo belongs to the **web agent**. If the owner says you are the **mobile agent**, read `Beachrex/backend` → `docs/AGENT-ROLES.md` and `docs/mobile/MOBILE-PLAN.md` and work in `Beachrex/mobile-app` instead.
+
 The rules and current state for **both** Beachrex repos live in the backend repo:
 - `Beachrex/backend` → `docs/HANDOFF.md` (state, working mode, bootstrap, next steps)
 - `Beachrex/backend` → `docs/DEVELOPMENT-RULES.md` (git, tests, docs, security)

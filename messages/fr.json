@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Plages du monde",
     "quickMenuBeachType": "Type de plage",
     "quickMenuUserType": "Type d'utilisateur",
-    "quickMenuBeachDisplay": "Vue de la plage",
     "quickMenuBeachServices": "Services de plage",
     "quickMenuTopBeaches": "Meilleures plages",
     "quickMenuAboutUs": "À propos de nous",
@@ -65,7 +64,14 @@
     "accommodationDefaultDistance": "250 m de la plage",
     "accommodationDefaultBeach": "Plage Haludovo",
     "accommodationDefaultPrice": "à partir de 25 €",
-    "beachSeaBeach": "Plage de mer"
+    "beachSeaBeach": "Plage de mer",
+    "copyLink": "Copier",
+    "linkCopied": "Copié",
+    "shareOn": "Partager sur {network}",
+    "shareByEmail": "Partager par e-mail",
+    "moreShareOptions": "Plus d’options",
+    "paginationPrevious": "Précédente",
+    "paginationNext": "Suivante"
   },
   "Search": {
     "typeBeach": "Plage",
@@ -76,7 +82,17 @@
     "beaches": "plages",
     "noResults": "Aucun résultat trouvé. Essayez un autre terme de recherche.",
     "searching": "Recherche en cours...",
-    "clearSearch": "Effacer la recherche"
+    "clearSearch": "Effacer la recherche",
+    "tabAll": "Tout",
+    "tabBeaches": "Plages",
+    "tabCities": "Villes",
+    "tabIslands": "Îles",
+    "tabRegions": "Régions",
+    "tabCountries": "Pays",
+    "tabsLabel": "Filtrer les résultats par type",
+    "showAllOnMap": "Toutes les plages sur la carte : {name}",
+    "showingOf": "{shown} sur {total} affichés",
+    "openPlace": "Ouvrir {name}"
   },
   "HomePage": {
     "allBeaches": "Toutes les plages",
@@ -103,7 +119,10 @@
     "outdoorPools": "Piscines extérieures",
     "indoorPoolsSpas": "Piscines intérieures et spas",
     "browseAccommodationsButton": "Parcourir les hébergements",
-    "moreAccommodations": "+Plus d'hébergements"
+    "moreAccommodations": "+Plus d'hébergements",
+    "showcaseExample": "Exemple : {beach}",
+    "showcaseOpenBeach": "Voir {beach}",
+    "showcaseLiveBadge": "En direct"
   },
   "BeachCategories": {
     "sandyBeaches": "Plages de sable",
@@ -136,9 +155,12 @@
     "browseBeaches": "Parcourir toutes les plages",
     "goHome": "Accueil"
   },
-  "AboutPage": {
-    "aboutUs": "À propos de nous",
-    "description": "Description de la page à propos de nous"
+  "ErrorPage": {
+    "title": "Une erreur s'est produite.",
+    "subtitle": "Erreur",
+    "description": "Une erreur inattendue s'est produite. Veuillez réessayer dans un instant.",
+    "retry": "Réessayer",
+    "goHome": "Accueil"
   },
   "BeachTypePage": {
     "title": "Types de plages",
@@ -161,17 +183,16 @@
     "premiumAccommodations": "Hébergements de luxe en {continent}",
     "bestDeals": "Bonnes affaires",
     "description": "Explorez les plus belles plages en {continent}.",
-    "countriesContinent": "Pays en {continent}"
+    "countriesContinent": "Pays en {continent}",
+    "sortBy": "Trier par",
+    "sortAlphabetical": "Alphabétique (A–Z)",
+    "sortBeachesDesc": "Le plus de plages d'abord",
+    "sortBeachesAsc": "Le moins de plages d'abord"
   },
   "FeatureCards": {
     "beachMapButton": "Carte des plages",
     "browseBlogButton": "Parcourir le blog",
     "browseAccommodationsButton": "Parcourir les hébergements"
-  },
-  "routes": {
-    "beachMap": "/carte-des-plages",
-    "blog": "/blog",
-    "accommodations": "/hebergements"
   },
   "Destinations": {
     "croatia": "Croatie",
@@ -221,7 +242,7 @@
     "viewBeachMap": "Voir la carte des plages"
   },
   "SearchBeach": {
-    "title": "Parcourir toutes les plages en Europe",
+    "title": "Parcourir toutes les plages en {continent}",
     "filterButton": "Filtrer",
     "mapButton": "Afficher la carte",
     "displayLabel": "Vue de la plage :",
@@ -312,9 +333,12 @@
     "islandLabel": "Île",
     "cityLabel": "Ville",
     "countryLabel": "Pays",
-    "beachLabel": "Plage de mer",
+    "beachLabel": "Mer",
     "beachCountLabel": "Nombre de plages :",
-    "accommodationCountLabel": "Nombre d'hébergements :"
+    "accommodationCountLabel": "Nombre d'hébergements :",
+    "beachLabelLake": "Lac",
+    "beachLabelRiver": "Rivière",
+    "beachLabelPool": "Piscine"
   },
   "TopBarBeach": {
     "beachLabel": "Plage de mer",
@@ -328,7 +352,9 @@
       "parking": "Parking disponible",
       "easyAccess": "Accès facile",
       "windsurfing": "Planche à voile",
-      "SeaTemperature": "Température de la mer"
+      "SeaTemperature": "Température de la mer",
+      "adventurer": "Plage pour aventuriers",
+      "partyBeach": "Plage festive"
     }
   },
   "AccommodationSection": {
@@ -514,20 +540,16 @@
       "title": "Parcourir le site",
       "links": [
         {
-          "label": "Vue d'ensemble de toutes les destinations",
-          "href": "/destinations"
+          "label": "Vue d'ensemble de toutes les destinations"
         },
         {
-          "label": "Rechercher par plages",
-          "href": "/beaches"
+          "label": "Rechercher par plages"
         },
         {
-          "label": "Rechercher par hébergements",
-          "href": "/accommodations"
+          "label": "Rechercher par hébergements"
         },
         {
-          "label": "Vue carte",
-          "href": "/beach-map"
+          "label": "Vue carte"
         }
       ]
     },
@@ -539,7 +561,12 @@
       "gdprConsent": "J'accepte de recevoir des e-mails promotionnels et des actualités, et j'accepte la <privacy>politique de confidentialité</privacy>."
     },
     "legal": {
-      "rights": "Tous droits réservés BeachRex"
+      "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Tous droits réservés."
+    },
+    "app": {
+      "title": "Téléchargez l'appli",
+      "googlePlayTop": "DISPONIBLE SUR",
+      "appStoreTop": "Télécharger dans"
     }
   },
   "BeachSimilarBeaches": {
@@ -564,7 +591,8 @@
       "sports": "Activités sportives",
       "parking": "Parking",
       "pathToBeach": "Chemin vers la plage",
-      "userType": "Type d'utilisateur"
+      "userType": "Type d'utilisateur",
+      "gpsLocation": "Position GPS"
     },
     "labels": {
       "type": "Type",
@@ -581,11 +609,15 @@
       "wayToParking": "Surface jusqu'au parking",
       "recommendedAccess": "Accès recommandé",
       "distance": "Distance (parking — plage)",
-      "elevationDiff": "Différence d'élévation (parking à la plage)"
+      "elevationDiff": "Différence d'élévation (parking à la plage)",
+      "seabedLake": "Fond du lac",
+      "seabedRiver": "Lit de la rivière",
+      "seabedPool": "Fond de la piscine"
     },
     "buttons": {
       "photo": "Photo",
-      "map": "Carte"
+      "map": "Carte",
+      "navigation": "Itinéraire"
     },
     "values": {
       "yes": "Oui",
@@ -631,7 +663,12 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Webcam en direct",
+    "webcamIframeTitle": "Webcam en direct : {name}",
+    "webcamCredit": "Webcam fournie par Windy.com",
+    "closeMedia": "Fermer",
+    "navigationAria": "Itinéraire vers {name} dans Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Continuer avec Google",
@@ -648,7 +685,30 @@
     "loginRequired": "Connexion requise",
     "loginRequiredMessage": "Vous devez vous connecter pour accéder à cette fonctionnalité.",
     "creditsRequired": "Crédits requis",
-    "creditsRequiredMessage": "Vous avez besoin de crédits pour générer des itinéraires. Veuillez acheter des crédits pour continuer."
+    "creditsRequiredMessage": "Vous avez besoin de crédits pour générer des itinéraires. Veuillez acheter des crédits pour continuer.",
+    "orDivider": "ou",
+    "signInWithEmail": "Se connecter avec un e-mail",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "forgotPassword": "Mot de passe oublié ?",
+    "invalidCredentials": "E-mail ou mot de passe incorrect.",
+    "tooManyAttempts": "Trop de tentatives. Attendez une minute et réessayez.",
+    "genericError": "Une erreur s'est produite. Veuillez réessayer.",
+    "forgotTitle": "Mot de passe oublié ?",
+    "forgotDescription": "Saisissez l'e-mail de votre compte Beachrex et nous vous enverrons un lien pour définir un nouveau mot de passe.",
+    "sendLink": "Envoyer le lien",
+    "forgotSent": "Si un compte existe pour cet e-mail, nous avons envoyé un lien de réinitialisation. Vérifiez votre boîte de réception et vos spams.",
+    "resetTitle": "Définir un nouveau mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Répéter le nouveau mot de passe",
+    "passwordHint": "Au moins 8 caractères.",
+    "passwordsDontMatch": "Les mots de passe ne correspondent pas.",
+    "savePassword": "Enregistrer le mot de passe",
+    "resetDone": "Votre mot de passe a été modifié et vous êtes connecté.",
+    "resetDoneSignIn": "Votre mot de passe a été modifié. Vous pouvez maintenant vous connecter.",
+    "resetInvalidLink": "Ce lien de réinitialisation est invalide ou a expiré.",
+    "requestNewLink": "Demander un nouveau lien"
   },
   "AI": {
     "landing": {
@@ -656,7 +716,13 @@
       "subtitle": "Votre compagnon personnel de découverte de plage propulsé par l'IA",
       "description": "Obtenez des recommandations de plages personnalisées, discutez avec notre assistant IA et créez des itinéraires personnalisés pour vos vacances à la plage parfaites.",
       "chatButton": "Commencer à discuter",
-      "itineraryButton": "Créer un itinéraire"
+      "itineraryButton": "Créer un itinéraire",
+      "chatCardText": "Posez toutes vos questions à notre assistant IA sur les plages, les destinations et les conseils de voyage, et recevez instantanément des recommandations personnalisées.",
+      "chatCta": "Commencer à discuter",
+      "itineraryCardText": "Créez des itinéraires de vacances à la plage sur plusieurs jours, adaptés à vos préférences, à votre budget et à vos centres d’intérêt.",
+      "itineraryCta": "Créer un itinéraire",
+      "infoTitle": "Nouveau sur Beachrex AI ?",
+      "infoText": "Le chat est gratuit pour tous. Les itinéraires sur plusieurs jours nécessitent des crédits – connectez-vous avec Google pour commencer !"
     },
     "chat": {
       "title": "Discuter avec l'IA",
@@ -666,29 +732,117 @@
       "sending": "Envoi en cours...",
       "error": "Échec de l'envoi du message. Veuillez réessayer.",
       "welcome": "Bonjour ! Je suis votre assistant de plage IA. Comment puis-je vous aider aujourd'hui ?",
-      "anonymousNote": "Vous discutez de manière anonyme. Connectez-vous pour sauvegarder vos conversations et accéder aux fonctionnalités premium."
+      "anonymousNote": "Vous discutez de manière anonyme. Connectez-vous pour sauvegarder vos conversations et accéder aux fonctionnalités premium.",
+      "viewDetails": "Voir les détails →",
+      "suggestions": "Suggestions :",
+      "match": "{percent} % de correspondance",
+      "useLocation": "Utiliser ma position (plages à proximité)",
+      "locationOn": "Votre position est utilisée pour les plages à proximité",
+      "locationDenied": "Position indisponible. Autorisez l'accès à la position dans le navigateur ou indiquez un lieu.",
+      "errorBusy": "L'assistant IA est occupé. Réessayez dans une minute.",
+      "errorTooMany": "Trop de messages. Patientez un peu et réessayez.",
+      "errorTooLong": "Le message est trop long. Raccourcissez-le.",
+      "widget": {
+        "open": "Ouvrir l’assistant plages IA",
+        "close": "Fermer le chat",
+        "title": "Assistant plages IA",
+        "newConversation": "Nouvelle conversation",
+        "openFullPage": "Ouvrir le chat complet",
+        "inputLabel": "Votre message",
+        "greeting": "Bonjour ! Posez-moi toutes vos questions sur les plages et votre séjour au bord de la mer.",
+        "greetingBeach": "Bonjour ! Vous consultez {name}. Posez-moi toutes vos questions sur cette plage ou sur n’importe quelle autre.",
+        "placeholderBeach": "Une question sur {name}…"
+      }
     },
     "itinerary": {
-      "title": "Créer un itinéraire de plage",
-      "subtitle": "Générez un plan de vacances à la plage personnalisé sur plusieurs jours",
+      "title": "Planifiez votre voyage à la plage",
+      "subtitle": "Choisissez un pays et la durée du voyage. Nous planifions les plages de chaque jour à partir de la base Beachrex, avec un lien vers chaque plage.",
       "form": {
-        "destination": "Destination",
-        "destinationPlaceholder": "par ex., Croatie, Bali, Caraïbes",
-        "days": "Nombre de jours",
-        "daysPlaceholder": "par ex., 7",
-        "interests": "Intérêts",
-        "interestsPlaceholder": "par ex., plongée avec tuba, détente, vie nocturne",
-        "budget": "Niveau de budget",
-        "budgetLow": "Économique",
-        "budgetMedium": "Modéré",
-        "budgetHigh": "Luxe",
-        "generate": "Générer l'itinéraire",
-        "generating": "Génération de votre itinéraire..."
+        "country": "Pays",
+        "countryPlaceholder": "Choisissez un pays",
+        "region": "Région (facultatif)",
+        "wholeCountry": "Tout le pays",
+        "duration": "Durée du voyage",
+        "daysOption": "{days} jours",
+        "plansAvailable": "{count} disponible(s)",
+        "interests": "Qu'aimez-vous ?",
+        "surface": "Type de plage",
+        "pace": "Rythme",
+        "adults": "Adultes",
+        "children": "Enfants"
       },
-      "error": "Échec de la génération de l'itinéraire. Veuillez réessayer.",
-      "paymentRequired": "Les itinéraires de plusieurs jours nécessitent des crédits. Veuillez acheter des crédits pour continuer.",
-      "creditsRemaining": "Crédits restants : {count}",
-      "purchaseCredits": "Acheter des crédits"
+      "interest": {
+        "swimming": "Baignade",
+        "snorkeling": "Snorkeling",
+        "family": "En famille",
+        "quiet": "Calme",
+        "nightlife": "Vie nocturne",
+        "nature": "Nature",
+        "diving": "Plongée",
+        "surfing": "Surf",
+        "kayaking": "Kayak",
+        "hiking": "Randonnée"
+      },
+      "surface": {
+        "sand": "Sable",
+        "pebble": "Galets",
+        "rock": "Rochers"
+      },
+      "pace": {
+        "relaxed": "Détendu",
+        "balanced": "Équilibré",
+        "packed": "Chargé"
+      },
+      "progressBeaches": "Nous cherchons les plages qui correspondent à vos envies…",
+      "progressRoute": "Nous planifions l'itinéraire jour par jour…",
+      "progressTips": "Nous écrivons des conseils pour chaque plage…",
+      "signInToStart": "Connectez-vous pour acheter et créer votre plan.",
+      "generate": "Créer mon plan",
+      "usesOnePlan": "Utilise l'un de vos plans de {days} jours.",
+      "buy": "Acheter le plan de {days} jours · {price}",
+      "buyNote": "Paiement unique, sans abonnement. Après le paiement, vous revenez ici et créez votre plan.",
+      "errors": {
+        "signInRequired": "Veuillez d'abord vous connecter.",
+        "buyRequired": "Vous n'avez plus de plan de cette durée. Achetez-en un pour continuer.",
+        "notEnoughBeaches": "Trop peu de plages correspondent. Essayez tout le pays, moins d'envies ou un voyage plus court. Votre plan n'a pas été utilisé.",
+        "busy": "Le planificateur est occupé. Réessayez dans une minute. Votre plan n'a pas été utilisé.",
+        "error": "Une erreur s'est produite, votre plan n'a pas été utilisé. Veuillez réessayer.",
+        "purchaseError": "Le paiement n'a pas pu être lancé. Veuillez réessayer."
+      },
+      "fallbackNote": "Cette fois, les conseils de l'IA n'ont pas pu être rédigés, le plan contient donc de courtes informations. Votre plan n'a pas été utilisé et vous pouvez le recréer.",
+      "day": "Jour {number}",
+      "timeBlock": {
+        "morning": "Matin",
+        "afternoon": "Après-midi",
+        "evening": "Soir"
+      },
+      "tip": "Conseil",
+      "travelKm": "Environ {km} km de route ce jour-là.",
+      "assumptions": "Bon à savoir",
+      "newPlan": "Planifier un autre voyage",
+      "plans": {
+        "title": "Mes plans",
+        "empty": "Vous n'avez encore aucun plan. Créez le premier.",
+        "untitled": "Voyage de {days} jours ({country})",
+        "notFound": "Ce plan n'existe pas ou appartient à un autre compte.",
+        "waitNote": "Vous pouvez fermer cette page : le plan sera enregistré dans Mes plans dès qu'il sera prêt.",
+        "status": {
+          "running": "En cours",
+          "done": "Prêt",
+          "failed": "Non créé"
+        },
+        "failed": {
+          "notEnoughBeaches": "Trop peu de plages correspondent à ce voyage. Le plan n'a pas été utilisé : essayez tout le pays, moins d'envies ou un voyage plus court.",
+          "timeout": "La création a pris trop de temps. Le plan n'a pas été utilisé, veuillez réessayer.",
+          "error": "Une erreur s'est produite. Le plan n'a pas été utilisé, veuillez réessayer."
+        }
+      },
+      "savePdf": "Enregistrer en PDF",
+      "mapTitle": "Carte du voyage",
+      "consent": {
+        "terms": "J'accepte les <link>conditions de vente</link>.",
+        "withdrawal": "Je souhaite que le plan soit disponible immédiatement. Je comprends que je perds mon droit de rétractation de 14 jours dès que je crée le plan ; d'ici là, je peux encore me rétracter."
+      }
     },
     "entitlements": {
       "title": "Mes crédits",
@@ -710,7 +864,173 @@
     "no360": "Aucune vue 360° disponible",
     "noVideo": "Aucune vidéo disponible",
     "mostVisited": "Plus visité",
+    "distanceAway": "à {distance}",
     "loading": "Chargement...",
-    "showOnMap": "Afficher {title} sur la carte"
+    "showOnMap": "Afficher {title} sur la carte",
+    "webcamClose": "Fermer la webcam"
+  },
+  "Menu": {
+    "browseBeaches": "Parcourir les plages",
+    "topCountries": "Pays balnéaires populaires",
+    "aiChat": "Chat IA plages",
+    "aiItinerary": "Planificateur de voyage IA",
+    "contact": "Contact",
+    "beachTypes": "Types de plages",
+    "beachesFor": "Plages pour",
+    "onTheBeach": "Sur la plage"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Téléchargements",
+    "packageTitle": "Kit de marque complet",
+    "packageDescription": "Tous les logos (SVG, PDF, EPS, PNG), le favicon et les icônes d’application, les images pour les réseaux sociaux et la palette de couleurs dans un seul fichier ZIP.",
+    "packageButton": "Télécharger le ZIP",
+    "guidelinesTitle": "Charte graphique",
+    "logosTitle": "Logos",
+    "versions": {
+      "horizontal": "Horizontal (principal)",
+      "stacked": "Empilé",
+      "symbol": "Symbole",
+      "wordmark": "Logotype"
+    },
+    "colors": {
+      "color": "Couleur",
+      "black": "Noir",
+      "white": "Blanc",
+      "teal": "Turquoise",
+      "orange": "Orange"
+    },
+    "logoAlt": "Logo Beachrex – {version}, {color}",
+    "colorsTitle": "Couleurs",
+    "paletteDownload": "Télécharger la palette",
+    "socialTitle": "Images pour les réseaux sociaux",
+    "social": {
+      "profile": "Photo de profil",
+      "og": "Image d’aperçu du lien",
+      "facebook": "Couverture Facebook",
+      "linkedin": "Couverture LinkedIn",
+      "x": "Bannière X"
+    }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – l’auteur de Beachrex",
+    "metaDescription": "Découvrez Gregor Balažic, qui a quitté son emploi, acheté un appareil photo et un van, et visité 4 000 plages dans 13 pays. Beachrex est né de ce voyage.",
+    "eyebrow": "À propos de l’auteur",
+    "bannerWord": "Auteur",
+    "role": "Fondateur de Beachrex",
+    "lead": "« Les plages ont toujours été ma grande passion. »",
+    "heroCta": "Lire l’histoire",
+    "stats": {
+      "beaches": "plages visitées",
+      "km": "kilomètres parcourus",
+      "countries": "pays",
+      "facts": "informations sur chaque plage"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Sortir de sa zone de confort",
+        "text": "Les plages ont toujours été ma grande passion, confie Gregor Balažic, qui a quitté son emploi. Chef de service, il est sorti de sa zone de confort et a renoncé à un avenir tout tracé. Il a acheté un appareil photo et un van, devenu sa nouvelle maison, puis il est parti à la découverte du monde. Ou plutôt, des plages."
+      },
+      "road": {
+        "title": "<beaches>4 000 plages</beaches> dans <countries>13 pays</countries>",
+        "text": "Il a sillonné les côtes et les plages de <countries>13 pays</countries> : <list></list>. Au total, il a visité pas moins de <beaches>4 000 plages</beaches>. Si le chiffre paraît énorme, ce n’est qu’une goutte d’eau dans l’océan : il existe dans le monde plus de 200 000 plages adaptées au tourisme, explique Balažic."
+      },
+      "database": {
+        "title": "La plus grande base de données de plages au monde",
+        "text": "Les plages visitées sont devenues le socle de la plus grande base de données de plages au monde : Beachrex. Chaque plage est accompagnée de photos, de vues panoramiques, de vidéos, d’informations sur le stationnement, de sa localisation GPS, de données météo, d’hébergements, d’activités sportives, de restaurants et de bars, ainsi que de la température de l’eau. Au total, plus de 200 informations sur chaque plage."
+      },
+      "hardships": {
+        "title": "Un chemin pas toujours facile",
+        "text": "Balažic a parcouru plus de 70 000 kilomètres, et il lui a parfois fallu escalader pour obtenir les plus belles images. Ce périple de milliers de kilomètres n’a pas toujours été baigné de soleil : il a aussi connu des moments difficiles et s’est fait dévaliser à plusieurs reprises. Mais son voyage n’est pas (encore) terminé."
+      }
+    },
+    "routeTitle": "Le long des côtes",
+    "countries": {
+      "si": "Slovénie",
+      "hr": "Croatie",
+      "me": "Monténégro",
+      "al": "Albanie",
+      "gr": "Grèce",
+      "it": "Italie",
+      "fr": "France",
+      "es": "Espagne",
+      "pt": "Portugal",
+      "be": "Belgique",
+      "nl": "Pays-Bas",
+      "de": "Allemagne",
+      "dk": "Danemark"
+    },
+    "photoAlt": "Gregor Balažic avec son appareil photo sur une plage de sable",
+    "beachAlt": "Plage de sable avec une barque retournée près des rochers et des pins",
+    "beachCaption": "L’une des 4 000 plages que Gregor a visitées et photographiées.",
+    "quote": "Nous avons une vision : d’ici quelques années, chaque plage du monde figurera sur la carte.",
+    "ctaTitle": "Découvrez les plages visitées par Gregor",
+    "ctaText": "Chaque photo, chaque vue à 360° et chaque détail sur Beachrex sont nés de ce voyage.",
+    "ctaMap": "Parcourir la carte",
+    "ctaContact": "Écrivez-nous",
+    "footerLink": "Découvrez l’auteur"
+  },
+  "Payment": {
+    "successTitle": "Paiement réussi",
+    "successMessage": "Merci pour votre achat ! Vos crédits ont été ajoutés à votre compte.",
+    "sessionId": "ID de session :",
+    "cancelTitle": "Paiement annulé",
+    "cancelMessage": "Votre paiement a été annulé. Aucun montant n’a été débité.",
+    "redirecting": "Retour au planificateur d’itinéraire dans <strong>{seconds}</strong> secondes…",
+    "planItinerary": "Planifier un itinéraire",
+    "tryChat": "Essayer le chat IA",
+    "tryAgain": "Réessayer",
+    "goHome": "Aller à l’accueil",
+    "help": "Besoin d’aide ? Écrivez à {email}."
+  },
+  "UI": {
+    "selectOption": "Choisir une option",
+    "noBeachesInArea": "Aucune plage trouvée dans cette zone",
+    "singleColumn": "Affichage sur une colonne",
+    "doubleColumn": "Affichage sur deux colonnes",
+    "closeMap": "Fermer la carte",
+    "closeFilters": "Fermer les filtres",
+    "videoTitle": "Vidéo de la plage",
+    "virtualTourTitle": "Visite virtuelle à 360°",
+    "beachRouteMapTitle": "Carte de l’itinéraire vers la plage",
+    "closeMenu": "Fermer le menu"
+  },
+  "FilterModal": {
+    "title": "Tous les filtres de plage",
+    "searchPlaceholder": "🔍 Rechercher un filtre…",
+    "clearAll": "Tout effacer",
+    "cancel": "Annuler",
+    "apply": "Appliquer les filtres",
+    "applyCount": "Appliquer les filtres ({count})",
+    "showLess": "Afficher moins",
+    "showMore": "Afficher {count} de plus…"
+  },
+  "Favorites": {
+    "title": "Mes plages favorites",
+    "add": "Ajouter aux favoris",
+    "remove": "Retirer des favoris",
+    "save": "Enregistrer",
+    "saved": "Enregistrée",
+    "signInTitle": "Connectez-vous pour enregistrer des plages",
+    "signInText": "Vos plages favorites sont enregistrées dans votre compte, vous les retrouvez donc sur tous vos appareils.",
+    "empty": "Vous n'avez encore enregistré aucune plage. Touchez le cœur d'une plage pour l'enregistrer.",
+    "browse": "Parcourir les plages",
+    "limit": "Votre liste de favoris est pleine. Retirez une plage pour en enregistrer une autre.",
+    "error": "La plage n'a pas pu être enregistrée. Veuillez réessayer.",
+    "loadError": "Vos plages favorites n'ont pas pu être chargées. Veuillez réessayer."
+  },
+  "BeachFaq": {
+    "title": "Questions fréquentes sur {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Tous les pays",
+    "allRegions": "Toutes les régions",
+    "allIslands": "Toutes les îles",
+    "allCities": "Toutes les villes",
+    "all": "Tout",
+    "search": "Rechercher…",
+    "noMatches": "Aucun résultat",
+    "clear": "Effacer",
+    "selected": "Filtres sélectionnés",
+    "remove": "Retirer {name}"
   }
 }

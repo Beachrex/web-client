@@ -8,10 +8,11 @@
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { buildCompleteMetadata, buildSelfAlternate } from '@/lib/utils/metadata-helpers';
 import { getStaticPageBySlug } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage, StaticPage } from '@/lib/api-client/types.gen';
 import StaticPageContent from '@/components/StaticPage/StaticPageContent';
+import { setRequestLocale } from 'next-intl/server';
 
 interface PageProps {
     params: { locale: string; slug: string };
@@ -37,6 +38,7 @@ async function fetchStaticPage(locale: string, slug: string): Promise<StaticPage
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { locale, slug } = params;
+    setRequestLocale(locale);
     try {
         const page = await fetchStaticPage(locale, slug);
         if (!page) return {};
@@ -45,6 +47,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             title: page.meta_title ?? page.title ?? slug,
             description: page.meta_description ?? page.title ?? slug,
             locale,
+            // Localized slugs: other locales' URLs are unknown here, so no cross-locale hreflang
+            alternateLanguages: buildSelfAlternate(locale, `/p/${slug}`),
             // `p` prefix is constant across locales; only the slug is localized.
             path: `/p/${slug}`,
             type: 'website',
@@ -56,6 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function StaticPageRoute({ params }: PageProps) {
     const { locale, slug } = params;
+    setRequestLocale(locale);
     const page = await fetchStaticPage(locale, slug);
     if (!page) notFound();
 
@@ -65,3 +70,11 @@ export default async function StaticPageRoute({ params }: PageProps) {
 // Revalidate every hour (ISR). The backend also caches for 30 days and
 // invalidates on admin edits; this is a safety net for the frontend cache.
 export const revalidate = 3600;
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
+}
