@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,6 +12,7 @@ import { buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { linkBeachNames, parseAgentMarkdown, sendChatMessage, type ChatBeach, type ChatErrorKey } from '@/lib/utils/ai-chat';
 import { env } from '@/env';
+import { chatScrollTarget, distanceFromBottom, shouldAutoScroll } from '@/lib/utils/chat-scroll';
 
 // Disable static generation for this page (uses client-side auth)
 export const dynamic = 'force-dynamic';
@@ -57,6 +58,48 @@ export default function AIChatPage() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
+  // The message list is its own scroll container. Without this it never scrolled: new questions and
+  // answers were appended below the visible area and only the scrollbar thumb moved.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  // Follow new content only while the reader is near the bottom (or has just sent a message).
+  const followRef = useRef(true);
+
+  const scrollToNewest = useCallback(() => {
+    const container = scrollRef.current;
+    const list = listRef.current;
+    if (!container || !list) return;
+    const last = list.lastElementChild as HTMLElement | null;
+    const lastTop = last
+      ? last.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop
+      : null;
+    container.scrollTop = chatScrollTarget(
+      { scrollHeight: container.scrollHeight, clientHeight: container.clientHeight },
+      lastTop,
+    );
+  }, []);
+
+  const handleScroll = () => {
+    const container = scrollRef.current;
+    if (container) followRef.current = shouldAutoScroll(distanceFromBottom(container));
+  };
+
+  // After a message (or the typing indicator) is rendered, before paint.
+  useLayoutEffect(() => {
+    if (followRef.current) scrollToNewest();
+  }, [messages.length, isLoading, scrollToNewest]);
+
+  // Beach card images and fonts change the height after render: keep following while the reader follows.
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list || typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(() => {
+      if (followRef.current) scrollToNewest();
+    });
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, [scrollToNewest]);
+
   const requestLocation = () => {
     if (!('geolocation' in navigator)) {
       setError('locationDenied');
@@ -79,6 +122,7 @@ export default function AIChatPage() {
       timestamp: new Date().toISOString(),
     };
 
+    followRef.current = true;
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
@@ -142,8 +186,13 @@ export default function AIChatPage() {
         </div>
 
         {/* Chat Messages */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-4 min-h-[500px] max-h-[600px] overflow-y-auto">
-          <div className="space-y-4">
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          data-testid="chat-scroll"
+          className="bg-white rounded-lg shadow-lg p-4 sm:p-6 mb-4 h-[min(600px,60dvh)] min-h-[280px] overflow-y-auto overscroll-contain"
+        >
+          <div ref={listRef} className="space-y-4">
             {messages.map((message, index) => (
               <div
                 key={index}
