@@ -1034,5 +1034,19 @@
     "clear": "Clear",
     "selected": "Selected filters",
     "remove": "Remove {name}"
+  },
+  "PreviewAccess": {
+    "metaTitle": "Beachrex test website",
+    "title": "This is the Beachrex test website",
+    "intro": "Enter your e-mail address. If it may open this website, you will get a one-time link.",
+    "emailLabel": "E-mail address",
+    "submit": "Send me a link",
+    "sending": "Sending…",
+    "sent": "Check your inbox. If this e-mail may open the test website, we have sent a link. It works for 15 minutes.",
+    "failed": "The link could not be requested. Please try again in a minute.",
+    "linkInvalid": "This link is invalid, already used or expired. Request a new one.",
+    "callbackTitle": "Open the test website",
+    "callbackIntro": "Click the button to open the Beachrex test website on this device.",
+    "callbackButton": "Open the test website"
   }
 }

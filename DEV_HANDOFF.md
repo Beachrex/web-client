@@ -18,6 +18,34 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 - Closed dev/uat website behind an e-mail magic link
+
+Owner: "dev in uat stran bi morali zapreti — vpišem svoj mail, dobim magic link, potem se v sejo shrani, da lahko
+gledam". Backend ADR "Closed dev/uat websites behind an e-mail magic link" (API: `POST /api/v1/preview-access/request`,
+`/verify`).
+
+- `src/lib/preview-gate/preview-gate.ts` (no `next/server` import): runtime config (`PREVIEW_GATE_ENABLED`,
+  `PREVIEW_GATE_SECRET`), never active when `isProductionSite(NEXT_PUBLIC_BASE_URL)`; exempt paths (`/preview-access*`,
+  `/_next/`, `robots.txt`, favicon, static file extensions); `sanitizeReturnPath` (relative only); cookie
+  `beachrex_preview` = `v1.<exp>.<nonce>.<HMAC-SHA256>` signed/verified with Web Crypto (edge); 30 days.
+- `src/middleware.ts`: `/preview-access*` bypass next-intl; then the gate runs before the legacy/locale handling:
+  no valid cookie → 307 `/preview-access?return=<path>`; enabled without a usable secret (< 32 chars) → 503 "closed"
+  page (fail closed, no crash).
+- Pages (own root layout, no header/footer/chat/analytics, `noindex`; strings `PreviewAccess.*` in all 19 languages;
+  language = locale of the wanted page, else the browser, else English):
+  - `/preview-access`: e-mail form; the **browser** posts to the API (so the API's per-IP limit sees the visitor).
+  - `/preview-access/callback?token=…` (the e-mail link): a button that POSTs the token, so mail link scanners that
+    open every URL cannot use up the one-time token.
+  - `/preview-access/verify` (route handler, POST): verifies with the API server side, sets the cookie (HttpOnly,
+    Secure, SameSite=Lax, 30 days), 303 to the sanitized return path; invalid → `/preview-access?error=link`.
+- Env: Next 14.2 does not inline non-public env in the middleware (checked: `next build` output keeps
+  `process.env.PREVIEW_GATE_*`, manifest `env` has only Next's own keys); the container gets them from
+  `env_file: .env.front.<env>` at runtime, so no build args or compose change.
+- Merging changes nothing until the owner sets the env (backend HANDOFF owner actions).
+- Tests: `e2e/preview-gate.unit.spec.ts`. Local proof: `next build` + standalone server + mock API: gated 307,
+  form 200 (sl), verify → cookie + 303 to the return path, replay → error, forged cookie → 307, no secret → 503,
+  gate off → site unchanged.
+
 ## 2026-10-29 - Microsoft Clarity on production, after analytics consent
 
 Owner: "implementiraj Microsoft Clarity, samo na PROD naj bo" (project `z5cgzffcp2`, public id).
