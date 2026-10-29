@@ -3,6 +3,8 @@ import '@/styles/globals.css';
 
 import { ApiClientProvider } from '@/components/ApiClientProvider';
 import DefaultLayout from '@/components/Layout';
+import { SiteSettingsProvider } from '@/contexts/SiteSettingsContext';
+import { fetchSiteSettings } from '@/lib/site-settings';
 import { env } from '@/env';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
@@ -77,6 +79,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const messages = (await getMessages()) as Record<string, string>;
+  const siteSettings = await fetchSiteSettings();
 
   // Get localized description for Organization schema
   const t = await getTranslations({ locale, namespace: 'SEO' });
@@ -104,7 +107,9 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
             <ApiClientProvider locale={locale}>
-              <DefaultLayout>{children}</DefaultLayout>
+              <SiteSettingsProvider value={siteSettings}>
+                <DefaultLayout>{children}</DefaultLayout>
+              </SiteSettingsProvider>
             </ApiClientProvider>
           </AuthProvider>
         </NextIntlClientProvider>

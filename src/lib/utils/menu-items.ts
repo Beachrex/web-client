@@ -49,6 +49,7 @@ export function buildMenuItems({
   contactUrl,
   labels,
   filterGroups = [],
+  showAi = true,
 }: {
   locale: string;
   continents: MenuContinent[];
@@ -57,6 +58,8 @@ export function buildMenuItems({
   contactUrl: string | null;
   labels: MenuLabels;
   filterGroups?: MenuFilterGroupItems[];
+  /** TASK-009: admin switch "AI guide on". */
+  showAi?: boolean;
 }): MenuItem[] {
   const items: MenuItem[] = [];
 
@@ -101,7 +104,7 @@ export function buildMenuItems({
     });
   }
 
-  items.push({
+  if (showAi) items.push({
     label: labels.aiAssistant,
     href: `/${locale}/ai`,
     subItems: [
