@@ -37,7 +37,8 @@ export const MENU_FILTER_GROUPS: MenuFilterGroup[] = [
         rock_beach: '/images/categories/stones-blue.png',
         grass_beach: '/images/categories/grass-beach.png',
       },
-      fallbackIcon: '/images/categories/sunset.png',
+      // Neutral dark icon (sunset.png is white and invisible on the light menu).
+      fallbackIcon: '/images/menu/world.svg',
     },
   },
   {

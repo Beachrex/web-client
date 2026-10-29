@@ -187,6 +187,9 @@ test('menu "Beach types" lists every beach type the API returns, API order and l
   expect(tiles[0]!.icon).toBe('/images/categories/sand-castle.png');
   expect(tiles.find((t) => t.code === 'future_type')!.icon).toBe(fallbackIcon);
   expect(resolveAllFilterOptions(filterKey, icons, fallbackIcon, null)).toEqual([]);
+  // White icons (made for dark backgrounds) are invisible on the light menu: "Concrete" rendered blank on dev.
+  const whiteIcons = ['/images/categories/sunset.png', '/images/categories/gozd.png', '/images/categories/reka.png'];
+  for (const icon of [...Object.values(icons), fallbackIcon]) expect(whiteIcons, icon).not.toContain(icon);
 
   const menuGroup = buildMenuItems({
     locale: 'si',
