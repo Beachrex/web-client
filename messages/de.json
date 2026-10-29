@@ -741,7 +741,18 @@
       "locationDenied": "Standort nicht verfügbar. Erlaube den Standortzugriff im Browser oder nenne einen Ort.",
       "errorBusy": "Der KI-Assistent ist gerade ausgelastet. Bitte versuche es in einer Minute erneut.",
       "errorTooMany": "Zu viele Nachrichten. Bitte warte kurz und versuche es erneut.",
-      "errorTooLong": "Die Nachricht ist zu lang. Bitte kürze sie."
+      "errorTooLong": "Die Nachricht ist zu lang. Bitte kürze sie.",
+      "widget": {
+        "open": "KI-Strandassistent öffnen",
+        "close": "Chat schließen",
+        "title": "KI-Strandassistent",
+        "newConversation": "Neues Gespräch",
+        "openFullPage": "Vollständigen Chat öffnen",
+        "inputLabel": "Ihre Nachricht",
+        "greeting": "Hallo! Fragen Sie mich alles über Strände und Ihre Reise ans Meer.",
+        "greetingBeach": "Hallo! Sie sehen sich {name} an. Fragen Sie mich alles dazu oder zu jedem anderen Strand.",
+        "placeholderBeach": "Fragen zu {name}…"
+      }
     },
     "itinerary": {
       "title": "Planen Sie Ihre Strandreise",

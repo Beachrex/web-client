@@ -741,7 +741,18 @@
       "locationDenied": "Vendndodhja nuk është e disponueshme. Lejoni qasjen në vendndodhje te shfletuesi ose shkruani një vend.",
       "errorBusy": "Asistenti AI është i zënë tani. Provoni përsëri pas një minute.",
       "errorTooMany": "Shumë mesazhe. Prisni pak dhe provoni përsëri.",
-      "errorTooLong": "Mesazhi është shumë i gjatë. Shkurtojeni."
+      "errorTooLong": "Mesazhi është shumë i gjatë. Shkurtojeni.",
+      "widget": {
+        "open": "Hap asistentin AI për plazhet",
+        "close": "Mbyll bisedën",
+        "title": "Asistenti AI për plazhet",
+        "newConversation": "Bisedë e re",
+        "openFullPage": "Hap bisedën e plotë",
+        "inputLabel": "Mesazhi juaj",
+        "greeting": "Përshëndetje! Më pyesni çfarëdo për plazhet dhe udhëtimin tuaj në det.",
+        "greetingBeach": "Përshëndetje! Po shikoni {name}. Më pyesni çfarëdo për të ose për çdo plazh tjetër.",
+        "placeholderBeach": "Pyetni për {name}…"
+      }
     },
     "itinerary": {
       "title": "Planifikoni udhëtimin tuaj në plazh",

@@ -741,7 +741,18 @@
       "locationDenied": "Lokalizacja niedostępna. Zezwól na dostęp do lokalizacji w przeglądarce lub podaj miejsce.",
       "errorBusy": "Asystent AI jest teraz zajęty. Spróbuj ponownie za minutę.",
       "errorTooMany": "Zbyt wiele wiadomości. Odczekaj chwilę i spróbuj ponownie.",
-      "errorTooLong": "Wiadomość jest za długa. Skróć ją."
+      "errorTooLong": "Wiadomość jest za długa. Skróć ją.",
+      "widget": {
+        "open": "Otwórz asystenta plażowego AI",
+        "close": "Zamknij czat",
+        "title": "Asystent plażowy AI",
+        "newConversation": "Nowa rozmowa",
+        "openFullPage": "Otwórz pełny czat",
+        "inputLabel": "Twoja wiadomość",
+        "greeting": "Cześć! Zapytaj mnie o cokolwiek na temat plaż i wyjazdu nad morze.",
+        "greetingBeach": "Cześć! Oglądasz {name}. Zapytaj mnie o cokolwiek na jej temat lub o dowolną inną plażę.",
+        "placeholderBeach": "Zapytaj o {name}…"
+      }
     },
     "itinerary": {
       "title": "Zaplanuj wyjazd na plażę",
