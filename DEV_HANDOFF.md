@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 - SEO: home page canonical/hreflang without trailing slash
+
+- `src/lib/utils/metadata-helpers.ts`: new `localeSuffix(path)`; `buildCanonicalUrl`, `buildAlternateLanguages` and
+  `buildLocalizedAlternates` no longer end URLs with `/`. The home page canonical was `https://beachrex.com/si/`, which
+  308-redirects to `/si`; Google Search Console rejected the indexing request at the launch (owner 2026-10-29).
+- Test: `e2e/seo-metadata.unit.spec.ts` "home page canonical and hreflang have no trailing slash".
+- Check: `curl -s https://beachrex.com/si | grep -o '<link rel="canonical"[^>]*>'` → `href="https://beachrex.com/si"`.
+
 ## 2026-10-29 – Continent page: own continent pill is static ✅ COMPLETE
 
 Owner, 2026-10-29: on a continent page the continent pill opened a tab that repeated the page's own bar ("Kontinent Evropa · Plaže: 2876" twice), which looked like a bug. `TopBar` gives that pill no link there, so it does not open (other pages: every pill is a parent level and stays interactive). Test in `e2e/location-pills.unit.spec.ts`.

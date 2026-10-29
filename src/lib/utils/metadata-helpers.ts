@@ -59,7 +59,7 @@ export function buildAlternateLanguages(path: string): Record<string, string> {
   const baseUrl = getBaseUrlInternal();
 
   // Ensure path starts with /
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const normalizedPath = localeSuffix(path);
 
   for (const locale of locales) {
     alternates[toHtmlLang(locale)] = `${baseUrl}/${locale}${normalizedPath}`;
@@ -80,9 +80,9 @@ export function buildLocalizedAlternates(pathFor: (locale: string) => string): R
   const alternates: Record<string, string> = {};
   for (const locale of locales) {
     // hreflang takes a language code: the URL's "si"/"ua" are sl/uk (pre-launch 2026-10-23)
-    alternates[toHtmlLang(locale)] = `${baseUrl}/${locale}${pathFor(locale)}`;
+    alternates[toHtmlLang(locale)] = `${baseUrl}/${locale}${localeSuffix(pathFor(locale))}`;
   }
-  alternates['x-default'] = alternates.en ?? `${baseUrl}/en${pathFor('en')}`;
+  alternates['x-default'] = alternates.en ?? `${baseUrl}/en${localeSuffix(pathFor('en'))}`;
   return alternates;
 }
 
@@ -115,6 +115,17 @@ export async function buildPlaceAlternates(
 }
 
 /**
+ * The part of a URL after `/{locale}`: always starts with `/`, never ends with one. The home page (`/` or '')
+ * is `/{locale}` itself — `/{locale}/` redirects (308) to `/{locale}`, so a canonical or hreflang with the
+ * slash points Google at a redirect ("Indexing request rejected", owner 2026-10-29 launch).
+ */
+export function localeSuffix(path: string): string {
+  const withSlash = path.startsWith('/') ? path : `/${path}`;
+  const trimmed = withSlash.replace(/\/+$/, '');
+  return trimmed;
+}
+
+/**
  * Build canonical URL for a page
  *
  * @param locale - Current locale (e.g., 'en', 'si')
@@ -129,9 +140,7 @@ export function buildCanonicalUrl(locale: string, path: string): string {
   const baseUrl = getBaseUrlInternal();
 
   // Ensure path starts with /
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-
-  return `${baseUrl}/${locale}${normalizedPath}`;
+  return `${baseUrl}/${locale}${localeSuffix(path)}`;
 }
 
 /**
