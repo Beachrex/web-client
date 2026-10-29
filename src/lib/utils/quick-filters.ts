@@ -28,6 +28,20 @@ export function resolveQuickFilters(
   });
 }
 
+/** Every option of one filter group, in API order, labelled with the API name; unnamed options are skipped. */
+export function resolveAllFilterOptions(
+  filterKey: string,
+  icons: Record<string, string>,
+  fallbackIcon: string,
+  filterOptions: Record<string, FilterGroup | undefined> | null | undefined
+): QuickFilterTile[] {
+  return (filterOptions?.[filterKey]?.options ?? []).flatMap((option) => {
+    const { code, name } = option;
+    if (typeof code !== 'string' || code === '' || typeof name !== 'string' || name === '') return [];
+    return [{ filterKey, code, label: name, icon: icons[code] ?? fallbackIcon }];
+  });
+}
+
 const splitValues = (value: FilterValue): string[] =>
   value === undefined || value === '' ? [] : String(value).split(',').filter(Boolean);
 

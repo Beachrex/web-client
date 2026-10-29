@@ -25,6 +25,15 @@ Owner report 2026-10-29 (Plage du Port Vieux, Biarritz): black "360° view" popu
 - `BeachMediaContent`: uploaded video files play in `<video controls>` (YouTube stays an iframe). `BeachPageView`: the 360° card shows for tour or panorama.
 - Spec: `e2e/beach-media.unit.spec.ts` (+4 tests; without the viewer fallback / file detection: 2 failed).
 
+## 2026-10-29 – Burger menu: all countries and all beach types ✅ COMPLETE
+
+Owner requests 2026-10-29: "the burger menu does not list all countries" and "under Beach types only 3 of the 6 types are shown".
+- `src/lib/utils/menu-items.ts`: removed `TOP_COUNTRIES` (cap of 10). "Top beach countries" now lists every country with beaches and a known continent, most beaches first (13 on dev). The menu body already scrolls (`overflow-y-auto`).
+- `src/config/menuBeachFilters.ts`: "Beach types" is no longer 3 hardcoded picks; it uses `allOptions` (every `beach_type` option from `GET /beaches/filters`, API order and localized names) with local icons per code and `sunset.png` as fallback (rocky/concrete without a local icon still get one; new types appear automatically). `resolveAllFilterOptions` in `src/lib/utils/quick-filters.ts`.
+- "Beaches for" and "On the beach" stay curated picks across several filter keys (a deliberate selection, not a "first N" cut).
+- Spec `e2e/navigation-links.unit.spec.ts` (cap of 10 back: 1 failed; beach types cut to 3: 1 failed).
+- Noted, not changed: `QuickMenu.tsx` filters `beach_type` with `large_stones`, a code the API does not have (`big_stones`).
+
 ## 2026-10-29 – TASK-009: AI guide follows the admin switch ✅ COMPLETE
 
 Owner request 2026-10-29 (backend Beachrex/backend#146, spec `docs/tasks/TASK-009-ai-assistant-switch.md`).
