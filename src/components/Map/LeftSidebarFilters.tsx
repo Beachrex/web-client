@@ -13,6 +13,15 @@ import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { MAP_QUICK_FILTERS } from '@/config/mapQuickFilters';
 import { isQuickFilterSelected, onlyQuickFilters, resolveQuickFilters, toggleFilterValue } from '@/lib/utils/quick-filters';
+import {
+    POOL_TYPE_KEY,
+    WATERBODY_KEY,
+    isChoiceSelected,
+    mergesPoolTypes,
+    toggleChoice,
+    waterbodyChoices,
+    waterbodySelectedCount,
+} from '@/lib/utils/waterbody-filter';
 
 type FilterValue = string | number | boolean | undefined;
 type FilterOptions = GetBeachFiltersResponse['data'];
@@ -166,6 +175,15 @@ const LeftSidebarFilters = ({
         [currentFilters, filterOptions],
     );
     const quickFilters = useMemo(() => resolveQuickFilters(MAP_QUICK_FILTERS, filterOptions), [filterOptions]);
+    // Indoor / outdoor pools are shown under "Pool" in the water body group (owner 2026-10-29)
+    const poolTypesMerged = useMemo(
+        () => mergesPoolTypes(filterOptions as Parameters<typeof mergesPoolTypes>[0]),
+        [filterOptions],
+    );
+    const sectionHasValue = (key: string): boolean => {
+        const has = (k: string) => currentFilters[k] !== undefined && currentFilters[k] !== null && currentFilters[k] !== '';
+        return has(key) || (poolTypesMerged && key === WATERBODY_KEY && has(POOL_TYPE_KEY));
+    };
 
     // Notify parent component when filter options change
     useEffect(() => {
@@ -187,14 +205,12 @@ const LeftSidebarFilters = ({
     const initialExpandedState: Record<string, boolean> = {};
     Object.keys(filterOptions).forEach(key => {
       // Auto-expand section if it has a selected value
-      const hasValue = currentFilters[key] !== undefined &&
-                      currentFilters[key] !== null &&
-                      currentFilters[key] !== '';
-      initialExpandedState[key] = hasValue;
+      initialExpandedState[key] = sectionHasValue(key);
     });
     setExpandedSections(initialExpandedState);
   }
-}, [filterOptions, expandedSections, currentFilters]);
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [filterOptions, expandedSections, currentFilters, poolTypesMerged]);
 
     // Auto-expand/collapse sections when currentFilters change
     useEffect(() => {
@@ -203,17 +219,15 @@ const LeftSidebarFilters = ({
       setExpandedSections(prev => {
         const updated = { ...prev };
         Object.keys(filterOptions).forEach(key => {
-          const hasValue = currentFilters[key] !== undefined &&
-                          currentFilters[key] !== null &&
-                          currentFilters[key] !== '';
           // Only auto-expand, don't auto-collapse if user manually expanded
-          if (hasValue && !prev[key]) {
+          if (sectionHasValue(key) && !prev[key]) {
             updated[key] = true;
           }
         });
         return updated;
       });
-    }, [currentFilters, filterOptions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentFilters, filterOptions, poolTypesMerged]);
 
     // The section the visitor just opened: its place list opens with the search box ready (owner 2026-10-23:
     // one click instead of two). Sections opened by the page itself (a selected value) do not open their list.
@@ -288,6 +302,31 @@ const LeftSidebarFilters = ({
         filterName: string
     ) => {
         if (!options) return null;
+
+        if (filterName === WATERBODY_KEY && poolTypesMerged) {
+            const choices = waterbodyChoices(filterOptions as Parameters<typeof waterbodyChoices>[0]);
+            return (
+                <div className="px-4 pb-3 space-y-2">
+                    {choices.map((choice) => (
+                        <label
+                            key={`${choice.filterKey}:${choice.code}`}
+                            className={`flex items-center gap-2 cursor-pointer${choice.nested ? ' pl-6' : ''}`}
+                        >
+                            <input
+                                type="checkbox"
+                                value={choice.code}
+                                checked={isChoiceSelected(currentFilters, choice)}
+                                onChange={() =>
+                                    handleFilterChange(choice.filterKey, toggleChoice(currentFilters, choice))
+                                }
+                                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                            />
+                            <span className="text-sm">{choice.label}</span>
+                        </label>
+                    ))}
+                </div>
+            );
+        }
 
         const type = inputType?.toLowerCase();
         const currentValue = currentFilters[filterName] as string | undefined;
@@ -497,6 +536,11 @@ text-xs font-semibold text-[#1A3C68] transition-colors hover:bg-[#d6e1ef]"
                                 {/* Dynamically render all filter categories */}
                                 {Object.entries(filterOptions).map(([filterKey, filterData]) => {
                                     if (!filterData) return null;
+                                    // Shown under "Pool" in the water body group
+                                    if (filterKey === POOL_TYPE_KEY && poolTypesMerged) return null;
+                                    const selectedCount = filterKey === WATERBODY_KEY
+                                        ? waterbodySelectedCount(currentFilters, poolTypesMerged)
+                                        : selectedValues(currentFilters[filterKey]).length;
                                     return (
                                         <div key={filterKey} className="border border-gray-200 rounded-lg">
                                             <button
@@ -516,11 +560,11 @@ text-xs font-semibold text-[#1A3C68] transition-colors hover:bg-[#d6e1ef]"
                                                     <h3 className="font-semibold text-sm">
                                                         {filterData.title ?? filterKey}
                                                     </h3>
-                                                    {selectedValues(currentFilters[filterKey]).length > 0 && (
+                                                    {selectedCount > 0 && (
                                                         <span
                                                             className="rounded-full bg-[#1A3C68] px-1.5 text-[11px] font-semibold text-white"
                                                         >
-                                                            {selectedValues(currentFilters[filterKey]).length}
+                                                            {selectedCount}
                                                         </span>
                                                     )}
                                                 </div>

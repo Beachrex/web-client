@@ -18,6 +18,17 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Indoor / outdoor pools under "Pool" in the water body filter ✅ COMPLETE
+
+Owner, 2026-10-29: "filter bi mogli razbit na notranji in zunanji bazen … če stisneš na prvi strani outdoor ali indoor, filter ne zazna". The map did take `?pool_type=indoor|outdoor` (chip "Notranji bazen"), but the options were a separate "Vrsta bazena" group and the water body group showed only Morje / Jezero / Reka / Bazen. The 0 results are data: dev has no pool places yet (backend `DEV_HANDOFF.md` 2026-10-29, ADR "Indoor / outdoor pools").
+
+- `src/lib/utils/waterbody-filter.ts` (new): the water body options with the API's `pool_type` options nested right after `pool`; toggles, the section counter, and a select encoding (`pool_type:indoor`) for single-choice selects. Without a `pool` option or `pool_type` group nothing is merged.
+- `src/components/Map/LeftSidebarFilters.tsx` (map sidebar, desktop and the mobile filter drawer): "Notranji bazen" / "Zunanji bazen" indented under "Bazen"; the separate pool type group is hidden; the water body counter counts both parameters and the section opens when only `pool_type` is set (home page tiles).
+- `src/components/Home/FilterModal.tsx`: same nesting in the home "more filters" dialog; selections and summary chips use the right parameter.
+- `src/components/DynamicSearchBeaches.tsx` (country/region/city/island listings): the water body select lists the two pool types after "Bazen"; choosing one sets `pool_type` and clears `waterbody`.
+- URLs unchanged: `waterbody=pool` = every pool place; `pool_type=indoor|outdoor|indoor,outdoor` as the home tiles send. Labels come from `GET /beaches/filters` (backend `lang/*.json`, 19 locales), so no new `messages/*.json` strings.
+- Tests: `e2e/pool-type-filter.unit.spec.ts` (nesting, toggles, counter, select round-trip, regression: the home tile params survive the map's option validation and get the chip label). Deliberate break (no nesting) fails 3 of 6.
+
 ## 2026-10-29 – Responsive WebP images from Imagor, fewer font preloads ✅ COMPLETE
 
 Owner, 2026-10-29 (home page audit): the hero was a 2800 px JPEG and beach cards 800 px JPEGs on every device (`images.unoptimized`), and 7 font files were preloaded.
