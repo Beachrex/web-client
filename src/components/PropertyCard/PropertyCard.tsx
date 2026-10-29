@@ -8,11 +8,12 @@ import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { parseWebcamUrl, windyIdFromPageUrl } from '@/lib/utils/webcam';
 import WebcamModal from '@/components/Beach/WebcamModal';
 import { useQueryClient } from '@tanstack/react-query';
-import { Star } from 'lucide-react';
+import { MapPin, Star } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { formatDistance } from '@/lib/utils/distance';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { FEATURES } from '@/lib/constants/features';
 import { FavoriteButton } from '../Favorites/FavoriteButton';
@@ -78,6 +79,9 @@ export interface PropertyCardProps {
 
   /** Beach type, family and parking from the API (QA #45) */
   features?: BeachCardFeatures | null;
+
+  /** Distance in km from the beach whose page shows this card ("Nearby beaches") */
+  distanceKm?: number | null;
 }
 
 const PropertyCard = React.memo(function PropertyCard({
@@ -103,6 +107,7 @@ const PropertyCard = React.memo(function PropertyCard({
   openInNewTab = false,
   tags,
   features,
+  distanceKm,
 }: PropertyCardProps) {
   const renderStartTime = useRef(performance.now());
   const currentRenderCount = useRef(++propertyCardRenderCount);
@@ -123,6 +128,8 @@ const PropertyCard = React.memo(function PropertyCard({
   const t = useTranslations('PropertyCard');
   const tBadges = useTranslations('BottomBadgesBeach');
   const featureIcons = React.useMemo(() => buildCardFeatureIcons(features), [features]);
+  const locale = useLocale();
+  const distance = distanceKm != null ? formatDistance(distanceKm, locale) : '';
   const queryClient = useQueryClient();
 
   const { ready } = useIsMobile();
@@ -367,6 +374,19 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
   <>
     {/* BADGES */}
     <div className="absolute left-2 top-2 flex gap-1 z-20">
+      {/* Distance from the current beach, as in the app (owner 2026-10-29) */}
+      {distance && (
+        <div
+          data-testid="card-distance"
+          className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1"
+        >
+          <MapPin size={12} className="text-[#0069AB]" aria-hidden="true" />
+          <span aria-hidden="true" className="text-[10px] text-[#4D4D4D] font-semibold">
+            {distance}
+          </span>
+          <span className="sr-only">{t('distanceAway', { distance })}</span>
+        </div>
+      )}
       {isMostVisited && (
         <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
           <span className="text-[10px] text-[#4D4D4D] font-semibold">
@@ -544,6 +564,7 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
     prevProps.videoEmbedUrl === nextProps.videoEmbedUrl &&
     prevProps.webcamEmbed === nextProps.webcamEmbed &&
     prevProps.tags?.join(',') === nextProps.tags?.join(',') &&
+    prevProps.distanceKm === nextProps.distanceKm &&
     JSON.stringify(prevProps.features ?? null) === JSON.stringify(nextProps.features ?? null)
   );
 });

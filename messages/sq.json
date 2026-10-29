@@ -854,6 +854,7 @@
     "no360": "Nuk ka pamje 360° në dispozicion",
     "noVideo": "Nuk ka video në dispozicion",
     "mostVisited": "Më të vizituarit",
+    "distanceAway": "{distance} larg",
     "loading": "Duke ngarkuar...",
     "showOnMap": "Shfaq {title} në hartë",
     "webcamClose": "Mbyll kamerën"
