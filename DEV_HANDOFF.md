@@ -18,6 +18,13 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – 360° panorama without a tour, uploaded videos play ✅ COMPLETE
+
+Owner report 2026-10-29 (Plage du Port Vieux, Biarritz): black "360° view" popup; video file shown as a broken photo. Backend Beachrex/backend#147 (tour_url null when no tour; video files move to `videos`).
+- `src/lib/utils/beach-media.ts`: no `tour_url` but a panorama → `sphereTourUrl` is our viewer `/vendor/pannellum-2.5.6/pannellum.htm#panorama=…&autoLoad=true` (Pannellum 2.5.6 standalone, MIT, self-hosted in `public/vendor/pannellum-2.5.6/` with its licence; no npm dependency, no third-party script). `videoIsFile` for uploaded files.
+- `BeachMediaContent`: uploaded video files play in `<video controls>` (YouTube stays an iframe). `BeachPageView`: the 360° card shows for tour or panorama.
+- Spec: `e2e/beach-media.unit.spec.ts` (+4 tests; without the viewer fallback / file detection: 2 failed).
+
 ## 2026-10-29 – TASK-009: AI guide follows the admin switch ✅ COMPLETE
 
 Owner request 2026-10-29 (backend Beachrex/backend#146, spec `docs/tasks/TASK-009-ai-assistant-switch.md`).
