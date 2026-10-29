@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Banner: duplicate map thumbnail removed ✅ COMPLETE
+
+Owner request 2026-10-29 (Kvarner region page): remove the `banner-map.png` thumbnail from the banner, the floating map icon on the right edge (`/images/common/map-icon.svg`) already opens the same map.
+- `BannerSection` (continent / country / region / island / city): `MapWidget` removed. The floating map icon (same `buildMapUrl()` with the place filters) stays. The widget row is only rendered when it has content (weather on region/island/city, or `rightWidgets`), so continent/country pages get no empty row.
+- `BeachBannerSection`: `MapWidget` removed too; its floating map button (`/images/map.png`, same `buildMapUrl()` incl. `beach_id`/`lat`/`lng`) stays. Weather + sea temperature widgets unchanged.
+- World banner (`/beaches`) keeps the thumbnail: it has no floating map icon, so it is the only map link there. `MapWidget` is now a plain decorative thumbnail (the `href`/`label` props were only used by the removed callers); `public/images/banner/banner-map.png` stays for it.
+- Spec `e2e/banner-map-link.unit.spec.ts` rewritten (break: banner-map.png `<img>` put back in `BannerSection` → 1 failed).
+
 ## 2026-10-29 – Beach page: distance on "Nearby beaches" cards ✅ COMPLETE
 
 Owner request 2026-10-29: "in 'Nearby beaches' show the distance to these beaches, like in the app".
