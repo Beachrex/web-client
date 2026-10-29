@@ -59,6 +59,9 @@ const figtree = Figtree({
   subsets: ['latin', 'latin-ext'],
   style: ['normal', 'italic'],
   display: 'swap',
+  // 4 files (normal/italic × latin/latin-ext). Not preloaded, so they do not compete with the hero image
+  // and the body/heading fonts; `swap` shows the fallback until they arrive (performance, 2026-10-29).
+  preload: false,
   variable: '--font-figtree',
 });
 const damion = Damion({

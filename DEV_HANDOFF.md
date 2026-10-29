@@ -18,6 +18,16 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Responsive WebP images from Imagor, fewer font preloads ✅ COMPLETE
+
+Owner, 2026-10-29 (home page audit): the hero was a 2800 px JPEG and beach cards 800 px JPEGs on every device (`images.unoptimized`), and 7 font files were preloaded.
+
+- `src/lib/imagor-loader.ts` (new) + `next.config.js` (`loader: "custom"`, `loaderFile`, `deviceSizes` 480–2800): `next/image` builds a `srcset`; for each width the loader asks Imagor for that width as WebP (`fit-in/{w}x{w}/filters:format(webp):quality(75)`). The width never exceeds the endpoint (800 teaser / 2800 large), so no image is larger than before. Existing filters (mobile-photo watermark) are kept. Non-Imagor sources (`public/`, Spaces icons, share images) pass through unchanged; in `next dev` these log a one-time "loader does not implement width" warning, which is expected.
+- `layout.tsx`: Figtree `preload: false` (4 of the 7 preloaded font files); Open Sans and Damion (hero h1) stay preloaded.
+- Test: `e2e/imagor-loader.unit.spec.ts`.
+- Not done: 19 header icons still load from `beachrex.fra1.digitaloceanspaces.com` (no Cloudflare). Moving them needs the SVG files (not reachable from the agent sandbox).
+- Imagor renders more width variants (cached by Cloudflare after the first request).
+
 ## 2026-10-29 – Burger menu beach types use the card icons ✅ COMPLETE
 
 Owner 2026-10-29: "Beton" had a globe icon and the other types used different icons than the beach cards. `menuBeachFilters.ts` now takes `BEACH_TYPE_ICONS` from `beach-badges.ts` (the same CDN icons as the cards and the beach page badges, incl. concrete) through `resolveBadgeIcon`. Spec `e2e/navigation-links.unit.spec.ts` (with the old icon map: 1 failed).
