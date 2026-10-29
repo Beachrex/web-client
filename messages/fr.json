@@ -742,6 +742,8 @@
       "errorBusy": "L'assistant IA est occupé. Réessayez dans une minute.",
       "errorTooMany": "Trop de messages. Patientez un peu et réessayez.",
       "errorTooLong": "Le message est trop long. Raccourcissez-le.",
+      "errorResting": "L'assistant IA a atteint sa limite quotidienne et se repose jusqu'à demain. Revenez alors – les pages des plages et la carte fonctionnent normalement.",
+      "errorRobot": "Nous n'avons pas pu confirmer que vous n'êtes pas un robot. Rechargez la page et réessayez.",
       "widget": {
         "open": "Ouvrir l’assistant plages IA",
         "close": "Fermer le chat",

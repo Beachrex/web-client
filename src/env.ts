@@ -21,6 +21,8 @@ const env = createEnv({
     NEXT_PUBLIC_CDN_ASSETS: z.string().url(),
     NEXT_PUBLIC_API_ENDPOINT: z.string().url().optional().default('http://localhost:8000'),
     NEXT_PUBLIC_BASE_URL: z.string().url().optional().default('http://localhost:3000'),
+    // Cloudflare Turnstile on the AI chat; unset = off (backend ADR 2026-10-29)
+    NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().optional(),
   },
 
   /**
@@ -34,6 +36,7 @@ const env = createEnv({
     NEXT_PUBLIC_CDN_ASSETS: process.env.NEXT_PUBLIC_CDN_ASSETS,
     NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT ?? 'http://localhost:8000',
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000',
+    NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

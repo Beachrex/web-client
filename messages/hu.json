@@ -742,6 +742,8 @@
       "errorBusy": "Az AI-asszisztens most foglalt. Próbáld újra egy perc múlva.",
       "errorTooMany": "Túl sok üzenet. Várj egy kicsit, és próbáld újra.",
       "errorTooLong": "Az üzenet túl hosszú. Rövidítsd le.",
+      "errorResting": "Az MI-asszisztens elérte a napi korlátot, és holnapig pihen. Térjen vissza akkor – a strandoldalak és a térkép a szokásos módon működnek.",
+      "errorRobot": "Nem sikerült megerősíteni, hogy nem robot. Frissítse az oldalt, és próbálja újra.",
       "widget": {
         "open": "AI strandasszisztens megnyitása",
         "close": "Csevegés bezárása",

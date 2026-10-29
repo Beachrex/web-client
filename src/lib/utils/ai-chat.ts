@@ -1,4 +1,5 @@
 import { env } from '@/env';
+import { isTurnstileChallenge } from '@/lib/utils/turnstile';
 
 /** Beach as returned by POST /api/v1/ai/chat (all fields from the database, in the page language). */
 export interface ChatBeach {
@@ -29,9 +30,16 @@ export interface ChatReply {
 }
 
 /** Message keys in `AI.chat` for a failed request. */
-export type ChatErrorKey = 'error' | 'errorBusy' | 'errorTooMany' | 'errorTooLong';
+export type ChatErrorKey = 'error' | 'errorBusy' | 'errorTooMany' | 'errorTooLong' | 'errorResting' | 'errorRobot';
 
-export function chatErrorKey(status: number): ChatErrorKey {
+/**
+ * `body` is the parsed JSON error body when there is one: a 503 with `reason: "daily_limit"` means the free daily
+ * cost limit is reached (back at midnight), a 403 `turnstile_*` that the robot check is missing or failed.
+ */
+export function chatErrorKey(status: number, body?: unknown): ChatErrorKey {
+  const data = (body && typeof body === 'object' ? body : {}) as { error?: unknown; reason?: unknown };
+  if (status === 503 && data.reason === 'daily_limit') return 'errorResting';
+  if (isTurnstileChallenge(status, data.error)) return 'errorRobot';
   if (status === 503) return 'errorBusy';
   if (status === 429) return 'errorTooMany';
   if (status === 413) return 'errorTooLong';
@@ -41,6 +49,7 @@ export function chatErrorKey(status: number): ChatErrorKey {
 /**
  * One chat turn. The session id keeps the conversation (the backend remembers earlier turns and the beaches
  * it showed); Accept-Language = page language so beach names and URL slugs match the website's URLs.
+ * `challenge: true` = the server wants a (new) Turnstile token; the caller runs the widget and sends again.
  */
 export async function sendChatMessage(args: {
   message: string;
@@ -50,7 +59,9 @@ export async function sendChatMessage(args: {
   location: { latitude: number; longitude: number } | null;
   /** TASK-010: the page the chat is open on (an untrusted hint; the backend validates and resolves it). */
   pageContext?: { page_type: string; path?: string; beach_id?: number; title?: string } | null;
-}): Promise<{ ok: true; reply: ChatReply } | { ok: false; error: ChatErrorKey }> {
+  /** Cloudflare Turnstile token, when the website has Turnstile on and this message needs one. */
+  turnstileToken?: string | null;
+}): Promise<{ ok: true; reply: ChatReply } | { ok: false; error: ChatErrorKey; challenge?: boolean }> {
   try {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -67,9 +78,14 @@ export async function sendChatMessage(args: {
         ...(args.sessionId ? { session_id: args.sessionId } : {}),
         ...(args.location ? { context: { location: args.location } } : {}),
         ...(args.pageContext ? { page_context: args.pageContext } : {}),
+        ...(args.turnstileToken ? { turnstile_token: args.turnstileToken } : {}),
       }),
     });
-    if (!response.ok) return { ok: false, error: chatErrorKey(response.status) };
+    if (!response.ok) {
+      const body: unknown = await response.json().catch(() => null);
+      const error = chatErrorKey(response.status, body);
+      return { ok: false, error, ...(error === 'errorRobot' ? { challenge: true } : {}) };
+    }
 
     return { ok: true, reply: (await response.json()) as ChatReply };
   } catch {
