@@ -83,6 +83,7 @@ import {
   getRegionWeather,
   getRoadToParkingTypeById,
   getRoadToParkingTypes,
+  getSiteSettings,
   getSportingActivities,
   getSportingActivityById,
   getStaticPageBySlug,
@@ -298,6 +299,8 @@ import type {
   GetRoadToParkingTypesData,
   GetRoadToParkingTypesError,
   GetRoadToParkingTypesResponse,
+  GetSiteSettingsData,
+  GetSiteSettingsResponse,
   GetSportingActivitiesData,
   GetSportingActivitiesError,
   GetSportingActivitiesResponse,
@@ -2636,6 +2639,36 @@ export const globalSearchOptions = (options: Options<GlobalSearchData>) =>
       return data;
     },
     queryKey: globalSearchQueryKey(options),
+  });
+
+export const getSiteSettingsQueryKey = (
+  options?: Options<GetSiteSettingsData>,
+) => createQueryKey("getSiteSettings", options);
+
+/**
+ * Public site switches
+ *
+ * Switches the owner sets in admin (System → Site settings), per environment. Clients hide a feature that is off. ai_assistant_enabled = false: the AI beach guide (chat, itineraries, buying credits) is off and its /api/v1/ai* routes answer 503 ai_disabled.
+ */
+export const getSiteSettingsOptions = (
+  options?: Options<GetSiteSettingsData>,
+) =>
+  queryOptions<
+    GetSiteSettingsResponse,
+    DefaultError,
+    GetSiteSettingsResponse,
+    ReturnType<typeof getSiteSettingsQueryKey>
+  >({
+    queryFn: async ({ queryKey, signal }) => {
+      const { data } = await getSiteSettings({
+        ...options,
+        ...queryKey[0],
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    queryKey: getSiteSettingsQueryKey(options),
   });
 
 export const resolveSlugQueryKey = (options: Options<ResolveSlugData>) =>

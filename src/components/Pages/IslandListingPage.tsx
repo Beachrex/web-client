@@ -18,6 +18,7 @@ import DestinationsSection from '../DestinationsSection';
 import { FEATURES } from '@/lib/constants/features';
 import AllBeachesLink from '@/components/AllBeachesLink';
 import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 
 interface IslandListingPageProps {
   islandSlug: string;
@@ -127,6 +128,12 @@ export default function IslandListingPage({
         continentCode={islandDetails?.country?.continent?.code}
         countryCode={islandDetails?.country?.code}
         islandSlug={_islandSlug}
+        {...mapPlacePills(locale, {
+          continent: islandDetails?.country?.continent,
+          country: islandDetails?.country,
+          region: islandDetails?.region,
+          island: islandDetails,
+        })}
       />
 
       <PropertySection

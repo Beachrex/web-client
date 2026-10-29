@@ -260,6 +260,8 @@ import type {
   GetRoadToParkingTypesData,
   GetRoadToParkingTypesErrors,
   GetRoadToParkingTypesResponses,
+  GetSiteSettingsData,
+  GetSiteSettingsResponses,
   GetSportingActivitiesData,
   GetSportingActivitiesErrors,
   GetSportingActivitiesResponses,
@@ -2221,6 +2223,24 @@ export const globalSearch = <ThrowOnError extends boolean = false>(
     ThrowOnError
   >({
     url: "/api/v1/search",
+    ...options,
+  });
+};
+
+/**
+ * Public site switches
+ *
+ * Switches the owner sets in admin (System → Site settings), per environment. Clients hide a feature that is off. ai_assistant_enabled = false: the AI beach guide (chat, itineraries, buying credits) is off and its /api/v1/ai* routes answer 503 ai_disabled.
+ */
+export const getSiteSettings = <ThrowOnError extends boolean = false>(
+  options?: Options<GetSiteSettingsData, ThrowOnError>,
+) => {
+  return (options?.client ?? client).get<
+    GetSiteSettingsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: "/api/v1/site-settings",
     ...options,
   });
 };

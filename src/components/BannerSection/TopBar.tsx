@@ -38,7 +38,22 @@ interface TopBarProps {
   pillLinks?: Partial<LocationPillUrls>;
   /** Full names for the region/island/city pills (their collapsed labels are shortened). */
   pillNames?: { region?: string | null; island?: string | null; city?: string | null };
+  /**
+   * Published beaches per pill level, shown in the open tab. A level without a number gets no count box
+   * (listing pages do not have their parents' counts; never show a wrong number).
+   */
+  pillCounts?: Partial<Record<PillLevel, number | null>>;
 }
+
+type PillLevel = 'continent' | 'country' | 'region' | 'island' | 'city';
+
+const PILL_BG: Record<PillLevel, string> = {
+  continent: VARIANT_BG_CLASS.continent,
+  country: VARIANT_BG_CLASS.country,
+  region: VARIANT_BG_CLASS.region,
+  island: VARIANT_BG_CLASS.island,
+  city: VARIANT_BG_CLASS.city,
+};
 
 const TopBar: React.FC<TopBarProps> = ({
   continent,
@@ -56,11 +71,21 @@ const TopBar: React.FC<TopBarProps> = ({
   pillLabelKey: pillLabelKeyOverride,
   pillLinks,
   pillNames,
+  pillCounts,
 }) => {
   const t = useTranslations('TopBar');
   const tContinent = useTranslations('Continents');
   const tCommon = useTranslations('Common');
   const tFilters = useTranslations('Filters');
+
+  /** Colours, level word and count of one pill's open tab: the same pieces as that place's own main bar. */
+  const pillTab = (level: PillLevel) => ({
+    colorClass: PILL_BG[level],
+    accentTextClass: VARIANT_TEXT_CLASS[level],
+    levelLabel: t(VARIANT_PILL_LABEL_KEY[level]),
+    beachCount: pillCounts?.[level],
+    beachCountLabel: tCommon('numBeaches').trim(),
+  });
   /* ------------------------------------------------
    * VARIANT LOGIC
    * ------------------------------------------------ */
@@ -167,7 +192,7 @@ const TopBar: React.FC<TopBarProps> = ({
               first
               name={continentName}
               href={pillLinks?.continent}
-              colorClass="bg-[#5E1CA5]"
+              {...pillTab('continent')}
             >
               <Image
                 src={getContinentIcon(effectiveContinentCode)}
@@ -187,7 +212,7 @@ const TopBar: React.FC<TopBarProps> = ({
               <LocationPill
                 name={country?.name ?? ''}
                 href={pillLinks?.country}
-                colorClass="bg-[#DD0000]"
+                {...pillTab('country')}
               >
                 <Image
                   src={countryIcon}
@@ -202,10 +227,9 @@ const TopBar: React.FC<TopBarProps> = ({
           {regionPillLabel &&
             (variant === 'island' || variant === 'city' || variant === 'beach') && (
               <LocationPill
-                textLabel
                 name={pillNames?.region ?? regionPillLabel}
                 href={pillLinks?.region}
-                colorClass="bg-[#FF2877]"
+                {...pillTab('region')}
               >
                 {regionPillLabel}
               </LocationPill>
@@ -213,10 +237,9 @@ const TopBar: React.FC<TopBarProps> = ({
 
           {(variant === 'city' || variant === 'beach') && islandPillLabel && (
             <LocationPill
-              textLabel
               name={pillNames?.island ?? islandPillLabel}
               href={pillLinks?.island}
-              colorClass="bg-[#FFC422]"
+              {...pillTab('island')}
             >
               {islandPillLabel}
             </LocationPill>
@@ -224,10 +247,9 @@ const TopBar: React.FC<TopBarProps> = ({
 
           {variant === 'beach' && cityPillLabel && (
             <LocationPill
-              textLabel
               name={pillNames?.city ?? cityPillLabel}
               href={pillLinks?.city}
-              colorClass="bg-[#FF8000]"
+              {...pillTab('city')}
             >
               {cityPillLabel}
             </LocationPill>
