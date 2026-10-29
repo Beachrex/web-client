@@ -18,7 +18,7 @@ import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import { useQuery } from '@tanstack/react-query';
 import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
 import { MENU_FILTER_GROUPS } from '@/config/menuBeachFilters';
-import { resolveQuickFilters } from '@/lib/utils/quick-filters';
+import { resolveAllFilterOptions, resolveQuickFilters } from '@/lib/utils/quick-filters';
 
 const sidebarTheme: CustomFlowbiteTheme['sidebar'] = {
   root: {
@@ -141,7 +141,14 @@ const BurgerMenu = () => {
         filterGroups: MENU_FILTER_GROUPS.map((group) => ({
           label: t(group.labelKey),
           icon: group.icon,
-          tiles: resolveQuickFilters(group.picks, filterOptions),
+          tiles: group.allOptions
+            ? resolveAllFilterOptions(
+                group.allOptions.filterKey,
+                group.allOptions.icons,
+                group.allOptions.fallbackIcon,
+                filterOptions,
+              )
+            : resolveQuickFilters(group.picks, filterOptions),
         })),
         labels: {
           browseBeaches: t('browseBeaches'),

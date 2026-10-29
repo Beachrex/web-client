@@ -7,22 +7,38 @@
  */
 import type { QuickFilterPick } from '@/config/mapQuickFilters';
 
-export interface MenuFilterGroup {
+/** Every option the API returns for one filter, in API order (new options appear automatically). */
+export interface MenuAllOptions {
+  filterKey: string;
+  /** Icon per option code; codes without one use `fallbackIcon`. */
+  icons: Record<string, string>;
+  fallbackIcon: string;
+}
+
+export type MenuFilterGroup = {
   /** Key in the `Menu` messages namespace. */
   labelKey: 'beachTypes' | 'beachesFor' | 'onTheBeach';
   icon: string;
-  picks: QuickFilterPick[];
-}
+} & ({ picks: QuickFilterPick[]; allOptions?: never } | { allOptions: MenuAllOptions; picks?: never });
 
 export const MENU_FILTER_GROUPS: MenuFilterGroup[] = [
   {
     labelKey: 'beachTypes',
     icon: '/images/categories/sand-castle.png',
-    picks: [
-      { filterKey: 'beach_type', optionCode: 'sand', icon: '/images/categories/sand-castle.png' },
-      { filterKey: 'beach_type', optionCode: 'small_stones', icon: '/images/categories/stones.png' },
-      { filterKey: 'beach_type', optionCode: 'grass_beach', icon: '/images/categories/grass-beach.png' },
-    ],
+    // All beach types (owner 2026-10-29: the menu showed only 3 of the 6).
+    allOptions: {
+      filterKey: 'beach_type',
+      icons: {
+        sand: '/images/categories/sand-castle.png',
+        brown_sand: '/images/categories/sand-castle.png',
+        black_sand: '/images/categories/sand-castle.png',
+        small_stones: '/images/categories/stones.png',
+        big_stones: '/images/categories/stones-blue.png',
+        rock_beach: '/images/categories/stones-blue.png',
+        grass_beach: '/images/categories/grass-beach.png',
+      },
+      fallbackIcon: '/images/categories/sunset.png',
+    },
   },
   {
     labelKey: 'beachesFor',
