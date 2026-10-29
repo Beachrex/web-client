@@ -60,6 +60,7 @@ import { env } from '@/env';
 import RegionListingPage from '@/components/Pages/RegionListingPage';
 import IslandListingPage from '@/components/Pages/IslandListingPage';
 import CityListingPage from '@/components/Pages/CityListingPage';
+import AiChatPageMarker from '@/components/AiChat/AiChatPageMarker';
 
 interface PageProps {
   params: {
@@ -478,6 +479,7 @@ export default async function FlexibleGeographyPage({ params }: PageProps) {
             />
           )}
           <BeachDetailPage beachDetails={beach} />
+          <AiChatPageMarker pageType="beach" beachId={beach.basic_info?.id} title={beach.basic_info?.name} />
         </>
       );
     }
@@ -622,6 +624,7 @@ async function renderDestinationPage(
         dangerouslySetInnerHTML={{ __html: renderJsonLd(breadcrumbSchema) }}
       />
       {content}
+      <AiChatPageMarker pageType={kind} title={name} />
     </>
   );
 }

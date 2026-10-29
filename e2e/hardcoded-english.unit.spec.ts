@@ -10,6 +10,8 @@ import { test, expect } from '@playwright/test';
 const FIXED: Record<string, string[]> = {
   'src/app/[locale]/ai/page.tsx': ['Ask our AI assistant', 'Start chatting', 'Generate personalized', 'Create itinerary', 'New to Beachrex AI?'],
   'src/app/[locale]/ai/chat/page.tsx': ['View details →', 'Suggestions:'],
+  'src/components/AiChat/ChatMessageList.tsx': ['View details →', 'Suggestions:'],
+  'src/components/AiChat/AiChatWidget.tsx': ['New conversation', 'Close', 'AI beach assistant'],
   'src/app/[locale]/ai/itinerary/page.tsx': ['Assumptions:', 'Failed to initiate purchase'],
   'src/components/DestinationsCarousel.tsx': ['Loading carousel'],
   'src/components/AccommodationCard/AccommodationCarousel.tsx': ['Loading carousel'],

@@ -741,7 +741,18 @@
       "locationDenied": "Posizione non disponibile. Consenti l'accesso alla posizione nel browser o indica un luogo.",
       "errorBusy": "L'assistente AI è occupato. Riprova tra un minuto.",
       "errorTooMany": "Troppi messaggi. Attendi un attimo e riprova.",
-      "errorTooLong": "Il messaggio è troppo lungo. Accorcialo."
+      "errorTooLong": "Il messaggio è troppo lungo. Accorcialo.",
+      "widget": {
+        "open": "Apri l’assistente spiagge IA",
+        "close": "Chiudi la chat",
+        "title": "Assistente spiagge IA",
+        "newConversation": "Nuova conversazione",
+        "openFullPage": "Apri la chat completa",
+        "inputLabel": "Il tuo messaggio",
+        "greeting": "Ciao! Chiedimi qualsiasi cosa sulle spiagge e sul tuo viaggio al mare.",
+        "greetingBeach": "Ciao! Stai guardando {name}. Chiedimi qualsiasi cosa su questa spiaggia o su qualsiasi altra.",
+        "placeholderBeach": "Chiedi di {name}…"
+      }
     },
     "itinerary": {
       "title": "Pianifica il tuo viaggio al mare",

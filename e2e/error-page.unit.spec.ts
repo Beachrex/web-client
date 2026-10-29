@@ -32,7 +32,7 @@ test('ErrorPage messages exist in all 19 locales', () => {
 });
 
 test('AI chat beach images use the CDN builder', () => {
-  const chat = read('src/app/[locale]/ai/chat/page.tsx');
+  const chat = read('src/components/AiChat/ChatMessageList.tsx'); // TASK-010: shared by page and widget
   expect(chat).not.toContain('NEXT_PUBLIC_IMAGOR_ENDPOINT');
   expect(chat).toContain("buildCdnUrl(beach.main_image, 'list')");
 });

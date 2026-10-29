@@ -753,7 +753,18 @@
       "locationDenied": "Lokacija ni na voljo. V brskalniku dovolite dostop do lokacije ali napišite kraj.",
       "errorBusy": "AI pomočnik je trenutno zaseden. Poskusite znova čez minuto.",
       "errorTooMany": "Preveč sporočil. Počakajte malo in poskusite znova.",
-      "errorTooLong": "Sporočilo je predolgo. Skrajšajte ga."
+      "errorTooLong": "Sporočilo je predolgo. Skrajšajte ga.",
+      "widget": {
+        "open": "Odpri AI pomočnika za plaže",
+        "close": "Zapri klepet",
+        "title": "AI pomočnik za plaže",
+        "newConversation": "Nov pogovor",
+        "openFullPage": "Odpri celoten klepet",
+        "inputLabel": "Vaše sporočilo",
+        "greeting": "Živjo! Vprašajte me karkoli o plažah in vašem izletu na morje.",
+        "greetingBeach": "Živjo! Ogledujete si {name}. Vprašajte me karkoli o tej plaži ali o katerikoli drugi.",
+        "placeholderBeach": "Vprašajte o {name}…"
+      }
     },
     "itinerary": {
       "title": "Načrtujte počitnice na plaži",

@@ -741,7 +741,18 @@
       "locationDenied": "Position indisponible. Autorisez l'accès à la position dans le navigateur ou indiquez un lieu.",
       "errorBusy": "L'assistant IA est occupé. Réessayez dans une minute.",
       "errorTooMany": "Trop de messages. Patientez un peu et réessayez.",
-      "errorTooLong": "Le message est trop long. Raccourcissez-le."
+      "errorTooLong": "Le message est trop long. Raccourcissez-le.",
+      "widget": {
+        "open": "Ouvrir l’assistant plages IA",
+        "close": "Fermer le chat",
+        "title": "Assistant plages IA",
+        "newConversation": "Nouvelle conversation",
+        "openFullPage": "Ouvrir le chat complet",
+        "inputLabel": "Votre message",
+        "greeting": "Bonjour ! Posez-moi toutes vos questions sur les plages et votre séjour au bord de la mer.",
+        "greetingBeach": "Bonjour ! Vous consultez {name}. Posez-moi toutes vos questions sur cette plage ou sur n’importe quelle autre.",
+        "placeholderBeach": "Une question sur {name}…"
+      }
     },
     "itinerary": {
       "title": "Planifiez votre voyage à la plage",

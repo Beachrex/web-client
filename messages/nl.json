@@ -741,7 +741,18 @@
       "locationDenied": "Locatie niet beschikbaar. Sta locatietoegang toe in de browser of noem een plaats.",
       "errorBusy": "De AI-assistent is nu druk. Probeer het over een minuut opnieuw.",
       "errorTooMany": "Te veel berichten. Wacht even en probeer het opnieuw.",
-      "errorTooLong": "Het bericht is te lang. Maak het korter."
+      "errorTooLong": "Het bericht is te lang. Maak het korter.",
+      "widget": {
+        "open": "AI-strandassistent openen",
+        "close": "Chat sluiten",
+        "title": "AI-strandassistent",
+        "newConversation": "Nieuw gesprek",
+        "openFullPage": "Volledige chat openen",
+        "inputLabel": "Uw bericht",
+        "greeting": "Hallo! Vraag me alles over stranden en uw reis naar zee.",
+        "greetingBeach": "Hallo! U bekijkt {name}. Vraag me alles over dit strand of over elk ander strand.",
+        "placeholderBeach": "Vraag over {name}…"
+      }
     },
     "itinerary": {
       "title": "Plan je strandvakantie",

@@ -741,7 +741,18 @@
       "locationDenied": "Your location is not available. Allow location access in the browser or name a place.",
       "errorBusy": "The AI assistant is busy right now. Please try again in a minute.",
       "errorTooMany": "Too many messages. Please wait a little and try again.",
-      "errorTooLong": "The message is too long. Please shorten it."
+      "errorTooLong": "The message is too long. Please shorten it.",
+      "widget": {
+        "open": "Open the AI beach assistant",
+        "close": "Close the chat",
+        "title": "AI beach assistant",
+        "newConversation": "New conversation",
+        "openFullPage": "Open the full chat page",
+        "inputLabel": "Your message",
+        "greeting": "Hi! Ask me anything about beaches and your seaside trip.",
+        "greetingBeach": "Hi! You are looking at {name}. Ask me anything about it, or about any other beach.",
+        "placeholderBeach": "Ask about {name}…"
+      }
     },
     "itinerary": {
       "title": "Plan your beach trip",
