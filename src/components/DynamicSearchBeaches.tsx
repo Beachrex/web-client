@@ -24,6 +24,12 @@ import { useBeachFiltersController } from '@/hooks/useBeachFiltersController';
 import StyledSelect from './ui/StyledSelect';
 import FilterCard from './ui/FilterCard';
 import { ALL_BEACHES_SECTION_ID } from './AllBeachesLink';
+import {
+  choiceSelectValue,
+  waterbodyChoices,
+  waterbodyFromSelectValue,
+  waterbodySelectValue,
+} from '@/lib/utils/waterbody-filter';
 
 /* -------------------------------------------------------------
    BUILD GALLERY
@@ -474,15 +480,16 @@ function DynamicSearchBeachesInner({
   }
   >
 
+    {/* Indoor / outdoor pools right after "Pool" (owner 2026-10-29); they set `pool_type` */}
     <StyledSelect
-      value={filters.waterbody ? String(filters.waterbody) : ''}
+      value={waterbodySelectValue(filters)}
       onChange={(v) =>
-        _setUserFilters(p => ({ ...p, waterbody: v || undefined }))
+        _setUserFilters(p => ({ ...p, ...waterbodyFromSelectValue(v) }))
       }
       placeholder={tf('allWaterbodies')}
-      options={_filterOptions.waterbody.options.map(opt => ({
-        value: String(opt.code ?? opt.slug),
-        label: String(opt.name ?? opt.slug ?? ''),
+      options={waterbodyChoices(_filterOptions).map(choice => ({
+        value: choiceSelectValue(choice),
+        label: choice.label,
       }))}
     />
   </FilterCard>
