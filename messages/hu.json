@@ -1034,5 +1034,19 @@
     "clear": "Törlés",
     "selected": "Kiválasztott szűrők",
     "remove": "{name} eltávolítása"
+  },
+  "PreviewAccess": {
+    "metaTitle": "Beachrex tesztoldal",
+    "title": "Ez a Beachrex tesztoldala",
+    "intro": "Adja meg e-mail-címét. Ha hozzáfér ehhez az oldalhoz, egyszer használható linket kap.",
+    "emailLabel": "E-mail-cím",
+    "submit": "Link küldése",
+    "sending": "Küldés…",
+    "sent": "Nézze meg a postafiókját. Ha ez a cím hozzáfér a tesztoldalhoz, elküldtük a linket. 15 percig érvényes.",
+    "failed": "A linket nem sikerült kérni. Próbálja újra egy perc múlva.",
+    "linkInvalid": "A link érvénytelen, már felhasználták, vagy lejárt. Kérjen újat.",
+    "callbackTitle": "Tesztoldal megnyitása",
+    "callbackIntro": "Kattintson a gombra a Beachrex tesztoldal megnyitásához ezen az eszközön.",
+    "callbackButton": "Tesztoldal megnyitása"
   }
 }

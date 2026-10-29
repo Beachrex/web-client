@@ -1034,5 +1034,19 @@
     "clear": "Cancella",
     "selected": "Filtri selezionati",
     "remove": "Rimuovi {name}"
+  },
+  "PreviewAccess": {
+    "metaTitle": "Sito di prova Beachrex",
+    "title": "Questo è il sito di prova Beachrex",
+    "intro": "Inserisci il tuo indirizzo e-mail. Se ha accesso a questo sito, riceverai un link monouso.",
+    "emailLabel": "Indirizzo e-mail",
+    "submit": "Inviami un link",
+    "sending": "Invio in corso…",
+    "sent": "Controlla la posta. Se questo indirizzo ha accesso al sito di prova, abbiamo inviato un link. È valido 15 minuti.",
+    "failed": "Non è stato possibile richiedere il link. Riprova tra un minuto.",
+    "linkInvalid": "Questo link non è valido, è già stato usato o è scaduto. Richiedine uno nuovo.",
+    "callbackTitle": "Apri il sito di prova",
+    "callbackIntro": "Fai clic sul pulsante per aprire il sito di prova Beachrex su questo dispositivo.",
+    "callbackButton": "Apri il sito di prova"
   }
 }

@@ -1034,5 +1034,19 @@
     "clear": "Vymazat",
     "selected": "Vybrané filtry",
     "remove": "Odebrat {name}"
+  },
+  "PreviewAccess": {
+    "metaTitle": "Testovací web Beachrex",
+    "title": "Toto je testovací web Beachrex",
+    "intro": "Zadejte svůj e-mail. Pokud má přístup k tomuto webu, dostanete jednorázový odkaz.",
+    "emailLabel": "E-mailová adresa",
+    "submit": "Poslat odkaz",
+    "sending": "Odesílám…",
+    "sent": "Zkontrolujte poštu. Pokud má tato adresa přístup k testovacímu webu, poslali jsme odkaz. Platí 15 minut.",
+    "failed": "Odkaz se nepodařilo vyžádat. Zkuste to znovu za minutu.",
+    "linkInvalid": "Odkaz je neplatný, již použitý nebo vypršel. Vyžádejte si nový.",
+    "callbackTitle": "Otevřít testovací web",
+    "callbackIntro": "Kliknutím na tlačítko otevřete testovací web Beachrex na tomto zařízení.",
+    "callbackButton": "Otevřít testovací web"
   }
 }
