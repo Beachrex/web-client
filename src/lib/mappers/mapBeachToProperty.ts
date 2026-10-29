@@ -6,6 +6,7 @@ import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/bea
 import type { BeachCardFeatures } from '@/lib/utils/beach-badges';
 import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
 import { webcamLink } from '@/lib/utils/webcam';
+import { parseDistanceKm } from '@/lib/utils/distance';
 
 /* ------------------------------------------------------------------
  * Minimal input types for mapper (NO any, NO API coupling)
@@ -55,6 +56,9 @@ export interface BeachLike {
   /** Up to 4 tag strings returned by the API (sporting, culinary, natural conditions) */
   tags?: string[] | null;
   features?: BeachCardFeatures | null;
+
+  /** Distance from the search point, sent by the spatial endpoints (within-radius, nearest) */
+  distance_km?: number | string | null;
 }
 
 
@@ -217,5 +221,6 @@ export function mapBeachToProperty(
 
     tags,
     features: beach.features ?? null,
+    distanceKm: parseDistanceKm(beach.distance_km),
   };
 }

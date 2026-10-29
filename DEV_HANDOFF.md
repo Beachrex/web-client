@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Beach page: distance on "Nearby beaches" cards ✅ COMPLETE
+
+Owner request 2026-10-29: "in 'Nearby beaches' show the distance to these beaches, like in the app".
+- Data: `GET /api/v1/spatial/beaches/within-radius` (already used by the section, centred on the current beach) returns `distance_km` per beach (PostGIS `ST_Distance`). No backend change.
+- `src/lib/utils/distance.ts`: `formatDistance(km, locale)` — same rules as the app (`mobile-app/src/lib/format.ts`): under 1 km metres rounded to 10 m (min 10 m), under 10 km one decimal, from 10 km whole km, `Intl.NumberFormat` per locale ("350 m", "4,2 km" /si, "4.2 km" /en, "12 km"). Web-only fix: 0.995–0.999 km shows "1 km", not "1.000 m". `parseDistanceKm` accepts a number or numeric string.
+- `mapBeachToProperty` → `Property.distanceKm`; `PropertyCard` shows a grey pill with a pin icon top-left on the photo (where the app puts it), with a screen-reader text `PropertyCard.distanceAway` ("{distance} away", all 19 locales). Other listings send no `distance_km`, so their cards are unchanged.
+- Spec `e2e/nearby-distance.unit.spec.ts` (break: no 1000 m guard + one decimal everywhere + mapper field removed → 3 failed).
+
 ## 2026-10-29 – 360° panorama without a tour, uploaded videos play ✅ COMPLETE
 
 Owner report 2026-10-29 (Plage du Port Vieux, Biarritz): black "360° view" popup; video file shown as a broken photo. Backend Beachrex/backend#147 (tour_url null when no tour; video files move to `videos`).
