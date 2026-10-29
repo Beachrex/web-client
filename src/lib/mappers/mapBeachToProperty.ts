@@ -57,6 +57,10 @@ export interface BeachLike {
   tags?: string[] | null;
   features?: BeachCardFeatures | null;
 
+  /** Beach coordinates (the card's map pin centers on them) */
+  latitude?: string | number | null;
+  longitude?: string | number | null;
+
   /** Distance from the search point, sent by the spatial endpoints (within-radius, nearest) */
   distance_km?: number | string | null;
 }
@@ -222,5 +226,7 @@ export function mapBeachToProperty(
     tags,
     features: beach.features ?? null,
     distanceKm: parseDistanceKm(beach.distance_km),
+    latitude: beach.latitude ?? null,
+    longitude: beach.longitude ?? null,
   };
 }

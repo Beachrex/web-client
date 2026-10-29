@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { buildBeachMapUrl, type LocationPillUrls } from '@/lib/utils/beach-urls';
 
 import BottomBadges from './BottomBadges';
 import InfoCardsSection from './InfoCardsSection';
@@ -52,6 +52,12 @@ interface BannerSectionProps {
   islandPillLabel?: string | null;
   topBarVariant?: PageVariant;
   beachCount?: number;
+  /** Pages of the places in the location pills (see TopBar). */
+  pillLinks?: Partial<LocationPillUrls>;
+  /** Full names for the region/island pills (their collapsed labels are shortened). */
+  pillNames?: { region?: string | null; island?: string | null; city?: string | null };
+  /** Published beaches per pill level; a missing level shows no count box. */
+  pillCounts?: Partial<Record<'continent' | 'country' | 'region' | 'island' | 'city', number | null>>;
 
   weather?: {
     temperature?: number | null;
@@ -87,6 +93,9 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   weather,
   weatherLocationName,
   isWeatherLoading,
+  pillLinks,
+  pillNames,
+  pillCounts,
 }) => {
   const t = useTranslations('BannerSection');
   const tCommon = useTranslations('Common');
@@ -140,6 +149,9 @@ const BannerSection: React.FC<BannerSectionProps> = ({
             accommodationCount={accommodationCount}
             title={title}
             beachCount={beachCount}
+            pillLinks={pillLinks}
+            pillNames={pillNames}
+            pillCounts={pillCounts}
           />
 
           <div className="flex flex-1 flex-col justify-center">

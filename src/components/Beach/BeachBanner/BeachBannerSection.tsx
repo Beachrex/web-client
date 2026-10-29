@@ -5,7 +5,8 @@ import { useBeachWeather } from '@/hooks/useWeather';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { getMainBeachImage } from '@/lib/utils/beach-images';
 import { buildBeachBadges } from '@/lib/utils/beach-badges';
-import { buildBeachMapUrl, buildLocationPillUrls } from '@/lib/utils/beach-urls';
+import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 import { FEATURES } from '@/lib/constants/features';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -135,12 +136,7 @@ export default function BeachBannerSection({
   showLocationPills
   showFilter={false}
   pillLabelKey={beachPillKey(water)}
-  pillLinks={buildLocationPillUrls(locale, beachDetails?.location)}
-  pillNames={{
-    region: beachDetails?.location?.region?.name,
-    island: beachDetails?.location?.island?.name,
-    city: beachDetails?.location?.city?.name,
-  }}
+  {...mapPlacePills(locale, beachDetails?.location)}
 />
 
 

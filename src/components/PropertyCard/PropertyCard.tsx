@@ -5,6 +5,7 @@ import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/p
 import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
 import { buildCardFeatureIcons, type BeachCardFeatures } from '@/lib/utils/beach-badges';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildBeachFocusMapUrl } from '@/lib/utils/beach-urls';
 import { parseWebcamUrl, windyIdFromPageUrl } from '@/lib/utils/webcam';
 import WebcamModal from '@/components/Beach/WebcamModal';
 import { useQueryClient } from '@tanstack/react-query';
@@ -69,7 +70,11 @@ export interface PropertyCardProps {
   /** Country page (the flag links to it) and its name for the accessible label */
   countryUrl?: string;
   countryName?: string;
+  /** Map page list only: the pin moves the side map to this beach instead of opening the map page */
   onLocationClick?: () => void;
+  /** Beach coordinates: the pin's map link centers on them before the beach is loaded */
+  latitude?: string | number | null;
+  longitude?: string | number | null;
 
   /** Open the beach page in a new tab (used by the map list, so the map state is kept) */
   openInNewTab?: boolean;
@@ -104,6 +109,8 @@ const PropertyCard = React.memo(function PropertyCard({
   countryName,
   webcamEmbed,
   onLocationClick,
+  latitude,
+  longitude,
   openInNewTab = false,
   tags,
   features,
@@ -198,6 +205,9 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
     e.stopPropagation();
     onLocationClick?.();
   }, [onLocationClick]);
+
+  // Owner 2026-10-29: the pin opens the beach map focused on this beach (outside the map page itself).
+  const mapUrl = Number(id) > 0 ? buildBeachFocusMapUrl(locale, { id: Number(id), latitude, longitude }) : null;
 
   /**
    * Prefetch beach details on hover to improve perceived performance
@@ -499,19 +509,40 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
   )}
 </h3>
 
-       <button
-  type="button"
-  onClick={handleLocationClick}
-  className="pr-[2px] hover:scale-105 transition-transform cursor-pointer hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8000] focus-visible:ring-offset-2 rounded"
-  aria-label={t('showOnMap', { title })}
-       >
-  <Image
-    src="/images/propertycard/location.png"
-    alt=""
-    width={32}
-    height={32}
-  />
-</button>
+        {onLocationClick || !mapUrl ? (
+          <button
+            type="button"
+            onClick={handleLocationClick}
+            data-testid="card-map-pin"
+            className="shrink-0 rounded-full pr-[2px] transition-transform hover:scale-110 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0069AB] focus-visible:ring-offset-2"
+            aria-label={t('showOnMap', { title })}
+            title={t('showOnMap', { title })}
+          >
+            <Image
+              src="/images/propertycard/location.png"
+              alt=""
+              width={32}
+              height={32}
+            />
+          </button>
+        ) : (
+          <Link
+            href={mapUrl}
+            prefetch={false}
+            onClick={(e) => e.stopPropagation()}
+            data-testid="card-map-pin"
+            className="shrink-0 rounded-full pr-[2px] transition-transform hover:scale-110 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0069AB] focus-visible:ring-offset-2"
+            aria-label={t('showOnMap', { title })}
+            title={t('showOnMap', { title })}
+          >
+            <Image
+              src="/images/propertycard/location.png"
+              alt=""
+              width={32}
+              height={32}
+            />
+          </Link>
+        )}
 
         </div>
 
@@ -565,6 +596,9 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
     prevProps.webcamEmbed === nextProps.webcamEmbed &&
     prevProps.tags?.join(',') === nextProps.tags?.join(',') &&
     prevProps.distanceKm === nextProps.distanceKm &&
+    prevProps.latitude === nextProps.latitude &&
+    prevProps.longitude === nextProps.longitude &&
+    Boolean(prevProps.onLocationClick) === Boolean(nextProps.onLocationClick) &&
     JSON.stringify(prevProps.features ?? null) === JSON.stringify(nextProps.features ?? null)
   );
 });

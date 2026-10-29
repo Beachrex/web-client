@@ -29,6 +29,40 @@ Owner, 2026-10-29: "ta AI chat widget na mobile responsive popravi, ker grafičn
 - `ChatMessageList.tsx`: bubbles wrap long words/URLs (`overflow-wrap:anywhere`), beach card text can shrink, no horizontal scroll; the list keeps following the newest message when the keyboard shrinks it.
 - Checked with Playwright (`next dev` + stubbed API, fake keyboard via a stubbed `visualViewport`) at iPhone 13, 320px, Pixel 7, iPhone landscape, desktop and `/ai/chat`. Tests: `e2e/ai-chat-viewport.unit.spec.ts`. Real-device check on dev.beachrex.com still needed.
 
+## 2026-10-29 – Card map pins open the beach map ✅ COMPLETE
+
+Owner: "Wherever cards have a map PIN marker, clicking it should redirect to the map page."
+- **Beach cards** (`PropertyCard`: most visited, browse all beaches, nearby beaches, favorites; blue pin next to the name): the pin is a link to the map focused on the beach, `buildBeachFocusMapUrl()` → `/{locale}/{map-slug}?beach_id=989&lat=45.54&lng=13.66` (coordinates optional). On the map page itself (its list passes `onLocationClick`) the pin still moves the side map in place.
+- **Place cards** (`DestinationCard`: country, region, island, city carousels; red / orange / yellow pin): the pin links to the map filtered to the place, `buildPlaceMapUrl()` with the banner map button's parameters, e.g. island Hvar → `/si/zemljevid-plaz?country=HR&island=<code>`; country → `continent_code` + `country`. The place value is its code (then id, then slug). The card was one `<Link>` around everything; it is now a `<div>` with a stretched card link (`absolute inset-0`) and the pin link above it (`z-20`), so links are not nested and both work with the keyboard.
+- **Map focus** (`src/lib/utils/map-focus.ts`, `MapWithSidebar`): `parseBeachFocus()` reads `beach_id` (+ optional `lat`/`lng`); the map loads the beach (`GET /beaches/{id}`), centers and zooms on it (URL coordinates first, otherwise the loaded beach's), opens its popup, and `withFocusedBeach()` adds its marker when the filters or the viewport would leave it out. The beach banner's map button (same parameters) gets this too.
+- Pins keep their icons, add hover (scale) and focus-visible rings, and are labelled with the existing `PropertyCard.showOnMap` ("Show {title} on map", 19 languages). The pin links do not prefetch.
+- Test: `e2e/card-map-pins.unit.spec.ts`.
+
+## 2026-10-29 – Location pill tabs: full width, place-page look with beach count, on every banner ✅ COMPLETE
+
+Owner report on dev (screenshots): the open tab was only as wide as the pill (name cut to "Hrvaš", "RN" of KVARN showing through), and the native `title` tooltip appeared on top. Owner wants the tab to look like the main bar of that place's own page, with its beach count, and the pills to work on every page that shows them.
+
+- `LocationPill`: the tab is `w-max` (sizes to its content, not to the pill) and covers what it overlaps; no `title` on interactive pills (aria-label stays). The tab shows the level word in a white pill (`TopBar.continentLabel|countryLabel|regionLabel|islandLabel|cityLabel`), the full name in bold white and the white count box with the beach icon and `Common.numBeaches` ("Plaže: 1167", count in the level colour), the same classes as TopBar's main bar, one step smaller. No count: no box (never a wrong number). Keyboard focus ring is drawn on the open tab. Still an overlay (`pointer-events-none`, clip-path, `motion-reduce:transition-none`): the row never moves under the cursor.
+- `TopBar`: new `pillCounts`; `pillTab(level)` passes colour, accent, level word and count to each pill.
+- `src/lib/mappers/mapPlacePills.ts`: links (`buildLocationPillUrls`), names and counts from the beach `location` or a place page's nested parents.
+- Wired on every banner: continent page (`beaches/[continent]/page.tsx`), country page, region/island/city listing pages (via `BannerSection`, which now forwards `pillLinks`/`pillNames`/`pillCounts`) and the beach banner.
+- API client regenerated from the backend spec (`npx openapi-ts -i <backend>/storage/api-docs/api-docs.json`, `client.gen.ts`/`index.ts` kept): `location.*.beaches_count`; it also picked up earlier backend drift (search location slugs are now nullable → `GlobalSearch` maps `null` to `undefined`).
+- Backend: Beachrex/backend PR #154 (`location.*.beaches_count` in beach details; parent counts on the country/region/island/city show endpoints).
+- No new strings: all level words and `Common.numBeaches` exist in all 19 locales (asserted by a test).
+- Tests: `e2e/location-pills.unit.spec.ts` (w-max, no title, tab content, 19 locales, `mapPlacePills`, every banner caller passes links/names/counts and no unlisted caller exists).
+- Visual check: static render of the real `TopBar` (si messages) with Tailwind CLI + Chromium: rest, hover on each pill, city page without the region count, keyboard focus; a left-to-right mouse sweep hovers Evropa > Hrvaška > Kvarner > Rab > Lopar once each, in order.
+
+## 2026-10-29 – Indoor / outdoor pools under "Pool" in the water body filter ✅ COMPLETE
+
+Owner, 2026-10-29: "filter bi mogli razbit na notranji in zunanji bazen … če stisneš na prvi strani outdoor ali indoor, filter ne zazna". The map did take `?pool_type=indoor|outdoor` (chip "Notranji bazen"), but the options were a separate "Vrsta bazena" group and the water body group showed only Morje / Jezero / Reka / Bazen. The 0 results are data: dev has no pool places yet (backend `DEV_HANDOFF.md` 2026-10-29, ADR "Indoor / outdoor pools").
+
+- `src/lib/utils/waterbody-filter.ts` (new): the water body options with the API's `pool_type` options nested right after `pool`; toggles, the section counter, and a select encoding (`pool_type:indoor`) for single-choice selects. Without a `pool` option or `pool_type` group nothing is merged.
+- `src/components/Map/LeftSidebarFilters.tsx` (map sidebar, desktop and the mobile filter drawer): "Notranji bazen" / "Zunanji bazen" indented under "Bazen"; the separate pool type group is hidden; the water body counter counts both parameters and the section opens when only `pool_type` is set (home page tiles).
+- `src/components/Home/FilterModal.tsx`: same nesting in the home "more filters" dialog; selections and summary chips use the right parameter.
+- `src/components/DynamicSearchBeaches.tsx` (country/region/city/island listings): the water body select lists the two pool types after "Bazen"; choosing one sets `pool_type` and clears `waterbody`.
+- URLs unchanged: `waterbody=pool` = every pool place; `pool_type=indoor|outdoor|indoor,outdoor` as the home tiles send. Labels come from `GET /beaches/filters` (backend `lang/*.json`, 19 locales), so no new `messages/*.json` strings.
+- Tests: `e2e/pool-type-filter.unit.spec.ts` (nesting, toggles, counter, select round-trip, regression: the home tile params survive the map's option validation and get the chip label). Deliberate break (no nesting) fails 3 of 6.
+
 ## 2026-10-29 – Map tooltip: no hardcoded "0.0" rating ✅ COMPLETE
 
 Owner, 2026-10-29: the beach tooltip on the map showed "⭐ 0.0" for every beach (hardcoded `Number(0)`), which read as a bad rating. Beaches have no rating source yet, so the badge is removed (as on `PropertyCard` since 2026-10-09). `src/components/Map/BeachMarkerTooltip.tsx`; test `e2e/map-tooltip-rating.unit.spec.ts`.

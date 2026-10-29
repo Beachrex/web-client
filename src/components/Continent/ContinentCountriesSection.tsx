@@ -4,6 +4,7 @@ import DestinationsCarousel from '@/components/DestinationsCarousel';
 import { useCountries } from '@/hooks/useCountries';
 import { useTranslations, useLocale } from 'next-intl';
 import { buildDestinationUrl } from '@/lib/utils/destination-url';
+import { buildPlaceMapUrl } from '@/lib/utils/beach-urls';
 import { useMemo, useState } from 'react';
 import DestinationSortSelect from '@/components/DestinationSortSelect';
 import {
@@ -66,6 +67,7 @@ export default function ContinentCountriesSection({
           country_slug: item.slug,
         },
       }),
+      mapUrl: buildPlaceMapUrl(locale, 'country', c),
     };
   });
 
