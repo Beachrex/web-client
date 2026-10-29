@@ -21,6 +21,7 @@ import DestinationsSection from '../DestinationsSection';
 import { FEATURES } from '@/lib/constants/features';
 import AllBeachesLink from '@/components/AllBeachesLink';
 import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 
 interface RegionListingPageProps {
   regionSlug: string;
@@ -120,6 +121,11 @@ export default function RegionListingPage({ regionSlug, initialData }: RegionLis
         continentCode={regionDetails?.country?.continent?.code}
         countryCode={regionDetails?.country?.code}
         regionSlug={regionSlug}
+        {...mapPlacePills(locale, {
+          continent: regionDetails?.country?.continent,
+          country: regionDetails?.country,
+          region: regionDetails,
+        })}
       />
 
       <PropertySection

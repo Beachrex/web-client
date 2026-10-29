@@ -28,6 +28,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 
 
 interface PageProps {
@@ -244,6 +245,7 @@ const Page = async ({ params }: PageProps) => {
           beachCount={continent.beaches_count ?? 0}
           topBarVariant="continent"
           continentCode={continent.code}
+          {...mapPlacePills(resolvedParams.locale, { continent })}
         />
 
         {/* Most visited */}

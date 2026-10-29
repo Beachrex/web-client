@@ -127,6 +127,35 @@ export type AiChatRequest = {
       facilities?: Array<string> | null;
     } | null;
   } | null;
+  /**
+   * TASK-010: the website page the chat widget is open on. Optional, an untrusted hint only (lets the assistant understand 'this beach' / 'here'); never used for authorization. For page_type=beach the server resolves the beach name and place from beach_id (active beaches only) and ignores title. Other keys → 422.
+   */
+  page_context?: {
+    page_type:
+      | "home"
+      | "beach"
+      | "destination"
+      | "country"
+      | "region"
+      | "island"
+      | "city"
+      | "search"
+      | "map"
+      | "article"
+      | "other";
+    /**
+     * Page path without query string: starts with /, only letters, digits and - . _ ~ / % (URL-encoded)
+     */
+    path?: string | null;
+    /**
+     * Beach id on beach pages
+     */
+    beach_id?: number | null;
+    /**
+     * Page heading (not used for beach pages; cleaned and cut to 80 characters before it reaches the model)
+     */
+    title?: string | null;
+  } | null;
 };
 
 /**
@@ -632,6 +661,10 @@ export type AiResponseMetadata = {
    * Chat only: what the API could not apply (unknown place, relaxed filters).
    */
   assumptions?: Array<string>;
+  /**
+   * Chat only (TASK-010): true when a valid page_context was sent and turned into a page hint for the model.
+   */
+  page_context_used?: boolean;
 };
 
 /**
@@ -1100,6 +1133,17 @@ export type BeachDetailsSchema = {
     name?: string;
     slug?: string;
     description?: string | null;
+    /**
+     * Search snippet in the requested language only (TASK-007)
+     */
+    meta_description?: string | null;
+    /**
+     * Questions and answers in the requested language only; empty when none (TASK-007)
+     */
+    faq?: Array<{
+      q: string;
+      a: string;
+    }>;
     latitude?: string;
     longitude?: string;
     folder_name?: string | null;
@@ -1113,27 +1157,47 @@ export type BeachDetailsSchema = {
       code?: string;
       name?: string;
       slug?: string | null;
+      /**
+       * Published beaches in this place (same count as its place page)
+       */
+      beaches_count?: number;
     } | null;
     country?: {
       code?: string;
       name?: string;
       full_name?: string | null;
       slug?: string | null;
+      /**
+       * Published beaches in this place (same count as its place page)
+       */
+      beaches_count?: number;
     } | null;
     region?: {
       id?: number;
       name?: string;
       slug?: string | null;
+      /**
+       * Published beaches in this place (same count as its place page)
+       */
+      beaches_count?: number;
     } | null;
     city?: {
       id?: number;
       name?: string;
       slug?: string | null;
+      /**
+       * Published beaches in this place (same count as its place page)
+       */
+      beaches_count?: number;
     } | null;
     island?: {
       id?: number;
       name?: string;
       slug?: string | null;
+      /**
+       * Published beaches in this place (same count as its place page)
+       */
+      beaches_count?: number;
     } | null;
     river?: {
       id?: number;
@@ -1262,11 +1326,28 @@ export type BeachDetailsSchema = {
     info_images?: Array<MediaItem>;
   };
   /**
+   * Verified Windy webcams (TASK-006), primary first. Embed `player_url` in an iframe (16:9) and keep a link to `page_url`.
+   */
+  webcams?: Array<{
+    windy_id?: number;
+    title?: string | null;
+    is_primary?: boolean;
+    player_url?: string;
+    page_url?: string;
+  }>;
+  /**
    * Embedded content (videos, webcams, maps, widgets). Note: Real-time weather data is now available via separate endpoint /beaches/{identifier}/weather
    */
   embeds?: {
     video_url?: string | null;
+    /**
+     * Legacy pasted webcam embed (unverified; kept for old app builds). Use `webcams`.
+     */
     webcam?: string | null;
+    /**
+     * Primary verified Windy webcam id (TASK-006), or null
+     */
+    windy_webcam_id?: number | null;
     map_url?: string | null;
     /**
      * Legacy weather widget HTML (deprecated - use /beaches/{identifier}/weather endpoint instead)
@@ -1376,7 +1457,7 @@ export type MediaItem = {
    */
   thumbnail_url?: string | null;
   /**
-   * Virtual tour HTML path for 360 spheres (present only for spheres_360 collection).
+   * Virtual tour HTML path for 360 spheres (spheres_360 only). Null when the tour was never generated: show the panorama in `url` in an own 360° viewer instead.
    */
   tour_url?: string | null;
   mime_type?: string;
@@ -1864,7 +1945,7 @@ export type BeachSchema = {
      */
     spheres_360?: Array<{
       /**
-       * URL to 360° virtual tour
+       * URL to 360° virtual tour. spheres_360 is left out when the beach is known to have no generated tour.
        */
       tour_url?: string;
     }>;
@@ -1877,9 +1958,13 @@ export type BeachSchema = {
        */
       video_url?: string | null;
       /**
-       * Webcam embed code
+       * Legacy pasted webcam embed (unverified)
        */
       webcam?: string | null;
+      /**
+       * Primary verified Windy webcam id (TASK-006), or null
+       */
+      windy_webcam_id?: number | null;
     };
   };
   /**
@@ -2386,7 +2471,7 @@ export type FirstPageContent = {
    */
   description?: string | null;
   /**
-   * Additional configuration data (JSON)
+   * Additional configuration (key-value, values are strings). beach_views: showcase_beach_id = id of the beach shown as the interactive media example on the homepage (TASK-008).
    */
   config?: {
     [key: string]: unknown;
@@ -3400,7 +3485,7 @@ export type SpatialBeach = {
      */
     spheres_360?: Array<{
       /**
-       * URL to 360 degree virtual tour
+       * URL to 360 degree virtual tour. spheres_360 is empty when the beach is known to have no generated tour.
        */
       tour_url?: string;
     }>;
@@ -3413,9 +3498,13 @@ export type SpatialBeach = {
        */
       video_url?: string | null;
       /**
-       * Webcam embed code
+       * Legacy pasted webcam embed (unverified)
        */
       webcam?: string | null;
+      /**
+       * Primary verified Windy webcam id (TASK-006), or null
+       */
+      windy_webcam_id?: number | null;
     };
   };
   /**
@@ -6914,15 +7003,15 @@ export type GetBeachFiltersData = {
      */
     continent_code?: string;
     /**
-     * Filter by country code or ID (e.g., HR, SI, or numeric ID). Alias: country_code
+     * Scope the options to one or several countries: codes or IDs, comma-separated (HR, HR,IT). Alias: country_code
      */
     country?: string | number;
     /**
-     * Filter by region ID or code. Alias: region_code
+     * Scope the options to one or several regions: codes or IDs, comma-separated (istra,kvarner); unknown codes are ignored. Alias: region_code
      */
     region?: number | string;
     /**
-     * Filter by island ID or code. Alias: island_code
+     * Scope the options to one or several islands: codes or IDs, comma-separated; unknown codes are ignored. Alias: island_code
      */
     island?: number | string;
   };
@@ -10137,26 +10226,64 @@ export type GlobalSearchResponses = {
        * Island results with localized slugs for URL building
        */
       islands?: Array<{
-        continent_slug?: string;
-        country_slug?: string;
-        region_slug?: string;
+        id?: number;
+        code?: string;
+        name?: string;
+        /**
+         * Localized island slug
+         */
+        slug?: string;
+        country_code?: string;
+        country_name?: string;
+        region_name?: string;
+        main_image?: string | null;
+        type?: string;
+        continent_slug?: string | null;
+        country_slug?: string | null;
+        region_slug?: string | null;
       }>;
       /**
        * Region results with localized slugs for URL building
        */
       regions?: Array<{
-        continent_slug?: string;
-        country_slug?: string;
+        id?: number;
+        code?: string;
+        name?: string;
+        /**
+         * Localized region slug
+         */
+        slug?: string;
+        country_code?: string;
+        country_name?: string;
+        main_image?: string | null;
+        type?: string;
+        continent_slug?: string | null;
+        country_slug?: string | null;
       }>;
       /**
        * Country results with localized slugs for URL building
        */
       countries?: Array<{
-        continent_slug?: string;
+        id?: number;
+        code?: string;
+        iso3?: string | null;
+        name?: string;
+        /**
+         * Localized country slug
+         */
+        slug?: string;
+        continent_code?: string;
+        continent_name?: string;
+        main_image?: string | null;
+        type?: string;
+        continent_slug?: string | null;
       }>;
     };
     meta?: {
       query?: string;
+      /**
+       * Number of items returned (at most `limit` per type)
+       */
       total_results?: number;
       results_by_type?: {
         beaches?: number;
@@ -10165,6 +10292,35 @@ export type GlobalSearchResponses = {
         regions?: number;
         countries?: number;
       };
+      /**
+       * Sum of totals_by_type: every match, not capped by `limit`
+       */
+      total_matches?: number;
+      /**
+       * Total matches per type (not capped by `limit`). When `place` is set, the types below it count everything in that place as the place pages do: active beaches, and towns/islands/regions with at least one active beach (e.g. all beaches in France). Those types are then listed most viewed (beaches) or most beaches (places) first.
+       */
+      totals_by_type?: {
+        beaches?: number;
+        cities?: number;
+        islands?: number;
+        regions?: number;
+        countries?: number;
+      };
+      /**
+       * The place the query names exactly (any language, case and diacritics ignored), or null. Results of the types below it are limited to it.
+       */
+      place?: {
+        type?: "country" | "region" | "island" | "city";
+        id?: number;
+        /**
+         * Map filter code (country ISO code, region/island/city code)
+         */
+        code?: string | null;
+        /**
+         * Localized name
+         */
+        name?: string;
+      } | null;
     };
     message?: string;
   };
@@ -10172,6 +10328,28 @@ export type GlobalSearchResponses = {
 
 export type GlobalSearchResponse =
   GlobalSearchResponses[keyof GlobalSearchResponses];
+
+export type GetSiteSettingsData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: "/api/v1/site-settings";
+};
+
+export type GetSiteSettingsResponses = {
+  /**
+   * Current switches
+   */
+  200: {
+    success?: boolean;
+    data?: {
+      ai_assistant_enabled?: boolean;
+    };
+  };
+};
+
+export type GetSiteSettingsResponse =
+  GetSiteSettingsResponses[keyof GetSiteSettingsResponses];
 
 export type ResolveSlugData = {
   body?: never;
