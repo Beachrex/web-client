@@ -33,9 +33,6 @@ export interface MenuLabels {
   contact: string;
 }
 
-/** How many countries the "Top beach countries" group lists. */
-export const TOP_COUNTRIES = 10;
-
 /**
  * Burger menu items from API data (TASK-004). Replaces the static `public/menu_*.json`, which had
  * English continent slugs (404 in locales with a localized slug) and only one enabled item.
@@ -74,10 +71,10 @@ export function buildMenuItems({
   });
 
   const continentSlug = new Map(continents.map((c) => [c.code, c.slug]));
+  // Every country with beaches, most beaches first (owner 2026-10-29: no cap, list them all).
   const top = countries
     .filter((c) => c.slug && c.name && (c.beaches_count ?? 0) > 0 && continentSlug.get(c.continent_code ?? ''))
-    .sort((a, b) => (b.beaches_count ?? 0) - (a.beaches_count ?? 0))
-    .slice(0, TOP_COUNTRIES);
+    .sort((a, b) => (b.beaches_count ?? 0) - (a.beaches_count ?? 0));
   if (top.length > 0) {
     items.push({
       label: labels.topCountries,
