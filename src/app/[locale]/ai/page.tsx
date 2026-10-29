@@ -2,6 +2,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { MessageSquare, MapPin } from 'lucide-react';
 
+import { fetchSiteSettings } from '@/lib/site-settings';
+
 /**
  * AI Landing Page
  *
@@ -33,6 +35,9 @@ export default async function AILandingPage({
   const { locale } = params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'AI.landing' });
+  // TASK-009: each card follows its own admin switch (the layout 404s when both are off).
+  const { aiAssistantEnabled, aiTripPlannerEnabled } = await fetchSiteSettings();
+  const both = aiAssistantEnabled && aiTripPlannerEnabled;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -51,8 +56,9 @@ export default async function AILandingPage({
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className={`grid gap-8 mx-auto ${both ? 'md:grid-cols-2 max-w-5xl' : 'max-w-2xl'}`}>
           {/* AI Chat Card */}
+          {aiAssistantEnabled && (
           <Link
             href={`/${locale}/ai/chat`}
             className="block p-8 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-gray-200 hover:border-blue-500"
@@ -85,8 +91,10 @@ export default async function AILandingPage({
               </svg>
             </div>
           </Link>
+          )}
 
           {/* AI Itinerary Card */}
+          {aiTripPlannerEnabled && (
           <Link
             href={`/${locale}/ai/itinerary`}
             className="block p-8 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-gray-200 hover:border-green-500"
@@ -119,9 +127,11 @@ export default async function AILandingPage({
               </svg>
             </div>
           </Link>
+          )}
         </div>
 
-        {/* Info Section */}
+        {/* Info Section: explains free chat vs paid plans, so only when both are on */}
+        {both && (
         <div className="mt-16 text-center">
           <div className="inline-block p-6 bg-blue-50 rounded-lg">
             <p className="text-gray-700">
@@ -129,6 +139,7 @@ export default async function AILandingPage({
             </p>
           </div>
         </div>
+        )}
       </div>
     </div>
   );

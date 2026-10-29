@@ -1,10 +1,12 @@
 import { notFound } from 'next/navigation';
 
-import { fetchSiteSettings } from '@/lib/site-settings';
+import { anyAiFeatureEnabled, fetchSiteSettings } from '@/lib/site-settings';
 
-/** TASK-009: the AI guide pages exist only while the admin switch "AI guide on" is on. */
+/**
+ * TASK-009: the `/ai` hub exists while the AI chat or the AI trip planner is on (admin, System → Site settings).
+ * Each feature's pages are gated again by their own layout (`chat/layout.tsx`, `itinerary/layout.tsx`).
+ */
 export default async function AiLayout({ children }: { children: React.ReactNode }) {
-  const { aiAssistantEnabled } = await fetchSiteSettings();
-  if (!aiAssistantEnabled) notFound();
+  if (!anyAiFeatureEnabled(await fetchSiteSettings())) notFound();
   return children;
 }

@@ -46,7 +46,8 @@ export function buildMenuItems({
   contactUrl,
   labels,
   filterGroups = [],
-  showAi = true,
+  showAiChat = true,
+  showAiPlanner = true,
 }: {
   locale: string;
   continents: MenuContinent[];
@@ -55,8 +56,10 @@ export function buildMenuItems({
   contactUrl: string | null;
   labels: MenuLabels;
   filterGroups?: MenuFilterGroupItems[];
-  /** TASK-009: admin switch "AI guide on". */
-  showAi?: boolean;
+  /** TASK-009: admin switch "AI chat". */
+  showAiChat?: boolean;
+  /** TASK-009: admin switch "AI trip planner (paid)". */
+  showAiPlanner?: boolean;
 }): MenuItem[] {
   const items: MenuItem[] = [];
 
@@ -101,14 +104,11 @@ export function buildMenuItems({
     });
   }
 
-  if (showAi) items.push({
-    label: labels.aiAssistant,
-    href: `/${locale}/ai`,
-    subItems: [
-      { label: labels.aiChat, href: `/${locale}/ai/chat` },
-      { label: labels.aiItinerary, href: `/${locale}/ai/itinerary` },
-    ],
-  });
+  // TASK-009: each entry follows its own admin switch; the group goes only when both are off.
+  const aiSubItems: MenuItem[] = [];
+  if (showAiChat) aiSubItems.push({ label: labels.aiChat, href: `/${locale}/ai/chat` });
+  if (showAiPlanner) aiSubItems.push({ label: labels.aiItinerary, href: `/${locale}/ai/itinerary` });
+  if (aiSubItems.length > 0) items.push({ label: labels.aiAssistant, href: `/${locale}/ai`, subItems: aiSubItems });
 
   if (aboutUrl) items.push({ label: labels.about, href: aboutUrl, icon: '/images/menu/info.svg' });
   if (contactUrl) items.push({ label: labels.contact, href: contactUrl });

@@ -18,6 +18,21 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 - TASK-009 amended: AI chat and AI trip planner follow separate admin switches
+
+Owner: hide the paid trip planner, not the chat; switch either or both in admin (backend Beachrex/backend#160,
+`GET /api/v1/site-settings` → `ai_assistant_enabled` = chat, `ai_trip_planner_enabled` = planner).
+
+- `src/lib/site-settings.ts`: `aiTripPlannerEnabled` (fail closed per key; a missing key = off), `anyAiFeatureEnabled`.
+- Chat switch: `/ai/chat` (new `ai/chat/layout.tsx`), the widget (unchanged), menu "AI beach chat", the chat button on
+  the payment success page.
+- Planner switch: `/ai/itinerary/*` incl. "My plans" (new `ai/itinerary/layout.tsx`), `/payment/*`, menu "AI trip planner".
+- `/ai` hub and the "AI Beach Assistant" menu group: 404 / hidden only when both are off; the hub shows only the
+  cards that are on (the free-vs-paid info line only when both are on).
+- `llms.txt`: one line per enabled feature (`src/lib/utils/llms-ai-lines.ts`).
+- `buildMenuItems({ showAiChat, showAiPlanner })` replaces `showAi`. API client regenerated (new key). No new strings.
+- Tests: `e2e/site-settings.unit.spec.ts`.
+
 ## 2026-10-29 - SEO: home page canonical/hreflang without trailing slash
 
 - `src/lib/utils/metadata-helpers.ts`: new `localeSuffix(path)`; `buildCanonicalUrl`, `buildAlternateLanguages` and

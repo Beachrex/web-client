@@ -10343,7 +10343,14 @@ export type GetSiteSettingsResponses = {
   200: {
     success?: boolean;
     data?: {
+      /**
+       * AI beach chat on
+       */
       ai_assistant_enabled?: boolean;
+      /**
+       * Paid AI trip planner on
+       */
+      ai_trip_planner_enabled?: boolean;
     };
   };
 };
