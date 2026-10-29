@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Fix: 360° viewer answered 404 (middleware) ✅ COMPLETE
+
+After #110 the Pannellum viewer `/vendor/pannellum-2.5.6/pannellum.htm` answered 404 on dev: the locale middleware rewrote it to `/en/vendor/…`. `vendor/` is now excluded in the middleware matcher (like `images`, `brand/`). Spec `e2e/middleware-public-files.unit.spec.ts` (without the fix: 1 failed).
+
 ## 2026-10-29 – Beach page: distance on "Nearby beaches" cards ✅ COMPLETE
 
 Owner request 2026-10-29: "in 'Nearby beaches' show the distance to these beaches, like in the app".
