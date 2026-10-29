@@ -1034,5 +1034,19 @@
     "clear": "Ryd",
     "selected": "Valgte filtre",
     "remove": "Fjern {name}"
+  },
+  "PreviewAccess": {
+    "metaTitle": "Beachrex' testside",
+    "title": "Dette er Beachrex' testside",
+    "intro": "Indtast din e-mailadresse. Hvis den har adgang til siden, får du et engangslink.",
+    "emailLabel": "E-mailadresse",
+    "submit": "Send mig et link",
+    "sending": "Sender…",
+    "sent": "Tjek din indbakke. Hvis denne adresse har adgang til testsiden, har vi sendt et link. Det gælder i 15 minutter.",
+    "failed": "Linket kunne ikke bestilles. Prøv igen om et minut.",
+    "linkInvalid": "Linket er ugyldigt, allerede brugt eller udløbet. Bed om et nyt.",
+    "callbackTitle": "Åbn testsiden",
+    "callbackIntro": "Klik på knappen for at åbne Beachrex' testside på denne enhed.",
+    "callbackButton": "Åbn testsiden"
   }
 }

@@ -1034,5 +1034,19 @@
     "clear": "Wissen",
     "selected": "Geselecteerde filters",
     "remove": "{name} verwijderen"
+  },
+  "PreviewAccess": {
+    "metaTitle": "Beachrex-testwebsite",
+    "title": "Dit is de Beachrex-testwebsite",
+    "intro": "Vul je e-mailadres in. Als het toegang heeft tot deze website, krijg je een eenmalige link.",
+    "emailLabel": "E-mailadres",
+    "submit": "Stuur me een link",
+    "sending": "Bezig met verzenden…",
+    "sent": "Kijk in je inbox. Als dit adres toegang heeft tot de testwebsite, hebben we een link gestuurd. Hij is 15 minuten geldig.",
+    "failed": "De link kon niet worden aangevraagd. Probeer het over een minuut opnieuw.",
+    "linkInvalid": "Deze link is ongeldig, al gebruikt of verlopen. Vraag een nieuwe aan.",
+    "callbackTitle": "Testwebsite openen",
+    "callbackIntro": "Klik op de knop om de Beachrex-testwebsite op dit apparaat te openen.",
+    "callbackButton": "Testwebsite openen"
   }
 }

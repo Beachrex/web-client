@@ -1034,5 +1034,19 @@
     "clear": "Pastro",
     "selected": "Filtrat e zgjedhur",
     "remove": "Hiq {name}"
+  },
+  "PreviewAccess": {
+    "metaTitle": "Faqja testuese Beachrex",
+    "title": "Kjo është faqja testuese Beachrex",
+    "intro": "Shkruani adresën tuaj të emailit. Nëse ka qasje në këtë faqe, do të merrni një lidhje njëpërdorimshe.",
+    "emailLabel": "Adresa e emailit",
+    "submit": "Më dërgo një lidhje",
+    "sending": "Po dërgohet…",
+    "sent": "Kontrolloni postën. Nëse ky email ka qasje në faqen testuese, kemi dërguar një lidhje. Vlen 15 minuta.",
+    "failed": "Lidhja nuk mund të kërkohej. Provoni sërish pas një minute.",
+    "linkInvalid": "Lidhja është e pavlefshme, është përdorur ose ka skaduar. Kërkoni një të re.",
+    "callbackTitle": "Hap faqen testuese",
+    "callbackIntro": "Klikoni butonin për të hapur faqen testuese Beachrex në këtë pajisje.",
+    "callbackButton": "Hap faqen testuese"
   }
 }

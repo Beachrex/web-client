@@ -3,12 +3,50 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { routing } from './i18n/routing';
 import { createBeachesMiddleware } from './lib/i18n/beaches-middleware';
 import { legacySlovenianPath } from './lib/utils/legacy-redirect';
+import {
+  MISCONFIGURED_HTML,
+  PREVIEW_ACCESS_PATH,
+  PREVIEW_COOKIE_NAME,
+  previewGateDecision,
+  readPreviewGateConfig,
+} from './lib/preview-gate/preview-gate';
 import { currentBeachSlug, oldBeachSlug, withBeachSlug } from './lib/utils/old-beach-slug';
 
 const intlMiddleware = createMiddleware(routing);
 const beachesMiddleware = createBeachesMiddleware(intlMiddleware, (url) => NextResponse.rewrite(url));
 
 export default async function middleware(request: NextRequest): Promise<NextResponse> {
+  // The gate's own pages are not localized: keep them away from next-intl.
+  const { pathname } = request.nextUrl;
+  if (pathname === PREVIEW_ACCESS_PATH || pathname.startsWith(`${PREVIEW_ACCESS_PATH}/`)) {
+    return NextResponse.next();
+  }
+  // Closed dev/uat websites (owner 2026-10-29): before anything else. Runtime env, read per request; never on prod.
+  const gate = await previewGateDecision(
+    readPreviewGateConfig({
+      PREVIEW_GATE_ENABLED: process.env.PREVIEW_GATE_ENABLED,
+      PREVIEW_GATE_SECRET: process.env.PREVIEW_GATE_SECRET,
+      NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+    }),
+    request.nextUrl.pathname,
+    request.cookies.get(PREVIEW_COOKIE_NAME)?.value,
+  );
+  if (gate === 'misconfigured') {
+    return new NextResponse(MISCONFIGURED_HTML, {
+      status: 503,
+      headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex' },
+    });
+  }
+  if (gate === 'login') {
+    const url = request.nextUrl.clone();
+    url.pathname = PREVIEW_ACCESS_PATH;
+    url.search = '';
+    url.searchParams.set('return', `${request.nextUrl.pathname}${request.nextUrl.search}`);
+    const response = NextResponse.redirect(url, 307);
+    response.headers.set('cache-control', 'no-store');
+    return response;
+  }
+
   // Old beachrex.com Slovenian URLs used `/sl`; the locale is `si` now. One permanent hop,
   // then `[locale]/[...rest]` maps the rest of the old path (TASK-004 step 5b).
   const slovenian = legacySlovenianPath(request.nextUrl.pathname);
