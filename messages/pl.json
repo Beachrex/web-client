@@ -742,6 +742,8 @@
       "errorBusy": "Asystent AI jest teraz zajęty. Spróbuj ponownie za minutę.",
       "errorTooMany": "Zbyt wiele wiadomości. Odczekaj chwilę i spróbuj ponownie.",
       "errorTooLong": "Wiadomość jest za długa. Skróć ją.",
+      "errorResting": "Asystent AI osiągnął dzienny limit i odpoczywa do jutra. Wróć wtedy – strony plaż i mapa działają jak zwykle.",
+      "errorRobot": "Nie udało się potwierdzić, że nie jesteś robotem. Odśwież stronę i spróbuj ponownie.",
       "widget": {
         "open": "Otwórz asystenta plażowego AI",
         "close": "Zamknij czat",

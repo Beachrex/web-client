@@ -742,6 +742,8 @@
       "errorBusy": "Der KI-Assistent ist gerade ausgelastet. Bitte versuche es in einer Minute erneut.",
       "errorTooMany": "Zu viele Nachrichten. Bitte warte kurz und versuche es erneut.",
       "errorTooLong": "Die Nachricht ist zu lang. Bitte kürze sie.",
+      "errorResting": "Der KI-Assistent hat sein Tageslimit erreicht und ruht bis morgen. Schauen Sie dann wieder vorbei – Strandseiten und Karte funktionieren wie gewohnt.",
+      "errorRobot": "Wir konnten nicht bestätigen, dass Sie kein Roboter sind. Bitte laden Sie die Seite neu und versuchen Sie es erneut.",
       "widget": {
         "open": "KI-Strandassistent öffnen",
         "close": "Chat schließen",

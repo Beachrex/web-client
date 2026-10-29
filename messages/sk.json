@@ -742,6 +742,8 @@
       "errorBusy": "AI asistent je práve vyťažený. Skúste to o minútu znova.",
       "errorTooMany": "Príliš veľa správ. Chvíľu počkajte a skúste to znova.",
       "errorTooLong": "Správa je príliš dlhá. Skráťte ju.",
+      "errorResting": "AI asistent dosiahol denný limit a odpočíva do zajtra. Vráťte sa potom – stránky pláží a mapa fungujú ako zvyčajne.",
+      "errorRobot": "Nepodarilo sa overiť, že nie ste robot. Obnovte stránku a skúste to znova.",
       "widget": {
         "open": "Otvoriť AI asistenta pre pláže",
         "close": "Zavrieť chat",
