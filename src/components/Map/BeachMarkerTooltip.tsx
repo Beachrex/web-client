@@ -3,7 +3,6 @@
 import type { BeachSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema, buildCountryUrl } from '@/lib/utils/beach-urls';
-import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
@@ -52,15 +51,8 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                     sizes="280px"
                 />
 
-                {/* BADGES - same style as PropertyCard */}
-                <div className="absolute left-2 top-2 flex gap-1 z-20">
-                    <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
-                        <Star size={14} className="text-[#FFD700]" fill="#FFD700" />
-                        <span className="text-[10px] text-[#4D4D4D] font-semibold">
-                            {Number(0).toFixed(1)}
-                        </span>
-                    </div>
-                </div>
+                {/* No rating badge: beaches have no rating source yet, and a hardcoded "0.0" read as a bad
+                    rating (owner, 2026-10-29; same as PropertyCard since 2026-10-09). */}
 
                 {/* BOTTOM LABELS - same style as PropertyCard */}
                 <div className="absolute bottom-2 left-2 right-2 flex justify-between pointer-events-none z-20">

@@ -18,6 +18,10 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 – Map tooltip: no hardcoded "0.0" rating ✅ COMPLETE
+
+Owner, 2026-10-29: the beach tooltip on the map showed "⭐ 0.0" for every beach (hardcoded `Number(0)`), which read as a bad rating. Beaches have no rating source yet, so the badge is removed (as on `PropertyCard` since 2026-10-09). `src/components/Map/BeachMarkerTooltip.tsx`; test `e2e/map-tooltip-rating.unit.spec.ts`.
+
 ## 2026-10-29 – Beach banner: location pills open and link to their place ✅ COMPLETE
 
 Owner, 2026-10-29: the pills (continent, country, region, island, city) showed only an icon or a cut 5-letter label ("KVARN", "LOPAR" overflowing) and did nothing.
