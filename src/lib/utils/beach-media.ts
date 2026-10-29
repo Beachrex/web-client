@@ -12,12 +12,28 @@ export interface BeachMediaSources {
   /** Gallery thumbnails (gallery CDN size), in API order. */
   galleryThumbs: string[];
   videoEmbedUrl: string | null;
+  /** True when the video is an uploaded file (mp4 …), played with <video>; false for YouTube embeds. */
+  videoIsFile: boolean;
+  /** krpano tour, or — when the tour was never generated — our 360° viewer with the panorama photo. */
   sphereTourUrl: string | null;
   sphereThumb: string | null;
   webcams: WindyWebcam[];
 }
 
 const FALLBACK_IMAGE = '/images/beachmedia/beach-gallery.jpg';
+
+/** Self-hosted Pannellum 2.5.6 standalone viewer (MIT, public/vendor/pannellum-2.5.6). */
+export const PANORAMA_VIEWER_PATH = '/vendor/pannellum-2.5.6/pannellum.htm';
+
+/**
+ * Owner 2026-10-29 (Plage du Port Vieux): a beach can have the 360° panorama photo but no generated krpano tour
+ * (API `tour_url` null). Then the panorama opens in Pannellum. `autoRotate` is degrees per second.
+ */
+export function panoramaViewerUrl(panoramaImageUrl: string): string {
+  return `${PANORAMA_VIEWER_PATH}#panorama=${encodeURIComponent(panoramaImageUrl)}&autoLoad=true&autoRotate=-2`;
+}
+
+const VIDEO_FILE = /\.(mp4|m4v|mov|webm|ogv)(\?|#|$)/i;
 
 /** Everything the media popup needs from beach details. Pure: no React, no fetch. */
 export function getBeachMediaSources(beach: BeachDetailsSchema): BeachMediaSources {
@@ -35,12 +51,17 @@ export function getBeachMediaSources(beach: BeachDetailsSchema): BeachMediaSourc
     }
   }
 
-  const sphereTourUrl = spheres.length > 0 ? buildSphereTourUrl(spheres[0]?.tour_url) : null;
+  const sphere = spheres[0];
+  const tourUrl = sphere ? buildSphereTourUrl(sphere.tour_url) : null;
+  const panorama = sphere && !tourUrl ? buildCdnUrl(sphere.url ?? sphere.thumbnail_url, 'banner') : null;
+  const sphereTourUrl = tourUrl ?? (panorama ? panoramaViewerUrl(panorama) : null);
+  const videoEmbedUrl = buildBeachVideoUrl(beach.embeds?.video_url, beach.media?.videos ?? []);
 
   return {
     galleryImages,
     galleryThumbs,
-    videoEmbedUrl: buildBeachVideoUrl(beach.embeds?.video_url, beach.media?.videos ?? []),
+    videoEmbedUrl,
+    videoIsFile: videoEmbedUrl !== null && VIDEO_FILE.test(videoEmbedUrl),
     sphereTourUrl,
     sphereThumb: sphereTourUrl
       ? buildCdnUrl(spheres[0]?.thumbnail_url ?? spheres[0]?.url, 'gallery')
