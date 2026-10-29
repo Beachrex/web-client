@@ -18,6 +18,25 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 - Google ads (AdSense) behind the admin switch, off by default
+
+Owner (2026-10-29): "prosim izklopi mi Google ads na produkciji, pa dobro bi bilo, da bi jih lahko prek admina
+vklapljali ali izklapljali". Backend: site setting `ads_enabled` (default off), `GET /api/v1/site-settings` →
+`data.ads_enabled` (Beachrex/backend PR "admin switch for Google ads"; ADR 2026-10-29 TASK-009 amendment).
+
+**Before:** `[locale]/layout.tsx` rendered `ThirdPartyScripts` on prod only; its inline tag loader always added
+`adsbygoogle.js?client=ca-pub-5133469552990533` (AdSense Auto ads — no ad slots or `<ins>` in our markup).
+
+**Now:**
+- `src/lib/site-settings.ts` — `SiteSettings.adsEnabled` (`ads_enabled === true`; fallback/missing/malformed → false).
+- `src/lib/analytics/adsense.ts` — `shouldLoadAdsense(baseUrl, settings)` = `isProductionSite` **and** `adsEnabled`;
+  `buildTagLoaderScript({ adsEnabled })` (Google Analytics always, AdSense only when on).
+- `ThirdPartyScripts` takes `adsEnabled`; consent defaults, CookieYes and GA unchanged. Off → no AdSense script, so no
+  ads and no empty ad spaces (Auto ads only exist when the script runs).
+- `public/ads.txt` stays published (harmless without the script; AdSense checks it when ads are switched back on).
+- Applies within ≤5 minutes (layout reads the settings server-side, `revalidate: 300`, ISR).
+- Tests: `e2e/adsense.unit.spec.ts`; `site-settings` and `seo-crawlers` specs updated.
+
 ## 2026-10-29 - Closed dev/uat website behind an e-mail magic link
 
 Owner: "dev in uat stran bi morali zapreti — vpišem svoj mail, dobim magic link, potem se v sejo shrani, da lahko
