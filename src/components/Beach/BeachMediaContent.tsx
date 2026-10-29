@@ -50,6 +50,23 @@ className="rounded-xl object-contain"
     );
   }
 
+  if (kind === 'video' && sources.videoEmbedUrl && sources.videoIsFile) {
+    // Uploaded video file (mobile app): a real player instead of an iframe (owner 2026-10-29).
+    return (
+      <div className="relative w-full overflow-hidden rounded-xl bg-black">
+        <video
+          src={sources.videoEmbedUrl}
+          title={tUi('videoTitle')}
+          controls
+          playsInline
+          preload="metadata"
+          className="max-h-[75vh] w-full"
+          data-testid="beach-video-file"
+        />
+      </div>
+    );
+  }
+
   if (kind === 'video' && sources.videoEmbedUrl) {
     return (
       <div className="relative w-full overflow-hidden rounded-xl">

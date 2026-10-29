@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
-import { getBeachMediaSources, parseShowcaseBeachId, showcaseCards } from '@/lib/utils/beach-media';
+import { getBeachMediaSources, PANORAMA_VIEWER_PATH, parseShowcaseBeachId, showcaseCards } from '@/lib/utils/beach-media';
 
 /**
  * TASK-008: homepage "View beaches from all angles" shows one real beach.
@@ -72,3 +72,53 @@ test.describe('showcaseCards', () => {
     expect(cards.map((c) => c.kind)).not.toContain('live');
   });
 });
+
+/** Owner 2026-10-29, Plage du Port Vieux (3247): panorama without a generated tour; mp4 uploaded from the app. */
+test.describe('mobile uploads: 360° without tour, uploaded video', () => {
+  const portVieux = (overrides: Record<string, unknown> = {}) =>
+    beach({
+      media: {
+        gallery: [{ url: 'img/beaches_mobile/biarritz-plage-du-port-vieux_5/biarritz-plage-du-port-vieux-085-sl1.jpg' }],
+        videos: [{ url: 'img/beaches_mobile/biarritz-plage-du-port-vieux_5/biarritz-plage-du-port-vieux-935-video.mp4' }],
+        spheres_360: [{
+          url: 'img/beaches_mobile/biarritz-plage-du-port-vieux_5/biarritz-plage-du-port-vieux-365-panorama1.jpg',
+          tour_url: null,
+        }],
+      },
+      embeds: { video_url: null },
+      webcams: [],
+      ...overrides,
+    });
+
+  test('no tour → the panorama opens in our 360° viewer', () => {
+    const s = getBeachMediaSources(portVieux());
+    expect(s.sphereTourUrl).not.toBeNull();
+    const url = s.sphereTourUrl!;
+    expect(url.startsWith(`${PANORAMA_VIEWER_PATH}#panorama=`)).toBe(true);
+    const panorama = decodeURIComponent(url.split('#panorama=')[1]!.split('&')[0]!);
+    expect(panorama).toMatch(/img\/beaches_mobile\/.+panorama1\.jpg$/);
+    expect(url).toContain('autoLoad=true');
+    expect(showcaseCards(s).map((c) => c.kind)).toContain('sphere');
+  });
+
+  test('a generated tour is still used as before', () => {
+    const s = getBeachMediaSources(beach());
+    expect(s.sphereTourUrl).toMatch(/vtour\/tour\.html$/);
+    expect(s.sphereTourUrl).not.toContain(PANORAMA_VIEWER_PATH);
+  });
+
+  test('no panorama and no tour → no 360° card', () => {
+    const s = getBeachMediaSources(portVieux({ media: { gallery: [], videos: [], spheres_360: [] } }));
+    expect(s.sphereTourUrl).toBeNull();
+  });
+
+  test('uploaded mp4 plays as a file, YouTube stays an embed', () => {
+    const file = getBeachMediaSources(portVieux());
+    expect(file.videoEmbedUrl).toMatch(/\.mp4$/);
+    expect(file.videoIsFile).toBe(true);
+
+    const yt = getBeachMediaSources(beach());
+    expect(yt.videoIsFile).toBe(false);
+  });
+});
+
