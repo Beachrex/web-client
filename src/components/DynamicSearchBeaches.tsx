@@ -1,14 +1,20 @@
 'use client';
 
-import { useAllBeaches } from '@/hooks/useBeaches';
+import { useBeachPage, type BeachSort } from '@/hooks/useBeaches';
+import type { BeachListResponseSchema, BeachSchema } from '@/lib/api-client/types.gen';
+import { hasMainImage, withMainImage } from '@/lib/utils/beach-cards';
+import { cardTags } from '@/lib/utils/beach-properties';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
+import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
+import { webcamLink } from '@/lib/utils/webcam';
+import { buildBeachMapUrl, buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
 import { Pagination } from 'flowbite-react';
 import { useLocale, useTranslations, type TranslationValues } from 'next-intl';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import { PropertyMediaContext } from '@/components/PropertySection';
+import BeachViewToggle, { type BeachMediaMode } from '@/components/BeachViewToggle';
 
 import Dropdown from './Dropdown';
 import type { PropertyCardProps } from './PropertyCard/PropertyCard';
@@ -17,6 +23,13 @@ import Link from 'next/link';
 import { useBeachFiltersController } from '@/hooks/useBeachFiltersController';
 import StyledSelect from './ui/StyledSelect';
 import FilterCard from './ui/FilterCard';
+import { ALL_BEACHES_SECTION_ID } from './AllBeachesLink';
+import {
+  choiceSelectValue,
+  waterbodyChoices,
+  waterbodyFromSelectValue,
+  waterbodySelectValue,
+} from '@/lib/utils/waterbody-filter';
 
 /* -------------------------------------------------------------
    BUILD GALLERY
@@ -31,6 +44,7 @@ interface BeachMediaInput {
   media?: {
     gallery?: { url?: string; order?: number | null }[];
     spheres_360?: { tour_url?: string }[];
+    videos?: { url?: string; is_primary?: boolean }[];
     embeds?: { video_url?: string | null } | null;
   };
 }
@@ -46,6 +60,39 @@ function buildGallery(beach: BeachMediaInput) {
     .filter((u): u is string => Boolean(u));
 }
 
+/** Beach → card props (beaches without a main image are skipped: QA #55, #56). */
+function useBeachCards(beaches: BeachSchema[]): PropertyCardProps[] {
+  const locale = useLocale();
+  const tCommon = useTranslations('Common');
+
+  return beaches.map(withMainImage).filter(hasMainImage).map((b) => {
+    const mainImage = buildCdnUrl(b.main_image, 'list')!;
+    const sphere = b.media?.spheres_360?.[0] ?? null;
+
+    return {
+      id: String(b.id),
+      beachUrl: buildBeachUrlFromSchema(b, locale) ?? undefined,
+      image: mainImage,
+      galleryImages: buildGallery(b),
+      sphereThumbnail: sphere ? mainImage : undefined,
+      sphereTourUrl: buildSphereTourUrl(sphere?.tour_url) ?? undefined,
+      videoEmbedUrl: buildBeachVideoUrl(b.media?.embeds?.video_url, b.media?.videos) ?? undefined,
+      webcamEmbed: webcamLink(b.media?.embeds),
+      features: b.features ?? null,
+      title: b.name ?? tCommon('unknownBeach'),
+      location: b.city_name ?? b.country_name ?? '',
+      locationUrl: buildCityUrlFromSchema(b, locale) ?? undefined,
+      price: 0,
+      rating: 0,
+      reviews: 0,
+      countryCode: b.country_code,
+      latitude: b.latitude ?? null,
+      longitude: b.longitude ?? null,
+      tags: cardTags(b),
+    };
+  });
+}
+
 /* -------------------------------------------------------------
    COMPONENT
 -------------------------------------------------------------- */
@@ -59,9 +106,11 @@ interface DynamicSearchBeachesProps {
   baseFilters: Record<string, string | number>;
   hiddenFilterKeys?: string[];
   optionScopeFilters?: Record<string, string | number>;
+  /** First page for `baseFilters`, fetched on the server: in the HTML at once, no client request for it. */
+  initialPage?: BeachListResponseSchema | null;
 }
 
-export default function DynamicSearchBeaches({
+function DynamicSearchBeachesInner({
   translationNamespace,
   filterNamespace = 'Filters',
   titleKey,
@@ -70,12 +119,12 @@ export default function DynamicSearchBeaches({
   baseFilters,
   hiddenFilterKeys,
   optionScopeFilters,
+  initialPage,
 }: DynamicSearchBeachesProps) {
   const t = useTranslations(translationNamespace);
   const tf = useTranslations(filterNamespace);
-  const tCommon = useTranslations('Common');
-
   const locale = useLocale();
+  const tCommon = useTranslations('Common');
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
@@ -91,15 +140,33 @@ export default function DynamicSearchBeaches({
     optionScopeFilters,
   });
 
-  const { beaches, loading } = useAllBeaches(filters, true);
+  const [sort, setSort] = useState<BeachSort>('popular');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [sort, setSort] = useState<'popular' | 'newest' | 'rating'>('popular');
-const [mediaMode] =
-  useState<'gallery' | 'sphere' | 'video' | 'webcam'>('gallery');
+  // Only the current page comes from the server (filters, page and sort are API parameters).
+  const { beaches, total, lastPage, loading, fetching } = useBeachPage(
+    filters,
+    currentPage,
+    sort,
+    initialPage ? { filters: baseFilters, response: initialPage } : null,
+  );
+
+  // A new filter or order starts again at page 1.
+  const filtersKey = JSON.stringify(filters);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filtersKey, sort]);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    document.getElementById(ALL_BEACHES_SECTION_ID)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  const [mediaMode, setMediaMode] = useState<BeachMediaMode>('gallery');
 
   // Build map URL with current filters
+  // Locale-prefixed: a bare '/beach-map' let the NEXT_LOCALE cookie pick the language (QA #24)
   const buildMapUrl = () => {
-    if (!baseFilters) return '/beach-map';
+    if (!baseFilters) return buildBeachMapUrl(locale);
 
     const params = new URLSearchParams();
     Object.entries(baseFilters).forEach(([key, value]) => {
@@ -109,16 +176,9 @@ const [mediaMode] =
     });
 
     const queryString = params.toString();
-    return queryString ? `/beach-map?${queryString}` : '/beach-map';
+    return buildBeachMapUrl(locale, queryString || undefined);
   };
 
-
-  const itemsPerPage = 16;
-  const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [mediaMode, beaches]);
 
   // Listen for custom event to open filter sidebar
   useEffect(() => {
@@ -132,60 +192,25 @@ const [mediaMode] =
     };
   }, []);
 
-  const properties: PropertyCardProps[] = beaches.map((b) => {
-    const mainImage = buildCdnUrl(b.main_image, 'list');
-    if (!mainImage) throw new Error(`Missing main_image for beach ${b.id}`);
+  const properties = useBeachCards(beaches);
 
-    const galleryImages = buildGallery(b);
-    const sphere = b.media?.spheres_360?.[0] ?? null;
-    const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
+  // The view switch changes how cards look, it does not hide beaches: the page comes from the server, so hiding
+  // cards here would break the count and paging. A beach without the medium shows its own empty state.
+  const hasAnyWebcam = properties.some((p) => Boolean(p.webcamEmbed));
 
-    const rawVideo = b.media?.embeds?.video_url ?? null;
-    const videoEmbedUrl =
-      rawVideo?.includes('youtu')
-        ? rawVideo
-            .replace('youtu.be/', 'www.youtube.com/embed/')
-            .replace('watch?v=', 'embed/')
-        : undefined;
-
-    return {
-      beachUrl: buildBeachUrlFromSchema(b, locale) ?? undefined,
-      image: mainImage,
-      galleryImages,
-      sphereThumbnail: sphere ? mainImage : undefined,
-      sphereTourUrl,
-      videoEmbedUrl,
-      webcamEmbed: b.media?.embeds?.webcam ?? null,
-      title: b.name ?? tCommon('unknownBeach'),
-      location: b.city_name ?? b.country_name ?? '',
-      locationUrl: buildCityUrlFromSchema(b, locale) ?? undefined,
-      price: 0,
-      rating: 0,
-      reviews: 0,
-      countryCode: b.country_code,
-    };
-  });
-
-  const filteredProperties = properties.filter((p) => {
-    if (mediaMode === 'sphere') return Boolean(p.sphereTourUrl);
-    if (mediaMode === 'video') return Boolean(p.videoEmbedUrl);
-    if (mediaMode === 'webcam') return Boolean(p.webcamEmbed);
-    return true;
-  });
-
-  const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
-  const paginatedItems = filteredProperties.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
+  const totalPages = lastPage;
+  const paginatedItems = properties;
 
   return (
-    <section className="relative bg-[#F5F5F5] py-12 sm:py-16 lg:py-20">
+    <section
+      id={ALL_BEACHES_SECTION_ID}
+      className="relative scroll-mt-4 bg-[#F5F5F5] py-12 sm:py-16 lg:py-20"
+    >
 
       {/* ================= FILTER DRAWER ================= */}
       {isFilterOpen && (
         <div
-          className="fixed inset-0 z-[100] bg-black/40"
+          className="fixed inset-0 z-[1100] bg-black/40"
           onClick={() => setIsFilterOpen(false)}
         >
           <div
@@ -214,7 +239,7 @@ const [mediaMode] =
                 <span>
                   {loading
                     ? tf('loadingFilters')
-                    : `${tf('found')} (${filteredProperties.length})`}
+                    : `${tf('found')} (${total})`}
                 </span>
                 <button
                   type="button"
@@ -457,15 +482,16 @@ const [mediaMode] =
   }
   >
 
+    {/* Indoor / outdoor pools right after "Pool" (owner 2026-10-29); they set `pool_type` */}
     <StyledSelect
-      value={filters.waterbody ? String(filters.waterbody) : ''}
+      value={waterbodySelectValue(filters)}
       onChange={(v) =>
-        _setUserFilters(p => ({ ...p, waterbody: v || undefined }))
+        _setUserFilters(p => ({ ...p, ...waterbodyFromSelectValue(v) }))
       }
       placeholder={tf('allWaterbodies')}
-      options={_filterOptions.waterbody.options.map(opt => ({
-        value: String(opt.code ?? opt.slug),
-        label: String(opt.name ?? opt.slug ?? ''),
+      options={waterbodyChoices(_filterOptions).map(choice => ({
+        value: choiceSelectValue(choice),
+        label: choice.label,
       }))}
     />
   </FilterCard>
@@ -485,6 +511,8 @@ const [mediaMode] =
           </h2>
 
           <div className="flex flex-wrap gap-3 items-center">
+            <BeachViewToggle mode={mediaMode} onChange={setMediaMode} webcamAvailable={hasAnyWebcam} />
+
             <button
               type="button"
               onClick={() => setIsFilterOpen(true)}
@@ -511,7 +539,7 @@ alt=""
 
             <Dropdown
               value={sort}
-              onChange={(v) => setSort(v as typeof sort)}
+              onChange={(v) => setSort(v as BeachSort)}
               showIcons={false}
               buttonBg="#FFFFFF"
               menuBg="#FFFFFF"
@@ -519,7 +547,6 @@ alt=""
               options={[
                 { value: 'popular', label: t('sortPopular') },
                 { value: 'newest', label: t('sortNewest') },
-                { value: 'rating', label: t('sortTopRated') },
               ]}
             />
           </div>
@@ -533,7 +560,10 @@ alt=""
   }}
      >
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div
+            className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 transition-opacity ${fetching ? 'opacity-60' : ''}`}
+            aria-busy={fetching}
+          >
             {!loading &&
               paginatedItems.map((p, i) => (
                 <PropertyCard key={`${p.title}-${i}`} {...p} />
@@ -546,7 +576,9 @@ alt=""
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              onPageChange={goToPage}
+              previousLabel={tCommon('paginationPrevious')}
+              nextLabel={tCommon('paginationNext')}
               showIcons
             />
           </div>
@@ -556,3 +588,36 @@ alt=""
   );
 }
 
+/**
+ * The browse list reads the URL filters (`useSearchParams`). Pages are cached as static HTML (ISR), and Next 14 needs
+ * a Suspense boundary around `useSearchParams` there, otherwise the page fails with a 500.
+ */
+export default function DynamicSearchBeaches(props: DynamicSearchBeachesProps) {
+  return (
+    <Suspense fallback={<FirstPageFallback {...props} />}>
+      <DynamicSearchBeachesInner {...props} />
+    </Suspense>
+  );
+}
+
+/**
+ * What the cached HTML contains: the title and the server-fetched first page of cards (visible at once and
+ * readable by search engines). The interactive list replaces it in the browser with the same data.
+ */
+function FirstPageFallback({ translationNamespace, titleKey, titleParams, initialPage }: DynamicSearchBeachesProps) {
+  const t = useTranslations(translationNamespace);
+  const cards = useBeachCards(initialPage?.data ?? []);
+
+  return (
+    <section id={ALL_BEACHES_SECTION_ID} className="relative min-h-[400px] bg-[#F5F5F5] py-12 sm:py-16 lg:py-20" aria-busy="true">
+      <div className="container mx-auto">
+        <h2 className="mb-8 text-[26px] font-bold text-[#222]">{t(titleKey, titleParams)}</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {cards.map((p, i) => (
+            <PropertyCard key={`${p.title}-${i}`} {...p} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

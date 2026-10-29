@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Plazhet në mbarë botën",
     "quickMenuBeachType": "Lloji i plazhit",
     "quickMenuUserType": "Lloji i përdoruesit",
-    "quickMenuBeachDisplay": "Pamja e plazhit",
     "quickMenuBeachServices": "Shërbimet e plazhit",
     "quickMenuTopBeaches": "Plazhet më të mira",
     "quickMenuAboutUs": "Rreth nesh",
@@ -65,7 +64,14 @@
     "accommodationDefaultDistance": "250 m nga plazhi",
     "accommodationDefaultBeach": "Plazhi Haludovo",
     "accommodationDefaultPrice": "nga 25 €",
-    "beachSeaBeach": "Plazh deti"
+    "beachSeaBeach": "Plazh deti",
+    "copyLink": "Kopjo",
+    "linkCopied": "U kopjua",
+    "shareOn": "Ndaj në {network}",
+    "shareByEmail": "Ndaj me email",
+    "moreShareOptions": "Më shumë opsione",
+    "paginationPrevious": "E mëparshmja",
+    "paginationNext": "Tjetra"
   },
   "Search": {
     "typeBeach": "Plazh",
@@ -76,7 +82,17 @@
     "beaches": "plazhe",
     "noResults": "Nuk u gjetën rezultate. Provoni një term tjetër kërkimi.",
     "searching": "Duke kërkuar...",
-    "clearSearch": "Pastro kërkimin"
+    "clearSearch": "Pastro kërkimin",
+    "tabAll": "Të gjitha",
+    "tabBeaches": "Plazhe",
+    "tabCities": "Qytete",
+    "tabIslands": "Ishuj",
+    "tabRegions": "Rajone",
+    "tabCountries": "Shtete",
+    "tabsLabel": "Filtro rezultatet sipas llojit",
+    "showAllOnMap": "Të gjitha plazhet në hartë: {name}",
+    "showingOf": "Shfaqen {shown} nga {total}",
+    "openPlace": "Hap {name}"
   },
   "HomePage": {
     "allBeaches": "Të gjithë plazhet",
@@ -103,7 +119,10 @@
     "outdoorPools": "Pishina të jashtme",
     "indoorPoolsSpas": "Pishina të brendshme & Spa",
     "browseAccommodationsButton": "Shfleto akomodimet",
-    "moreAccommodations": "+Më shumë akomodime"
+    "moreAccommodations": "+Më shumë akomodime",
+    "showcaseExample": "Shembull: {beach}",
+    "showcaseOpenBeach": "Shiko {beach}",
+    "showcaseLiveBadge": "Drejtpërdrejt"
   },
   "BeachCategories": {
     "sandyBeaches": "Plazhe me rërë",
@@ -136,9 +155,12 @@
     "browseBeaches": "Shfleto të gjitha plazhet",
     "goHome": "Shko në fillim"
   },
-  "AboutPage": {
-    "aboutUs": "Rreth nesh",
-    "description": "Përshkrimi i faqes rreth nesh"
+  "ErrorPage": {
+    "title": "Diçka shkoi keq.",
+    "subtitle": "Gabim",
+    "description": "Ndodhi një gabim i papritur. Provoni përsëri pas pak.",
+    "retry": "Provo përsëri",
+    "goHome": "Kreu"
   },
   "BeachTypePage": {
     "title": "Llojet e plazheve",
@@ -161,17 +183,16 @@
     "premiumAccommodations": "Akomodim luksoz në {continent}",
     "bestDeals": "Oferta të mira",
     "description": "Eksploroni plazhet më të bukura në {continent}.",
-    "countriesContinent": "Vendet në {continent}"
+    "countriesContinent": "Vendet në {continent}",
+    "sortBy": "Rendit",
+    "sortAlphabetical": "Sipas alfabetit (A–Zh)",
+    "sortBeachesDesc": "Më shumë plazhe së pari",
+    "sortBeachesAsc": "Më pak plazhe së pari"
   },
   "FeatureCards": {
     "beachMapButton": "Harta e plazheve",
     "browseBlogButton": "Shfleto blogun",
     "browseAccommodationsButton": "Shfleto akomodimet"
-  },
-  "routes": {
-    "beachMap": "/harta-plazheve",
-    "blog": "/blog",
-    "accommodations": "/akomodimet"
   },
   "Destinations": {
     "croatia": "Kroacia",
@@ -221,7 +242,7 @@
     "viewBeachMap": "Shiko hartën e plazheve"
   },
   "SearchBeach": {
-    "title": "Shfletoni të gjithë plazhet në Evropë",
+    "title": "Shfletoni të gjithë plazhet në {continent}",
     "filterButton": "Filtro",
     "mapButton": "Shfaq hartën",
     "displayLabel": "Pamja e plazhit:",
@@ -239,7 +260,7 @@
     "filterBeachType": "Lloji i plazhit",
     "filterUserType": "Lloji i përdoruesit",
     "filterWaterbody": "Lloji i ujit",
-    "filterParking": "Parking",
+    "filterParking": "Parkim",
     "allCountries": "Të gjitha vendet",
     "allRegions": "Të gjitha rajonet",
     "allIslands": "Të gjithë ishujt",
@@ -312,9 +333,12 @@
     "islandLabel": "Ishull",
     "cityLabel": "Qytet",
     "countryLabel": "Vend",
-    "beachLabel": "Plazh deti",
+    "beachLabel": "Det",
     "beachCountLabel": "Numri i plazheve:",
-    "accommodationCountLabel": "Numri i akomodimeve:"
+    "accommodationCountLabel": "Numri i akomodimeve:",
+    "beachLabelLake": "Liqen",
+    "beachLabelRiver": "Lumë",
+    "beachLabelPool": "Pishinë"
   },
   "TopBarBeach": {
     "beachLabel": "Plazh deti",
@@ -328,7 +352,9 @@
       "parking": "Parking në dispozicion",
       "easyAccess": "Akses i lehtë",
       "windsurfing": "Windsurfing",
-      "SeaTemperature": "Temperatura e detit"
+      "SeaTemperature": "Temperatura e detit",
+      "adventurer": "Plazh për aventurierë",
+      "partyBeach": "Plazh për festa"
     }
   },
   "AccommodationSection": {
@@ -514,20 +540,16 @@
       "title": "Shfletoni faqen",
       "links": [
         {
-          "label": "Përmbledhja e të gjitha destinacioneve",
-          "href": "/destinacionet"
+          "label": "Përmbledhja e të gjitha destinacioneve"
         },
         {
-          "label": "Kërko sipas plazheve",
-          "href": "/plazhet"
+          "label": "Kërko sipas plazheve"
         },
         {
-          "label": "Kërko sipas akomodimeve",
-          "href": "/akomodimet"
+          "label": "Kërko sipas akomodimeve"
         },
         {
-          "label": "Pamja e hartës",
-          "href": "/harta-plazheve"
+          "label": "Pamja e hartës"
         }
       ]
     },
@@ -539,7 +561,12 @@
       "gdprConsent": "Pranoj të marr email-et promovuese dhe lajme, dhe pranoj <privacy>politikën e privatësisë</privacy>."
     },
     "legal": {
-      "rights": "Të gjitha të drejtat e rezervuara BeachRex"
+      "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Të gjitha të drejtat të rezervuara."
+    },
+    "app": {
+      "title": "Shkarko aplikacionin",
+      "googlePlayTop": "MERRE NË",
+      "appStoreTop": "Shkarko nga"
     }
   },
   "BeachSimilarBeaches": {
@@ -562,9 +589,10 @@
       "accommodation": "Akomodimi",
       "food": "Ushqim & pije",
       "sports": "Aktivitete sportive",
-      "parking": "Parking",
+      "parking": "Parkim",
       "pathToBeach": "Shtegu drejt plazhit",
-      "userType": "Lloji i përdoruesit"
+      "userType": "Lloji i përdoruesit",
+      "gpsLocation": "Vendndodhja GPS"
     },
     "labels": {
       "type": "Lloji",
@@ -581,11 +609,15 @@
       "wayToParking": "Siperfaqja drejt parkimit",
       "recommendedAccess": "Aksesi i rekomanduar",
       "distance": "Distanca (parking — plazh)",
-      "elevationDiff": "Ndryshimi i lartësisë (parking në plazh)"
+      "elevationDiff": "Ndryshimi i lartësisë (parking në plazh)",
+      "seabedLake": "Fundi i liqenit",
+      "seabedRiver": "Shtrati i lumit",
+      "seabedPool": "Fundi i pishinës"
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Hartë"
+      "map": "Hartë",
+      "navigation": "Navigimi"
     },
     "values": {
       "yes": "Po",
@@ -613,7 +645,7 @@
       "playground": "Fushë lojërash",
       "sportsField": "Fushë sportive",
       "lifeguard": "Shpëtues",
-      "parking": "Parking",
+      "parking": "Parkim",
       "bench": "Stol",
       "trashBin": "Kosh mbeturinash",
       "publicPhone": "Telefon publik",
@@ -631,7 +663,12 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Kamerë live",
+    "webcamIframeTitle": "Kamerë live: {name}",
+    "webcamCredit": "Kamera ofrohet nga Windy.com",
+    "closeMedia": "Mbyll",
+    "navigationAria": "Udhëzime për te {name} në Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Vazhdo me Google",
@@ -648,7 +685,30 @@
     "loginRequired": "Kërkohet hyrja",
     "loginRequiredMessage": "Ju duhet të hyni për të përdorur këtë funksion.",
     "creditsRequired": "Kërkohen kredite",
-    "creditsRequiredMessage": "Ju duhen kredite për të gjeneruar itinerarë. Ju lutemi blini kredite për të vazhduar."
+    "creditsRequiredMessage": "Ju duhen kredite për të gjeneruar itinerarë. Ju lutemi blini kredite për të vazhduar.",
+    "orDivider": "ose",
+    "signInWithEmail": "Hyr me email",
+    "email": "Email",
+    "password": "Fjalëkalimi",
+    "signIn": "Hyr",
+    "forgotPassword": "Keni harruar fjalëkalimin?",
+    "invalidCredentials": "Email ose fjalëkalim i gabuar.",
+    "tooManyAttempts": "Shumë përpjekje. Prisni një minutë dhe provoni përsëri.",
+    "genericError": "Diçka shkoi keq. Provoni përsëri.",
+    "forgotTitle": "Keni harruar fjalëkalimin?",
+    "forgotDescription": "Shkruani email-in e llogarisë suaj Beachrex dhe do t'ju dërgojmë një lidhje për të vendosur një fjalëkalim të ri.",
+    "sendLink": "Dërgo lidhjen",
+    "forgotSent": "Nëse ekziston një llogari me këtë email, kemi dërguar një lidhje për rivendosjen e fjalëkalimit. Kontrolloni kutinë hyrëse dhe dosjen e spam-it.",
+    "resetTitle": "Vendosni një fjalëkalim të ri",
+    "newPassword": "Fjalëkalimi i ri",
+    "confirmPassword": "Përsëritni fjalëkalimin e ri",
+    "passwordHint": "Të paktën 8 karaktere.",
+    "passwordsDontMatch": "Fjalëkalimet nuk përputhen.",
+    "savePassword": "Ruaj fjalëkalimin",
+    "resetDone": "Fjalëkalimi juaj u ndryshua dhe jeni i identifikuar.",
+    "resetDoneSignIn": "Fjalëkalimi juaj u ndryshua. Tani mund të hyni.",
+    "resetInvalidLink": "Kjo lidhje për rivendosjen e fjalëkalimit është e pavlefshme ose ka skaduar.",
+    "requestNewLink": "Kërko një lidhje të re"
   },
   "AI": {
     "landing": {
@@ -656,7 +716,13 @@
       "subtitle": "Shoqëruesi juaj personal i zbulimit të plazheve i fuqizuar nga AI",
       "description": "Merrni rekomandime të personalizuara për plazhe, bisedoni me asistentin tonë AI dhe krijoni itinerarë të personalizuara për pushimet tuaja të përsosura në plazh.",
       "chatButton": "Fillo bisedën",
-      "itineraryButton": "Krijo itinerar"
+      "itineraryButton": "Krijo itinerar",
+      "chatCardText": "Pyetni asistentin tonë AI për çdo gjë rreth plazheve, destinacioneve dhe këshillave të udhëtimit dhe merrni menjëherë rekomandime të personalizuara.",
+      "chatCta": "Fillo bisedën",
+      "itineraryCardText": "Krijoni itinerare të personalizuara shumëditore për pushime në plazh, sipas preferencave, buxhetit dhe interesave tuaja.",
+      "itineraryCta": "Krijo një itinerar",
+      "infoTitle": "I ri në Beachrex AI?",
+      "infoText": "Biseda është falas për të gjithë. Itineraret shumëditore kërkojnë kredite – hyni me Google për të filluar!"
     },
     "chat": {
       "title": "Bisedo me AI",
@@ -666,29 +732,117 @@
       "sending": "Duke dërguar...",
       "error": "Dështoi dërgimi i mesazhit. Ju lutemi provoni përsëri.",
       "welcome": "Përshëndetje! Jam asistenti juaj AI i plazheve. Si mund t'ju ndihmoj sot?",
-      "anonymousNote": "Po bisedoni anonimisht. Hyni për të ruajtur bisedat tuaja dhe për të përdorur funksionet premium."
+      "anonymousNote": "Po bisedoni anonimisht. Hyni për të ruajtur bisedat tuaja dhe për të përdorur funksionet premium.",
+      "viewDetails": "Shiko detajet →",
+      "suggestions": "Sugjerime:",
+      "match": "{percent}% përputhje",
+      "useLocation": "Përdor vendndodhjen time (plazhet afër)",
+      "locationOn": "Vendndodhja juaj përdoret për plazhet afër",
+      "locationDenied": "Vendndodhja nuk është e disponueshme. Lejoni qasjen në vendndodhje te shfletuesi ose shkruani një vend.",
+      "errorBusy": "Asistenti AI është i zënë tani. Provoni përsëri pas një minute.",
+      "errorTooMany": "Shumë mesazhe. Prisni pak dhe provoni përsëri.",
+      "errorTooLong": "Mesazhi është shumë i gjatë. Shkurtojeni.",
+      "widget": {
+        "open": "Hap asistentin AI për plazhet",
+        "close": "Mbyll bisedën",
+        "title": "Asistenti AI për plazhet",
+        "newConversation": "Bisedë e re",
+        "openFullPage": "Hap bisedën e plotë",
+        "inputLabel": "Mesazhi juaj",
+        "greeting": "Përshëndetje! Më pyesni çfarëdo për plazhet dhe udhëtimin tuaj në det.",
+        "greetingBeach": "Përshëndetje! Po shikoni {name}. Më pyesni çfarëdo për të ose për çdo plazh tjetër.",
+        "placeholderBeach": "Pyetni për {name}…"
+      }
     },
     "itinerary": {
-      "title": "Krijo itinerar plazhesh",
-      "subtitle": "Gjenero një plan të personalizuara pushimesh me disa ditë në plazh",
+      "title": "Planifikoni udhëtimin tuaj në plazh",
+      "subtitle": "Zgjidhni një shtet dhe kohëzgjatjen e udhëtimit. Ne planifikojmë plazhet për çdo ditë nga baza e të dhënave Beachrex, me një lidhje për çdo plazh.",
       "form": {
-        "destination": "Destinacion",
-        "destinationPlaceholder": "p.sh., Kroacia, Bali, Karaibet",
-        "days": "Numri i ditëve",
-        "daysPlaceholder": "p.sh., 7",
-        "interests": "Interesat",
-        "interestsPlaceholder": "p.sh., snorkeling, relaksim, jetë nate",
-        "budget": "Niveli i buxhetit",
-        "budgetLow": "Buxhet",
-        "budgetMedium": "Mesatar",
-        "budgetHigh": "Luksoz",
-        "generate": "Gjenero itinerar",
-        "generating": "Duke gjeneruar itinerarin tuaj..."
+        "country": "Shteti",
+        "countryPlaceholder": "Zgjidhni një shtet",
+        "region": "Rajoni (opsional)",
+        "wholeCountry": "I gjithë shteti",
+        "duration": "Kohëzgjatja e udhëtimit",
+        "daysOption": "{days} ditë",
+        "plansAvailable": "Në dispozicion: {count}",
+        "interests": "Çfarë ju pëlqen?",
+        "surface": "Lloji i plazhit",
+        "pace": "Ritmi",
+        "adults": "Të rritur",
+        "children": "Fëmijë"
       },
-      "error": "Dështoi gjenerimi i itinerarit. Ju lutemi provoni përsëri.",
-      "paymentRequired": "Itinerarët me disa ditë kërkojnë kredite. Ju lutemi blini kredite për të vazhduar.",
-      "creditsRemaining": "Kreditë e mbetura: {count}",
-      "purchaseCredits": "Bli kredite"
+      "interest": {
+        "swimming": "Not",
+        "snorkeling": "Snorkeling",
+        "family": "Për familje",
+        "quiet": "Qetësi",
+        "nightlife": "Jeta e natës",
+        "nature": "Natyrë",
+        "diving": "Zhytje",
+        "surfing": "Surf",
+        "kayaking": "Kajak",
+        "hiking": "Ecje në natyrë"
+      },
+      "surface": {
+        "sand": "Rërë",
+        "pebble": "Zall",
+        "rock": "Shkëmbinj"
+      },
+      "pace": {
+        "relaxed": "I qetë",
+        "balanced": "I balancuar",
+        "packed": "I ngjeshur"
+      },
+      "progressBeaches": "Po kërkojmë plazhe sipas dëshirave tuaja…",
+      "progressRoute": "Po planifikojmë itinerarin ditë pas dite…",
+      "progressTips": "Po shkruajmë këshilla për çdo plazh…",
+      "signInToStart": "Hyni për të blerë dhe krijuar planin tuaj.",
+      "generate": "Krijo planin tim",
+      "usesOnePlan": "Përdor një nga planet tuaja {days}-ditore.",
+      "buy": "Bli planin {days}-ditor · {price}",
+      "buyNote": "Pagesë e njëhershme, pa abonim. Pas pagesës ktheheni këtu dhe krijoni planin tuaj.",
+      "errors": {
+        "signInRequired": "Ju lutemi hyni fillimisht.",
+        "buyRequired": "Nuk keni më plane me këtë kohëzgjatje. Blini një për të vazhduar.",
+        "notEnoughBeaches": "Përputhen shumë pak plazhe. Provoni të gjithë shtetin, më pak dëshira ose një udhëtim më të shkurtër. Plani juaj nuk u përdor.",
+        "busy": "Planifikuesi është i zënë tani. Provoni përsëri pas një minute. Plani juaj nuk u përdor.",
+        "error": "Diçka shkoi keq dhe plani juaj nuk u përdor. Provoni përsëri.",
+        "purchaseError": "Pagesa nuk mund të niste. Provoni përsëri."
+      },
+      "fallbackNote": "Këtë herë këshillat e IA-së nuk mund të shkruheshin, prandaj plani përmban fakte të shkurtra. Plani juaj nuk u përdor dhe mund ta krijoni përsëri.",
+      "day": "Dita {number}",
+      "timeBlock": {
+        "morning": "Mëngjes",
+        "afternoon": "Pasdite",
+        "evening": "Mbrëmje"
+      },
+      "tip": "Këshillë",
+      "travelKm": "Rreth {km} km udhëtim me makinë këtë ditë.",
+      "assumptions": "Mirë të dini",
+      "newPlan": "Planifikoni një udhëtim tjetër",
+      "plans": {
+        "title": "Planet e mia",
+        "empty": "Ende nuk keni plane. Krijoni të parin.",
+        "untitled": "Udhëtim {days}-ditor ({country})",
+        "notFound": "Ky plan nuk ekziston ose i përket një llogarie tjetër.",
+        "waitNote": "Mund ta mbyllni këtë faqe: plani ruhet te Planet e mia kur të jetë gati.",
+        "status": {
+          "running": "Po krijohet",
+          "done": "Gati",
+          "failed": "Nuk u krijua"
+        },
+        "failed": {
+          "notEnoughBeaches": "Shumë pak plazhe përputhen me këtë udhëtim. Plani nuk u përdor: provoni të gjithë shtetin, më pak dëshira ose një udhëtim më të shkurtër.",
+          "timeout": "Krijimi i planit zgjati shumë. Plani nuk u përdor, provoni përsëri.",
+          "error": "Diçka shkoi keq. Plani nuk u përdor, provoni përsëri."
+        }
+      },
+      "savePdf": "Ruaj si PDF",
+      "mapTitle": "Harta e udhëtimit",
+      "consent": {
+        "terms": "Pranoj <link>kushtet e shitjes</link>.",
+        "withdrawal": "Dua që plani të jetë i disponueshëm menjëherë. E kuptoj se e humb të drejtën e tërheqjes brenda 14 ditëve kur krijoj planin; deri atëherë mund të tërhiqem ende."
+      }
     },
     "entitlements": {
       "title": "Kreditë e mia",
@@ -710,7 +864,173 @@
     "no360": "Nuk ka pamje 360° në dispozicion",
     "noVideo": "Nuk ka video në dispozicion",
     "mostVisited": "Më të vizituarit",
+    "distanceAway": "{distance} larg",
     "loading": "Duke ngarkuar...",
-    "showOnMap": "Shfaq {title} në hartë"
+    "showOnMap": "Shfaq {title} në hartë",
+    "webcamClose": "Mbyll kamerën"
+  },
+  "Menu": {
+    "browseBeaches": "Shfleto plazhet",
+    "topCountries": "Vendet më të njohura me plazhe",
+    "aiChat": "Bisedë AI për plazhet",
+    "aiItinerary": "Planifikues udhëtimi AI",
+    "contact": "Kontakt",
+    "beachTypes": "Llojet e plazheve",
+    "beachesFor": "Plazhe për",
+    "onTheBeach": "Në plazh"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Shkarkime",
+    "packageTitle": "Paketa e plotë e markës",
+    "packageDescription": "Të gjitha logot (SVG, PDF, EPS, PNG), favicon-i dhe ikonat e aplikacionit, imazhet për rrjetet sociale dhe paleta e ngjyrave në një skedar ZIP.",
+    "packageButton": "Shkarkoni ZIP-in",
+    "guidelinesTitle": "Udhëzimet e markës",
+    "logosTitle": "Logot",
+    "versions": {
+      "horizontal": "Horizontal (kryesor)",
+      "stacked": "Vertikal",
+      "symbol": "Simboli",
+      "wordmark": "Logo me tekst"
+    },
+    "colors": {
+      "color": "Me ngjyra",
+      "black": "E zezë",
+      "white": "E bardhë",
+      "teal": "Bruz",
+      "orange": "Portokalli"
+    },
+    "logoAlt": "Logoja e Beachrex – {version}, {color}",
+    "colorsTitle": "Ngjyrat",
+    "paletteDownload": "Shkarkoni paletën",
+    "socialTitle": "Imazhe për rrjetet sociale",
+    "social": {
+      "profile": "Foto e profilit",
+      "og": "Imazh për parapamjen e lidhjes",
+      "facebook": "Kopertina e Facebook",
+      "linkedin": "Kopertina e LinkedIn",
+      "x": "Koka e X"
+    }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – autori i Beachrex",
+    "metaDescription": "Njihuni me Gregor Balažicin, që la punën, bleu një aparat fotografik dhe një furgon dhe vizitoi 4 000 plazhe në 13 vende. Kështu lindi Beachrex.",
+    "eyebrow": "Rreth autorit",
+    "bannerWord": "Autori",
+    "role": "Themeluesi i Beachrex",
+    "lead": "«Plazhet kanë qenë gjithmonë pasioni im i madh.»",
+    "heroCta": "Lexoni historinë",
+    "stats": {
+      "beaches": "plazhe të vizituara",
+      "km": "kilometra të përshkuara",
+      "countries": "vende",
+      "facts": "të dhëna për çdo plazh"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Jashtë zonës së rehatisë",
+        "text": "Plazhet kanë qenë gjithmonë pasioni im i madh, thotë Gregor Balažic, i cili la punën. Ishte drejtues departamenti, por doli nga zona e rehatisë dhe la pas një të ardhme të parashikueshme. Bleu një aparat fotografik dhe një furgon, që u bë shtëpia e tij e re, dhe u nis nëpër botë. Më saktë, drejt plazheve."
+      },
+      "road": {
+        "title": "<beaches>4 000 plazhe</beaches> në <countries>13 vende</countries>",
+        "text": "Përshkoi brigjet dhe plazhet e <countries>13 vendeve</countries>: <list></list>. Vizitoi plot <beaches>4 000 plazhe</beaches>. Edhe pse numri duket i madh, është vetëm një pikë në oqean – në botë ka mbi 200 000 plazhe të përshtatshme për turizëm, shpjegon Balažic."
+      },
+      "database": {
+        "title": "Baza më e madhe e të dhënave për plazhet në botë",
+        "text": "Plazhet e vizituara u bënë themeli i bazës më të madhe të të dhënave për plazhet në botë – Beachrex. Çdo plazh shoqërohet me fotografi, pamje panoramike, video, informacion për mundësitë e parkimit, vendndodhjen GPS, të dhëna për motin, akomodimin, aktivitetet sportive, restorantet dhe baret, si edhe temperaturën e detit. Gjithsej, mbi 200 të dhëna për çdo plazh."
+      },
+      "hardships": {
+        "title": "Rruga nuk ishte gjithmonë e lehtë",
+        "text": "Balažic ka përshkuar mbi 70 000 kilometra dhe, për pamje mahnitëse, ndonjëherë i është dashur edhe të ngjitet nëpër shkëmbinj. Rruga e gjatë mijëra kilometra nuk ka qenë gjithmonë e ndriçuar nga dielli – ka përjetuar edhe ngjarje të pakëndshme dhe është grabitur disa herë. Por rrugëtimi i tij nuk ka përfunduar (ende)."
+      }
+    },
+    "routeTitle": "Përgjatë brigjeve",
+    "countries": {
+      "si": "Sllovenia",
+      "hr": "Kroacia",
+      "me": "Mali i Zi",
+      "al": "Shqipëria",
+      "gr": "Greqia",
+      "it": "Italia",
+      "fr": "Franca",
+      "es": "Spanja",
+      "pt": "Portugalia",
+      "be": "Belgjika",
+      "nl": "Holanda",
+      "de": "Gjermania",
+      "dk": "Danimarka"
+    },
+    "photoAlt": "Gregor Balažic me aparatin fotografik në një plazh me rërë",
+    "beachAlt": "Plazh me rërë me një varkë të përmbysur pranë shkëmbinjve dhe pishave",
+    "beachCaption": "Një nga 4 000 plazhet që Gregor vizitoi dhe fotografoi.",
+    "quote": "Kemi një vizion – pas disa vitesh çdo plazh në botë do të jetë në hartë.",
+    "ctaTitle": "Zbuloni plazhet që vizitoi Gregor",
+    "ctaText": "Çdo fotografi, çdo panoramë 360° dhe çdo detaj në Beachrex lindi gjatë këtij udhëtimi.",
+    "ctaMap": "Shfletoni hartën",
+    "ctaContact": "Na shkruani",
+    "footerLink": "Njihuni me autorin"
+  },
+  "Payment": {
+    "successTitle": "Pagesa u krye",
+    "successMessage": "Faleminderit për blerjen! Kreditet u shtuan në llogarinë tuaj.",
+    "sessionId": "ID e seancës:",
+    "cancelTitle": "Pagesa u anulua",
+    "cancelMessage": "Pagesa juaj u anulua. Nuk u tarifua asgjë.",
+    "redirecting": "Kthim te planifikuesi i itinerarit pas <strong>{seconds}</strong> sekondash…",
+    "planItinerary": "Planifiko një itinerar",
+    "tryChat": "Provo bisedën me AI",
+    "tryAgain": "Provo përsëri",
+    "goHome": "Te faqja kryesore",
+    "help": "Keni nevojë për ndihmë? Shkruani në {email}."
+  },
+  "UI": {
+    "selectOption": "Zgjidhni një opsion",
+    "noBeachesInArea": "Nuk u gjetën plazhe në këtë zonë",
+    "singleColumn": "Pamje me një kolonë",
+    "doubleColumn": "Pamje me dy kolona",
+    "closeMap": "Mbyll hartën",
+    "closeFilters": "Mbyll filtrat",
+    "videoTitle": "Video e plazhit",
+    "virtualTourTitle": "Turi virtual 360°",
+    "beachRouteMapTitle": "Harta me rrugën për në plazh",
+    "closeMenu": "Mbyll menunë"
+  },
+  "FilterModal": {
+    "title": "Të gjithë filtrat e plazhit",
+    "searchPlaceholder": "🔍 Kërko filtra…",
+    "clearAll": "Pastro të gjitha",
+    "cancel": "Anulo",
+    "apply": "Apliko filtrat",
+    "applyCount": "Apliko filtrat ({count})",
+    "showLess": "Shfaq më pak",
+    "showMore": "Shfaq edhe {count}…"
+  },
+  "Favorites": {
+    "title": "Plazhet e mia të preferuara",
+    "add": "Ruaj te të preferuarat",
+    "remove": "Hiq nga të preferuarat",
+    "save": "Ruaj",
+    "saved": "U ruajt",
+    "signInTitle": "Hyni për të ruajtur plazhe",
+    "signInText": "Plazhet tuaja të preferuara ruhen në llogarinë tuaj, kështu që i gjeni në çdo pajisje.",
+    "empty": "Ende nuk keni ruajtur asnjë plazh. Prekni zemrën te një plazh për ta ruajtur.",
+    "browse": "Shfletoni plazhet",
+    "limit": "Lista e të preferuarave është plot. Hiqni një plazh për të ruajtur një tjetër.",
+    "error": "Plazhi nuk u ruajt dot. Ju lutemi provoni përsëri.",
+    "loadError": "Plazhet e preferuara nuk u ngarkuan dot. Ju lutemi provoni përsëri."
+  },
+  "BeachFaq": {
+    "title": "Pyetje të shpeshta për {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Të gjitha shtetet",
+    "allRegions": "Të gjitha rajonet",
+    "allIslands": "Të gjithë ishujt",
+    "allCities": "Të gjitha qytetet",
+    "all": "Të gjitha",
+    "search": "Kërko…",
+    "noMatches": "Asnjë rezultat",
+    "clear": "Pastro",
+    "selected": "Filtrat e zgjedhur",
+    "remove": "Hiq {name}"
   }
 }

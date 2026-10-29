@@ -1,11 +1,14 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { PageProps } from '@/types';
 
 export async function generateMetadata({ params }: PageProps) {
     const resolvedParams = await params;
+    setRequestLocale(resolvedParams.locale);
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'BeachTypePage' });
 
+    // Placeholder page, hidden for launch (backend docs/features/hidden-for-launch.md): not indexed.
     return {
+        robots: { index: false, follow: true },
         title: t('title'),
         description: t('description'),
     };
@@ -13,6 +16,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 const Page = async ({ params }: PageProps) => {
     const resolvedParams = await params;
+    setRequestLocale(resolvedParams.locale);
     const t = await getTranslations({ locale: resolvedParams.locale, namespace: 'BeachTypePage' });
     const pathname = '/beach-type';
 

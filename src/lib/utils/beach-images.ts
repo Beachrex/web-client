@@ -7,26 +7,15 @@ import type { MediaItem } from '@/lib/api-client/types.gen';
 export type CdnEndpointType = 'teaser' | 'large' | 'assets';
 
 /**
- * Check if path contains non-ASCII characters (special characters like č, š, ž)
+ * Percent-encode non-ASCII path segments. Since TASK-002 every storage key is
+ * ASCII, so this only keeps a stray non-ASCII path a valid URL (it will 404).
  */
-function hasNonAsciiCharacters(path: string): boolean {
-  return !/^[\x00-\x7F]*$/.test(path);
-}
-
-/**
- * Encode path segment with NFD normalization for DigitalOcean Spaces compatibility
- */
-function encodePathSegment(segment: string): string {
-  if (!segment) return segment;
-
-  // Fast path: already pure ASCII, nothing to encode
-  if (/^[\u0000-\u007F]*$/.test(segment)) {
-    return segment;
-  }
-
-  // Use NFD normalization (decomposed form) to match how files are stored on DigitalOcean Spaces
-  // This ensures 'č' becomes 'c' + combining caron (U+0063 + U+030C)
-  return encodeURIComponent(segment.normalize('NFD'));
+function encodePath(path: string): string {
+  if (/^[\x00-\x7F]*$/.test(path)) return path;
+  return path
+    .split('/')
+    .map((segment) => (/^[\x00-\x7F]*$/.test(segment) ? segment : encodeURIComponent(segment)))
+    .join('/');
 }
 
 /**
@@ -102,49 +91,92 @@ export function determineCdnEndpointType(
 }
 
 /**
+ * Logo watermark for photos uploaded from the mobile app (ADR 2026-10-29). Photos uploaded in admin
+ * have the logo baked in; mobile uploads (`img/beaches_mobile/`) do not, so Imagor draws it when the
+ * photo is shown. The originals stay untouched. The PNG is put on the bucket by the backend command
+ * `media:publish-watermark` (versioned path: a new design is a new file, never an overwrite).
+ */
+export const WATERMARK_IMAGE_PATH = 'img/watermark/beachrex-watermark-v1.png';
+
+/**
+ * Imagor `watermark(image, x, y, alpha, w_ratio, h_ratio)`: bottom-right, 3 % / 4 % margin, opaque
+ * (the PNG has its own soft shadow), at most 20 % of the photo's width and 30 % of its height,
+ * like the baked-in logo on admin photos.
+ */
+export const WATERMARK_FILTER = `watermark(${WATERMARK_IMAGE_PATH},-3p,-4p,0,20,30)`;
+
+export interface CdnUrlOptions {
+  /** `false` never adds the watermark (e.g. 360° sphere images). Default: automatic by path. */
+  watermark?: boolean;
+}
+
+/**
+ * True for a mobile-app beach photo: `img/beaches_mobile/…` raster image. Not for videos, icons,
+ * 360° tours (`/vtour/`) or panorama/sphere images (a logo on an equirectangular image looks wrong).
+ */
+export function needsWatermark(path: string | null | undefined): boolean {
+  if (!path) return false;
+  const lower = path.toLowerCase().replace(/^\/+/, '');
+  if (!lower.startsWith('img/beaches_mobile/')) return false;
+  if (lower.includes('/vtour/')) return false;
+  const fileName = lower.slice(lower.lastIndexOf('/') + 1);
+  if (/panorama|sphere/.test(fileName)) return false;
+  return /\.(jpe?g|png|webp)$/.test(fileName);
+}
+
+/**
+ * Add an Imagor filter to an endpoint prefix such as `…/unsafe/fit-in/800x800/` or
+ * `…/unsafe/1200x630/smart/filters:format(jpeg):quality(85)/`. An existing `filters:` segment is
+ * extended (Imagor reads one filters segment). Endpoints that are not Imagor (direct Spaces assets)
+ * are returned unchanged.
+ */
+function withImagorFilter(endpoint: string, filter: string): string {
+  if (!endpoint.includes('/unsafe/')) return endpoint;
+  const base = endpoint.endsWith('/') ? endpoint : `${endpoint}/`;
+  if (/\/filters:[^/]*\/$/.test(base)) {
+    return base.replace(/\/$/, `:${filter}/`);
+  }
+  return `${base}filters:${filter}/`;
+}
+
+/**
  * Build full CDN URL with automatic endpoint selection
  *
- * For images with special characters (č, š, ž, etc.), uses direct DigitalOcean Spaces URL
- * to bypass Imagor (which doesn't handle UTF-8 paths correctly).
+ * Every image goes through Imagor. Storage keys are ASCII since TASK-002 (the old
+ * non-ASCII keys were deleted), so there is no direct Spaces bypass any more.
  *
  * @param path - Relative image path from API
+ * Mobile-app beach photos get the logo watermark (see `needsWatermark`).
+ *
  * @param context - Optional context hint for endpoint selection
+ * @param options - `{ watermark: false }` to never add the watermark
  * @returns Full CDN URL or null if path is invalid
  */
 export function buildCdnUrl(
   path: string | null | undefined,
-  context?: 'banner' | 'hero' | 'icon' | 'video' | 'list' | 'carousel' | 'gallery'
+  context?: 'banner' | 'hero' | 'icon' | 'video' | 'list' | 'carousel' | 'gallery',
+  options: CdnUrlOptions = {}
 ): string | null {
   if (!path) return null;
 
-  // If path contains special characters, use direct DigitalOcean Spaces URL
-  // Imagor doesn't handle UTF-8 paths correctly, so we bypass it
-  if (hasNonAsciiCharacters(path)) {
-    const segments = path.split('/');
-    const encodedSegments = segments.map(encodePathSegment);
-    const encodedPath = encodedSegments.join('/');
-
-    return `${env.NEXT_PUBLIC_CDN_ASSETS}${encodedPath}`;
+  const endpointType = determineCdnEndpointType(path, context);
+  let endpoint = getCdnEndpoint(endpointType);
+  if (options.watermark !== false && needsWatermark(path)) {
+    endpoint = withImagorFilter(endpoint, WATERMARK_FILTER);
   }
 
-  // For ASCII-only paths, use Imagor optimization
-  const endpointType = determineCdnEndpointType(path, context);
-  const endpoint = getCdnEndpoint(endpointType);
-
-  return `${endpoint}${path}`;
+  return `${endpoint}${encodePath(path)}`;
 }
 
 /**
  * Build full CDN URL for 360° sphere tour HTML files
- * Handles special characters in paths (č, š, ž, etc.) by using NFD encoding
  *
- * @param tourUrl - Relative tour URL from API (e.g., 'img/beaches/hr-4-o-čiovo/vtour/tour.html')
- * @returns Full CDN URL with proper encoding for special characters
+ * @param tourUrl - Relative tour URL from API (e.g., 'img/beaches/hr-4-o-ciovo/vtour/tour.html')
+ * @returns Full CDN URL
  */
 export function buildSphereTourUrl(tourUrl: string | null | undefined): string | null {
   if (!tourUrl) return null;
 
-  // Use buildCdnUrl which handles special character encoding
   // Always use 'assets' endpoint for tour HTML files
   return buildCdnUrl(tourUrl, 'icon');
 }
@@ -209,4 +241,33 @@ export function getMainBeachImage(
   }
 
   return buildBeachImageUrl(folderName, selectedImage.file_name, mobileUpload, context);
+}
+
+/** Share image size for Open Graph / X cards (owner, 2026-10-08: shared beach links show the beach). */
+export const SHARE_IMAGE_SIZE = { width: 1200, height: 630 } as const;
+
+/**
+ * Imagor URL for a 1200×630 JPEG crop of an image (smart crop), for link previews. Derived from the
+ * large endpoint (`…/unsafe/fit-in/2800x2800/`); a 2800 px original can exceed the 5 MB limit of X.
+ * Falls back to the large URL when the endpoint has another shape.
+ */
+export function buildShareImageUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  const large = getCdnEndpoint('large');
+  const { width, height } = SHARE_IMAGE_SIZE;
+  let share = large.replace(/\/fit-in\/\d+x\d+\/$/, `/${width}x${height}/smart/filters:format(jpeg):quality(85)/`);
+  if (needsWatermark(path)) share = withImagorFilter(share, WATERMARK_FILTER);
+  return `${share}${encodePath(path)}`;
+}
+
+/** Share image of a beach: the primary gallery image (else the first) as a 1200×630 JPEG. */
+export function getBeachShareImage(
+  gallery: MediaItem[] | undefined,
+  folderName: string | null | undefined,
+  mobileUpload = false,
+): string | null {
+  const image = gallery?.find((img) => img.is_primary === true) ?? gallery?.[0];
+  if (!folderName || !image?.file_name) return null;
+  const basePath = mobileUpload ? 'img/beaches_mobile' : 'img/beaches';
+  return buildShareImageUrl(`${basePath}/${folderName}/${image.file_name}`);
 }

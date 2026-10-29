@@ -2,14 +2,22 @@
 
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { cancelPrefetch, debouncedPrefetch, prefetchBeachDetails } from '@/lib/prefetch-utils';
+import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
+import { buildCardFeatureIcons, type BeachCardFeatures } from '@/lib/utils/beach-badges';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { buildBeachFocusMapUrl } from '@/lib/utils/beach-urls';
+import { parseWebcamUrl, windyIdFromPageUrl } from '@/lib/utils/webcam';
+import WebcamModal from '@/components/Beach/WebcamModal';
 import { useQueryClient } from '@tanstack/react-query';
-import { Heart, Star } from 'lucide-react';
+import { MapPin, Star } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { formatDistance } from '@/lib/utils/distance';
 import React, { useCallback, useEffect, useRef } from 'react';
+import { FEATURES } from '@/lib/constants/features';
+import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { PropertyMediaContext } from '../PropertySection';
 
 // Performance logging
@@ -37,20 +45,9 @@ if (ENABLE_PERF_LOGGING) {
 }
 
 
-function extractLookrUrl(html: string | null | undefined): string | null {
-  if (!html) return null;
-
-  // 1. Unescape \" → "
-  const unescaped = html.replace(/\\"/g, '"');
-
-  // 2. Extract href
-  const match = /href\s*=\s*"([^"]+)"/i.exec(unescaped);
-
-  return match?.[1] ?? null;
-}
-
-
 export interface PropertyCardProps {
+  /** Beach id (string, as in `Property`); enables the favorites heart. */
+  id?: string;
   webcamEmbed?: string | null;
   beachUrl?: string;
   beachSlug?: string; // Add beach slug for prefetching
@@ -70,13 +67,31 @@ export interface PropertyCardProps {
   reviews: number;
   isMostVisited?: boolean;
   countryCode?: string;
+  /** Country page (the flag links to it) and its name for the accessible label */
+  countryUrl?: string;
+  countryName?: string;
+  /** Map page list only: the pin moves the side map to this beach instead of opening the map page */
   onLocationClick?: () => void;
+  /** Beach coordinates: the pin's map link centers on them before the beach is loaded */
+  latitude?: string | number | null;
+  longitude?: string | number | null;
+
+  /** Open the beach page in a new tab (used by the map list, so the map state is kept) */
+  openInNewTab?: boolean;
 
   /** Up to 4 descriptive tags from the API (sporting activities, culinary, natural conditions) */
   tags?: string[];
+
+  /** Beach type, family and parking from the API (QA #45) */
+  features?: BeachCardFeatures | null;
+
+  /** Distance in km from the beach whose page shows this card ("Nearby beaches") */
+  distanceKm?: number | null;
 }
 
-const PropertyCard = React.memo(function PropertyCard({  beachUrl,
+const PropertyCard = React.memo(function PropertyCard({
+  id,
+  beachUrl,
   beachSlug,
   image,
   galleryImages = [],
@@ -90,9 +105,16 @@ const PropertyCard = React.memo(function PropertyCard({  beachUrl,
   rating,
   isMostVisited,
   countryCode,
+  countryUrl,
+  countryName,
   webcamEmbed,
   onLocationClick,
+  latitude,
+  longitude,
+  openInNewTab = false,
   tags,
+  features,
+  distanceKm,
 }: PropertyCardProps) {
   const renderStartTime = useRef(performance.now());
   const currentRenderCount = useRef(++propertyCardRenderCount);
@@ -111,6 +133,10 @@ const PropertyCard = React.memo(function PropertyCard({  beachUrl,
   }, [title]);
 
   const t = useTranslations('PropertyCard');
+  const tBadges = useTranslations('BottomBadgesBeach');
+  const featureIcons = React.useMemo(() => buildCardFeatureIcons(features), [features]);
+  const locale = useLocale();
+  const distance = distanceKm != null ? formatDistance(distanceKm, locale) : '';
   const queryClient = useQueryClient();
 
   const { ready } = useIsMobile();
@@ -130,9 +156,13 @@ React.useEffect(() => {
 
 
 const webcamUrl = React.useMemo(
-  () => extractLookrUrl(webcamEmbed),
+  () => parseWebcamUrl(webcamEmbed),
   [webcamEmbed]
 );
+// Owner 2026-10-22: a verified Windy webcam plays in a popup on our page; only an old pasted link opens a new tab.
+const windyId = React.useMemo(() => windyIdFromPageUrl(webcamUrl), [webcamUrl]);
+const [webcamOpen, setWebcamOpen] = React.useState(false);
+const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
 
   /**
    * IMAGES TO SHOW
@@ -157,10 +187,13 @@ const webcamUrl = React.useMemo(
   // Memoize event handlers to prevent recreation on every render
   const handleWebcamClick = React.useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    if (webcamUrl) {
+    e.preventDefault();
+    if (windyId) {
+      setWebcamOpen(true);
+    } else if (webcamUrl) {
       window.open(webcamUrl, '_blank', 'noopener,noreferrer');
     }
-  }, [webcamUrl]);
+  }, [webcamUrl, windyId]);
 
   const handleSphereClick = React.useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -172,6 +205,9 @@ const webcamUrl = React.useMemo(
     e.stopPropagation();
     onLocationClick?.();
   }, [onLocationClick]);
+
+  // Owner 2026-10-29: the pin opens the beach map focused on this beach (outside the map page itself).
+  const mapUrl = Number(id) > 0 ? buildBeachFocusMapUrl(locale, { id: Number(id), latitude, longitude }) : null;
 
   /**
    * Prefetch beach details on hover to improve perceived performance
@@ -208,6 +244,9 @@ const webcamUrl = React.useMemo(
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {webcamOpen && windyId ? (
+        <WebcamModal windyId={windyId} beachName={title} onClose={closeWebcam} />
+      ) : null}
       <div className="relative grow overflow-hidden">
 
       {/* MEDIA DISPLAY */}
@@ -223,10 +262,11 @@ const webcamUrl = React.useMemo(
         loading="lazy"
       />
 
-      {/* OPEN WEBCAM IN NEW TAB */}
+      {/* OPEN WEBCAM (popup for Windy, new tab for an old pasted link) */}
       <button
         type="button"
         onClick={handleWebcamClick}
+        aria-haspopup={windyId ? 'dialog' : undefined}
         className="absolute inset-0 z-30 flex items-center justify-center"
       >
         <div className="flex items-center gap-3 rounded-full bg-black/60 px-6 py-4 backdrop-blur-sm hover:bg-black/70 transition">
@@ -344,6 +384,19 @@ const webcamUrl = React.useMemo(
   <>
     {/* BADGES */}
     <div className="absolute left-2 top-2 flex gap-1 z-20">
+      {/* Distance from the current beach, as in the app (owner 2026-10-29) */}
+      {distance && (
+        <div
+          data-testid="card-distance"
+          className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1"
+        >
+          <MapPin size={12} className="text-[#0069AB]" aria-hidden="true" />
+          <span aria-hidden="true" className="text-[10px] text-[#4D4D4D] font-semibold">
+            {distance}
+          </span>
+          <span className="sr-only">{t('distanceAway', { distance })}</span>
+        </div>
+      )}
       {isMostVisited && (
         <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
           <span className="text-[10px] text-[#4D4D4D] font-semibold">
@@ -352,21 +405,23 @@ const webcamUrl = React.useMemo(
         </div>
       )}
 
-      <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
-        <Star size={14} className="text-[#FFD700]" fill="#FFD700" />
-        <span className="text-[10px] text-[#4D4D4D] font-semibold">
-          {Number(rating ?? 0).toFixed(1)}
-        </span>
-      </div>
+      {/* No rating source yet (every card had 0.0, owner 2026-10-09): the star shows only a real rating. */}
+      {Number(rating) > 0 && (
+        <div className="px-[8px] py-[2px] bg-[#F5F5F5] rounded-[12px] flex items-center gap-1">
+          <Star size={14} className="text-[#FFD700]" fill="#FFD700" />
+          <span className="text-[10px] text-[#4D4D4D] font-semibold">
+            {Number(rating).toFixed(1)}
+          </span>
+        </div>
+      )}
     </div>
 
-    {/* HEART ICON */}
-    <div className="absolute right-2 top-2 z-20">
-      <Heart
-        size={22}
-        className="text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.5)]"
-      />
-    </div>
+    {/* FAVORITES HEART */}
+    {FEATURES.favorites && Number(id) > 0 && (
+      <div className="absolute right-1 top-1 z-20">
+        <FavoriteButton beachId={Number(id)} />
+      </div>
+    )}
   </>
 )}
 
@@ -375,20 +430,24 @@ const webcamUrl = React.useMemo(
 
 {mediaMode !== 'sphere' && mediaMode !== 'video' && (
   <div className="absolute bottom-2 left-2 right-2 flex justify-between pointer-events-none z-20">
-    <div className="pointer-events-auto flex h-[40px] items-center gap-1 bg-[#008260] text-white px-3 rounded">
-      <Image
-        src="/images/accomodation.png"
-        alt="acc"
-        width={16}
-        height={16}
-      />
-      <span className="text-[12px] font-medium">{t('priceFrom', { price })}</span>
-    </div>
+    {/* Accommodation price: hidden until accommodation pricing exists (FEATURES.accommodation). */}
+    {FEATURES.accommodation && (
+      <div className="pointer-events-auto flex h-[40px] items-center gap-1 bg-[#008260] text-white px-3 rounded">
+        <Image
+          src="/images/accomodation.png"
+          alt=""
+          width={16}
+          height={16}
+        />
+        <span className="text-[12px] font-medium">{t('priceFrom', { price })}</span>
+      </div>
+    )}
 
-    <div className="pointer-events-auto flex items-center gap-2">
+    <div className="pointer-events-auto ml-auto flex items-center gap-2">
       {locationUrl ? (
         <Link
           href={locationUrl}
+          {...(openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           onClick={(e) => e.stopPropagation()}
           className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#FF8000] px-[12px] transition-colors hover:bg-[#e67300] focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
         >
@@ -400,15 +459,34 @@ const webcamUrl = React.useMemo(
         </div>
       )}
 
-      <div className="h-[40px] w-[50px] overflow-hidden rounded-[6px]">
-        <Image
-          src={flagUrl ?? '/images/propertycard/default-flag.png'}
-          width={50}
-          height={40}
-          alt="flag"
-          className="h-full w-full object-cover"
-        />
-      </div>
+      {countryUrl ? (
+        <Link
+          href={countryUrl}
+          {...(openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          onClick={(e) => e.stopPropagation()}
+          aria-label={countryName}
+          title={countryName}
+          className="block h-[40px] w-[50px] overflow-hidden rounded-[6px] transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          <Image
+            src={flagUrl ?? '/images/propertycard/default-flag.png'}
+            width={50}
+            height={40}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        </Link>
+      ) : (
+        <div className="h-[40px] w-[50px] overflow-hidden rounded-[6px]">
+          <Image
+            src={flagUrl ?? '/images/propertycard/default-flag.png'}
+            width={50}
+            height={40}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
     </div>
   </div>
 )}
@@ -421,6 +499,7 @@ const webcamUrl = React.useMemo(
   {beachUrl ? (
     <Link
       href={beachUrl}
+      {...(openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
     >
       {title}
@@ -430,19 +509,40 @@ const webcamUrl = React.useMemo(
   )}
 </h3>
 
-       <button
-  type="button"
-  onClick={handleLocationClick}
-  className="pr-[2px] hover:scale-105 transition-transform cursor-pointer hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8000] focus-visible:ring-offset-2 rounded"
-  aria-label={t('showOnMap', { title })}
-       >
-  <Image
-    src="/images/propertycard/location.png"
-    alt="location"
-    width={32}
-    height={32}
-  />
-</button>
+        {onLocationClick || !mapUrl ? (
+          <button
+            type="button"
+            onClick={handleLocationClick}
+            data-testid="card-map-pin"
+            className="shrink-0 rounded-full pr-[2px] transition-transform hover:scale-110 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0069AB] focus-visible:ring-offset-2"
+            aria-label={t('showOnMap', { title })}
+            title={t('showOnMap', { title })}
+          >
+            <Image
+              src="/images/propertycard/location.png"
+              alt=""
+              width={32}
+              height={32}
+            />
+          </button>
+        ) : (
+          <Link
+            href={mapUrl}
+            prefetch={false}
+            onClick={(e) => e.stopPropagation()}
+            data-testid="card-map-pin"
+            className="shrink-0 rounded-full pr-[2px] transition-transform hover:scale-110 hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0069AB] focus-visible:ring-offset-2"
+            aria-label={t('showOnMap', { title })}
+            title={t('showOnMap', { title })}
+          >
+            <Image
+              src="/images/propertycard/location.png"
+              alt=""
+              width={32}
+              height={32}
+            />
+          </Link>
+        )}
 
         </div>
 
@@ -456,24 +556,20 @@ const webcamUrl = React.useMemo(
           )}
 
           <div className="flex shrink-0 gap-5 pr-[2px]">
-            <Image
-              src="/images/propertycard/stones.png"
-              width={26}
-              height={26}
-              alt="stones"
-            />
-            <Image
-              src="/images/propertycard/family.png"
-              width={26}
-              height={26}
-              alt="family"
-            />
-            <Image
-              src="/images/propertycard/parking.png"
-              width={26}
-              height={26}
-              alt="parking"
-            />
+            {featureIcons.map((f) => {
+              const label = f.labelKey ? tBadges(`badges.${f.labelKey}`) : (f.label ?? '');
+              return (
+                <Image
+                  key={f.key}
+                  src={resolveBadgeIcon(f.icon)}
+                  width={26}
+                  height={26}
+                  className="h-[26px] w-[26px] object-contain"
+                  alt={label}
+                  title={label}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
@@ -482,7 +578,9 @@ const webcamUrl = React.useMemo(
 }, (prevProps, nextProps) => {
   // Custom comparison to prevent unnecessary re-renders
   return (
+    prevProps.id === nextProps.id &&
     prevProps.beachUrl === nextProps.beachUrl &&
+    prevProps.openInNewTab === nextProps.openInNewTab &&
     prevProps.beachSlug === nextProps.beachSlug &&
     prevProps.image === nextProps.image &&
     prevProps.title === nextProps.title &&
@@ -491,11 +589,17 @@ const webcamUrl = React.useMemo(
     prevProps.rating === nextProps.rating &&
     prevProps.isMostVisited === nextProps.isMostVisited &&
     prevProps.countryCode === nextProps.countryCode &&
+    prevProps.countryUrl === nextProps.countryUrl &&
     prevProps.galleryImages?.length === nextProps.galleryImages?.length &&
     prevProps.sphereTourUrl === nextProps.sphereTourUrl &&
     prevProps.videoEmbedUrl === nextProps.videoEmbedUrl &&
     prevProps.webcamEmbed === nextProps.webcamEmbed &&
-    prevProps.tags?.join(',') === nextProps.tags?.join(',')
+    prevProps.tags?.join(',') === nextProps.tags?.join(',') &&
+    prevProps.distanceKm === nextProps.distanceKm &&
+    prevProps.latitude === nextProps.latitude &&
+    prevProps.longitude === nextProps.longitude &&
+    Boolean(prevProps.onLocationClick) === Boolean(nextProps.onLocationClick) &&
+    JSON.stringify(prevProps.features ?? null) === JSON.stringify(nextProps.features ?? null)
   );
 });
 

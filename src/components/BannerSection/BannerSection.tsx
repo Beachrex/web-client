@@ -6,11 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { buildBeachMapUrl, type LocationPillUrls } from '@/lib/utils/beach-urls';
 
 import BottomBadges from './BottomBadges';
 import InfoCardsSection from './InfoCardsSection';
-import MapWidget from './MapWidget';
 import TopBar from './TopBar';
 import WeatherWidget from './WeatherWidget';
 
@@ -53,6 +52,12 @@ interface BannerSectionProps {
   islandPillLabel?: string | null;
   topBarVariant?: PageVariant;
   beachCount?: number;
+  /** Pages of the places in the location pills (see TopBar). */
+  pillLinks?: Partial<LocationPillUrls>;
+  /** Full names for the region/island pills (their collapsed labels are shortened). */
+  pillNames?: { region?: string | null; island?: string | null; city?: string | null };
+  /** Published beaches per pill level; a missing level shows no count box. */
+  pillCounts?: Partial<Record<'continent' | 'country' | 'region' | 'island' | 'city', number | null>>;
 
   weather?: {
     temperature?: number | null;
@@ -88,8 +93,13 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   weather,
   weatherLocationName,
   isWeatherLoading,
+  pillLinks,
+  pillNames,
+  pillCounts,
 }) => {
   const t = useTranslations('BannerSection');
+  const tCommon = useTranslations('Common');
+  const tFilters = useTranslations('Filters');
   const locale = useLocale();
 
   const variant = topBarVariant;
@@ -97,6 +107,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
   const categoryLabelKey = VARIANT_CATEGORY_LABEL_KEY[variant];
 
   const floatingButtonColorClass = variantBgClass;
+  const showWeather = variant !== 'country' && variant !== 'continent';
 
   // Build map URL with context filters
   const buildMapUrl = () => {
@@ -138,6 +149,9 @@ const BannerSection: React.FC<BannerSectionProps> = ({
             accommodationCount={accommodationCount}
             title={title}
             beachCount={beachCount}
+            pillLinks={pillLinks}
+            pillNames={pillNames}
+            pillCounts={pillCounts}
           />
 
           <div className="flex flex-1 flex-col justify-center">
@@ -152,7 +166,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
                 {t(categoryLabelKey)}
               </span>
 
-              <span
+              <h1
                 className={[
                   'absolute bottom-0 left-[30px] font-figtree font-bold leading-[100%] text-white',
                   'text-[40px] sm:left-[50px] sm:text-[60px]',
@@ -161,7 +175,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
                 ].join(' ')}
               >
                 {title}
-              </span>
+              </h1>
             </div>
 
             <div
@@ -182,20 +196,20 @@ const BannerSection: React.FC<BannerSectionProps> = ({
 </div>
 
 
-              {/* Widgets */}
-              <div className="flex shrink-0 justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
-                <MapWidget />
-
-                {variant !== 'country' && variant !== 'continent' && (
-  <WeatherWidget
-    weather={weather}
-    locationName={weatherLocationName}
-    isLoading={isWeatherLoading}
-  />
-)}
-{rightWidgets}
-
-              </div>
+              {/* Widgets. No map thumbnail here: the floating map icon on the right edge
+                  opens the same map (owner 2026-10-29), and an empty row is not rendered. */}
+              {(showWeather || rightWidgets) && (
+                <div className="flex shrink-0 justify-center gap-[6px] sm:gap-[10px] lg:justify-end">
+                  {showWeather && (
+                    <WeatherWidget
+                      weather={weather}
+                      locationName={weatherLocationName}
+                      isLoading={isWeatherLoading}
+                    />
+                  )}
+                  {rightWidgets}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -212,7 +226,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
           >
             <Image
               src="/images/common/map-icon.svg"
-              alt="play beach"
+              alt={tCommon('map')}
               width={24}
               height={24}
               className="h-[24px] w-[24px] sm:h-[33px] sm:w-[33px]"
@@ -239,7 +253,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
           >
             <Image
               src="/images/common/white-filter.svg"
-              alt="filters"
+              alt={tFilters('filterButton')}
               width={20}
               height={20}
               className="h-[20px] w-[20px] sm:h-[28px] sm:w-[28px]"

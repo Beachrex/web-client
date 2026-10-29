@@ -49,7 +49,7 @@ const BeachMediaSection = React.memo<BeachMediaSectionProps>(function BeachMedia
                 {item.iconUrl && (
                   <Image
                     src={item.iconUrl}
-                    alt={`${item.title} icon`}
+                    alt=""
                     width={20}
                     height={20}
                   />

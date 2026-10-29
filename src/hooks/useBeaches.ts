@@ -1,8 +1,9 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getBeachesOptions, getBeachesWithinRadiusOptions, getBeachesInBoundingBoxOptions, getBeachesMapBoundsOptions } from '@/lib/api-client/@tanstack/react-query.gen';
-import type { BeachSchema, BeachBoundingBoxResponseSchema, BeachMapBoundsResponse } from '@/lib/api-client/types.gen';
+import { BEACH_PAGE_SIZE } from '@/lib/utils/beach-list';
+import type { BeachSchema, BeachBoundingBoxResponseSchema, BeachMapBoundsResponse, BeachListResponseSchema } from '@/lib/api-client/types.gen';
 
 type FilterInputValue = string | number | boolean | undefined;
 
@@ -88,29 +89,56 @@ interface BeachesResult {
   meta?: Record<string, unknown>;
 }
 
-/**
- * Hook to fetch all beaches with optional filters
- */
-export function useAllBeaches(filters?: AllBeachesFilters, enabled = true): BeachesResult {
-  const normalizedFilters = filters
-    ? normalizeFilterValues(filters as Record<string, FilterInputValue>)
-    : undefined;
+export type BeachSort = 'popular' | 'newest';
 
-  const { data, isLoading, error } = useQuery({
-    ...getBeachesOptions({
-      query: normalizedFilters as AllBeachesFilters | undefined,
-    }),
-    enabled,
+/** One page of GET /beaches (server-side pagination, 2026-10-09). */
+export interface BeachPage {
+  beaches: BeachSchema[];
+  total: number;
+  lastPage: number;
+  loading: boolean;
+  fetching: boolean;
+}
+
+/**
+ * One page of the beach list from the server. Filters, page and sort are sent to the API; only one page
+ * is downloaded (the old hook downloaded every beach and paged in the browser). `initial` is the first page
+ * rendered on the server for the page's base filters: used as-is, no refetch, until filters/page/sort change.
+ */
+export function useBeachPage(
+  filters: AllBeachesFilters,
+  page: number,
+  sort: BeachSort,
+  initial?: { filters: AllBeachesFilters; response: BeachListResponseSchema } | null,
+): BeachPage {
+  const query = {
+    ...normalizeFilterValues(filters as Record<string, FilterInputValue>),
+    page,
+    per_page: BEACH_PAGE_SIZE,
+    sort,
+  };
+  const useInitial =
+    initial != null &&
+    page === 1 &&
+    sort === 'popular' &&
+    JSON.stringify(normalizeFilterValues(initial.filters as Record<string, FilterInputValue>)) ===
+      JSON.stringify(normalizeFilterValues(filters as Record<string, FilterInputValue>));
+
+  const { data, isLoading, isFetching } = useQuery({
+    ...getBeachesOptions({ query: query as AllBeachesFilters }),
+    // Keep the current cards while the next page loads (no empty flash).
+    placeholderData: keepPreviousData,
+    ...(useInitial ? { initialData: initial.response, staleTime: 5 * 60 * 1000 } : {}),
   });
 
-  const beaches = data?.data ?? [];
-  const metaData = data?.meta ?? {};
+  const meta = (data?.meta ?? {}) as { total?: number; last_page?: number };
 
   return {
-    beaches,
+    beaches: data?.data ?? [],
+    total: meta.total ?? data?.data?.length ?? 0,
+    lastPage: meta.last_page ?? 1,
     loading: isLoading,
-    error: error ? (error instanceof Error ? error.message : 'Failed to fetch beaches') : null,
-    meta: metaData,
+    fetching: isFetching,
   };
 }
 

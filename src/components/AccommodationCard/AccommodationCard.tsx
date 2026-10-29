@@ -47,7 +47,7 @@ const AccommodationCard = React.memo<AccommodationCardProps>(function Accommodat
         {/* Single background image (no carousel) */}
         <Image
           src="/images/propertycard/accommodation-card-banner.png"
-          alt="Accommodation"
+          alt=""
           fill
           priority
           className="rounded-inherit object-cover"
@@ -93,7 +93,7 @@ const AccommodationCard = React.memo<AccommodationCardProps>(function Accommodat
             <div className="h-[47px] w-[40px] overflow-hidden rounded-[6px] shadow-sm">
               <Image
                 src="/images/propertycard/croatia-icon.png"
-                alt="Croatia flag"
+                alt=""
                 width={40}
                 height={47}
                 className="h-full w-full object-cover"
@@ -111,7 +111,7 @@ const AccommodationCard = React.memo<AccommodationCardProps>(function Accommodat
           <div className="pointer-events-auto flex min-w-0 items-center gap-2 rounded-[8px] bg-[#0069AB] px-3 py-[10px] text-white">
             <Image
               src="/images/beach.png"
-              alt="Beach"
+              alt=""
               width={18}
               height={18}
               className="shrink-0"

@@ -12,14 +12,14 @@ const FlowbiteCarousel = dynamic(
   {
     loading: () => (
       <div className="h-96 bg-gray-100 animate-pulse rounded-lg flex items-center justify-center">
-        <div className="text-gray-400">Loading carousel...</div>
+        <div className="h-full w-full animate-pulse rounded-lg bg-gray-200" />
       </div>
     ),
     ssr: false,
   }
 );
 
-type CountryWithUrl = Country & { url: string };
+type CountryWithUrl = Country & { url: string; mapUrl?: string };
 
 interface DestinationsCarouselProps {
   items: CountryWithUrl[];
@@ -30,6 +30,7 @@ interface DestinationsCarouselProps {
   backgroundClassName?: string;
   titleClassName?: string;
   showFlag?: boolean;
+  headerActions?: React.ReactNode;
 }
 
 const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function DestinationsCarousel(props) {
@@ -42,6 +43,7 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
     backgroundClassName = 'bg-white',
     titleClassName = 'text-[#222222]',
     showFlag = false,
+    headerActions,
   } = props;
 
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
@@ -79,6 +81,8 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
             {title}
           </h2>
 
+          <div className="flex flex-wrap items-center gap-4">
+          {headerActions}
           {countLabel && items.length > itemsPerSlide && (
 <button
   type="button"
@@ -95,6 +99,7 @@ const DestinationsCarousel = React.memo<DestinationsCarouselProps>(function Dest
     />
   </button>
 )}
+          </div>
 
         </div>
 
@@ -124,6 +129,7 @@ rightControl={
                 key={c.code}
                 country={c}
                 url={c.url}
+                mapUrl={c.mapUrl}
                 badgeLabel={badgeLabel}
                 bottomVariant={cardVariant}
                 showFlag={showFlag}
@@ -141,6 +147,7 @@ rightControl={
         key={c.code}
         country={c}
         url={c.url}
+        mapUrl={c.mapUrl}
         badgeLabel={badgeLabel}
         bottomVariant={cardVariant}
         showFlag={showFlag}

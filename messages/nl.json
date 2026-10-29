@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Stranden wereldwijd",
     "quickMenuBeachType": "Strandtype",
     "quickMenuUserType": "Gebruikerstype",
-    "quickMenuBeachDisplay": "Strandweergave",
     "quickMenuBeachServices": "Strandvoorzieningen",
     "quickMenuTopBeaches": "Topstranden",
     "quickMenuAboutUs": "Over ons",
@@ -65,7 +64,14 @@
     "accommodationDefaultDistance": "250 m van het strand",
     "accommodationDefaultBeach": "Haludovo Beach",
     "accommodationDefaultPrice": "vanaf 25 €",
-    "beachSeaBeach": "Zeestrand"
+    "beachSeaBeach": "Zeestrand",
+    "copyLink": "Kopiëren",
+    "linkCopied": "Gekopieerd",
+    "shareOn": "Delen op {network}",
+    "shareByEmail": "Delen via e-mail",
+    "moreShareOptions": "Meer opties",
+    "paginationPrevious": "Vorige",
+    "paginationNext": "Volgende"
   },
   "Search": {
     "typeBeach": "Strand",
@@ -76,7 +82,17 @@
     "beaches": "stranden",
     "noResults": "Geen resultaten gevonden. Probeer een andere zoekterm.",
     "searching": "Zoeken...",
-    "clearSearch": "Zoekopdracht wissen"
+    "clearSearch": "Zoekopdracht wissen",
+    "tabAll": "Alles",
+    "tabBeaches": "Stranden",
+    "tabCities": "Plaatsen",
+    "tabIslands": "Eilanden",
+    "tabRegions": "Regio's",
+    "tabCountries": "Landen",
+    "tabsLabel": "Resultaten filteren op type",
+    "showAllOnMap": "Alle stranden op de kaart: {name}",
+    "showingOf": "{shown} van {total} getoond",
+    "openPlace": "{name} openen"
   },
   "HomePage": {
     "allBeaches": "Alle stranden",
@@ -103,7 +119,10 @@
     "outdoorPools": "Buitenzwembaden",
     "indoorPoolsSpas": "Binnenzwembaden & spa's",
     "browseAccommodationsButton": "Accommodaties bekijken",
-    "moreAccommodations": "+Meer accommodaties"
+    "moreAccommodations": "+Meer accommodaties",
+    "showcaseExample": "Voorbeeld: {beach}",
+    "showcaseOpenBeach": "Bekijk {beach}",
+    "showcaseLiveBadge": "Live"
   },
   "BeachCategories": {
     "sandyBeaches": "Zandstranden",
@@ -136,9 +155,12 @@
     "browseBeaches": "Alle stranden doorbladeren",
     "goHome": "Naar home"
   },
-  "AboutPage": {
-    "aboutUs": "Over ons",
-    "description": "Beschrijving over ons-pagina"
+  "ErrorPage": {
+    "title": "Er is iets misgegaan.",
+    "subtitle": "Fout",
+    "description": "Er is een onverwachte fout opgetreden. Probeer het zo meteen opnieuw.",
+    "retry": "Opnieuw proberen",
+    "goHome": "Naar home"
   },
   "BeachTypePage": {
     "title": "Strandtypes",
@@ -161,17 +183,16 @@
     "premiumAccommodations": "Luxe accommodaties in {continent}",
     "bestDeals": "Geweldige deals",
     "description": "Ontdek de mooiste stranden in {continent}.",
-    "countriesContinent": "Landen in {continent}"
+    "countriesContinent": "Landen in {continent}",
+    "sortBy": "Sorteren op",
+    "sortAlphabetical": "Alfabetisch (A–Z)",
+    "sortBeachesDesc": "Meeste stranden eerst",
+    "sortBeachesAsc": "Minste stranden eerst"
   },
   "FeatureCards": {
     "beachMapButton": "Strandkaart",
     "browseBlogButton": "Blog bekijken",
     "browseAccommodationsButton": "Accommodaties bekijken"
-  },
-  "routes": {
-    "beachMap": "/strandkaart",
-    "blog": "/blog",
-    "accommodations": "/accommodaties"
   },
   "Destinations": {
     "croatia": "Kroatië",
@@ -221,7 +242,7 @@
     "viewBeachMap": "Strandkaart bekijken"
   },
   "SearchBeach": {
-    "title": "Alle stranden in Europa doorbladeren",
+    "title": "Alle stranden in {continent} doorbladeren",
     "filterButton": "Filter",
     "mapButton": "Kaart weergeven",
     "displayLabel": "Strandweergave:",
@@ -312,9 +333,12 @@
     "islandLabel": "Eiland",
     "cityLabel": "Stad",
     "countryLabel": "Land",
-    "beachLabel": "Zeestrand",
+    "beachLabel": "Zee",
     "beachCountLabel": "Aantal stranden:",
-    "accommodationCountLabel": "Aantal accommodaties:"
+    "accommodationCountLabel": "Aantal accommodaties:",
+    "beachLabelLake": "Meer",
+    "beachLabelRiver": "Rivier",
+    "beachLabelPool": "Zwembad"
   },
   "TopBarBeach": {
     "beachLabel": "Zeestrand",
@@ -328,7 +352,9 @@
       "parking": "Parkeerplaats beschikbaar",
       "easyAccess": "Eenvoudige toegang",
       "windsurfing": "Windsurfen",
-      "SeaTemperature": "Zee-temperatuur"
+      "SeaTemperature": "Zee-temperatuur",
+      "adventurer": "Strand voor avonturiers",
+      "partyBeach": "Feeststrand"
     }
   },
   "AccommodationSection": {
@@ -514,20 +540,16 @@
       "title": "De site doorbladeren",
       "links": [
         {
-          "label": "Overzicht van alle bestemmingen",
-          "href": "/destinations"
+          "label": "Overzicht van alle bestemmingen"
         },
         {
-          "label": "Zoeken op stranden",
-          "href": "/stranden"
+          "label": "Zoeken op stranden"
         },
         {
-          "label": "Zoeken op accommodaties",
-          "href": "/accommodaties"
+          "label": "Zoeken op accommodaties"
         },
         {
-          "label": "Kaartweergave",
-          "href": "/strandkaart"
+          "label": "Kaartweergave"
         }
       ]
     },
@@ -539,7 +561,12 @@
       "gdprConsent": "Ik ga akkoord met het ontvangen van promotionele e-mails en nieuws, en ik accepteer het <privacy>privacybeleid</privacy>."
     },
     "legal": {
-      "rights": "Alle rechten voorbehouden BeachRex"
+      "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Alle rechten voorbehouden."
+    },
+    "app": {
+      "title": "Download de app",
+      "googlePlayTop": "ONTDEK HET OP",
+      "appStoreTop": "Download in de"
     }
   },
   "BeachSimilarBeaches": {
@@ -554,7 +581,7 @@
     "title": "Gedetailleerde informatie",
     "beachMediaGallery": "Strandgalerij",
     "beachMediaVideo": "Strandvideo",
-    "beachMedia360": "360°-weergave",
+    "beachMedia360": "360° weergave",
     "beachMediaLiveCam": "Live cam",
     "groups": {
       "beach": "Strand",
@@ -564,7 +591,8 @@
       "sports": "Sportactiviteiten",
       "parking": "Parkeren",
       "pathToBeach": "Pad naar het strand",
-      "userType": "Gebruikerstype"
+      "userType": "Gebruikerstype",
+      "gpsLocation": "GPS-locatie"
     },
     "labels": {
       "type": "Type",
@@ -581,11 +609,15 @@
       "wayToParking": "Ondergrond naar parkeerplaats",
       "recommendedAccess": "Aanbevolen toegang",
       "distance": "Afstand (parkeerplaats — strand)",
-      "elevationDiff": "Hoogteverschil (parkeerplaats naar strand)"
+      "elevationDiff": "Hoogteverschil (parkeerplaats naar strand)",
+      "seabedLake": "Meerbodem",
+      "seabedRiver": "Rivierbedding",
+      "seabedPool": "Zwembadbodem"
     },
     "buttons": {
       "photo": "Foto",
-      "map": "Kaart"
+      "map": "Kaart",
+      "navigation": "Navigatie"
     },
     "values": {
       "yes": "Ja",
@@ -631,7 +663,12 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Live webcam",
+    "webcamIframeTitle": "Live webcam: {name}",
+    "webcamCredit": "Webcam aangeboden door Windy.com",
+    "closeMedia": "Sluiten",
+    "navigationAria": "Route naar {name} in Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Doorgaan met Google",
@@ -648,7 +685,30 @@
     "loginRequired": "Aanmelden vereist",
     "loginRequiredMessage": "Je moet je aanmelden om toegang te krijgen tot deze functie.",
     "creditsRequired": "Credits vereist",
-    "creditsRequiredMessage": "Je hebt credits nodig om reisplannen te genereren. Koop credits om door te gaan."
+    "creditsRequiredMessage": "Je hebt credits nodig om reisplannen te genereren. Koop credits om door te gaan.",
+    "orDivider": "of",
+    "signInWithEmail": "Inloggen met e-mail",
+    "email": "E-mail",
+    "password": "Wachtwoord",
+    "signIn": "Inloggen",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "invalidCredentials": "Onjuist e-mailadres of wachtwoord.",
+    "tooManyAttempts": "Te veel pogingen. Wacht een minuut en probeer het opnieuw.",
+    "genericError": "Er is iets misgegaan. Probeer het opnieuw.",
+    "forgotTitle": "Wachtwoord vergeten?",
+    "forgotDescription": "Vul het e-mailadres van je Beachrex-account in en we sturen je een link om een nieuw wachtwoord in te stellen.",
+    "sendLink": "Link versturen",
+    "forgotSent": "Als er een account bestaat voor dit e-mailadres, hebben we een link gestuurd om het wachtwoord opnieuw in te stellen. Controleer je inbox en spammap.",
+    "resetTitle": "Stel een nieuw wachtwoord in",
+    "newPassword": "Nieuw wachtwoord",
+    "confirmPassword": "Herhaal nieuw wachtwoord",
+    "passwordHint": "Minimaal 8 tekens.",
+    "passwordsDontMatch": "De wachtwoorden komen niet overeen.",
+    "savePassword": "Wachtwoord opslaan",
+    "resetDone": "Je wachtwoord is gewijzigd en je bent ingelogd.",
+    "resetDoneSignIn": "Je wachtwoord is gewijzigd. Je kunt nu inloggen.",
+    "resetInvalidLink": "Deze link om het wachtwoord opnieuw in te stellen is ongeldig of verlopen.",
+    "requestNewLink": "Nieuwe link aanvragen"
   },
   "AI": {
     "landing": {
@@ -656,7 +716,13 @@
       "subtitle": "Jouw persoonlijke strandontdekkingsgezel, aangedreven door AI",
       "description": "Krijg persoonlijke strandaanbevelingen, chat met onze AI-assistent en maak aangepaste reisplannen voor jouw perfecte strandvakantie.",
       "chatButton": "Start met chatten",
-      "itineraryButton": "Reisplan maken"
+      "itineraryButton": "Reisplan maken",
+      "chatCardText": "Vraag onze AI-assistent alles over stranden, bestemmingen en reistips en krijg meteen persoonlijke aanbevelingen.",
+      "chatCta": "Begin met chatten",
+      "itineraryCardText": "Maak persoonlijke meerdaagse reisroutes voor je strandvakantie, afgestemd op je voorkeuren, budget en interesses.",
+      "itineraryCta": "Reisroute maken",
+      "infoTitle": "Nieuw bij Beachrex AI?",
+      "infoText": "De chat is gratis voor iedereen. Meerdaagse reisroutes vragen credits – log in met Google om te beginnen!"
     },
     "chat": {
       "title": "Chat met AI",
@@ -666,29 +732,117 @@
       "sending": "Versturen...",
       "error": "Bericht versturen mislukt. Probeer het opnieuw.",
       "welcome": "Hallo! Ik ben je AI-strandassistent. Hoe kan ik je vandaag helpen?",
-      "anonymousNote": "Je chat anoniem. Meld je aan om je gesprekken op te slaan en toegang te krijgen tot premium functies."
+      "anonymousNote": "Je chat anoniem. Meld je aan om je gesprekken op te slaan en toegang te krijgen tot premium functies.",
+      "viewDetails": "Details bekijken →",
+      "suggestions": "Suggesties:",
+      "match": "{percent}% overeenkomst",
+      "useLocation": "Gebruik mijn locatie (stranden in de buurt)",
+      "locationOn": "Je locatie wordt gebruikt voor stranden in de buurt",
+      "locationDenied": "Locatie niet beschikbaar. Sta locatietoegang toe in de browser of noem een plaats.",
+      "errorBusy": "De AI-assistent is nu druk. Probeer het over een minuut opnieuw.",
+      "errorTooMany": "Te veel berichten. Wacht even en probeer het opnieuw.",
+      "errorTooLong": "Het bericht is te lang. Maak het korter.",
+      "widget": {
+        "open": "AI-strandassistent openen",
+        "close": "Chat sluiten",
+        "title": "AI-strandassistent",
+        "newConversation": "Nieuw gesprek",
+        "openFullPage": "Volledige chat openen",
+        "inputLabel": "Uw bericht",
+        "greeting": "Hallo! Vraag me alles over stranden en uw reis naar zee.",
+        "greetingBeach": "Hallo! U bekijkt {name}. Vraag me alles over dit strand of over elk ander strand.",
+        "placeholderBeach": "Vraag over {name}…"
+      }
     },
     "itinerary": {
-      "title": "Strandreisplan maken",
-      "subtitle": "Genereer een persoonlijk meerdaags strandvakantieplan",
+      "title": "Plan je strandvakantie",
+      "subtitle": "Kies een land en de lengte van je reis. Wij plannen de stranden voor elke dag uit de Beachrex-database, met een link naar elk strand.",
       "form": {
-        "destination": "Bestemming",
-        "destinationPlaceholder": "bijv. Kroatië, Bali, Caribisch gebied",
-        "days": "Aantal dagen",
-        "daysPlaceholder": "bijv. 7",
-        "interests": "Interesses",
-        "interestsPlaceholder": "bijv. snorkelen, ontspanning, nachtleven",
-        "budget": "Budgetniveau",
-        "budgetLow": "Budget",
-        "budgetMedium": "Gemiddeld",
-        "budgetHigh": "Luxe",
-        "generate": "Reisplan genereren",
-        "generating": "Je reisplan wordt gegenereerd..."
+        "country": "Land",
+        "countryPlaceholder": "Kies een land",
+        "region": "Regio (optioneel)",
+        "wholeCountry": "Heel het land",
+        "duration": "Reisduur",
+        "daysOption": "{days} dagen",
+        "plansAvailable": "{count} beschikbaar",
+        "interests": "Wat vind je leuk?",
+        "surface": "Strandondergrond",
+        "pace": "Tempo",
+        "adults": "Volwassenen",
+        "children": "Kinderen"
       },
-      "error": "Reisplan genereren mislukt. Probeer het opnieuw.",
-      "paymentRequired": "Meerdaagse reisplannen vereisen credits. Koop credits om door te gaan.",
-      "creditsRemaining": "Resterende credits: {count}",
-      "purchaseCredits": "Credits kopen"
+      "interest": {
+        "swimming": "Zwemmen",
+        "snorkeling": "Snorkelen",
+        "family": "Gezinsvriendelijk",
+        "quiet": "Rust",
+        "nightlife": "Nachtleven",
+        "nature": "Natuur",
+        "diving": "Duiken",
+        "surfing": "Surfen",
+        "kayaking": "Kajakken",
+        "hiking": "Wandelen"
+      },
+      "surface": {
+        "sand": "Zand",
+        "pebble": "Kiezels",
+        "rock": "Rotsen"
+      },
+      "pace": {
+        "relaxed": "Ontspannen",
+        "balanced": "Gebalanceerd",
+        "packed": "Vol"
+      },
+      "progressBeaches": "We zoeken stranden die bij je wensen passen…",
+      "progressRoute": "We plannen de route dag voor dag…",
+      "progressTips": "We schrijven tips voor elk strand…",
+      "signInToStart": "Log in om je plan te kopen en te maken.",
+      "generate": "Maak mijn plan",
+      "usesOnePlan": "Gebruikt een van je {days}-daagse plannen.",
+      "buy": "Koop {days}-daags plan · {price}",
+      "buyNote": "Eenmalige betaling, geen abonnement. Na het betalen kom je hier terug en maak je je plan.",
+      "errors": {
+        "signInRequired": "Log eerst in.",
+        "buyRequired": "Je hebt geen plan van deze lengte meer. Koop er een om verder te gaan.",
+        "notEnoughBeaches": "Te weinig stranden passen. Probeer heel het land, minder wensen of een kortere reis. Je plan is niet gebruikt.",
+        "busy": "De planner is nu druk. Probeer het over een minuut opnieuw. Je plan is niet gebruikt.",
+        "error": "Er ging iets mis en je plan is niet gebruikt. Probeer het opnieuw.",
+        "purchaseError": "De betaling kon niet worden gestart. Probeer het opnieuw."
+      },
+      "fallbackNote": "Deze keer konden de AI-tips niet worden geschreven, dus het plan bevat korte feiten. Je plan is niet gebruikt en je kunt het opnieuw maken.",
+      "day": "Dag {number}",
+      "timeBlock": {
+        "morning": "Ochtend",
+        "afternoon": "Middag",
+        "evening": "Avond"
+      },
+      "tip": "Tip",
+      "travelKm": "Ongeveer {km} km rijden op deze dag.",
+      "assumptions": "Goed om te weten",
+      "newPlan": "Plan een andere reis",
+      "plans": {
+        "title": "Mijn plannen",
+        "empty": "Je hebt nog geen plannen. Maak je eerste.",
+        "untitled": "Reis van {days} dagen ({country})",
+        "notFound": "Dit plan bestaat niet of hoort bij een ander account.",
+        "waitNote": "Je kunt deze pagina sluiten: het plan wordt bewaard onder Mijn plannen zodra het klaar is.",
+        "status": {
+          "running": "Wordt gemaakt",
+          "done": "Klaar",
+          "failed": "Niet gemaakt"
+        },
+        "failed": {
+          "notEnoughBeaches": "Te weinig stranden passen bij deze reis. Het plan is niet gebruikt: probeer heel het land, minder wensen of een kortere reis.",
+          "timeout": "Het maken duurde te lang. Het plan is niet gebruikt, probeer het opnieuw.",
+          "error": "Er ging iets mis. Het plan is niet gebruikt, probeer het opnieuw."
+        }
+      },
+      "savePdf": "Opslaan als pdf",
+      "mapTitle": "Kaart van de reis",
+      "consent": {
+        "terms": "Ik ga akkoord met de <link>verkoopvoorwaarden</link>.",
+        "withdrawal": "Ik wil dat het plan meteen beschikbaar is. Ik begrijp dat ik mijn herroepingsrecht van 14 dagen verlies zodra ik het plan maak; tot dan kan ik nog herroepen."
+      }
     },
     "entitlements": {
       "title": "Mijn credits",
@@ -707,10 +861,176 @@
     "priceFrom": "vanaf {price} €",
     "webcamLabel": "Webcam",
     "noWebcam": "Geen webcam beschikbaar",
-    "no360": "Geen 360°-weergave beschikbaar",
+    "no360": "Geen 360° weergave beschikbaar",
     "noVideo": "Geen video beschikbaar",
     "mostVisited": "Meest bezocht",
+    "distanceAway": "op {distance}",
     "loading": "Laden...",
-    "showOnMap": "{title} op kaart weergeven"
+    "showOnMap": "{title} op kaart weergeven",
+    "webcamClose": "Webcam sluiten"
+  },
+  "Menu": {
+    "browseBeaches": "Stranden bekijken",
+    "topCountries": "Populaire strandlanden",
+    "aiChat": "AI-strandchat",
+    "aiItinerary": "AI-reisplanner",
+    "contact": "Contact",
+    "beachTypes": "Soorten stranden",
+    "beachesFor": "Stranden voor",
+    "onTheBeach": "Op het strand"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Downloads",
+    "packageTitle": "Compleet merkpakket",
+    "packageDescription": "Alle logo’s (SVG, PDF, EPS, PNG), favicon en app-iconen, afbeeldingen voor sociale media en het kleurenpalet in één ZIP-bestand.",
+    "packageButton": "Download ZIP",
+    "guidelinesTitle": "Merkrichtlijnen",
+    "logosTitle": "Logo’s",
+    "versions": {
+      "horizontal": "Horizontaal (primair)",
+      "stacked": "Gestapeld",
+      "symbol": "Symbool",
+      "wordmark": "Woordmerk"
+    },
+    "colors": {
+      "color": "Volledige kleur",
+      "black": "Zwart",
+      "white": "Wit",
+      "teal": "Turquoise",
+      "orange": "Oranje"
+    },
+    "logoAlt": "Beachrex-logo – {version}, {color}",
+    "colorsTitle": "Kleuren",
+    "paletteDownload": "Download het palet",
+    "socialTitle": "Afbeeldingen voor sociale media",
+    "social": {
+      "profile": "Profielfoto",
+      "og": "Afbeelding voor linkvoorbeeld",
+      "facebook": "Facebook-omslagfoto",
+      "linkedin": "LinkedIn-omslagfoto",
+      "x": "X-header"
+    }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – de auteur van Beachrex",
+    "metaDescription": "Maak kennis met Gregor Balažic, die zijn baan opzegde, een camera en een busje kocht en 4.000 stranden in 13 landen bezocht. Zo ontstond Beachrex.",
+    "eyebrow": "Over de auteur",
+    "bannerWord": "Auteur",
+    "role": "Oprichter van Beachrex",
+    "lead": "“Stranden zijn altijd mijn grote passie geweest.”",
+    "heroCta": "Lees het verhaal",
+    "stats": {
+      "beaches": "bezochte stranden",
+      "km": "gereden kilometers",
+      "countries": "landen",
+      "facts": "gegevens over elk strand"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Uit de comfortzone",
+        "text": "Stranden zijn altijd mijn grote passie geweest, zegt Gregor Balažic, die zijn baan opzegde. Hij was afdelingshoofd, maar stapte uit zijn comfortzone en liet een voorspelbare toekomst achter zich. Hij kocht een camera en een busje, dat zijn nieuwe thuis werd, en trok de wereld in. Of eigenlijk: de stranden langs."
+      },
+      "road": {
+        "title": "<beaches>4.000 stranden</beaches> in <countries>13 landen</countries>",
+        "text": "Hij reisde langs de kusten en stranden van <countries>13 landen</countries>: <list></list>. Hij bezocht maar liefst <beaches>4.000 stranden</beaches>. Hoe enorm dat getal ook lijkt, het is slechts een druppel op een gloeiende plaat – wereldwijd zijn er meer dan 200.000 stranden die geschikt zijn voor toerisme, legt Balažic uit."
+      },
+      "database": {
+        "title": "De grootste strandendatabase ter wereld",
+        "text": "De bezochte stranden vormden de basis voor de grootste strandendatabase ter wereld: Beachrex. Bij elk strand horen foto’s, panoramabeelden, video’s, informatie over parkeermogelijkheden, GPS-locatie, weergegevens, accommodaties, sportactiviteiten, restaurants en bars en de temperatuur van het zeewater. Samen zijn dat meer dan 200 gegevens over elk strand."
+      },
+      "hardships": {
+        "title": "De weg was niet altijd makkelijk",
+        "text": "Balažic heeft meer dan 70.000 kilometer afgelegd en moest soms zelfs klimmen voor de mooiste beelden. De reis van duizenden kilometers verliep niet altijd zonnig – onderweg maakte hij ook onaangename dingen mee en werd hij meerdere keren beroofd. Maar zijn reis is (nog) niet voorbij."
+      }
+    },
+    "routeTitle": "Langs de kust",
+    "countries": {
+      "si": "Slovenië",
+      "hr": "Kroatië",
+      "me": "Montenegro",
+      "al": "Albanië",
+      "gr": "Griekenland",
+      "it": "Italië",
+      "fr": "Frankrijk",
+      "es": "Spanje",
+      "pt": "Portugal",
+      "be": "België",
+      "nl": "Nederland",
+      "de": "Duitsland",
+      "dk": "Denemarken"
+    },
+    "photoAlt": "Gregor Balažic met zijn camera op een zandstrand",
+    "beachAlt": "Zandstrand met een omgekeerde boot bij de rotsen en dennenbomen",
+    "beachCaption": "Een van de 4.000 stranden die Gregor heeft bezocht en gefotografeerd.",
+    "quote": "We hebben een visie – over een paar jaar staat elk strand ter wereld op de kaart.",
+    "ctaTitle": "Ontdek de stranden die Gregor bezocht",
+    "ctaText": "Elke foto, elk 360° panorama en elk detail op Beachrex is op deze reis ontstaan.",
+    "ctaMap": "Verken de kaart",
+    "ctaContact": "Schrijf ons",
+    "footerLink": "Maak kennis met de auteur"
+  },
+  "Payment": {
+    "successTitle": "Betaling geslaagd",
+    "successMessage": "Bedankt voor je aankoop! Je credits zijn aan je account toegevoegd.",
+    "sessionId": "Sessie-ID:",
+    "cancelTitle": "Betaling geannuleerd",
+    "cancelMessage": "Je betaling is geannuleerd. Er is niets afgeschreven.",
+    "redirecting": "Terug naar de reisplanner over <strong>{seconds}</strong> seconden…",
+    "planItinerary": "Plan een reisroute",
+    "tryChat": "Probeer de AI-chat",
+    "tryAgain": "Opnieuw proberen",
+    "goHome": "Naar de startpagina",
+    "help": "Hulp nodig? Schrijf naar {email}."
+  },
+  "UI": {
+    "selectOption": "Kies een optie",
+    "noBeachesInArea": "Geen stranden gevonden in dit gebied",
+    "singleColumn": "Weergave in één kolom",
+    "doubleColumn": "Weergave in twee kolommen",
+    "closeMap": "Kaart sluiten",
+    "closeFilters": "Filters sluiten",
+    "videoTitle": "Strandvideo",
+    "virtualTourTitle": "360° rondleiding",
+    "beachRouteMapTitle": "Kaart met de route naar het strand",
+    "closeMenu": "Menu sluiten"
+  },
+  "FilterModal": {
+    "title": "Alle strandfilters",
+    "searchPlaceholder": "🔍 Filters zoeken…",
+    "clearAll": "Alles wissen",
+    "cancel": "Annuleren",
+    "apply": "Filters toepassen",
+    "applyCount": "Filters toepassen ({count})",
+    "showLess": "Minder tonen",
+    "showMore": "Nog {count} tonen…"
+  },
+  "Favorites": {
+    "title": "Mijn favoriete stranden",
+    "add": "Opslaan als favoriet",
+    "remove": "Verwijderen uit favorieten",
+    "save": "Opslaan",
+    "saved": "Opgeslagen",
+    "signInTitle": "Log in om stranden op te slaan",
+    "signInText": "Je favoriete stranden worden in je account opgeslagen, zodat je ze op elk apparaat terugvindt.",
+    "empty": "Je hebt nog geen stranden opgeslagen. Tik op het hartje bij een strand om het op te slaan.",
+    "browse": "Stranden bekijken",
+    "limit": "Je favorietenlijst is vol. Verwijder een strand om een ander op te slaan.",
+    "error": "Het strand kon niet worden opgeslagen. Probeer het opnieuw.",
+    "loadError": "Je favoriete stranden konden niet worden geladen. Probeer het opnieuw."
+  },
+  "BeachFaq": {
+    "title": "Veelgestelde vragen over {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Alle landen",
+    "allRegions": "Alle regio's",
+    "allIslands": "Alle eilanden",
+    "allCities": "Alle plaatsen",
+    "all": "Alles",
+    "search": "Zoeken…",
+    "noMatches": "Geen resultaten",
+    "clear": "Wissen",
+    "selected": "Geselecteerde filters",
+    "remove": "{name} verwijderen"
   }
 }

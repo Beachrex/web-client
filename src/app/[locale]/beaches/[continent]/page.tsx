@@ -18,31 +18,17 @@ import {
 } from '@/lib/api-client/sdk.gen';
 
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
-import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
-import { buildBeachUrlFromSchema, buildCityUrlFromSchema, getBeachesWord } from '@/lib/utils/beach-urls';
+import { beachesToProperties } from '@/lib/utils/beach-properties';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, buildContinentSchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
-import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { buildCanonicalUrl, buildCompleteMetadata, buildPlaceAlternates } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-
-
-function toYouTubeEmbed(raw?: string | null) {
-  if (!raw) return undefined;
-
-  if (raw.includes('youtu.be/')) {
-    return raw.replace('youtu.be/', 'www.youtube.com/embed/');
-  }
-
-  if (raw.includes('watch?v=')) {
-    const u = new URL(raw);
-    const v = u.searchParams.get('v');
-    if (v) return `https://www.youtube.com/embed/${v}`;
-  }
-
-  return undefined;
-}
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 
 
 interface PageProps {
@@ -50,36 +36,6 @@ interface PageProps {
     locale: string;
     continent: string;
   }>;
-}
-
-/**
- * Build gallery (max 5 images)
- */
-interface GalleryItem {
-  url?: string;
-  order?: number | null;
-}
-
-interface BeachMediaInput {
-  media?: {
-    gallery?: GalleryItem[];
-    spheres_360?: { tour_url?: string }[];
-    embeds?: {
-      video_url?: string | null;
-      webcam?: string | null;
-    };
-  };
-}
-
-function buildGallery(beach: BeachMediaInput) {
-  const gallery = beach.media?.gallery ?? [];
-
-  return gallery
-    .filter((img): img is GalleryItem & { url: string } => typeof img.url === 'string')
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    .slice(0, 5)
-    .map((img) => buildCdnUrl(img.url, 'list'))
-    .filter((url): url is string => Boolean(url));
 }
 
 // ---------------- VALIDATION -----------------
@@ -111,6 +67,7 @@ const validateAndGetContinentCode = async (
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
+  setRequestLocale(resolvedParams.locale);
   const { locale, continent: continentSlug } = resolvedParams;
   const t = await getTranslations({ locale, namespace: 'SEO' });
 
@@ -167,6 +124,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       locale,
+      // hreflang for all 19 languages (pre-launch 2026-10-23)
+      alternateLanguages: await buildPlaceAlternates(locale, canonicalPath, { continent: continent.code ?? null }),
       path: canonicalPath,
       images: imageUrl ? [imageUrl] : undefined,
       type: 'website',
@@ -183,6 +142,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 const Page = async ({ params }: PageProps) => {
   const resolvedParams = await params;
+  setRequestLocale(resolvedParams.locale);
   const beachesWord = getBeachesWord(resolvedParams.locale);
   const pathname = `/${beachesWord}/${resolvedParams.continent}`;
 
@@ -222,50 +182,8 @@ const Page = async ({ params }: PageProps) => {
 
     const mostVisited = mostVisitedResponse?.data ?? [];
 
-    // 4) Transform into PropertySection items
-    const transformedProperties = mostVisited.map((beach) => {
-      const gallery = buildGallery(beach);
-     const mainImage = buildCdnUrl(beach.main_image, 'list')!;
-
-/* Sphere - use buildSphereTourUrl to handle special characters (č, š, ž, etc.) */
-const sphere = beach.media?.spheres_360?.[0] ?? null;
-const sphereThumbnail = sphere ? mainImage : undefined;
-const sphereTourUrl = buildSphereTourUrl(sphere?.tour_url) ?? undefined;
-
-/* Video */
-const rawVideo = beach.media?.embeds?.video_url ?? null;
-const videoEmbedUrl = toYouTubeEmbed(rawVideo);
-
-/* Webcam */
-const webcamEmbed = beach.media?.embeds?.webcam ?? null;
-
-const beachUrl =
-  buildBeachUrlFromSchema(beach, resolvedParams.locale) ?? undefined;
-
-return {
-  id: String(beach.id),
-
-  beachUrl,
-
-  image: mainImage,
-  galleryImages: gallery,
-
-  sphereThumbnail,
-  sphereTourUrl,
-  videoEmbedUrl,
-  webcamEmbed,
-
-  title: beach.name ?? '',
-  location: beach.city_name ?? beach.country_name ?? '',
-  locationUrl:
-    buildCityUrlFromSchema(beach, resolvedParams.locale) ?? undefined,
-  price: 0,
-  rating: 0,
-  reviews: 0,
-  countryCode: beach.country_code,
-};
-
-    });
+    // 4) Cards with the same media rules as the beach page
+    const transformedProperties = beachesToProperties(mostVisited, resolvedParams.locale);
 
     const bannerImage = continent.main_image
       ? buildCdnUrl(continent.main_image, 'banner')
@@ -314,6 +232,7 @@ return {
         {/* Breadcrumbs */}
     <DynamicTopBar
   pathname={pathname}
+        breadcrumbLabels={breadcrumbLabels(continent)}
   variant="continent"
     />
 
@@ -326,6 +245,7 @@ return {
           beachCount={continent.beaches_count ?? 0}
           topBarVariant="continent"
           continentCode={continent.code}
+          {...mapPlacePills(resolvedParams.locale, { continent })}
         />
 
         {/* Most visited */}
@@ -341,13 +261,17 @@ return {
           continentSlug={resolvedParams.continent}
         />
 
-        {/* Countries list */}
-        <ContinentCountriesSection />
+        {/* Countries of this continent */}
+        <ContinentCountriesSection
+          title={t('countriesContinent', { continent: continent.name ?? '' })}
+          continentCode={continentCode}
+        />
 
         {/* Search beaches */}
         <DynamicSearchBeaches
   translationNamespace="SearchBeach"
   titleKey="title"
+  titleParams={{ continent: continent.name ?? '' }}
   filterButtonColor="#5E1CA5"
   baseFilters={{
     continent_code: continentCode,
@@ -371,3 +295,11 @@ export default Page;
  * Revalidate continent pages every hour (3600 seconds)
  */
 export const revalidate = 3600;
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "name": "BeachRex Teal",
+    "hex": "#00B2C9",
+    "rgb": [
+      0,
+      178,
+      201
+    ],
+    "cmyk": "C80 M0 Y20 K0",
+    "pantone": "PANTONE 3125 C (približek)"
+  },
+  {
+    "name": "BeachRex Orange",
+    "hex": "#EB8751",
+    "rgb": [
+      235,
+      135,
+      81
+    ],
+    "cmyk": "C0 M56 Y70 K0",
+    "pantone": "PANTONE 7577 C (približek)"
+  },
+  {
+    "name": "Deep Sea",
+    "hex": "#0F3B45",
+    "rgb": [
+      15,
+      59,
+      69
+    ],
+    "cmyk": "C90 M50 Y45 K45",
+    "pantone": "—"
+  },
+  {
+    "name": "Sand",
+    "hex": "#FFF4E8",
+    "rgb": [
+      255,
+      244,
+      232
+    ],
+    "cmyk": "C0 M4 Y9 K0",
+    "pantone": "—"
+  },
+  {
+    "name": "White",
+    "hex": "#FFFFFF",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "cmyk": "C0 M0 Y0 K0",
+    "pantone": "—"
+  }
+]

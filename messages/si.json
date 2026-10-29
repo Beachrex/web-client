@@ -4,7 +4,7 @@
     "mapButtonFilter": "Zemljevid plaž s filtri",
     "menu": "Meni",
     "about": "O nas",
-    "numBeaches": "plaže: ",
+    "numBeaches": "Plaže: ",
     "numAccommodations": "Nastanitve: ",
     "hotelPrice": "Cena hotela",
     "home": "Domov",
@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Plaže po svetu",
     "quickMenuBeachType": "Tip plaže",
     "quickMenuUserType": "Tip uporabnika",
-    "quickMenuBeachDisplay": "Prikaz plaže",
     "quickMenuBeachServices": "Storitve ob plaži",
     "quickMenuTopBeaches": "Top plaže",
     "quickMenuAboutUs": "O nas",
@@ -65,7 +64,14 @@
     "accommodationDefaultDistance": "250 m od plaže",
     "accommodationDefaultBeach": "Plaža Haludovo",
     "accommodationDefaultPrice": "od 25 €",
-    "beachSeaBeach": "Morska plaža"
+    "beachSeaBeach": "Morska plaža",
+    "copyLink": "Kopiraj",
+    "linkCopied": "Kopirano",
+    "shareOn": "Deli na {network}",
+    "shareByEmail": "Deli po e-pošti",
+    "moreShareOptions": "Več možnosti",
+    "paginationPrevious": "Prejšnja",
+    "paginationNext": "Naslednja"
   },
   "Search": {
     "typeBeach": "Plaža",
@@ -76,7 +82,17 @@
     "beaches": "plaže",
     "noResults": "Ni rezultatov. Poskusite z drugim iskalnim izrazom.",
     "searching": "Iskanje...",
-    "clearSearch": "Počisti iskanje"
+    "clearSearch": "Počisti iskanje",
+    "tabAll": "Vse",
+    "tabBeaches": "Plaže",
+    "tabCities": "Mesta",
+    "tabIslands": "Otoki",
+    "tabRegions": "Regije",
+    "tabCountries": "Države",
+    "tabsLabel": "Filtriraj zadetke po vrsti",
+    "showAllOnMap": "Vse plaže na zemljevidu: {name}",
+    "showingOf": "Prikazanih {shown} od {total}",
+    "openPlace": "Odpri {name}"
   },
   "HomePage": {
     "allBeaches": "Vse plaže",
@@ -103,7 +119,10 @@
     "outdoorPools": "Zunanji bazeni",
     "indoorPoolsSpas": "Pokriti bazeni, terme",
     "browseAccommodationsButton": "Brskaj po nastanitvah",
-    "moreAccommodations": "+More Accommodations"
+    "moreAccommodations": "+Več nastanitev",
+    "showcaseExample": "Primer: {beach}",
+    "showcaseOpenBeach": "Oglej si plažo {beach}",
+    "showcaseLiveBadge": "V živo"
   },
   "Metadata": {
     "title": "BeachRex - Najdi svojo popolno plažo.",
@@ -116,9 +135,12 @@
     "browseBeaches": "Brskaj po vseh plažah",
     "goHome": "Nazaj domov"
   },
-  "AboutPage": {
-    "aboutUs": "O nas",
-    "description": "Opis o nas strani"
+  "ErrorPage": {
+    "title": "Prišlo je do napake.",
+    "subtitle": "Napaka",
+    "description": "Prišlo je do nepričakovane napake. Poskusite znova čez trenutek.",
+    "retry": "Poskusi znova",
+    "goHome": "Na domačo stran"
   },
   "BeachTypePage": {
     "title": "Tipi plaž",
@@ -161,17 +183,16 @@
     "premiumAccommodations": "Luksuzne nastanitve v {continent}",
     "bestDeals": "Odlične ponude",
     "description": "Raziščite najlepše plaže v {continent}.",
-    "countriesContinent": "Države v {continent}"
+    "countriesContinent": "Države v {continent}",
+    "sortBy": "Razvrsti",
+    "sortAlphabetical": "Po abecedi (A–Ž)",
+    "sortBeachesDesc": "Največ plaž najprej",
+    "sortBeachesAsc": "Najmanj plaž najprej"
   },
   "FeatureCards": {
     "beachMapButton": "Zemljevid plaž",
     "browseBlogButton": "Brskaj po blogu",
     "browseAccommodationsButton": "Brskaj po nastanitvah"
-  },
-  "routes": {
-    "beachMap": "/zemljevid-plaz",
-    "blog": "/blog",
-    "accommodations": "/nastanitve"
   },
   "Destinations": {
     "croatia": "Hrvaška",
@@ -221,7 +242,7 @@
     "viewBeachMap": "Poglej zemljevid plaž"
   },
   "SearchBeach": {
-    "title": "Brskaj po vseh plažah Evrope",
+    "title": "Brskaj po vseh plažah {continent}",
     "filterButton": "Filtriraj",
     "mapButton": "Prikaži zemljevid",
     "displayLabel": "Prikaz plaže:",
@@ -312,9 +333,12 @@
     "islandLabel": "Otok",
     "cityLabel": "Mesto",
     "countryLabel": "Država",
-    "beachLabel": "Morska plaža",
+    "beachLabel": "Morje",
     "beachCountLabel": "Število plaž:",
-    "accommodationCountLabel": "Število nastanitev:"
+    "accommodationCountLabel": "Število nastanitev:",
+    "beachLabelLake": "Jezero",
+    "beachLabelRiver": "Reka",
+    "beachLabelPool": "Bazen"
   },
   "TopBarBeach": {
     "beachLabel": "Morska plaža",
@@ -329,7 +353,7 @@
     "mapButton": "Poglej zemljevid",
     "dropdownOption": "Razdalja {distance} od plaže",
     "dropdownAria": "Razdalja od plaže",
-    "activitiesTitle": "Get your guide",
+    "activitiesTitle": "Vaš vodič",
     "activitiesLink": "Vse aktivnosti ({count})"
   },
   "BeachPromoBanner": {
@@ -399,7 +423,7 @@
   },
   "WorldTopBar": {
     "worldLabel": "Svet",
-    "countriesWithBeachesLabel": "Držav z plažami",
+    "countriesWithBeachesLabel": "Države s plažami",
     "totalBeachesLabel": "Plaž na svetu",
     "openPoolsLabel": "Odprtih bazenov na svetu",
     "indoorPoolsLabel": "Zaprtih bazenov na svetu",
@@ -475,7 +499,7 @@
     "map": "Zemljevid",
     "regionsTitle": "Regije {country}",
     "citiesTitle": "Mesta {country}",
-    "islandsTitle": "Otoški {country}",
+    "islandsTitle": "Otoki {country}",
     "allRegionsCount": "Vse regije ({count})",
     "allCitiesCount": "Vsa mesta ({count})",
     "allIslandsCount": "Vsi otoki ({count})",
@@ -495,8 +519,10 @@
       "familyFriendly": "Primerna za družine",
       "parking": "Parkirišče na voljo",
       "easyAccess": "Preprost dostop",
-      "windsurfing": "Windsurfing",
-      "SeaTemperature": "Temperatura morja"
+      "windsurfing": "Jadranje na deski",
+      "SeaTemperature": "Temperatura morja",
+      "adventurer": "Plaža za avanturiste",
+      "partyBeach": "Plaža za zabavo"
     }
   },
   "Footer": {
@@ -514,20 +540,16 @@
       "title": "Brskaj po strani",
       "links": [
         {
-          "label": "Pregled vseh destinacij",
-          "href": "/destinations"
+          "label": "Pregled vseh destinacij"
         },
         {
-          "label": "Išči po plažah",
-          "href": "/beaches"
+          "label": "Išči po plažah"
         },
         {
-          "label": "Išči po nastanitvah",
-          "href": "/accommodations"
+          "label": "Išči po nastanitvah"
         },
         {
-          "label": "Zemljevid",
-          "href": "/beach-map"
+          "label": "Zemljevid"
         }
       ]
     },
@@ -539,7 +561,12 @@
       "gdprConsent": "Strinjam se s prejemanjem promocijskih e-poštnih sporočil in novic ter sprejemam <privacy>politiko zasebnosti</privacy>."
     },
     "legal": {
-      "rights": "Vse pravice pridržane BeachRex"
+      "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Vse pravice pridržane."
+    },
+    "app": {
+      "title": "Prenesi aplikacijo",
+      "googlePlayTop": "NA VOLJO NA",
+      "appStoreTop": "Prenesi iz"
     }
   },
   "BeachSimilarBeaches": {
@@ -564,7 +591,8 @@
       "sports": "Športne aktivnosti",
       "parking": "Parkirišče",
       "pathToBeach": "Pot do plaže",
-      "userType": "Tip uporabnika"
+      "userType": "Tip uporabnika",
+      "gpsLocation": "GPS lokacija"
     },
     "labels": {
       "type": "Tip",
@@ -581,11 +609,15 @@
       "wayToParking": "Pot do parkirišča",
       "recommendedAccess": "Priporočljiv dostop",
       "distance": "Razdalja (parkirišče—plaža)",
-      "elevationDiff": "Višinska razlika (od parkirišča do plaže)"
+      "elevationDiff": "Višinska razlika (od parkirišča do plaže)",
+      "seabedLake": "Dno jezera",
+      "seabedRiver": "Rečno dno",
+      "seabedPool": "Dno bazena"
     },
     "buttons": {
       "photo": "Slika",
-      "map": "Zemljevid"
+      "map": "Zemljevid",
+      "navigation": "Navigacija"
     },
     "values": {
       "yes": "Da",
@@ -631,7 +663,12 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Spletna kamera v živo",
+    "webcamIframeTitle": "Spletna kamera v živo: {name}",
+    "webcamCredit": "Spletno kamero zagotavlja Windy.com",
+    "closeMedia": "Zapri",
+    "navigationAria": "Navigacija do {name} v Google Zemljevidih"
   },
   "PropertyCard": {
     "priceFrom": "od {price} €",
@@ -640,7 +677,360 @@
     "no360": "Pogled 360° ni na voljo",
     "noVideo": "Video ni na voljo",
     "mostVisited": "Najbolj obiskana",
+    "distanceAway": "oddaljeno {distance}",
     "loading": "Nalaganje...",
-    "showOnMap": "Prikaži {title} na zemljevidu"
+    "showOnMap": "Prikaži {title} na zemljevidu",
+    "webcamClose": "Zapri spletno kamero"
+  },
+  "Auth": {
+    "continueWithGoogle": "Nadaljuj z Googlom",
+    "signOut": "Odjava",
+    "signingIn": "Prijavljanje ...",
+    "signingOut": "Odjavljanje ...",
+    "completingSignIn": "Zaključujemo prijavo",
+    "pleaseWait": "Počakajte, da zaključimo prijavo ...",
+    "authenticationError": "Napaka pri prijavi",
+    "authenticationFailed": "Prijava ni uspela. Poskusite znova.",
+    "googleAuthError": "Napaka pri prijavi z Googlom: {error}",
+    "missingParameters": "Manjkajo podatki, potrebni za prijavo.",
+    "returnHome": "Nazaj na začetno stran",
+    "loginRequired": "Potrebna je prijava",
+    "loginRequiredMessage": "Za uporabo te funkcije se morate prijaviti.",
+    "creditsRequired": "Potrebni so krediti",
+    "creditsRequiredMessage": "Za ustvarjanje načrtov potovanja potrebujete kredite. Za nadaljevanje kupite kredite.",
+    "orDivider": "ali",
+    "signInWithEmail": "Prijava z e-pošto",
+    "email": "E-pošta",
+    "password": "Geslo",
+    "signIn": "Prijava",
+    "forgotPassword": "Ste pozabili geslo?",
+    "invalidCredentials": "Napačna e-pošta ali geslo.",
+    "tooManyAttempts": "Preveč poskusov. Počakajte minuto in poskusite znova.",
+    "genericError": "Prišlo je do napake. Poskusite znova.",
+    "forgotTitle": "Ste pozabili geslo?",
+    "forgotDescription": "Vpišite e-pošto svojega računa Beachrex in poslali vam bomo povezavo za nastavitev novega gesla.",
+    "sendLink": "Pošlji povezavo",
+    "forgotSent": "Če za ta e-naslov obstaja račun, smo poslali povezavo za ponastavitev gesla. Preverite nabiralnik in mapo z neželeno pošto.",
+    "resetTitle": "Nastavite novo geslo",
+    "newPassword": "Novo geslo",
+    "confirmPassword": "Ponovite novo geslo",
+    "passwordHint": "Vsaj 8 znakov.",
+    "passwordsDontMatch": "Gesli se ne ujemata.",
+    "savePassword": "Shrani geslo",
+    "resetDone": "Geslo je spremenjeno in prijavljeni ste.",
+    "resetDoneSignIn": "Geslo je spremenjeno. Zdaj se lahko prijavite.",
+    "resetInvalidLink": "Povezava za ponastavitev gesla ni veljavna ali je potekla.",
+    "requestNewLink": "Zahtevaj novo povezavo"
+  },
+  "AI": {
+    "landing": {
+      "title": "AI pomočnik za plaže",
+      "subtitle": "Vaš osebni spremljevalec pri iskanju plaž, ki ga poganja umetna inteligenca",
+      "description": "Prejmite priporočila plaž po vaši meri, poklepetajte z našim AI pomočnikom in ustvarite načrt potovanja za popoln dopust ob morju.",
+      "chatButton": "Začni klepet",
+      "itineraryButton": "Ustvari načrt potovanja",
+      "chatCardText": "Vprašajte našega AI pomočnika karkoli o plažah, destinacijah in nasvetih za potovanje ter takoj dobite prilagojena priporočila.",
+      "chatCta": "Začni klepet",
+      "itineraryCardText": "Ustvarite večdnevne načrte počitnic na plaži, prilagojene vašim željam, proračunu in interesom.",
+      "itineraryCta": "Ustvari načrt izleta",
+      "infoTitle": "Ste novi pri Beachrex AI?",
+      "infoText": "Klepet je brezplačen za vse. Za večdnevne načrte potrebujete kredite – za začetek se prijavite z Googlom!"
+    },
+    "chat": {
+      "title": "Klepet z AI",
+      "subtitle": "Vprašajte me karkoli o plažah, nasvetih za potovanje ali priporočilih",
+      "placeholder": "Vprašajte o plažah, destinacijah ali nasvetih za potovanje ...",
+      "send": "Pošlji",
+      "sending": "Pošiljanje ...",
+      "error": "Sporočila ni bilo mogoče poslati. Poskusite znova.",
+      "welcome": "Pozdravljeni! Sem vaš AI pomočnik za plaže. Kako vam lahko pomagam?",
+      "anonymousNote": "Klepetate anonimno. Prijavite se, da shranite pogovore in dostopate do naprednih funkcij.",
+      "viewDetails": "Poglej podrobnosti →",
+      "suggestions": "Predlogi:",
+      "match": "{percent}% ujemanje",
+      "useLocation": "Uporabi mojo lokacijo (plaže v bližini)",
+      "locationOn": "Vaša lokacija se uporablja za plaže v bližini",
+      "locationDenied": "Lokacija ni na voljo. V brskalniku dovolite dostop do lokacije ali napišite kraj.",
+      "errorBusy": "AI pomočnik je trenutno zaseden. Poskusite znova čez minuto.",
+      "errorTooMany": "Preveč sporočil. Počakajte malo in poskusite znova.",
+      "errorTooLong": "Sporočilo je predolgo. Skrajšajte ga.",
+      "widget": {
+        "open": "Odpri AI pomočnika za plaže",
+        "close": "Zapri klepet",
+        "title": "AI pomočnik za plaže",
+        "newConversation": "Nov pogovor",
+        "openFullPage": "Odpri celoten klepet",
+        "inputLabel": "Vaše sporočilo",
+        "greeting": "Živjo! Vprašajte me karkoli o plažah in vašem izletu na morje.",
+        "greetingBeach": "Živjo! Ogledujete si {name}. Vprašajte me karkoli o tej plaži ali o katerikoli drugi.",
+        "placeholderBeach": "Vprašajte o {name}…"
+      }
+    },
+    "itinerary": {
+      "title": "Načrtujte počitnice na plaži",
+      "subtitle": "Izberite državo in dolžino potovanja. Iz baze Beachrex vam za vsak dan izberemo plaže, s povezavo do vsake plaže.",
+      "form": {
+        "country": "Država",
+        "countryPlaceholder": "Izberite državo",
+        "region": "Regija (neobvezno)",
+        "wholeCountry": "Cela država",
+        "duration": "Dolžina potovanja",
+        "daysOption": "{days} dni",
+        "plansAvailable": "Na voljo: {count}",
+        "interests": "Kaj imate radi?",
+        "surface": "Podlaga plaže",
+        "pace": "Tempo",
+        "adults": "Odrasli",
+        "children": "Otroci"
+      },
+      "interest": {
+        "swimming": "Plavanje",
+        "snorkeling": "Potapljanje z masko",
+        "family": "Za družine",
+        "quiet": "Mir",
+        "nightlife": "Nočno življenje",
+        "nature": "Narava",
+        "diving": "Potapljanje",
+        "surfing": "Deskanje",
+        "kayaking": "Kajak",
+        "hiking": "Pohodništvo"
+      },
+      "surface": {
+        "sand": "Pesek",
+        "pebble": "Prodniki",
+        "rock": "Skale"
+      },
+      "pace": {
+        "relaxed": "Sproščen",
+        "balanced": "Uravnotežen",
+        "packed": "Natrpan"
+      },
+      "progressBeaches": "Iščemo plaže, ki ustrezajo vašim željam …",
+      "progressRoute": "Načrtujemo pot za vsak dan …",
+      "progressTips": "Pišemo nasvete za vsako plažo …",
+      "signInToStart": "Prijavite se, da kupite in ustvarite načrt.",
+      "generate": "Ustvari moj načrt",
+      "usesOnePlan": "Porabi enega od vaših {days}-dnevnih načrtov.",
+      "buy": "Kupi {days}-dnevni načrt · {price}",
+      "buyNote": "Enkratno plačilo, brez naročnine. Po plačilu se vrnete sem in ustvarite načrt.",
+      "errors": {
+        "signInRequired": "Najprej se prijavite.",
+        "buyRequired": "Načrta te dolžine nimate več. Za nadaljevanje ga kupite.",
+        "notEnoughBeaches": "Premalo plaž ustreza. Izberite celo državo, manj želja ali krajše potovanje. Načrt ni bil porabljen.",
+        "busy": "Načrtovalec je trenutno zaseden. Poskusite znova čez minuto. Načrt ni bil porabljen.",
+        "error": "Prišlo je do napake, načrt ni bil porabljen. Poskusite znova.",
+        "purchaseError": "Plačila ni bilo mogoče začeti. Poskusite znova."
+      },
+      "fallbackNote": "Tokrat AI nasvetov ni bilo mogoče napisati, zato načrt vsebuje kratka dejstva. Načrt ni bil porabljen, zato ga lahko ustvarite znova.",
+      "day": "{number}. dan",
+      "timeBlock": {
+        "morning": "Dopoldne",
+        "afternoon": "Popoldne",
+        "evening": "Zvečer"
+      },
+      "tip": "Nasvet",
+      "travelKm": "Ta dan približno {km} km vožnje.",
+      "assumptions": "Dobro je vedeti",
+      "newPlan": "Načrtuj novo potovanje",
+      "plans": {
+        "title": "Moji načrti",
+        "empty": "Še nimate načrtov. Ustvarite prvega.",
+        "untitled": "{days}-dnevno potovanje ({country})",
+        "notFound": "Ta načrt ne obstaja ali pripada drugemu računu.",
+        "waitNote": "To stran lahko zaprete: načrt bo shranjen med Mojimi načrti, ko bo pripravljen.",
+        "status": {
+          "running": "V pripravi",
+          "done": "Pripravljen",
+          "failed": "Ni ustvarjen"
+        },
+        "failed": {
+          "notEnoughBeaches": "Za to potovanje se ujema premalo plaž. Načrt ni bil porabljen: poskusite s celo državo, manj željami ali krajšim potovanjem.",
+          "timeout": "Priprava načrta je trajala predolgo. Načrt ni bil porabljen, poskusite znova.",
+          "error": "Prišlo je do napake. Načrt ni bil porabljen, poskusite znova."
+        }
+      },
+      "savePdf": "Shrani kot PDF",
+      "mapTitle": "Zemljevid potovanja",
+      "consent": {
+        "terms": "Sprejemam <link>pogoje prodaje</link>.",
+        "withdrawal": "Želim, da je načrt na voljo takoj. Razumem, da pravico do odstopa v 14 dneh izgubim, ko načrt ustvarim; do takrat lahko še odstopim."
+      }
+    },
+    "entitlements": {
+      "title": "Moji krediti",
+      "subtitle": "Upravljajte kredite za AI načrte potovanja",
+      "balance": "Trenutno stanje",
+      "credits": "kreditov",
+      "history": "Zgodovina nakupov",
+      "date": "Datum",
+      "amount": "Znesek",
+      "status": "Stanje",
+      "noHistory": "Nakupov še ni.",
+      "purchase": "Kupi več kreditov"
+    }
+  },
+  "Menu": {
+    "browseBeaches": "Brskaj po plažah",
+    "topCountries": "Najbolj priljubljene države",
+    "aiChat": "AI klepet o plažah",
+    "aiItinerary": "AI načrtovalec potovanj",
+    "contact": "Kontakt",
+    "beachTypes": "Vrste plaž",
+    "beachesFor": "Plaže za",
+    "onTheBeach": "Na plaži"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Prenosi",
+    "packageTitle": "Celoten paket blagovne znamke",
+    "packageDescription": "Vsi logotipi (SVG, PDF, EPS, PNG), favicon in ikone aplikacij, slike za družbena omrežja in barvna paleta v eni datoteki ZIP.",
+    "packageButton": "Prenesite ZIP",
+    "guidelinesTitle": "Smernice blagovne znamke",
+    "logosTitle": "Logotipi",
+    "versions": {
+      "horizontal": "Vodoravni (osnovni)",
+      "stacked": "Navpični",
+      "symbol": "Simbol",
+      "wordmark": "Besedni znak"
+    },
+    "colors": {
+      "color": "Barvni",
+      "black": "Črni",
+      "white": "Beli",
+      "teal": "Turkizni",
+      "orange": "Oranžni"
+    },
+    "logoAlt": "Logotip Beachrex – {version}, {color}",
+    "colorsTitle": "Barve",
+    "paletteDownload": "Prenesite paleto",
+    "socialTitle": "Slike za družbena omrežja",
+    "social": {
+      "profile": "Profilna slika",
+      "og": "Slika za predogled povezave",
+      "facebook": "Naslovnica za Facebook",
+      "linkedin": "Naslovnica za LinkedIn",
+      "x": "Glava za X"
+    }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – avtor Beachrex",
+    "metaDescription": "Spoznajte Gregorja Balažica, ki je pustil službo, kupil fotoaparat in kombi ter obiskal 4.000 plaž v 13 državah. Iz njegove poti je nastal Beachrex.",
+    "eyebrow": "O avtorju",
+    "bannerWord": "Avtor",
+    "role": "Ustanovitelj Beachrex",
+    "lead": "»Plaže so bile vedno moja velika strast.«",
+    "heroCta": "Preberi zgodbo",
+    "stats": {
+      "beaches": "obiskanih plaž",
+      "km": "prevoženih kilometrov",
+      "countries": "držav",
+      "facts": "podatkov o vsaki plaži"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Izstop iz cone udobja",
+        "text": "Plaže so bile vedno moja velika strast, pravi Gregor Balažic, ki je pustil službo. Bil je vodja oddelka, izstopil iz cone udobja in zapustil predvidljivo prihodnost. Kupil je fotoaparat in kombi, ki se je prelevil v njegov nov dom, ter se podal v svet. Pravzaprav na plaže."
+      },
+      "road": {
+        "title": "<beaches>4.000 plaž</beaches> v <countries>13 državah</countries>",
+        "text": "Podal se je po obalah in plažah <countries>13 držav</countries>: <list></list>. Obiskal je kar <beaches>4.000 plaž</beaches>. Čeprav se zdi številka ogromna, je zgolj kapljica v morje – na svetu je prek 200 tisoč plaž, ki so primerne za turizem, pojasnjuje Balažic."
+      },
+      "database": {
+        "title": "Največja baza plaž na svetu",
+        "text": "Obiskane plaže so postale podlaga za največjo bazo plaž na svetu – Beachrex. Vsaka plaža je opremljena s fotografijami, panoramskimi posnetki, videi, informacijami o možnostih parkiranja, GPS lokaciji, podatki o vremenu, nastanitvah, športnih aktivnostih, restavracijah in barih ter temperaturi morja. Skupaj je to več kot 200 informacij o vsaki plaži."
+      },
+      "hardships": {
+        "title": "Pot ni bila vedno lahka",
+        "text": "Balažic je prepotoval več kot 70 tisoč kilometrov, za čudovite posnetke je moral včasih tudi plezati. Več tisoč kilometrov dolga pot ni bila vedno obsijana s pozitivnimi žarki – na njej je doživel tudi nekaj neprijetnih dogodkov in bil je večkrat oropan. A njegova pot se (še) ni končala."
+      }
+    },
+    "routeTitle": "Pot ob obalah",
+    "countries": {
+      "si": "Slovenija",
+      "hr": "Hrvaška",
+      "me": "Črna gora",
+      "al": "Albanija",
+      "gr": "Grčija",
+      "it": "Italija",
+      "fr": "Francija",
+      "es": "Španija",
+      "pt": "Portugalska",
+      "be": "Belgija",
+      "nl": "Nizozemska",
+      "de": "Nemčija",
+      "dk": "Danska"
+    },
+    "photoAlt": "Gregor Balažic s fotoaparatom na peščeni plaži",
+    "beachAlt": "Peščena plaža s prevrnjenim čolnom ob skalah in borovcih",
+    "beachCaption": "Ena od 4.000 plaž, ki jih je Gregor obiskal in fotografiral.",
+    "quote": "Imamo vizijo – v nekaj letih bo na zemljevidu sleherna plaža na svetu.",
+    "ctaTitle": "Odkrijte plaže, ki jih je obiskal Gregor",
+    "ctaText": "Vsaka fotografija, sfera in podrobnost na Beachrex je nastala na tej poti.",
+    "ctaMap": "Brskaj po zemljevidu",
+    "ctaContact": "Pišite nam",
+    "footerLink": "Spoznajte avtorja"
+  },
+  "Payment": {
+    "successTitle": "Plačilo je uspelo",
+    "successMessage": "Hvala za nakup! Krediti so dodani na vaš račun.",
+    "sessionId": "ID seje:",
+    "cancelTitle": "Plačilo je preklicano",
+    "cancelMessage": "Plačilo je bilo preklicano. Ničesar vam nismo zaračunali.",
+    "redirecting": "Vrnitev v načrtovalnik izletov čez <strong>{seconds}</strong> s …",
+    "planItinerary": "Načrtuj izlet",
+    "tryChat": "Preizkusi AI klepet",
+    "tryAgain": "Poskusi znova",
+    "goHome": "Na domačo stran",
+    "help": "Potrebujete pomoč? Pišite na {email}."
+  },
+  "UI": {
+    "selectOption": "Izberite možnost",
+    "noBeachesInArea": "Na tem območju ni plaž",
+    "singleColumn": "Prikaz v enem stolpcu",
+    "doubleColumn": "Prikaz v dveh stolpcih",
+    "closeMap": "Zapri zemljevid",
+    "closeFilters": "Zapri filtre",
+    "videoTitle": "Video plaže",
+    "virtualTourTitle": "Virtualni ogled 360°",
+    "beachRouteMapTitle": "Zemljevid s potjo do plaže",
+    "closeMenu": "Zapri meni"
+  },
+  "FilterModal": {
+    "title": "Vsi filtri plaž",
+    "searchPlaceholder": "🔍 Iščite filtre …",
+    "clearAll": "Počisti vse",
+    "cancel": "Prekliči",
+    "apply": "Uporabi filtre",
+    "applyCount": "Uporabi filtre ({count})",
+    "showLess": "Prikaži manj",
+    "showMore": "Prikaži še {count} …"
+  },
+  "Favorites": {
+    "title": "Moje priljubljene plaže",
+    "add": "Shrani med priljubljene",
+    "remove": "Odstrani iz priljubljenih",
+    "save": "Shrani",
+    "saved": "Shranjeno",
+    "signInTitle": "Prijavite se, da shranite plaže",
+    "signInText": "Priljubljene plaže se shranijo v vaš račun, zato jih najdete na vsaki napravi.",
+    "empty": "Shranjenih plaž še nimate. Za shranjevanje tapnite srček na plaži.",
+    "browse": "Prebrskaj plaže",
+    "limit": "Seznam priljubljenih je poln. Odstranite plažo, da shranite novo.",
+    "error": "Plaže ni bilo mogoče shraniti. Poskusite znova.",
+    "loadError": "Priljubljenih plaž ni bilo mogoče naložiti. Poskusite znova."
+  },
+  "BeachFaq": {
+    "title": "Pogosta vprašanja o plaži {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Vse države",
+    "allRegions": "Vse regije",
+    "allIslands": "Vsi otoki",
+    "allCities": "Vsa mesta",
+    "all": "Vse",
+    "search": "Išči …",
+    "noMatches": "Ni zadetkov",
+    "clear": "Počisti",
+    "selected": "Izbrani filtri",
+    "remove": "Odstrani {name}"
   }
 }

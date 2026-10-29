@@ -7,6 +7,9 @@ import React from 'react';
 
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { formatCoordinates, googleMapsNavigationUrl, parseCoordinates } from '@/lib/utils/geo';
+import { seabedLabelKey, waterKind } from '@/lib/utils/waterbody';
+
 import InfoRow from './InfoRow';
 import SingleValue from './SingleValue';
 
@@ -67,7 +70,7 @@ const MediaBlock = ({ images }: { images: { url?: string | null }[] }) => {
           return (
             <div key={index} className="relative h-[300px] w-full">
               <Image
-src={src} alt={`media-${index}`} fill
+src={src} alt="" fill
 className="object-cover"
               />
             </div>
@@ -80,11 +83,15 @@ className="object-cover"
 
 const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({ beachDetails }) => {
   const tMain = useTranslations('BeachDetails');
+  const tUi = useTranslations('UI');
   const tGroups = useTranslations('BeachDetails.groups');
   const tButtons = useTranslations('BeachDetails.buttons');
 
   const accessibility = beachDetails.accessibility;
+  // Owner 2026-10-28: GPS position + Google Maps navigation above Parking.
+  const position = parseCoordinates(beachDetails.basic_info?.latitude, beachDetails.basic_info?.longitude);
   const characteristics = beachDetails.characteristics;
+  const description = beachDetails.basic_info?.description?.trim();
   const dimensions = beachDetails.dimensions;
   const facilities = beachDetails.facilities;
   const natural = beachDetails.natural_conditions;
@@ -196,11 +203,19 @@ height={20}
    * RENDER
    * ------------------------------------------- */
   return (
-    <section className="w-full bg-[#F5F5F5] py-8">
+    <section id="beach-details" className="w-full scroll-mt-24 bg-[#F5F5F5] py-8">
       <div className="container mx-auto px-4">
-        <h1 className="mb-8 font-figtree text-[30px] font-bold text-[#222222]">
+        {/* h2: the beach name in the banner is the page's h1 */}
+        <h2 className="mb-8 font-figtree text-[30px] font-bold text-[#222222]">
           {tMain('title')}
-        </h1>
+        </h2>
+
+        {/* Full description: the banner card shows only two lines and links here ("read more") */}
+        {description && (
+          <p className="mb-8 max-w-4xl whitespace-pre-line font-figtree text-[16px] leading-6 text-[#4D4D4D]">
+            {description}
+          </p>
+        )}
 
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {/* -------------------------------------------
@@ -253,7 +268,7 @@ height={20}
                 <SingleValue valueRaw={beachFromApi.swimmingArea} />
               </InfoRow>
 
-              <InfoRow labelKey="seabed">
+              <InfoRow labelKey={seabedLabelKey(waterKind(characteristics?.waterbody?.code))}>
                 {renderTickList(beachFromApi.seabed)}
               </InfoRow>
             </div>
@@ -355,6 +370,45 @@ height={20}
            * PARKING + PATH (original block)
            * ------------------------------------------- */}
           <div>
+            {/* GPS location + navigation */}
+            {position && (
+              <div className="mb-8" data-testid="beach-gps">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src="/images/beachicons/location-icon-orange.svg"
+                      alt=""
+                      width={30}
+                      height={30}
+                    />
+                    <h2 className="font-figtree text-[16px] font-bold">
+                      {tGroups('gpsLocation')}:{' '}
+                      <span className="select-all font-normal tabular-nums">{formatCoordinates(position)}</span>
+                    </h2>
+                  </div>
+                  <a
+                    href={googleMapsNavigationUrl(position)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={tMain('navigationAria', { name: beachDetails.basic_info?.name ?? '' })}
+                    className="inline-flex items-center gap-2 rounded-md bg-[#1A3C68] px-3 py-2 text-white hover:bg-[#214a7f]"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      fill="currentColor"
+                    >
+                      <path d="M21.7 2.3a1 1 0 0 0-1.06-.22l-18 7a1 1 0 0 0 .1 1.9l7.6 2.04 2.04 7.6a1 1 0 0 0 1.9.1l7-18a1 1 0 0 0-.22-1.06z" />
+                    </svg>
+                    <span className="font-figtree text-[14px] font-bold">{tButtons('navigation')}</span>
+                  </a>
+                </div>
+                <div className="mt-3 border-b border-[#E7E7E7]" />
+              </div>
+            )}
+
             {/* Parking */}
             <div>
               <div className="relative flex items-center justify-between">
@@ -465,7 +519,7 @@ height={20}
                   <div className="mt-4 h-[300px] w-full overflow-hidden rounded-lg shadow-md">
                     <iframe
                       src={mapUrl}
-                      title="Path to the beach map"
+                      title={tUi('beachRouteMapTitle')}
                       className="h-full w-full border-0"
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"

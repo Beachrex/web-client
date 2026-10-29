@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Pláže po celém světě",
     "quickMenuBeachType": "Typ pláže",
     "quickMenuUserType": "Typ uživatele",
-    "quickMenuBeachDisplay": "Pohled na pláž",
     "quickMenuBeachServices": "Služby na pláži",
     "quickMenuTopBeaches": "Top pláže",
     "quickMenuAboutUs": "O nás",
@@ -65,7 +64,14 @@
     "accommodationDefaultDistance": "250 m od pláže",
     "accommodationDefaultBeach": "Pláž Haludovo",
     "accommodationDefaultPrice": "od 25 €",
-    "beachSeaBeach": "Mořská pláž"
+    "beachSeaBeach": "Mořská pláž",
+    "copyLink": "Kopírovat",
+    "linkCopied": "Zkopírováno",
+    "shareOn": "Sdílet na {network}",
+    "shareByEmail": "Sdílet e-mailem",
+    "moreShareOptions": "Další možnosti",
+    "paginationPrevious": "Předchozí",
+    "paginationNext": "Další"
   },
   "Search": {
     "typeBeach": "Pláž",
@@ -76,7 +82,17 @@
     "beaches": "pláže",
     "noResults": "Žádné výsledky. Zkuste jiný vyhledávací výraz.",
     "searching": "Hledání...",
-    "clearSearch": "Vymazat hledání"
+    "clearSearch": "Vymazat hledání",
+    "tabAll": "Vše",
+    "tabBeaches": "Pláže",
+    "tabCities": "Místa",
+    "tabIslands": "Ostrovy",
+    "tabRegions": "Regiony",
+    "tabCountries": "Země",
+    "tabsLabel": "Filtrovat výsledky podle typu",
+    "showAllOnMap": "Všechny pláže na mapě: {name}",
+    "showingOf": "Zobrazeno {shown} z {total}",
+    "openPlace": "Otevřít {name}"
   },
   "HomePage": {
     "allBeaches": "Všechny pláže",
@@ -103,7 +119,10 @@
     "outdoorPools": "Venkovní bazény",
     "indoorPoolsSpas": "Vnitřní bazény a lázně",
     "browseAccommodationsButton": "Procházet ubytování",
-    "moreAccommodations": "+Více ubytování"
+    "moreAccommodations": "+Více ubytování",
+    "showcaseExample": "Příklad: {beach}",
+    "showcaseOpenBeach": "Zobrazit {beach}",
+    "showcaseLiveBadge": "Živě"
   },
   "BeachCategories": {
     "sandyBeaches": "Písečné pláže",
@@ -136,9 +155,12 @@
     "browseBeaches": "Procházet všechny pláže",
     "goHome": "Domů"
   },
-  "AboutPage": {
-    "aboutUs": "O nás",
-    "description": "Popis stránky o nás"
+  "ErrorPage": {
+    "title": "Něco se pokazilo.",
+    "subtitle": "Chyba",
+    "description": "Došlo k neočekávané chybě. Zkuste to prosím za chvíli znovu.",
+    "retry": "Zkusit znovu",
+    "goHome": "Domů"
   },
   "BeachTypePage": {
     "title": "Typy pláží",
@@ -161,17 +183,16 @@
     "premiumAccommodations": "Luxusní ubytování v {continent}",
     "bestDeals": "Skvělé nabídky",
     "description": "Prozkoumejte nejkrásnější pláže v {continent}.",
-    "countriesContinent": "Země v {continent}"
+    "countriesContinent": "Země v {continent}",
+    "sortBy": "Řadit",
+    "sortAlphabetical": "Abecedně (A–Z)",
+    "sortBeachesDesc": "Nejvíce pláží první",
+    "sortBeachesAsc": "Nejméně pláží první"
   },
   "FeatureCards": {
     "beachMapButton": "Mapa pláží",
     "browseBlogButton": "Procházet blog",
     "browseAccommodationsButton": "Procházet ubytování"
-  },
-  "routes": {
-    "beachMap": "/beach-map",
-    "blog": "/blog",
-    "accommodations": "/accommodations"
   },
   "Destinations": {
     "croatia": "Chorvatsko",
@@ -221,7 +242,7 @@
     "viewBeachMap": "Zobrazit mapu pláží"
   },
   "SearchBeach": {
-    "title": "Procházet všechny pláže v Evropě",
+    "title": "Procházet všechny pláže v {continent}",
     "filterButton": "Filtr",
     "mapButton": "Zobrazit mapu",
     "displayLabel": "Pohled na pláž:",
@@ -312,9 +333,12 @@
     "islandLabel": "Ostrov",
     "cityLabel": "Město",
     "countryLabel": "Země",
-    "beachLabel": "Mořská pláž",
+    "beachLabel": "Moře",
     "beachCountLabel": "Počet pláží:",
-    "accommodationCountLabel": "Počet ubytování:"
+    "accommodationCountLabel": "Počet ubytování:",
+    "beachLabelLake": "Jezero",
+    "beachLabelRiver": "Řeka",
+    "beachLabelPool": "Bazén"
   },
   "TopBarBeach": {
     "beachLabel": "Mořská pláž",
@@ -328,7 +352,9 @@
       "parking": "Parkování k dispozici",
       "easyAccess": "Snadný přístup",
       "windsurfing": "Windsurfing",
-      "SeaTemperature": "Teplota moře"
+      "SeaTemperature": "Teplota moře",
+      "adventurer": "Pláž pro dobrodruhy",
+      "partyBeach": "Párty pláž"
     }
   },
   "AccommodationSection": {
@@ -514,20 +540,16 @@
       "title": "Procházet stránku",
       "links": [
         {
-          "label": "Přehled všech destinací",
-          "href": "/destinations"
+          "label": "Přehled všech destinací"
         },
         {
-          "label": "Hledat podle pláží",
-          "href": "/beaches"
+          "label": "Hledat podle pláží"
         },
         {
-          "label": "Hledat podle ubytování",
-          "href": "/accommodations"
+          "label": "Hledat podle ubytování"
         },
         {
-          "label": "Zobrazení mapy",
-          "href": "/beach-map"
+          "label": "Zobrazení mapy"
         }
       ]
     },
@@ -539,7 +561,12 @@
       "gdprConsent": "Souhlasím se zasíláním propagačních e-mailů a novinek a přijímám <privacy>zásady ochrany osobních údajů</privacy>."
     },
     "legal": {
-      "rights": "Všechna práva vyhrazena BeachRex"
+      "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. Všechna práva vyhrazena."
+    },
+    "app": {
+      "title": "Stáhněte si aplikaci",
+      "googlePlayTop": "NYNÍ NA",
+      "appStoreTop": "Stáhnout v"
     }
   },
   "BeachSimilarBeaches": {
@@ -564,7 +591,8 @@
       "sports": "Sportovní aktivity",
       "parking": "Parkování",
       "pathToBeach": "Cesta k pláži",
-      "userType": "Typ uživatele"
+      "userType": "Typ uživatele",
+      "gpsLocation": "GPS poloha"
     },
     "labels": {
       "type": "Typ",
@@ -581,11 +609,15 @@
       "wayToParking": "Povrch k parkování",
       "recommendedAccess": "Doporučený přístup",
       "distance": "Vzdálenost (parkování — pláž)",
-      "elevationDiff": "Výškový rozdíl (parkování k pláži)"
+      "elevationDiff": "Výškový rozdíl (parkování k pláži)",
+      "seabedLake": "Dno jezera",
+      "seabedRiver": "Říční dno",
+      "seabedPool": "Dno bazénu"
     },
     "buttons": {
       "photo": "Fotografie",
-      "map": "Mapa"
+      "map": "Mapa",
+      "navigation": "Navigace"
     },
     "values": {
       "yes": "Ano",
@@ -631,7 +663,12 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Webkamera živě",
+    "webcamIframeTitle": "Webkamera živě: {name}",
+    "webcamCredit": "Webkameru poskytuje Windy.com",
+    "closeMedia": "Zavřít",
+    "navigationAria": "Navigace k {name} v Mapách Google"
   },
   "Auth": {
     "continueWithGoogle": "Pokračovat s Google",
@@ -648,7 +685,30 @@
     "loginRequired": "Vyžadováno přihlášení",
     "loginRequiredMessage": "Pro přístup k této funkci se musíte přihlásit.",
     "creditsRequired": "Vyžadovány kredity",
-    "creditsRequiredMessage": "Potřebujete kredity pro generování itinerářů. Zakupte prosím kredity pro pokračování."
+    "creditsRequiredMessage": "Potřebujete kredity pro generování itinerářů. Zakupte prosím kredity pro pokračování.",
+    "orDivider": "nebo",
+    "signInWithEmail": "Přihlásit se e-mailem",
+    "email": "E-mail",
+    "password": "Heslo",
+    "signIn": "Přihlásit se",
+    "forgotPassword": "Zapomněli jste heslo?",
+    "invalidCredentials": "Nesprávný e-mail nebo heslo.",
+    "tooManyAttempts": "Příliš mnoho pokusů. Počkejte minutu a zkuste to znovu.",
+    "genericError": "Něco se pokazilo. Zkuste to znovu.",
+    "forgotTitle": "Zapomněli jste heslo?",
+    "forgotDescription": "Zadejte e-mail svého účtu Beachrex a pošleme vám odkaz pro nastavení nového hesla.",
+    "sendLink": "Odeslat odkaz",
+    "forgotSent": "Pokud pro tento e-mail existuje účet, poslali jsme odkaz pro obnovení hesla. Zkontrolujte doručenou poštu i složku se spamem.",
+    "resetTitle": "Nastavte nové heslo",
+    "newPassword": "Nové heslo",
+    "confirmPassword": "Zopakujte nové heslo",
+    "passwordHint": "Alespoň 8 znaků.",
+    "passwordsDontMatch": "Hesla se neshodují.",
+    "savePassword": "Uložit heslo",
+    "resetDone": "Heslo bylo změněno a jste přihlášeni.",
+    "resetDoneSignIn": "Heslo bylo změněno. Nyní se můžete přihlásit.",
+    "resetInvalidLink": "Tento odkaz pro obnovení hesla je neplatný nebo vypršel.",
+    "requestNewLink": "Vyžádat nový odkaz"
   },
   "AI": {
     "landing": {
@@ -656,7 +716,13 @@
       "subtitle": "Váš osobní průvodce objevování pláží poháněný AI",
       "description": "Získejte personalizovaná doporučení pláží, chatujte s naším AI asistentem a vytvářejte vlastní itineráře pro vaši perfektní plážovou dovolenou.",
       "chatButton": "Začít chatovat",
-      "itineraryButton": "Vytvořit itinerář"
+      "itineraryButton": "Vytvořit itinerář",
+      "chatCardText": "Zeptejte se našeho AI asistenta na cokoli o plážích, destinacích a cestovních tipech a hned získejte doporučení na míru.",
+      "chatCta": "Začít chatovat",
+      "itineraryCardText": "Vytvářejte vícedenní plány dovolené u moře na míru podle svých preferencí, rozpočtu a zájmů.",
+      "itineraryCta": "Vytvořit plán výletu",
+      "infoTitle": "Jste v Beachrex AI noví?",
+      "infoText": "Chat je pro všechny zdarma. Vícedenní plány vyžadují kredity – přihlaste se přes Google a začněte!"
     },
     "chat": {
       "title": "Chat s AI",
@@ -666,29 +732,117 @@
       "sending": "Odesílání...",
       "error": "Odeslání zprávy selhalo. Zkuste to prosím znovu.",
       "welcome": "Ahoj! Jsem váš AI plážový asistent. Jak vám mohu dnes pomoci?",
-      "anonymousNote": "Chatujete anonymně. Přihlaste se pro uložení konverzací a přístup k prémiové funkce."
+      "anonymousNote": "Chatujete anonymně. Přihlaste se pro uložení konverzací a přístup k prémiové funkce.",
+      "viewDetails": "Zobrazit podrobnosti →",
+      "suggestions": "Návrhy:",
+      "match": "{percent} % shoda",
+      "useLocation": "Použít moji polohu (pláže v okolí)",
+      "locationOn": "Vaše poloha se používá pro pláže v okolí",
+      "locationDenied": "Poloha není k dispozici. Povolte přístup k poloze v prohlížeči nebo napište místo.",
+      "errorBusy": "AI asistent je právě vytížený. Zkuste to za minutu znovu.",
+      "errorTooMany": "Příliš mnoho zpráv. Chvíli počkejte a zkuste to znovu.",
+      "errorTooLong": "Zpráva je příliš dlouhá. Zkraťte ji.",
+      "widget": {
+        "open": "Otevřít AI asistenta pro pláže",
+        "close": "Zavřít chat",
+        "title": "AI asistent pro pláže",
+        "newConversation": "Nová konverzace",
+        "openFullPage": "Otevřít celý chat",
+        "inputLabel": "Vaše zpráva",
+        "greeting": "Ahoj! Zeptejte se mě na cokoli o plážích a vaší cestě k moři.",
+        "greetingBeach": "Ahoj! Prohlížíte si {name}. Zeptejte se mě na cokoli o této pláži nebo o jakékoli jiné.",
+        "placeholderBeach": "Zeptejte se na {name}…"
+      }
     },
     "itinerary": {
-      "title": "Vytvořit plážový itinerář",
-      "subtitle": "Vygenerujte personalizovaný vícedenní plán plážové dovolené",
+      "title": "Naplánujte si dovolenou u moře",
+      "subtitle": "Vyberte zemi a délku cesty. Z databáze Beachrex naplánujeme pláže na každý den, s odkazem na každou pláž.",
       "form": {
-        "destination": "Destinace",
-        "destinationPlaceholder": "např. Chorvatsko, Bali, Karibik",
-        "days": "Počet dní",
-        "daysPlaceholder": "např. 7",
-        "interests": "Zájmy",
-        "interestsPlaceholder": "např. šnorchlování, relaxace, noční život",
-        "budget": "Úroveň rozpočtu",
-        "budgetLow": "Rozpočtový",
-        "budgetMedium": "Střední",
-        "budgetHigh": "Luxusní",
-        "generate": "Generovat itinerář",
-        "generating": "Generování vašeho itineráře..."
+        "country": "Země",
+        "countryPlaceholder": "Vyberte zemi",
+        "region": "Region (nepovinné)",
+        "wholeCountry": "Celá země",
+        "duration": "Délka cesty",
+        "daysOption": "{days} dní",
+        "plansAvailable": "K dispozici: {count}",
+        "interests": "Co máte rádi?",
+        "surface": "Povrch pláže",
+        "pace": "Tempo",
+        "adults": "Dospělí",
+        "children": "Děti"
       },
-      "error": "Generování itineráře selhalo. Zkuste to prosím znovu.",
-      "paymentRequired": "Vícedenní itineráře vyžadují kredity. Zakupte prosím kredity pro pokračování.",
-      "creditsRemaining": "Zbývající kredity: {count}",
-      "purchaseCredits": "Zakoupit kredity"
+      "interest": {
+        "swimming": "Plavání",
+        "snorkeling": "Šnorchlování",
+        "family": "Pro rodiny",
+        "quiet": "Klid",
+        "nightlife": "Noční život",
+        "nature": "Příroda",
+        "diving": "Potápění",
+        "surfing": "Surfování",
+        "kayaking": "Kajak",
+        "hiking": "Turistika"
+      },
+      "surface": {
+        "sand": "Písek",
+        "pebble": "Oblázky",
+        "rock": "Skály"
+      },
+      "pace": {
+        "relaxed": "Pohodové",
+        "balanced": "Vyvážené",
+        "packed": "Nabité"
+      },
+      "progressBeaches": "Hledáme pláže podle vašich přání…",
+      "progressRoute": "Plánujeme trasu den po dni…",
+      "progressTips": "Píšeme tipy ke každé pláži…",
+      "signInToStart": "Přihlaste se, abyste mohli plán koupit a vytvořit.",
+      "generate": "Vytvořit můj plán",
+      "usesOnePlan": "Použije jeden z vašich {days}denních plánů.",
+      "buy": "Koupit {days}denní plán · {price}",
+      "buyNote": "Jednorázová platba, žádné předplatné. Po zaplacení se vrátíte sem a vytvoříte plán.",
+      "errors": {
+        "signInRequired": "Nejprve se přihlaste.",
+        "buyRequired": "Plán této délky už nemáte. Pro pokračování si ho kupte.",
+        "notEnoughBeaches": "Odpovídá příliš málo pláží. Zkuste celou zemi, méně přání nebo kratší cestu. Plán nebyl použit.",
+        "busy": "Plánovač je teď vytížený. Zkuste to za minutu znovu. Plán nebyl použit.",
+        "error": "Něco se pokazilo a plán nebyl použit. Zkuste to znovu.",
+        "purchaseError": "Platbu se nepodařilo spustit. Zkuste to znovu."
+      },
+      "fallbackNote": "Tentokrát se nepodařilo napsat tipy AI, a tak plán obsahuje krátká fakta. Plán nebyl použit a můžete ho vytvořit znovu.",
+      "day": "{number}. den",
+      "timeBlock": {
+        "morning": "Dopoledne",
+        "afternoon": "Odpoledne",
+        "evening": "Večer"
+      },
+      "tip": "Tip",
+      "travelKm": "Tento den asi {km} km jízdy.",
+      "assumptions": "Dobré vědět",
+      "newPlan": "Naplánovat další cestu",
+      "plans": {
+        "title": "Moje plány",
+        "empty": "Zatím nemáte žádné plány. Vytvořte první.",
+        "untitled": "{days}denní cesta ({country})",
+        "notFound": "Tento plán neexistuje nebo patří jinému účtu.",
+        "waitNote": "Tuto stránku můžete zavřít: plán se uloží do Mých plánů, jakmile bude hotový.",
+        "status": {
+          "running": "Připravuje se",
+          "done": "Hotovo",
+          "failed": "Nevytvořeno"
+        },
+        "failed": {
+          "notEnoughBeaches": "Této cestě odpovídá příliš málo pláží. Plán nebyl použit: zkuste celou zemi, méně přání nebo kratší cestu.",
+          "timeout": "Vytváření plánu trvalo příliš dlouho. Plán nebyl použit, zkuste to znovu.",
+          "error": "Něco se pokazilo. Plán nebyl použit, zkuste to znovu."
+        }
+      },
+      "savePdf": "Uložit jako PDF",
+      "mapTitle": "Mapa cesty",
+      "consent": {
+        "terms": "Souhlasím s <link>obchodními podmínkami</link>.",
+        "withdrawal": "Chci, aby byl plán k dispozici ihned. Beru na vědomí, že vytvořením plánu ztrácím 14denní právo na odstoupení; do té doby mohu ještě odstoupit."
+      }
     },
     "entitlements": {
       "title": "Moje kredity",
@@ -710,7 +864,173 @@
     "no360": "Pohled 360° není k dispozici",
     "noVideo": "Video není k dispozici",
     "mostVisited": "Nejnavštěvovanější",
+    "distanceAway": "vzdáleno {distance}",
     "loading": "Načítání...",
-    "showOnMap": "Zobrazit {title} na mapě"
+    "showOnMap": "Zobrazit {title} na mapě",
+    "webcamClose": "Zavřít webkameru"
+  },
+  "Menu": {
+    "browseBeaches": "Procházet pláže",
+    "topCountries": "Nejoblíbenější země",
+    "aiChat": "AI chat o plážích",
+    "aiItinerary": "AI plánovač cest",
+    "contact": "Kontakt",
+    "beachTypes": "Typy pláží",
+    "beachesFor": "Pláže pro",
+    "onTheBeach": "Na pláži"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Ke stažení",
+    "packageTitle": "Kompletní balíček značky",
+    "packageDescription": "Všechna loga (SVG, PDF, EPS, PNG), favicon a ikony aplikace, obrázky pro sociální sítě a barevná paleta v jednom souboru ZIP.",
+    "packageButton": "Stáhnout ZIP",
+    "guidelinesTitle": "Pravidla značky",
+    "logosTitle": "Loga",
+    "versions": {
+      "horizontal": "Vodorovné (primární)",
+      "stacked": "Svislé",
+      "symbol": "Symbol",
+      "wordmark": "Slovní ochranná známka"
+    },
+    "colors": {
+      "color": "Barevné",
+      "black": "Černé",
+      "white": "Bílé",
+      "teal": "Tyrkysové",
+      "orange": "Oranžové"
+    },
+    "logoAlt": "Logo Beachrex – {version}, {color}",
+    "colorsTitle": "Barvy",
+    "paletteDownload": "Stáhnout paletu",
+    "socialTitle": "Obrázky pro sociální sítě",
+    "social": {
+      "profile": "Profilový obrázek",
+      "og": "Náhledový obrázek odkazu",
+      "facebook": "Titulní fotka na Facebook",
+      "linkedin": "Titulní obrázek na LinkedIn",
+      "x": "Záhlaví na X"
+    }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – autor Beachrex",
+    "metaDescription": "Seznamte se s Gregorem Balažicem, který dal výpověď, koupil fotoaparát a dodávku a navštívil 4 000 pláží v 13 zemích. Tak vznikl Beachrex.",
+    "eyebrow": "O autorovi",
+    "bannerWord": "Autor",
+    "role": "Zakladatel Beachrex",
+    "lead": "„Pláže byly vždycky mou velkou vášní.“",
+    "heroCta": "Přečtěte si příběh",
+    "stats": {
+      "beaches": "navštívených pláží",
+      "km": "ujetých kilometrů",
+      "countries": "zemí",
+      "facts": "údajů o každé pláži"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Ven z komfortní zóny",
+        "text": "Pláže byly vždycky mou velkou vášní, říká Gregor Balažic, který dal výpověď. Byl vedoucím oddělení, přesto vystoupil z komfortní zóny a opustil předvídatelnou budoucnost. Koupil si fotoaparát a dodávku, která se stala jeho novým domovem, a vydal se do světa. Přesněji řečeno na pláže."
+      },
+      "road": {
+        "title": "<beaches>4 000 pláží</beaches> v <countries>13 zemích</countries>",
+        "text": "Jeho cesta vedla po pobřežích a plážích <countries>13 zemí</countries>: <list></list>. Navštívil celkem <beaches>4 000 pláží</beaches>. I když se to číslo zdá obrovské, je jen kapkou v moři – na světě je přes 200 000 pláží vhodných pro turismus, vysvětluje Balažic."
+      },
+      "database": {
+        "title": "Největší databáze pláží na světě",
+        "text": "Navštívené pláže se staly základem největší databáze pláží na světě – Beachrex. Ke každé pláži patří fotografie, panoramatické snímky, videa, informace o možnostech parkování, GPS poloha, údaje o počasí, ubytování, sportovních aktivitách, restauracích a barech a také o teplotě moře. Dohromady jde o více než 200 údajů o každé pláži."
+      },
+      "hardships": {
+        "title": "Cesta nebyla vždy snadná",
+        "text": "Balažic urazil více než 70 000 kilometrů a kvůli úchvatným záběrům musel někdy i šplhat. Tisíce kilometrů dlouhá cesta nebyla vždy prozářená sluncem – zažil i několik nepříjemných chvil a několikrát byl okraden. Jeho cesta však (ještě) neskončila."
+      }
+    },
+    "routeTitle": "Podél pobřeží",
+    "countries": {
+      "si": "Slovinsko",
+      "hr": "Chorvatsko",
+      "me": "Černá Hora",
+      "al": "Albánie",
+      "gr": "Řecko",
+      "it": "Itálie",
+      "fr": "Francie",
+      "es": "Španělsko",
+      "pt": "Portugalsko",
+      "be": "Belgie",
+      "nl": "Nizozemsko",
+      "de": "Německo",
+      "dk": "Dánsko"
+    },
+    "photoAlt": "Gregor Balažic s fotoaparátem na písečné pláži",
+    "beachAlt": "Písečná pláž s převrácenou lodí u skal a borovic",
+    "beachCaption": "Jedna z 4 000 pláží, které Gregor navštívil a vyfotografoval.",
+    "quote": "Máme vizi – za pár let bude na mapě každá pláž na světě.",
+    "ctaTitle": "Objevte pláže, které Gregor navštívil",
+    "ctaText": "Každá fotografie, každé panorama 360° i každý detail na Beachrex vznikly během této cesty.",
+    "ctaMap": "Procházet mapu",
+    "ctaContact": "Napište nám",
+    "footerLink": "Seznamte se s autorem"
+  },
+  "Payment": {
+    "successTitle": "Platba proběhla",
+    "successMessage": "Děkujeme za nákup! Kredity byly připsány na váš účet.",
+    "sessionId": "ID relace:",
+    "cancelTitle": "Platba zrušena",
+    "cancelMessage": "Vaše platba byla zrušena. Nic vám nebylo účtováno.",
+    "redirecting": "Návrat do plánovače výletů za <strong>{seconds}</strong> s…",
+    "planItinerary": "Naplánovat výlet",
+    "tryChat": "Vyzkoušet AI chat",
+    "tryAgain": "Zkusit znovu",
+    "goHome": "Na úvodní stránku",
+    "help": "Potřebujete pomoc? Napište na {email}."
+  },
+  "UI": {
+    "selectOption": "Vyberte možnost",
+    "noBeachesInArea": "V této oblasti nebyly nalezeny žádné pláže",
+    "singleColumn": "Zobrazení v jednom sloupci",
+    "doubleColumn": "Zobrazení ve dvou sloupcích",
+    "closeMap": "Zavřít mapu",
+    "closeFilters": "Zavřít filtry",
+    "videoTitle": "Video pláže",
+    "virtualTourTitle": "Virtuální prohlídka 360°",
+    "beachRouteMapTitle": "Mapa s cestou na pláž",
+    "closeMenu": "Zavřít nabídku"
+  },
+  "FilterModal": {
+    "title": "Všechny filtry pláží",
+    "searchPlaceholder": "🔍 Hledat filtry…",
+    "clearAll": "Vymazat vše",
+    "cancel": "Zrušit",
+    "apply": "Použít filtry",
+    "applyCount": "Použít filtry ({count})",
+    "showLess": "Zobrazit méně",
+    "showMore": "Zobrazit dalších {count}…"
+  },
+  "Favorites": {
+    "title": "Moje oblíbené pláže",
+    "add": "Uložit do oblíbených",
+    "remove": "Odebrat z oblíbených",
+    "save": "Uložit",
+    "saved": "Uloženo",
+    "signInTitle": "Přihlaste se a ukládejte pláže",
+    "signInText": "Oblíbené pláže se ukládají do vašeho účtu, takže je najdete na každém zařízení.",
+    "empty": "Zatím nemáte uložené žádné pláže. Pláž uložíte klepnutím na srdíčko.",
+    "browse": "Procházet pláže",
+    "limit": "Seznam oblíbených je plný. Odeberte pláž, abyste mohli uložit jinou.",
+    "error": "Pláž se nepodařilo uložit. Zkuste to prosím znovu.",
+    "loadError": "Oblíbené pláže se nepodařilo načíst. Zkuste to prosím znovu."
+  },
+  "BeachFaq": {
+    "title": "Časté otázky o pláži {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "Všechny země",
+    "allRegions": "Všechny regiony",
+    "allIslands": "Všechny ostrovy",
+    "allCities": "Všechna místa",
+    "all": "Vše",
+    "search": "Hledat…",
+    "noMatches": "Žádné výsledky",
+    "clear": "Vymazat",
+    "selected": "Vybrané filtry",
+    "remove": "Odebrat {name}"
   }
 }

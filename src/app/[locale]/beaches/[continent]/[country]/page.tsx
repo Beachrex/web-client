@@ -9,8 +9,9 @@
  * - Enable ISR with revalidate
  */
 
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import AccommodationSection from '@/components/AccommodationCard/AccommodationsSection';
 import BannerSection from '@/components/BannerSection/BannerSection';
@@ -19,7 +20,6 @@ import DynamicTopBar from '@/components/DynamicTopBar';
 import PropertySection, { type Property } from '@/components/PropertySection';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCountryUrlFromNavigation } from '@/lib/utils/beach-urls';
-import { ChevronRight } from 'lucide-react';
 
 import {
   getCities,
@@ -37,12 +37,18 @@ import type {
 } from '@/lib/api-client/types.gen';
 import { mapArticlesToInfoCards } from '@/lib/mappers/mapArticlesToInfoCards';
 import { mapBeachToProperty } from '@/lib/mappers/mapBeachToProperty';
+import { mapPlacePills } from '@/lib/mappers/mapPlacePills';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
 import { buildBreadcrumbSchema, buildCountrySchema, renderJsonLd } from '@/lib/utils/json-ld-helpers';
-import { buildCanonicalUrl, buildCompleteMetadata } from '@/lib/utils/metadata-helpers';
+import { buildCanonicalUrl, buildCompleteMetadata, buildPlaceAlternates } from '@/lib/utils/metadata-helpers';
 import { truncateDescription } from '@/lib/utils/seo-helpers';
 import type { CountryDetails } from '@/types/CountryDetails';
 import DestinationsSection from '@/components/DestinationsSection';
+import { FEATURES } from '@/lib/constants/features';
+import AllBeachesLink from '@/components/AllBeachesLink';
+import { fetchFirstBeachPage } from '@/lib/server/destination-page-data';
+import type { BeachListResponseSchema } from '@/lib/api-client/types.gen';
+import { breadcrumbLabels } from '@/lib/utils/breadcrumb-labels';
 
 interface PageProps {
   params: {
@@ -59,6 +65,7 @@ interface PageProps {
  */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, country: countrySlug } = params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'SEO' });
 
   try {
@@ -96,7 +103,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     // Build canonical path with localized "beaches" word
     const beachesWord = getBeachesWord(locale);
-    const canonicalPath = `/${beachesWord}/${continentSlug}/${countrySlug}`;
+    // This language's slugs from the API, not the request URL (pre-launch 2026-10-23: one URL per page)
+    const apiCountry = countryDetails as {
+      slug?: string | null;
+      continent?: { slug?: string | null } | null;
+    };
+    const canonicalContinent = apiCountry.continent?.slug ?? continentSlug;
+    const canonicalPath = `/${beachesWord}/${canonicalContinent}/${apiCountry.slug ?? countrySlug}`;
 
     // Build image URL
     const imageUrl = countryDetails.main_image
@@ -107,6 +120,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       locale,
+      // hreflang for all 19 languages (pre-launch 2026-10-23)
+      alternateLanguages: await buildPlaceAlternates(locale, canonicalPath, {
+        continent: countryDetails.continent_code ?? null,
+        country: countryDetails.code ?? null,
+      }),
       path: canonicalPath,
       images: imageUrl ? [imageUrl] : undefined,
       type: 'website',
@@ -124,6 +142,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
  */
 export default async function Page({ params }: PageProps) {
   const { locale, country: countryParam } = params;
+  setRequestLocale(locale);
 
   const tCountry = await getTranslations({ locale, namespace: 'countryPage' });
   const tProperty = await getTranslations({ locale, namespace: 'PropertySection' });
@@ -134,6 +153,8 @@ export default async function Page({ params }: PageProps) {
   let cities: City[] = [];
   let islands: Island[] = [];
   let mostVisited: BeachSchema[] = [];
+  let firstBeachPage: BeachListResponseSchema | null = null;
+  let countryStatus: number | undefined;
 
   try {
     // Fetch country details
@@ -142,12 +163,13 @@ export default async function Page({ params }: PageProps) {
       headers: { 'Accept-Language': locale as AcceptLanguage },
     });
     countryDetails = countryResponse.data?.data ?? null;
+    countryStatus = countryResponse.response?.status;
 
     const countryCode = countryDetails?.code;
 
     if (countryCode) {
       // Fetch all related data in parallel
-      const [regionsResponse, citiesResponse, islandsResponse, mostVisitedResponse] =
+      const [regionsResponse, citiesResponse, islandsResponse, mostVisitedResponse, firstPageResponse] =
         await Promise.all([
           getRegions({
             query: { country_code: countryCode },
@@ -165,16 +187,25 @@ export default async function Page({ params }: PageProps) {
             query: { country_code: countryCode, limit: 20 },
             headers: { 'Accept-Language': locale as AcceptLanguage },
           }),
+          fetchFirstBeachPage({ country: countryCode }, locale),
         ]);
 
       regions = regionsResponse.data?.data ?? [];
       cities = citiesResponse.data?.data ?? [];
       islands = islandsResponse.data?.data ?? [];
       mostVisited = mostVisitedResponse.data?.data ?? [];
+      firstBeachPage = firstPageResponse;
     }
   } catch (error) {
     console.error('Error fetching country page data:', error);
     // Continue with empty data - components will handle gracefully
+  }
+
+  // Unknown country: a real 404 (before, `countryDetails.code` crashed with a 500). An unreachable API stays an
+  // error, so ISR keeps serving the last good page instead of caching a 404 for a real country.
+  if (!countryDetails?.code) {
+    if (countryStatus === 404) notFound();
+    throw new Error(`Country page data unavailable (${countryParam}, API status ${countryStatus ?? 'none'})`);
   }
 
   const countryName =
@@ -334,6 +365,7 @@ const beachProperties: Property[] =
 
       <DynamicTopBar
   pathname={pathname}
+        breadcrumbLabels={breadcrumbLabels(countryDetails)}
   navigation={navigationWithUrls}
   variant="country"
       />
@@ -351,6 +383,10 @@ const beachProperties: Property[] =
         infoCards={infoCards.length ? infoCards : undefined}
         continentCode={countryDetails?.continent?.code}
         countryCode={countryDetails?.code}
+        {...mapPlacePills(locale, {
+          continent: countryDetails?.continent,
+          country: countryDetails,
+        })}
       />
 
       {/* --------------------------
@@ -361,23 +397,18 @@ const beachProperties: Property[] =
         totalCount={beachProperties.length}
         properties={beachProperties}
         headerRight={
-          <a
-            href="#"
-            className="flex items-center font-figtree text-[14px] font-bold text-[#8D8D8D] underline underline-offset-[2px] hover:text-[#555]"
-          >
-            {tProperty('allBeachesLink', {
-              count: beachProperties.length,
-            })}
-            <ChevronRight className="h-4 w-4" />
-          </a>
+          <AllBeachesLink label={tProperty('allBeachesLink', { count: countryBeachesCount })} />
         }
       />
 
-      <AccommodationSection
-        title={tCountry('featuredAccommodationTitle', { country: countryName })}
-        totalCount={countryAccommodationsCount}
-        showDropdown={false}
-      />
+      {/* Hidden for launch: no accommodation source yet (fake cards) */}
+      {FEATURES.accommodation && (
+        <AccommodationSection
+          title={tCountry('featuredAccommodationTitle', { country: countryName })}
+          totalCount={countryAccommodationsCount}
+          showDropdown={false}
+        />
+      )}
 
      <DestinationsSection
   context="country"
@@ -390,6 +421,7 @@ const beachProperties: Property[] =
       countKey: 'allRegionsCount',
       badgeKey: 'regionBadge',
       cardVariant: 'region',
+      sortable: true,
     },
     {
       type: 'city',
@@ -398,6 +430,7 @@ const beachProperties: Property[] =
       countKey: 'allCitiesCount',
       badgeKey: 'cityBadge',
       cardVariant: 'city',
+      sortable: true,
     },
     {
       type: 'island',
@@ -406,6 +439,7 @@ const beachProperties: Property[] =
       countKey: 'allIslandsCount',
       badgeKey: 'islandBadge',
       cardVariant: 'island',
+      sortable: true,
     },
   ]}
      />
@@ -418,10 +452,11 @@ const beachProperties: Property[] =
   filterButtonColor="#DD0000"
   hiddenFilterKeys={['country']}
   baseFilters={{
-    country: countryDetails!.code!,
+    country: countryDetails.code,
   }}
+  initialPage={firstBeachPage}
   optionScopeFilters={{
-    country: countryDetails!.code!, // filter-options endpoint
+    country: countryDetails.code, // filter-options endpoint
   }}
 
 
@@ -434,3 +469,11 @@ const beachProperties: Property[] =
 
 // Enable ISR - Revalidate every hour (3600 seconds)
 export const revalidate = 3600;
+
+/**
+ * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
+ * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
+ */
+export function generateStaticParams() {
+  return [];
+}

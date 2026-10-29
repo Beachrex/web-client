@@ -5,10 +5,11 @@
  * Includes hreflang alternate language links, canonical URLs, and OpenGraph metadata
  */
 
-import { locales } from '@/app/config/locales';
+import { locales, toHtmlLang } from '@/app/config/locales';
 import { env } from '@/env';
 import type { Metadata } from 'next';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
+import type { PlaceRef } from '@/lib/seo/place-paths';
 
 /**
  * Get the base URL for the application
@@ -26,6 +27,14 @@ function getBaseUrlInternal(): string {
  */
 export function getBaseUrl(): string {
   return getBaseUrlInternal();
+}
+
+/** Share image for pages without their own (brand package OG image, 1200×630). */
+export const DEFAULT_OG_IMAGE_PATH = '/og-image.png';
+
+/** The page's images, or the default share image when it has none (absolute URL for crawlers). */
+export function withDefaultShareImage(images?: string[]): string[] {
+  return images && images.length > 0 ? images : [`${getBaseUrl()}${DEFAULT_OG_IMAGE_PATH}`];
 }
 
 /**
@@ -53,12 +62,55 @@ export function buildAlternateLanguages(path: string): Record<string, string> {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
 
   for (const locale of locales) {
-    alternates[locale] = `${baseUrl}/${locale}${normalizedPath}`;
+    alternates[toHtmlLang(locale)] = `${baseUrl}/${locale}${normalizedPath}`;
   }
 
   // Add x-default for international users (defaults to English)
   alternates['x-default'] = `${baseUrl}/en${normalizedPath}`;
 
+  return alternates;
+}
+
+/**
+ * hreflang alternates for a page whose path differs per locale (e.g. the localized beaches word):
+ * `pathFor(locale)` returns the path without the locale prefix.
+ */
+export function buildLocalizedAlternates(pathFor: (locale: string) => string): Record<string, string> {
+  const baseUrl = getBaseUrlInternal();
+  const alternates: Record<string, string> = {};
+  for (const locale of locales) {
+    // hreflang takes a language code: the URL's "si"/"ua" are sl/uk (pre-launch 2026-10-23)
+    alternates[toHtmlLang(locale)] = `${baseUrl}/${locale}${pathFor(locale)}`;
+  }
+  alternates['x-default'] = alternates.en ?? `${baseUrl}/en${pathFor('en')}`;
+  return alternates;
+}
+
+/**
+ * Only the page itself as its language version. For pages with localized slugs (continent,
+ * country, region, beach, CMS page) the other locales' slugs are unknown here, and
+ * `buildAlternateLanguages(path)` would pair the slugs of one locale with every other locale,
+ * producing wrong hreflang URLs (TASK-004 SEO). A missing hreflang is better than a wrong one.
+ */
+export function buildSelfAlternate(locale: string, path: string): Record<string, string> {
+  return { [toHtmlLang(locale)]: buildCanonicalUrl(locale, path) };
+}
+
+/**
+ * Pre-launch 2026-10-23: hreflang for a beach or place page in all 19 languages (see seo/place-paths.ts).
+ * This page's own entry is always its canonical URL; without slug data it falls back to the self link.
+ */
+export async function buildPlaceAlternates(
+  locale: string,
+  path: string,
+  ref: PlaceRef,
+): Promise<Record<string, string>> {
+  const { loadPlaceSlugs, placeAlternates } = await import('@/lib/seo/place-paths');
+  const slugs = await loadPlaceSlugs(env.NEXT_PUBLIC_API_ENDPOINT);
+  const alternates = placeAlternates(slugs, ref, getBaseUrlInternal());
+  const self = buildCanonicalUrl(locale, path);
+  alternates[toHtmlLang(locale)] = self;
+  if (locale === 'en') alternates['x-default'] = self;
   return alternates;
 }
 
@@ -114,7 +166,7 @@ export function buildOpenGraphMetadata(options: {
     siteName: options.siteName ?? 'BeachRex',
     locale: options.locale ?? 'en',
     type: options.type ?? 'website',
-    images: options.images ?? [],
+    images: withDefaultShareImage(options.images),
   };
 }
 
@@ -144,7 +196,7 @@ export function buildTwitterCardMetadata(options: {
     card: options.card ?? 'summary_large_image',
     title: options.title,
     description: options.description,
-    images: options.images ?? [],
+    images: withDefaultShareImage(options.images),
     creator: options.creator,
     site: options.site ?? '@BeachRex',
   };

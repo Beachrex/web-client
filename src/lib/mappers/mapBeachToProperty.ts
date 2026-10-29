@@ -3,6 +3,10 @@
 import type { Property } from '@/components/PropertySection';
 import { buildCdnUrl, buildSphereTourUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrlFromSchema, buildCityUrlFromSchema } from '@/lib/utils/beach-urls';
+import type { BeachCardFeatures } from '@/lib/utils/beach-badges';
+import { buildBeachVideoUrl } from '@/lib/utils/beach-video';
+import { webcamLink } from '@/lib/utils/webcam';
+import { parseDistanceKm } from '@/lib/utils/distance';
 
 /* ------------------------------------------------------------------
  * Minimal input types for mapper (NO any, NO API coupling)
@@ -20,11 +24,13 @@ interface BeachMediaSphere {
 interface BeachMediaEmbeds {
   video_url?: string | null;
   webcam?: string | null;
+  windy_webcam_id?: number | null;
 }
 
 interface BeachMedia {
   gallery?: BeachMediaGalleryItem[] | null;
   spheres_360?: BeachMediaSphere[] | null;
+  videos?: { url?: string | null; is_primary?: boolean | null }[] | null;
   embeds?: BeachMediaEmbeds | null;
 }
 
@@ -49,6 +55,14 @@ export interface BeachLike {
 
   /** Up to 4 tag strings returned by the API (sporting, culinary, natural conditions) */
   tags?: string[] | null;
+  features?: BeachCardFeatures | null;
+
+  /** Beach coordinates (the card's map pin centers on them) */
+  latitude?: string | number | null;
+  longitude?: string | number | null;
+
+  /** Distance from the search point, sent by the spatial endpoints (within-radius, nearest) */
+  distance_km?: number | string | null;
 }
 
 
@@ -109,22 +123,14 @@ export function mapBeachToProperty(
   /* ---------------------------
    * VIDEO (YouTube embed)
    * --------------------------- */
-  const rawVideo = beach.media?.embeds?.video_url;
-
   const videoEmbedUrl =
-    typeof rawVideo === 'string'
-      ? rawVideo
-          .replace('youtu.be/', 'www.youtube.com/embed/')
-          .replace('watch?v=', 'embed/')
-      : undefined;
+    buildBeachVideoUrl(beach.media?.embeds?.video_url, beach.media?.videos) ?? undefined;
 
   /* ---------------------------
    * WEBCAM
    * --------------------------- */
-  const webcamEmbed =
-    typeof beach.media?.embeds?.webcam === 'string'
-      ? beach.media.embeds.webcam
-      : undefined;
+  // Only a link the card can open counts as "has webcam" (TASK-006: the verified Windy webcam).
+  const webcamEmbed = webcamLink(beach.media?.embeds) ?? undefined;
 
   /* ---------------------------
    * LOCATION LABEL
@@ -218,5 +224,9 @@ export function mapBeachToProperty(
         : undefined,
 
     tags,
+    features: beach.features ?? null,
+    distanceKm: parseDistanceKm(beach.distance_km),
+    latitude: beach.latitude ?? null,
+    longitude: beach.longitude ?? null,
   };
 }

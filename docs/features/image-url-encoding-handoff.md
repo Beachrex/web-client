@@ -1,3 +1,5 @@
+> **Historical (2026-10-08).** TASK-002 renamed every storage key to ASCII and deleted the old non-ASCII keys. `buildCdnUrl` no longer bypasses Imagor for paths with special characters. See `Beachrex/backend` → `docs/tasks/TASK-002-ascii-storage-paths.md`.
+
 # Handoff: Fix for Beach Images With Special Characters in URLs
 
 ## Context / Problem

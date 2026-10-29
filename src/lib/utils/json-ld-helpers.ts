@@ -1,8 +1,15 @@
+import { SOCIAL_PROFILES } from '@/lib/constants/social';
 import type { BeachDetailsSchema, Country, Continent } from '@/lib/api-client/types.gen';
 import { buildBeachImageUrl, buildCdnUrl } from '@/lib/utils/beach-images';
 import { env } from '@/env';
 
 const baseUrl = env.NEXT_PUBLIC_BASE_URL;
+
+/**
+ * Organization logo for Google (raster, at least 112×112, readable on white): the colour
+ * horizontal logo from the brand package (CGP v1.0, `public/brand/`). `/logo.png` never existed.
+ */
+export const ORGANIZATION_LOGO_PATH = '/brand/BeachRex_CGP/01_Logo/Horizontal/PNG/beachrex_horizontal_color_1000px.png';
 
 /**
  * Build Organization JSON-LD structured data
@@ -17,14 +24,10 @@ export function buildOrganizationSchema(description: string) {
     '@type': 'Organization',
     name: 'BeachRex',
     url: baseUrl,
-    logo: `${baseUrl}/logo.png`,
+    logo: `${baseUrl}${ORGANIZATION_LOGO_PATH}`,
     description,
-    sameAs: [
-      // Add social media profiles when available
-      // 'https://www.facebook.com/beachrex',
-      // 'https://www.instagram.com/beachrex',
-      // 'https://twitter.com/beachrex',
-    ],
+    // The brand's own profiles: helps search engines and AI assistants recognise Beachrex as one entity
+    sameAs: Object.values(SOCIAL_PROFILES),
   };
 }
 
@@ -88,6 +91,45 @@ export function buildBreadcrumbSchema(items: { name: string; url: string }[]) {
  * @example
  * buildBeachSchema(beachData, 'en', 'https://beachrex.com/en/beaches/europe/croatia/split/bacvice-beach')
  */
+/** Photos on Beachrex are works of MOJA PLAŽA, d.o.o. (terms of use §6). */
+export const PHOTO_COPYRIGHT_HOLDER = 'MOJA PLAŽA, d.o.o.';
+
+/** Licence and permission pages for image structured data (English CMS slugs, stable in the content files). */
+const PHOTO_LICENSE_PATH = '/en/p/terms-of-use';
+const PHOTO_ACQUIRE_LICENSE_PATH = '/en/p/media-kit';
+
+export function buildBeachImageObjects(beach: BeachDetailsSchema, max = 5): Record<string, unknown>[] {
+  const folderName = beach.basic_info?.folder_name;
+  const mobileUpload = beach.basic_info?.mobile_upload ?? false;
+  const gallery = beach.media?.gallery ?? [];
+  if (!folderName || gallery.length === 0) return [];
+
+  const ordered = [...gallery.filter((m) => m.is_primary), ...gallery.filter((m) => !m.is_primary)];
+  const base = baseUrl;
+  const holder = { '@type': 'Organization', name: PHOTO_COPYRIGHT_HOLDER };
+  const name = beach.basic_info?.name ?? undefined;
+
+  return ordered.slice(0, max).flatMap((item) => {
+    const url = buildBeachImageUrl(folderName, item.file_name, mobileUpload, 'hero');
+    if (!url) return [];
+    return [{
+      '@type': 'ImageObject',
+      contentUrl: url,
+      url,
+      name,
+      // Mobile uploads may be other authors' photos: no claim on those
+      ...(mobileUpload ? {} : {
+        creator: holder,
+        copyrightHolder: holder,
+        copyrightNotice: `© ${PHOTO_COPYRIGHT_HOLDER}`,
+        creditText: 'Beachrex',
+        license: `${base}${PHOTO_LICENSE_PATH}`,
+        acquireLicensePage: `${base}${PHOTO_ACQUIRE_LICENSE_PATH}`,
+      }),
+    }];
+  });
+}
+
 export function buildBeachSchema(beach: BeachDetailsSchema, locale: string, url: string) {
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -104,7 +146,8 @@ export function buildBeachSchema(beach: BeachDetailsSchema, locale: string, url:
     schema.address = {
       '@type': 'PostalAddress',
       addressLocality: cityName ?? undefined,
-      addressCountry: countryName ?? undefined,
+      // ISO 3166-1 code ("HR") is what schema.org recommends; the localized name only as a fallback
+      addressCountry: beach.location?.country?.code ?? countryName ?? undefined,
     };
   }
 
@@ -119,14 +162,11 @@ export function buildBeachSchema(beach: BeachDetailsSchema, locale: string, url:
     };
   }
 
-  // Add image if available
-  const folderName = beach.basic_info?.folder_name;
-  const firstImage = beach.media?.gallery?.[0];
-  if (folderName && firstImage?.file_name) {
-    const imageUrl = buildBeachImageUrl(folderName, firstImage.file_name, false, 'list');
-    if (imageUrl) {
-      schema.image = imageUrl;
-    }
+  // Photos as ImageObjects with author and licence (owner, 2026-10-08): Google Images shows the
+  // creator, credit and licence details. Primary image first, up to 5, in the large size.
+  const images = buildBeachImageObjects(beach);
+  if (images.length > 0) {
+    schema.image = images;
   }
 
   return schema;
@@ -209,6 +249,50 @@ export function buildContinentSchema(
 }
 
 /**
+ * Build Place JSON-LD for a region, island or city page.
+ * `containedInPlace` names the country, so search engines know where the place is.
+ */
+export function buildDestinationSchema(options: {
+  name: string;
+  url: string;
+  description?: string;
+  mainImage?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  countryName?: string | null;
+}) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Place',
+    name: options.name,
+    url: options.url,
+  };
+
+  if (options.description) {
+    schema.description = options.description;
+  }
+
+  const imageUrl = options.mainImage ? buildCdnUrl(options.mainImage, 'list') : null;
+  if (imageUrl) {
+    schema.image = imageUrl;
+  }
+
+  if (typeof options.latitude === 'number' && typeof options.longitude === 'number') {
+    schema.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: options.latitude,
+      longitude: options.longitude,
+    };
+  }
+
+  if (options.countryName) {
+    schema.containedInPlace = { '@type': 'Country', name: options.countryName };
+  }
+
+  return schema;
+}
+
+/**
  * Build ItemList JSON-LD structured data for a list of beaches
  *
  * @param beaches - Array of beach data
@@ -259,6 +343,7 @@ export function buildBeachListSchema(
  * />
  */
 export function renderJsonLd(schema: Record<string, unknown> | Record<string, unknown>[]) {
-  return JSON.stringify(schema);
+  // `<` as \u003c: text from the database (descriptions, FAQ) can never close the <script> tag. Still valid JSON.
+  return JSON.stringify(schema).replace(/</g, '\\u003c');
 }
 

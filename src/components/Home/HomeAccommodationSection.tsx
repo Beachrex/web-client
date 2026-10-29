@@ -39,7 +39,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
             <button className="flex w-fit items-center justify-center gap-2 rounded-md bg-[#008260] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#006b4f] sm:px-6 sm:py-3 sm:text-base">
               <Image
                 src="/images/accomodation.png"
-                alt="accommodation icon"
+                alt=""
                 width={20}
                 height={20}
                 className="object-contain"
@@ -58,7 +58,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 <Image
                   key={idx}
                   src={url}
-                  alt={`Accommodation ${idx + 1}`}
+                  alt=""
                   width={302}
                   height={182}
                   className="h-32 w-full rounded-lg object-cover"
@@ -72,7 +72,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 <Image
                   key={idx}
                   src={url}
-                  alt={`Accommodation ${idx + 1}`}
+                  alt=""
                   width={302}
                   height={182}
                   className="h-40 w-full rounded-lg object-cover"
@@ -88,7 +88,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                   {images[0] && (
                     <Image
                       src={images[0]}
-                      alt="Accommodation 1"
+                      alt=""
                       width={302}
                       height={182}
                       className="h-48 w-full rounded-lg object-cover"
@@ -97,7 +97,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                   {images[1] && (
                     <Image
                       src={images[1]}
-                      alt="Accommodation 2"
+                      alt=""
                       width={233}
                       height={211}
                       className="w-full flex-1 rounded-lg object-cover"
@@ -110,7 +110,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                   {images[2] && (
                     <Image
                       src={images[2]}
-                      alt="Accommodation 3"
+                      alt=""
                       width={299}
                       height={187}
                       className="h-40 w-full rounded-lg object-cover"
@@ -119,7 +119,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                   {images[3] && (
                     <Image
                       src={images[3]}
-                      alt="Accommodation 4"
+                      alt=""
                       width={412}
                       height={214}
                       className="h-52 w-full rounded-lg object-cover"
@@ -128,7 +128,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                   {images[6] && (
                     <Image
                       src={images[6]}
-                      alt="Accommodation 7"
+                      alt=""
                       width={241}
                       height={119}
                       className="w-full flex-1 rounded-lg object-cover"
@@ -141,7 +141,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                   {images[4] && (
                     <Image
                       src={images[4]}
-                      alt="Accommodation 5"
+                      alt=""
                       width={367}
                       height={126}
                       className="h-32 w-full rounded-lg object-cover"
@@ -150,7 +150,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                   {images[5] && (
                     <Image
                       src={images[5]}
-                      alt="Accommodation 6"
+                      alt=""
                       width={399}
                       height={291}
                       className="w-full flex-1 rounded-lg object-cover"
@@ -163,7 +163,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                   {images[7] && (
                     <Image
                       src={images[7]}
-                      alt="Accommodation 8"
+                      alt=""
                       width={159}
                       height={152}
                       className="h-40 w-full rounded-lg object-cover"
@@ -185,7 +185,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 {images[0] && (
                   <Image
                     src={images[0]}
-                    alt="image 0"
+                    alt=""
                     width={412}
                     height={214}
                     className="absolute left-[314px] top-[199px] h-[214px] w-[412px] rounded-[10px] object-cover"
@@ -196,7 +196,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 {images[4] && (
                   <Image
                     src={images[4]}
-                    alt="image 4"
+                    alt=""
                     width={340}
                     height={291}
                     className="absolute left-[738px] top-[199px] h-[291px] w-[340px] rounded-[10px] object-cover"
@@ -207,7 +207,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 {images[1] && (
                   <Image
                     src={images[1]}
-                    alt="image 1"
+                    alt=""
                     width={233}
                     height={211}
                     className="absolute left-[69px] top-[275px] h-[211px] w-[233px] rounded-[10px] object-cover"
@@ -218,7 +218,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 {images[2] && (
                   <Image
                     src={images[2]}
-                    alt="image 2"
+                    alt=""
                     width={299}
                     height={187}
                     className="absolute left-[314px] top-[0px] h-[187px] w-[299px] rounded-[10px] object-cover"
@@ -229,7 +229,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 {images[6] && (
                   <Image
                     src={images[6]}
-                    alt="image 6"
+                    alt=""
                     width={241}
                     height={119}
                     className="absolute left-[314px] top-[422px] h-[119px] w-[241px] rounded-[10px] object-cover"
@@ -240,7 +240,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 {images[7] && (
                   <Image
                     src={images[7]}
-                    alt="image 7"
+                    alt=""
                     width={159}
                     height={152}
                     className="absolute left-[567px] top-[422px] h-[152px] w-[159px] rounded-[10px] object-cover"
@@ -251,7 +251,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 {images[5] && (
                   <Image
                     src={images[5]}
-                    alt="image 5"
+                    alt=""
                     width={367}
                     height={126}
                     className="absolute left-[625px] top-[61px] h-[126px] w-[367px] rounded-[10px] object-cover"
@@ -262,7 +262,7 @@ const HomeAccommodationSection: React.FC<HomeAccommodationSectionProps> = ({
                 {images[3] && (
                   <Image
                     src={images[3]}
-                    alt="image 3"
+                    alt=""
                     width={302}
                     height={182}
                     className="absolute left-[0px] top-[81px] h-[182px] w-[302px] rounded-[10px] object-cover"

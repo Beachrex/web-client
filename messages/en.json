@@ -29,7 +29,6 @@
     "quickMenuWorldBeaches": "Beaches worldwide",
     "quickMenuBeachType": "Beach type",
     "quickMenuUserType": "User type",
-    "quickMenuBeachDisplay": "Beach view",
     "quickMenuBeachServices": "Beach services",
     "quickMenuTopBeaches": "Top beaches",
     "quickMenuAboutUs": "About us",
@@ -65,7 +64,14 @@
     "accommodationDefaultDistance": "250 m from beach",
     "accommodationDefaultBeach": "Haludovo Beach",
     "accommodationDefaultPrice": "from 25 €",
-    "beachSeaBeach": "Sea beach"
+    "beachSeaBeach": "Sea beach",
+    "copyLink": "Copy",
+    "linkCopied": "Copied",
+    "shareOn": "Share on {network}",
+    "shareByEmail": "Share by e-mail",
+    "moreShareOptions": "More options",
+    "paginationPrevious": "Previous",
+    "paginationNext": "Next"
   },
   "Search": {
     "typeBeach": "Beach",
@@ -76,7 +82,17 @@
     "beaches": "beaches",
     "noResults": "No results found. Try a different search term.",
     "searching": "Searching...",
-    "clearSearch": "Clear search"
+    "clearSearch": "Clear search",
+    "tabAll": "All",
+    "tabBeaches": "Beaches",
+    "tabCities": "Cities",
+    "tabIslands": "Islands",
+    "tabRegions": "Regions",
+    "tabCountries": "Countries",
+    "tabsLabel": "Filter results by type",
+    "showAllOnMap": "All beaches on the map: {name}",
+    "showingOf": "Showing {shown} of {total}",
+    "openPlace": "Open {name}"
   },
   "HomePage": {
     "allBeaches": "All Beaches",
@@ -103,7 +119,10 @@
     "outdoorPools": "Outdoor Pools",
     "indoorPoolsSpas": "Indoor Pools & Spas",
     "browseAccommodationsButton": "Browse Accommodations",
-    "moreAccommodations": "+More Accommodations"
+    "moreAccommodations": "+More Accommodations",
+    "showcaseExample": "Example: {beach}",
+    "showcaseOpenBeach": "View {beach}",
+    "showcaseLiveBadge": "Live"
   },
   "BeachCategories": {
     "sandyBeaches": "Sandy beaches",
@@ -136,9 +155,12 @@
     "browseBeaches": "Browse All Beaches",
     "goHome": "Go Home"
   },
-  "AboutPage": {
-    "aboutUs": "About us",
-    "description": "Description about us page"
+  "ErrorPage": {
+    "title": "Something went wrong.",
+    "subtitle": "Error",
+    "description": "An unexpected error occurred. Please try again in a moment.",
+    "retry": "Try again",
+    "goHome": "Go Home"
   },
   "BeachTypePage": {
     "title": "Beach Types",
@@ -161,17 +183,16 @@
     "premiumAccommodations": "Luxury Accommodation in {continent}",
     "bestDeals": "Great Deals",
     "description": "Explore the most beautiful beaches in {continent}.",
-    "countriesContinent": "Countries in {continent}"
+    "countriesContinent": "Countries in {continent}",
+    "sortBy": "Sort by",
+    "sortAlphabetical": "Alphabetical (A–Z)",
+    "sortBeachesDesc": "Most beaches first",
+    "sortBeachesAsc": "Fewest beaches first"
   },
   "FeatureCards": {
     "beachMapButton": "Beach Map",
     "browseBlogButton": "Browse Blog",
     "browseAccommodationsButton": "Browse Accommodations"
-  },
-  "routes": {
-    "beachMap": "/beach-map",
-    "blog": "/blog",
-    "accommodations": "/accommodations"
   },
   "Destinations": {
     "croatia": "Croatia",
@@ -221,7 +242,7 @@
     "viewBeachMap": "View beach map"
   },
   "SearchBeach": {
-    "title": "Browse all beaches in Europe",
+    "title": "Browse all beaches in {continent}",
     "filterButton": "Filter",
     "mapButton": "Show map",
     "displayLabel": "Beach view:",
@@ -312,9 +333,12 @@
     "islandLabel": "Island",
     "cityLabel": "City",
     "countryLabel": "Country",
-    "beachLabel": "Sea beach",
+    "beachLabel": "Sea",
     "beachCountLabel": "Beach count:",
-    "accommodationCountLabel": "Accommodation count:"
+    "accommodationCountLabel": "Accommodation count:",
+    "beachLabelLake": "Lake",
+    "beachLabelRiver": "River",
+    "beachLabelPool": "Pool"
   },
   "TopBarBeach": {
     "beachLabel": "Sea beach",
@@ -328,7 +352,9 @@
       "parking": "Parking available",
       "easyAccess": "Easy access",
       "windsurfing": "Windsurfing",
-      "SeaTemperature": "Sea Temperature"
+      "SeaTemperature": "Sea Temperature",
+      "adventurer": "Adventurer beach",
+      "partyBeach": "Party beach"
     }
   },
   "AccommodationSection": {
@@ -514,20 +540,16 @@
       "title": "Browse the site",
       "links": [
         {
-          "label": "All destinations overview",
-          "href": "/destinations"
+          "label": "All destinations overview"
         },
         {
-          "label": "Search by beaches",
-          "href": "/beaches"
+          "label": "Search by beaches"
         },
         {
-          "label": "Search by accommodations",
-          "href": "/accommodations"
+          "label": "Search by accommodations"
         },
         {
-          "label": "Map view",
-          "href": "/beach-map"
+          "label": "Map view"
         }
       ]
     },
@@ -539,7 +561,12 @@
       "gdprConsent": "I agree to receive promotional emails and news, and I accept the <privacy>privacy policy</privacy>."
     },
     "legal": {
-      "rights": "All rights reserved BeachRex"
+      "rights": "© {year} MOJA PLAŽA, d.o.o. · BeachRex. All rights reserved."
+    },
+    "app": {
+      "title": "Get the app",
+      "googlePlayTop": "GET IT ON",
+      "appStoreTop": "Download on the"
     }
   },
   "BeachSimilarBeaches": {
@@ -564,7 +591,8 @@
       "sports": "Sports activities",
       "parking": "Parking",
       "pathToBeach": "Path to the beach",
-      "userType": "User type"
+      "userType": "User type",
+      "gpsLocation": "GPS location"
     },
     "labels": {
       "type": "Type",
@@ -581,11 +609,15 @@
       "wayToParking": "Surface to parking",
       "recommendedAccess": "Recommended access",
       "distance": "Distance (parking — beach)",
-      "elevationDiff": "Elevation difference (parking to beach)"
+      "elevationDiff": "Elevation difference (parking to beach)",
+      "seabedLake": "Lake bed",
+      "seabedRiver": "Riverbed",
+      "seabedPool": "Pool floor"
     },
     "buttons": {
       "photo": "Photo",
-      "map": "Map"
+      "map": "Map",
+      "navigation": "Navigation"
     },
     "values": {
       "yes": "Yes",
@@ -631,7 +663,12 @@
       "unit": {
         "meters": "m"
       }
-    }
+    },
+    "webcamHeading": "Live webcam",
+    "webcamIframeTitle": "Live webcam: {name}",
+    "webcamCredit": "Webcam provided by Windy.com",
+    "closeMedia": "Close",
+    "navigationAria": "Navigate to {name} in Google Maps"
   },
   "Auth": {
     "continueWithGoogle": "Continue with Google",
@@ -648,7 +685,30 @@
     "loginRequired": "Login Required",
     "loginRequiredMessage": "You need to sign in to access this feature.",
     "creditsRequired": "Credits Required",
-    "creditsRequiredMessage": "You need credits to generate itineraries. Please purchase credits to continue."
+    "creditsRequiredMessage": "You need credits to generate itineraries. Please purchase credits to continue.",
+    "orDivider": "or",
+    "signInWithEmail": "Sign in with e-mail",
+    "email": "E-mail",
+    "password": "Password",
+    "signIn": "Sign in",
+    "forgotPassword": "Forgot password?",
+    "invalidCredentials": "Wrong e-mail or password.",
+    "tooManyAttempts": "Too many attempts. Please wait a minute and try again.",
+    "genericError": "Something went wrong. Please try again.",
+    "forgotTitle": "Forgot your password?",
+    "forgotDescription": "Enter the e-mail of your Beachrex account and we will send you a link to set a new password.",
+    "sendLink": "Send link",
+    "forgotSent": "If an account exists for this e-mail, we have sent a link to reset the password. Check your inbox and spam folder.",
+    "resetTitle": "Set a new password",
+    "newPassword": "New password",
+    "confirmPassword": "Repeat new password",
+    "passwordHint": "At least 8 characters.",
+    "passwordsDontMatch": "The passwords do not match.",
+    "savePassword": "Save password",
+    "resetDone": "Your password has been changed and you are signed in.",
+    "resetDoneSignIn": "Your password has been changed. You can now sign in.",
+    "resetInvalidLink": "This password reset link is invalid or has expired.",
+    "requestNewLink": "Request a new link"
   },
   "AI": {
     "landing": {
@@ -656,7 +716,13 @@
       "subtitle": "Your personal beach discovery companion powered by AI",
       "description": "Get personalized beach recommendations, chat with our AI assistant, and create custom itineraries for your perfect beach vacation.",
       "chatButton": "Start Chatting",
-      "itineraryButton": "Create Itinerary"
+      "itineraryButton": "Create Itinerary",
+      "chatCardText": "Ask our AI assistant anything about beaches, destinations and travel tips, and get instant personalised recommendations.",
+      "chatCta": "Start chatting",
+      "itineraryCardText": "Generate personalised multi-day beach holiday itineraries tailored to your preferences, budget and interests.",
+      "itineraryCta": "Create an itinerary",
+      "infoTitle": "New to Beachrex AI?",
+      "infoText": "The chat is free for everyone. Multi-day itineraries need credits – sign in with Google to get started!"
     },
     "chat": {
       "title": "Chat with AI",
@@ -666,29 +732,117 @@
       "sending": "Sending...",
       "error": "Failed to send message. Please try again.",
       "welcome": "Hello! I'm your AI beach assistant. How can I help you today?",
-      "anonymousNote": "You're chatting anonymously. Sign in to save your conversations and access premium features."
+      "anonymousNote": "You're chatting anonymously. Sign in to save your conversations and access premium features.",
+      "viewDetails": "View details →",
+      "suggestions": "Suggestions:",
+      "match": "{percent}% match",
+      "useLocation": "Use my location (beaches near me)",
+      "locationOn": "Your location is used for nearby beaches",
+      "locationDenied": "Your location is not available. Allow location access in the browser or name a place.",
+      "errorBusy": "The AI assistant is busy right now. Please try again in a minute.",
+      "errorTooMany": "Too many messages. Please wait a little and try again.",
+      "errorTooLong": "The message is too long. Please shorten it.",
+      "widget": {
+        "open": "Open the AI beach assistant",
+        "close": "Close the chat",
+        "title": "AI beach assistant",
+        "newConversation": "New conversation",
+        "openFullPage": "Open the full chat page",
+        "inputLabel": "Your message",
+        "greeting": "Hi! Ask me anything about beaches and your seaside trip.",
+        "greetingBeach": "Hi! You are looking at {name}. Ask me anything about it, or about any other beach.",
+        "placeholderBeach": "Ask about {name}…"
+      }
     },
     "itinerary": {
-      "title": "Create Beach Itinerary",
-      "subtitle": "Generate a personalized multi-day beach vacation plan",
+      "title": "Plan your beach trip",
+      "subtitle": "Pick a country and the length of your trip. We plan the beaches for every day from the Beachrex database, with a link to each beach.",
       "form": {
-        "destination": "Destination",
-        "destinationPlaceholder": "e.g., Croatia, Bali, Caribbean",
-        "days": "Number of Days",
-        "daysPlaceholder": "e.g., 7",
-        "interests": "Interests",
-        "interestsPlaceholder": "e.g., snorkeling, relaxation, nightlife",
-        "budget": "Budget Level",
-        "budgetLow": "Budget",
-        "budgetMedium": "Moderate",
-        "budgetHigh": "Luxury",
-        "generate": "Generate Itinerary",
-        "generating": "Generating your itinerary..."
+        "country": "Country",
+        "countryPlaceholder": "Choose a country",
+        "region": "Region (optional)",
+        "wholeCountry": "Whole country",
+        "duration": "Trip length",
+        "daysOption": "{days} days",
+        "plansAvailable": "{count} ready to use",
+        "interests": "What do you enjoy?",
+        "surface": "Beach surface",
+        "pace": "Pace",
+        "adults": "Adults",
+        "children": "Children"
       },
-      "error": "Failed to generate itinerary. Please try again.",
-      "paymentRequired": "Multi-day itineraries require credits. Please purchase credits to continue.",
-      "creditsRemaining": "Credits remaining: {count}",
-      "purchaseCredits": "Purchase Credits"
+      "interest": {
+        "swimming": "Swimming",
+        "snorkeling": "Snorkelling",
+        "family": "Family-friendly",
+        "quiet": "Quiet",
+        "nightlife": "Nightlife",
+        "nature": "Nature",
+        "diving": "Diving",
+        "surfing": "Surfing",
+        "kayaking": "Kayaking",
+        "hiking": "Hiking"
+      },
+      "surface": {
+        "sand": "Sand",
+        "pebble": "Pebbles",
+        "rock": "Rocks"
+      },
+      "pace": {
+        "relaxed": "Relaxed",
+        "balanced": "Balanced",
+        "packed": "Packed"
+      },
+      "progressBeaches": "Finding beaches that match your wishes…",
+      "progressRoute": "Planning the route day by day…",
+      "progressTips": "Writing tips for each beach…",
+      "signInToStart": "Sign in to buy and create your plan.",
+      "generate": "Create my plan",
+      "usesOnePlan": "Uses one of your {days}-day plans.",
+      "buy": "Buy {days}-day plan · {price}",
+      "buyNote": "One-off payment, no subscription. After paying you come back here and create your plan.",
+      "errors": {
+        "signInRequired": "Please sign in first.",
+        "buyRequired": "You have no plan of this length left. Buy one to continue.",
+        "notEnoughBeaches": "Not enough beaches match. Try the whole country, fewer wishes or a shorter trip. Your plan was not used.",
+        "busy": "The planner is busy right now. Please try again in a minute. Your plan was not used.",
+        "error": "Something went wrong and your plan was not used. Please try again.",
+        "purchaseError": "The payment could not be started. Please try again."
+      },
+      "fallbackNote": "This time the AI tips could not be written, so the plan has short facts instead. Your plan was not used and you can create it again.",
+      "day": "Day {number}",
+      "timeBlock": {
+        "morning": "Morning",
+        "afternoon": "Afternoon",
+        "evening": "Evening"
+      },
+      "tip": "Tip",
+      "travelKm": "About {km} km of driving this day.",
+      "assumptions": "Good to know",
+      "newPlan": "Plan another trip",
+      "plans": {
+        "title": "My plans",
+        "empty": "You have no plans yet. Create your first one.",
+        "untitled": "{days}-day trip ({country})",
+        "notFound": "This plan does not exist or belongs to another account.",
+        "waitNote": "You can close this page: the plan is saved under My plans when it is ready.",
+        "status": {
+          "running": "Being created",
+          "done": "Ready",
+          "failed": "Not created"
+        },
+        "failed": {
+          "notEnoughBeaches": "Not enough beaches matched this trip. The plan was not used: try the whole country, fewer wishes or a shorter trip.",
+          "timeout": "Creating the plan took too long. The plan was not used, please try again.",
+          "error": "Something went wrong. The plan was not used, please try again."
+        }
+      },
+      "savePdf": "Save as PDF",
+      "mapTitle": "Map of the trip",
+      "consent": {
+        "terms": "I accept the <link>terms of sale</link>.",
+        "withdrawal": "I want the plan to be available right away. I understand that I lose my 14-day right of withdrawal once I create the plan; until then I can still withdraw."
+      }
     },
     "entitlements": {
       "title": "My Credits",
@@ -710,7 +864,173 @@
     "no360": "No 360° view available",
     "noVideo": "No video available",
     "mostVisited": "Most visited",
+    "distanceAway": "{distance} away",
     "loading": "Loading...",
-    "showOnMap": "Show {title} on map"
+    "showOnMap": "Show {title} on map",
+    "webcamClose": "Close webcam"
+  },
+  "Menu": {
+    "browseBeaches": "Browse beaches",
+    "topCountries": "Top beach countries",
+    "aiChat": "AI beach chat",
+    "aiItinerary": "AI trip planner",
+    "contact": "Contact",
+    "beachTypes": "Beach types",
+    "beachesFor": "Beaches for",
+    "onTheBeach": "On the beach"
+  },
+  "MediaKit": {
+    "downloadsTitle": "Downloads",
+    "packageTitle": "Complete brand package",
+    "packageDescription": "All logos (SVG, PDF, EPS, PNG), favicon and app icons, social media images and the colour palette in one ZIP file.",
+    "packageButton": "Download ZIP",
+    "guidelinesTitle": "Brand guidelines",
+    "logosTitle": "Logos",
+    "versions": {
+      "horizontal": "Horizontal (primary)",
+      "stacked": "Stacked",
+      "symbol": "Symbol",
+      "wordmark": "Wordmark"
+    },
+    "colors": {
+      "color": "Full colour",
+      "black": "Black",
+      "white": "White",
+      "teal": "Teal",
+      "orange": "Orange"
+    },
+    "logoAlt": "Beachrex logo – {version}, {color}",
+    "colorsTitle": "Colours",
+    "paletteDownload": "Download the palette",
+    "socialTitle": "Social media images",
+    "social": {
+      "profile": "Profile picture",
+      "og": "Link preview image",
+      "facebook": "Facebook cover",
+      "linkedin": "LinkedIn cover",
+      "x": "X header"
+    }
+  },
+  "AuthorPage": {
+    "metaTitle": "Gregor Balažic – the author of Beachrex",
+    "metaDescription": "Meet Gregor Balažic, who quit his job, bought a camera and a van and visited 4,000 beaches in 13 countries. Beachrex grew out of his journey.",
+    "eyebrow": "About the author",
+    "bannerWord": "Author",
+    "role": "Founder of Beachrex",
+    "lead": "“Beaches have always been my great passion.”",
+    "heroCta": "Read the story",
+    "stats": {
+      "beaches": "beaches visited",
+      "km": "kilometres driven",
+      "countries": "countries",
+      "facts": "details about every beach"
+    },
+    "chapters": {
+      "leap": {
+        "title": "Leaving the comfort zone",
+        "text": "Beaches have always been my great passion, says Gregor Balažic, who quit his job. He was a head of department; he stepped out of his comfort zone and left a predictable future behind. He bought a camera and a van, which became his new home, and set off into the world. To the beaches, to be precise."
+      },
+      "road": {
+        "title": "<beaches>4,000 beaches</beaches> in <countries>13 countries</countries>",
+        "text": "He travelled along the coasts and beaches of <countries>13 countries</countries>: <list></list>. He visited no fewer than <beaches>4,000 beaches</beaches>. The number may seem huge, but it is only a drop in the ocean – there are more than 200,000 beaches in the world suitable for tourism, Balažic explains."
+      },
+      "database": {
+        "title": "The world’s largest beach database",
+        "text": "The beaches he visited became the foundation of the world’s largest beach database – Beachrex. Every beach comes with photos, panoramic shots, videos, information about parking, GPS location, weather data, accommodation, sports activities, restaurants and bars, and sea temperature. Altogether that is more than 200 details about every beach."
+      },
+      "hardships": {
+        "title": "The road was not always easy",
+        "text": "Balažic has travelled more than 70,000 kilometres, and sometimes he even had to climb to get the perfect shot. The journey of thousands of kilometres was not always bathed in sunshine – there were unpleasant moments along the way, and he was robbed several times. But his journey is not over (yet)."
+      }
+    },
+    "routeTitle": "Along the coasts",
+    "countries": {
+      "si": "Slovenia",
+      "hr": "Croatia",
+      "me": "Montenegro",
+      "al": "Albania",
+      "gr": "Greece",
+      "it": "Italy",
+      "fr": "France",
+      "es": "Spain",
+      "pt": "Portugal",
+      "be": "Belgium",
+      "nl": "Netherlands",
+      "de": "Germany",
+      "dk": "Denmark"
+    },
+    "photoAlt": "Gregor Balažic with his camera on a sandy beach",
+    "beachAlt": "Sandy beach with an upturned boat by the rocks and pine trees",
+    "beachCaption": "One of the 4,000 beaches Gregor visited and photographed.",
+    "quote": "We have a vision – in a few years, every single beach in the world will be on the map.",
+    "ctaTitle": "Discover the beaches Gregor visited",
+    "ctaText": "Every photo, sphere and detail on Beachrex was created on this journey.",
+    "ctaMap": "Browse the map",
+    "ctaContact": "Write to us",
+    "footerLink": "Meet the author"
+  },
+  "Payment": {
+    "successTitle": "Payment successful",
+    "successMessage": "Thank you for your purchase! Your credits have been added to your account.",
+    "sessionId": "Session ID:",
+    "cancelTitle": "Payment cancelled",
+    "cancelMessage": "Your payment was cancelled. No charges were made.",
+    "redirecting": "Returning to the itinerary planner in <strong>{seconds}</strong> seconds…",
+    "planItinerary": "Plan an itinerary",
+    "tryChat": "Try the AI chat",
+    "tryAgain": "Try again",
+    "goHome": "Go to the homepage",
+    "help": "Need help? Write to {email}."
+  },
+  "UI": {
+    "selectOption": "Select an option",
+    "noBeachesInArea": "No beaches found in this area",
+    "singleColumn": "Single-column layout",
+    "doubleColumn": "Two-column layout",
+    "closeMap": "Close map",
+    "closeFilters": "Close filters",
+    "videoTitle": "Beach video",
+    "virtualTourTitle": "360° virtual tour",
+    "beachRouteMapTitle": "Map with the route to the beach",
+    "closeMenu": "Close menu"
+  },
+  "FilterModal": {
+    "title": "All beach filters",
+    "searchPlaceholder": "🔍 Search filters…",
+    "clearAll": "Clear all",
+    "cancel": "Cancel",
+    "apply": "Apply filters",
+    "applyCount": "Apply filters ({count})",
+    "showLess": "Show less",
+    "showMore": "Show {count} more…"
+  },
+  "Favorites": {
+    "title": "My favorite beaches",
+    "add": "Save to favorites",
+    "remove": "Remove from favorites",
+    "save": "Save",
+    "saved": "Saved",
+    "signInTitle": "Sign in to save beaches",
+    "signInText": "Your favorite beaches are saved to your account, so you can find them on any device.",
+    "empty": "You have not saved any beaches yet. Tap the heart on a beach to save it.",
+    "browse": "Browse beaches",
+    "limit": "Your favorites list is full. Remove a beach to save another one.",
+    "error": "The beach could not be saved. Please try again.",
+    "loadError": "Your favorite beaches could not be loaded. Please try again."
+  },
+  "BeachFaq": {
+    "title": "Frequently asked questions about {name}"
+  },
+  "PlaceSelect": {
+    "allCountries": "All countries",
+    "allRegions": "All regions",
+    "allIslands": "All islands",
+    "allCities": "All towns",
+    "all": "All",
+    "search": "Search…",
+    "noMatches": "No matches",
+    "clear": "Clear",
+    "selected": "Selected filters",
+    "remove": "Remove {name}"
   }
 }

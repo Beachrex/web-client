@@ -4,11 +4,12 @@ import { Heart, UserCircle, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import { Dropdown } from 'flowbite-react';
 import { locales, languageNames } from '@/app/config/locales';
-import { usePathname } from '@/i18n/routing';
+import { Link, usePathname } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 import { useLocalizedPath } from '@/hooks/useLocalizedPath';
+import { FEATURES } from '@/lib/constants/features';
 
 const CDN_ASSETS = process.env.NEXT_PUBLIC_CDN_ASSETS ?? '';
 
@@ -40,18 +41,12 @@ const TopBar = () => {
 
   const handleLocaleChange = (newLocale: string) => {
     startTransition(async () => {
-      console.log('[TopBar] Switching locale to:', newLocale);
-      console.log('[TopBar] Current pathname:', pathname);
 
       // Get the localized path for the new locale
       const localizedPath = await getLocalizedPath(newLocale);
 
-      console.log('[TopBar] Localized path returned:', localizedPath);
-
       // Construct the full URL with locale prefix
       const fullPath = `/${newLocale}${localizedPath}`;
-
-      console.log('[TopBar] Full path to navigate:', fullPath);
 
       // Navigate using Next.js router
       router.push(fullPath);
@@ -68,7 +63,7 @@ const TopBar = () => {
             <Image
               width="16"
               height="12"
-              alt="Language"
+              alt=""
               src={`${CDN_ASSETS}img/icon/globeTranslate.svg`}
             />
             {isClient ? (
@@ -102,19 +97,21 @@ const TopBar = () => {
             )}
           </div>
 
-          {/* Center: Shortened Message */}
-          <div className="flex-1 truncate px-2 text-center text-[11px] font-bold text-white">
-            Sporočilo...
-          </div>
+          {/* Center: spacer (the hardcoded Slovenian placeholder message was removed) */}
+          <div className="flex-1" />
 
-          {/* Right: Icons Only */}
+          {/* Right: Icons Only (favorites and account are hidden for launch) */}
           <div className="flex items-center space-x-2">
-            <button className="flex items-center">
-              <Heart className="h-[18px] w-[18px]" />
-            </button>
-            <button className="flex items-center">
-              <UserCircle className="h-[18px] w-[18px]" />
-            </button>
+            {FEATURES.favorites && (
+              <Link href="/favorites" className="flex items-center" aria-label={t('favorite_beaches')}>
+                <Heart className="h-[18px] w-[18px]" />
+              </Link>
+            )}
+            {FEATURES.account && (
+              <button className="flex items-center">
+                <UserCircle className="h-[18px] w-[18px]" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -125,7 +122,7 @@ const TopBar = () => {
             <Image
               width="20"
               height="16"
-              alt="Beachrex Language"
+              alt=""
               src={`${CDN_ASSETS}img/icon/globeTranslate.svg`}
             />
             {isClient ? (
@@ -157,15 +154,19 @@ const TopBar = () => {
             )}
           </div>
 
-          {/* Center Section */}
-          <div className="text-[13px] font-bold text-white lg:text-[14px]">
-            Izpostavljeno sporočilo...
-          </div>
+          {/* Center Section: spacer (the hardcoded Slovenian placeholder message was removed) */}
+          <div className="flex-1" />
 
           {/* Right Section */}
           <div className="flex items-center space-x-4">
-            <IconButton icon={Heart} label={t('favorite_beaches')} />
-            <IconButton icon={UserCircle} label={t('my_account')} />
+            {/* Favorites and account: hidden for launch */}
+            {FEATURES.favorites && (
+              <Link href="/favorites" className="flex items-center space-x-1">
+                <Heart className="h-[20px] w-[20px]" />
+                <span className="text-[10px] font-semibold">{t('favorite_beaches')}</span>
+              </Link>
+            )}
+            {FEATURES.account && <IconButton icon={UserCircle} label={t('my_account')} />}
           </div>
         </div>
       </div>

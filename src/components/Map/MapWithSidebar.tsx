@@ -5,14 +5,23 @@ import { PropertyMediaContext } from '@/components/PropertySection';
 import { useBeachesBoundingBox, useBeachesMapBounds, type BoundingBoxSearchFilters } from '@/hooks/useBeaches';
 import type { BeachSchema, GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
 import { useTranslations } from 'next-intl';
+import { nextDisplayedBeaches } from '@/lib/utils/map-results';
+import { focusCenter, parseBeachFocus, withFocusedBeach } from '@/lib/utils/map-focus';
+import { getBeachByIdentifierOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Map as MapIcon, SlidersHorizontal, X } from 'lucide-react';
 import Dropdown, { MediaToggleInline } from '../Dropdown';
 import LeftSidebarFilters from './LeftSidebarFilters';
 import ReactLeafletMap from './ReactLeafletMap';
 import { VirtualizedBeachList } from './VirtualizedBeachList';
+import { optionMatches, type FilterOptionLike } from '@/lib/utils/filter-options';
 
 type ColumnLayout = 1 | 2;
+
+// Zoom level that guarantees markers are ungrouped (disableClusteringAtZoom is 15)
+const BEACH_DETAIL_ZOOM = 16;
 
 interface Bounds {
     min_lat: number;
@@ -23,10 +32,12 @@ interface Bounds {
 
 const MapWithSidebar = () => {
     const t = useTranslations('BeachesMap');
+    const tUi = useTranslations('UI');
     const d = useTranslations('BeachDetails');
     const c = useTranslations('SearchBeach');
     const searchParams = useSearchParams();
 
+    // Same order as the beach page and the inline toggle: photos, video, 360, webcam.
     const mediaOptions = [
         {
             value: 'gallery',
@@ -34,14 +45,14 @@ const MapWithSidebar = () => {
             icon: '/images/beachmedia/photo.png',
         },
         {
-            value: 'sphere',
-            label: d('beachMedia360'),
-            icon: '/images/beachmedia/360-degree-white.png',
-        },
-        {
             value: 'video',
             label: d('beachMediaVideo'),
             icon: '/images/beachmedia/play-button-arrowhead-white.png',
+        },
+        {
+            value: 'sphere',
+            label: d('beachMedia360'),
+            icon: '/images/beachmedia/360-degree-white.png',
         },
         {
             value: 'webcam',
@@ -59,10 +70,19 @@ const MapWithSidebar = () => {
     const [mapCenter, setMapCenter] = useState<[number, number] | null>(null);
     const [mapZoom, setMapZoom] = useState<number>(6);
     const [columnLayout, setColumnLayout] = useState<ColumnLayout>(1);
-    const [isListVisible, setIsListVisible] = useState(true);
     const [isMobileMapOpen, setIsMobileMapOpen] = useState(false);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
+    // The side map is only mounted on md+ screens: hidden with CSS alone, phones still rendered
+    // thousands of markers in an invisible map, which made the whole page stutter.
+    const [isDesktop, setIsDesktop] = useState(false);
+    useEffect(() => {
+        const query = window.matchMedia('(min-width: 768px)');
+        const update = () => setIsDesktop(query.matches);
+        update();
+        query.addEventListener('change', update);
+        return () => query.removeEventListener('change', update);
+    }, []);
     const [boundingBox, setBoundingBox] = useState<{
         min_lat: number;
         min_lon: number;
@@ -70,6 +90,7 @@ const MapWithSidebar = () => {
         max_lon: number;
     } | null>(null);
     const [selectedBeachId, setSelectedBeachId] = useState<number | null>(null);
+    const [hoveredBeachId, setHoveredBeachId] = useState<number | null>(null);
     const [filters, setFilters] = useState<Record<string, string | number | boolean | undefined>>({});
     const [filterOptions, setFilterOptions] = useState<GetBeachFiltersResponse['data'] | null>(null);
     const [filterOptionsLoading, setFilterOptionsLoading] = useState(false);
@@ -89,8 +110,6 @@ const MapWithSidebar = () => {
     } | null>(null);
     const beachCardsContainerRef = useRef<HTMLDivElement>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    // Keep previous beaches visible while loading new data
-    const previousBeachesRef = useRef<BeachSchema[]>([]);
     // Container dimensions for virtualization
     const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 });
     // Show scroll-to-top button on mobile when page scrolled down
@@ -216,31 +235,34 @@ const MapWithSidebar = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapBoundsData]);
 
-    // When navigating from a beach page: once the map has initialised (mapCenter is set),
-    // center on the specific beach and select it so its popup auto-opens.
-    // We intentionally do NOT set ignoreNextViewportChangeRef / skipNextBoundingBoxUpdateRef
+    // "Focus this beach" (`beach_id`, optional `lat`/`lng`; see src/lib/utils/map-focus.ts): sent by the beach
+    // banner and the pin on beach cards. The beach itself is loaded so its marker is shown even when the
+    // current filters or viewport do not contain it, and to center on it when the URL has no coordinates.
+    const focus = useMemo(() => parseBeachFocus(searchParams), [searchParams]);
+    const { data: focusedBeachResponse } = useQuery({
+        ...getBeachByIdentifierOptions({ path: { identifier: focus?.id ?? 0 } }),
+        enabled: focus !== null,
+        staleTime: 5 * 60 * 1000,
+    });
+    const focusedBeach = focus && focusedBeachResponse?.data?.id === focus.id ? focusedBeachResponse.data : null;
+
+    // Once the map has initialised (mapCenter is set), center on the focused beach and select it so its
+    // popup auto-opens. We intentionally do NOT set ignoreNextViewportChangeRef / skipNextBoundingBoxUpdateRef
     // so the viewport change triggers a bounding-box fetch for the beach's area.
     useEffect(() => {
-        if (initialBeachAppliedRef.current || !mapCenter) return;
+        if (initialBeachAppliedRef.current || !mapCenter || !focus) return;
 
-        const beachIdParam = searchParams.get('beach_id');
-        const latParam = searchParams.get('lat');
-        const lngParam = searchParams.get('lng');
-
-        if (!beachIdParam || !latParam || !lngParam) return;
-
-        const lat = parseFloat(latParam);
-        const lng = parseFloat(lngParam);
-        const id = parseInt(beachIdParam, 10);
-
-        if (isNaN(lat) || isNaN(lng) || isNaN(id)) return;
+        const center = focusCenter(focus, focusedBeach);
+        if (!center) return; // no coordinates in the URL: wait for the beach to load
 
         initialBeachAppliedRef.current = true;
-        setMapCenter([lat, lng]);
+        // The beach decides the view: the bounding box of the first result must not zoom the map back out.
+        viewportChangedByUserRef.current = true;
+        setMapCenter(center);
         setMapZoom(BEACH_DETAIL_ZOOM);
-        setSelectedBeachId(id);
+        setSelectedBeachId(focus.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [mapCenter]);
+    }, [mapCenter, focus, focusedBeach]);
 
     // Validate filters against filter options - only include filters that exist in the current options
     // Wait for filter options to load before validating, but keep previous validated filters while loading
@@ -287,20 +309,14 @@ const MapWithSidebar = () => {
             if (typeof filterValue === 'string' && filterValue.includes(',')) {
                 const selectedValues = filterValue.split(',');
                 const validValues = selectedValues.filter(val => {
-                    return options.some((opt: { id?: number; code?: string; slug?: string }) =>
-                        opt.code === val || opt.slug === val || String(opt.id) === String(val)
-                    );
+                    return options.some((opt: FilterOptionLike) => optionMatches(opt, val));
                 });
                 if (validValues.length > 0) {
                     validated[filterKey] = validValues.join(',');
                 }
             } else {
                 // Single value - check if it exists in options
-                const isValid = options.some((opt: { id?: number; code?: string; slug?: string }) =>
-                    opt.code === filterValue ||
-                    opt.slug === filterValue ||
-                    String(opt.id) === String(filterValue)
-                );
+                const isValid = options.some((opt: FilterOptionLike) => optionMatches(opt, filterValue));
                 if (isValid) {
                     validated[filterKey] = filterValue;
                 }
@@ -387,17 +403,16 @@ const MapWithSidebar = () => {
     // and ensure we never show empty list while loading
     const [displayedBeaches, setDisplayedBeaches] = useState<BeachSchema[]>([]);
 
-    // Update displayed beaches only when we have actual new data
+    // Update displayed beaches whenever a response arrives, including an empty one: a filter with
+    // no matches (e.g. waterbody=pool) must show 0 beaches, not keep the previous result.
+    // While a new query is loading `data` is undefined, so the previous beaches stay visible.
     useEffect(() => {
-        const allBeaches = boundingBoxResult.data?.data ?? [];
-        if (allBeaches.length > 0) {
-            setDisplayedBeaches(allBeaches);
-            previousBeachesRef.current = allBeaches;
-        }
+        setDisplayedBeaches((prev) => nextDisplayedBeaches(prev, boundingBoxResult.data?.data));
     }, [boundingBoxResult.data?.data]);
 
-    // Use displayed beaches, or fall back to previous if we don't have any yet
-    const beaches = displayedBeaches.length > 0 ? displayedBeaches : previousBeachesRef.current;
+    const beaches = displayedBeaches;
+    // Map markers: the focused beach is always among them (its popup must open even outside the filters).
+    const mapBeaches = useMemo(() => withFocusedBeach(beaches, focusedBeach), [beaches, focusedBeach]);
 
     const loading = boundingBoxResult.loading;
     const error = boundingBoxResult.error;
@@ -415,8 +430,6 @@ const MapWithSidebar = () => {
 
 
     // OPTIMIZATION: Memoize to prevent VirtualizedBeachList re-renders
-    // Zoom level that guarantees markers are ungrouped (disableClusteringAtZoom is 15)
-    const BEACH_DETAIL_ZOOM = 16;
 
     const handleLocationClick = useCallback((latitude: string, longitude: string, beachId?: number) => {
         const lat = parseFloat(latitude);
@@ -547,7 +560,11 @@ const MapWithSidebar = () => {
         }, DEBOUNCE_MS);
     }, [applyBoundingBoxUpdate]);
 
-       const handleMarkerClick = useCallback((beachId: number) => {
+       const handleBeachHover = useCallback((beachId: number | null) => {
+        setHoveredBeachId(beachId);
+    }, []);
+
+    const handleMarkerClick = useCallback((beachId: number) => {
         // Select the beach for highlighting - popup will open via isSelected effect
         setSelectedBeachId(beachId);
     }, []);
@@ -582,20 +599,22 @@ const MapWithSidebar = () => {
 
                 {/* Right side: mobile controls + list + map */}
                 <div className="flex-1 flex flex-col gap-2">
-                    {/* Mobile controls to toggle list/map visibility */}
+                    {/* Mobile controls: filters panel and full-screen map */}
                     <div className="w-full flex items-center justify-between gap-2 px-3 py-2 md:hidden">
                         <button
                             type="button"
-                            className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm"
-                            onClick={() => setIsListVisible((prev) => !prev)}
+                            className="flex flex-1 items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm"
+                            onClick={() => setIsMobileFiltersOpen(true)}
                         >
-                            {isListVisible ? 'Hide list' : 'Show list'}
+                            <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+                            {t('filters')}
                         </button>
                         <button
                             type="button"
-                            className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm"
+                            className="flex flex-1 items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm"
                             onClick={() => setIsMobileMapOpen(true)}
                         >
+                            <MapIcon className="h-4 w-4" aria-hidden="true" />
                             {t('openMap')}
                         </button>
                     </div>
@@ -605,7 +624,7 @@ const MapWithSidebar = () => {
                         {/* Middle Column - Beach Cards List */}
                         <div
                             ref={beachCardsContainerRef}
-                            className={`rounded-lg scrollbar-hide w-full overflow-x-hidden md:flex-shrink-0 md:h-screen md:overflow-y-auto ${isListVisible ? 'block' : 'hidden'} md:block`}
+                            className="rounded-lg scrollbar-hide w-full overflow-x-hidden md:flex-shrink-0 md:h-screen md:overflow-y-auto"
                             style={{
                                 width: `${getContainerWidth()}px`,
                                 maxWidth: '100%',
@@ -655,14 +674,14 @@ const MapWithSidebar = () => {
                                     <button
                                         onClick={() => setColumnLayout(1)}
                                         className="py-1.5 pl-1.5 pr-0.5 hover:bg-gray-50 rounded"
-                                        aria-label="Single column layout"
+                                        aria-label={tUi('singleColumn')}
                                     >
                                         <SingleColumnIcon isActive={columnLayout === 1} />
                                     </button>
                                     <button
                                         onClick={() => setColumnLayout(2)}
                                         className="py-1.5 pl-0.5 pr-1.5 hover:bg-gray-50 rounded"
-                                        aria-label="Double column layout"
+                                        aria-label={tUi('doubleColumn')}
                                     >
                                         <DoubleColumnIcon isActive={columnLayout === 2} />
                                     </button>
@@ -684,6 +703,12 @@ const MapWithSidebar = () => {
                                 )}
 
 
+                                {!isLoading && !error && !mapBoundsError && beaches.length === 0 && (
+                                    <div className="text-center py-8">
+                                        <p className="text-gray-600">{t('noBeachesFound')}</p>
+                                    </div>
+                                )}
+
                                 {/* Show virtualized list whenever we have beaches, even while loading new data */}
                                 {!error && beaches.length > 0 && (
                                     <PropertyMediaContext.Provider value={mediaContextValue}>
@@ -691,6 +716,7 @@ const MapWithSidebar = () => {
                                             beaches={beaches}
                                             columnLayout={columnLayout}
                                             onLocationClick={handleLocationClick}
+                                            onBeachHover={handleBeachHover}
                                             containerHeight={containerDimensions.height}
                                             containerWidth={containerDimensions.width}
                                             scrollContainerRef={beachCardsContainerRef}
@@ -704,12 +730,13 @@ const MapWithSidebar = () => {
                         {/* Right Side - Map (desktop only, mobile uses popup) */}
                         <div className="hidden md:block flex-1 h-screen">
                             <div ref={mapContainerRef} className='h-full w-full rounded-lg overflow-hidden'>
-                                {mapCenter ? (
+                                {!isDesktop ? null : mapCenter ? (
                                     <ReactLeafletMap
-                                        beaches={beaches}
+                                        beaches={mapBeaches}
                                         center={mapCenter}
                                         zoom={mapZoom}
                                         selectedBeachId={selectedBeachId}
+                                        hoveredBeachId={hoveredBeachId}
                                         boundingBox={
                                             viewportChangedByUserRef.current
                                                 ? null
@@ -734,16 +761,17 @@ const MapWithSidebar = () => {
 
                 {/* Mobile full-screen map popup */}
                 {isMobileMapOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 md:hidden">
+                    <div className="fixed inset-0 z-[10001] flex items-center justify-center bg-black/60 md:hidden">
                         <div className="relative w-full h-full p-2 flex items-center justify-center">
                             <div className="relative h-full w-full">
                                 <div className="h-full w-full rounded-lg overflow-hidden bg-white">
                                     {mapCenter ? (
                                         <ReactLeafletMap
-                                            beaches={beaches}
+                                            beaches={mapBeaches}
                                             center={mapCenter}
                                             zoom={mapZoom}
                                             selectedBeachId={selectedBeachId}
+                                            hoveredBeachId={hoveredBeachId}
                                             boundingBox={
                                                 viewportChangedByUserRef.current
                                                     ? null
@@ -765,10 +793,10 @@ const MapWithSidebar = () => {
                                 <button
                                     type="button"
                                     onClick={() => setIsMobileMapOpen(false)}
-                                    className="absolute -top-4 right-4 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-white text-xl font-bold text-gray-800 shadow"
-                                    aria-label="Close map"
+                                    className="absolute top-3 right-3 z-[1100] flex h-11 w-11 items-center justify-center rounded-full bg-white text-gray-800 shadow-lg"
+                                    aria-label={tUi('closeMap')}
                                 >
-                                    X
+                                    <X className="h-6 w-6" aria-hidden="true" />
                                 </button>
                             </div>
                         </div>
@@ -777,15 +805,15 @@ const MapWithSidebar = () => {
 
                 {/* Mobile slide-in filters panel */}
                 {isMobileFiltersOpen && (
-                    <div className="fixed inset-0 z-40 flex justify-end bg-black/40 md:hidden">
+                    <div className="fixed inset-0 z-[10001] flex justify-end bg-black/40 md:hidden">
                         <div className="relative h-full w-4/5 max-w-xs bg-[#F6F6F5] shadow-lg">
                             <button
                                 type="button"
                                 onClick={() => setIsMobileFiltersOpen(false)}
-                                className="absolute top-3 right-3 z-50 flex h-8 w-8 items-center justify-center rounded-full bg-white text-lg font-bold text-gray-800 shadow"
-                                aria-label="Close filters"
+                                className="absolute top-3 right-3 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-800 shadow"
+                                aria-label={tUi('closeFilters')}
                             >
-                                X
+                                <X className="h-5 w-5" aria-hidden="true" />
                             </button>
                             <div className="h-full overflow-y-auto pt-12 px-3 pb-4">
                                 <LeftSidebarFilters
@@ -801,20 +829,8 @@ const MapWithSidebar = () => {
                     </div>
                 )}
 
-                {/* Floating filters button on mobile */}
-                {!isMobileFiltersOpen && !isMobileMapOpen && (
-                    <button
-                        type="button"
-                        onClick={() => setIsMobileFiltersOpen(true)}
-                        className="fixed top-1/2 right-4 -translate-y-1/2 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow md:hidden"
-                        aria-label={t('filters')}
-                    >
-                        F
-                    </button>
-                )}
-
                 {/* Scroll-to-top button for long list on mobile */}
-                {showScrollTop && !isMobileMapOpen && (
+                {showScrollTop && !isMobileMapOpen && !isMobileFiltersOpen && (
                     <button
                         type="button"
                         onClick={() => {

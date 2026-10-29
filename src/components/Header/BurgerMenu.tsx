@@ -1,30 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { HiX } from 'react-icons/hi';
 import { type CustomFlowbiteTheme, Sidebar } from 'flowbite-react';
-import { Link } from '@/i18n/routing';
-import { useLocale } from 'next-intl';
-import enMenu from 'public/menu_en.json';
-import siMenu from 'public/menu_si.json';
-// Dynamic imports for new languages — using English as fallback until localized menu files are created
-// import daMenu from 'public/menu_da.json';
-// import ptMenu from 'public/menu_pt.json';
-// import nlMenu from 'public/menu_nl.json';
-// import elMenu from 'public/menu_el.json';
-// import sqMenu from 'public/menu_sq.json';
+import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 import QuickMenu from './QuickMenu';
 import Image from 'next/image';
-import { ChevronRight } from 'lucide-react';
-
-// Map locale codes to their menu JSON. Falls back to English menu for locales
-// that don't yet have a dedicated menu file.
-const menuMap: Record<string, typeof enMenu> = {
-  en: enMenu,
-  si: siMenu,
-  // Add new locale menu files here when created:
-  // da: daMenu, pt: ptMenu, nl: nlMenu, el: elMenu, sq: sqMenu,
-};
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import { useContinents } from '@/hooks/useContinents';
+import { useCountries } from '@/hooks/useCountries';
+import { staticPageUrl, useFooterStaticPages } from '@/hooks/useStaticPages';
+import { FEATURES } from '@/lib/constants/features';
+import { buildMenuItems, type MenuItem } from '@/lib/utils/menu-items';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
+import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { useQuery } from '@tanstack/react-query';
+import { getBeachFiltersOptions } from '@/lib/api-client/@tanstack/react-query.gen';
+import { MENU_FILTER_GROUPS } from '@/config/menuBeachFilters';
+import { resolveAllFilterOptions, resolveQuickFilters } from '@/lib/utils/quick-filters';
 
 const sidebarTheme: CustomFlowbiteTheme['sidebar'] = {
   root: {
@@ -33,103 +27,83 @@ const sidebarTheme: CustomFlowbiteTheme['sidebar'] = {
   },
 };
 
-interface MenuItem {
-  label: string;
-  href: string;
-  icon?: React.ComponentType<{ className?: string }> | string;
-  enabled?: boolean;
-  subItems?: MenuItem[];
-}
+/** CGP v1.0 colour horizontal logo. */
+const MENU_LOGO = '/brand/BeachRex_CGP/01_Logo/Horizontal/SVG/beachrex_horizontal_color.svg';
 
 // Recursive component for rendering nested menu
 const NestedMenu = ({
   items,
   closeMenu,
+  level = 0,
 }: {
   items: MenuItem[];
   closeMenu: () => void;
+  level?: number;
 }) => {
-  const enabledItems = items.filter((item) => item.enabled === true);
-
   return (
-    <ul className="pl-4">
-      {enabledItems.map((item, index) => (
-        <MenuItemComponent key={index} item={item} closeMenu={closeMenu} />
+    <ul className={level > 0 ? 'bg-white/70' : ''}>
+      {items.map((item, index) => (
+        <MenuItemComponent
+key={index} item={item} closeMenu={closeMenu}
+level={level}
+        />
       ))}
     </ul>
   );
 };
 
-// Individual menu item component
+const MenuIcon = ({ item }: { item: MenuItem }) =>
+  typeof item.icon === 'string' && item.icon !== '' ? (
+    <Image
+src={item.icon} alt="" width={24}
+height={24} className="h-6 w-6 shrink-0 object-contain"
+    />
+  ) : (
+    <span className="h-6 w-6 shrink-0" aria-hidden />
+  );
+
+// Individual menu item component: full-width rows; groups expand in place, links close the menu.
 const MenuItemComponent: React.FC<{
   item: MenuItem;
   closeMenu: () => void;
-}> = ({ item, closeMenu }) => {
+  level: number;
+}> = ({ item, closeMenu, level }) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    if (item.subItems && item.subItems.length > 0) {
-      setIsOpen((prev) => !prev);
-    } else {
-      closeMenu();
-    }
-  };
+  const isGroup = Boolean(item.subItems?.length);
+  const indent = level > 0 ? 'pl-12' : 'pl-5';
+  const row = `flex w-full items-center gap-3 border-b border-[#E7E7E7] py-3 pr-5 text-left hover:bg-white ${indent}`;
+  const label = (
+    <span
+      className={`flex-1 font-figtree leading-tight text-[#222222] ${level > 0 ? 'text-[14px] font-semibold' : 'text-[15px] font-bold'}`}
+    >
+      {item.label}
+    </span>
+  );
 
   return (
-    <li className="mb-1">
-      <div
-        onClick={toggleMenu}
-        className="relative ml-[100px] mr-[50px] flex w-[250px] cursor-pointer items-center justify-between border-b border-[#E7E7E7] py-2 pl-6 transition-colors hover:bg-white/60"
-      >
-        {item.subItems?.some((sub) => sub.enabled === true) ? (
-          <span
-            className={`absolute left-0 top-1/2 -translate-y-1/2 text-xs transition-transform ${isOpen ? 'rotate-90' : ''} `}
-          >
-            ➔
-          </span>
-        ) : null}
-
-        {item.subItems?.length ? (
-          <span className="flex flex-1 items-center gap-2">
-            {typeof item.icon === 'string' && item.icon !== '' && (
-              <Image
-                src={item.icon}
-                alt={item.label}
-                width={26}
-                height={26}
-                className="shrink-0"
-              />
-            )}
-            <span className="font-figtree text-[14px] font-bold leading-[100%] text-[#4D4D4D]">
-              {item.label}
-            </span>
-          </span>
-        ) : (
-          <Link
-            href={item.href}
-            className="flex flex-1 items-center gap-2"
-            onClick={closeMenu}
-          >
-            {typeof item.icon === 'string' && item.icon !== '' && (
-              <Image
-                src={item.icon}
-                alt={item.label}
-                width={26}
-                height={26}
-                className="shrink-0"
-              />
-            )}
-            <span className="font-figtree text-[14px] font-bold leading-[100%] text-[#4D4D4D]">
-              {item.label}
-            </span>
-          </Link>
-        )}
-
-        <ChevronRight size={18} className="text-[#B0B0B0]" />
-      </div>
+    <li>
+      {isGroup ? (
+        <button
+type="button" onClick={() => setIsOpen((prev) => !prev)} aria-expanded={isOpen}
+className={row}
+        >
+          <MenuIcon item={item} />
+          {label}
+          <ChevronDown
+            size={18}
+            className={`shrink-0 text-[#8D8D8D] transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          />
+        </button>
+      ) : (
+        <Link href={item.href} onClick={closeMenu} className={row}>
+          <MenuIcon item={item} />
+          {label}
+          <ChevronRight size={18} className="shrink-0 text-[#B0B0B0]" />
+        </Link>
+      )}
 
       {isOpen && item.subItems && (
-        <NestedMenu items={item.subItems} closeMenu={closeMenu} />
+        <NestedMenu items={item.subItems} closeMenu={closeMenu} level={level + 1} />
       )}
     </li>
   );
@@ -142,10 +116,52 @@ const MenuItemComponent: React.FC<{
 const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const locale = useLocale();
+  const t = useTranslations('Menu');
+  const tCommon = useTranslations('Common');
+  const tAI = useTranslations('AI.landing');
+  const tUi = useTranslations('UI');
+  const { continents } = useContinents();
+  const { countries } = useCountries();
+  const staticPages = useFooterStaticPages();
+  const { aiAssistantEnabled } = useSiteSettings();
+  // Same query as the home category tiles (shared cache); labels in the visitor's language.
+  const { data: filtersData } = useQuery(getBeachFiltersOptions({ query: {} as never }));
+  const filterOptions = filtersData?.data as Parameters<typeof resolveQuickFilters>[1];
 
-  const rawMenuItems = (menuMap[locale] ?? enMenu).MenuItems;
-
-  const menuItems = rawMenuItems.filter((item) => item.enabled);
+  // Built from API data: continents and countries with beaches, CMS pages by code.
+  const menuItems = useMemo(
+    () =>
+      buildMenuItems({
+        locale,
+        continents,
+        countries,
+        aboutUrl: staticPageUrl(staticPages, 'about-us', locale),
+        contactUrl: staticPageUrl(staticPages, 'contact', locale),
+        showAi: aiAssistantEnabled,
+        filterGroups: MENU_FILTER_GROUPS.map((group) => ({
+          label: t(group.labelKey),
+          icon: group.icon,
+          tiles: group.allOptions
+            ? resolveAllFilterOptions(
+                group.allOptions.filterKey,
+                group.allOptions.icons,
+                group.allOptions.fallbackIcon,
+                filterOptions,
+              )
+            : resolveQuickFilters(group.picks, filterOptions),
+        })),
+        labels: {
+          browseBeaches: t('browseBeaches'),
+          topCountries: t('topCountries'),
+          aiAssistant: tAI('title'),
+          aiChat: t('aiChat'),
+          aiItinerary: t('aiItinerary'),
+          about: tCommon('quickMenuAboutUs'),
+          contact: t('contact'),
+        },
+      }),
+    [locale, continents, countries, staticPages, filterOptions, t, tCommon, tAI, aiAssistantEnabled],
+  );
 
   const closeMenu = () => setIsOpen(false);
 
@@ -160,39 +176,50 @@ const BurgerMenu = () => {
       <Sidebar
         id="sidebar"
         theme={sidebarTheme}
-        className={`w-full max-w-[450px] shadow-[0_0_4px_0_#00000033] transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} `}
+        className={`w-full max-w-[420px] shadow-[0_0_4px_0_#00000033] transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} `}
       >
         <Sidebar.Items className="h-full">
           <Sidebar.ItemGroup className="flex h-full flex-col">
             {/* HEADER */}
-            <div className="flex justify-end p-4">
-              <button onClick={closeMenu}>
+            <div className="flex items-center justify-between border-b border-[#E7E7E7] px-5 py-4">
+              <Link href={`/${locale}`} onClick={closeMenu} aria-label="BeachRex">
+                <Image
+src={MENU_LOGO} alt="BeachRex" width={150}
+height={29} className="h-[29px] w-auto"
+                />
+              </Link>
+              <button
+type="button" onClick={closeMenu} aria-label={tUi('closeMenu')}
+className="-mr-2 rounded-full p-2 hover:bg-white"
+              >
                 <HiX className="h-6 w-6 text-gray-800" />
               </button>
             </div>
 
             {/* MENU (SCROLL) */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto pb-8">
               <NestedMenu items={menuItems} closeMenu={closeMenu} />
 
               {/* CTA (NOT STICKY, PART OF CONTENT) */}
-              <div className="ml-[100px] mr-[50px] mt-10 flex w-[250px] flex-col gap-3">
+              <div className="mt-6 flex flex-col gap-3 px-5">
                 <Link
-                  href="/beach-map"
+                  href={buildBeachMapUrl(locale)}
                   onClick={closeMenu}
-                  className="flex h-[41px] items-center justify-center gap-3 rounded-lg bg-[#1A3C68] text-white transition-all duration-200 hover:bg-[#162f4f] hover:shadow-[0_4px_10px_rgba(26,60,104,0.25)] active:scale-[0.98]"
+                  className="flex h-[44px] items-center justify-center gap-3 rounded-lg bg-[#1A3C68] text-white transition-all duration-200 hover:bg-[#162f4f] hover:shadow-[0_4px_10px_rgba(26,60,104,0.25)] active:scale-[0.98]"
                 >
                   <Image
 src="/images/map.png" alt="" width={26}
 height={26}
                   />
                   <span className="text-[14px] font-bold">
-                    Beach map with filter
+                    {tCommon('mapButtonFilter')}
                   </span>
                 </Link>
 
+                {/* Accommodation: hidden for launch (no route yet) */}
+                {FEATURES.accommodation && (
                 <Link
-                  href="/beach-accommodation"
+                  href={`/${locale}/accommodations`}
                   onClick={closeMenu}
                   className="flex h-[41px] items-center justify-center gap-3 rounded-lg bg-[#008260] text-white transition-all duration-200 hover:bg-[#006b4f] hover:shadow-[0_4px_10px_rgba(0,130,96,0.25)] active:scale-[0.98]"
                 >
@@ -202,60 +229,12 @@ height={26}
                     width={26}
                     height={26}
                   />
-                  <span className="text-[14px] font-bold">Accommodation</span>
+                  <span className="text-[14px] font-bold">{tCommon('accommodations')}</span>
                 </Link>
+                )}
               </div>
             </div>
 
-            {/* FOOTER (STICKY BOTTOM) - COMMENTED */}
-            {/*
-            <div className="mt-auto pb-8">
-              <div className="ml-[100px] mr-[50px] w-[250px] mb-6">
-                <Link
-                  href="/mobile-app"
-                  onClick={closeMenu}
-                  className="
-  h-[41px]
-  rounded-lg
-  border border-[#E7E7E7]
-  bg-white
-  flex items-center justify-center gap-3
-
-  transition-all duration-200
-  hover:bg-[#F5F5F5]
-  hover:border-[#DADADA]
-  hover:shadow-[0_2px_6px_rgba(0,0,0,0.08)]
-  active:scale-[0.98]
-"
-
-                >
-                  <Image
-src="/images/menu/app.svg" alt="" width={26}
-height={26}
-                  />
-                  <span className="font-bold text-[14px] text-[#4D4D4D]">
-  {tCommon('mobileApp')}
-</span>
-
-                </Link>
-              </div>
-
-              <div className="flex justify-center gap-4">
-                <Image
-src="/images/menu/FB.svg" alt="Facebook" width={26}
-height={26}
-                />
-                <Image
-src="/images/menu/INSTA.svg" alt="Instagram" width={26}
-height={26}
-                />
-                <Image
-src="/images/menu/YT.svg" alt="YouTube" width={26}
-height={26}
-                />
-              </div>
-            </div>
-*/}
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>

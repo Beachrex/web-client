@@ -34,12 +34,12 @@ export default function FooterMostViewedColumn() {
   });
 
   return (
-    <div className="space-y-3">
-      <h2 className="font-figtree text-[14px] font-bold leading-none text-[#4D4D4D]">
+    <div>
+      <h2 className="mb-4 font-figtree text-[15px] font-bold leading-tight text-[#1A3C68]">
         {t('title')}
       </h2>
 
-      <ul className="space-y-2">
+      <ul className="space-y-3">
         {(beaches ?? []).map((beach) => {
           // buildBeachUrlFromSchema returns the full /{locale}/beaches/.../{slug}
           // URL (locale already included), so use plain next/link (not the
@@ -51,7 +51,7 @@ export default function FooterMostViewedColumn() {
             <li key={beach.id}>
               <Link
                 href={href}
-                className="font-figtree text-[14px] font-medium leading-none text-[#4D4D4D] hover:underline hover:text-[#1A3C68] transition"
+                className="font-figtree text-[14px] font-medium leading-5 text-[#4D4D4D] hover:underline hover:text-[#1A3C68] transition"
               >
                 {beach.name}
               </Link>

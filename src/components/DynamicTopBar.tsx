@@ -21,6 +21,8 @@ interface DynamicTopBarProps {
   variant: PageVariant;
   /** Optional extra content on the right (buttons, icons, etc.) */
   rightExtras?: React.ReactNode;
+  /** `slug → localized name` for the breadcrumb segments (`breadcrumbLabels`) */
+  breadcrumbLabels?: Record<string, string>;
   /** Optional wrapper classes */
   className?: string;
 }
@@ -32,6 +34,7 @@ export default function DynamicTopBar({
   variant,
   showBreadcrumbs = true,
   rightExtras,
+  breadcrumbLabels,
   className = '',
 }: DynamicTopBarProps) {
   // Has pagination if navigation exists and either has pre-computed URLs or buildUrl function
@@ -59,6 +62,7 @@ const accentColor = VARIANT_ACCENT_COLOR[variant];
   pathname={pathname}
   textClass={textClass}
   accentColor={accentColor}
+  labels={breadcrumbLabels}
               />
 
             </div>

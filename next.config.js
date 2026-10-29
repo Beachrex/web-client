@@ -3,6 +3,20 @@ import bundleAnalyzer from "@next/bundle-analyzer";
 
 const withNextIntl = createNextIntlPlugin();
 
+// Keep in sync with PRODUCTION_HOSTS in src/lib/utils/environment.ts
+const PRODUCTION_HOSTS = ["beachrex.com", "www.beachrex.com"];
+
+/** @param {string | undefined} baseUrl */
+function isProductionSite(baseUrl) {
+  if (!baseUrl) return false;
+  try {
+    const url = new URL(/^https?:\/\//.test(baseUrl) ? baseUrl : `https://${baseUrl}`);
+    return PRODUCTION_HOSTS.includes(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
@@ -18,8 +32,7 @@ const nextConfig = {
 
   // Add X-Robots-Tag header to block search engines on dev/staging
   async headers() {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-    const isProduction = baseUrl.includes('beachrex.com') && !baseUrl.includes('dev.');
+    const isProduction = isProductionSite(process.env.NEXT_PUBLIC_BASE_URL);
 
     // Only add noindex header on non-production environments
     if (!isProduction) {
@@ -68,9 +81,12 @@ const nextConfig = {
       },
     ],
 
-    // Disable Vercel Image Optimization - we use Imagor for optimization
-    // This prevents hitting Vercel's image optimization limits
-    unoptimized: true,
+    // Images are resized by Imagor, not by Next (no Next image optimizer on the server).
+    // The custom loader turns Imagor URLs into a responsive WebP srcset; other sources pass through unchanged.
+    loader: "custom",
+    loaderFile: "./src/lib/imagor-loader.ts",
+    // srcset widths for full-width / `sizes` images (Imagor endpoints cap at 800 and 2800 px)
+    deviceSizes: [480, 640, 828, 1080, 1440, 1920, 2800],
 
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

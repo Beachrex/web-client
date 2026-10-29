@@ -22,7 +22,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({
 }) => {
   // Use weather data if available, otherwise show placeholder
   const temperature = weather?.temperature ?? null;
-  const location = locationName ?? weather?.location_name ?? 'Loading...';
+  const location = locationName ?? weather?.location_name ?? '';
   const weatherIcon = weather?.icon_url;
 
   // Show loading state
@@ -68,7 +68,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({
         <div className="mt-[4px] flex items-center gap-[4px]">
           <Image
             src="/images/banner/rotated-arrow.png"
-            alt="location"
+            alt=""
             width={10}
             height={10}
           />

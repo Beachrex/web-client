@@ -59,7 +59,7 @@ const SimilarBeachesSection: React.FC<SimilarBeachesSectionProps> = ({
             <div className="relative mb-6 h-32 w-32 sm:h-40 sm:w-40">
               <Image
                 src="/images/propertycard/beach-gray.png"
-                alt="No beaches found"
+                alt=""
                 width={160}
                 height={160}
                 className="h-full w-full object-contain"

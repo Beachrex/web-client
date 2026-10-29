@@ -3,7 +3,7 @@ import { defineRouting } from 'next-intl/routing';
 import { createSharedPathnamesNavigation } from 'next-intl/navigation';
 import { locales } from '@/app/config/locales';
 
-const globalRoutes = {
+export const globalRoutes = {
     beaches: {
         en: 'beaches',
         si: 'plaze',

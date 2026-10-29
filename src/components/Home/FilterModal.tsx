@@ -2,7 +2,9 @@
 
 import { Button, Modal } from 'flowbite-react';
 import React, { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import type { GetBeachFiltersResponse } from '@/lib/api-client/types.gen';
+import { WATERBODY_KEY, waterbodyChoices } from '@/lib/utils/waterbody-filter';
 
 interface FilterModalProps {
   isOpen: boolean;
@@ -19,6 +21,9 @@ interface FilterSection {
   options: {
     code: string;
     name: string;
+    /** The parameter this option sets when it is not the section's own (pool types under "Pool"). */
+    filterKey?: string;
+    nested?: boolean;
   }[];
 }
 
@@ -29,6 +34,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
   selectedCategories,
   onApplyFilters,
 }) => {
+  const t = useTranslations('FilterModal');
   const [localSelectedCategories, setLocalSelectedCategories] = useState<Record<string, string[]>>(
     selectedCategories
   );
@@ -59,7 +65,20 @@ const FilterModal: React.FC<FilterModalProps> = ({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (!filter?.options) return null;
 
-        const options: { code: string; name: string }[] = [];
+        const options: FilterSection['options'] = [];
+        // Indoor / outdoor pools under "Pool" (owner 2026-10-29)
+        if (filterKey === WATERBODY_KEY) {
+          waterbodyChoices(filterOptions as Parameters<typeof waterbodyChoices>[0]).forEach((choice) => {
+            options.push({
+              code: choice.code,
+              name: choice.label,
+              filterKey: choice.filterKey === WATERBODY_KEY ? undefined : choice.filterKey,
+              nested: choice.nested,
+            });
+          });
+          const group = filter as { title?: string | null; icon?: string | null };
+          return { key: filterKey, title: group.title ?? filterKey, icon: group.icon, options };
+        }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         filter.options.forEach((option: { code?: string; name?: string }) => {
@@ -157,7 +176,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     >
       <Modal.Header>
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold">All Beach Filters</span>
+          <span className="text-xl font-bold">{t('title')}</span>
           {totalSelected > 0 && (
             <span className="ml-4 text-sm text-gray-500">
               {totalSelected} filter{totalSelected !== 1 ? 's' : ''} selected
@@ -171,7 +190,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
         <div className="mb-6">
           <input
             type="text"
-            placeholder="🔍 Search filters..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
@@ -186,7 +205,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
             </p>
           ) : (
             filteredSections.map((section) => {
-              const sectionSelected = localSelectedCategories[section.key]?.length ?? 0;
+              const sectionKeys = [section.key, ...section.options.flatMap((o) => (o.filterKey ? [o.filterKey] : []))];
+              const sectionSelected = [...new Set(sectionKeys)].reduce(
+                (n, key) => n + (localSelectedCategories[key]?.length ?? 0),
+                0,
+              );
               const isExpanded = expandedSections[section.key] ?? false;
               const showMore = showMoreSections[section.key] ?? false;
               const visibleOptions = showMore
@@ -224,18 +247,19 @@ const FilterModal: React.FC<FilterModalProps> = ({
                     <div className="border-t border-gray-200 p-4">
                       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                         {visibleOptions.map((option) => {
+                          const optionKey = option.filterKey ?? section.key;
                           const isSelected =
-                            localSelectedCategories[section.key]?.includes(option.code) ?? false;
+                            localSelectedCategories[optionKey]?.includes(option.code) ?? false;
 
                           return (
                             <label
-                              key={option.code}
-                              className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-gray-50"
+                              key={`${optionKey}:${option.code}`}
+                              className={`flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-gray-50${option.nested ? ' pl-8' : ''}`}
                             >
                               <input
                                 type="checkbox"
                                 checked={isSelected}
-                                onChange={() => toggleCategory(section.key, option.code)}
+                                onChange={() => toggleCategory(optionKey, option.code)}
                                 className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                               />
                               <span className="text-sm">{option.name}</span>
@@ -251,8 +275,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
                           className="mt-3 text-sm text-blue-600 hover:underline"
                         >
                           {showMore
-                            ? 'Show less'
-                            : `Show ${hiddenCount} more...`}
+                            ? t('showLess')
+                            : t('showMore', { count: hiddenCount })}
                         </button>
                       )}
                     </div>
@@ -274,14 +298,15 @@ const FilterModal: React.FC<FilterModalProps> = ({
                 onClick={handleClearAll}
                 className="text-sm text-blue-600 hover:underline"
               >
-                Clear all
+                {t('clearAll')}
               </button>
             </div>
             <div className="flex flex-wrap gap-2">
               {Object.entries(localSelectedCategories).flatMap(([filterKey, optionCodes]) =>
                 optionCodes.map((code) => {
-                  const section = filterSections.find((s) => s.key === filterKey);
-                  const option = section?.options.find((o) => o.code === code);
+                  const option = filterSections
+                    .flatMap((s) => s.options.map((o) => ({ ...o, key: o.filterKey ?? s.key })))
+                    .find((o) => o.key === filterKey && o.code === code);
 
                   return option ? (
                     <span
@@ -307,10 +332,10 @@ const FilterModal: React.FC<FilterModalProps> = ({
       <Modal.Footer>
         <div className="flex w-full items-center justify-between">
           <Button color="gray" onClick={onClose}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button color="blue" onClick={handleApply}>
-            Apply Filters {totalSelected > 0 && `(${totalSelected})`}
+            {totalSelected > 0 ? t('applyCount', { count: totalSelected }) : t('apply')}
           </Button>
         </div>
       </Modal.Footer>

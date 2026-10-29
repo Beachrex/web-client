@@ -13,6 +13,9 @@ import {
   VARIANT_PILL_LABEL_KEY,
   VARIANT_TEXT_CLASS,
 } from '../ui/pageVariants';
+import { FEATURES } from '@/lib/constants/features';
+import type { LocationPillUrls } from '@/lib/utils/beach-urls';
+import LocationPill from './LocationPill';
 
 type CountryWithFlag = Country & { flag_icon?: string | null };
 
@@ -29,7 +32,28 @@ interface TopBarProps {
   beachCount?: number;
   showLocationPills?: boolean;
   showFilter?: boolean;
+  /** TopBar key that replaces the variant's pill label (beach pages: lake/river/pool wording). */
+  pillLabelKey?: string;
+  /** Pages of the places in the pills; a pill with a link opens on hover/focus and navigates on click. */
+  pillLinks?: Partial<LocationPillUrls>;
+  /** Full names for the region/island/city pills (their collapsed labels are shortened). */
+  pillNames?: { region?: string | null; island?: string | null; city?: string | null };
+  /**
+   * Published beaches per pill level, shown in the open tab. A level without a number gets no count box
+   * (listing pages do not have their parents' counts; never show a wrong number).
+   */
+  pillCounts?: Partial<Record<PillLevel, number | null>>;
 }
+
+type PillLevel = 'continent' | 'country' | 'region' | 'island' | 'city';
+
+const PILL_BG: Record<PillLevel, string> = {
+  continent: VARIANT_BG_CLASS.continent,
+  country: VARIANT_BG_CLASS.country,
+  region: VARIANT_BG_CLASS.region,
+  island: VARIANT_BG_CLASS.island,
+  city: VARIANT_BG_CLASS.city,
+};
 
 const TopBar: React.FC<TopBarProps> = ({
   continent,
@@ -44,10 +68,24 @@ const TopBar: React.FC<TopBarProps> = ({
   beachCount,
   showLocationPills,
   showFilter,
+  pillLabelKey: pillLabelKeyOverride,
+  pillLinks,
+  pillNames,
+  pillCounts,
 }) => {
   const t = useTranslations('TopBar');
   const tContinent = useTranslations('Continents');
   const tCommon = useTranslations('Common');
+  const tFilters = useTranslations('Filters');
+
+  /** Colours, level word and count of one pill's open tab: the same pieces as that place's own main bar. */
+  const pillTab = (level: PillLevel) => ({
+    colorClass: PILL_BG[level],
+    accentTextClass: VARIANT_TEXT_CLASS[level],
+    levelLabel: t(VARIANT_PILL_LABEL_KEY[level]),
+    beachCount: pillCounts?.[level],
+    beachCountLabel: tCommon('numBeaches').trim(),
+  });
   /* ------------------------------------------------
    * VARIANT LOGIC
    * ------------------------------------------------ */
@@ -98,7 +136,7 @@ const TopBar: React.FC<TopBarProps> = ({
    * ------------------------------------------------ */
   const barBgClass = VARIANT_BG_CLASS[variant];
   const accentTextClass = VARIANT_TEXT_CLASS[variant];
-  const pillLabelKey = VARIANT_PILL_LABEL_KEY[variant];
+  const pillLabelKey = pillLabelKeyOverride ?? VARIANT_PILL_LABEL_KEY[variant];
 
   const barRadiusClass =
     variant === 'continent'
@@ -150,15 +188,21 @@ const TopBar: React.FC<TopBarProps> = ({
         <div className="hidden lg:flex h-full items-center">
 
           {effectiveContinentCode && (
-            <div className="flex h-full w-[54px] items-center justify-center rounded-l-[10px] bg-[#5E1CA5]">
+            <LocationPill
+              first
+              name={continentName}
+              // On the continent's own page this pill is the page itself: no link, no tab (owner, 2026-10-29).
+              href={variant === 'continent' ? null : pillLinks?.continent}
+              {...pillTab('continent')}
+            >
               <Image
                 src={getContinentIcon(effectiveContinentCode)}
-                alt={continentName}
+                alt={variant !== 'continent' && pillLinks?.continent ? '' : continentName}
                 width={35}
                 height={35}
                 className="object-contain"
               />
-            </div>
+            </LocationPill>
           )}
 
           {(variant === 'region' ||
@@ -166,40 +210,50 @@ const TopBar: React.FC<TopBarProps> = ({
             variant === 'city' ||
             variant === 'beach') &&
             countryIcon && (
-              <div className="flex h-full w-[54px] items-center justify-center bg-[#DD0000] -ml-[7px] rounded-l-[10px]">
+              <LocationPill
+                name={country?.name ?? ''}
+                href={pillLinks?.country}
+                {...pillTab('country')}
+              >
                 <Image
                   src={countryIcon}
-                  alt={country?.name ?? ''}
+                  alt={pillLinks?.country ? '' : country?.name ?? ''}
                   width={28}
                   height={26}
                   className="object-contain"
                 />
-              </div>
+              </LocationPill>
             )}
 
           {regionPillLabel &&
             (variant === 'island' || variant === 'city' || variant === 'beach') && (
-              <div className="flex h-full w-[54px] items-center justify-center bg-[#FF2877] -ml-[7px] rounded-l-[10px]">
-                <span className="font-figtree text-[14px] font-bold text-white">
-                  {regionPillLabel}
-                </span>
-              </div>
+              <LocationPill
+                name={pillNames?.region ?? regionPillLabel}
+                href={pillLinks?.region}
+                {...pillTab('region')}
+              >
+                {regionPillLabel}
+              </LocationPill>
             )}
 
           {(variant === 'city' || variant === 'beach') && islandPillLabel && (
-            <div className="flex h-full w-[54px] items-center justify-center bg-[#FFC422] -ml-[7px] rounded-l-[10px]">
-              <span className="font-figtree text-[14px] font-bold text-white">
-                {islandPillLabel}
-              </span>
-            </div>
+            <LocationPill
+              name={pillNames?.island ?? islandPillLabel}
+              href={pillLinks?.island}
+              {...pillTab('island')}
+            >
+              {islandPillLabel}
+            </LocationPill>
           )}
 
           {variant === 'beach' && cityPillLabel && (
-            <div className="flex h-full w-[54px] items-center justify-center bg-[#FF8000] -ml-[7px] rounded-l-[10px]">
-              <span className="font-figtree text-[14px] font-bold text-white">
-                {cityPillLabel}
-              </span>
-            </div>
+            <LocationPill
+              name={pillNames?.city ?? cityPillLabel}
+              href={pillLinks?.city}
+              {...pillTab('city')}
+            >
+              {cityPillLabel}
+            </LocationPill>
           )}
         </div>
       )}
@@ -226,7 +280,8 @@ const TopBar: React.FC<TopBarProps> = ({
         {/* COUNTERS */}
       {isBeach ? (
   <>
-    {/* ACCOMMODATIONS */}
+    {/* ACCOMMODATIONS (hidden for launch) */}
+    {FEATURES.accommodation && (
     <div className="flex h-[41px] items-center gap-[6px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
       <Image
         src="/images/common/accommodation-black.svg"
@@ -249,6 +304,7 @@ const TopBar: React.FC<TopBarProps> = ({
         {accommodationCount}
       </span>
     </div>
+    )}
 
     {/* ACTIVITIES */}
     <div className="flex h-[41px] items-center gap-[6px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
@@ -301,7 +357,8 @@ const TopBar: React.FC<TopBarProps> = ({
   </span>
 </div>
 
-{/* ACCOMMODATIONS COUNT */}
+{/* ACCOMMODATIONS COUNT (hidden for launch) */}
+{FEATURES.accommodation && (
 <div className="flex h-[41px] items-center gap-[6px] rounded-[6px] bg-white px-[6px] sm:px-[10px]">
   <Image
     src="/images/common/accommodation-black.svg"
@@ -325,6 +382,7 @@ const TopBar: React.FC<TopBarProps> = ({
     {accommodationCount}
   </span>
 </div>
+  )}
 
           </>
         )}
@@ -346,7 +404,7 @@ const TopBar: React.FC<TopBarProps> = ({
             className="flex h-[41px] w-[35px] items-center justify-center rounded-[6px] bg-white sm:w-[41px]"
           >
             <Image
-src={filterIcon} alt="filter" width={20}
+src={filterIcon} alt={tFilters('filterButton')} width={20}
 height={20} />
           </button>
         )}

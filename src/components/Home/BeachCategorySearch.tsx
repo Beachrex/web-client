@@ -43,6 +43,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
   >({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const t = useTranslations('BeachCategories');
+  const tFilters = useTranslations('Filters');
   const locale = useLocale();
   const router = useRouter();
 
@@ -156,11 +157,6 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
     const queryString = queryParams.toString();
     const mapUrl = `/${locale}/${mapRoute}${queryString ? `?${queryString}` : ''}`;
 
-    console.log('[BeachCategorySearch] Navigating to map with filters:', {
-      filters,
-      queryString,
-      mapUrl,
-    });
 
     // Navigate to map page with filters
     router.push(mapUrl);
@@ -214,7 +210,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
           {/* Category Grid */}
           {filtersLoading ? (
             <div className="py-12 text-center text-white">
-              Loading filters...
+              {tFilters('loadingFilters')}
             </div>
           ) : (
             <div className="mb-4 grid grid-cols-4 gap-2 sm:mb-6 sm:grid-cols-5 sm:gap-3 md:grid-cols-6 md:gap-4 lg:grid-cols-8 lg:gap-5 xl:grid-cols-10 xl:gap-6 2xl:grid-cols-11">
@@ -271,7 +267,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
                 >
                     <Image
                         src="/images/filters-blue.png"
-                        alt="All Filters"
+                        alt=""
                         width={20}
                         height={20}
                         className="h-5 w-5 mr-1 object-contain"
@@ -305,7 +301,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/sunset.png"
-                alt="Sunset icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
@@ -329,7 +325,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/gozd.png"
-                alt="Forest icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
@@ -353,7 +349,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/reka.png"
-                alt="River icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
@@ -364,20 +360,20 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
           {/* Zunanji bazeni */}
           <button
-            onClick={() => navigateToMapWithFilters({ waterbody: ['pool'] })}
+            onClick={() => navigateToMapWithFilters({ pool_type: ['outdoor'] })}
             className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
             style={{ backgroundColor: '#42D4F4' }}
           >
             <Image
               src="/images/categories/bazen.jpg"
-              alt="Zunanji bazeni background"
+              alt=""
               fill
               className="object-cover opacity-10"
             />
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/reka.png"
-                alt="Pool icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"
@@ -388,7 +384,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
 
           {/* Pokriti bazeni, terme */}
           <button
-            onClick={() => navigateToMapWithFilters({ waterbody: ['pool'] })}
+            onClick={() => navigateToMapWithFilters({ pool_type: ['indoor'] })}
             className="relative flex h-20 items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-bold text-white transition-transform hover:scale-105 sm:h-24 sm:px-6 sm:py-4 sm:text-base lg:h-[100px] lg:px-8 lg:text-lg"
             style={{ backgroundColor: '#42D4F4' }}
           >
@@ -401,7 +397,7 @@ const BeachCategorySearch: React.FC<BeachCategorySearchProps> = ({
             <span className="relative z-10 flex items-center gap-2 sm:gap-3">
               <Image
                 src="/images/categories/reka.png"
-                alt="Indoor pool icon"
+                alt=""
                 width={32}
                 height={32}
                 className="h-6 w-6 object-contain sm:h-7 sm:w-7 lg:h-8 lg:w-8"

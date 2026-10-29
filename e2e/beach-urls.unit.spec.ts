@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { test, expect } from '@playwright/test';
 import { locales } from '@/app/config/locales';
-import { getBeachMapWord, buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { getBeachMapWord, getBeachesWord, buildBeachMapUrl } from '@/lib/utils/beach-urls';
 
 /**
  * Pure unit tests for the beach-map URL helpers.
@@ -33,6 +33,11 @@ const EXPECTED_SLUGS: Record<string, string> = {
   hu: 'strand-terkep',
   bg: 'karta-na-plyazhovete',
   sk: 'mapa-plazi',
+  da: 'strandkort',
+  pt: 'mapa-praias',
+  nl: 'strandkaart',
+  el: 'chartis-paralion',
+  sq: 'harta-plazheve',
 };
 
 test.describe('beach-urls: getBeachMapWord', () => {
@@ -87,6 +92,20 @@ test.describe('beach-urls: buildBeachMapUrl', () => {
   });
 });
 
+/** Parse a `key: { en: '...', si: '...' }` block from src/i18n/routing.ts. */
+function routingBlock(key: string): Record<string, string> {
+  const routingSrc = readFileSync(join(process.cwd(), 'src', 'i18n', 'routing.ts'), 'utf-8');
+  const blockMatch = new RegExp(`${key}:\\s*\\{([^}]*)\\}`).exec(routingSrc);
+  expect(blockMatch, `${key} block not found in routing.ts`).toBeTruthy();
+  const slugs: Record<string, string> = {};
+  const entryRe = /(\w+):\s*'([^']+)'/g;
+  let m: RegExpExecArray | null;
+  while ((m = entryRe.exec(blockMatch?.[1] ?? '')) !== null) {
+    if (m[1] && m[2]) slugs[m[1]] = m[2];
+  }
+  return slugs;
+}
+
 test.describe('beach-urls: sync with routing.ts', () => {
   test('every supported locale has a slug', () => {
     for (const locale of locales) {
@@ -120,6 +139,16 @@ test.describe('beach-urls: sync with routing.ts', () => {
     expect(routingSlugs).toEqual(EXPECTED_SLUGS);
     for (const locale of Object.keys(routingSlugs)) {
       expect(getBeachMapWord(locale)).toBe(routingSlugs[locale]);
+    }
+  });
+
+  // Added 2026-10-07: the 5 languages added on 2026-07-28 were missing from the
+  // helper, so beach detail links in da/pt/nl/el/sq used "/beaches/".
+  test('getBeachesWord matches globalRoutes.beaches for every locale', () => {
+    const routingWords = routingBlock('beaches');
+    for (const locale of locales) {
+      expect(routingWords[locale], `routing.ts has no beaches word for ${locale}`).toBeTruthy();
+      expect(getBeachesWord(locale), `getBeachesWord("${locale}")`).toBe(routingWords[locale]);
     }
   });
 });
