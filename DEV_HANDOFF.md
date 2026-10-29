@@ -18,6 +18,28 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-29 - Zero-downtime website deploys (blue/green) + `GET /api/health`
+
+### Overview
+Every website deploy recreated `front_<env>` in place → a few seconds of 502 "Host Error" on beachrex.com (owner,
+prod run 40948577676). The deploy now switches between two containers without a gap. Decision and mechanism live in
+the backend repo: ADR 2026-10-29 "Zero-downtime deploys", runbook `docs/runbooks/zero-downtime-deploys.md`,
+script `deploy/scripts/front-deploy.sh`.
+
+### Changes
+- `src/app/api/health/route.ts`: `GET /api/health` → `{"status":"ok","color":"blue"|"green"|null}`, `no-store`, no API
+  call (the middleware skips `/api`). The deploy waits for it and probes it through nginx; the compose healthcheck uses it.
+- `.github/workflows/deploy.yml`: runs `/opt/beachrex/deploy/scripts/front-deploy.sh <env>` (build → green →
+  switch → blue → stop green, probe every 0.2 s, fails on any 000/5xx). Falls back to the old in-place recreate
+  while the server's `deploy/` (backend repo) does not have the script yet.
+
+### Testing
+- `e2e/health-route.unit.spec.ts` (3 tests; fails when the body/status changes — checked with a deliberate break).
+- `npx tsc --noEmit -p .`, `yarn lint`, all `e2e/*.unit.spec.ts` (453 passed).
+- Promotion: backend first (dev → uat → main), then this repo.
+
+---
+
 ## 2026-10-29 - Google ads (AdSense) behind the admin switch, off by default
 
 Owner (2026-10-29): "prosim izklopi mi Google ads na produkciji, pa dobro bi bilo, da bi jih lahko prek admina
