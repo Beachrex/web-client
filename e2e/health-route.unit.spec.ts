@@ -16,7 +16,7 @@ test.describe('/api/health', () => {
       expect(res.status).toBe(200);
       expect(res.headers.get('cache-control')).toBe('no-store');
       const text = await res.text();
-      expect(JSON.parse(text)).toEqual({ status: 'ok', color: 'green' });
+      expect(JSON.parse(text)).toMatchObject({ status: 'ok', color: 'green' });
       // The deploy script parses the color with a plain pattern: keep the compact JSON form.
       expect(text).toContain('"color":"green"');
     } finally {
@@ -30,14 +30,14 @@ test.describe('/api/health', () => {
     const before = process.env.BEACHREX_COLOR;
     delete process.env.BEACHREX_COLOR;
     try {
-      expect(await GET().json()).toEqual({ status: 'ok', color: null });
+      expect(await GET().json()).toMatchObject({ status: 'ok', color: null });
     } finally {
       if (before !== undefined) process.env.BEACHREX_COLOR = before;
     }
   });
 
-  test('the locale/preview middleware skips /api', () => {
+  test('the locale/preview middleware skips /api/health', () => {
     const middleware = readFileSync(join(process.cwd(), 'src', 'middleware.ts'), 'utf8');
-    expect(middleware).toContain("'/((?!api|");
+    expect(middleware).toContain("'/((?!api/health|");
   });
 });

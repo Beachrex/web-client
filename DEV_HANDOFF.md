@@ -18,6 +18,34 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-30 - Bounded Next.js cache: no ISR/fetch files on disk, scanner URLs 404 before rendering
+
+Owner: `front_prod` writable layer **16.3 GB** in a day (`.next/server/app` 13.9 GB / 178 057 files, `.next/cache`
+1.2 GB), newest files scanner paths such as `api/proc/self/environ.{html,rsc,meta}`. Cause: Next 14's default cache
+handler writes every ISR render (also 404 and redirect renders, ~125–260 KB each) and every cached fetch to disk and
+never deletes; the middleware matcher skipped every path starting with `api`, so `/api/<anything>` rendered as
+locale `api` through `[locale]/[...rest]` (ISR) and was stored with its legacy-redirect API response. No secret was
+served (normal 404 page). Backend ADR 2026-10-30 "Bounded Next.js cache", runbook `disk-cleanup.md` "Website cache".
+
+- `cache-handler.cjs` + `next.config.js` (`cacheHandler`, `cacheMaxMemorySize: 0`): pages, route handlers and the
+  fetch Data Cache in one gzip-compressed in-memory LRU with a byte budget `NEXT_CACHE_MAX_MB` (runtime env; default
+  128, VPS compose: prod 256, uat/dev 64). Never writes to disk; build-time files read from the image; non-200 renders
+  not stored; `revalidateTag` honoured. Next copies the file into `.next/standalone` (checked).
+- `src/lib/utils/junk-paths.ts` + `src/middleware.ts`: scanner URLs (`/api/*` except `/api/health`, dot segments,
+  `..`, `;`, `/proc/self`, `/etc/passwd`, script/config/dump extensions, `wp-*`, `cgi-bin`, `phpmyadmin` ...) get a
+  9-byte 404 first; matcher skips only `api/health`.
+- `[locale]/layout.tsx`: 404 for a locale that is not one of the 19. `[locale]/[...rest]`: `force-dynamic` (no ISR
+  file or cached API response per invented URL; old-site redirects still work, the API caches them for a day).
+- `/api/health` adds `cache` (`entries`, `mb`, `maxMb`, `evictions`, `hits`, `misses`, `skipped`) and `rssMb`
+  (`src/lib/server/cache-stats.ts`); the compact `"color":"…"` the deploy parses is unchanged.
+- Tests: `e2e/next-cache-handler.unit.spec.ts`, `e2e/junk-paths.unit.spec.ts`, `e2e/health-route.unit.spec.ts`.
+- Local proof (`next build`, standalone server, mock API; growth of `.next/cache` + `.next/server/app`): before,
+  950 beach pages (50 × 19 languages) +247 MB / 2 019 fetch files, 200 unknown slugs +24 MB, 200 unknown paths +24 MB,
+  100 redirects +12 MB; after, all of these plus 480 scanner probes: **0 bytes**. TTFB avg: first render 64 → 67 ms,
+  cached 15.3 → 15.9 ms. Cache 63.5 MB for ~1 000 pages + API responses.
+
+---
+
 ## 2026-10-30 - Deploy cleans up old Docker images and build cache
 
 Owner: VPS disk 71 % full. `.github/workflows/deploy.yml` got a last step "Clean up old Docker images and build cache"
