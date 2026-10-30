@@ -124,8 +124,9 @@ const BurgerMenu = () => {
   const { countries } = useCountries();
   const staticPages = useFooterStaticPages();
   const { aiAssistantEnabled, aiTripPlannerEnabled } = useSiteSettings();
-  // Same query as the home category tiles (shared cache); labels in the visitor's language.
-  const { data: filtersData } = useQuery(getBeachFiltersOptions({ query: {} as never }));
+  // Same query as the home category tiles (shared cache); labels in the visitor's language. Only once the menu is
+  // opened: the filter list is ~125 KB and was fetched on every page view (backend ADR 2026-10-30 "API performance").
+  const { data: filtersData } = useQuery({ ...getBeachFiltersOptions({ query: {} as never }), enabled: isOpen });
   const filterOptions = filtersData?.data as Parameters<typeof resolveQuickFilters>[1];
 
   // Built from API data: continents and countries with beaches, CMS pages by code.

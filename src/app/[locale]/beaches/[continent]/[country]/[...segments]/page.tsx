@@ -9,7 +9,9 @@
  * Task 0.6: Add generateStaticParams for Top Beaches
  */
 
+import '@/lib/server/api-client-server';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
+import { serverApiBaseUrl } from '@/lib/server/api-base';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import React from 'react';
@@ -56,7 +58,6 @@ import {
 import BeachDetailPage from '@/components/Pages/BeachDetailPage';
 import { buildBeachFaqSchema, readBeachFaq, readMetaDescription } from '@/lib/utils/beach-faq';
 import { beachPlaceRef, destinationPlaceRef, loadPlaceSlugs, placePath } from '@/lib/seo/place-paths';
-import { env } from '@/env';
 import RegionListingPage from '@/components/Pages/RegionListingPage';
 import IslandListingPage from '@/components/Pages/IslandListingPage';
 import CityListingPage from '@/components/Pages/CityListingPage';
@@ -539,7 +540,7 @@ async function buildDestinationMetadata(
   // Pre-launch 2026-10-23: canonical from this language's slugs (not the request URL) and hreflang for all
   // 19 languages; without slug data, the request path as before.
   const ref = destinationPlaceRef(kind, details as unknown as Record<string, unknown>);
-  const slugs = await loadPlaceSlugs(env.NEXT_PUBLIC_API_ENDPOINT);
+  const slugs = await loadPlaceSlugs(serverApiBaseUrl());
   const path = placePath(slugs, locale, ref) ?? buildDestinationPath(locale, continent, country, segments);
 
   return buildCompleteMetadata({

@@ -1,3 +1,4 @@
+import '@/lib/server/api-client-server';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { resolveLegacyUrl } from '@/lib/api-client/sdk.gen';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';

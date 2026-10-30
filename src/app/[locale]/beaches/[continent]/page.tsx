@@ -4,6 +4,7 @@
  * Task 0.5: Convert Continent Page to SSR with comprehensive SEO metadata
  */
 
+import '@/lib/server/api-client-server';
 import BannerSection from '@/components/BannerSection/BannerSection';
 import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
 import SearchContinent from '@/components/Continent/SearchContinent';
