@@ -230,12 +230,21 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
    * Prefetch beach details on hover to improve perceived performance
    */
   const handleMouseEnter = useCallback(() => {
+    // On the beach map the panel asks by id: warm that exact query (a slug prefetch has another cache key).
+    const beachId = Number(id);
+    if (beachPanel && beachId > 0) {
+      debouncedPrefetch(() => {
+        beachPanel.prefetch(beachId);
+        return Promise.resolve();
+      });
+      return;
+    }
     if (!beachSlug) return;
 
     debouncedPrefetch(async () => {
       await prefetchBeachDetails(queryClient, beachSlug);
     });
-  }, [queryClient, beachSlug]);
+  }, [queryClient, beachSlug, beachPanel, id]);
 
   /**
    * Cancel prefetch if user moves mouse away quickly
