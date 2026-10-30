@@ -1048,5 +1048,18 @@
     "callbackTitle": "Open the test website",
     "callbackIntro": "Click the button to open the Beachrex test website on this device.",
     "callbackButton": "Open the test website"
+  },
+  "MapBeachPanel": {
+    "close": "Close and return to the list",
+    "dialogLabel": "Beach",
+    "openInNewTab": "Open in new tab",
+    "newTab": "New tab",
+    "openFullPage": "Open full beach page",
+    "openFullPageShort": "Open full page",
+    "directions": "Directions",
+    "escHint": "Esc or X: back to the list",
+    "loading": "Loading beach…",
+    "loadError": "This beach could not be loaded.",
+    "retry": "Try again"
   }
 }

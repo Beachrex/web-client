@@ -7,6 +7,7 @@ import React from 'react';
 
 import type { BeachDetailsSchema } from '@/lib/api-client/types.gen';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { useBeachEmbedded } from '@/components/Beach/BeachEmbedContext';
 import { formatCoordinates, googleMapsNavigationUrl, parseCoordinates } from '@/lib/utils/geo';
 import { seabedLabelKey, waterKind } from '@/lib/utils/waterbody';
 
@@ -86,6 +87,7 @@ const BeachDetailsSection: React.FC<BeachDetailsSectionProps> = ({ beachDetails 
   const tUi = useTranslations('UI');
   const tGroups = useTranslations('BeachDetails.groups');
   const tButtons = useTranslations('BeachDetails.buttons');
+  const embedded = useBeachEmbedded();
 
   const accessibility = beachDetails.accessibility;
   // Owner 2026-10-28: GPS position + Google Maps navigation above Parking.
@@ -217,7 +219,8 @@ height={20}
           </p>
         )}
 
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        {/* Beach map panel (≤ 720px on any screen): two columns at most */}
+        <div className={embedded ? 'grid gap-10 sm:grid-cols-2' : 'grid gap-10 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'}>
           {/* -------------------------------------------
            * BEACH + USER TYPE
            * ------------------------------------------- */}

@@ -1048,5 +1048,18 @@
     "callbackTitle": "Åbn testsiden",
     "callbackIntro": "Klik på knappen for at åbne Beachrex' testside på denne enhed.",
     "callbackButton": "Åbn testsiden"
+  },
+  "MapBeachPanel": {
+    "close": "Luk og gå tilbage til listen",
+    "dialogLabel": "Strand",
+    "openInNewTab": "Åbn i ny fane",
+    "newTab": "Ny fane",
+    "openFullPage": "Åbn hele strandsiden",
+    "openFullPageShort": "Åbn hele siden",
+    "directions": "Rutevejledning",
+    "escHint": "Esc eller X: tilbage til listen",
+    "loading": "Indlæser stranden…",
+    "loadError": "Stranden kunne ikke indlæses.",
+    "retry": "Prøv igen"
   }
 }

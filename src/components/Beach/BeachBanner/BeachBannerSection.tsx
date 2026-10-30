@@ -17,6 +17,7 @@ import SeaTempWidget from './SeaTempWidget';
 import { beachPillKey, showsSeaTemperature, waterKind } from '@/lib/utils/waterbody';
 import TopBarBeachRight from './TopBarBeachRight';
 import TopBar from '@/components/BannerSection/TopBar';
+import { useBeachEmbedded } from '@/components/Beach/BeachEmbedContext';
 import { mapBeachLocationToTopBar } from '@/lib/mappers/mapBeachLocationToTopBar';
 
 interface BeachBannerSectionProps {
@@ -33,6 +34,8 @@ export default function BeachBannerSection({
   const locale = useLocale();
   const tCommon = useTranslations('Common');
   const tFilters = useTranslations('Filters');
+  // Beach map panel: the panel header has the save/share buttons and the page is already the map.
+  const embedded = useBeachEmbedded();
 
   const beachName = beachDetails?.basic_info?.name ?? '';
   const beachSlug = beachDetails?.basic_info?.slug;
@@ -100,9 +103,15 @@ export default function BeachBannerSection({
 
 
   return (
-    <section className="relative mx-auto mb-10 h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-visible pb-40 sm:h-[700px] md:min-h-[400px] md:pb-48 lg:h-[798px]">
+    <section
+      className={
+        embedded
+          ? 'relative mx-auto mb-16 h-[460px] w-full overflow-visible'
+          : 'relative mx-auto mb-10 h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-visible pb-40 sm:h-[700px] md:min-h-[400px] md:pb-48 lg:h-[798px]'
+      }
+    >
       {/* Background with rounded corners */}
-      <div className="absolute inset-0 overflow-hidden rounded-b-[10px] rounded-t-[10px]">
+      <div className={`absolute inset-0 overflow-hidden ${embedded ? '' : 'rounded-b-[10px] rounded-t-[10px]'}`}>
         {mainImage ? (
           <Image
             src={mainImage}
@@ -118,7 +127,7 @@ export default function BeachBannerSection({
       </div>
 
       {/* Top bar stays at the top */}
-      <div className="z-1 relative flex flex-row items-center justify-between p-4 sm:p-6 lg:p-8">
+      <div className={`z-1 relative flex flex-row items-center justify-between ${embedded ? 'p-4' : 'p-4 sm:p-6 lg:p-8'}`}>
         {/* Left: Title + counters */}
         <div className="flex flex-col">
 
@@ -136,6 +145,7 @@ export default function BeachBannerSection({
   showLocationPills
   showFilter={false}
   pillLabelKey={beachPillKey(water)}
+  compact={embedded}
   {...mapPlacePills(locale, beachDetails?.location)}
 />
 
@@ -143,15 +153,29 @@ export default function BeachBannerSection({
         </div>
 
         {/* Right: review / save / share */}
-        <TopBarBeachRight beachId={beachId} />
+        {!embedded && <TopBarBeachRight beachId={beachId} />}
       </div>
 
       {/* === Title + widgets anchored near bottom === */}
-      <div className="absolute inset-x-0 bottom-[110px] z-20 sm:bottom-[120px] md:bottom-[130px] pointer-events-none">
-        <div className="grid grid-cols-1 gap-6 px-4 pr-16 sm:px-6 sm:pr-20 lg:grid-cols-[1fr_auto] lg:items-end lg:px-8 lg:pr-[96px]">
+      <div
+        className={`absolute inset-x-0 z-20 pointer-events-none ${
+          embedded ? 'bottom-[80px]' : 'bottom-[110px] sm:bottom-[120px] md:bottom-[130px]'
+        }`}
+      >
+        <div
+          className={
+            embedded
+              ? 'grid grid-cols-1 gap-4 px-4 sm:px-6'
+              : 'grid grid-cols-1 gap-6 px-4 pr-16 sm:px-6 sm:pr-20 lg:grid-cols-[1fr_auto] lg:items-end lg:px-8 lg:pr-[96px]'
+          }
+        >
           <BeachTitleBlock title={beachName} />
 
-          <div className="flex justify-center gap-[6px] sm:gap-[10px] lg:justify-end pointer-events-auto">
+          <div
+            className={`flex gap-[6px] sm:gap-[10px] pointer-events-auto ${
+              embedded ? 'justify-start' : 'justify-center lg:justify-end'
+            }`}
+          >
             <WeatherWidget
               weather={weatherData}
               locationName={locationName}
@@ -171,10 +195,17 @@ export default function BeachBannerSection({
         <BottomBadgesBeach
           badges={badges}
           description={description ?? undefined}
+          // In the map panel "read more" scrolls the panel; a #beach-details link would add a history entry
+          onReadMore={
+            embedded
+              ? () => document.getElementById('beach-details')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              : undefined
+          }
         />
       </div>
 
-      {/* Floating buttons */}
+      {/* Floating buttons (not in the map panel: the map is right there) */}
+      {!embedded && (
       <div className="absolute right-0 top-1/2 z-40 flex -translate-y-1/2 flex-col">
         <Link
           href={buildMapUrl()}
@@ -200,6 +231,7 @@ export default function BeachBannerSection({
         </button>
         )}
       </div>
+      )}
     </section>
   );
 }
