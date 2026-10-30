@@ -26,6 +26,15 @@ VPS if it is there (keeps the current + one previous image per service, `beachre
 ones and BuildKit cache unused > 72 h; disk usage before/after as a notice). Backend ADR 2026-10-30, runbook
 `Beachrex/backend` → `docs/runbooks/disk-cleanup.md`. No app code changed.
 
+## 2026-10-30 – Beach panel: faster first open (prefetch by id, photo while loading) ✅ COMPLETE
+
+Owner, 2026-10-30: the beach panel on the map loaded slowly the first time.
+
+- Cards prefetched beach details by slug on hover, but the panel asks by id: a different React Query key (and, until Beachrex/backend#183, a different API cache key), so the prefetch never helped. On the map page a hovered card now prefetches the panel query itself (`MapBeachPanelApi.prefetch`, `beachPanelQueryOptions`), and an opened marker popup does too. Elsewhere cards keep the slug prefetch.
+- While loading, the panel shows the beach's photo and name from the map list (`preview`) instead of a grey box.
+- Backend: Beachrex/backend#183 caches beach details per beach id, so a beach page visit also warms the panel.
+- Test: `e2e/map-panel-prefetch.unit.spec.ts`.
+
 ## 2026-10-30 – Beach panel: "Nearby beaches" carousel fixed ✅ COMPLETE
 
 Owner, 2026-10-30: in the beach panel on the map page the nearby-beaches carousel squeezed a card into a quarter of the width with both arrows over it.

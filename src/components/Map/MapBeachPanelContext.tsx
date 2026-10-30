@@ -12,6 +12,11 @@ import { opensBeachPanel } from '@/lib/utils/map-beach-panel';
 export interface MapBeachPanelApi {
   /** Opens (or swaps) the panel to this beach; `trigger` gets the focus back when the panel closes. */
   open: (beachId: number, trigger?: HTMLElement | null) => void;
+  /**
+   * Loads the beach's details into the panel's cache (same query key) on a sign of intent: a card hovered, a marker
+   * popup opened. The panel then opens with the content ready (owner 2026-10-30: first open was slow).
+   */
+  prefetch: (beachId: number) => void;
 }
 
 export const MapBeachPanelContext = createContext<MapBeachPanelApi | null>(null);

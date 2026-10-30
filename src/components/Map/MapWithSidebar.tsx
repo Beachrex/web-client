@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import { nextDisplayedBeaches } from '@/lib/utils/map-results';
 import { focusCenter, parseBeachFocus, withFocusedBeach } from '@/lib/utils/map-focus';
 import { getBeachByIdentifierOptions } from '@/lib/api-client/@tanstack/react-query.gen';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Map as MapIcon, SlidersHorizontal, X } from 'lucide-react';
@@ -18,7 +18,7 @@ import ReactLeafletMap from './ReactLeafletMap';
 import { VirtualizedBeachList } from './VirtualizedBeachList';
 import { optionMatches, type FilterOptionLike } from '@/lib/utils/filter-options';
 import { buildMapPanelUrl, panelMapInset, parseMapBeachParam } from '@/lib/utils/map-beach-panel';
-import { useBeachPanelDetails } from '@/hooks/useBeachPanelDetails';
+import { beachPanelQueryOptions, useBeachPanelDetails } from '@/hooks/useBeachPanelDetails';
 import { MapBeachPanelContext, type MapBeachPanelApi } from './MapBeachPanelContext';
 import MapBeachPanel from './MapBeachPanel';
 import type { ActiveBeach } from './ReactLeafletMap';
@@ -486,7 +486,14 @@ const MapWithSidebar = () => {
         target?.focus({ preventScroll: true });
     }, [panelBeachId]);
 
-    const beachPanelApi = useMemo<MapBeachPanelApi>(() => ({ open: openBeachPanel }), [openBeachPanel]);
+    const queryClient = useQueryClient();
+    const prefetchBeachPanel = useCallback((beachId: number) => {
+        if (beachId > 0) void queryClient.prefetchQuery(beachPanelQueryOptions(beachId));
+    }, [queryClient]);
+    const beachPanelApi = useMemo<MapBeachPanelApi>(
+        () => ({ open: openBeachPanel, prefetch: prefetchBeachPanel }),
+        [openBeachPanel, prefetchBeachPanel],
+    );
 
     const panelPreview = useMemo(
         () => (panelBeachId === null ? null : mapBeaches.find((b) => b.id === panelBeachId) ?? null),

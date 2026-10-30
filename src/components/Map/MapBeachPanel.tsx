@@ -1,6 +1,7 @@
 'use client';
 
 import { ExternalLink, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -12,6 +13,7 @@ import BeachDetailPage from '@/components/Pages/BeachDetailPage';
 import { useBeachPanelDetails } from '@/hooks/useBeachPanelDetails';
 import type { BeachDetailsSchema, BeachSchema } from '@/lib/api-client/types.gen';
 import { FEATURES } from '@/lib/constants/features';
+import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachUrl, buildBeachUrlFromSchema } from '@/lib/utils/beach-urls';
 import { googleMapsNavigationUrl, parseCoordinates } from '@/lib/utils/geo';
 import { desktopPanelWidth, panelBreadcrumb } from '@/lib/utils/map-beach-panel';
@@ -110,11 +112,33 @@ function placeNames(details: BeachDetailsSchema | null, preview?: BeachSchema | 
   };
 }
 
-function PanelSkeleton() {
+/**
+ * Shown until the details arrive. With the beach from the map list (`preview`) the photo and name show at once
+ * (owner 2026-10-30: the first open looked like a long wait on a grey box); the rest pulses.
+ */
+function PanelSkeleton({ imageUrl, name }: { imageUrl?: string | null; name?: string }) {
   return (
-    <div className="animate-pulse" aria-hidden="true">
-      <div className="h-[270px] w-full bg-gray-200" />
-      <div className="flex flex-col gap-4 p-6">
+    <div aria-hidden="true">
+      {imageUrl ? (
+        <div className="relative h-[270px] w-full overflow-hidden bg-gray-200">
+          <Image
+            src={imageUrl}
+            alt=""
+            fill
+            sizes="(min-width: 1024px) 720px, 100vw"
+            className="object-cover"
+            priority
+          />
+          {name && (
+            <span className="absolute bottom-5 left-6 right-6 font-figtree text-[30px] font-bold leading-tight text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.45)]">
+              {name}
+            </span>
+          )}
+        </div>
+      ) : (
+        <div className="h-[270px] w-full animate-pulse bg-gray-200" />
+      )}
+      <div className="flex animate-pulse flex-col gap-4 p-6">
         <div className="flex flex-wrap gap-2">
           {[64, 80, 120, 72].map((w) => (
             <div key={w} className="h-8 rounded-full bg-gray-200" style={{ width: w }} />
@@ -363,7 +387,10 @@ export default function MapBeachPanel({ beachId, preview, desktop, onClose, area
       ) : (
         <>
           <span className="sr-only" role="status">{t('loading')}</span>
-          <PanelSkeleton />
+          <PanelSkeleton
+            imageUrl={previewOk?.main_image ? buildCdnUrl(previewOk.main_image, 'hero') : null}
+            name={name}
+          />
         </>
       )}
     </div>

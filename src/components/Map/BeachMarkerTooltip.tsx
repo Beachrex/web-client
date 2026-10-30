@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import React from 'react';
-import { useBeachPanelLinkClick } from './MapBeachPanelContext';
+import { useBeachPanelLinkClick, useMapBeachPanel } from './MapBeachPanelContext';
 
 interface BeachMarkerTooltipProps {
     beach: BeachSchema;
@@ -24,6 +24,11 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
     // Owner 2026-10-30: the beach opens in the map's beach panel (plain click), not in a new tab; the links stay
     // real links, so Ctrl/Cmd/middle click still open a new tab.
     const openInPanel = useBeachPanelLinkClick(beach.id);
+    // An open popup is a strong sign the beach will be opened: load its panel content now.
+    const beachPanel = useMapBeachPanel();
+    React.useEffect(() => {
+        if (beach.id) beachPanel?.prefetch(beach.id);
+    }, [beachPanel, beach.id]);
     const onBeachLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.stopPropagation();
         openInPanel(e);
