@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import PropertyCard from './PropertyCard/PropertyCard';
 import BeachViewToggle, { type BeachMediaMode } from './BeachViewToggle';
+import { useBeachEmbedded } from './Beach/BeachEmbedContext';
 
 // Dynamically import PropertyCarousel to reduce initial bundle size
 const PropertyCarousel = dynamic(
@@ -92,11 +93,14 @@ export const PropertyMediaContext = React.createContext({
 ------------------------------------------------------ */
 function PropertyEmblaCarousel({ items = [] }: PropertyCarouselProps) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
+  // Inside the beach map panel (≤ 720px) at most two cards fit, whatever the window width.
+  const embedded = useBeachEmbedded();
 
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      if (w >= 1536) setItemsPerSlide(4);
+      if (embedded) setItemsPerSlide(w >= 640 ? 2 : 1);
+      else if (w >= 1536) setItemsPerSlide(4);
       else if (w >= 1280) setItemsPerSlide(3);
       else if (w >= 640) setItemsPerSlide(2);
       else setItemsPerSlide(1);
@@ -105,7 +109,7 @@ function PropertyEmblaCarousel({ items = [] }: PropertyCarouselProps) {
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
-  }, []);
+  }, [embedded]);
 
   if (!items.length) return null;
 
@@ -123,6 +127,7 @@ export const PropertySection: React.FC<PropertySectionProps> = ({
   controlsBelowHeader,
 }) => {
   const t = useTranslations('PropertySection');
+  const embedded = useBeachEmbedded();
  const [expanded, setExpanded] = useState(false);
  const c = useTranslations('Common');
 
@@ -134,7 +139,7 @@ const hasAnyWebcam = React.useMemo(
 
 
   return (
-    <section className="relative overflow-x-hidden bg-white py-10 sm:py-14 lg:py-20">
+    <section className={`relative overflow-x-hidden bg-white ${embedded ? 'py-8' : 'py-10 sm:py-14 lg:py-20'}`}>
       <div className="pointer-events-none absolute left-0 top-1/2 -z-10 -translate-y-1/2">
         <div className="relative h-[400px] w-[250px] opacity-70 sm:w-[300px] lg:w-[350px]">
           <Image
@@ -151,7 +156,11 @@ const hasAnyWebcam = React.useMemo(
       <div className="container relative z-10 mx-auto">
         {/* HEADER */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4 sm:mb-6">
-          <h2 className="font-figtree text-[22px] sm:text-[26px] lg:text-[30px] font-bold text-[#222222]">
+          <h2
+            className={`font-figtree font-bold text-[#222222] ${
+              embedded ? 'text-[22px]' : 'text-[22px] sm:text-[26px] lg:text-[30px]'
+            }`}
+          >
             {title}
           </h2>
 
@@ -198,7 +207,7 @@ const hasAnyWebcam = React.useMemo(
        >
 
           {expanded ? (
-  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  <div className={embedded ? 'grid gap-6 sm:grid-cols-2' : 'grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}>
     {properties.map((p) => (
       <PropertyCard key={p.id} {...p} />
     ))}

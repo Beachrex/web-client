@@ -24,6 +24,11 @@ import { readBeachFaq } from '@/lib/utils/beach-faq';
 
 interface BeachDetailPageProps {
   beachDetails: BeachDetailsSchema;
+  /**
+   * Rendered inside the beach map's panel (owner 2026-10-30): no breadcrumb/prev-next bar (the panel header has
+   * the place line), and the sections keep their narrow layout (`BeachEmbedContext`, set by the panel).
+   */
+  embedded?: boolean;
 }
 
 /* -------------------------------------------------------------
@@ -32,7 +37,7 @@ interface BeachDetailPageProps {
 -------------------------------------------------------------- */
 
 
-export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) {
+export default function BeachDetailPage({ beachDetails, embedded = false }: BeachDetailPageProps) {
   const pathname = usePathname();
   const locale = useLocale();
 
@@ -94,6 +99,7 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
   return (
     <>
       {/* TOP BAR */}
+      {!embedded && (
       <DynamicTopBar
         pathname={pathname ?? ''}
         breadcrumbLabels={breadcrumbLabels(beachDetails.location, beachDetails.basic_info)}
@@ -109,6 +115,7 @@ export default function BeachDetailPage({ beachDetails }: BeachDetailPageProps) 
           )
         }
       />
+      )}
 
       {/* HERO */}
       <BeachBannerSection

@@ -43,6 +43,8 @@ interface TopBarProps {
    * (listing pages do not have their parents' counts; never show a wrong number).
    */
   pillCounts?: Partial<Record<PillLevel, number | null>>;
+  /** Narrow host (beach map panel, ≤ 720px on a wide screen): shorter title so the bar fits. */
+  compact?: boolean;
 }
 
 type PillLevel = 'continent' | 'country' | 'region' | 'island' | 'city';
@@ -72,6 +74,7 @@ const TopBar: React.FC<TopBarProps> = ({
   pillLinks,
   pillNames,
   pillCounts,
+  compact = false,
 }) => {
   const t = useTranslations('TopBar');
   const tContinent = useTranslations('Continents');
@@ -266,12 +269,11 @@ const TopBar: React.FC<TopBarProps> = ({
         </span>
 
        <span
-  className="
-    hidden md:block
-    max-w-[220px] lg:max-w-[320px] xl:max-w-none
-    overflow-hidden whitespace-nowrap
-    font-figtree text-[30px] font-bold leading-[100%] text-white
-  "
+  className={[
+    'hidden md:block overflow-hidden whitespace-nowrap',
+    compact ? 'max-w-[150px] text-ellipsis text-[24px]' : 'max-w-[220px] lg:max-w-[320px] xl:max-w-none text-[30px]',
+    'font-figtree font-bold leading-[100%] text-white',
+  ].join(' ')}
        >
   {displayTitle}
 </span>

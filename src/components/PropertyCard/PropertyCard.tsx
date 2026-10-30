@@ -6,6 +6,7 @@ import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
 import { buildCardFeatureIcons, type BeachCardFeatures } from '@/lib/utils/beach-badges';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
 import { buildBeachFocusMapUrl } from '@/lib/utils/beach-urls';
+import { isPlainPrimaryClick } from '@/lib/utils/map-beach-panel';
 import { parseWebcamUrl, windyIdFromPageUrl } from '@/lib/utils/webcam';
 import WebcamModal from '@/components/Beach/WebcamModal';
 import { useQueryClient } from '@tanstack/react-query';
@@ -19,6 +20,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { FEATURES } from '@/lib/constants/features';
 import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { PropertyMediaContext } from '../PropertySection';
+import { useBeachPanelLinkClick, useMapBeachPanel } from '../Map/MapBeachPanelContext';
 
 // Performance logging
 const ENABLE_PERF_LOGGING = false;
@@ -76,7 +78,10 @@ export interface PropertyCardProps {
   latitude?: string | number | null;
   longitude?: string | number | null;
 
-  /** Open the beach page in a new tab (used by the map list, so the map state is kept) */
+  /**
+   * Open the city/country pages in a new tab (map list, so the map state is kept). The beach itself opens in the
+   * map's beach panel there (owner 2026-10-30, `MapBeachPanelContext`), never in a new tab.
+   */
   openInNewTab?: boolean;
 
   /** Up to 4 descriptive tags from the API (sporting activities, culinary, natural conditions) */
@@ -206,6 +211,18 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
     onLocationClick?.();
   }, [onLocationClick]);
 
+  // Beach map page only (context set there): a plain click on the name or the card's info bar opens the beach
+  // panel; outside the map page the context is null and the name is a normal link.
+  const beachPanel = useMapBeachPanel();
+  const openInPanel = useBeachPanelLinkClick(Number(id) > 0 ? Number(id) : null);
+  const handleInfoBarClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const beachId = Number(id);
+    if (!beachPanel || !(beachId > 0) || !isPlainPrimaryClick(e)) return;
+    if ((e.target as HTMLElement).closest('a, button, input, select, textarea')) return;
+    // The name link gets the focus back when the panel closes.
+    beachPanel.open(beachId, e.currentTarget.querySelector<HTMLElement>('h3 a'));
+  }, [beachPanel, id]);
+
   // Owner 2026-10-29: the pin opens the beach map focused on this beach (outside the map page itself).
   const mapUrl = Number(id) > 0 ? buildBeachFocusMapUrl(locale, { id: Number(id), latitude, longitude }) : null;
 
@@ -213,12 +230,21 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
    * Prefetch beach details on hover to improve perceived performance
    */
   const handleMouseEnter = useCallback(() => {
+    // On the beach map the panel asks by id: warm that exact query (a slug prefetch has another cache key).
+    const beachId = Number(id);
+    if (beachPanel && beachId > 0) {
+      debouncedPrefetch(() => {
+        beachPanel.prefetch(beachId);
+        return Promise.resolve();
+      });
+      return;
+    }
     if (!beachSlug) return;
 
     debouncedPrefetch(async () => {
       await prefetchBeachDetails(queryClient, beachSlug);
     });
-  }, [queryClient, beachSlug]);
+  }, [queryClient, beachSlug, beachPanel, id]);
 
   /**
    * Cancel prefetch if user moves mouse away quickly
@@ -493,13 +519,19 @@ const closeWebcam = React.useCallback(() => setWebcamOpen(false), []);
       </div>
 
       {/* BOTTOM DETAILS */}
-      <div className="relative z-30 pointer-events-auto bg-[#E5F2FB] px-4 py-3 lg:px-5 lg:py-4 rounded-b-[10px] flex flex-col gap-[2px]">
+      <div
+        className={[
+          'relative z-30 pointer-events-auto bg-[#E5F2FB] px-4 py-3 lg:px-5 lg:py-4 rounded-b-[10px] flex flex-col gap-[2px]',
+          beachPanel ? 'cursor-pointer' : '',
+        ].join(' ')}
+        onClick={beachPanel ? handleInfoBarClick : undefined}
+      >
         <div className="flex justify-between items-center">
           <h3 className="text-[#0069AB] text-[20px] font-bold">
   {beachUrl ? (
     <Link
       href={beachUrl}
-      {...(openInNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      onClick={openInPanel}
       className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
     >
       {title}

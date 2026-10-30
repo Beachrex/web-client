@@ -1048,5 +1048,18 @@
     "callbackTitle": "Ouvrir le site de test",
     "callbackIntro": "Cliquez sur le bouton pour ouvrir le site de test Beachrex sur cet appareil.",
     "callbackButton": "Ouvrir le site de test"
+  },
+  "MapBeachPanel": {
+    "close": "Fermer et revenir à la liste",
+    "dialogLabel": "Plage",
+    "openInNewTab": "Ouvrir dans un nouvel onglet",
+    "newTab": "Nouvel onglet",
+    "openFullPage": "Ouvrir la page complète de la plage",
+    "openFullPageShort": "Ouvrir la page complète",
+    "directions": "Itinéraire",
+    "escHint": "Échap ou X : retour à la liste",
+    "loading": "Chargement de la plage…",
+    "loadError": "Impossible de charger cette plage.",
+    "retry": "Réessayer"
   }
 }

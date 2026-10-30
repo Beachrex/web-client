@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl';
 import SearchableSelect from '@/components/ui/SearchableSelect';
 import { filterChips, selectedValues, withoutChip } from '@/lib/utils/filter-chips';
 import { buildCdnUrl } from '@/lib/utils/beach-images';
+import { MAP_BEACH_PARAM, parseMapBeachParam, withoutPanelParam } from '@/lib/utils/map-beach-panel';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { MAP_QUICK_FILTERS } from '@/config/mapQuickFilters';
 import { isQuickFilterSelected, onlyQuickFilters, resolveQuickFilters, toggleFilterValue } from '@/lib/utils/quick-filters';
@@ -55,7 +56,10 @@ const LeftSidebarFilters = ({
     const tPlace = useTranslations('PlaceSelect');
     const router = useRouter();
     const pathname = usePathname();
-    const searchParams = useSearchParams();
+    // The beach panel's `beach` parameter is not a filter: opening/closing the panel must not touch the filters.
+    const rawSearchParams = useSearchParams();
+    const rawSearch = rawSearchParams?.toString() ?? '';
+    const searchParams = useMemo(() => withoutPanelParam(rawSearch), [rawSearch]);
     const [isExpanded, setIsExpanded] = useState(false);
     const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
     const [isInitialized, setIsInitialized] = useState(false);
@@ -259,6 +263,10 @@ const LeftSidebarFilters = ({
             }
         });
 
+        // Keep the open beach panel
+        const panelBeach = parseMapBeachParam(rawSearchParams);
+        if (panelBeach !== null) params.set(MAP_BEACH_PARAM, String(panelBeach));
+
         // Build the new URL
         const queryString = params.toString();
         const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
@@ -290,8 +298,12 @@ const LeftSidebarFilters = ({
 
     const handleResetFilters = () => {
         onFiltersChange?.({});
-        // Reset URL to pathname without query params
-        router.replace(pathname, { scroll: false });
+        // Reset URL to pathname without query params (the open beach panel stays)
+        const panelBeach = parseMapBeachParam(rawSearchParams);
+        router.replace(
+            panelBeach !== null ? `${pathname}?${MAP_BEACH_PARAM}=${panelBeach}` : pathname,
+            { scroll: false },
+        );
     };
 
     const renderFilterOptions = (

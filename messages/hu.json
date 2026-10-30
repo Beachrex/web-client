@@ -1048,5 +1048,18 @@
     "callbackTitle": "Tesztoldal megnyitása",
     "callbackIntro": "Kattintson a gombra a Beachrex tesztoldal megnyitásához ezen az eszközön.",
     "callbackButton": "Tesztoldal megnyitása"
+  },
+  "MapBeachPanel": {
+    "close": "Bezárás és vissza a listához",
+    "dialogLabel": "Strand",
+    "openInNewTab": "Megnyitás új lapon",
+    "newTab": "Új lap",
+    "openFullPage": "A teljes strandoldal megnyitása",
+    "openFullPageShort": "Teljes oldal megnyitása",
+    "directions": "Útvonal",
+    "escHint": "Esc vagy X: vissza a listához",
+    "loading": "Strand betöltése…",
+    "loadError": "Ezt a strandot nem sikerült betölteni.",
+    "retry": "Újrapróbálás"
   }
 }

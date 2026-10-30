@@ -1048,5 +1048,18 @@
     "callbackTitle": "Hap faqen testuese",
     "callbackIntro": "Klikoni butonin për të hapur faqen testuese Beachrex në këtë pajisje.",
     "callbackButton": "Hap faqen testuese"
+  },
+  "MapBeachPanel": {
+    "close": "Mbyll dhe kthehu te lista",
+    "dialogLabel": "Plazh",
+    "openInNewTab": "Hape në skedë të re",
+    "newTab": "Skedë e re",
+    "openFullPage": "Hap faqen e plotë të plazhit",
+    "openFullPageShort": "Hap faqen e plotë",
+    "directions": "Udhëzime",
+    "escHint": "Esc ose X: kthehu te lista",
+    "loading": "Po ngarkohet plazhi…",
+    "loadError": "Ky plazh nuk mund të ngarkohej.",
+    "retry": "Provo përsëri"
   }
 }

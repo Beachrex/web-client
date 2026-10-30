@@ -18,6 +18,107 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-30 - Bounded Next.js cache: no ISR/fetch files on disk, scanner URLs 404 before rendering
+
+Owner: `front_prod` writable layer **16.3 GB** in a day (`.next/server/app` 13.9 GB / 178 057 files, `.next/cache`
+1.2 GB), newest files scanner paths such as `api/proc/self/environ.{html,rsc,meta}`. Cause: Next 14's default cache
+handler writes every ISR render (also 404 and redirect renders, ~125–260 KB each) and every cached fetch to disk and
+never deletes; the middleware matcher skipped every path starting with `api`, so `/api/<anything>` rendered as
+locale `api` through `[locale]/[...rest]` (ISR) and was stored with its legacy-redirect API response. No secret was
+served (normal 404 page). Backend ADR 2026-10-30 "Bounded Next.js cache", runbook `disk-cleanup.md` "Website cache".
+
+- `cache-handler.cjs` + `next.config.js` (`cacheHandler`, `cacheMaxMemorySize: 0`): pages, route handlers and the
+  fetch Data Cache in one gzip-compressed in-memory LRU with a byte budget `NEXT_CACHE_MAX_MB` (runtime env; default
+  128, VPS compose: prod 256, uat/dev 64). Never writes to disk; build-time files read from the image; non-200 renders
+  not stored; `revalidateTag` honoured. Next copies the file into `.next/standalone` (checked).
+- `src/lib/utils/junk-paths.ts` + `src/middleware.ts`: scanner URLs (`/api/*` except `/api/health`, dot segments,
+  `..`, `;`, `/proc/self`, `/etc/passwd`, script/config/dump extensions, `wp-*`, `cgi-bin`, `phpmyadmin` ...) get a
+  9-byte 404 first; matcher skips only `api/health`.
+- `[locale]/layout.tsx`: 404 for a locale that is not one of the 19. `[locale]/[...rest]`: `force-dynamic` (no ISR
+  file or cached API response per invented URL; old-site redirects still work, the API caches them for a day).
+- `/api/health` adds `cache` (`entries`, `mb`, `maxMb`, `evictions`, `hits`, `misses`, `skipped`) and `rssMb`
+  (`src/lib/server/cache-stats.ts`); the compact `"color":"…"` the deploy parses is unchanged.
+- Tests: `e2e/next-cache-handler.unit.spec.ts`, `e2e/junk-paths.unit.spec.ts`, `e2e/health-route.unit.spec.ts`.
+- Local proof (`next build`, standalone server, mock API; growth of `.next/cache` + `.next/server/app`): before,
+  950 beach pages (50 × 19 languages) +247 MB / 2 019 fetch files, 200 unknown slugs +24 MB, 200 unknown paths +24 MB,
+  100 redirects +12 MB; after, all of these plus 480 scanner probes: **0 bytes**. TTFB avg: first render 64 → 67 ms,
+  cached 15.3 → 15.9 ms. Cache 63.5 MB for ~1 000 pages + API responses.
+
+---
+
+## 2026-10-30 - Deploy cleans up old Docker images and build cache
+
+Owner: VPS disk 71 % full. `.github/workflows/deploy.yml` got a last step "Clean up old Docker images and build cache"
+(after "Reload Nginx", `continue-on-error`): it runs the backend's `deploy/scripts/docker-prune.sh <env> front` on the
+VPS if it is there (keeps the current + one previous image per service, `beachrex/front:<env>-previous`; removes older
+ones and BuildKit cache unused > 72 h; disk usage before/after as a notice). Backend ADR 2026-10-30, runbook
+`Beachrex/backend` → `docs/runbooks/disk-cleanup.md`. No app code changed.
+
+## 2026-10-30 – Beach panel: faster first open (prefetch by id, photo while loading) ✅ COMPLETE
+
+Owner, 2026-10-30: the beach panel on the map loaded slowly the first time.
+
+- Cards prefetched beach details by slug on hover, but the panel asks by id: a different React Query key (and, until Beachrex/backend#183, a different API cache key), so the prefetch never helped. On the map page a hovered card now prefetches the panel query itself (`MapBeachPanelApi.prefetch`, `beachPanelQueryOptions`), and an opened marker popup does too. Elsewhere cards keep the slug prefetch.
+- While loading, the panel shows the beach's photo and name from the map list (`preview`) instead of a grey box.
+- Backend: Beachrex/backend#183 caches beach details per beach id, so a beach page visit also warms the panel.
+- Test: `e2e/map-panel-prefetch.unit.spec.ts`.
+
+## 2026-10-30 – Beach panel: "Nearby beaches" carousel fixed ✅ COMPLETE
+
+Owner, 2026-10-30: in the beach panel on the map page the nearby-beaches carousel squeezed a card into a quarter of the width with both arrows over it.
+
+- `PropertyCarousel.tsx`: grid columns follow `itemsPerSlide` (inline `repeat(n, minmax(0, 1fr))`) instead of window breakpoints (`lg:grid-cols-3 2xl:grid-cols-4`). Also fixes 1024–1279px on normal pages, where a slide of 2 cards left an empty third column. Arrows only with more than one slide, with `aria-label`s (`Common.paginationPrevious/Next`).
+- `PropertySection.tsx`: in the panel (`useBeachEmbedded`) a smaller title (22px) and padding.
+- Test: `e2e/property-carousel.unit.spec.ts`.
+
+## 2026-10-30 - Beach map: beaches open in a panel over the map (no more new tabs)
+
+### Overview
+Owner 2026-10-30: on the beach map (`/si/zemljevid-plaz`, `/en/beach-map`, …) a beach (list card, marker popup
+"View →"/name) opened in a new tab — bad UI, especially on phones. It now opens over the map (approved mockup,
+variant A): on lg+ (≥1024px) a panel slides in from the left over the filters + list (the map stays usable, the beach
+gets an orange pin with its name and the map pans to keep it visible); below lg a bottom sheet over the dimmed map.
+Sticky header: close (X), place line, name, save, share, "New tab"; sticky footer: "Open full beach page" (same tab)
+and "Directions" (Google Maps, as on the beach page). The body is the real beach page (`BeachDetailPage embedded`).
+
+### URL state (decision)
+`?beach=<id>` on the map URL, added with `history.pushState` (Next 14.2 syncs `useSearchParams`, no server request);
+Back closes the panel, X goes back when the entry was pushed, else `replaceState` removes the parameter; swapping
+beaches uses `replaceState`. A direct load of the map URL with `?beach=` opens the panel; beach URLs still render the
+full beach page (SEO unchanged). The beach pathname itself is NOT pushed: the filter sidebar reads the filters from the
+query string and writes them with `usePathname()` (a beach pathname cleared the filters and the next filter change
+navigated to the beach page), and the locale switcher would translate the beach instead of the map.
+
+### Changes
+- `src/lib/utils/map-beach-panel.ts`: URL build/parse, plain-click rule (`isPlainPrimaryClick`, `opensBeachPanel`),
+  panel width/inset, breadcrumb.
+- `src/components/Map/MapBeachPanelContext.tsx`: context set only by `MapWithSidebar`; `useBeachPanelLinkClick()`
+  intercepts a plain primary click on a real `<a href>` (Ctrl/Cmd/Shift/Alt/middle click keep the browser behaviour).
+  Outside the map page the context is null and cards behave as before.
+- `src/components/Map/MapBeachPanel.tsx`: desktop panel (non-modal `role="dialog"`, fixed box over the map area that
+  never extends below the window) and phone sheet (`aria-modal`, focus trap, body scroll lock, drag down on the
+  handle/header, tap on the dimmed map); Escape closes (not while a menu/modal inside is open); focus moves in on open
+  and back to the clicked link on close; skeleton, error with retry + link; no slide with `prefers-reduced-motion`.
+- `src/hooks/useBeachPanelDetails.ts`: `getBeachDetails` by id via the generated react-query options, sent "not a
+  view" (`X-Beachrex-Client`) and cached 30 min; the visit is counted once by `BeachDetailPage` (`POST /view`).
+- `MapWithSidebar.tsx` (provider, URL state, focus return, highlighted pin), `ReactLeafletMap.tsx`
+  (`ActiveBeachLayer`: unclustered orange pin + label, `panInside` right of the panel, popup closed),
+  `BeachMarkerTooltip.tsx` and `PropertyCard.tsx` (beach links: no `target=_blank`, open the panel; the card's info
+  bar opens it too on the map page), `LeftSidebarFilters.tsx` (ignores and keeps the `beach` parameter).
+- Embedded beach page: `BeachEmbedContext` keeps the narrow layout inside the panel (banner height/title/widgets,
+  description card only, details grid ≤2 columns, nearby cards ≤2 per slide, TopBar `compact` title); no
+  breadcrumb/prev-next bar, no banner save/share (in the panel header) and no banner map button. `ShareMenu` takes a
+  `url`/`compact`; `FavoriteButton` has a `panel` variant and its sign-in modal is above the header (`z-[1100]`).
+- Mobile map popup and filters drawer: `z-[10001]` → `z-[1060]` (the sheet is `z-[1070]`, media overlays stay 1100).
+- Strings: `MapBeachPanel.*` in all 19 `messages/*.json`.
+
+### Testing
+- `e2e/map-beach-panel.unit.spec.ts` (9 tests): click rule, URL build/parse, panel geometry, no `target=_blank` on
+  map beach links, scoping to the map page, filters ignore the parameter, a11y attributes, 19 locales.
+- `npx tsc --noEmit -p .`, `yarn lint`, all `e2e/*.unit.spec.ts` (462 passed), production build.
+- Local production build with a mocked API (Playwright `page.route`): 1440×900, 1024×768 and 390×844 — open from a
+  card, URL `?beach=101`, Escape/X close back to `?country=FR` with focus on the card link, direct load opens the panel.
+
 ## 2026-10-29 - Zero-downtime website deploys (blue/green) + `GET /api/health`
 
 ### Overview

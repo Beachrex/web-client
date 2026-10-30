@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { resolveBadgeIcon } from '@/lib/utils/beach-badge-icons';
 import type { BeachBadge } from '@/lib/utils/beach-badges';
 import React from 'react';
+import { useBeachEmbedded } from '@/components/Beach/BeachEmbedContext';
 
 interface BottomBadgesBeachProps {
   badges: BeachBadge[];
@@ -21,6 +22,8 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
 }) => {
   const t = useTranslations('BottomBadgesBeach');
   const tCommon = useTranslations('Common');
+  // Beach map panel (≤ 720px): the phone layout (description card only; the badges are in the details below)
+  const embedded = useBeachEmbedded();
 
   const desc = description?.trim();
 
@@ -40,9 +43,13 @@ const BottomBadgesBeach: React.FC<BottomBadgesBeachProps> = ({
     <div className="w-full">
       <div className="container mx-auto px-4">
         {/* Fixed height 100px so 50/50 overlap is stable */}
-        <div className="grid h-[100px] grid-cols-1 gap-3 rounded-[10px] sm:gap-4 lg:grid-cols-[auto_minmax(260px,1fr)]">
+        <div
+          className={`grid h-[100px] grid-cols-1 gap-3 rounded-[10px] sm:gap-4 ${
+            embedded ? '' : 'lg:grid-cols-[auto_minmax(260px,1fr)]'
+          }`}
+        >
           {/* Badges (hidden below lg). On lg show first 6; on xl show up to 9. */}
-          <div className="hidden h-full w-full overflow-hidden lg:flex">
+          <div className={embedded ? 'hidden' : 'hidden h-full w-full overflow-hidden lg:flex'}>
             <div className="flex h-full flex-nowrap items-stretch gap-2 sm:gap-3">
               {badges.map((b, i) => {
                 const label = b.labelKey ? t(`badges.${b.labelKey}`) : (b.label ?? '');
