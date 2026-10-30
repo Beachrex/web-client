@@ -6,6 +6,7 @@
  * renders it with SEO metadata via `generateMetadata`.
  */
 
+import '@/lib/server/api-client-server';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { buildCompleteMetadata, buildSelfAlternate } from '@/lib/utils/metadata-helpers';

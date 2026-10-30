@@ -6,6 +6,7 @@
  * the continent and country pages.
  */
 
+import '@/lib/server/api-client-server';
 import ContinentCountriesSection from '@/components/Continent/ContinentCountriesSection';
 import DynamicSearchBeaches from '@/components/DynamicSearchBeaches';
 import { PropertySection } from '@/components/PropertySection';

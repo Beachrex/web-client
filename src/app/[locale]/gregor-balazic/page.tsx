@@ -11,6 +11,7 @@
  * links to its localized country page, and "4,000 beaches" / "13 countries" link to the all-beaches page.
  */
 
+import '@/lib/server/api-client-server';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
