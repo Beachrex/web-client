@@ -18,6 +18,16 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-30 - Fix: place banners without image (unquoted CSS url with Imagor parentheses)
+
+- Country/continent/region/island/city banners (`BannerSection`), the world banner and the author page set
+  `background-image: url(${image})` without quotes. Imagor URLs of mobile photos carry
+  `filters:watermark(…,0,20,30)` (since 2026-10-29), and parentheses inside an unquoted `url()` make the CSS
+  declaration invalid, so the browser dropped it: no banner image, no request, no error (owner 2026-10-30,
+  e.g. `/en/beaches/europe/denmark`, `/en/beaches/europe/denmark/nordjylland/skagen`).
+- New `src/lib/utils/css-url.ts` (`cssUrl()` quotes and escapes); used in all three places.
+- Test: `e2e/css-url.unit.spec.ts`.
+
 ## 2026-10-30 - Bounded Next.js cache: no ISR/fetch files on disk, scanner URLs 404 before rendering
 
 Owner: `front_prod` writable layer **16.3 GB** in a day (`.next/server/app` 13.9 GB / 178 057 files, `.next/cache`
