@@ -18,6 +18,28 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-30 - Performance: global lists from the server, lazy menu filters, SSR calls the API internally
+
+Prod incident 2026-10-30 (backend ADR "API performance: layered caching, bounded keys, protected health"): a
+scraper's page loads made every browser fetch the same global lists again (filters, countries, continents,
+static pages, footer beaches: 6–10 API calls per page view), and the server's own calls went out through
+Cloudflare and back.
+- `src/lib/server/global-data.ts`: continents, countries, footer CMS pages and footer beaches are fetched in
+  `[locale]/layout.tsx` (Next data cache, 300 s, tag `api-global`) and dehydrated into React Query
+  (`HydrationBoundary`) under the exact keys the hooks build — the browser makes no request for them.
+- `BurgerMenu`: the 125 KB filter list loads only when the menu is opened (`enabled: isOpen`).
+- `src/lib/server/api-base.ts` (`serverApiBaseUrl()`): server-side calls use `API_INTERNAL_URL`
+  (`http://web_<env>`, set in backend `deploy/docker-compose.vps.yml`) — site settings, place slugs, sitemaps,
+  global lists; `src/lib/server/api-client-server.ts` points the SDK client of the server bundle there (imported by
+  the server pages/helpers that use the SDK). Unset = public URL (local development). The middleware (edge) still
+  uses the public URL for the rare old-slug lookup.
+- Measured locally (production build + standalone server against the local API; a fresh browser context per page,
+  like a scraper; 8 pages: home ×2, country, 3 beach pages, map, French country page): browser API requests
+  **55 → 18**. Remaining per page: page-specific data (within-radius, map bounds/box, home first-page content and
+  category filters, the beach view counter).
+- Test: `e2e/global-data.unit.spec.ts` (keys equal the hooks', one internal fetch per list, API down → browser
+  fetches as before, base URL choice, lazy menu filters).
+
 ## 2026-10-30 - Fix: place banners without image (unquoted CSS url with Imagor parentheses)
 
 - Country/continent/region/island/city banners (`BannerSection`), the world banner and the author page set

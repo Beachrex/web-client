@@ -6,6 +6,7 @@
  */
 
 import { locales, toHtmlLang } from '@/app/config/locales';
+import { serverApiBaseUrl } from '@/lib/server/api-base';
 import { env } from '@/env';
 import type { Metadata } from 'next';
 import { getBeachesWord } from '@/lib/utils/beach-urls';
@@ -106,7 +107,7 @@ export async function buildPlaceAlternates(
   ref: PlaceRef,
 ): Promise<Record<string, string>> {
   const { loadPlaceSlugs, placeAlternates } = await import('@/lib/seo/place-paths');
-  const slugs = await loadPlaceSlugs(env.NEXT_PUBLIC_API_ENDPOINT);
+  const slugs = await loadPlaceSlugs(serverApiBaseUrl());
   const alternates = placeAlternates(slugs, ref, getBaseUrlInternal());
   const self = buildCanonicalUrl(locale, path);
   alternates[toHtmlLang(locale)] = self;

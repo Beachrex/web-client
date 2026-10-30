@@ -8,6 +8,8 @@ import { SiteSettingsProvider } from '@/contexts/SiteSettingsContext';
 import { AiChatProvider } from '@/contexts/AiChatContext';
 import AiChatWidget from '@/components/AiChat/AiChatWidget';
 import { fetchSiteSettings } from '@/lib/site-settings';
+import { fetchGlobalQueryState } from '@/lib/server/global-data';
+import { HydrationBoundary } from '@tanstack/react-query';
 import { env } from '@/env';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
@@ -91,7 +93,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const messages = (await getMessages()) as Record<string, string>;
-  const siteSettings = await fetchSiteSettings();
+  const [siteSettings, globalQueryState] = await Promise.all([fetchSiteSettings(), fetchGlobalQueryState(locale)]);
 
   // Get localized description for Organization schema
   const t = await getTranslations({ locale, namespace: 'SEO' });
@@ -121,6 +123,8 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
             <ApiClientProvider locale={locale}>
+              {/* Menu/footer lists from the server: the browser does not fetch them again (lib/server/global-data) */}
+              <HydrationBoundary state={globalQueryState}>
               <SiteSettingsProvider value={siteSettings}>
                 {/* TASK-010: one AI conversation for every page; the widget hides itself when the AI switch is off */}
                 <AiChatProvider>
@@ -128,6 +132,7 @@ export default async function LocaleLayout({
                   <AiChatWidget />
                 </AiChatProvider>
               </SiteSettingsProvider>
+              </HydrationBoundary>
             </ApiClientProvider>
           </AuthProvider>
         </NextIntlClientProvider>

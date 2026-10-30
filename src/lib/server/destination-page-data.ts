@@ -6,6 +6,7 @@
  * data with the same queries the hooks used and passes it to the page components as props.
  */
 
+import '@/lib/server/api-client-server';
 import {
   getBeaches,
   getCities,
