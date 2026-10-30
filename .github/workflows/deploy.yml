@@ -96,3 +96,20 @@ jobs:
           VPS_HOST: ${{ secrets.VPS_HOST }}
         run: |
           ssh ${VPS_USER}@${VPS_HOST} "sudo systemctl reload nginx"
+
+      - name: Clean up old Docker images and build cache
+        # Script from the backend repo (deploy/scripts/docker-prune.sh, synced to /opt/beachrex/deploy by every
+        # backend deploy). Keeps the current + one previous image per service, removes older ones and BuildKit
+        # cache unused > 72 h, reports disk usage as a notice (backend ADR 2026-10-30, docs/runbooks/disk-cleanup.md).
+        # Never fails the deploy.
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          ENV_NAME: ${{ steps.env.outputs.name }}
+        run: |
+          ssh ${VPS_USER}@${VPS_HOST} "
+            SCRIPT=/opt/beachrex/deploy/scripts/docker-prune.sh
+            if [ -f \${SCRIPT} ]; then bash \${SCRIPT} ${ENV_NAME} front; else echo '::notice::docker-prune.sh is not on the server yet (backend deploy first).'; fi
+          " || echo "::warning::Disk cleanup did not run (see the log); the deploy itself succeeded."
