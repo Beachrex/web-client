@@ -1048,5 +1048,18 @@
     "callbackTitle": "Abrir o site de teste",
     "callbackIntro": "Clique no botão para abrir o site de teste Beachrex neste dispositivo.",
     "callbackButton": "Abrir o site de teste"
+  },
+  "MapBeachPanel": {
+    "close": "Fechar e voltar à lista",
+    "dialogLabel": "Praia",
+    "openInNewTab": "Abrir num novo separador",
+    "newTab": "Novo separador",
+    "openFullPage": "Abrir a página completa da praia",
+    "openFullPageShort": "Abrir página completa",
+    "directions": "Direções",
+    "escHint": "Esc ou X: voltar à lista",
+    "loading": "A carregar a praia…",
+    "loadError": "Não foi possível carregar esta praia.",
+    "retry": "Tentar novamente"
   }
 }

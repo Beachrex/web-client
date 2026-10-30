@@ -1048,5 +1048,18 @@
     "callbackTitle": "Testwebsite openen",
     "callbackIntro": "Klik op de knop om de Beachrex-testwebsite op dit apparaat te openen.",
     "callbackButton": "Testwebsite openen"
+  },
+  "MapBeachPanel": {
+    "close": "Sluiten en terug naar de lijst",
+    "dialogLabel": "Strand",
+    "openInNewTab": "Openen in nieuw tabblad",
+    "newTab": "Nieuw tabblad",
+    "openFullPage": "Volledige strandpagina openen",
+    "openFullPageShort": "Volledige pagina openen",
+    "directions": "Routebeschrijving",
+    "escHint": "Esc of X: terug naar de lijst",
+    "loading": "Strand laden…",
+    "loadError": "Dit strand kon niet worden geladen.",
+    "retry": "Opnieuw proberen"
   }
 }

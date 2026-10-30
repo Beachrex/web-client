@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import React from 'react';
+import { useBeachPanelLinkClick } from './MapBeachPanelContext';
 
 interface BeachMarkerTooltipProps {
     beach: BeachSchema;
@@ -20,6 +21,13 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
     const locale = useLocale();
     const t = useTranslations('BeachesMap');
     const beachUrl = buildBeachUrlFromSchema(beach, locale) ?? undefined;
+    // Owner 2026-10-30: the beach opens in the map's beach panel (plain click), not in a new tab; the links stay
+    // real links, so Ctrl/Cmd/middle click still open a new tab.
+    const openInPanel = useBeachPanelLinkClick(beach.id);
+    const onBeachLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.stopPropagation();
+        openInPanel(e);
+    };
 
     // Get the main image using CDN URL builder
     const mainImage = buildCdnUrl(beach.main_image ?? null, 'list')
@@ -112,9 +120,8 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                         {beachUrl ? (
                             <Link
                                 href={beachUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
+                                prefetch={false}
+                                onClick={onBeachLinkClick}
                                 className="hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1A3C68] rounded"
                             >
                                 {title}
@@ -127,9 +134,8 @@ export const BeachMarkerTooltip = React.memo(({ beach }: BeachMarkerTooltipProps
                     {beachUrl && (
                         <Link
                             href={beachUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
+                            prefetch={false}
+                            onClick={onBeachLinkClick}
                             className="text-[11px] text-[#0069AB] font-medium hover:underline whitespace-nowrap ml-2"
                         >
                             {t('viewDetails')}

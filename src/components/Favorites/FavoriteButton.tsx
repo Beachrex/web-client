@@ -10,8 +10,11 @@ import { useFavoriteIds, useToggleFavorite, type FavoriteError } from '@/hooks/u
 
 interface FavoriteButtonProps {
   beachId: number;
-  /** `card`: white heart on a photo; `banner`: heart with a label on the beach page. */
-  variant?: 'card' | 'banner';
+  /**
+   * `card`: white heart on a photo; `banner`: heart with a label on the beach page; `panel`: outlined square icon
+   * button on white (beach map panel header).
+   */
+  variant?: 'card' | 'banner' | 'panel';
 }
 
 /**
@@ -69,12 +72,18 @@ export function FavoriteButton({ beachId, variant = 'card' }: FavoriteButtonProp
           className={
             variant === 'card'
               ? 'flex h-8 w-8 items-center justify-center rounded-full hover:bg-black/20'
-              : 'flex items-center gap-1 font-figtree text-[14px] font-semibold text-white hover:underline'
+              : variant === 'panel'
+                ? 'flex h-11 w-11 items-center justify-center rounded-lg border border-[#E7E7E7] bg-white transition-colors hover:border-[#1A3C68] hover:bg-[#F1F4F8]'
+                : 'flex items-center gap-1 font-figtree text-[14px] font-semibold text-white hover:underline'
           }
         >
           <Heart
             size={variant === 'card' ? 22 : 20}
-            className={`drop-shadow-[0_0_3px_rgba(0,0,0,0.5)] ${saved ? 'text-red-500' : 'text-white'}`}
+            className={
+              variant === 'panel'
+                ? saved ? 'text-red-500' : 'text-[#1A3C68]'
+                : `drop-shadow-[0_0_3px_rgba(0,0,0,0.5)] ${saved ? 'text-red-500' : 'text-white'}`
+            }
             fill={saved ? 'currentColor' : 'none'}
           />
           {variant === 'banner' && <span>{saved ? t('saved') : t('save')}</span>}
@@ -98,6 +107,8 @@ export function FavoriteButton({ beachId, variant = 'card' }: FavoriteButtonProp
         size="md"
         position="center"
         dismissible
+        // Above the site header (z-[1050]) and the beach map panel / sheet, like the media overlays
+        className="z-[1100]"
       >
         <Modal.Header>{t('signInTitle')}</Modal.Header>
         <Modal.Body>

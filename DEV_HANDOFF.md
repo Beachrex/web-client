@@ -18,6 +18,54 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-30 - Beach map: beaches open in a panel over the map (no more new tabs)
+
+### Overview
+Owner 2026-10-30: on the beach map (`/si/zemljevid-plaz`, `/en/beach-map`, …) a beach (list card, marker popup
+"View →"/name) opened in a new tab — bad UI, especially on phones. It now opens over the map (approved mockup,
+variant A): on lg+ (≥1024px) a panel slides in from the left over the filters + list (the map stays usable, the beach
+gets an orange pin with its name and the map pans to keep it visible); below lg a bottom sheet over the dimmed map.
+Sticky header: close (X), place line, name, save, share, "New tab"; sticky footer: "Open full beach page" (same tab)
+and "Directions" (Google Maps, as on the beach page). The body is the real beach page (`BeachDetailPage embedded`).
+
+### URL state (decision)
+`?beach=<id>` on the map URL, added with `history.pushState` (Next 14.2 syncs `useSearchParams`, no server request);
+Back closes the panel, X goes back when the entry was pushed, else `replaceState` removes the parameter; swapping
+beaches uses `replaceState`. A direct load of the map URL with `?beach=` opens the panel; beach URLs still render the
+full beach page (SEO unchanged). The beach pathname itself is NOT pushed: the filter sidebar reads the filters from the
+query string and writes them with `usePathname()` (a beach pathname cleared the filters and the next filter change
+navigated to the beach page), and the locale switcher would translate the beach instead of the map.
+
+### Changes
+- `src/lib/utils/map-beach-panel.ts`: URL build/parse, plain-click rule (`isPlainPrimaryClick`, `opensBeachPanel`),
+  panel width/inset, breadcrumb.
+- `src/components/Map/MapBeachPanelContext.tsx`: context set only by `MapWithSidebar`; `useBeachPanelLinkClick()`
+  intercepts a plain primary click on a real `<a href>` (Ctrl/Cmd/Shift/Alt/middle click keep the browser behaviour).
+  Outside the map page the context is null and cards behave as before.
+- `src/components/Map/MapBeachPanel.tsx`: desktop panel (non-modal `role="dialog"`, fixed box over the map area that
+  never extends below the window) and phone sheet (`aria-modal`, focus trap, body scroll lock, drag down on the
+  handle/header, tap on the dimmed map); Escape closes (not while a menu/modal inside is open); focus moves in on open
+  and back to the clicked link on close; skeleton, error with retry + link; no slide with `prefers-reduced-motion`.
+- `src/hooks/useBeachPanelDetails.ts`: `getBeachDetails` by id via the generated react-query options, sent "not a
+  view" (`X-Beachrex-Client`) and cached 30 min; the visit is counted once by `BeachDetailPage` (`POST /view`).
+- `MapWithSidebar.tsx` (provider, URL state, focus return, highlighted pin), `ReactLeafletMap.tsx`
+  (`ActiveBeachLayer`: unclustered orange pin + label, `panInside` right of the panel, popup closed),
+  `BeachMarkerTooltip.tsx` and `PropertyCard.tsx` (beach links: no `target=_blank`, open the panel; the card's info
+  bar opens it too on the map page), `LeftSidebarFilters.tsx` (ignores and keeps the `beach` parameter).
+- Embedded beach page: `BeachEmbedContext` keeps the narrow layout inside the panel (banner height/title/widgets,
+  description card only, details grid ≤2 columns, nearby cards ≤2 per slide, TopBar `compact` title); no
+  breadcrumb/prev-next bar, no banner save/share (in the panel header) and no banner map button. `ShareMenu` takes a
+  `url`/`compact`; `FavoriteButton` has a `panel` variant and its sign-in modal is above the header (`z-[1100]`).
+- Mobile map popup and filters drawer: `z-[10001]` → `z-[1060]` (the sheet is `z-[1070]`, media overlays stay 1100).
+- Strings: `MapBeachPanel.*` in all 19 `messages/*.json`.
+
+### Testing
+- `e2e/map-beach-panel.unit.spec.ts` (9 tests): click rule, URL build/parse, panel geometry, no `target=_blank` on
+  map beach links, scoping to the map page, filters ignore the parameter, a11y attributes, 19 locales.
+- `npx tsc --noEmit -p .`, `yarn lint`, all `e2e/*.unit.spec.ts` (462 passed), production build.
+- Local production build with a mocked API (Playwright `page.route`): 1440×900, 1024×768 and 390×844 — open from a
+  card, URL `?beach=101`, Escape/X close back to `?country=FR` with focus on the card link, direct load opens the panel.
+
 ## 2026-10-29 - Zero-downtime website deploys (blue/green) + `GET /api/health`
 
 ### Overview

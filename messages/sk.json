@@ -1048,5 +1048,18 @@
     "callbackTitle": "Otvoriť testovaciu stránku",
     "callbackIntro": "Kliknutím na tlačidlo otvoríte testovaciu stránku Beachrex na tomto zariadení.",
     "callbackButton": "Otvoriť testovaciu stránku"
+  },
+  "MapBeachPanel": {
+    "close": "Zavrieť a vrátiť sa na zoznam",
+    "dialogLabel": "Pláž",
+    "openInNewTab": "Otvoriť na novej karte",
+    "newTab": "Nová karta",
+    "openFullPage": "Otvoriť celú stránku pláže",
+    "openFullPageShort": "Otvoriť celú stránku",
+    "directions": "Trasa",
+    "escHint": "Esc alebo X: späť na zoznam",
+    "loading": "Načítava sa pláž…",
+    "loadError": "Túto pláž sa nepodarilo načítať.",
+    "retry": "Skúsiť znova"
   }
 }

@@ -1048,5 +1048,18 @@
     "callbackTitle": "Otwórz stronę testową",
     "callbackIntro": "Kliknij przycisk, aby otworzyć testową stronę Beachrex na tym urządzeniu.",
     "callbackButton": "Otwórz stronę testową"
+  },
+  "MapBeachPanel": {
+    "close": "Zamknij i wróć do listy",
+    "dialogLabel": "Plaża",
+    "openInNewTab": "Otwórz w nowej karcie",
+    "newTab": "Nowa karta",
+    "openFullPage": "Otwórz pełną stronę plaży",
+    "openFullPageShort": "Otwórz pełną stronę",
+    "directions": "Wskazówki dojazdu",
+    "escHint": "Esc lub X: powrót do listy",
+    "loading": "Ładowanie plaży…",
+    "loadError": "Nie udało się wczytać tej plaży.",
+    "retry": "Spróbuj ponownie"
   }
 }

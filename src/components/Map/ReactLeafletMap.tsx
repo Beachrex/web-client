@@ -3,7 +3,7 @@
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
 import { useEffect, useRef, useMemo, memo } from 'react';
@@ -38,6 +38,74 @@ interface ReactLeafletMapProps {
     bounds: { min_lat: number; min_lon: number; max_lat: number; max_lon: number }
   ) => void;
   onMarkerClick?: (beachId: number) => void;
+  /** Beach open in the beach panel: orange pin with its name, outside the clusters, kept in view. */
+  activeBeach?: ActiveBeach | null;
+  /** Pixels of the map's left edge covered by the beach panel (the pin is kept right of them). */
+  coveredLeft?: () => number;
+}
+
+export interface ActiveBeach {
+  id: number;
+  lat: number;
+  lng: number;
+  name: string;
+}
+
+// Same pin shape as the mockup (approved variant A), orange and larger than the other markers.
+const ACTIVE_PIN_HTML =
+  '<svg width="40" height="54" viewBox="0 0 26 36" aria-hidden="true"><path d="M13 1C6.4 1 1 6.2 1 12.7 1 21.5 13 35 13 35s12-13.5 ' +
+  '12-22.3C25 6.2 19.6 1 13 1z" fill="#FF8000" stroke="#FFFFFF" stroke-width="2"/><circle cx="13" cy="13" r="4.5" fill="#FFFFFF"/></svg>';
+
+const activeBeachIcon = L.divIcon({
+  className: 'beach-div-icon beach-active-pin',
+  html: ACTIVE_PIN_HTML,
+  iconSize: [40, 54],
+  iconAnchor: [20, 54],
+  tooltipAnchor: [0, -54],
+});
+
+/**
+ * The beach open in the panel: its own marker (not clustered, so it shows at any zoom) and a pan that keeps it
+ * inside the visible part of the map. The marker popup is closed: the panel shows the beach.
+ */
+function ActiveBeachLayer({ beach, coveredLeft }: { beach: ActiveBeach | null; coveredLeft?: () => number }) {
+  const map = useMap();
+  const id = beach?.id;
+  const lat = beach?.lat;
+  const lng = beach?.lng;
+
+  useEffect(() => {
+    if (id == null || lat == null || lng == null) return;
+    map.closePopup();
+    const inset = coveredLeft?.() ?? 0;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    map.panInside([lat, lng], {
+      paddingTopLeft: [inset + 48, 80],
+      paddingBottomRight: [48, 48],
+      animate: !reduced,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, lat, lng, map]);
+
+  if (!beach) return null;
+  return (
+    <Marker
+      position={[beach.lat, beach.lng]}
+      icon={activeBeachIcon}
+      zIndexOffset={2000}
+      interactive={false}
+      keyboard={false}
+    >
+      <Tooltip
+        permanent
+        direction="top"
+        offset={[0, -4]}
+        className="beach-active-label"
+      >
+        {beach.name}
+      </Tooltip>
+    </Marker>
+  );
 }
 
 // Extended map type with custom properties for fitBounds coordination
@@ -397,6 +465,8 @@ const ReactLeafletMap = ({
   isLoading = false,
   onViewportChange,
   onMarkerClick,
+  activeBeach = null,
+  coveredLeft,
 }: ReactLeafletMapProps) => {
   const renderStart = useRef(performance.now());
   const currentRenderCount = useRef(++mapRenderCount);
@@ -545,6 +615,7 @@ const ReactLeafletMap = ({
               />
             ))}
           </MarkerClusterGroup>
+          <ActiveBeachLayer beach={activeBeach} coveredLeft={coveredLeft} />
         </MapContainer>
       </div>
     </div>
