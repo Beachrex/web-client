@@ -1,4 +1,5 @@
 import { env } from '@/env';
+import { serverApiBaseUrl } from '@/lib/server/api-base';
 import { loadPlaceSlugs } from '@/lib/seo/place-paths';
 import { parseSitemapFile, sectionRefs, sitemapXml } from '@/lib/seo/sitemap-sections';
 
@@ -9,7 +10,7 @@ export async function GET(_req: Request, { params }: { params: { file: string } 
   const parsed = parseSitemapFile(params.file);
   if (!parsed) return new Response('Not found', { status: 404 });
 
-  const apiEndpoint = env.NEXT_PUBLIC_API_ENDPOINT;
+  const apiEndpoint = serverApiBaseUrl();
   const [slugs, refs] = await Promise.all([loadPlaceSlugs(apiEndpoint), sectionRefs(apiEndpoint, parsed.section)]);
   const lastmod = new Date().toISOString();
   const xml = sitemapXml(refs, slugs, parsed.locale, parsed.section, env.NEXT_PUBLIC_BASE_URL, lastmod);

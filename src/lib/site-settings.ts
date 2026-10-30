@@ -1,4 +1,4 @@
-import { env } from '@/env';
+import { serverApiBaseUrl } from '@/lib/server/api-base';
 
 /**
  * TASK-009: site switches the owner sets in admin (System → Site settings), per environment.
@@ -43,7 +43,7 @@ export function anyAiFeatureEnabled(settings: SiteSettings): boolean {
 
 export async function fetchSiteSettings(): Promise<SiteSettings> {
   try {
-    const res = await fetch(`${env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/site-settings`, {
+    const res = await fetch(`${serverApiBaseUrl()}/api/v1/site-settings`, {
       headers: { Accept: 'application/json' },
       next: { revalidate: REVALIDATE_SECONDS, tags: ['site-settings'] },
     });

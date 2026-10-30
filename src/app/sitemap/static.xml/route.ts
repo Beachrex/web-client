@@ -1,3 +1,4 @@
+import '@/lib/server/api-client-server';
 import type { MetadataRoute } from 'next';
 import { locales, toHtmlLang } from '@/app/config/locales';
 import { env } from '@/env';
