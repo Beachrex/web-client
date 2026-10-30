@@ -139,7 +139,7 @@ const hasAnyWebcam = React.useMemo(
 
 
   return (
-    <section className="relative overflow-x-hidden bg-white py-10 sm:py-14 lg:py-20">
+    <section className={`relative overflow-x-hidden bg-white ${embedded ? 'py-8' : 'py-10 sm:py-14 lg:py-20'}`}>
       <div className="pointer-events-none absolute left-0 top-1/2 -z-10 -translate-y-1/2">
         <div className="relative h-[400px] w-[250px] opacity-70 sm:w-[300px] lg:w-[350px]">
           <Image
@@ -156,7 +156,11 @@ const hasAnyWebcam = React.useMemo(
       <div className="container relative z-10 mx-auto">
         {/* HEADER */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4 sm:mb-6">
-          <h2 className="font-figtree text-[22px] sm:text-[26px] lg:text-[30px] font-bold text-[#222222]">
+          <h2
+            className={`font-figtree font-bold text-[#222222] ${
+              embedded ? 'text-[22px]' : 'text-[22px] sm:text-[26px] lg:text-[30px]'
+            }`}
+          >
             {title}
           </h2>
 
