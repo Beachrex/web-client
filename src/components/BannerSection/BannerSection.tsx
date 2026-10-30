@@ -1,6 +1,7 @@
 'use client';
 
 import type { Continent, Country } from '@/lib/api-client/types.gen';
+import { cssUrl } from '@/lib/utils/css-url';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -133,7 +134,7 @@ const BannerSection: React.FC<BannerSectionProps> = ({
           'bg-cover bg-center sm:h-[700px] lg:h-[735px]',
         ].join(' ')}
         style={{
-          backgroundImage: image ? `url(${image})` : undefined,
+          backgroundImage: image ? cssUrl(image) : undefined,
         }}
       >
         <div className="absolute inset-0 bg-black/20" />

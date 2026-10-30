@@ -29,6 +29,7 @@ import {
   type AuthorCountryKey,
 } from '@/lib/constants/author';
 import { getContinents, getCountries } from '@/lib/api-client/sdk.gen';
+import { cssUrl } from '@/lib/utils/css-url';
 import type { AcceptLanguage } from '@/lib/api-client/types.gen';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
 import {
@@ -165,7 +166,7 @@ export default async function AuthorPage({ params }: PageProps) {
           'relative mx-auto h-[460px] w-full max-w-[1928px] overflow-hidden rounded-[10px]',
           'bg-cover bg-center sm:h-[560px] lg:h-[620px]',
         ].join(' ')}
-        style={{ backgroundImage: `url(${AUTHOR_BEACH_PHOTO})` }}
+        style={{ backgroundImage: cssUrl(AUTHOR_BEACH_PHOTO) }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/25 to-black/10" />
         <div className="relative z-10 flex h-full flex-col p-4 sm:p-6 lg:p-8">

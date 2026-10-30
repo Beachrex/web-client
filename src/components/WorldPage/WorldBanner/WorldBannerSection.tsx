@@ -7,6 +7,7 @@ import React from 'react';
 import MapWidget from '@/components/BannerSection/MapWidget';
 import WorldTopBar from './WorldTopBar';
 import { buildBeachMapUrl } from '@/lib/utils/beach-urls';
+import { cssUrl } from '@/lib/utils/css-url';
 
 interface WorldBannerSectionProps {
   /** Background image; a plain gradient when missing. */
@@ -37,7 +38,7 @@ const WorldBannerSection: React.FC<WorldBannerSectionProps> = ({
   return (
     <section
       className="relative mx-auto h-[600px] min-h-[500px] w-full max-w-[1928px] overflow-hidden rounded-[10px] bg-cover bg-center sm:h-[700px] lg:h-[780px]"
-      style={image ? { backgroundImage: `url(${image})` } : { backgroundImage: 'linear-gradient(135deg, #0B99C2, #1A3C68)' }}
+      style={image ? { backgroundImage: cssUrl(image) } : { backgroundImage: 'linear-gradient(135deg, #0B99C2, #1A3C68)' }}
     >
       {/* Dark overlay for better text readability */}
       <div className="absolute inset-0 bg-black/10" />
