@@ -201,6 +201,63 @@ div[style*="background-image"] {
   animation: markerBounce 0.6s ease-in-out infinite;
 }
 
+/* Beach map panel (owner 2026-10-30): the beach open in the panel gets an orange pin with its name. */
+.beach-active-label.leaflet-tooltip {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: #fff;
+  color: #1A3C68;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.beach-active-label.leaflet-tooltip-top::before {
+  display: none;
+}
+
+/* Inside the panel the beach sections get the mockup's side margins (the page's .container keeps 5px). */
+[data-beach-panel] .container {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+[data-beach-panel="desktop"] .container {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Panel slides in from the left (desktop), the sheet up from the bottom (phone); no motion when reduced. */
+@keyframes beachPanelInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes beachSheetInUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes beachBackdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .beach-panel-slide-left {
+    animation: beachPanelInLeft 220ms ease-out;
+  }
+
+  .beach-sheet-slide-up {
+    animation: beachSheetInUp 260ms ease-out;
+  }
+
+  .beach-sheet-backdrop {
+    animation: beachBackdropIn 200ms ease-out;
+  }
+}
+
 
 
 

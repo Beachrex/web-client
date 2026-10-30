@@ -1,4 +1,5 @@
-import { toHtmlLang } from '@/app/config/locales';
+import { locales, toHtmlLang } from '@/app/config/locales';
+import { notFound } from 'next/navigation';
 import '@/styles/globals.css';
 
 import { ApiClientProvider } from '@/components/ApiClientProvider';
@@ -84,6 +85,9 @@ export default async function LocaleLayout({
 }) {
   // Next.js 14: params is directly available (not a Promise)
   const { locale } = params;
+  // Only real locales: a path like /api/... or /xyz/... must not render as a page of locale "api"
+  // (prod 2026-10-30: scanner paths were rendered and cached as pages; backend ADR "Bounded Next.js cache").
+  if (!(locales as readonly string[]).includes(locale)) notFound();
   setRequestLocale(locale);
 
   const messages = (await getMessages()) as Record<string, string>;

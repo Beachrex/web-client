@@ -1048,5 +1048,18 @@
     "callbackTitle": "Odpri testno stran",
     "callbackIntro": "Kliknite gumb, da odprete testno stran Beachrex na tej napravi.",
     "callbackButton": "Odpri testno stran"
+  },
+  "MapBeachPanel": {
+    "close": "Zapri in se vrni na seznam",
+    "dialogLabel": "Plaža",
+    "openInNewTab": "Odpri v novem zavihku",
+    "newTab": "Nov zavihek",
+    "openFullPage": "Odpri celo stran plaže",
+    "openFullPageShort": "Odpri celo stran",
+    "directions": "Navodila za pot",
+    "escHint": "Esc ali X: nazaj na seznam",
+    "loading": "Nalagam plažo …",
+    "loadError": "Plaže ni bilo mogoče naložiti.",
+    "retry": "Poskusi znova"
   }
 }

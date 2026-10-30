@@ -8,8 +8,10 @@ interface PageProps {
   params: { locale: string; rest: string[] };
 }
 
-// Old URLs and their targets change rarely; re-check once a day.
-export const revalidate = 86400;
+// Rendered per request, never stored (backend ADR 2026-10-30 "Bounded Next.js cache"): this route answers every URL
+// that matches no page, an unbounded set (bots). With ISR, each one was stored on disk as a page plus a cached
+// legacy-redirect API response. Old URLs are rare and the API caches its answer for a day.
+export const dynamic = 'force-dynamic';
 
 async function resolveOldUrl(locale: string, rest: string[]): Promise<LegacyTarget | null> {
   try {
@@ -36,12 +38,4 @@ export default async function CatchAllPage({ params }: PageProps) {
   const target = buildLegacyTargetUrl(await resolveOldUrl(locale, rest), locale);
   if (target) permanentRedirect(target);
   notFound();
-}
-
-/**
- * No paths are rendered at build time (the build must not depend on the API); every page is rendered on its first
- * visit and then served from the cache (ISR, see `revalidate`). Without this, Next 14 renders every request.
- */
-export function generateStaticParams() {
-  return [];
 }

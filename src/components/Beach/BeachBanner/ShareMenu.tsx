@@ -6,7 +6,7 @@
  * for the system share sheet (Web Share API, shown only where the browser has it).
  */
 
-import { Check, Mail, MoreHorizontal } from 'lucide-react';
+import { Check, Mail, MoreHorizontal, Share2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useEffect, useId, useRef, useState } from 'react';
@@ -30,7 +30,15 @@ fill="currentColor" aria-hidden
   );
 }
 
-export default function ShareMenu() {
+interface ShareMenuProps {
+  /** Page to share; default: the current page (the beach map panel passes the beach page's URL). */
+  url?: string;
+  title?: string;
+  /** Icon-only square button (beach map panel header). */
+  compact?: boolean;
+}
+
+export default function ShareMenu({ url, title, compact = false }: ShareMenuProps = {}) {
   const t = useTranslations('Common');
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -41,7 +49,10 @@ export default function ShareMenu() {
 
   // The URL without query or hash, read when the panel opens (client only)
   const openPanel = () => {
-    setPage({ url: `${window.location.origin}${window.location.pathname}`, title: document.title });
+    const pageUrl = url
+      ? new URL(url, window.location.origin).toString()
+      : `${window.location.origin}${window.location.pathname}`;
+    setPage({ url: pageUrl, title: title ?? document.title });
     setCanNativeShare(typeof navigator.share === 'function');
     setCopied(false);
     setOpen(true);
@@ -52,14 +63,18 @@ export default function ShareMenu() {
     const onPointer = (e: PointerEvent) => {
       if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
     };
+    // Capture phase + preventDefault: Escape closes this menu only, not the beach map panel around it.
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setOpen(false);
+      }
     };
     document.addEventListener('pointerdown', onPointer);
-    document.addEventListener('keydown', onKey);
+    document.addEventListener('keydown', onKey, true);
     return () => {
       document.removeEventListener('pointerdown', onPointer);
-      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('keydown', onKey, true);
     };
   }, [open]);
 
@@ -83,6 +98,19 @@ export default function ShareMenu() {
 
   return (
     <div ref={rootRef} className="relative">
+      {compact ? (
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={panelId}
+          aria-label={t('share')}
+          title={t('share')}
+          onClick={() => (open ? setOpen(false) : openPanel())}
+          className={iconButton}
+        >
+          <Share2 size={20} aria-hidden />
+        </button>
+      ) : (
       <button
         type="button"
         aria-expanded={open}
@@ -99,6 +127,7 @@ src="/images/share.png" alt="" width={22}
 height={22} className="object-contain"
         />
       </button>
+      )}
 
       {open && (
         <div

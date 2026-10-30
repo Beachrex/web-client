@@ -30,9 +30,14 @@ test('every server page and the locale layout call setRequestLocale', () => {
   expect(missing).toEqual([]);
 });
 
-test('the layout and every route with its own dynamic segment export generateStaticParams', () => {
+test('the layout and every cached route with its own dynamic segment export generateStaticParams', () => {
   const routes = [join(appDir, 'layout.tsx'), ...files(appDir, 'page.tsx').filter((f) => /\[[^\]]+\]/.test(relative(appDir, f)))];
-  const missing = routes.filter((f) => !read(f).includes('generateStaticParams')).map((f) => relative(root, f));
+  // `[...rest]` (unknown URLs, old-site redirects) is force-dynamic on purpose: an ISR file per invented URL filled the
+  // prod disk (backend ADR 2026-10-30 "Bounded Next.js cache").
+  const missing = routes
+    .filter((f) => !read(f).includes("export const dynamic = 'force-dynamic'"))
+    .filter((f) => !read(f).includes('generateStaticParams'))
+    .map((f) => relative(root, f));
   expect(missing).toEqual([]);
 });
 

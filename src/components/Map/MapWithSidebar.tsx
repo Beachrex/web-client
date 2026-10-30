@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import { nextDisplayedBeaches } from '@/lib/utils/map-results';
 import { focusCenter, parseBeachFocus, withFocusedBeach } from '@/lib/utils/map-focus';
 import { getBeachByIdentifierOptions } from '@/lib/api-client/@tanstack/react-query.gen';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Map as MapIcon, SlidersHorizontal, X } from 'lucide-react';
@@ -17,11 +17,24 @@ import LeftSidebarFilters from './LeftSidebarFilters';
 import ReactLeafletMap from './ReactLeafletMap';
 import { VirtualizedBeachList } from './VirtualizedBeachList';
 import { optionMatches, type FilterOptionLike } from '@/lib/utils/filter-options';
+import { buildMapPanelUrl, panelMapInset, parseMapBeachParam } from '@/lib/utils/map-beach-panel';
+import { beachPanelQueryOptions, useBeachPanelDetails } from '@/hooks/useBeachPanelDetails';
+import { MapBeachPanelContext, type MapBeachPanelApi } from './MapBeachPanelContext';
+import MapBeachPanel from './MapBeachPanel';
+import type { ActiveBeach } from './ReactLeafletMap';
 
 type ColumnLayout = 1 | 2;
 
 // Zoom level that guarantees markers are ungrouped (disableClusteringAtZoom is 15)
 const BEACH_DETAIL_ZOOM = 16;
+
+// History entries pushed for the beach panel carry this flag, so closing knows it may go back.
+const PANEL_HISTORY_KEY = '__beachPanel';
+
+function historyEntryIsPanel(): boolean {
+    const state = window.history.state as Record<string, unknown> | null;
+    return Boolean(state?.[PANEL_HISTORY_KEY]);
+}
 
 interface Bounds {
     min_lat: number;
@@ -79,6 +92,17 @@ const MapWithSidebar = () => {
     useEffect(() => {
         const query = window.matchMedia('(min-width: 768px)');
         const update = () => setIsDesktop(query.matches);
+        update();
+        query.addEventListener('change', update);
+        return () => query.removeEventListener('change', update);
+    }, []);
+    // Beach panel layout: side panel from lg (1024px, approved variant A), bottom sheet below.
+    const [isWide, setIsWide] = useState(
+        () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches,
+    );
+    useEffect(() => {
+        const query = window.matchMedia('(min-width: 1024px)');
+        const update = () => setIsWide(query.matches);
         update();
         query.addEventListener('change', update);
         return () => query.removeEventListener('change', update);
@@ -414,6 +438,87 @@ const MapWithSidebar = () => {
     // Map markers: the focused beach is always among them (its popup must open even outside the filters).
     const mapBeaches = useMemo(() => withFocusedBeach(beaches, focusedBeach), [beaches, focusedBeach]);
 
+    // ---------------------------------------------------------------------------------------------
+    // Beach panel (owner 2026-10-30): beaches open over the map instead of in a new tab.
+    // The open beach is `?beach=<id>` on the map URL (see src/lib/utils/map-beach-panel.ts): pushed on open,
+    // so Back closes the panel and the URL can be shared; the filters in the query string stay untouched.
+    // ---------------------------------------------------------------------------------------------
+    const panelBeachId = parseMapBeachParam(searchParams);
+    const panelTriggerRef = useRef<HTMLElement | null>(null);
+    const lastPanelBeachRef = useRef<number | null>(null);
+
+    const openBeachPanel = useCallback((beachId: number, trigger?: HTMLElement | null) => {
+        panelTriggerRef.current = trigger ?? null;
+        const url = buildMapPanelUrl(window.location, beachId);
+        if (parseMapBeachParam(new URLSearchParams(window.location.search)) === null) {
+            window.history.pushState({ [PANEL_HISTORY_KEY]: true }, '', url);
+        } else {
+            // Another beach while the panel is open: swap the content, one history entry for the panel.
+            // Only our flag: Next.js copies its own history state in (passing its `__NA` state back would make
+            // its patched replaceState skip the router update, and useSearchParams would keep the old beach).
+            window.history.replaceState({ [PANEL_HISTORY_KEY]: historyEntryIsPanel() }, '', url);
+        }
+    }, []);
+
+    const closeBeachPanel = useCallback(() => {
+        if (historyEntryIsPanel()) {
+            window.history.back();
+        } else {
+            // Opened by a direct link to the panel URL: nothing to go back to on this page.
+            window.history.replaceState(null, '', buildMapPanelUrl(window.location, null));
+        }
+    }, []);
+
+    // Closed (X, Escape, Back): focus returns to the card or marker link that opened the panel.
+    useEffect(() => {
+        if (panelBeachId !== null) {
+            lastPanelBeachRef.current = panelBeachId;
+            return;
+        }
+        const lastId = lastPanelBeachRef.current;
+        if (lastId === null) return;
+        lastPanelBeachRef.current = null;
+        const trigger = panelTriggerRef.current;
+        panelTriggerRef.current = null;
+        const target = trigger?.isConnected
+            ? trigger
+            : document.querySelector<HTMLElement>(`[data-beach-id="${lastId}"] h3 a`);
+        target?.focus({ preventScroll: true });
+    }, [panelBeachId]);
+
+    const queryClient = useQueryClient();
+    const prefetchBeachPanel = useCallback((beachId: number) => {
+        if (beachId > 0) void queryClient.prefetchQuery(beachPanelQueryOptions(beachId));
+    }, [queryClient]);
+    const beachPanelApi = useMemo<MapBeachPanelApi>(
+        () => ({ open: openBeachPanel, prefetch: prefetchBeachPanel }),
+        [openBeachPanel, prefetchBeachPanel],
+    );
+
+    const panelPreview = useMemo(
+        () => (panelBeachId === null ? null : mapBeaches.find((b) => b.id === panelBeachId) ?? null),
+        [mapBeaches, panelBeachId],
+    );
+    // Same query as the panel (shared cache, one request): coordinates and name for the map's highlighted pin.
+    const { details: panelDetails } = useBeachPanelDetails(panelBeachId);
+    const activeBeach = useMemo<ActiveBeach | null>(() => {
+        if (panelBeachId === null) return null;
+        const lat = Number(panelDetails?.basic_info?.latitude ?? panelPreview?.latitude);
+        const lng = Number(panelDetails?.basic_info?.longitude ?? panelPreview?.longitude);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng) || (lat === 0 && lng === 0)) return null;
+        return { id: panelBeachId, lat, lng, name: panelDetails?.basic_info?.name ?? panelPreview?.name ?? '' };
+    }, [panelBeachId, panelDetails, panelPreview]);
+
+    // Map pixels hidden under the desktop panel (none in the usual layout: the panel covers filters + list).
+    const panelAreaRef = useRef<HTMLDivElement>(null);
+    const panelCoveredLeft = useCallback(() => {
+        const map = mapContainerRef.current;
+        const panel = document.querySelector<HTMLElement>('[data-beach-panel="desktop"]');
+        if (!map || !isWide || !panel) return 0;
+        // offsetWidth: the width without the slide-in transform
+        return panelMapInset(panel.getBoundingClientRect().left + panel.offsetWidth, map.getBoundingClientRect().left);
+    }, [isWide]);
+
     const loading = boundingBoxResult.loading;
     const error = boundingBoxResult.error;
     const boundingBoxMeta = boundingBoxResult.data?.meta;
@@ -581,7 +686,8 @@ const MapWithSidebar = () => {
 
 
     return (
-        <div className="min-h-screen w-full overflow-x-hidden md:h-screen md:overflow-hidden">
+        <MapBeachPanelContext.Provider value={beachPanelApi}>
+        <div ref={panelAreaRef} className="relative min-h-screen w-full overflow-x-hidden md:h-screen md:overflow-hidden">
             <div className="h-full w-full flex flex-col md:flex-row gap-2">
                 {/* Left Sidebar - Filters (desktop) */}
                 <div className="hidden md:block w-full md:w-80 md:h-screen md:flex-shrink-0">
@@ -745,6 +851,8 @@ const MapWithSidebar = () => {
                                         isLoading={loading}
                                         onViewportChange={handleMapViewportChange}
                                         onMarkerClick={handleMarkerClick}
+                                        activeBeach={activeBeach}
+                                        coveredLeft={panelCoveredLeft}
                                     />
                                 ) : (
                                     <div className="h-full w-full bg-white flex items-center justify-center rounded-lg">
@@ -761,7 +869,8 @@ const MapWithSidebar = () => {
 
                 {/* Mobile full-screen map popup */}
                 {isMobileMapOpen && (
-                    <div className="fixed inset-0 z-[10001] flex items-center justify-center bg-black/60 md:hidden">
+                    // z-[1060]: above the site header (1050), below the beach sheet (1070) and media overlays (1100)
+                    <div className="fixed inset-0 z-[1060] flex items-center justify-center bg-black/60 md:hidden">
                         <div className="relative w-full h-full p-2 flex items-center justify-center">
                             <div className="relative h-full w-full">
                                 <div className="h-full w-full rounded-lg overflow-hidden bg-white">
@@ -780,6 +889,7 @@ const MapWithSidebar = () => {
                                             isLoading={loading}
                                             onViewportChange={handleMapViewportChange}
                                             onMarkerClick={handleMarkerClick}
+                                            activeBeach={activeBeach}
                                         />
                                     ) : (
                                         <div className="h-full w-full bg-white flex items-center justify-center rounded-lg">
@@ -805,7 +915,7 @@ const MapWithSidebar = () => {
 
                 {/* Mobile slide-in filters panel */}
                 {isMobileFiltersOpen && (
-                    <div className="fixed inset-0 z-[10001] flex justify-end bg-black/40 md:hidden">
+                    <div className="fixed inset-0 z-[1060] flex justify-end bg-black/40 md:hidden">
                         <div className="relative h-full w-4/5 max-w-xs bg-[#F6F6F5] shadow-lg">
                             <button
                                 type="button"
@@ -830,7 +940,7 @@ const MapWithSidebar = () => {
                 )}
 
                 {/* Scroll-to-top button for long list on mobile */}
-                {showScrollTop && !isMobileMapOpen && !isMobileFiltersOpen && (
+                {showScrollTop && !isMobileMapOpen && !isMobileFiltersOpen && panelBeachId === null && (
                     <button
                         type="button"
                         onClick={() => {
@@ -844,8 +954,21 @@ const MapWithSidebar = () => {
                         ↑
                     </button>
                 )}
+
+                {/* Beach panel: side panel over filters + list (lg+), bottom sheet over the map below lg */}
+                {panelBeachId !== null && (
+                    <MapBeachPanel
+                        beachId={panelBeachId}
+                        preview={panelPreview}
+                        desktop={isWide}
+                        onClose={closeBeachPanel}
+                        areaRef={panelAreaRef}
+                        mapRef={mapContainerRef}
+                    />
+                )}
             </div>
         </div>
+        </MapBeachPanelContext.Provider>
     );
 };
 
