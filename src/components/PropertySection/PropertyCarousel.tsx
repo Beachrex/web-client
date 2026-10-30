@@ -2,6 +2,7 @@
 
 import useEmblaCarousel from 'embla-carousel-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import React, { useCallback, useMemo } from 'react';
 import PropertyCard from '../PropertyCard/PropertyCard';
 import type { Property } from '../PropertySection';
@@ -19,6 +20,7 @@ export const PropertyCarousel: React.FC<PropertyCarouselProps> = ({
   items,
   itemsPerSlide,
 }) => {
+  const c = useTranslations('Common');
   const slides = useMemo(() => {
     const chunks: Property[][] = [];
     for (let i = 0; i < items.length; i += itemsPerSlide) {
@@ -49,7 +51,13 @@ export const PropertyCarousel: React.FC<PropertyCarouselProps> = ({
         <div className="embla__container flex">
           {slides.map((chunk, idx) => (
             <div key={idx} className="embla__slide flex-shrink-0 w-full px-1">
-              <div className="grid grid-cols-1 h-full gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+              {/* Columns follow itemsPerSlide (owner, 2026-10-30). The old `lg:grid-cols-3 2xl:grid-cols-4`
+                  followed the window: in the 720px beach panel on the map a card got a quarter of the width,
+                  and between 1024 and 1279px a slide of 2 cards left an empty third column. */}
+              <div
+                className="grid h-full gap-6"
+                style={{ gridTemplateColumns: `repeat(${itemsPerSlide}, minmax(0, 1fr))` }}
+              >
                 {chunk.map((card, i) => (
                   <PropertyCard key={`${idx}_${i}`} {...card} />
                 ))}
@@ -59,20 +67,28 @@ export const PropertyCarousel: React.FC<PropertyCarouselProps> = ({
         </div>
       </div>
 
-      {/* ARROWS */}
-      <button
-        onClick={scrollPrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
-      >
-        <ChevronLeft size={24} />
-      </button>
+      {/* ARROWS: only when there is more than one slide (one card showed both arrows over it). */}
+      {slides.length > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={scrollPrev}
+            aria-label={c('paginationPrevious')}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
+          >
+            <ChevronLeft size={24} />
+          </button>
 
-      <button
-        onClick={scrollNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
-      >
-        <ChevronRight size={24} />
-      </button>
+          <button
+            type="button"
+            onClick={scrollNext}
+            aria-label={c('paginationNext')}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </>
+      )}
     </div>
   );
 };

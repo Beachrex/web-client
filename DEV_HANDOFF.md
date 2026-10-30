@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-30 – Beach panel: "Nearby beaches" carousel fixed ✅ COMPLETE
+
+Owner, 2026-10-30: in the beach panel on the map page the nearby-beaches carousel squeezed a card into a quarter of the width with both arrows over it.
+
+- `PropertyCarousel.tsx`: grid columns follow `itemsPerSlide` (inline `repeat(n, minmax(0, 1fr))`) instead of window breakpoints (`lg:grid-cols-3 2xl:grid-cols-4`). Also fixes 1024–1279px on normal pages, where a slide of 2 cards left an empty third column. Arrows only with more than one slide, with `aria-label`s (`Common.paginationPrevious/Next`).
+- `PropertySection.tsx`: in the panel (`useBeachEmbedded`) a smaller title (22px) and padding.
+- Test: `e2e/property-carousel.unit.spec.ts`.
+
 ## 2026-10-30 - Beach map: beaches open in a panel over the map (no more new tabs)
 
 ### Overview
