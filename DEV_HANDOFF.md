@@ -18,6 +18,14 @@ All technical documentation is organized in the **[docs/](./docs/README.md)** fo
 
 ---
 
+## 2026-10-30 - Deploy cleans up old Docker images and build cache
+
+Owner: VPS disk 71 % full. `.github/workflows/deploy.yml` got a last step "Clean up old Docker images and build cache"
+(after "Reload Nginx", `continue-on-error`): it runs the backend's `deploy/scripts/docker-prune.sh <env> front` on the
+VPS if it is there (keeps the current + one previous image per service, `beachrex/front:<env>-previous`; removes older
+ones and BuildKit cache unused > 72 h; disk usage before/after as a notice). Backend ADR 2026-10-30, runbook
+`Beachrex/backend` → `docs/runbooks/disk-cleanup.md`. No app code changed.
+
 ## 2026-10-30 – Beach panel: faster first open (prefetch by id, photo while loading) ✅ COMPLETE
 
 Owner, 2026-10-30: the beach panel on the map loaded slowly the first time.
