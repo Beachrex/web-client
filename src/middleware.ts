@@ -11,6 +11,7 @@ import {
   readPreviewGateConfig,
 } from './lib/preview-gate/preview-gate';
 import { currentBeachSlug, oldBeachSlug, withBeachSlug } from './lib/utils/old-beach-slug';
+import { isJunkPath } from './lib/utils/junk-paths';
 
 const intlMiddleware = createMiddleware(routing);
 const beachesMiddleware = createBeachesMiddleware(intlMiddleware, (url) => NextResponse.rewrite(url));
@@ -18,6 +19,14 @@ const beachesMiddleware = createBeachesMiddleware(intlMiddleware, (url) => NextR
 export default async function middleware(request: NextRequest): Promise<NextResponse> {
   // The gate's own pages are not localized: keep them away from next-intl.
   const { pathname } = request.nextUrl;
+  // Scanner probes (/.env, /api/proc/self/environ, /wp-login.php ...): a tiny 404 before anything renders or is
+  // cached (prod 2026-10-30: 178 000 cached 404 pages in one day; backend ADR "Bounded Next.js cache").
+  if (isJunkPath(pathname)) {
+    return new NextResponse('Not found', {
+      status: 404,
+      headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=86400', 'x-robots-tag': 'noindex' },
+    });
+  }
   if (pathname === PREVIEW_ACCESS_PATH || pathname.startsWith(`${PREVIEW_ACCESS_PATH}/`)) {
     return NextResponse.next();
   }
@@ -72,7 +81,7 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
+     * - api/health (the only API route; any other /api/... is a probe and gets a 404 here)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon*, apple-touch-icon, android-chrome-*, site.webmanifest, og-image (icons and share image)
@@ -80,6 +89,6 @@ export const config = {
      * - images, brand/ (public files; brand/ is the media kit package)
      * - vendor/ (self-hosted third-party files, e.g. the Pannellum 360° viewer)
      */
-    '/((?!api|_next/static|_next/image|favicon|apple-touch-icon|android-chrome|site\\.webmanifest|og-image|sitemap|robots\\.txt|ads\\.txt|llms\\.txt|images|brand/|vendor/).*)',
+    '/((?!api/health|_next/static|_next/image|favicon|apple-touch-icon|android-chrome|site\\.webmanifest|og-image|sitemap|robots\\.txt|ads\\.txt|llms\\.txt|images|brand/|vendor/).*)',
   ],
 };

@@ -1,5 +1,6 @@
 import createNextIntlPlugin from "next-intl/plugin";
 import bundleAnalyzer from "@next/bundle-analyzer";
+import { fileURLToPath } from "node:url";
 
 const withNextIntl = createNextIntlPlugin();
 
@@ -26,6 +27,13 @@ const nextConfig = {
   // Emit a self-contained `.next/standalone` build for the production Docker image.
   // Required by Front/beachrex/Dockerfile.prod (VPS deployment).
   output: "standalone",
+
+  // Bounded in-memory cache for ISR pages and the fetch Data Cache (backend ADR 2026-10-30 "Bounded Next.js
+  // cache"). The default handler wrote every rendered page and fetch response to disk and never deleted any:
+  // ~14 GB in the prod container in one day. Budget: NEXT_CACHE_MAX_MB (runtime env, default 128).
+  cacheHandler: fileURLToPath(new URL("./cache-handler.cjs", import.meta.url)),
+  // Next's own extra memory layer would double the memory; the handler has its own LRU.
+  cacheMaxMemorySize: 0,
 
   // Transpile flowbite-react to fix module resolution issues
   transpilePackages: ["flowbite-react"],
